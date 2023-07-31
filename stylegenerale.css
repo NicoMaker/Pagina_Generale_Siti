@@ -35,13 +35,15 @@ th {
 a
 {
     text-decoration: none;
-    color: black;
+    color: white;
+    text-shadow: 2px 2px 4px #000000;
 }
 
 p
 {
     font-size: 50px;
     color: white;
+    font-weight: bold;
     text-shadow: 2px 2px 4px #000000;
 }
 
