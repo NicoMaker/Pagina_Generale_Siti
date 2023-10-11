@@ -27,9 +27,22 @@ td{
     padding: 10px;
 }
 
-td,
-th {
-    border: 1px solid blue;
+/**colore riga alternato pari**/
+td:nth-child(2n) {
+    background-color: orange;
+    border: 1px solid orange;
+}
+
+/**colore riga alternato dispari**/
+td:nth-child(2n + 3) {
+    background-color:yellow ;
+    border: 1px solid yellow;
+}
+
+/***colore prima linea tabella**/
+td:nth-child(-n + 1) {
+    background-color: yellow;
+    border: 1px solid yellow;
 }
 
 a
@@ -53,13 +66,12 @@ p
     font-size: 2rem;
     color: inherit;
     text-decoration: none;
-    background-image: linear-gradient(to right, yellow, red);
+    background-image: linear-gradient(to right, blue,cyan);
     background-repeat: no-repeat;
     background-position: bottom left;
     background-size: 0% 50%;
     transition: background-size 300ms ease-in-out;
 }
-
 
 .contorno:hover
 {
