@@ -54,10 +54,11 @@ a
 p
 {
     font-size: 50px;
+    color: blue;
     font-weight: bold;
     text-shadow: 2px 2px 4px #000000;
+    background: linear-gradient(to right, green,white, white,red);
     border-radius: 50px;
-    animation: changeBackground 10s infinite;
 }
 
 .contorno
@@ -75,31 +76,4 @@ p
 .contorno:hover
 {
     background-size: 100% 20%;
-}
-
-@keyframes changeBackground {
-    0% {
-        color:white;
-        background: linear-gradient(to right, #ff7f50, #6495ed);
-    }
-
-    25% {
-        color: yellow;
-        background: linear-gradient(to right, #ff69b4, #87cefa);
-    }
-
-    50% {
-        color: lightblue;
-        background: linear-gradient(to right, #7fffd4, #ff1493);
-    }
-
-    75% {
-        color: thistle;
-        background: linear-gradient(to right, #ffa500, #9932cc);
-    }
-
-    100% {
-        color: turquoise;
-        background: linear-gradient(to right, #32cd32, #ffd700);
-    }
 }
