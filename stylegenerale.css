@@ -58,7 +58,8 @@ p {
 }
 
 .contorno,
-.serpente {
+.serpente,
+.GitHub {
     font-size: 2rem;
     color: inherit;
     text-decoration: none;
@@ -70,7 +71,8 @@ p {
 }
 
 .contorno:hover,
-.serpente:hover {
+.serpente:hover,
+.GitHub:hover {
     background-size: 100% 20%;
 }
 
@@ -111,5 +113,5 @@ p {
 .GitHub
 {
     width: 50px;
-    height: 50px;;
+    height: 50px;
 }
