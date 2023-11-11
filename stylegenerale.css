@@ -58,7 +58,6 @@ p {
 }
 
 .contorno,
-.serpente,
 .GitHub {
     font-size: 2rem;
     color: inherit;
@@ -71,44 +70,10 @@ p {
 }
 
 .contorno:hover,
-.serpente:hover,
 .GitHub:hover {
     background-size: 100% 20%;
 }
 
-.sfondoSerpente {
-    background: linear-gradient(to right, #00ff9d, #21b17a);
-    border-radius: 50px;
-    font-size: 45px;
-}
-
-.serpentesx {
-    float: right;
-}
-
-.serpentedx {
-    float: left;
-}
-
-
-@media all and (max-width: 1024px) {
-
-    .serpentesx,
-    .serpentedx {
-        height: 50px;
-        weight: 50px;
-        margin: 10px;
-    }
-}
-
-@media all and (min-width: 1024px) {
-    .serpentesx,
-    .serpentedx {
-        height: 30px;
-        weight: 30px;
-        margin: 10px;
-    }
-}
 
 .GitHub
 {
