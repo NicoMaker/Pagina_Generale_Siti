@@ -83,8 +83,8 @@ p {
     float: left;
     width: auto;
     height: 230px;
-    border: dashed #00ff9d 10px;
-    background-color: yellow;
+    border-radius: 10px;
+    border: solid 2px blue;
 }
 
 @media all and (max-width: 1024px) {
