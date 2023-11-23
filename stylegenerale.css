@@ -22,6 +22,7 @@ td {
     border-radius: 50px;
     margin-bottom: 20px;
     padding: 10px;
+    margin: 20px;
 }
 
 /**colore riga alternato pari**/
@@ -56,12 +57,17 @@ p {
     border-radius: 50px;
 }
 
+.GitHub {
+    width: 60px;
+    height: 60px;
+}
+
 .contorno,
 .GitHub {
     font-size: 2rem;
     color: inherit;
     text-decoration: none;
-    background-image: linear-gradient(to right, blue, cyan);
+    background-image: linear-gradient(to right, yellow,red);
     background-repeat: no-repeat;
     background-position: bottom left;
     background-size: 0% 50%;
@@ -70,13 +76,7 @@ p {
 
 .contorno:hover,
 .GitHub:hover {
-    background-size: 100% 20%;
-}
-
-
-.GitHub {
-    width: 50px;
-    height: 50px;
+    background-size: 100% 15%;
 }
 
 .immagine {
@@ -87,11 +87,17 @@ p {
     border: solid 2px blue;
 }
 
+.IconaGit {
+    background: linear-gradient(to right, #79E0EE, #B1AFFF, #79E0EE);
+    border-radius: 25px;
+    border: 1px solid blue;
+}
+
 @media all and (max-width: 1024px) {
 
     h1 {
         font-size: 75px;
-    }
+    }   
 }
 
 @media all and (min-width: 1024px) {
@@ -102,5 +108,14 @@ p {
 
     .immagine {
         margin: 10px;
+    }
+
+    .IconaGit {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 20;
+        background: linear-gradient(to right, #79E0EE, #B1AFFF, #79E0EE);
+        border: 1px solid blue;
     }
 }
