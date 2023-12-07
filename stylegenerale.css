@@ -97,7 +97,7 @@ p {
     top: 5px;
     right: 20px;
     z-index: 10;
-    background: linear-gradient(to right, #79E0EE, #B1AFFF, #79E0EE);
+    background: linear-gradient(to right, darkblue, navy);
     border: 1px solid blue;
     border-radius: 25px;
 }
