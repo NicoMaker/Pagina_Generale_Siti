@@ -161,7 +161,8 @@ p {
   right: 20px;
   z-index: 20;
   border-radius: 50%;
-  text-shadow: 2px 2px 4px black;
+  color: blue;
+  text-shadow: 2px 2px 4px dark;
   font-size: 30px;
   border: none;
   cursor: pointer;
@@ -210,4 +211,11 @@ p {
 
 button:hover {
   color: red;
+}
+
+h2
+{
+  color: gold;
+  font-size: 35px;
+  text-shadow: 2px 2px 4px #000000;
 }

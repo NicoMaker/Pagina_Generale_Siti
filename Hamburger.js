@@ -10,6 +10,8 @@ function toggleMenu() {
 
 function Matematica() {
   stampa = `
+
+    <h2>Matematica </h2>
     <table>
         <tr>
             <td class="contorno">
@@ -119,6 +121,7 @@ function Matematica() {
 
 function Bici() {
   stampa = `
+  <h2>Bici </h2>
     <table>
         <br>
         <tr>
@@ -133,6 +136,7 @@ function Bici() {
 
 function Random() {
   stampa = `
+    <h2>Opzioni Random </h2>
     <table>
         <tr>
             <td class="contorno">
@@ -188,6 +192,7 @@ function Random() {
 
 function Giochi() {
   stampa = `
+    <h2>Giochi </h2>
     <table>
         <tr>
             <td class="contorno">
@@ -224,6 +229,7 @@ function Giochi() {
 
 function Borsa() {
   stampa = `
+    <h2>Borsa </h2>
     <table>
         <tr>
             <td class="contorno">
@@ -241,6 +247,7 @@ function Borsa() {
 
 function Calendario() {
   stampa = `
+    <h2>Siti sul Calendario </h2>
     <table>
         <tr>
             <td class="contorno">
@@ -267,6 +274,7 @@ function Calendario() {
 
 function InfoPaesiStati() {
   stampa = `
+    <h2>Info Paese / Stati</h2>
     <table>
         <tr>
             <td class="contorno">
@@ -285,6 +293,7 @@ function InfoPaesiStati() {
 
 function Natale() {
   stampa = `
+    <h2> Siti sul Natale </h2>
     <table>
         <tr>
             <td class="contorno">
@@ -307,6 +316,7 @@ function Natale() {
 
 function Salute() {
   stampa = `
+    <h2>Siti sulla Salute </h2>
     <table>
         <tr>
             <td class="contorno">
@@ -321,6 +331,7 @@ function Salute() {
 
 function Pasqua() {
   stampa = `
+    <h2> Siti Sulla Pasqua </h2>
     <table>
         <tr>
             <td class="contorno">
