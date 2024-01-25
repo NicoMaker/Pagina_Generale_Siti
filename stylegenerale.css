@@ -150,6 +150,7 @@ p {
   top: 0;
   z-index: 10;
   overflow-y: auto; 
+  border-radius: 20px;
 }
 
 .menu.showMenu {
@@ -203,6 +204,7 @@ p {
   color: darkblue;
   cursor: pointer;
   font-size: 25px;
+  border-radius: 20px;
 }
 
 button:hover {
