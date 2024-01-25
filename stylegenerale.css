@@ -5,7 +5,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap");
 
-
 h1 {
   color: red;
   font-weight: bold;
@@ -33,19 +32,16 @@ td {
   margin: 20px;
 }
 
-/**colore riga alternato pari**/
 td:nth-child(2n) {
   background-color: orange;
   border: 1px solid orange;
 }
 
-/**colore riga alternato dispari**/
 td:nth-child(2n + 3) {
   background-color: yellow;
   border: 1px solid yellow;
 }
 
-/***colore prima linea tabella**/
 td:nth-child(-n + 1) {
   background-color: yellow;
   border: 1px solid yellow;
@@ -68,6 +64,7 @@ p {
 .GitHub {
   width: 60px;
   height: 60px;
+  background: linear-gradient(right, darkgreen, black, darkgreen);
 }
 
 .contorno,
@@ -117,11 +114,6 @@ p {
 }
 
 .IconaGit {
-  position: fixed;
-  top: 5px;
-  right: 20px;
-  z-index: 10;
-  background: linear-gradient(to right, darkgreen, black, darkgreen);
   border: 1px solid blue;
   border-radius: 25px;
 }
@@ -130,10 +122,92 @@ p {
   h1 {
     font-size: 75px;
   }
+
+  .menu h1 {
+    font-size: 45px;
+  }
 }
 
 @media all and (min-width: 1024px) {
   h1 {
     font-size: 100px;
   }
+  .menu h1 {
+    font-size: 40px;
+  }
+}
+
+.menu {
+  position: fixed;
+  width: 20vw;
+  min-width: 200px;
+  height: 100%;
+  list-style: none;
+  right: -100%;
+  transition: right 550ms;
+  background: linear-gradient(to right, #79e0ee, #b1afff, #79e0ee);
+  top: 0;
+  z-index: 10;
+  overflow-y: auto; 
+}
+
+.menu.showMenu {
+  right: 0;
+}
+
+.hamburger {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 20;
+  border-radius: 50%;
+  text-shadow: 2px 2px 4px black;
+  font-size: 30px;
+  border: none;
+  cursor: pointer;
+  background-color: #79e0ee;
+}
+
+.hamburger .MenuIcon,
+.hamburger .CloseIcon {
+  display: block;
+  text-align: center;
+}
+
+.hamburger .CloseIcon {
+  display: none;
+}
+
+.hamburger.closeIcon {
+  background: none;
+}
+
+.hamburger.closeIcon .MenuIcon {
+  display: none;
+}
+
+.hamburger.closeIcon .CloseIcon {
+  display: block;
+}
+
+.menu li {
+  padding: 20px;
+}
+
+.menu a {
+  text-decoration: none;
+  color: darkblue;
+}
+
+.menu button {
+  padding: 10px;
+  background: none;
+  border: 2px solid darkblue;
+  color: darkblue;
+  cursor: pointer;
+  font-size: 25px;
+}
+
+button:hover {
+  color: red;
 }

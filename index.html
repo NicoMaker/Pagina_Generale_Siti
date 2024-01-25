@@ -11,6 +11,8 @@
   <meta name="keyword" content="Pagina Generale tutti i siti, WEB SITE, WEB APP, Nico Maker" />
   <meta name="generator" content="HTML, CSS" />
   <meta name="description" content="Nel Seguente sito si vedono tutti i miei siti realizzati" />
+  <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"> -->
+  <script src="Hamburger.js" defer></script>
 
   <title>Pagina Generale tutti i siti</title>
 </head>
@@ -23,260 +25,38 @@
 
   <h1>Pagina Generale Siti dove sono menzionati tutti</h1>
 
-  <button class="IconaGit">
-    <a href="https://github.com/NicoMaker/NicoMaker" target="_blank">
-      <img class="GitHub" src="Imagini_Sito/GitHub.png" />
-    </a>
-  </button>
-
   <img class="immagine" src="Imagini_Sito/Immagine_mondo.jpg">
 
   <br />
 
-  <table>
-    <tr>
-      <td class="contorno">
-        <a href="https://eserciziotrifase.netlify.app/" target="_blank">
-          Esercizio Trifase</a>
-      </td>
+  <ul class="menu">
+    <br>
+    <br>
+    <h1>Menu dove trovi tutte le categoriie dei siti scritti</h1>
+    <li><button onclick="Matematica()">Matematica</button></li>
+    <li><button onclick="Bici()">Bici</button></li>
+    <li><button onclick="Random()">Opzioni Random</button></li>
+    <li><button onclick="Giochi()">Giochi</button></li>
+    <li><button onclick="Borsa()">Borsa</button></li>
+    <li><button onclick="Calendario()">Siti sul Calendario</button></li>
+    <li><button onclick="InfoPaesiStati()">Info Paese / Stati</button></li>
+    <li><button onclick="Natale()">Siti sul Natale</button></li>
+    <li><button onclick="Salute()">Salute </button></li>
+    <li><button onclick="Pasqua()">Siti Sulla Pasqua</button></li>
+    <button class="IconaGit">
+      <a href="https://github.com/NicoMaker/NicoMaker" target="_blank">
+        <img class="GitHub" src="Imagini_Sito/GitHub.png" />
+      </a>
+    </button>
+    <br>
+  </ul>
 
-      <td class="contorno">
-        <a href="https://alant.netlify.app/" target="_blank">
-          Biografia su Alan Turing</a>
-      </td>
+  <button class="hamburger" onclick="toggleMenu()">
+    <i class="MenuIcon material-icons">menu</i>
+    <i class="CloseIcon material-icons">close</i>
+  </button>
 
-      <td class="contorno">
-        <a href="https://giri-in-bici.netlify.app/" target="_blank">Giri In Bici</a>
-      </td>
-
-      <td class="contorno">
-        <a href="https://calcolatricenico.netlify.app/" target="_blank">Calcolatrice</a>
-      </td>
-    </tr>
-
-    <tr>
-      <td class="contorno">
-        <a href="https://generatorepassword.netlify.app/" target="_blank">Generatore Password</a>
-      </td>
-
-      <td class="contorno">
-        <a href="https://tombolanico.netlify.app/" target="_blank">Gioco della Tombola</a>
-      </td>
-
-      <td class="contorno">
-        <a href="https://cambivalute.netlify.app/" target="_blank">Cambi Valute</a>
-      </td>
-
-      <td class="contorno">
-        <a href="https://conversionebasi.netlify.app/" target="_blank">Conversioni Base</a>
-      </td>
-    </tr>
-
-    <tr>
-      <td class="contorno">
-        <a href="https://lanciodadi.netlify.app/" target="_blank">Lancio dei dadi</a>
-      </td>
-
-      <td class="contorno">
-        <a href="https://lanciodeidadipernfacce.netlify.app/" target="_blank">Lancio dei dadi con n facce Grafico</a>
-      </td>
-
-      <td class="contorno">
-        <a href="https://lanciodeidadiconpifaccenumeriparziali.netlify.app/" target="_blank">Lancio dei dadi con n facce
-          Normale</a>
-      </td>
-
-      <td class="contorno">
-        <a href="https://giocosassocartaforbice.netlify.app/" target="_blank">Gioco Sasso Carta Forbice</a>
-      </td>
-    </tr>
-
-    <tr>
-      <td class="contorno">
-        <a href="https://letterecasuali.netlify.app/" target="_blank">Estrazione Lettera Casuale</a>
-      </td>
-
-      <td class="contorno">
-        <a href="https://numericasualinico.netlify.app/" target="_blank">Estrazione Numeri Casuali tra un intervallo</a>
-      </td>
-
-      <td class="contorno">
-        <a href="https://lanciomonete.netlify.app/" target="_blank">Estrazionne Lancio n Monete</a>
-      </td>
-
-      <td class="contorno">
-        <a href="https://casualecarta.netlify.app/" target="_blank">Generatore di Carte (Scala 40 o Briscola)</a>
-      </td>
-    </tr>
-
-    <tr>
-      <td class="contorno">
-        <a href="https://numeriprimi.netlify.app/" target="_blank">Verifica Numero Primo</a>
-      </td>
-
-      <td class="contorno">
-        <a href="https://verificanumeriprimiprecedenti.netlify.app/" target="_blank">Verifica Numeri Primi
-          Precedenti</a>
-      </td>
-
-      <td class="contorno">
-        <a href="https://calcolapasqua.netlify.app/" target="_blank">Calcola la Data di Pasqua</a>
-      </td>
-
-      <td class="contorno">
-        <a href="https://calendariogiorno.netlify.app/" target="_blank">Calcola Giorno della Settimana</a>
-      </td>
-    </tr>
-
-    <tr>
-      <td class="contorno">
-        <a href="https://tabellinenico.netlify.app/" target="blank">Tabelline</a>
-      </td>
-
-      <td class="contorno">
-        <a href="https://tartaglianico.netlify.app/" target="_blank">Triangolo di Tartaglia</a>
-      </td>
-
-      <td class="contorno">
-        <a href="https://esponenzialiradici.netlify.app/" target="_blank">Calcola Esponenziali / Radici</a>
-      </td>
-
-      <td class="contorno">
-        <a href="https://logaritmi.netlify.app/" target="_blank">
-          Calcola Logaritmi</a>
-      </td>
-    </tr>
-
-    <tr>
-      <td class="contorno">
-        <a href="https://calcolofattoriale.netlify.app/" target="_blank">Fattoriale</a>
-      </td>
-
-      <td class="contorno">
-        <a href="https://fibonaccinicomaker.netlify.app/" target="_blank">Calcola Numero di Fibonacci</a>
-      </td>
-
-      <td class="contorno">
-        <a href="https://pitagora.netlify.app/" target="_blank">Calcolatore Triangolo di Pitagora</a>
-      </td>
-
-      <td class="contorno">
-        <a href="https://criptazione.netlify.app/" target="_blank">
-          Criptazione con Alfabeto Opposto</a>
-      </td>
-    </tr>
-
-    <tr>
-      <td class="contorno">
-        <a href="https://tris.netlify.app/" target="_blank">
-          Gioco del Tris</a>
-      </td>
-
-      <td class="contorno">
-        <a href="https://cronometrotimer.netlify.app/" target="_blank">Cronometro / Timer</a>
-      </td>
-
-      <td class="contorno">
-        <a href="https://calendarionico.netlify.app/" target="_blank">Calendario</a>
-      </td>
-
-      <td class="contorno">
-        <a href="https://fusoorario.netlify.app/" target="_blank">Verifica Fuso Orario Città</a>
-      </td>
-    </tr>
-
-    <tr>
-      <td class="contorno">
-        <a href="https://forza4nico.netlify.app/" target="_blank">Forza 4</a>
-      </td>
-
-      <td class="contorno">
-        <a href="https://valoretitoliborsa.netlify.app/" target="_blank">Valore Titoli di Borsa</a>
-      </td>
-
-      <td class="contorno">
-        <a href="https://gestionepunteggi.netlify.app/" target="_blank">Gestione Punteggi</a>
-      </td>
-
-      <td class="contorno">
-        <a href="https://segnozodiacale.netlify.app/" target="_blank">Calcolo Segno Zodiacale</a>
-      </td>
-    </tr>
-
-    <tr>
-      <td class="contorno">
-        <a href="https://stampanumeri.netlify.app/" target="_blank">Stampa Numeri Pari / dispari o tutti</a>
-      </td>
-
-      <td class="contorno">
-        <a href="https://nomicasuali.netlify.app/" target="_blank">Genera Nomi Casuali</a>
-      </td>
-
-      <td class="contorno">
-        <a href="https://valoreassoluto.netlify.app/" target="_blank">Calcolo Valore Assoluto</a>
-      </td>
-
-      <td class="contorno">
-        <a href="https://statiinfo.netlify.app/" target="_blank">Info Stato</a>
-      </td>
-    </tr>
-
-    <tr>
-      <td class="contorno">
-        <a href="https://snakegamenico.netlify.app/" target="_blank">Snake Game</a>
-      </td>
-
-      <td class="contorno">
-        <a href="https://ahmes.netlify.app/" target="_blank">Ahmes</a>
-      </td>
-
-      <td class="contorno">
-        <a href="https://euclide.netlify.app/" target="_blank">Euclide</a>
-      </td>
-      <td class="contorno">
-        <a href="https://collatznico.netlify.app/" target="_blank">Collatz</a>
-      </td>
-    </tr>
-
-    <tr>
-      <td class="contorno">
-        <a href="https://trigonometrianico.netlify.app/" target="_blank">Calcolo Trigonometrico</a>
-      </td>
-
-      <td class="contorno">
-        <a href="https://adventcalendarnico.netlify.app/" target="_blank">Calendario dell'Avvento</a>
-      </td>
-
-      <td class="contorno">
-        <a href="https://indovinellodinosauri.netlify.app/" target="_blank">Indovinello dei Dinosauri</a>
-      </td>
-
-      <td class="contorno">
-        <a href="https://calcolopesoaltzzaideale.netlify.app/" target="_blank">Sito che Calcola Altezza ideale o Peso
-          Ideale</a>
-      </td>
-    </tr>
-
-    <tr></tr>
-
-    <tr>
-      <td class="contorno">
-        <a href="https://contoallarovescianatale.netlify.app/" target="_blank">Conto alla rovescia data di Natale</a>
-      </td>
-
-      <td class="contorno">
-        <a href="https://contoallarovesciapasqua.netlify.app/" target="_blank">Conto alla rovescia data di Pasqua</a>
-      </td>
-
-      <td class="contorno">
-        <a href="https://contoallarovesciaannonuovo.netlify.app/" target="_blank">Conto Alla rovescia Anno Nuovo</a>
-      </td>
-
-      <td class="contorno">
-        <a href="https://calcolatoreditempo.netlify.app/" target="_blank">Calcolatore di Tempo</a>
-      </td>
-    </tr>
-  </table>
+  <div id="dati"></div>
 
   <a href="https://drive.google.com/file/d/1jouYKNyfHzE5lnQHvGRPCnzWrS_c2aas/view?usp=sharing" target="_blank">
     <p> Realizzata da Nico Maker</p>
