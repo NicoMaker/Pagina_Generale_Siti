@@ -4,6 +4,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Hubballi&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100&display=swap');
 
 h1 {
   color: red;
@@ -213,4 +214,9 @@ h2
   color: gold;
   font-size: 35px;
   text-shadow: 2px 2px 4px #000000;
+}
+
+.menu h1{
+  font-family: 'Poppins', sans-serif;
+  font-weight: bold;
 }
