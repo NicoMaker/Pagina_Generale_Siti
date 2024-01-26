@@ -4,7 +4,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Hubballi&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap");
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100&display=swap");
 
 h1 {
   color: red;
@@ -62,14 +62,14 @@ p {
   border-radius: 50px;
 }
 
-.GitHub {
+.Immagineicona {
   width: 60px;
   height: 60px;
   background: linear-gradient(right, darkgreen, black, darkgreen);
 }
 
 .contorno,
-.GitHub {
+.Immagineicona {
   font-size: 2rem;
   color: inherit;
   text-decoration: none;
@@ -80,12 +80,12 @@ p {
   transition: background-size 300ms ease-in-out;
 }
 
-.GitHub {
+.Immagineicona {
   background-image: linear-gradient(to right, yellow, red);
 }
 
 .contorno:hover,
-.GitHub:hover {
+.Immagineicona:hover {
   background-size: 100% 15%;
 }
 
@@ -114,7 +114,7 @@ p {
   border: 5px solid blue;
 }
 
-.IconaGit {
+.Icona {
   border: 1px solid blue;
   border-radius: 25px;
 }
@@ -149,7 +149,7 @@ p {
   background: linear-gradient(to right, #79e0ee, #b1afff, #79e0ee);
   top: 0;
   z-index: 10;
-  overflow-y: auto; 
+  overflow-y: auto;
   border-radius: 20px;
 }
 
@@ -207,19 +207,8 @@ p {
   border-radius: 20px;
 }
 
-button:hover {
-  color: red;
-}
-
-h2
-{
-  color: gold;
-  font-size: 35px;
-  text-shadow: 2px 2px 4px #000000;
-}
-
-.menu h1{
-  font-family: 'Poppins', sans-serif;
+.menu h1 {
+  font-family: "Poppins", sans-serif;
   font-weight: bold;
 }
 
@@ -233,4 +222,19 @@ h2
 .CloseIcon span,
 .MenuIcon span {
   font-size: 50px;
+}
+
+button:hover {
+  color: red;
+}
+
+h2 {
+  color: gold;
+  font-size: 35px;
+  text-shadow: 2px 2px 4px #000000;
+  background: linear-gradient(1000deg, lightgreen, green, green, lightgreen);
+  border-radius: 20px;
+  padding: 4px;
+  border: 1px solid orange;
+  margin: 5px;
 }

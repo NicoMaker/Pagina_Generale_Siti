@@ -22,6 +22,7 @@ let Matematica = () =>
   (document.getElementById("dati").innerHTML = `
 
   <h2>Matematica </h2>
+  <br>
   <table>
       <tr>
           <td class="contorno">
@@ -129,8 +130,8 @@ let Matematica = () =>
 let Bici = () =>
   (document.getElementById("dati").innerHTML = `
   <h2>Bici </h2>
+  <br>
     <table>
-        <br>
         <tr>
             <td class="contorno">
                 <a href="https://giri-in-bici.netlify.app/" target="_blank">Giri In Bici</a>
@@ -142,6 +143,7 @@ let Bici = () =>
 let Random = () =>
   (document.getElementById("dati").innerHTML = `
     <h2>Opzioni Random </h2>
+    <br>
     <table>
         <tr>
             <td class="contorno">
@@ -195,6 +197,7 @@ let Random = () =>
 let Giochi = () =>
   (document.getElementById("dati").innerHTML = `
     <h2>Giochi </h2>
+    <br>
     <table>
         <tr>
             <td class="contorno">
@@ -232,6 +235,7 @@ let Giochi = () =>
 let Borsa = () =>
   (document.getElementById("dati").innerHTML = `
     <h2>Borsa </h2>
+    <br>
     <table>
         <tr>
             <td class="contorno">
@@ -247,6 +251,7 @@ let Borsa = () =>
 let Calendario = () =>
   (document.getElementById("dati").innerHTML = `
     <h2>Siti sul Calendario </h2>
+    <br>
     <table>
         <tr>
             <td class="contorno">
@@ -271,6 +276,7 @@ let Calendario = () =>
 let InfoPaesiStati = () =>
   (document.getElementById("dati").innerHTML = `
     <h2>Info Paese / Stati</h2>
+    <br>
     <table>
         <tr>
             <td class="contorno">
@@ -287,6 +293,7 @@ let InfoPaesiStati = () =>
 let Natale = () =>
   (document.getElementById("dati").innerHTML = `
     <h2> Siti sul Natale </h2>
+    <br>
     <table>
         <tr>
             <td class="contorno">
@@ -307,6 +314,7 @@ let Natale = () =>
 let Salute = () =>
   (document.getElementById("dati").innerHTML = `
     <h2>Siti sulla Salute </h2>
+    <br>
     <table>
         <tr>
             <td class="contorno">
@@ -320,6 +328,7 @@ let Salute = () =>
 let Pasqua = () =>
   (document.getElementById("dati").innerHTML = `
     <h2> Siti Sulla Pasqua </h2>
+    <br>
     <table>
         <tr>
             <td class="contorno">
