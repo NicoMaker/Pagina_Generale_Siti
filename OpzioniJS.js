@@ -96,7 +96,7 @@ let Matematica = () =>
           </td>
 
           <td class="contorno">
-              <a href="https://document.getElementById("dati").innerHTMLnumeri.netlify.app/" target="_blank">document.getElementById("dati").innerHTML Numeri Pari / dispari o tutti</a>
+              <a href="https://stampanumeri.netlify.app/" target="_blank">Stampa Numeri Pari / dispari o tutti</a>
           </td>
       </tr>
 
@@ -213,10 +213,6 @@ let Giochi = () =>
         </tr>
 
         <tr>
-            <td class="contorno">
-                <a href="https://forza4nico.netlify.app/" target="_blank">Forza 4</a>
-            </td>
-            
             <td class="contorno">
                 <a href="https://snakegamenico.netlify.app/" target="_blank">Snake Game</a>
             </td>
