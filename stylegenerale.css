@@ -90,7 +90,7 @@ p {
 }
 
 .immaginedx,
-.immaginesx {
+.immaginerobot{
   width: 230px;
   height: 230px;
   border-radius: 10px;
@@ -100,10 +100,6 @@ p {
 
 .immaginedx {
   float: left;
-}
-
-.immaginesx {
-  float: right;
 }
 
 .immagine {
