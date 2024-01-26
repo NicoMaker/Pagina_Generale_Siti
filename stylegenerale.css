@@ -235,6 +235,6 @@ h2 {
   background: linear-gradient(1000deg, lightgreen, green, green, lightgreen);
   border-radius: 20px;
   padding: 4px;
-  border: 1px solid orange;
+  border: 5px solid orange;
   margin: 5px;
 }
