@@ -17,121 +17,117 @@ function toggleMenu() {
 
 hamburger.addEventListener("click", toggleMenu);
 
-let stampa = "";
 
-function Matematica() {
-  stampa = `
+let Matematica = () =>
+  (document.getElementById("dati").innerHTML = `
 
-    <h2>Matematica </h2>
-    <table>
-        <tr>
-            <td class="contorno">
-                <a href="https://eserciziotrifase.netlify.app/" target="_blank">
-                Esercizio Trifase</a>
-            </td>
+  <h2>Matematica </h2>
+  <table>
+      <tr>
+          <td class="contorno">
+              <a href="https://eserciziotrifase.netlify.app/" target="_blank">
+              Esercizio Trifase</a>
+          </td>
 
-            <td class="contorno">
-                <a href="https://alant.netlify.app/" target="_blank">
-                Biografia su Alan Turing</a>
-            </td>
+          <td class="contorno">
+              <a href="https://alant.netlify.app/" target="_blank">
+              Biografia su Alan Turing</a>
+          </td>
 
-            <td class="contorno">
-                <a href="https://calcolatricenico.netlify.app/" target="_blank">Calcolatrice</a>
-            </td>
+          <td class="contorno">
+              <a href="https://calcolatricenico.netlify.app/" target="_blank">Calcolatrice</a>
+          </td>
 
-            <td class="contorno">
-                <a href="https://conversionebasi.netlify.app/" target="_blank">Conversioni Base</a>
-            </td>
-        </tr>
+          <td class="contorno">
+              <a href="https://conversionebasi.netlify.app/" target="_blank">Conversioni Base</a>
+          </td>
+      </tr>
 
-        <tr>
-            <td class="contorno">
-                <a href="https://numeriprimi.netlify.app/" target="_blank">Verifica Numero Primo</a>
-            </td>
+      <tr>
+          <td class="contorno">
+              <a href="https://numeriprimi.netlify.app/" target="_blank">Verifica Numero Primo</a>
+          </td>
 
-            <td class="contorno">
-                <a href="https://verificanumeriprimiprecedenti.netlify.app/" target="_blank">Verifica Numeri Primi
-                Precedenti</a>
-            </td>
+          <td class="contorno">
+              <a href="https://verificanumeriprimiprecedenti.netlify.app/" target="_blank">Verifica Numeri Primi
+              Precedenti</a>
+          </td>
 
-            <td class="contorno">
-                 <a href="https://tabellinenico.netlify.app/" target="blank">Tabelline</a>
-            </td>
+          <td class="contorno">
+               <a href="https://tabellinenico.netlify.app/" target="blank">Tabelline</a>
+          </td>
 
-            <td class="contorno">
-                <a href="https://tartaglianico.netlify.app/" target="_blank">Triangolo di Tartaglia</a>
-            </td>
+          <td class="contorno">
+              <a href="https://tartaglianico.netlify.app/" target="_blank">Triangolo di Tartaglia</a>
+          </td>
 
-        </tr>
+      </tr>
 
-        <tr>
-            <td class="contorno">
-                <a href="https://esponenzialiradici.netlify.app/" target="_blank">Calcola Esponenziali / Radici</a>
-            </td>
+      <tr>
+          <td class="contorno">
+              <a href="https://esponenzialiradici.netlify.app/" target="_blank">Calcola Esponenziali / Radici</a>
+          </td>
 
-            <td class="contorno">
-                 <a href="https://logaritmi.netlify.app/" target="_blank">
-                Calcola Logaritmi</a>
-            </td>
+          <td class="contorno">
+               <a href="https://logaritmi.netlify.app/" target="_blank">
+              Calcola Logaritmi</a>
+          </td>
 
-            <td class="contorno">
-                <a href="https://calcolofattoriale.netlify.app/" target="_blank">Fattoriale</a>
-            </td>
+          <td class="contorno">
+              <a href="https://calcolofattoriale.netlify.app/" target="_blank">Fattoriale</a>
+          </td>
 
-            <td class="contorno">
-                <a href="https://fibonaccinicomaker.netlify.app/" target="_blank">Calcola Numero di Fibonacci</a>
-            </td>
-        </tr>
+          <td class="contorno">
+              <a href="https://fibonaccinicomaker.netlify.app/" target="_blank">Calcola Numero di Fibonacci</a>
+          </td>
+      </tr>
 
-        <tr>
-            <td class="contorno">
-                <a href="https://pitagora.netlify.app/" target="_blank">Calcolatore Triangolo di Pitagora</a>
-            </td>
+      <tr>
+          <td class="contorno">
+              <a href="https://pitagora.netlify.app/" target="_blank">Calcolatore Triangolo di Pitagora</a>
+          </td>
 
-            <td class="contorno">
-                <a href="https://gestionepunteggi.netlify.app/" target="_blank">Gestione Punteggi</a>
-            </td>
-    
-            <td class="contorno">
-                <a href="https://segnozodiacale.netlify.app/" target="_blank">Calcolo Segno Zodiacale</a>
-            </td>
+          <td class="contorno">
+              <a href="https://gestionepunteggi.netlify.app/" target="_blank">Gestione Punteggi</a>
+          </td>
+  
+          <td class="contorno">
+              <a href="https://segnozodiacale.netlify.app/" target="_blank">Calcolo Segno Zodiacale</a>
+          </td>
 
-            <td class="contorno">
-                <a href="https://stampanumeri.netlify.app/" target="_blank">Stampa Numeri Pari / dispari o tutti</a>
-            </td>
-        </tr>
+          <td class="contorno">
+              <a href="https://document.getElementById("dati").innerHTMLnumeri.netlify.app/" target="_blank">document.getElementById("dati").innerHTML Numeri Pari / dispari o tutti</a>
+          </td>
+      </tr>
 
-        <tr>
-            <td class="contorno">
-                <a href="https://valoreassoluto.netlify.app/" target="_blank">Calcolo Valore Assoluto</a>
-            </td>
+      <tr>
+          <td class="contorno">
+              <a href="https://valoreassoluto.netlify.app/" target="_blank">Calcolo Valore Assoluto</a>
+          </td>
 
-            <td class="contorno">
-                <a href="https://ahmes.netlify.app/" target="_blank">Ahmes</a>
-            </td>
-    
-            <td class="contorno">
-                <a href="https://euclide.netlify.app/" target="_blank">Euclide</a>
-            </td>
+          <td class="contorno">
+              <a href="https://ahmes.netlify.app/" target="_blank">Ahmes</a>
+          </td>
+  
+          <td class="contorno">
+              <a href="https://euclide.netlify.app/" target="_blank">Euclide</a>
+          </td>
 
-            <td class="contorno">
-                <a href="https://collatznico.netlify.app/" target="_blank">Collatz</a>
-            </td>
-        </tr>
+          <td class="contorno">
+              <a href="https://collatznico.netlify.app/" target="_blank">Collatz</a>
+          </td>
+      </tr>
 
-        <tr>
-            <td class="contorno">
-                <a href="https://trigonometrianico.netlify.app/" target="_blank">Calcolo Trigonometrico</a>
-            </td>
-        </tr>
-    </table>
-    `;
+      <tr>
+          <td class="contorno">
+              <a href="https://trigonometrianico.netlify.app/" target="_blank">Calcolo Trigonometrico</a>
+          </td>
+      </tr>
+  </table>
+  `);
 
-  document.getElementById("dati").innerHTML = stampa;
-}
-
-function Bici() {
-  stampa = `
+let Bici = () =>
+  (document.getElementById("dati").innerHTML = `
   <h2>Bici </h2>
     <table>
         <br>
@@ -141,12 +137,10 @@ function Bici() {
             </td>
         </tr>
     </table>    
-    `;
-  document.getElementById("dati").innerHTML = stampa;
-}
+    `);
 
-function Random() {
-  stampa = `
+let Random = () =>
+  (document.getElementById("dati").innerHTML = `
     <h2>Opzioni Random </h2>
     <table>
         <tr>
@@ -196,13 +190,10 @@ function Random() {
                 <a href="https://nomicasuali.netlify.app/" target="_blank">Genera Nomi Casuali</a>
             </td>
         </tr>
-    </table>`;
+    </table>`);
 
-  document.getElementById("dati").innerHTML = stampa;
-}
-
-function Giochi() {
-  stampa = `
+let Giochi = () =>
+  (document.getElementById("dati").innerHTML = `
     <h2>Giochi </h2>
     <table>
         <tr>
@@ -234,12 +225,10 @@ function Giochi() {
             </td>
         </tr>
     </table>
-    `;
-  document.getElementById("dati").innerHTML = stampa;
-}
+    `);
 
-function Borsa() {
-  stampa = `
+let Borsa = () =>
+  (document.getElementById("dati").innerHTML = `
     <h2>Borsa </h2>
     <table>
         <tr>
@@ -251,13 +240,10 @@ function Borsa() {
                 <a href="https://valoretitoliborsa.netlify.app/" target="_blank">Valore Titoli di Borsa</a>
             </td>
         </tr>
-    </table>`;
+    </table>`);
 
-  document.getElementById("dati").innerHTML = stampa;
-}
-
-function Calendario() {
-  stampa = `
+let Calendario = () =>
+  (document.getElementById("dati").innerHTML = `
     <h2>Siti sul Calendario </h2>
     <table>
         <tr>
@@ -278,13 +264,10 @@ function Calendario() {
             </td>
         </tr>
     </table>
-    `;
+    `);
 
-  document.getElementById("dati").innerHTML = stampa;
-}
-
-function InfoPaesiStati() {
-  stampa = `
+let InfoPaesiStati = () =>
+  (document.getElementById("dati").innerHTML = `
     <h2>Info Paese / Stati</h2>
     <table>
         <tr>
@@ -297,13 +280,10 @@ function InfoPaesiStati() {
             </td>
         </tr>
     </table>
-    `;
+    `);
 
-  document.getElementById("dati").innerHTML = stampa;
-}
-
-function Natale() {
-  stampa = `
+let Natale = () =>
+  (document.getElementById("dati").innerHTML = `
     <h2> Siti sul Natale </h2>
     <table>
         <tr>
@@ -320,13 +300,10 @@ function Natale() {
             </td>
         </tr>
     </table>
-    `;
+    `);
 
-  document.getElementById("dati").innerHTML = stampa;
-}
-
-function Salute() {
-  stampa = `
+let Salute = () =>
+  (document.getElementById("dati").innerHTML = `
     <h2>Siti sulla Salute </h2>
     <table>
         <tr>
@@ -336,12 +313,10 @@ function Salute() {
             </td>
         </tr>
     </table>
-    `;
-  document.getElementById("dati").innerHTML = stampa;
-}
+    `);
 
-function Pasqua() {
-  stampa = `
+let Pasqua = () =>
+  (document.getElementById("dati").innerHTML = `
     <h2> Siti Sulla Pasqua </h2>
     <table>
         <tr>
@@ -354,6 +329,4 @@ function Pasqua() {
             </td>
         </tr>
     </table>
-    `;
-  document.getElementById("dati").innerHTML = stampa;
-}
+    `);
