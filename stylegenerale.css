@@ -89,16 +89,25 @@ p {
   background-size: 100% 15%;
 }
 
-.immaginedx,
+.immagginelogo,
 .immaginerobot{
-  width: 230px;
-  height: 230px;
+
   border-radius: 10px;
   border: 2px solid blue;
   top: 100px;
 }
 
-.immaginedx {
+.immagginelogo{
+  width: 230px;
+  height: 230px;
+}
+
+.immaginerobot{
+  width: 150px;
+  height: 150px;
+}
+
+.immagginelogo {
   float: left;
 }
 
