@@ -210,12 +210,13 @@ let Giochi = () =>
                 Gioco del Tris</a>
             </td>
 
-            <td class="contorno">
-                <a href="https://forza4nico.netlify.app/" target="_blank">Forza 4</a>
-            </td>
         </tr>
 
         <tr>
+            <td class="contorno">
+                <a href="https://forza4nico.netlify.app/" target="_blank">Forza 4</a>
+            </td>
+            
             <td class="contorno">
                 <a href="https://snakegamenico.netlify.app/" target="_blank">Snake Game</a>
             </td>
