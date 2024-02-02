@@ -38,13 +38,13 @@ let Matematica = () =>
           <td class="contorno">
               <a href="https://calcolatricenico.netlify.app/" target="_blank">Calcolatrice</a>
           </td>
-
-          <td class="contorno">
-              <a href="https://conversionebasi.netlify.app/" target="_blank">Conversioni Base</a>
-          </td>
       </tr>
 
       <tr>
+          <td class="contorno">
+            <a href="https://conversionebasi.netlify.app/" target="_blank">Conversioni Base</a>
+          </td>
+
           <td class="contorno">
               <a href="https://numeriprimi.netlify.app/" target="_blank">Verifica Numero Primo</a>
           </td>
@@ -54,21 +54,23 @@ let Matematica = () =>
               Precedenti</a>
           </td>
 
-          <td class="contorno">
-               <a href="https://tabellinenico.netlify.app/" target="blank">Tabelline</a>
-          </td>
-
-          <td class="contorno">
-              <a href="https://tartaglianico.netlify.app/" target="_blank">Triangolo di Tartaglia</a>
-          </td>
-
       </tr>
 
       <tr>
-          <td class="contorno">
-              <a href="https://esponenzialiradici.netlify.app/" target="_blank">Calcola Esponenziali / Radici</a>
-          </td>
+        <td class="contorno">
+            <a href="https://tabellinenico.netlify.app/" target="blank">Tabelline</a>
+         </td>
 
+        <td class="contorno">
+             <a href="https://tartaglianico.netlify.app/" target="_blank">Triangolo di Tartaglia</a>
+        </td>
+
+        <td class="contorno">
+            <a href="https://esponenzialiradici.netlify.app/" target="_blank">Calcola Esponenziali / Radici</a>
+        </td>
+      </tr>  
+
+      <tr>
           <td class="contorno">
                <a href="https://logaritmi.netlify.app/" target="_blank">
               Calcola Logaritmi</a>
@@ -96,12 +98,13 @@ let Matematica = () =>
               <a href="https://segnozodiacale.netlify.app/" target="_blank">Calcolo Segno Zodiacale</a>
           </td>
 
-          <td class="contorno">
-              <a href="https://stampanumeri.netlify.app/" target="_blank">Stampa Numeri Pari / dispari o tutti</a>
-          </td>
       </tr>
 
       <tr>
+          <td class="contorno">
+              <a href="https://stampanumeri.netlify.app/" target="_blank">Stampa Numeri Pari / dispari o tutti</a>
+          </td>
+
           <td class="contorno">
               <a href="https://valoreassoluto.netlify.app/" target="_blank">Calcolo Valore Assoluto</a>
           </td>
@@ -109,19 +112,19 @@ let Matematica = () =>
           <td class="contorno">
               <a href="https://ahmes.netlify.app/" target="_blank">Ahmes</a>
           </td>
-  
-          <td class="contorno">
-              <a href="https://euclide.netlify.app/" target="_blank">Euclide</a>
-          </td>
-
-          <td class="contorno">
-              <a href="https://collatznico.netlify.app/" target="_blank">Collatz</a>
-          </td>
       </tr>
 
       <tr>
+         <td class="contorno">
+            <a href="https://euclide.netlify.app/" target="_blank">Euclide</a>
+         </td>
+
+         <td class="contorno">
+           <a href="https://collatznico.netlify.app/" target="_blank">Collatz</a>
+         </td>
+
           <td class="contorno">
-              <a href="https://trigonometrianico.netlify.app/" target="_blank">Calcolo Trigonometrico</a>
+            <a href="https://trigonometrianico.netlify.app/" target="_blank">Calcolo Trigonometrico</a>
           </td>
       </tr>
   </table>
