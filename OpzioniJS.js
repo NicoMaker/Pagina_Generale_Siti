@@ -194,7 +194,11 @@ let Random = () =>
 
             <td class="contorno">
                 <a href="https://coachlifegenerator.netlify.app/" target="_blank">Coach Life Generator</a>
-            </td>   
+            </td>  
+            
+            <td class="contorno">
+                <a href="https://colorecasuale.netlify.app/" target="_blank">Generatore Colore Casuale </a>
+            </td>    
 
         </tr>
 
