@@ -191,7 +191,14 @@ let Random = () =>
             <td class="contorno">
                 <a href="https://nomicasuali.netlify.app/" target="_blank">Genera Nomi Casuali</a>
             </td>
+
+            <td class="contorno">
+                <a href="https://coachlifegenerator.netlify.app/" target="_blank">Coach Life Generator</a>
+            </td>   
+
         </tr>
+
+
     </table>`);
 
 let Giochi = () =>
