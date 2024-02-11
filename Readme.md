@@ -8,7 +8,7 @@
 - Matematica (21 siti)
 - Bici (1 sito)
 - Opzioni Random (12 siti)
-- Giochi (6 siti)
+- Giochi (7 siti)
 - Borsa (2 siti)
 - Siti sul Calendario (4 siti)
 - Info Paese / stati (2 siti)
