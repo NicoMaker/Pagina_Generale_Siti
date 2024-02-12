@@ -243,7 +243,11 @@ let Giochi = () =>
             </td>
 
             <td class="contorno">
-                <a href="https://generated4letter.netlify.app/" target="_blank">Generazione 4 Lettere Casuali</a>
+                <a href="https://generated4letters.netlify.app/" target="_blank">Generazione 4 Lettere Casuali</a>
+            </td>
+
+            <td class="contorno">
+                <a href="https://estrai4emi.netlify.app/" target="_blank">Estrai 4 Semi Casuali tra Briscola Scala 40 o Entambi</a>
             </td>
         </tr>
     </table>
