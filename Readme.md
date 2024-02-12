@@ -28,6 +28,7 @@
 ## Apertutra sito
 
 [Apertura sito Principale 1 link](https://paginageneralesiti.netlify.app/)
+
 [Apertura sito principlae 2 link](https://nicomaker.github.io/Pagina_Generale_Siti/)
 
 ## Apertuta parte codice interessata dove puoi vedere come è stato realizzato
