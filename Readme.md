@@ -1,6 +1,5 @@
 # Pagina Generale dove vedi tutti i siti
 
-
 ## Categorie sito che sel selezione nel Hamburger Menu dove lo puoi aprire o chiudere, se vuoi aprire un sito di quella categoria chiudi l'Hamburger Menu e clicchi sul sito interessato della categoria interessata
 
 ### Le categore sono
@@ -8,7 +7,7 @@
 - Matematica (21 siti)
 - Bici (1 sito)
 - Opzioni Random (12 siti)
-- Giochi (7 siti)
+- Giochi (8 siti)
 - Borsa (2 siti)
 - Siti sul Calendario (4 siti)
 - Info Paese / stati (2 siti)
