@@ -247,7 +247,7 @@ let Giochi = () =>
             </td>
 
             <td class="contorno">
-                <a href="https://estrai4emi.netlify.app/" target="_blank">Estrai 4 Semi Casuali tra Briscola Scala 40 o Entambi</a>
+                <a href="https://estrai4semi.netlify.app/" target="_blank">Estrai 4 Semi Casuali tra Briscola Scala 40 o Entambi</a>
             </td>
         </tr>
     </table>
