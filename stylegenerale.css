@@ -45,14 +45,13 @@ td:nth-child(4n + 2) {
 
 td:nth-child(4n + 3) {
   background-color: chartreuse;
-  border: 1px solid  green;
+  border: 1px solid green;
 }
 
 td:nth-child(4n) {
   background-color: orange;
   border: 1px solid darkorange;
 }
-
 
 a {
   text-decoration: none;
@@ -96,18 +95,18 @@ p {
 }
 
 .immagginelogo,
-.immaginerobot{
+.immaginerobot {
   border-radius: 10px;
   border: 2px solid blue;
   top: 100px;
 }
 
-.immagginelogo{
+.immagginelogo {
   width: 230px;
   height: 230px;
 }
 
-.immaginerobot{
+.immaginerobot {
   width: 150px;
   height: 150px;
 }
