@@ -247,7 +247,7 @@ let Giochi = () =>
             </td>
 
             <td class="contorno">
-                <a href="https://giocobriscolascala.netlify.app/" target="_blank"Gioco Briscola Scala</a>
+                <a href="https://giocobriscolascala.netlify.app/" target="_blank">Gioco Briscola Scala</a>
             </td>
         </tr>
     </table>
