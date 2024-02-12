@@ -33,20 +33,26 @@ td {
   margin: 20px;
 }
 
-td:nth-child(2n) {
-  background-color: orange;
+td:nth-child(4n + 1) {
+  background-color: yellow;
   border: 1px solid orange;
 }
 
-td:nth-child(2n + 3) {
-  background-color: yellow;
-  border: 1px solid yellow;
+td:nth-child(4n + 2) {
+  background-color: cyan;
+  border: 1px solid blue;
 }
 
-td:nth-child(-n + 1) {
-  background-color: yellow;
-  border: 1px solid yellow;
+td:nth-child(4n + 3) {
+  background-color: chartreuse;
+  border: 1px solid  green;
 }
+
+td:nth-child(4n) {
+  background-color: orange;
+  border: 1px solid darkorange;
+}
+
 
 a {
   text-decoration: none;
