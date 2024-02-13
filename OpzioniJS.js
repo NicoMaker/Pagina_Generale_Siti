@@ -227,13 +227,13 @@ let Giochi = () =>
                 Gioco del Tris</a>
             </td>
 
-            <td class="contorno">
-            <a href="https://forza4nico.netlify.app" target="_blank">Forza 4</a>
-        </td>
-
         </tr>
 
         <tr>
+            <td class="contorno">
+                <a href="https://forza4nico.netlify.app" target="_blank">Forza 4</a>
+            </td>
+
             <td class="contorno">
                 <a href="https://snakegamenico.netlify.app/" target="_blank">Snake Game</a>
             </td>
@@ -241,7 +241,9 @@ let Giochi = () =>
             <td class="contorno">
                 <a href="https://indovinellodinosauri.netlify.app/" target="_blank">Indovinello dei Dinosauri</a>
             </td>
+        </tr>
 
+        <tr>
             <td class="contorno">
                 <a href="https://generated4letters.netlify.app/" target="_blank">Generazione 4 Lettere Casuali</a>
             </td>
@@ -249,7 +251,10 @@ let Giochi = () =>
             <td class="contorno">
                 <a href="https://giocobriscolascala.netlify.app/" target="_blank">Gioco Briscola Scala</a>
             </td>
-        </tr>
+
+            <td class="contorno">
+                <a href="https://generated4numbers.netlify.app/"  target="_blank">Generazione 4 Numeri Casuali</a>
+            </td>
     </table>
     `);
 
