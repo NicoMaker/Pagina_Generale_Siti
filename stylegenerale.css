@@ -104,7 +104,7 @@ a {
 .riga3:nth-child(4n),
 .riga4:nth-child(4n) {
   background-color: yellow;
-  border: 3px solid darkorange; 
+  border: 5px solid purple; 
 }
 
 .riga1:nth-child(4n + 1),
@@ -112,7 +112,7 @@ a {
 .riga3:nth-child(4n + 1),
 .riga4:nth-child(4n + 1) {
   background-color: cyan;
-  border: 3px solid blue;
+  border: 5px solid blue;
 }
 
 .riga1:nth-child(4n + 2),
@@ -120,7 +120,7 @@ a {
 .riga3:nth-child(4n + 2),
 .riga4:nth-child(4n + 2) {
   background-color: chartreuse;
-  border: 3px solid green;
+  border: 5px solid #ff69b4;
 }
 
 .riga1:nth-child(4n + 3),
@@ -128,7 +128,7 @@ a {
 .riga3:nth-child(4n + 3),
 .riga4:nth-child(4n + 3) {
   background-color: orange;
-  border: 3px solid darkorange;
+  border: 5px solid darkblue
 }
 
 .immagginelogo,
@@ -281,7 +281,7 @@ footer {
   .riga2,
   .riga3,
   .riga4 {
-    height: 120px;
+    height: 145px;
   }
 
   footer {
