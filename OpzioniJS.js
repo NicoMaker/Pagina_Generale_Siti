@@ -208,32 +208,32 @@ const categories = {
 
 function generateCategoryHTML(categoryName, category) {
   let linksHTML = "";
-  let rowCount = 0;
-  category.forEach((item, index) => {
-    let divisibile = 0;
+  category.forEach((item) => {
+    if (
+      categoryName == "Matematica" ||
+      categoryName == "Giochi" ||
+      categoryName == "Natale"
+    )
+      linksHTML += `<div class="riga3">`;
+    else if (categoryName == "Bici" || categoryName == "Salute")
+      linksHTML += `<div class="riga1">`;
+    else if (
+      categoryName == "Borsa" ||
+      categoryName == "Info_Paesi_Stati" ||
+      categoryName == "Pasqua"
+    )
+      linksHTML += `<div class="riga2">`;
+    else linksHTML += `<div class="riga4">`;
 
-    if (categoryName == "Matematica" || categoryName == "Giochi")
-      divisibile = 3;
-    else divisibile = 4;
-
-    if (index % divisibile === 0) {
-      if (index !== 0) linksHTML += "</tr>";
-      linksHTML += "<tr>";
-      rowCount = 0;
-    }
-    linksHTML += `
-    <td class="contorno">
-        <a href="${item.link}" target="_blank">${item.name}</a>
-    </td>`;
-    rowCount++;
+    linksHTML += ` 
+    <a href="${item.link}" target="_blank">${item.name}</a>
+    </div>
+    `;
   });
-  if (rowCount !== 0) {
-    linksHTML += "</tr>";
-  }
   return `
       <h2>${categoryName}</h2> 
       <br>
-      <table>${linksHTML}</table>
+      <div class="container">${linksHTML}</div>
     `;
 }
 
