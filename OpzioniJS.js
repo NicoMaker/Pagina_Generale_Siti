@@ -17,353 +17,232 @@ function toggleMenu() {
 
 hamburger.addEventListener("click", toggleMenu);
 
+const categories = {
+  Matematica: [
+    {
+      name: "Esercizio Trifase",
+      link: "https://eserciziotrifase.netlify.app/",
+    },
+    { name: "Biografia su Alan Turing", link: "https://alant.netlify.app/" },
+    { name: "Calcolatrice", link: "https://calcolatricenico.netlify.app/" },
+    { name: "Conversioni Base", link: "https://conversionebasi.netlify.app/" },
+    { name: "Verifica Numero Primo", link: "https://numeriprimi.netlify.app/" },
+    {
+      name: "Verifica Numeri Primi Precedenti",
+      link: "https://verificanumeriprimiprecedenti.netlify.app/",
+    },
+    { name: "Tabelline", link: "https://tabellinenico.netlify.app/" },
+    {
+      name: "Triangolo di Tartaglia",
+      link: "https://tartaglianico.netlify.app/",
+    },
+    {
+      name: "Calcola Esponenziali / Radici",
+      link: "https://esponenzialiradici.netlify.app/",
+    },
+    { name: "Calcola Logaritmi", link: "https://logaritmi.netlify.app/" },
+    { name: "Fattoriale", link: "https://calcolofattoriale.netlify.app/" },
+    {
+      name: "Calcola Numero di Fibonacci",
+      link: "https://fibonaccinicomaker.netlify.app/",
+    },
+    {
+      name: "Calcolatore Triangolo di Pitagora",
+      link: "https://pitagora.netlify.app/",
+    },
+    {
+      name: "Gestione Punteggi",
+      link: "https://gestionepunteggi.netlify.app/",
+    },
+    {
+      name: "Calcolo Segno Zodiacale",
+      link: "https://segnozodiacale.netlify.app/",
+    },
+    {
+      name: "Stampa Numeri Pari / Dispari o Tutti",
+      link: "https://stampanumeri.netlify.app/",
+    },
+    {
+      name: "Calcolo Valore Assoluto",
+      link: "https://valoreassoluto.netlify.app/",
+    },
+    { name: "Ahmes", link: "https://ahmes.netlify.app/" },
+    { name: "Euclide", link: "https://euclide.netlify.app/" },
+    { name: "Collatz", link: "https://collatznico.netlify.app/" },
+    {
+      name: "Calcolo Trigonometrico",
+      link: "https://trigonometrianico.netlify.app/",
+    },
+  ],
+  Bici: [{ name: "Giri In Bici", link: "https://giri-in-bici.netlify.app/" }],
+  Random: [
+    {
+      name: "Generatore Password",
+      link: "https://generatorepassword.netlify.app/",
+    },
+    { name: "Lancio dei dadi", link: "https://lanciodadi.netlify.app/" },
+    {
+      name: "Lancio dei dadi con n facce Grafico",
+      link: "https://lanciodeidadipernfacce.netlify.app/",
+    },
+    {
+      name: "Lancio dei dadi con n facce Normale",
+      link: "https://lanciodeidadiconpifaccenumeriparziali.netlify.app/",
+    },
+    {
+      name: "Estrazione Lettera Casuale",
+      link: "https://letterecasuali.netlify.app/",
+    },
+    {
+      name: "Estrazione Numeri Casuali tra un intervallo",
+      link: "https://numericasualinico.netlify.app/",
+    },
+    {
+      name: "Estrazionne Lancio n Monete",
+      link: "https://lanciomonete.netlify.app/",
+    },
+    {
+      name: "Generatore di Carte (Scala 40 o Briscola)",
+      link: "https://casualecarta.netlify.app/",
+    },
+    {
+      name: "Criptazione con Alfabeto Opposto",
+      link: "https://criptazione.netlify.app/",
+    },
+    { name: "Genera Nomi Casuali", link: "https://nomicasuali.netlify.app/" },
+    {
+      name: "Coach Life Generator",
+      link: "https://coachlifegenerator.netlify.app/",
+    },
+    {
+      name: "Generatore Colore Casuale",
+      link: "https://colorecasuale.netlify.app/",
+    },
+  ],
+  Giochi: [
+    { name: "Gioco della Tombola", link: "https://tombolanico.netlify.app/" },
+    {
+      name: "Gioco Sasso Carta Forbice",
+      link: "https://giocosassocartaforbice.netlify.app/",
+    },
+    { name: "Gioco del Tris", link: "https://tris.netlify.app/" },
+    { name: "Forza 4", link: "https://forza4nico.netlify.app" },
+    { name: "Snake Game", link: "https://snakegamenico.netlify.app/" },
+    {
+      name: "Indovinello dei Dinosauri",
+      link: "https://indovinellodinosauri.netlify.app/",
+    },
+    {
+      name: "Generazione 4 Lettere Casuali",
+      link: "https://generated4letters.netlify.app/",
+    },
+    {
+      name: "Gioco Briscola Scala",
+      link: "https://giocobriscolascala.netlify.app/",
+    },
+    {
+      name: "Generazione 4 Numeri Casuali",
+      link: "https://generated4numbers.netlify.app/",
+    },
+  ],
+  Borsa: [
+    { name: "Cambi Valute", link: "https://cambivalute.netlify.app/" },
+    {
+      name: "Valore Titoli di Borsa",
+      link: "https://valoretitoliborsa.netlify.app/",
+    },
+  ],
+  Calendario: [
+    {
+      name: "Calcola Giorno della Settimana",
+      link: "https://calendariogiorno.netlify.app/",
+    },
+    {
+      name: "Cronometro / Timer",
+      link: "https://cronometrotimer.netlify.app/",
+    },
+    { name: "Calendario", link: "https://calendarionico.netlify.app/" },
+    {
+      name: "Calcolatore di Tempo",
+      link: "https://calcolatoreditempo.netlify.app/",
+    },
+  ],
+  Info_Paesi_Stati: [
+    {
+      name: "Verifica Fuso Orario Città",
+      link: "https://fusoorario.netlify.app/",
+    },
+    { name: "Info Stato", link: "https://statiinfo.netlify.app/" },
+  ],
+  Natale: [
+    {
+      name: "Calendario dell'Avvento",
+      link: "https://adventcalendarnico.netlify.app/",
+    },
+    {
+      name: "Conto alla rovescia data di Natale",
+      link: "https://contoallarovescianatale.netlify.app/",
+    },
+    {
+      name: "Conto Alla rovescia Anno Nuovo",
+      link: "https://contoallarovesciaannonuovo.netlify.app/",
+    },
+  ],
+  Salute: [
+    {
+      name: "Sito che Calcola Altezza ideale o Peso Ideale",
+      link: "https://calcolopesoaltzzaideale.netlify.app/",
+    },
+  ],
+  Pasqua: [
+    {
+      name: "Calcola la Data di Pasqua",
+      link: "https://calcolapasqua.netlify.app/",
+    },
+    {
+      name: "Conto alla rovescia data di Pasqua",
+      link: "https://contoallarovesciapasqua.netlify.app/",
+    },
+  ],
+};
 
-let Matematica = () =>
-  (document.getElementById("dati").innerHTML = `
+function generateCategoryHTML(categoryName, category) {
+  let linksHTML = "";
+  let rowCount = 0;
+  category.forEach((item, index) => {
+    let divisibile = 0;
 
-  <h2>Matematica </h2>
-  <br>
-  <table>
-      <tr>
-          <td class="contorno">
-              <a href="https://eserciziotrifase.netlify.app/" target="_blank">
-              Esercizio Trifase</a>
-          </td>
+    if(categoryName == "Matematica" || categoryName=="Giochi")
+        divisibile = 3;
+    else
+        divisibile = 4;
 
-          <td class="contorno">
-              <a href="https://alant.netlify.app/" target="_blank">
-              Biografia su Alan Turing</a>
-          </td>
+    if (index % divisibile === 0) {
+      if (index !== 0) {
+        linksHTML += "</tr>";
+      }
+      linksHTML += "<tr>";
+      rowCount = 0;
+    }
+    linksHTML += `<td class="contorno"><a href="${item.link}" target="_blank">${item.name}</a></td>`;
+    rowCount++;
+  });
+  if (rowCount !== 0) {
+    linksHTML += "</tr>";
+  }
+  return `
+      <h2>${categoryName}</h2> 
+      <br>
+      <table>${linksHTML}</table>
+    `;
+}
 
-          <td class="contorno">
-              <a href="https://calcolatricenico.netlify.app/" target="_blank">Calcolatrice</a>
-          </td>
-      </tr>
-
-      <tr>
-          <td class="contorno">
-            <a href="https://conversionebasi.netlify.app/" target="_blank">Conversioni Base</a>
-          </td>
-
-          <td class="contorno">
-              <a href="https://numeriprimi.netlify.app/" target="_blank">Verifica Numero Primo</a>
-          </td>
-
-          <td class="contorno">
-              <a href="https://verificanumeriprimiprecedenti.netlify.app/" target="_blank">Verifica Numeri Primi
-              Precedenti</a>
-          </td>
-
-      </tr>
-
-      <tr>
-        <td class="contorno">
-            <a href="https://tabellinenico.netlify.app/" target="blank">Tabelline</a>
-         </td>
-
-        <td class="contorno">
-             <a href="https://tartaglianico.netlify.app/" target="_blank">Triangolo di Tartaglia</a>
-        </td>
-
-        <td class="contorno">
-            <a href="https://esponenzialiradici.netlify.app/" target="_blank">Calcola Esponenziali / Radici</a>
-        </td>
-      </tr>  
-
-      <tr>
-          <td class="contorno">
-               <a href="https://logaritmi.netlify.app/" target="_blank">
-              Calcola Logaritmi</a>
-          </td>
-
-          <td class="contorno">
-              <a href="https://calcolofattoriale.netlify.app/" target="_blank">Fattoriale</a>
-          </td>
-
-          <td class="contorno">
-              <a href="https://fibonaccinicomaker.netlify.app/" target="_blank">Calcola Numero di Fibonacci</a>
-          </td>
-      </tr>
-
-      <tr>
-          <td class="contorno">
-              <a href="https://pitagora.netlify.app/" target="_blank">Calcolatore Triangolo di Pitagora</a>
-          </td>
-
-          <td class="contorno">
-              <a href="https://gestionepunteggi.netlify.app/" target="_blank">Gestione Punteggi</a>
-          </td>
-  
-          <td class="contorno">
-              <a href="https://segnozodiacale.netlify.app/" target="_blank">Calcolo Segno Zodiacale</a>
-          </td>
-
-      </tr>
-
-      <tr>
-          <td class="contorno">
-              <a href="https://stampanumeri.netlify.app/" target="_blank">Stampa Numeri Pari / dispari o tutti</a>
-          </td>
-
-          <td class="contorno">
-              <a href="https://valoreassoluto.netlify.app/" target="_blank">Calcolo Valore Assoluto</a>
-          </td>
-
-          <td class="contorno">
-              <a href="https://ahmes.netlify.app/" target="_blank">Ahmes</a>
-          </td>
-      </tr>
-
-      <tr>
-         <td class="contorno">
-            <a href="https://euclide.netlify.app/" target="_blank">Euclide</a>
-         </td>
-
-         <td class="contorno">
-           <a href="https://collatznico.netlify.app/" target="_blank">Collatz</a>
-         </td>
-
-          <td class="contorno">
-            <a href="https://trigonometrianico.netlify.app/" target="_blank">Calcolo Trigonometrico</a>
-          </td>
-      </tr>
-  </table>
-  `);
-
-let Bici = () =>
-  (document.getElementById("dati").innerHTML = `
-  <h2>Bici </h2>
-  <br>
-    <table>
-        <tr>
-            <td class="contorno">
-                <a href="https://giri-in-bici.netlify.app/" target="_blank">Giri In Bici</a>
-            </td>
-        </tr>
-    </table>    
-    `);
-
-let Random = () =>
-  (document.getElementById("dati").innerHTML = `
-    <h2>Opzioni Random </h2>
-    <br>
-    <table>
-        <tr>
-            <td class="contorno">
-                <a href="https://generatorepassword.netlify.app/" target="_blank">Generatore Password</a>
-            </td>
-
-            <td class="contorno">
-                <a href="https://lanciodadi.netlify.app/" target="_blank">Lancio dei dadi</a>
-            </td>
-    
-            <td class="contorno">
-                <a href="https://lanciodeidadipernfacce.netlify.app/" target="_blank">Lancio dei dadi con n facce Grafico</a>
-            </td>
-    
-            <td class="contorno">
-                <a href="https://lanciodeidadiconpifaccenumeriparziali.netlify.app/" target="_blank">Lancio dei dadi con n facce
-                Normale</a>
-            </td>
-        </tr>
-
-        <tr>
-            <td class="contorno">
-                <a href="https://letterecasuali.netlify.app/" target="_blank">Estrazione Lettera Casuale</a>
-            </td>
-
-            <td class="contorno">
-                <a href="https://numericasualinico.netlify.app/" target="_blank">Estrazione Numeri Casuali tra un intervallo</a>
-            </td>
-
-            <td class="contorno">
-                <a href="https://lanciomonete.netlify.app/" target="_blank">Estrazionne Lancio n Monete</a>
-            </td>
-
-            <td class="contorno">
-                <a href="https://casualecarta.netlify.app/" target="_blank">Generatore di Carte (Scala 40 o Briscola)</a>
-            </td>
-        </tr>
-
-        <tr>
-            <td class="contorno">
-                 <a href="https://criptazione.netlify.app/" target="_blank">
-                Criptazione con Alfabeto Opposto</a>
-            </td>
-
-            <td class="contorno">
-                <a href="https://nomicasuali.netlify.app/" target="_blank">Genera Nomi Casuali</a>
-            </td>
-
-            <td class="contorno">
-                <a href="https://coachlifegenerator.netlify.app/" target="_blank">Coach Life Generator</a>
-            </td>  
-            
-            <td class="contorno">
-                <a href="https://colorecasuale.netlify.app/" target="_blank">Generatore Colore Casuale </a>
-            </td>    
-
-        </tr>
-
-
-    </table>`);
-
-let Giochi = () =>
-  (document.getElementById("dati").innerHTML = `
-    <h2>Giochi </h2>
-    <br>
-    <table>
-        <tr>
-            <td class="contorno">
-                 <a href="https://tombolanico.netlify.app/" target="_blank">Gioco della Tombola</a>
-            </td>
-
-            <td class="contorno">
-                <a href="https://giocosassocartaforbice.netlify.app/" target="_blank">Gioco Sasso Carta Forbice</a>
-            </td>
-
-            <td class="contorno">
-                <a href="https://tris.netlify.app/" target="_blank">
-                Gioco del Tris</a>
-            </td>
-
-        </tr>
-
-        <tr>
-            <td class="contorno">
-                <a href="https://forza4nico.netlify.app" target="_blank">Forza 4</a>
-            </td>
-
-            <td class="contorno">
-                <a href="https://snakegamenico.netlify.app/" target="_blank">Snake Game</a>
-            </td>
-
-            <td class="contorno">
-                <a href="https://indovinellodinosauri.netlify.app/" target="_blank">Indovinello dei Dinosauri</a>
-            </td>
-        </tr>
-
-        <tr>
-            <td class="contorno">
-                <a href="https://generated4letters.netlify.app/" target="_blank">Generazione 4 Lettere Casuali</a>
-            </td>
-
-            <td class="contorno">
-                <a href="https://giocobriscolascala.netlify.app/" target="_blank">Gioco Briscola Scala</a>
-            </td>
-
-            <td class="contorno">
-                <a href="https://generated4numbers.netlify.app/"  target="_blank">Generazione 4 Numeri Casuali</a>
-            </td>
-    </table>
-    `);
-
-let Borsa = () =>
-  (document.getElementById("dati").innerHTML = `
-    <h2>Borsa </h2>
-    <br>
-    <table>
-        <tr>
-            <td class="contorno">
-                <a href="https://cambivalute.netlify.app/" target="_blank">Cambi Valute</a>
-            </td>
-
-            <td class="contorno">
-                <a href="https://valoretitoliborsa.netlify.app/" target="_blank">Valore Titoli di Borsa</a>
-            </td>
-        </tr>
-    </table>`);
-
-let Calendario = () =>
-  (document.getElementById("dati").innerHTML = `
-    <h2>Siti sul Calendario </h2>
-    <br>
-    <table>
-        <tr>
-            <td class="contorno">
-                <a href="https://calendariogiorno.netlify.app/" target="_blank">Calcola Giorno della Settimana</a>
-            </td>
-
-            <td class="contorno">
-                <a href="https://cronometrotimer.netlify.app/" target="_blank">Cronometro / Timer</a>
-            </td>
-
-            <td class="contorno">
-                <a href="https://calendarionico.netlify.app/" target="_blank">Calendario</a>
-            </td>
-
-            <td class="contorno">
-                <a href="https://calcolatoreditempo.netlify.app/" target="_blank">Calcolatore di Tempo</a>
-            </td>
-        </tr>
-    </table>
-    `);
-
-let InfoPaesiStati = () =>
-  (document.getElementById("dati").innerHTML = `
-    <h2>Info Paese / Stati</h2>
-    <br>
-    <table>
-        <tr>
-            <td class="contorno">
-                <a href="https://fusoorario.netlify.app/" target="_blank">Verifica Fuso Orario Città</a>
-            </td>
-
-            <td class="contorno">
-                <a href="https://statiinfo.netlify.app/" target="_blank">Info Stato</a>
-            </td>
-        </tr>
-    </table>
-    `);
-
-let Natale = () =>
-  (document.getElementById("dati").innerHTML = `
-    <h2> Siti sul Natale </h2>
-    <br>
-    <table>
-        <tr>
-            <td class="contorno">
-                <a href="https://adventcalendarnico.netlify.app/" target="_blank">Calendario dell'Avvento</a>
-            </td>
-
-            <td class="contorno">
-                <a href="https://contoallarovescianatale.netlify.app/" target="_blank">Conto alla rovescia data di Natale</a>
-            </td>
-
-            <td class="contorno">
-                <a href="https://contoallarovesciaannonuovo.netlify.app/" target="_blank">Conto Alla rovescia Anno Nuovo</a>
-            </td>
-        </tr>
-    </table>
-    `);
-
-let Salute = () =>
-  (document.getElementById("dati").innerHTML = `
-    <h2>Siti sulla Salute </h2>
-    <br>
-    <table>
-        <tr>
-            <td class="contorno">
-                <a href="https://calcolopesoaltzzaideale.netlify.app/" target="_blank">Sito che Calcola Altezza ideale o Peso
-                Ideale</a>
-            </td>
-        </tr>
-    </table>
-    `);
-
-let Pasqua = () =>
-  (document.getElementById("dati").innerHTML = `
-    <h2> Siti Sulla Pasqua </h2>
-    <br>
-    <table>
-        <tr>
-            <td class="contorno">
-                 <a href="https://calcolapasqua.netlify.app/" target="_blank">Calcola la Data di Pasqua</a>
-            </td>
-
-            <td class="contorno">
-                <a href="https://contoallarovesciapasqua.netlify.app/" target="_blank">Conto alla rovescia data di Pasqua</a>
-            </td>
-        </tr>
-    </table>
-    `);
+function displayCategory(categoryName) {
+  const category = categories[categoryName];
+  if (category) {
+    document.getElementById("dati").innerHTML = generateCategoryHTML(
+      categoryName,
+      category
+    );
+  }
+}
