@@ -212,7 +212,8 @@ function generateCategoryHTML(categoryName, category) {
     if (
       categoryName == "Matematica" ||
       categoryName == "Giochi" ||
-      categoryName == "Natale"
+      categoryName == "Natale" ||
+      categoryName == "Random"
     )
       linksHTML += `<div class="riga3">`;
     else if (categoryName == "Bici" || categoryName == "Salute")
