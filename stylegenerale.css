@@ -256,6 +256,13 @@ footer {
   text-align: center;
   text-shadow: 2px 2px 4px black;
   font-weight: bold;
+  margin: 0px;
+  border-radius: 50px;
+  left: 10px;
+  width: calc(100% - 20px);
+  font-weight: bold;
+  transform: translateX(-10px);
+  
 }
 
 @media all and (max-width: 1024px) {
