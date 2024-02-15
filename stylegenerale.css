@@ -253,12 +253,9 @@ footer {
   position: fixed;
   bottom: 0;
   width: 100%;
-
-
   text-align: center;
   text-shadow: 2px 2px 4px black;
   font-weight: bold;
-  border-radius: 50px;
 }
 
 @media all and (max-width: 1024px) {
