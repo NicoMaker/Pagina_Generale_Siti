@@ -212,19 +212,19 @@ function generateCategoryHTML(categoryName, category) {
   category.forEach((item, index) => {
     let divisibile = 0;
 
-    if(categoryName == "Matematica" || categoryName=="Giochi")
-        divisibile = 3;
-    else
-        divisibile = 4;
+    if (categoryName == "Matematica" || categoryName == "Giochi")
+      divisibile = 3;
+    else divisibile = 4;
 
     if (index % divisibile === 0) {
-      if (index !== 0) {
-        linksHTML += "</tr>";
-      }
+      if (index !== 0) linksHTML += "</tr>";
       linksHTML += "<tr>";
       rowCount = 0;
     }
-    linksHTML += `<td class="contorno"><a href="${item.link}" target="_blank">${item.name}</a></td>`;
+    linksHTML += `
+    <td class="contorno">
+        <a href="${item.link}" target="_blank">${item.name}</a>
+    </td>`;
     rowCount++;
   });
   if (rowCount !== 0) {
