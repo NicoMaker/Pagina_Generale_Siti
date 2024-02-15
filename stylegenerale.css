@@ -254,6 +254,7 @@ footer {
   bottom: 0;
   width: 100%;
 
+
   text-align: center;
   text-shadow: 2px 2px 4px black;
   font-weight: bold;
@@ -277,7 +278,8 @@ footer {
   }
 
   footer {
-    font-size: 35px;
+    font-size: 60px;
+    padding: 30px;
   }
 }
 
@@ -297,6 +299,6 @@ footer {
   }
 
   footer {
-    font-size: 25px;
+    font-size: 35px;
   }
 }
