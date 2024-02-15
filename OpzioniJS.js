@@ -209,22 +209,17 @@ const categories = {
 function generateCategoryHTML(categoryName, category) {
   let linksHTML = "";
   category.forEach((item) => {
-    if (
-      categoryName == "Matematica" ||
-      categoryName == "Giochi" ||
-      categoryName == "Natale" ||
-      categoryName == "Random"
-    )
-      linksHTML += `<div class="riga3">`;
-    else if (categoryName == "Bici" || categoryName == "Salute")
+    if (categoryName == "Bici" || categoryName == "Salute")
       linksHTML += `<div class="riga1">`;
     else if (
       categoryName == "Borsa" ||
       categoryName == "Info_Paesi_Stati" ||
-      categoryName == "Pasqua"
+      categoryName == "Pasqua" || 
+      categoryName == "Calendario"
     )
-      linksHTML += `<div class="riga2">`;
-    else linksHTML += `<div class="riga4">`;
+    linksHTML += `<div class="riga2">`;
+    else
+      linksHTML += `<div class="riga3">`;
 
     linksHTML += ` 
     <a href="${item.link}" target="_blank">${item.name}</a>
