@@ -1,22 +1,3 @@
-const menu = document.querySelector(".menu");
-const hamburger = document.querySelector(".hamburger");
-const closeIcon = document.querySelector(".CloseIcon");
-const menuIcon = document.querySelector(".MenuIcon");
-
-function toggleMenu() {
-  if (menu.classList.contains("showMwnu")) {
-    menu.classList.remove("showMwnu");
-    closeIcon.style.display = "none";
-    menuIcon.style.display = "block";
-  } else {
-    menu.classList.add("showMwnu");
-    closeIcon.style.display = "block";
-    menuIcon.style.display = "none";
-  }
-}
-
-hamburger.addEventListener("click", toggleMenu);
-
 const categories = {
   Matematica: [
     {
@@ -210,27 +191,26 @@ function generateCategoryHTML(categoryName, category) {
   let linksHTML = "";
   category.forEach((item) => {
     if (categoryName == "Bici" || categoryName == "Salute")
-      linksHTML += `<div class="riga1">`;
+      linksHTML += `<div class="contenitore1">`;
     else if (
       categoryName == "Borsa" ||
       categoryName == "Info_Paesi_Stati" ||
-      categoryName == "Pasqua" || 
+      categoryName == "Pasqua" ||
       categoryName == "Calendario"
     )
-    linksHTML += `<div class="riga2">`;
-    else
-      linksHTML += `<div class="riga3">`;
+      linksHTML += `<div class="contenitore2">`;
+    else linksHTML += `<div class="contenitore3">`;
 
     linksHTML += ` 
-    <a href="${item.link}" target="_blank">${item.name}</a>
-    </div>
-    `;
+      <a href="${item.link}" target="_blank">${item.name}</a>
+      </div>
+      `;
   });
   return `
-      <h2>${categoryName}</h2> 
-      <br>
-      <div class="container">${linksHTML}</div>
-    `;
+        <h2>${categoryName}</h2> 
+        <br>
+        <div class="container">${linksHTML}</div>
+      `;
 }
 
 function displayCategory(categoryName) {

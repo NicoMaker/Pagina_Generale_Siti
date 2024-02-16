@@ -47,20 +47,20 @@ a {
 }
 
 .Immagineicona,
-.riga1,
-.riga2,
-.riga3,
-.riga4 {
+.contenitore1,
+.contenitore2,
+.contenitore3,
+.contenitore4 {
   background-repeat: no-repeat;
   background-position: bottom left;
   background-size: 0% 50%;
   transition: background-size 300ms ease-in-out;
 }
 
-.riga1,
-.riga2,
-.riga3,
-.riga4 {
+.contenitore1,
+.contenitore2,
+.contenitore3,
+.contenitore4 {
   text-decoration: none;
   background-image: linear-gradient(to right, blue, cyan);
   font-family: "Roboto", sans-serif;
@@ -75,50 +75,50 @@ a {
   align-items: center;
 }
 
-.riga1 {
+.contenitore1 {
   width: calc(100% - 10px);
 }
 
-.riga2 {
+.contenitore2 {
   width: calc(50% - 10px);
 }
 
-.riga3 {
+.contenitore3 {
   width: calc(33% - 10px);
 }
 
-.riga1:hover,
-.riga2:hover,
-.riga3:hover,
+.contenitore1:hover,
+.contenitore2:hover,
+.contenitore3:hover,
 .Immagineicona:hover {
   background-size: 100% 15%;
 }
 
-.riga1:nth-child(4n),
-.riga2:nth-child(4n),
-.riga3:nth-child(4n),
-.riga4:nth-child(4n) {
+.contenitore1:nth-child(4n),
+.contenitore2:nth-child(4n),
+.contenitore3:nth-child(4n),
+.contenitore4:nth-child(4n) {
   background-color: yellow;
   border: 5px solid purple; 
 }
 
-.riga1:nth-child(4n + 1),
-.riga2:nth-child(4n + 1),
-.riga3:nth-child(4n + 1){
+.contenitore1:nth-child(4n + 1),
+.contenitore2:nth-child(4n + 1),
+.contenitore3:nth-child(4n + 1){
   background-color: cyan;
   border: 5px solid blue;
 }
 
-.riga1:nth-child(4n + 2),
-.riga2:nth-child(4n + 2),
-.riga3:nth-child(4n + 2){
+.contenitore1:nth-child(4n + 2),
+.contenitore2:nth-child(4n + 2),
+.contenitore3:nth-child(4n + 2){
   background-color: chartreuse;
   border: 5px solid coral;
 }
 
-.riga1:nth-child(4n + 3),
-.riga2:nth-child(4n + 3),
-.riga3:nth-child(4n + 3){
+.contenitore1:nth-child(4n + 3),
+.contenitore2:nth-child(4n + 3),
+.contenitore3:nth-child(4n + 3){
   background-color: orange;
   border: 5px solid darkblue
 }
@@ -274,9 +274,9 @@ footer {
     font-size: 40px;
   }
 
-  .riga1,
-  .riga2,
-  .riga3 {
+  .contenitore1,
+  .contenitore2,
+  .contenitore3 {
     height: 145px;
   }
 
@@ -294,9 +294,9 @@ footer {
     font-size: 40px;
   }
 
-  .riga1,
-  .riga2,
-  .riga3{
+  .contenitore1,
+  .contenitore2,
+  .contenitore3{
     height: 100px;
   }
 
