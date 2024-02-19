@@ -147,9 +147,13 @@ a {
 .immagine {
   display: block;
   margin: 0 auto;
-  width: 700px;
-  height: 600px;
+  border-radius: 50px;
   border: 5px solid blue;
+  display: inline-block;
+}
+
+.container_immagine {
+  text-align: center;
 }
 
 .Icona {
@@ -284,6 +288,11 @@ footer {
     font-size: 40px;
     padding: 15px;
   }
+
+  .immagine{
+    width: 450px;
+    height: 450px;
+  }
 }
 
 @media all and (min-width: 1024px) {
@@ -302,5 +311,10 @@ footer {
 
   footer {
     font-size: 35px;
+  }
+
+  .immagine{
+    width: 700px;
+    height: 700px;
   }
 }
