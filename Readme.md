@@ -16,7 +16,7 @@
 - Siti sulla Pasqua (2 siti)
 
 
-## Riferimento icone con link
+## Riferimento icone o immagini con link
 
 - Con l'immagine del robot mi apre il mio accout di Github 
 - Con l'icona del codice mi apre la repository di dove trovo il codice di tutti i siti
