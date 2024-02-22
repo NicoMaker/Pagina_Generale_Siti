@@ -97,28 +97,28 @@ a {
 .contenitore3:nth-child(4n),
 .contenitore4:nth-child(4n) {
   background-color: yellow;
-  border: 5px solid purple; 
+  border: 5px solid purple;
 }
 
 .contenitore1:nth-child(4n + 1),
 .contenitore2:nth-child(4n + 1),
-.contenitore3:nth-child(4n + 1){
+.contenitore3:nth-child(4n + 1) {
   background-color: cyan;
   border: 5px solid blue;
 }
 
 .contenitore1:nth-child(4n + 2),
 .contenitore2:nth-child(4n + 2),
-.contenitore3:nth-child(4n + 2){
+.contenitore3:nth-child(4n + 2) {
   background-color: chartreuse;
   border: 5px solid coral;
 }
 
 .contenitore1:nth-child(4n + 3),
 .contenitore2:nth-child(4n + 3),
-.contenitore3:nth-child(4n + 3){
+.contenitore3:nth-child(4n + 3) {
   background-color: orange;
-  border: 5px solid darkblue
+  border: 5px solid darkblue;
 }
 
 .immagginelogo,
@@ -265,7 +265,6 @@ footer {
   width: calc(100% - 20px);
   font-weight: bold;
   transform: translateX(-10px);
-  
 }
 
 @media all and (max-width: 1024px) {
@@ -284,7 +283,7 @@ footer {
     padding: 15px;
   }
 
-  .immagine{
+  .immagine {
     width: 450px;
     height: 450px;
   }
@@ -297,7 +296,7 @@ footer {
 
   .contenitore1,
   .contenitore2,
-  .contenitore3{
+  .contenitore3 {
     height: 100px;
   }
 
@@ -305,8 +304,13 @@ footer {
     font-size: 35px;
   }
 
-  .immagine{
+  .immagine {
     width: 700px;
     height: 700px;
   }
+}
+
+.MenuIcon:hover,
+.CloseIcon:hover {
+  color: red;
 }
