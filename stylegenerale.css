@@ -231,6 +231,7 @@ a {
 .menu h1 {
   font-family: "Poppins", sans-serif;
   font-weight: bold;
+  font-size: 40px;
 }
 
 .CloseIcon span,
@@ -272,10 +273,6 @@ footer {
     font-size: 75px;
   }
 
-  .menu h1 {
-    font-size: 40px;
-  }
-
   .contenitore1,
   .contenitore2,
   .contenitore3 {
@@ -296,9 +293,6 @@ footer {
 @media all and (min-width: 1024px) {
   h1 {
     font-size: 100px;
-  }
-  .menu h1 {
-    font-size: 40px;
   }
 
   .contenitore1,
