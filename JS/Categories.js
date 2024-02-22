@@ -187,30 +187,37 @@ const categories = {
   ],
 };
 
-function generateCategoryHTML(categoryName, category) {
-  let linksHTML = "";
-  category.forEach((item) => {
-    if (categoryName == "Bici" || categoryName == "Salute")
-      linksHTML += `<div class="contenitore1">`;
-    else if (
-      categoryName == "Borsa" ||
-      categoryName == "Info_Paesi_Stati" ||
-      categoryName == "Pasqua" ||
-      categoryName == "Calendario"
-    )
-      linksHTML += `<div class="contenitore2">`;
-    else linksHTML += `<div class="contenitore3">`;
+const categoryClasses = {
+  Bici: "contenitore1",
+  Salute: "contenitore1",
+  Borsa: "contenitore2",
+  Info_Paesi_Stati: "contenitore2",
+  Pasqua: "contenitore2",
+  Calendario: "contenitore2",
+  Matematica: "contenitore3",
+  Random: "contenitore3",
+  Giochi: "contenitore3",
+  Natale: "contenitore3",
+};
 
-    linksHTML += ` 
+function generateCategoryHTML(categoryName, category) {
+  const containerClass = categoryClasses[categoryName];
+
+  const linksHTML = category
+    .map(
+      (item) => `
+    <div class="${containerClass}">
       <a href="${item.link}" target="_blank">${item.name}</a>
-      </div>
-      `;
-  });
+    </div>
+  `
+    )
+    .join("");
+
   return `
-        <h2>${categoryName}</h2> 
-        <br>
-        <div class="container">${linksHTML}</div>
-      `;
+    <h2>${categoryName}</h2>
+    <br>
+    <div class="container">${linksHTML}</div>
+  `;
 }
 
 function displayCategory(categoryName) {
@@ -220,5 +227,7 @@ function displayCategory(categoryName) {
       categoryName,
       category
     );
+  } else {
+    console.error(`La categoria "${categoryName}" non esiste.`);
   }
 }
