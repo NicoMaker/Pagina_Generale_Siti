@@ -18,10 +18,16 @@
 
 ## Riferimento icone o immagini con link
 
+### Nel Hamburger
+
 - Con l'immagine del robot mi apre il mio accout di Github 
-- Con l'icona del codice mi apre la repository di dove trovo il codice di tutti i siti
+- Con l'icona del codice e del mio logo mi apre la repository di dove trovo il codice di tutti i siti
 - Nell' icona qr ti si apre un immagine che scansionandolo entri nel sito che hai aperto
 - con l'immagine di Github invece vai nel codice del sito seguente
+
+
+### nel sito generale
+
 - All'iinizio con l'immagine del logo se lo clicci vai al mio account di Github
 - e infine sotto dove c'è la sritta Realizzata da Nico Maker ti si apre un immagine che scansionandolo entri nel sito che hai aperto
 
