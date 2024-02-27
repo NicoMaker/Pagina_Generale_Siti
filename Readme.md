@@ -15,16 +15,14 @@
 - Siti sulla Salute (1 sito)
 - Siti sulla Pasqua (2 siti)
 
-
 ## Riferimento icone o immagini con link
 
 ### Nel Hamburger
 
-- Con l'immagine del robot mi apre il mio accout di Github 
-- Con l'icona del codice e del mio logo mi apre la repository di dove trovo il codice di tutti i siti
+- Con l'immagine del robot e del mio logo mi apre il mio accout di Github
+- Con l'icona del codice mi apre la repository di dove trovo il codice di tutti i siti
 - Nell' icona qr ti si apre un immagine che scansionandolo entri nel sito che hai aperto
 - con l'immagine di Github invece vai nel codice del sito seguente
-
 
 ### nel sito generale
 
@@ -38,4 +36,5 @@
 [Apertura sito principlae 2 link](https://nicomaker.github.io/Pagina_Generale_Siti/)
 
 ## Apertuta parte codice interessata dove puoi vedere come è stato realizzato
+
 [Apertutra Repository Github interessata](https://github.com/NicoMaker/NicoMaker)
