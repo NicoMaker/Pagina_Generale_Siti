@@ -1,4 +1,4 @@
-# Pagina Generale dove vedi tutti i siti
+# Pagina Generale dove vedi tutti i siti realizzati
 
 ## Categorie sito che sel selezione nel Hamburger Menu dove lo puoi aprire o chiudere, se vuoi aprire un sito di quella categoria chiudi l'Hamburger Menu e clicchi sul sito interessato della categoria interessata
 
@@ -33,7 +33,3 @@
 [Apertura sito Principale 1 link](https://paginageneralesiti.netlify.app/)
 
 [Apertura sito principlae 2 link](https://nicomaker.github.io/Pagina_Generale_Siti/)
-
-## Apertuta parte codice interessata dove puoi vedere come è stato realizzato
-
-[Apertutra Repository Github interessata](https://github.com/NicoMaker/NicoMaker)
