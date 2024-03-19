@@ -1,0 +1,47 @@
+body{
+    text-align: center;
+    background: linear-gradient(to right, #79E0EE, #B1AFFF, #79E0EE);
+}
+
+input
+{
+    border-radius: 50px;
+    font-size: 25px;
+    text-align: center;
+}
+
+button
+{
+    border-radius: 50px;
+    font-size: 40px;
+}
+
+h1
+{
+    color: red;
+    font-size: 50px;
+}
+
+#nomiInseriti
+{
+    color: blue;
+    font-size: 40px;
+}
+
+#nomeCasuale
+{
+    color: tomato;
+    font-size: 40px;
+}
+
+.aggiungi
+{
+    background-color: gold;
+    color: green;
+}
+
+.genera
+{
+    background-color: brown;
+    color: white;
+}

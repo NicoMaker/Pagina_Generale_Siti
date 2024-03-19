@@ -2,196 +2,199 @@ const categories = {
   Matematica: [
     {
       name: "Esercizio Trifase",
-      link: "Matematica/Esercizio Trifase/Esercizio Trifase.html",
+      link: "Siti/Matematica/Esercizio Trifase/Esercizio Trifase.html",
     },
     {
       name: "Biografia su Alan Turing",
-      link: "Matematica/Biografia su Alan Turing/Alan turing.html",
+      link: "Siti/Matematica/Biografia su Alan Turing/Alan turing.html",
     },
-    { name: "Calcolatrice", link: "Matematica/Calcolatrice/calcolatrice.html" },
+    {
+      name: "Calcolatrice",
+      link: "Siti/Matematica/Calcolatrice/calcolatrice.html",
+    },
     {
       name: "Conversioni Base",
-      link: "Matematica/Conversione Basi/conversione_basi.html",
+      link: "Siti/Matematica/Conversione Basi/conversione_basi.html",
     },
     {
       name: "Verifica Numero Primo",
-      link: "Matematica/Numero Primo/index.html",
+      link: "Siti/Matematica/Numero Primo/index.html",
     },
     {
       name: "Verifica Numeri Primi Precedenti",
-      link: "Matematica/Verifica Numeri Primi Precedenti/index.html",
+      link: "Siti/Matematica/Verifica Numeri Primi Precedenti/index.html",
     },
-    { name: "Tabelline", link: "Matematica/Tabelline/Tabelline.html" },
+    { name: "Tabelline", link: "Siti/Matematica/Tabelline/Tabelline.html" },
     {
       name: "Triangolo di Tartaglia",
-      link: "Matematica/Triangolo di Tartaglia/tartaglia.html",
+      link: "Siti/Matematica/Triangolo di Tartaglia/tartaglia.html",
     },
     {
       name: "Calcola Esponenziali / Radici",
-      link: "Matematica/Esponenziali  e Radici/Esponenzili_radici.html",
+      link: "Siti/Matematica/Esponenziali  e Radici/Esponenzili_radici.html",
     },
-    { name: "Calcola Logaritmi", link: "Matematica/Logaritmi/Logaritmi.html" },
-    { name: "Fattoriale", link: "Matematica/Fattoriale/Fact.html" },
+    {
+      name: "Calcola Logaritmi",
+      link: "Siti/Matematica/Logaritmi/Logaritmi.html",
+    },
+    { name: "Fattoriale", link: "Siti/Matematica/Fattoriale/Fact.html" },
     {
       name: "Calcola Numero di Fibonacci",
-      link: "Matematica/Fibonacci/Fibonacci.html",
+      link: "Siti/Matematica/Fibonacci/Fibonacci.html",
     },
     {
       name: "Calcolatore Triangolo di Pitagora",
-      link: "Matematica/Pitagora/pitagora.html",
+      link: "Siti/Matematica/Pitagora/pitagora.html",
     },
-    {
-      name: "Gestione Punteggi",
-      link: "Matematica/Punteggi/index.html",
-    },
+    { name: "Gestione Punteggi", link: "Siti/Matematica/Punteggi/index.html" },
     {
       name: "Calcolo Segno Zodiacale",
-      link: "Matematica/Segno_Zodiacale/index.html",
+      link: "Siti/Matematica/Segno_Zodiacale/index.html",
     },
     {
       name: "Stampa Numeri Pari / Dispari o Tutti",
-      link: "Matematica/StampaNumeri/index.html",
+      link: "Siti/Matematica/StampaNumeri/index.html",
     },
     {
       name: "Calcolo Valore Assoluto",
-      link: "Matematica/Valore_Assoluto/index.html",
+      link: "Siti/Matematica/Valore_Assoluto/index.html",
     },
-    { name: "Ahmes", link: "Matematica/Ahmes/index.html" },
-    { name: "Euclide", link: "Matematica/Euclide/index.html" },
-    { name: "Collatz", link: "Matematica/Collatz/index.html" },
+    { name: "Ahmes", link: "Siti/Matematica/Ahmes/index.html" },
+    { name: "Euclide", link: "Siti/Matematica/Euclide/index.html" },
+    { name: "Collatz", link: "Siti/Matematica/Collatz/index.html" },
     {
       name: "Calcolo Trigonometrico",
-      link: "Matematica/Trigonometria/index.html",
+      link: "Siti/Matematica/Trigonometria/index.html",
     },
   ],
   Bici: [{ name: "Giri In Bici", link: "https://giri-in-bici.netlify.app/" }],
   Random: [
-    {
-      name: "Generatore Password",
-      link: "Random/Password/index.html",
-    },
-    { name: "Lancio dei dadi", link: "Random/Lancio_Dadi/index.html" },
+    { name: "Generatore Password", link: "Siti/Random/Password/index.html" },
+    { name: "Lancio dei dadi", link: "Siti/Random/Lancio_Dadi/index.html" },
     {
       name: "Lancio dei dadi con n facce Grafico",
-      link: "Random/Lancio Dadi N facce/Lancio_Dadi.html",
+      link: "Siti/Random/Lancio Dadi N facce/Lancio_Dadi.html",
     },
     {
       name: "Lancio dei dadi con n facce Normale",
-      link: "Random/Lancio_dei_Dadi_N/index.html",
+      link: "Siti/Random/Lancio_dei_Dadi_N/index.html",
     },
     {
       name: "Estrazione Lettera Casuale",
-      link: "Random/Lettera_Casuale/index.html",
+      link: "Siti/Random/Lettera_Casuale/index.html",
     },
     {
       name: "Estrazione Numeri Casuali tra un intervallo",
-      link: "Random/Numeri_Casuali/index.html",
+      link: "Siti/Random/Numeri_Casuali/index.html",
     },
     {
       name: "Estrazionne Lancio n Monete",
-      link: "Random/Lancio Monete/Monete.html",
+      link: "Siti/Random/Lancio Monete/Monete.html",
     },
     {
       name: "Generatore di Carte (Scala 40 o Briscola)",
-      link: "Random/Casuale Carta/Casuale_carte.html",
+      link: "Siti/Random/Casuale Carta/Casuale_carte.html",
     },
     {
       name: "Criptazione con Alfabeto Opposto",
-      link: "Random/Criptazione Alfabeto Contrario/Criptazione_alfabeto_contrario.html",
+      link: "Siti/Random/Criptazione Alfabeto Contrario/Criptazione_alfabeto_contrario.html",
     },
-    { name: "Genera Nomi Casuali", link: "Random/Nomi Casuali/index.html" },
+    {
+      name: "Genera Nomi Casuali",
+      link: "Siti/Random/Nomi Casuali/index.html",
+    },
     {
       name: "Coach Life Generator",
-      link: "Random/Coach_Life_Genertor/index.html",
+      link: "Siti/Random/Coach_Life_Genertor/index.html",
     },
     {
       name: "Generatore Colore Casuale",
-      link: "Random/Colore_Casuale/index.html",
+      link: "Siti/Random/Colore_Casuale/index.html",
     },
   ],
   Giochi: [
-    { name: "Gioco della Tombola", link: "Giochi/Tombola/index.html" },
+    { name: "Gioco della Tombola", link: "Siti/Giochi/Tombola/index.html" },
     {
       name: "Gioco Sasso Carta Forbice",
-      link: "Giochi/Sasso_Carta_Forbice/index.html",
+      link: "Siti/Giochi/Sasso_Carta_Forbice/index.html",
     },
-    { name: "Gioco del Tris", link: "Giochi/Tris/tris.html" },
-    { name: "Forza 4", link: "Giochi/Forza 4/index.html" },
-    { name: "Snake Game", link: "Giochi/SnakeGame/index.html" },
+    { name: "Gioco del Tris", link: "Siti/Giochi/Tris/tris.html" },
+    { name: "Forza 4", link: "Siti/Giochi/Forza 4/index.html" },
+    { name: "Snake Game", link: "Siti/Giochi/SnakeGame/index.html" },
     {
       name: "Indovinello dei Dinosauri",
-      link: "Giochi/Dino-Game/Index.html",
+      link: "Siti/Giochi/Dino-Game/Index.html",
     },
     {
       name: "Generazione 4 Lettere Casuali",
-      link: "Giochi/Generated_4_Letters/index.html",
+      link: "Siti/Giochi/Generated_4_Letters/index.html",
     },
     {
       name: "Gioco Briscola Scala",
-      link: "Giochi/Gioco_Briscola_Scala/index.html",
+      link: "Siti/Giochi/Gioco_Briscola_Scala/index.html",
     },
     {
       name: "Generazione 4 Numeri Casuali",
-      link: "Giochi/Generated_4_Numbers/index.html",
+      link: "Siti/Giochi/Generated_4_Numbers/index.html",
     },
   ],
   Borsa: [
-    { name: "Cambi Valute", link: "Borsa/Cambi Valute/CambiValute.html" },
+    { name: "Cambi Valute", link: "Siti/Borsa/Cambi Valute/CambiValute.html" },
     {
       name: "Valore Titoli di Borsa",
-      link: "Borsa/Valore Titoli/index.html",
+      link: "Siti/Borsa/Valore Titoli/index.html",
     },
   ],
   Calendario: [
     {
       name: "Calcola Giorno della Settimana",
-      link: "Calendario/Controllo_data/controllo_data.html",
+      link: "Siti/Calendario/Controllo_data/controllo_data.html",
     },
     {
       name: "Cronometro / Timer",
-      link: "Calendario/Cronometro_timer/index.html",
+      link: "Siti/Calendario/Cronometro_timer/index.html",
     },
-    { name: "Calendario", link: "Calendario/Calendario/index.html" },
+    { name: "Calendario", link: "Siti/Calendario/Calendario/index.html" },
     {
       name: "Calcolatore di Tempo",
-      link: "Calendario/Calcolatore_di_tempo/index.html",
+      link: "Siti/Calendario/Calcolatore_di_tempo/index.html",
     },
   ],
   Info_Paesi_Stati: [
     {
       name: "Verifica Fuso Orario Città",
-      link: "https://fusoorario.netlify.app/",
+      link: "Siti/Info_Paesi_Stati/Fuso Orario/index.html",
     },
-    { name: "Info Stato", link: "https://statiinfo.netlify.app/" },
+    { name: "Info Stato", link: "SIti/Info_Paesi_Stati/Stati_info/index.html" },
   ],
   Natale: [
     {
       name: "Calendario dell'Avvento",
-      link: "https://adventcalendarnico.netlify.app/",
+      link: "Siti/Natale/Advent-Calendar/index.html",
     },
     {
       name: "Conto alla rovescia data di Natale",
-      link: "https://contoallarovescianatale.netlify.app/",
+      link: "Siti/Natale/Countdown_Natale/index.html",
     },
     {
       name: "Conto Alla rovescia Anno Nuovo",
-      link: "https://contoallarovesciaannonuovo.netlify.app/",
+      link: "Siti/Natale/Countdown_anno_nuovo/index.html",
     },
   ],
   Salute: [
     {
       name: "Sito che Calcola Altezza ideale o Peso Ideale",
-      link: "https://calcolopesoaltzzaideale.netlify.app/",
+      link: "SIti/Salute/Calcolo_peso_altezza_ideale/index.html",
     },
   ],
   Pasqua: [
     {
       name: "Calcola la Data di Pasqua",
-      link: "https://calcolapasqua.netlify.app/",
+      link: "Siti/Pasqua/Pasqua/Pasqua.html",
     },
     {
       name: "Conto alla rovescia data di Pasqua",
-      link: "https://contoallarovesciapasqua.netlify.app/",
+      link: "Siti/Pasqua/Countdown_Pasqua/index.html",
     },
   ],
 };
@@ -210,23 +213,14 @@ const categoryClasses = {
 };
 
 function generateCategoryHTML(categoryName, category) {
-  const containerClass = categoryClasses[categoryName];
-
-  const linksHTML = category
-    .map(
-      (item) => `
-    <div class="${containerClass}">
-      <a href="${item.link}" target="_blank">${item.name}</a>
-    </div>
-  `
-    )
-    .join("");
-
-  return `
-    <h2>${categoryName}</h2>
-    <br>
-    <div class="container">${linksHTML}</div>
-  `;
+  const containerClass = categoryClasses[categoryName],
+    linksHTML = category
+      .map(
+        (item) =>
+          `<div class="${containerClass}"><a href="${item.link}" target="_blank">${item.name}</a></div>`
+      )
+      .join("");
+  return `<h2>${categoryName}</h2><br><div class="container">${linksHTML}</div>`;
 }
 
 function displayCategory(categoryName) {

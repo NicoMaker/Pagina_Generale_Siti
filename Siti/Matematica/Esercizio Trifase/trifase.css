@@ -1,0 +1,27 @@
+h1 {
+    color: #ff0d05;
+    font-size: 50px;
+    text-align: center;
+}
+
+.grasetto {
+    font-weight: bold;
+}
+
+h2
+{
+    color:#2c0be6;
+    font-size: 25px;
+}
+
+
+.immagine {
+
+    display: block;
+    margin: 0 auto;
+}
+
+.verde{
+    color: #519718;
+    font-size: 20px;
+}

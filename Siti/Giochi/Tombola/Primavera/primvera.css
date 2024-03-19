@@ -1,0 +1,102 @@
+@import url("https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;wght@100&display=swap");
+
+body,
+table {
+  font-family: Arial;
+}
+
+body {
+  color: #fff;
+  text-align: center;
+  border: 5px;
+  background: linear-gradient(to right, #00ff9d, #21b17a);
+  background-size: cover;
+}
+
+h1 {
+  font-family: "Dancing Script", cursive;
+  color: red;
+  text-shadow: 2px 2px 4px black;
+}
+
+table {
+  width: 90%;
+  height: 500px;
+  margin: 0 auto;
+}
+
+td {
+  text-align: center;
+  font-size: 250%;
+  cursor: pointer;
+  background-color: #eee;
+  color: #333;
+  border-radius: 9px;
+  margin-bottom: 20px;
+
+  background-color: white;
+  color: blue;
+
+  border-radius: 50px;
+
+  text-shadow: 2px 2px 4px #000000;
+
+  border: solid 2px orange;
+}
+
+td.blink {
+  background-color: cyan;
+  color: blue;
+  font-weight: bold;
+}
+
+td.on {
+  color: blue;
+  background-color: yellow;
+  font-weight: bold;
+}
+
+textarea {
+  color: white;
+  background-color: #000;
+  overflow: visible;
+  font-weight: bold;
+  width: 90%;
+}
+
+input {
+  border-radius: 50px;
+  color: black;
+  background-color: yellow;
+  margin: 3px 0px;
+  font-size: 50px;
+  padding: 2px;
+}
+
+.contenitore {
+  margin: 40px;
+  background-color: orange;
+}
+
+@media all and (max-width: 1024px) {
+  td {
+    font-size: 55px;
+    padding: 10px;
+  }
+
+  h1 {
+    font-size: 100px;
+  }
+}
+
+@media all and (min-width: 1024px) {
+  td {
+    font-size: 40px;
+    padding: 5px;
+  }
+
+  h1 {
+    font-size: 60px;
+  }
+}

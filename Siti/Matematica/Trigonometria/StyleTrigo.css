@@ -1,0 +1,45 @@
+body {
+  background: linear-gradient(to right, #79e0ee, #b1afff, #79e0ee);
+  text-align: center;
+}
+
+h1 {
+  color: red;
+  font-size: 30px;
+  font-weight: bold;
+}
+
+input {
+  text-align: center;
+  border-radius: 50px;
+  font-size: 25px;
+}
+
+button {
+  text-align: center;
+  border-radius: 50px;
+  font-size: 25px;
+  background-color: tomato;
+  color: white;
+}
+
+#risultato {
+  font-size: 25px;
+  color: blue;
+  background: linear-gradient(to right, #79e0ee, #b1afff, #79e0ee);
+}
+
+img {
+  display: block;
+  margin: 0 auto;
+  width: auto;
+  height: 150px;
+}
+
+select {
+  text-align: center;
+  background-color: yellow;
+  color: red;
+  font-size: 25px;
+  border-radius: 50px;
+}

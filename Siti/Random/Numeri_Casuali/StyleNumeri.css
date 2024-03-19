@@ -1,0 +1,35 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+h1{
+    color: red;
+    font-size: 100px;
+}
+
+input
+{
+    text-align: center;
+    font-size: 30px;
+    border-radius: 50px;
+}
+
+label
+{
+    font-size: 30px;
+}
+
+button
+{
+    font-size: 50px;
+    background-color: aqua;
+    border-radius: 50px;
+    color: orange;
+}
+
+p
+{
+    font-size: 40px;
+    color: green;
+}
