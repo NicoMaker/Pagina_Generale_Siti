@@ -1,7 +1,7 @@
 function generaTabellina() {
-  let num = insertnum();
-  let min = insertmin();
-  let max = insertmax();
+  let num = insertnum(),
+    min = insertmin(),
+    max = insertmax();
 
   // Inverti i valori min e max se min > max
   if (min > max) {
@@ -13,9 +13,9 @@ function generaTabellina() {
   stampatable(num, min, max);
 }
 
-let insertnum = () => parseInt(document.getElementById("num").value);
-let insertmin = () => parseInt(document.getElementById("min").value);
-let insertmax = () => parseInt(document.getElementById("max").value);
+let insertnum = () => parseInt(document.getElementById("num").value),
+  insertmin = () => parseInt(document.getElementById("min").value),
+  insertmax = () => parseInt(document.getElementById("max").value);
 
 function stampatable(num, min, max) {
   let tabellinaHTML =
