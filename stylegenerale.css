@@ -138,8 +138,8 @@ a {
   height: 150px;
 }
 
-.immagginelogo {
-  float: left;
+.immagginelogo{
+  margin: 55;
 }
 
 .immagine {
