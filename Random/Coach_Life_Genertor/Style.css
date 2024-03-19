@@ -1,0 +1,37 @@
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  background: linear-gradient(to right, #79e0ee, #b1afff, #79e0ee);
+}
+h1 {
+  font-size: 100px;
+  color: red;
+}
+#phrase {
+  font-size: 80px;
+  margin-top: 20px;
+  color: black;
+}
+
+label {
+  font-size: 50px;
+}
+
+button {
+  border-radius: 50px;
+  font-size: 70px;
+  background-color: cyan;
+}
+
+img {
+  height: 350px;
+  width: 350px;
+}
+
+.scritta{
+  color: blue;
+  text-align: center;
+  font-size: 80px;
+  padding: 10px;
+  font-size: 70px;
+}

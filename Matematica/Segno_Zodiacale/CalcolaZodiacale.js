@@ -1,6 +1,6 @@
-const output = document.getElementById("output");
-const immagine = document.getElementById("immagine");
-const year = new Date().getFullYear();
+const output = document.getElementById("output"),
+  immagine = document.getElementById("immagine"),
+  year = new Date().getFullYear();
 
 const segniZodiacali = [
   {
@@ -107,9 +107,9 @@ function updateOutput(text, isError = false) {
 updateImmagine("SEGNI/segni.jpg");
 
 function calcolaSegnoZodiacale() {
-  const day = parseInt(document.getElementById("day").value);
-  const month = parseInt(document.getElementById("month").value);
-  const selectedDate = monthDayToDate(month - 1, day)?.valueOf();
+  const day = parseInt(document.getElementById("day").value),
+    month = parseInt(document.getElementById("month").value),
+    selectedDate = monthDayToDate(month - 1, day)?.valueOf();
 
   const segno = segniZodiacali.find(
     (segno) => selectedDate >= segno.inizio && selectedDate <= segno.fine

@@ -68,45 +68,45 @@ const categories = {
   Random: [
     {
       name: "Generatore Password",
-      link: "https://generatorepassword.netlify.app/",
+      link: "Random/Password/index.html",
     },
-    { name: "Lancio dei dadi", link: "https://lanciodadi.netlify.app/" },
+    { name: "Lancio dei dadi", link: "Random/Lancio_Dadi/index.html" },
     {
       name: "Lancio dei dadi con n facce Grafico",
-      link: "https://lanciodeidadipernfacce.netlify.app/",
+      link: "Random/Lancio Dadi N facce/Lancio_Dadi.html",
     },
     {
       name: "Lancio dei dadi con n facce Normale",
-      link: "https://lanciodeidadiconpifaccenumeriparziali.netlify.app/",
+      link: "Random/Lancio_dei_Dadi_N/index.html",
     },
     {
       name: "Estrazione Lettera Casuale",
-      link: "https://letterecasuali.netlify.app/",
+      link: "Random/Lettera_Casuale/index.html",
     },
     {
       name: "Estrazione Numeri Casuali tra un intervallo",
-      link: "https://numericasualinico.netlify.app/",
+      link: "Random/Numeri_Casuali/index.html",
     },
     {
       name: "Estrazionne Lancio n Monete",
-      link: "https://lanciomonete.netlify.app/",
+      link: "Random/Lancio Monete/Monete.html",
     },
     {
       name: "Generatore di Carte (Scala 40 o Briscola)",
-      link: "https://casualecarta.netlify.app/",
+      link: "Random/Casuale Carta/Casuale_carte.html",
     },
     {
       name: "Criptazione con Alfabeto Opposto",
-      link: "https://criptazione.netlify.app/",
+      link: "Random/Criptazione Alfabeto Contrario/Criptazione_alfabeto_contrario.html",
     },
-    { name: "Genera Nomi Casuali", link: "https://nomicasuali.netlify.app/" },
+    { name: "Genera Nomi Casuali", link: "Random/Nomi Casuali/index.html" },
     {
       name: "Coach Life Generator",
-      link: "https://coachlifegenerator.netlify.app/",
+      link: "Random/Coach_Life_Genertor/index.html",
     },
     {
       name: "Generatore Colore Casuale",
-      link: "https://colorecasuale.netlify.app/",
+      link: "Random/Colore_Casuale/index.html",
     },
   ],
   Giochi: [

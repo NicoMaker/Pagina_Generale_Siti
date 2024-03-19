@@ -1,0 +1,169 @@
+input {
+    text-align: center;
+    border-radius: 50px;
+}
+
+button {
+    background-color: orangered;
+    overflow: hidden;
+}
+
+h1 {
+    color: coral;
+    font-weight: bold;
+    border: dashed coral 10px;
+    border-radius: 50px;
+}
+
+.triangolo {
+    width: 0;
+    height: 0;
+    border-left: 50px solid transparent;
+    border-right: 50px solid transparent;
+    border-bottom: 100px solid Yellow;
+}
+
+.quadrato {
+    width: 100px;
+    height: 100px;
+    background-color: Yellow;
+}
+
+.rombo {
+    width: 100px;
+    height: 100px;
+    background-color: Yellow;
+    transform: rotate(45deg);
+    position: relative;
+}
+
+.pentagono {
+    width: 100px;
+    height: 100px;
+    background-color: Yellow;
+    position: relative;
+    transform: rotate(36deg);
+}
+
+.esagono {
+    width: 100px;
+    height: 100px;
+    background-color: yellow;
+    position: relative;
+}
+
+.cerchio {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: yellow;
+}
+
+
+.figure-container {
+    position: relative;
+    width: 100px;
+    height: 100px;
+}
+
+.number {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 24px;
+    line-height: 1;
+}
+
+@media all and (max-width: 1024px) {
+    .container {
+        max-width: 500px;
+        margin: 0 auto;
+        text-align: center;
+        padding: 20px;
+    }
+
+    label {
+        font-size: 40px;
+        color: blue;
+    }
+
+    h1 {
+        font-size: 80px;
+    }
+
+    input {
+        font-size: 35px;
+    }
+
+    p {
+        font-size: 40px;
+        color: blue;
+    }
+
+    h2 {
+        font-size: 35px;
+    }
+
+    #risultato
+    {
+        background-color: mediumspringgreen;
+    }
+}
+
+@media all and (min-width: 1024px) {
+    .container {
+        max-width: 2500px;
+        margin: 0 auto;
+        text-align: center;
+        padding: 45px;
+    }
+
+    label {
+        font-size: 50px;
+        color: blue;
+    }
+
+    h1 {
+        font-size: 100px;
+    }
+
+    input {
+        font-size: 40px;
+    }
+
+    p {
+        font-size: 45px;
+        color: blue;
+    }
+
+    h2 {
+        font-size: 40px;
+    }
+
+    #risultato
+    {
+        background-image: url(https://img.wallpapic.it/i0217-813-97/thumb/fantasia-drago-cartoni-animati-computer-grafica-sfondo.jpg);
+    }
+}
+
+body {
+    background-color: aqua;
+}
+
+.view {
+    color: red
+}
+
+#risultato {
+    text-align: center;
+    margin: 15px;
+    font-weight: bold;
+    border: dashed coral 10px;
+}
+
+#somma-totale {
+    border-radius: 50px;
+    border: dashed turquoise 10px;
+    background-color: beige;
+}

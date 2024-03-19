@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Lancio Dei Dadi</title>
+    <link
+      rel="icon"
+      href="https://static.vecteezy.com/ti/vettori-gratis/p1/2165690-line-icon-for-dice-vettoriale.jpg"
+      type="image/jpg"
+    />
+    <link rel="stylesheet" href="StyleDadi.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="Scriptdadi.js" defer></script>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Lancio dei dadi</h1>
+      <label for="numero-dadi">Quanti dadi vuoi lanciare?</label>
+      <input type="number" id="numero-dadi" min="1" value="1" />
+      <br />
+      <br />
+      <button onclick="generaNumeri()">Genera numeri</button>
+      <p id="numeri-parziali"></p>
+
+      <img
+        src="https://static.vecteezy.com/ti/vettori-gratis/p1/2165690-line-icon-for-dice-vettoriale.jpg"
+        id="immagine-dadi"
+      />
+
+      <div id="grafico" class="grafico">
+        <canvas id="grafico-barre"></canvas>
+      </div>
+    </div>
+    
+    <br>
+    <br>
+
+    <table id="valori_uscite"></table>
+
+    <p id="somma-totale"></p>
+  </body>
+</html>
