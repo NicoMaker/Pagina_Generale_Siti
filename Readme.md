@@ -1,4 +1,4 @@
-# Pagina Generale dove vedi tutti i siti realizzati
+# Pagina Generale 
 
 ## Categorie sito che sel selezione nel Hamburger Menu dove lo puoi aprire o chiudere, se vuoi aprire un sito di quella categoria chiudi l'Hamburger Menu e clicchi sul sito interessato della categoria interessata
 
