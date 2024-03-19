@@ -1,0 +1,49 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+  }
+  
+  h1 {
+    text-align: center;
+    color: red;
+    font-size: 60px;
+  }
+  
+  .container {
+    max-width: 400px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  
+  label {
+    display: block;
+    margin-top: 10px;
+    text-align: center;
+    font-size: 35px;
+  }
+  
+  input[type="number"], select {
+    width: 100%;
+    padding: 5px;
+    text-align: center;
+    border-radius: 30px;
+    font-size: 35px;
+  }
+  
+  button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    text-align: center;
+    border-radius: 30px;
+    background-color:aqua;
+    font-size: 35px;
+  }
+  
+  #result {
+    margin-top: 20px;
+    font-weight: bold;
+    font-size: 50px;
+  }

@@ -6,7 +6,7 @@ const categories = {
     },
     {
       name: "Biografia su Alan Turing",
-      link: "Matematica/Biografia Su Alan Turing/Alan turing.html",
+      link: "Matematica/Biografia su Alan Turing/Alan turing.html",
     },
     { name: "Calcolatrice", link: "Matematica/Calcolatrice/calcolatrice.html" },
     {
@@ -110,51 +110,51 @@ const categories = {
     },
   ],
   Giochi: [
-    { name: "Gioco della Tombola", link: "https://tombolanico.netlify.app/" },
+    { name: "Gioco della Tombola", link: "Giochi/Tombola/index.html" },
     {
       name: "Gioco Sasso Carta Forbice",
-      link: "https://giocosassocartaforbice.netlify.app/",
+      link: "Giochi/Sasso_Carta_Forbice/index.html",
     },
-    { name: "Gioco del Tris", link: "https://tris.netlify.app/" },
-    { name: "Forza 4", link: "https://forza4nico.netlify.app" },
-    { name: "Snake Game", link: "https://snakegamenico.netlify.app/" },
+    { name: "Gioco del Tris", link: "Giochi/Tris/tris.html" },
+    { name: "Forza 4", link: "Giochi/Forza 4/index.html" },
+    { name: "Snake Game", link: "Giochi/SnakeGame/index.html" },
     {
       name: "Indovinello dei Dinosauri",
-      link: "https://indovinellodinosauri.netlify.app/",
+      link: "Giochi/Dino-Game/Index.html",
     },
     {
       name: "Generazione 4 Lettere Casuali",
-      link: "https://generated4letters.netlify.app/",
+      link: "Giochi/Generated_4_Letters/index.html",
     },
     {
       name: "Gioco Briscola Scala",
-      link: "https://giocobriscolascala.netlify.app/",
+      link: "Giochi/Gioco_Briscola_Scala/index.html",
     },
     {
       name: "Generazione 4 Numeri Casuali",
-      link: "https://generated4numbers.netlify.app/",
+      link: "Giochi/Generated_4_Numbers/index.html",
     },
   ],
   Borsa: [
-    { name: "Cambi Valute", link: "https://cambivalute.netlify.app/" },
+    { name: "Cambi Valute", link: "Borsa/Cambi Valute/CambiValute.html" },
     {
       name: "Valore Titoli di Borsa",
-      link: "https://valoretitoliborsa.netlify.app/",
+      link: "Borsa/Valore Titoli/index.html",
     },
   ],
   Calendario: [
     {
       name: "Calcola Giorno della Settimana",
-      link: "https://calendariogiorno.netlify.app/",
+      link: "Calendario/Controllo_data/controllo_data.html",
     },
     {
       name: "Cronometro / Timer",
-      link: "https://cronometrotimer.netlify.app/",
+      link: "Calendario/Cronometro_timer/index.html",
     },
-    { name: "Calendario", link: "https://calendarionico.netlify.app/" },
+    { name: "Calendario", link: "Calendario/Calendario/index.html" },
     {
       name: "Calcolatore di Tempo",
-      link: "https://calcolatoreditempo.netlify.app/",
+      link: "Calendario/Calcolatore_di_tempo/index.html",
     },
   ],
   Info_Paesi_Stati: [

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Indovina il Dinosauro</title>
+    <link rel="icon" href="Immagini/ico.jpg" type="image/jpg">
+    <script src="script.js" defer></script>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Indovina il Dinosauro</h1>
+        <p id="hint"></p>
+        <select id="dinosaurSelector" onchange="selezionaDinosauro"></select>
+        <br>
+        <br>
+        <button onclick="controllaIndovinello()">Controlla</button>
+        <button onclick="nuovoDinosauro()">Avanti</button>
+        <br>
+        <br>
+        <div id="risultato">
+        </div>
+</body>
+
+</html>

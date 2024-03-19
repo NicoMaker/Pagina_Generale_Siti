@@ -1,0 +1,49 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+h1 {
+    color: #333;
+}
+#result {
+    font-size: 60px;
+    margin-top: 20px;
+}
+#winner {
+    font-size: 60px;
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+h1{
+    color: red;
+    font-size: 100px;
+}
+
+input
+{
+    text-align: center;
+    border-radius: 50px;
+    font-size: 25px;
+}
+
+label
+{
+    font-size: 50px;
+}
+
+button
+{
+    text-align: center;
+    border-radius: 50px;
+    color: antiquewhite;
+    font-size: 70px;
+    background-color: orangered;
+}
+
+.regole{
+    position: fixed;
+    top: 5px;
+    right: 10px;
+    font-size: 30px;
+}
