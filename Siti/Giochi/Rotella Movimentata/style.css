@@ -1,0 +1,70 @@
+body {
+  text-align: center;
+}
+
+h1 {
+  color: red;
+  font-size: 50px;
+}
+
+label {
+  font-size: 35px;
+}
+
+select {
+  font-size: 35px;
+  color: red;
+  border-radius: 50px;
+  background-color: white;
+  text-align: center;
+}
+
+input {
+  font-size: 35px;
+  border-radius: 50px;
+  text-align: center;
+}
+
+.bottone {
+  font-size: 50px;
+  color: aqua;
+  background-color: black;
+}
+
+.container {
+  width: 100%;
+  background-color: yellow;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.wheel {
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  background-color: red;
+  animation: spin 10s linear infinite;
+  border: dashed 20px;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@media all and (max-width: 1024px) {
+  .container {
+    height: 60vh;
+  }
+}
+
+@media all and (min-width: 1024px) {
+  .container {
+    height: 75vh;
+  }
+}

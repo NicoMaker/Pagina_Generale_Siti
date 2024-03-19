@@ -137,6 +137,10 @@ const categories = {
       name: "Generazione 4 Numeri Casuali",
       link: "Siti/Giochi/Generated_4_Numbers/index.html",
     },
+    {
+      name: "Rotella Movimentata",
+      link: "Siti/Giochi/Rotella Movimentata/index.html",
+    },
   ],
   Borsa: [
     { name: "Cambi Valute", link: "Siti/Borsa/Cambi Valute/CambiValute.html" },
@@ -208,7 +212,7 @@ const categoryClasses = {
   Calendario: "contenitore2",
   Matematica: "contenitore3",
   Random: "contenitore3",
-  Giochi: "contenitore3",
+  Giochi: "contenitore2",
   Natale: "contenitore3",
 };
 

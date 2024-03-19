@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+  <title>Rotella Movimentata</title>
+  <link rel="icon" href="https://m.media-amazon.com/images/I/61NAVwZNuNL._AC_UF894,1000_QL80_.jpg" type="image/jpg">
+</head>
+
+<body>
+
+  <h1>Rotella Movimentata</h1>
+  <br>
+  <form id="settingsForm">
+    <label for="color">Seleziona il colore:</label>
+    <select id="color">
+      <option value="red">Rosso</option>
+      <option value="blue">Blu</option>
+      <option value="green">Verde</option>
+      <option value="yellow">Giallo</option>
+    </select><br>
+
+    <label for="speed">Seleziona la velocità (secondi):</label>
+    <br>
+    <br>
+    <input type="number" id="speed" name="speed" min="1" max="100" value="10"><br>
+    <br>
+
+    <input class="bottone" type="submit" value="Applica">
+  </form>
+
+  <br>
+  <br>
+
+  <div class="container">
+    <div class="wheel"></div>
+  </div>
+</body>
+
+</html>
