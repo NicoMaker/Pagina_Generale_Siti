@@ -1,0 +1,70 @@
+/* Stile per la tabella */
+table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 35px;
+}
+
+th,
+td {
+  border: 1px solid black;
+  padding: 8px;
+  text-align: center;
+}
+
+h1 {
+  color: red;
+  font-size: 100px;
+}
+
+label {
+  font-size: 50px;
+}
+
+body {
+  text-align: center;
+}
+
+input {
+  border-radius: 50px;
+  text-align: center;
+  font-size: 30px;
+}
+
+button {
+  border-radius: 50px;
+  text-align: center;
+  font-size: 45px;
+  background-color: aqua;
+}
+
+th {
+  color: red;
+  text-shadow: 7px 7px 7px white;
+}
+
+/**colore riga alternato pari**/
+tr:nth-child(2n) {
+  background-color: #09ff0059;
+}
+
+/**colore riga alternato dispari**/
+tr:nth-child(2n + 3) {
+  background-color: #f0ec067e;
+}
+
+/***colore prima linea tabella**/
+tr:nth-child(-n + 1) {
+  background-color: #0400ff60;
+}
+
+tr:nth-child(2n):hover,
+tr:nth-child(2n + 3):hover {
+  background-color: cyan;
+}
+
+p{
+  text-align: center;
+  font-size: 35px;
+  color: blue;
+}

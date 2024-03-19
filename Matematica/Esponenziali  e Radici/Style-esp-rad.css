@@ -1,0 +1,58 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+  text-align: center;
+}
+
+label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+input[type="number"] {
+  width: 100%;
+  max-width: 350px;
+  padding: 5px;
+  text-align: center;
+  font-size: 4vh;
+}
+
+select {
+  width: 100%;
+  max-width: 350px;
+  padding: 5px;
+  text-align: center;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: aqua;
+  color: red;
+  border: none;
+  cursor: pointer;
+  border-radius: 50px;
+  font-size: 50px;
+}
+
+#result {
+  margin-top: 20px;
+  font-weight: bold;
+  font-size: 50px;
+}
+
+h1 {
+  color: red;
+  font-size: 80px;
+}
+
+input,
+select {
+  border-radius: 50px;
+  margin-bottom: 10px;
+  font-size: 35px;
+}
+
+label
+{
+  font-size: 50px;
+}

@@ -1,0 +1,43 @@
+body {
+    font-family: Arial, sans-serif;
+}
+.container {
+    max-width: 400px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 20px;
+}
+
+h1
+{
+    color: red;
+    font-size: 70px;
+}
+
+label
+{
+    font-size: 35px;
+}
+
+input
+{
+    font-size: 20px;
+    text-align: center;
+    border-radius: 50px;
+}
+
+button
+{
+    text-align: center;
+    background-color: aqua;
+    color: brown;
+    font-size: 50px;
+    border-radius: 50px;
+}
+
+#result
+{
+    text-align: center;
+    font-size: 40px;
+    color: green;
+}

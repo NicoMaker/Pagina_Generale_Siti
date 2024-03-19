@@ -1,0 +1,70 @@
+th, td {
+    padding: 10px;
+    color: red;
+    background-color: yellow;
+    text-align: center;
+    font-size: 45px;
+    font-weight: bold;
+}
+
+table
+{
+    width: 100%;
+}
+
+body{
+    text-align: center;
+    background: linear-gradient(to right, #79E0EE, #B1AFFF, #79E0EE);
+}
+
+input
+{
+    border-radius: 50px;
+    font-size: 25px;
+    text-align: center;
+}
+
+select
+{
+    text-align: center;
+    border-radius: 50px;
+    background-color: white;
+    font-size: 30px;
+}
+
+button
+{
+    border-radius: 50px;
+    font-size: 40px;
+}
+
+#risultato
+{
+    text-align: center;
+    color: red;
+    font-size: 45px;
+}
+
+h1
+{
+    color: red;
+    text-align: center;
+    font-size: 50px;
+}
+
+
+@media all and (max-width: 1024px) {
+
+    td,th
+    {
+        border-radius: 50%;
+    }
+}
+
+@media all and (min-width: 1024px) 
+{
+    td,th
+    {
+        border-radius: 50px;
+    }
+}

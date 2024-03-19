@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Convertitore di Base Numero</title>
+    <link rel="stylesheet" href="basi.css">
+    <link rel="icon"
+        href="https://play-lh.googleusercontent.com/MfHE_Q2H33_bFPJFCtViLshDG87iiW3C1HKNMkKOQq6Zbyy_dmZ9UUVqMG63_PsRk3M"
+        type="image/jpg">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Convertitore di Base del Numero</h1>
+
+        <br>
+        <label>Numero (Base di origine):</label>
+        <input type="text" id="inputNumber" placeholder="Inserisci il numero">
+        <label>Base di origine:</label>
+        <select id="selectFromBase">
+            <option value="2">Binario (BIN)</option>
+            <option value="8">Otale (OCT) </option>
+            <option value="10">Decimale (DEC)</option>
+            <option value="16">Esadecimale (HEZ)</option>
+        </select>
+        <br>
+        <label>Base di destinazione:</label>
+        <select id="selectToBase">
+            <option value="2">Binario (BIN)</option>
+            <option value="8">Otale (OCT) </option>
+            <option value="10">Decimale (DEC)</option>
+            <option value="16">Esadecimale (HEZ)</option>
+        </select>
+
+        <br>
+        <br>
+        <button onclick="convert()">CONVERTI</button>
+        <br>
+        <br>
+        <label>Risultato:</label>
+        <input type="text" id="outputNumber" readonly>
+    </div>
+
+    <script src="basi.js">
+    </script>
+</body>
+
+</html>

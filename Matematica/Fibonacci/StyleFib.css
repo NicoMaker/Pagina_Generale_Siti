@@ -1,0 +1,40 @@
+#output {
+    margin-top: 10px;
+    font-weight: bold;
+    font-size: 45px;
+    color: brown;
+}
+
+body {
+    text-align: center;
+}
+
+h1 {
+    color: red;
+    font-size: 100px;
+}
+
+label {
+    font-size: 35px;
+}
+
+input
+{
+    font-size: 30px;
+    border-radius: 50px;
+    text-align: center;
+}
+
+button
+{
+    font-size: 45px;
+    border-radius: 50px;
+    background-color: yellow;
+}
+
+img {
+    display: block;
+    margin: 0 auto;
+    width: auto;
+    height: 350px;
+}

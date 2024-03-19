@@ -1,0 +1,67 @@
+/** commento **/
+
+/** scrittura al centro colorato **/
+
+html {
+    /**immagine di sfondo**/
+    background-image: url("./Sfumatura.jpg");
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    /**carattere **/
+    font-size: 15px;
+    /**sporta margine destro **/
+    margin-left: 250px;
+    /**sporta margine sinistro **/
+    margin-right: 250px;
+}
+
+.rosso {
+    color: #ff0d05;
+    font-size: 50px;
+}
+
+/** classe centrata **/
+.centro {
+    text-align: center;
+}
+
+.blu {
+    color: #053bff;
+    font-size: 30px;
+}
+
+h3 {
+    color: #08bd11;
+}
+
+/** classe immagine **/
+.immagine {
+
+    display: block;
+    margin: 0 auto;
+}
+
+p {
+    /**giustificazione testo **/
+    text-align: justify;
+}
+
+
+table {
+    font-family: Roboto, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td,
+th {
+    border: 1px solid;
+    text-align: center;
+    padding: 8px;
+}
+
+.lettere {
+    list-style: lower-alpha;
+}
