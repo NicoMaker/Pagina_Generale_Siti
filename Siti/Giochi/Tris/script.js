@@ -30,7 +30,7 @@ function makeMove(index) {
   }
 }
 
-let togglePlayer = () => (currentPlayer = currentPlayer === "X" ? "O" : "X");
+const togglePlayer = () => (currentPlayer = currentPlayer === "X" ? "O" : "X");
 
 function checkWin() {
   let winningCombinations = [

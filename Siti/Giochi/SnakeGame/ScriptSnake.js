@@ -155,7 +155,7 @@ function clearCanvas() {
   ctx.strokeRect(0, 0, gameCanvas.width, gameCanvas.height);
 }
 
-let drawSnake = () => snake.forEach(drawSnakePart);
+const drawSnake = () => snake.forEach(drawSnakePart);
 
 function drawSnakePart(snakePart) {
   ctx.fillStyle = SNAKE_COLOUR;

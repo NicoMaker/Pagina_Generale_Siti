@@ -30,7 +30,7 @@ function determineWinner(choice1, choice2, player1, player2) {
   else return `Giocatore 2 ${player2} vince!`;
 }
 
-let Regole = () =>
+const Regole = () =>
   alert(
     "------------------------------- REGOLE -------------------------------\n\n" +
       "SASSO VINCE SU FORBICI MA PERDE CON CARTA\n" +
