@@ -9,6 +9,7 @@ h1 {
   font-weight: bold;
   font-family: "Dancing Script", cursive;
   text-shadow: 2px 2px 4px #000000;
+  text-align: center;
 }
 
 h2 {
@@ -125,21 +126,18 @@ a {
 .immaginerobot {
   border-radius: 10px;
   border: 2px solid blue;
-  top: 100px;
 }
 
 .immagginelogo {
+  position: absolute;
   width: 230px;
   height: 230px;
+  left: 0px;
 }
 
 .immaginerobot {
   width: 150px;
   height: 150px;
-}
-
-.immagginelogo{
-  margin: 55;
 }
 
 .immagine {
@@ -271,7 +269,7 @@ footer {
 
 @media all and (max-width: 1024px) {
   h1 {
-    font-size: 75px;
+    font-size: 65px;
   }
 
   .contenitore1,

@@ -1,12 +1,10 @@
 function checkDay() {
-  let inputDate = document.getElementById("input-date").value;
-  let parts = inputDate.split("/");
-
-  let day = parseInt(parts[0]);
-  let month = parseInt(parts[1]);
-  let year = parseInt(parts[2]);
-
-  let date = new Date(year, month - 1, day);
+  let inputDate = document.getElementById("input-date").value,
+    parts = inputDate.split("/"),
+    day = parseInt(parts[0]),
+    month = parseInt(parts[1]),
+    year = parseInt(parts[2]),
+    date = new Date(year, month - 1, day);
 
   calculatedate(day, month, year, date, inputDate);
 }

@@ -2,19 +2,19 @@ const categories = {
   Matematica: [
     {
       name: "Esercizio Trifase",
-      link: "Siti/Matematica/Esercizio Trifase/Esercizio Trifase.html",
+      link: "Siti/Matematica/Esercizio Trifase/index.html",
     },
     {
       name: "Biografia su Alan Turing",
-      link: "Siti/Matematica/Biografia su Alan Turing/Alan turing.html",
+      link: "Siti/Matematica/Biografia su Alan Turing/index.html",
     },
     {
       name: "Calcolatrice",
-      link: "Siti/Matematica/Calcolatrice/calcolatrice.html",
+      link: "Siti/Matematica/Calcolatrice/index.html",
     },
     {
       name: "Conversioni Base",
-      link: "Siti/Matematica/Conversione Basi/conversione_basi.html",
+      link: "Siti/Matematica/Conversione Basi/index.html",
     },
     {
       name: "Verifica Numero Primo",
@@ -24,27 +24,27 @@ const categories = {
       name: "Verifica Numeri Primi Precedenti",
       link: "Siti/Matematica/Verifica Numeri Primi Precedenti/index.html",
     },
-    { name: "Tabelline", link: "Siti/Matematica/Tabelline/Tabelline.html" },
+    { name: "Tabelline", link: "Siti/Matematica/Tabelline/index.html" },
     {
       name: "Triangolo di Tartaglia",
-      link: "Siti/Matematica/Triangolo di Tartaglia/tartaglia.html",
+      link: "Siti/Matematica/Triangolo di Tartaglia/index.html",
     },
     {
       name: "Calcola Esponenziali / Radici",
-      link: "Siti/Matematica/Esponenziali  e Radici/Esponenzili_radici.html",
+      link: "Siti/Matematica/Esponenziali  e Radici/index.html",
     },
     {
       name: "Calcola Logaritmi",
-      link: "Siti/Matematica/Logaritmi/Logaritmi.html",
+      link: "Siti/Matematica/Logaritmi/index.html",
     },
-    { name: "Fattoriale", link: "Siti/Matematica/Fattoriale/Fact.html" },
+    { name: "Fattoriale", link: "Siti/Matematica/Fattoriale/index.html" },
     {
       name: "Calcola Numero di Fibonacci",
-      link: "Siti/Matematica/Fibonacci/Fibonacci.html",
+      link: "Siti/Matematica/Fibonacci/index.html",
     },
     {
       name: "Calcolatore Triangolo di Pitagora",
-      link: "Siti/Matematica/Pitagora/pitagora.html",
+      link: "Siti/Matematica/Pitagora/index.html",
     },
     { name: "Gestione Punteggi", link: "Siti/Matematica/Punteggi/index.html" },
     {
@@ -73,7 +73,7 @@ const categories = {
     { name: "Lancio dei dadi", link: "Siti/Random/Lancio_Dadi/index.html" },
     {
       name: "Lancio dei dadi con n facce Grafico",
-      link: "Siti/Random/Lancio Dadi N facce/Lancio_Dadi.html",
+      link: "Siti/Random/Lancio Dadi N facce/index.html",
     },
     {
       name: "Lancio dei dadi con n facce Normale",
@@ -89,15 +89,15 @@ const categories = {
     },
     {
       name: "Estrazionne Lancio n Monete",
-      link: "Siti/Random/Lancio Monete/Monete.html",
+      link: "Siti/Random/Lancio Monete/index.html",
     },
     {
       name: "Generatore di Carte (Scala 40 o Briscola)",
-      link: "Siti/Random/Casuale Carta/Casuale_carte.html",
+      link: "Siti/Random/Casuale Carta/index.html",
     },
     {
       name: "Criptazione con Alfabeto Opposto",
-      link: "Siti/Random/Criptazione Alfabeto Contrario/Criptazione_alfabeto_contrario.html",
+      link: "Siti/Random/Criptazione Alfabeto Contrario/index.html",
     },
     {
       name: "Genera Nomi Casuali",
@@ -118,7 +118,7 @@ const categories = {
       name: "Gioco Sasso Carta Forbice",
       link: "Siti/Giochi/Sasso_Carta_Forbice/index.html",
     },
-    { name: "Gioco del Tris", link: "Siti/Giochi/Tris/tris.html" },
+    { name: "Gioco del Tris", link: "Siti/Giochi/Tris/index.html" },
     { name: "Forza 4", link: "Siti/Giochi/Forza 4/index.html" },
     { name: "Snake Game", link: "Siti/Giochi/SnakeGame/index.html" },
     {
@@ -143,7 +143,7 @@ const categories = {
     },
   ],
   Borsa: [
-    { name: "Cambi Valute", link: "Siti/Borsa/Cambi Valute/CambiValute.html" },
+    { name: "Cambi Valute", link: "Siti/Borsa/Cambi Valute/index.html" },
     {
       name: "Valore Titoli di Borsa",
       link: "Siti/Borsa/Valore Titoli/index.html",
@@ -152,7 +152,7 @@ const categories = {
   Calendario: [
     {
       name: "Calcola Giorno della Settimana",
-      link: "Siti/Calendario/Controllo_data/controllo_data.html",
+      link: "Siti/Calendario/Controllo_data/index.html",
     },
     {
       name: "Cronometro / Timer",
@@ -194,7 +194,7 @@ const categories = {
   Pasqua: [
     {
       name: "Calcola la Data di Pasqua",
-      link: "Siti/Pasqua/Pasqua/Pasqua.html",
+      link: "Siti/Pasqua/Pasqua/index.html",
     },
     {
       name: "Conto alla rovescia data di Pasqua",

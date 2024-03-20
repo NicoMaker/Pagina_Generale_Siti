@@ -1,8 +1,8 @@
 function CalculateTrigonometrics() {
-  const gradi = parseFloat(document.getElementById("gradi-radianti").value);
-  const options = document.getElementById("options").value;
-  const info = options === "Rad" ? "Radianti" : "Gradi";
-  const result = options === "Rad" ? gradi : (gradi * Math.PI) / 180;
+  const gradi = parseFloat(document.getElementById("gradi-radianti").value),
+    options = document.getElementById("options").value,
+    info = options === "Rad" ? "Radianti" : "Gradi",
+    result = options === "Rad" ? gradi : (gradi * Math.PI) / 180;
 
   if (isNaN(gradi)) {
     document.getElementById("risultato").innerHTML =

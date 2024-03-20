@@ -85,14 +85,14 @@ const dinosauri = [
   },
 ];
 
-let indiceCorrente = 0;
-let dinosauroCorrente = dinosauri[indiceCorrente];
+let indiceCorrente = 0,
+  dinosauroCorrente = dinosauri[indiceCorrente];
 
 document.getElementById("hint").textContent = dinosauroCorrente.indizi[0];
 
 function controllaIndovinello() {
-  const selezionato = document.getElementById("dinosaurSelector");
-  const indovinelloUtente = dinosauri[selezionato.value].nome.toLowerCase();
+  const selezionato = document.getElementById("dinosaurSelector"),
+    indovinelloUtente = dinosauri[selezionato.value].nome.toLowerCase();
 
   if (indovinelloUtente === dinosauroCorrente.nome.toLowerCase()) {
     let stampaImg = '<img src="Immagini/Immagine_contenta.jpg">';
@@ -133,8 +133,8 @@ popolaSelettore();
 function selezionaDinosauro() {
   indiceCorrente = document.getElementById("dinosaurSelector").value;
   dinosauroCorrente = dinosauri[indiceCorrente];
-  const indizi = dinosauroCorrente.indizi;
-  const tuttiGliIndizi = indizi.join(", ");
+  const indizi = dinosauroCorrente.indizi,
+    tuttiGliIndizi = indizi.join(", ");
   document.getElementById("hint").textContent = tuttiGliIndizi;
   document.getElementById("risultato").textContent = "";
   document.getElementById("guessInput").value = "";

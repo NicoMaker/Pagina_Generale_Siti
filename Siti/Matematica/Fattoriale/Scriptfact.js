@@ -1,8 +1,7 @@
 function calculateFactorial() {
   let numberInput = document.getElementById("number"),
-    resultDiv = document.getElementById("result");
-
-  let number = parseInt(numberInput.value);
+    resultDiv = document.getElementById("result"),
+    number = parseInt(numberInput.value);
 
   if (isNaN(number)) {
     resultDiv.textContent = "Inserisci un numero valido.";

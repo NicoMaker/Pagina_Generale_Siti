@@ -1,10 +1,8 @@
-let orig = [];
-let hist = new Set();
+let orig = [],
+  hist = new Set();
 
 function init() {
-  for (let ii = 1; ii <= 90; ii++) {
-    orig.push(ii);
-  }
+  for (let ii = 1; ii <= 90; ii++) orig.push(ii);
 }
 
 function BlinkNode(celnode, times, millis) {
@@ -51,30 +49,23 @@ function dumpHist() {
 }
 
 function choseMe(anode) {
-  let id = anode.id;
-  let nn = +id.match(/\d+/)[0];
+  let id = anode.id,
+    nn = +id.match(/\d+/)[0];
 
-  if (!hist.has(nn)) {
-    selectNr(nn);
-  } else {
-    resetNr(nn);
-  }
+  if (!hist.has(nn)) selectNr(nn);
+  else resetNr(nn);
 }
 
 function extractRandom() {
   if (orig.length <= 0) return;
 
-  let idx = Math.floor(Math.random() * orig.length);
-  let nn = orig[idx];
+  let idx = Math.floor(Math.random() * orig.length),
+    nn = orig[idx];
 
-  if (!hist.has(nn)) {
-    selectNr(nn);
-  }
+  if (!hist.has(nn)) selectNr(nn);
 }
 
-function manageKeyb() {
-  extractRandom();
-}
+let manageKeyb = () => extractRandom();
 
 init();
 document.onkeypress = manageKeyb;

@@ -1,18 +1,18 @@
 // JavaScript Code - calendario.js
 document.addEventListener("DOMContentLoaded", function () {
-  const calendarTable = document.getElementById("calendarTable");
-  const currentMonth = document.getElementById("currentMonth");
-  const prevMonthBtn = document.getElementById("prevMonthBtn");
-  const nextMonthBtn = document.getElementById("nextMonthBtn");
+  const calendarTable = document.getElementById("calendarTable"),
+    currentMonth = document.getElementById("currentMonth"),
+    prevMonthBtn = document.getElementById("prevMonthBtn"),
+    nextMonthBtn = document.getElementById("nextMonthBtn");
 
-  let currentDate = new Date();
-  let events = {};
+  let currentDate = new Date(),
+    events = {};
 
   function displayCalendar() {
-    const year = currentDate.getFullYear();
-    const month = currentDate.getMonth();
-    const firstDay = new Date(year, month, 1).getDay();
-    const lastDay = new Date(year, month + 1, 0).getDate();
+    const year = currentDate.getFullYear(),
+      month = currentDate.getMonth(),
+      firstDay = new Date(year, month, 1).getDay(),
+      lastDay = new Date(year, month + 1, 0).getDate();
 
     currentMonth.textContent = `${getMonthName(month)} ${year}`;
 
@@ -25,12 +25,11 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     for (let day = 1; day <= lastDay; day++) {
-      const dateKey = `${year}-${month + 1}-${day}`;
-      const eventText = events[dateKey] ? `<br>${events[dateKey]}` : "";
+      const dateKey = `${year}-${month + 1}-${day}`,
+        eventText = events[dateKey] ? `<br>${events[dateKey]}` : "";
       cells += `<td class='cell' data-date='${dateKey}'>${day}${eventText}</td>`;
-      if ((firstDay + day - 1) % 7 === 6 && day !== lastDay) {
+      if ((firstDay + day - 1) % 7 === 6 && day !== lastDay)
         cells += "</tr><tr>";
-      }
     }
     cells += "</tr>";
 
@@ -68,8 +67,8 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   calendarTable.addEventListener("click", function (event) {
-    const cell = event.target;
-    const date = cell.dataset.date;
+    const cell = event.target,
+      date = cell.dataset.date;
     if (date) {
       const currentEvent = events[date];
       if (currentEvent) {

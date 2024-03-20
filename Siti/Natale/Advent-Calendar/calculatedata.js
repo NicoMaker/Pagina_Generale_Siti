@@ -1,9 +1,9 @@
 function generateCalendarLinks() {
-  let currentDate = new Date();
-  let currentDay = currentDate.getDate();
-  let month = currentDate.getMonth();
-  let table = document.getElementById("calendarTable");
-  let html = "";
+  let currentDate = new Date(),
+    currentDay = currentDate.getDate(),
+    month = currentDate.getMonth(),
+    table = document.getElementById("calendarTable"),
+    html = "";
 
   if (month === 11) {
     for (let i = 1; i <= 25; i++) {

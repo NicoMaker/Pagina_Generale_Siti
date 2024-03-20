@@ -1,28 +1,29 @@
-const CANVAS_BORDER_COLOUR = "black";
-const CANVAS_BACKGROUND_COLOUR = "yellow";
-const SNAKE_COLOUR = "lightgreen";
-const SNAKE_BORDER_COLOUR = "darkgreen";
-let gameIsRunning;
-let snake = [
-  { x: 170, y: 150 },
-  { x: 160, y: 150 },
-  { x: 150, y: 150 },
-  { x: 140, y: 150 },
-];
-let score = 0;
-let foodX, foodY;
-let dx = 10;
-let dy = 0;
-const pageWidth = window.innerWidth || document.body.clientWidth;
-const isTouchDevice = "ontouchstart" in window || navigator.maxTouchPoints;
-const isMobile = isTouchDevice || pageWidth <= 800;
-let treshold = Math.max(1, Math.floor(0.01 * pageWidth));
-let touchstartX = 0;
-let touchstartY = 0;
-let touchendX = 0;
-let touchendY = 0;
-const limit = Math.tan(((45 * 1.5) / 180) * Math.PI);
-const gestureZone = document.getElementById("gameCanvas");
+const CANVAS_BORDER_COLOUR = "black",
+  CANVAS_BACKGROUND_COLOUR = "yellow",
+  SNAKE_COLOUR = "lightgreen",
+  SNAKE_BORDER_COLOUR = "darkgreen";
+let gameIsRunning,
+  snake = [
+    { x: 170, y: 150 },
+    { x: 160, y: 150 },
+    { x: 150, y: 150 },
+    { x: 140, y: 150 },
+  ],
+  score = 0,
+  foodX,
+  foodY,
+  dx = 10,
+  dy = 0;
+const pageWidth = window.innerWidth || document.body.clientWidth,
+  isTouchDevice = "ontouchstart" in window || navigator.maxTouchPoints,
+  isMobile = isTouchDevice || pageWidth <= 800;
+let treshold = Math.max(1, Math.floor(0.01 * pageWidth)),
+  touchstartX = 0,
+  touchstartY = 0,
+  touchendX = 0,
+  touchendY = 0;
+const limit = Math.tan(((45 * 1.5) / 180) * Math.PI),
+  gestureZone = document.getElementById("gameCanvas");
 
 gestureZone.addEventListener(
   "touchstart",
@@ -44,14 +45,14 @@ gestureZone.addEventListener(
 );
 
 function handleGesture(e) {
-  let x = touchendX - touchstartX;
-  let y = touchendY - touchstartY;
-  let xy = Math.abs(x / y);
-  let yx = Math.abs(y / x);
-  const goingUp = dy === -10;
-  const goingDown = dy === 10;
-  const goingRight = dx === 10;
-  const goingLeft = dx === -10;
+  let x = touchendX - touchstartX,
+    y = touchendY - touchstartY,
+    xy = Math.abs(x / y),
+    yx = Math.abs(y / x);
+  const goingUp = dy === -10,
+    goingDown = dy === 10,
+    goingRight = dx === 10,
+    goingLeft = dx === -10;
 
   if (Math.abs(x) > treshold || Math.abs(y) > treshold) {
     if (yx <= limit) {
@@ -135,17 +136,17 @@ function handleGesture(e) {
   }
 }
 
-const resetButton = document.getElementById("button");
-const upButtonMobile = document.getElementById("upButtonMobile");
-const downButtonMobile = document.getElementById("downButtonMobile");
-const leftButtonMobile = document.getElementById("leftButtonMobile");
-const rightButtonMobile = document.getElementById("rightButtonMobile");
-const upButtonPC = document.getElementById("upButtonPC");
-const downButtonPC = document.getElementById("downButtonPC");
-const leftButtonPC = document.getElementById("leftButtonPC");
-const rightButtonPC = document.getElementById("rightButtonPC");
-const gameCanvas = document.getElementById("gameCanvas");
-const ctx = gameCanvas.getContext("2d");
+const resetButton = document.getElementById("button"),
+  upButtonMobile = document.getElementById("upButtonMobile"),
+  downButtonMobile = document.getElementById("downButtonMobile"),
+  leftButtonMobile = document.getElementById("leftButtonMobile"),
+  rightButtonMobile = document.getElementById("rightButtonMobile"),
+  upButtonPC = document.getElementById("upButtonPC"),
+  downButtonPC = document.getElementById("downButtonPC"),
+  leftButtonPC = document.getElementById("leftButtonPC"),
+  rightButtonPC = document.getElementById("rightButtonPC"),
+  gameCanvas = document.getElementById("gameCanvas"),
+  ctx = gameCanvas.getContext("2d");
 
 function clearCanvas() {
   ctx.fillStyle = CANVAS_BACKGROUND_COLOUR;
@@ -154,9 +155,7 @@ function clearCanvas() {
   ctx.strokeRect(0, 0, gameCanvas.width, gameCanvas.height);
 }
 
-function drawSnake() {
-  snake.forEach(drawSnakePart);
-}
+let drawSnake = () => snake.forEach(drawSnakePart);
 
 function drawSnakePart(snakePart) {
   ctx.fillStyle = SNAKE_COLOUR;
@@ -190,23 +189,15 @@ function advanceSnake() {
     snake.pop();
   }
 
-  const hitLeftWall = snake[0].x < 0;
-  const hitRightWall = snake[0].x > gameCanvas.width - 10;
-  const hitTopWall = snake[0].y < 0;
-  const hitBottomWall = snake[0].y > gameCanvas.height - 10;
+  const hitLeftWall = snake[0].x < 0,
+    hitRightWall = snake[0].x > gameCanvas.width - 10,
+    hitTopWall = snake[0].y < 0,
+    hitBottomWall = snake[0].y > gameCanvas.height - 10;
 
-  if (hitRightWall) {
-    snake[0].x = 0;
-  }
-  if (hitLeftWall) {
-    snake[0].x = 290;
-  }
-  if (hitBottomWall) {
-    snake[0].y = 0;
-  }
-  if (hitTopWall) {
-    snake[0].y = 290;
-  }
+  if (hitRightWall) snake[0].x = 0;
+  if (hitLeftWall) snake[0].x = 290;
+  if (hitBottomWall) snake[0].y = 0;
+  if (hitTopWall) snake[0].y = 290;
 }
 
 function isFoodOnSnake(part) {
@@ -230,10 +221,10 @@ function didGameEnd() {
       return true;
     }
   }
-  const hitLeftWall = snake[0].x < 0;
-  const hitRightWall = snake[0].x > gameCanvas.width - 10;
-  const hitTopWall = snake[0].y < 0;
-  const hitBottomWall = snake[0].y > gameCanvas.height - 10;
+  const hitLeftWall = snake[0].x < 0,
+    hitRightWall = snake[0].x > gameCanvas.width - 10,
+    hitTopWall = snake[0].y < 0,
+    hitBottomWall = snake[0].y > gameCanvas.height - 10;
 
   if (hitRightWall || hitLeftWall || hitTopWall || hitBottomWall) {
     resetGame();

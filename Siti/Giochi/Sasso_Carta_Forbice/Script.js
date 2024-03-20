@@ -1,11 +1,9 @@
 function playGame() {
-  let player1 = Player1();
-  let player2 = Player2();
-
-  let options = ["sasso", "carta", "forbice"];
-
-  let player1Choice = ResultGenerate(options);
-  let player2Choice = ResultGenerate(options);
+  let player1 = Player1(),
+    player2 = Player2(),
+    options = ["sasso", "carta", "forbice"],
+    player1Choice = ResultGenerate(options),
+    player2Choice = ResultGenerate(options);
 
   document.getElementById(
     "result"
@@ -15,24 +13,21 @@ function playGame() {
   document.getElementById("winner").innerHTML = winner;
 }
 
-let Player1 = () => document.getElementById("player1").value;
-let Player2 = () => document.getElementById("player2").value;
+let Player1 = () => document.getElementById("player1").value,
+  Player2 = () => document.getElementById("player2").value;
 
 let ResultGenerate = (options) =>
   options[Math.floor(Math.random() * options.length)];
 
 function determineWinner(choice1, choice2, player1, player2) {
-  if (choice1 === choice2) {
-    return "Pareggio!";
-  } else if (
+  if (choice1 === choice2) return "Pareggio!";
+  else if (
     (choice1 === "sasso" && choice2 === "forbice") ||
     (choice1 === "carta" && choice2 === "sasso") ||
     (choice1 === "forbice" && choice2 === "carta")
-  ) {
+  )
     return `Giocatore 1 ${player1} vince!`;
-  } else {
-    return `Giocatore 2 ${player2} vince!`;
-  }
+  else return `Giocatore 2 ${player2} vince!`;
 }
 
 let Regole = () =>

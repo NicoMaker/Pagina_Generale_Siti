@@ -13,9 +13,9 @@ function Result(number) {
     return;
   }
 
-  let isPrime = 0;
-  let primi = [];
-  let priminumeri = 0;
+  let isPrime = 0,
+    primi = [],
+    priminumeri = 0;
 
   for (let i = 0; i < number; i++) {
     isPrime = 0;

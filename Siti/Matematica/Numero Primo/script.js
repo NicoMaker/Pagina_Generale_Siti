@@ -14,8 +14,8 @@ function Result(number) {
     return;
   }
 
-  let isPrime = 0;
-  let divisors = [];
+  let isPrime = 0,
+    divisors = [];
 
   for (let i = 0; i <= number; i++) {
     if (number % i === 0) {

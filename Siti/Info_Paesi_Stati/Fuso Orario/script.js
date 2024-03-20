@@ -13,19 +13,19 @@ function getCityInfo() {
       if (data.results.length === 0) {
         displayResult("La città non esiste.");
       } else {
-        const city = data.results[0];
-        const cityInfo = {
-          name:
-            city.components.city ||
-            city.components.town ||
-            city.components.village ||
-            city.components.county,
-          state: city.components.state,
-          country: city.components.country,
-          latitude: city.geometry.lat,
-          longitude: city.geometry.lng,
-          timezone: city.annotations.timezone.name,
-        };
+        const city = data.results[0],
+          cityInfo = {
+            name:
+              city.components.city ||
+              city.components.town ||
+              city.components.village ||
+              city.components.county,
+            state: city.components.state,
+            country: city.components.country,
+            latitude: city.geometry.lat,
+            longitude: city.geometry.lng,
+            timezone: city.annotations.timezone.name,
+          };
 
         const currentTime = new Date().toLocaleString("it", {
           timeZone: cityInfo.timezone,
