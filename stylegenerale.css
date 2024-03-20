@@ -5,12 +5,11 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100&display=swap");
 
 h1 {
-  position: relative;
   color: red;
   font-weight: bold;
   font-family: "Dancing Script", cursive;
   text-shadow: 2px 2px 4px #000000;
-  left: 65px;
+  text-align: center;
 }
 
 h2 {
@@ -231,8 +230,6 @@ a {
   font-family: "Poppins", sans-serif;
   font-weight: bold;
   font-size: 40px;
-  text-align: center;
-  left: 0px
 }
 
 .CloseIcon span,
@@ -272,7 +269,7 @@ footer {
 
 @media all and (max-width: 1024px) {
   h1 {
-    font-size: 75px;
+    font-size: 65px;
   }
 
   .contenitore1,
@@ -287,8 +284,8 @@ footer {
   }
 
   .immagine {
-    width: 450px;
-    height: 450px;
+    width: 350px;
+    height: 350px;
   }
 }
 
@@ -308,8 +305,8 @@ footer {
   }
 
   .immagine {
-    width: 700px;
-    height: 700px;
+    width: 400px;
+    height: 400px;
   }
 }
 
