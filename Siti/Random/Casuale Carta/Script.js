@@ -61,6 +61,6 @@ function RandomCard(suits, cardValues) {
     suit = suits[randomSuitIndex],
     value = cardValues[randomValueIndex],
     cardImage = suitImages[suit],
-    card = `<img src="${cardImage}" alt="${suit}" style="width: 70px; height: auto;"> ${value}`;
+    card = `<img src="${cardImage}" alt="${suit}" style="width: 200px; height: auto;"> <br> ${value}`;
   document.getElementById("card").innerHTML = card;
 }
