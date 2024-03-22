@@ -27,3 +27,17 @@ button {
   font-size: 70px;
   background-color: azure;
 }
+
+@media all and (max-width: 1024px) {
+  img{
+    height: 400px;
+    width: 400px;
+  }
+}
+
+@media all and (min-width: 1024px) {
+  img{
+    height: 250px;
+    width: 250px;
+  }
+}

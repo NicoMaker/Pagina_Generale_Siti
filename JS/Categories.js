@@ -130,8 +130,8 @@ const categories = {
       link: "Siti/Giochi/Generated_4_Letters/index.html",
     },
     {
-      name: "Gioco Briscola Scala",
-      link: "Siti/Giochi/Gioco_Briscola_Scala/index.html",
+      name: "Slot Macchine",
+      link: "Siti/Giochi/Slot_Macchine/index.html",
     },
     {
       name: "Generazione 4 Numeri Casuali",
