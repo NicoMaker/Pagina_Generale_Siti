@@ -6,7 +6,7 @@ initialphrase.innerHTML = `
 distruggerli, fanne buon uso</p>
 `;
 function generatePhrase() {
-  let phrase = [
+  const phrase = [
     "Ricorda che le montagne più alte sono scalate passo dopo passo. Non temere la salita, ma goditi il panorama lungo il cammino.",
     "Le tue parole hanno il potere di creare, di guarire, di ispirare. Usa la tua voce con saggezza e gentilezza, perché il mondo ha bisogno della tua melodia unica.",
     "L'amore è il filo d'oro che connette il cuore umano. Coltivalo, diffondilo e trasforma il mondo con la magia della gentilezza.",
@@ -225,7 +225,7 @@ function generatePhrase() {
     "Se vuoi essere felice per un giorno, bevi un bicchiere di vino; se vuoi essere felice per un anno, sposa una donna ricca; se vuoi essere felice per tutta la vita, impara a fare qualcosa -- Confucio",
     "La vita è per il 10% cosa ti accade e per il 90% come reagisci -- Charles R.Swindoll",
     "Così tra questa immensità s'annega il pensier mio: e il naufragar m'è dolce in questo mare. - Giacomo Leopardi",
-    "La vita è come una montagna russa, devi affrontare le curve e goderti la discesa. - John Lennon"
+    "La vita è come una montagna russa, devi affrontare le curve e goderti la discesa. - John Lennon",
   ];
 
   RandomPhrase(phrase);
@@ -236,3 +236,14 @@ function generatePhrase() {
 const RandomPhrase = (phrase) =>
   (phrasegenerated.innerHTML =
     phrase[Math.floor(Math.random() * phrase.length)]);
+
+document
+  .getElementById("generateButton")
+  .addEventListener("click", function () {
+    const randomGenerator = setInterval(generatePhrase, 150);
+
+    setTimeout(() => {
+      clearInterval(randomGenerator);
+      generatePhrase();
+    }, 500);
+  });
