@@ -3,11 +3,9 @@ body {
   text-align: center;
 }
 h1 {
-  font-size: 100px;
   color: red;
 }
 #card {
-  font-size: 70px;
   margin-top: 20px;
 }
 
@@ -24,20 +22,42 @@ select {
 
 button {
   border-radius: 50px;
-  font-size: 70px;
   background-color: azure;
 }
 
 @media all and (max-width: 1024px) {
-  img{
+  img {
     height: 400px;
     width: 400px;
+  }
+
+  h1 {
+    font-size: 150px;
+  }
+
+  #card {
+    font-size: 140px;
+  }
+
+  button {
+    font-size: 70px;
   }
 }
 
 @media all and (min-width: 1024px) {
-  img{
+  img {
     height: 250px;
     width: 250px;
+  }
+  h1 {
+    font-size: 70px;
+  }
+
+  #card {
+    font-size: 50px;
+  }
+
+  button {
+    font-size: 60px;
   }
 }
