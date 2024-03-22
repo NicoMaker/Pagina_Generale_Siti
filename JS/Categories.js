@@ -201,19 +201,17 @@ const categories = {
       link: "Siti/Pasqua/Countdown_Pasqua/index.html",
     },
   ],
-};
-
-const categoryClasses = {
+},categoryClasses = {
   Bici: "contenitore1",
   Salute: "contenitore1",
-  Borsa: "contenitore2",
-  Info_Paesi_Stati: "contenitore2",
-  Pasqua: "contenitore2",
-  Calendario: "contenitore2",
+  Borsa: "contenitore1",
+  Info_Paesi_Stati: "contenitore1",
+  Pasqua: "contenitore1",
+  Calendario: "contenitore1",
   Matematica: "contenitore3",
-  Random: "contenitore3",
+  Random: "contenitore2",
   Giochi: "contenitore2",
-  Natale: "contenitore3",
+  Natale: "contenitore1",
 };
 
 function generateCategoryHTML(categoryName, category) {
