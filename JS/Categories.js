@@ -93,7 +93,7 @@ const categories = {
     },
     {
       name: "Generatore di Carte (Scala 40 o Briscola)",
-      link: "Siti/Random/Casuale Carta/index.html",
+      link: "Siti/Random/Generatore di Carte/index.html",
     },
     {
       name: "Criptazione con Alfabeto Opposto",
