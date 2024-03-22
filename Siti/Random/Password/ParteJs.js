@@ -2,7 +2,6 @@ document
   .getElementById("password-form")
   .addEventListener("submit", function (event) {
     event.preventDefault();
-    
 
     let passwordLength = password();
 
@@ -15,14 +14,13 @@ document
     createpassword(passwordLength);
   });
 
-
 const password = () => document.getElementById("password-length").value;
 
 function createpassword(passwordLength) {
-  let uppercaseChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-  let lowercaseChars = "abcdefghijklmnopqrstuvwxyz";
-  let specialChars = "!@#$%^&*()";
-  let numericChars = "0123456789";
+  let uppercaseChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+    lowercaseChars = "abcdefghijklmnopqrstuvwxyz",
+    specialChars = "!@#$%^&*()",
+    numericChars = "0123456789";
 
   let password = "";
   password += uppercaseChars[Math.floor(Math.random() * uppercaseChars.length)];
@@ -52,6 +50,21 @@ function createpassword(passwordLength) {
     }
   }
 
-  document.getElementById("password-output").textContent =
-    `Password generata: ${password}`;
+  document.getElementById(
+    "password-output"
+  ).textContent = `Password generata: ${password}`;
 }
+
+document
+  .getElementById("generateButton")
+  .addEventListener("click", function () {
+    const passwordLength = password(),
+      randomGenerator = setInterval(() => {
+        createpassword(passwordLength);
+      }, 150);
+
+    setTimeout(() => {
+      clearInterval(randomGenerator);
+      createpassword(passwordLength);
+    }, 500);
+  });
