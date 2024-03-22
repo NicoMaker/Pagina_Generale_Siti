@@ -113,9 +113,20 @@ function generaNumeri() {
     }
 
     document.getElementById("numeri-parziali").textContent =
-      "Numeri parziali: " + numeriParziali.join(", ");
+      `Numeri parziali: ${numeriParziali.join(", ")}`;
 
     document.getElementById("somma-totale").textContent =
-      "Somma totale: " + sommaTotale;
+      `Somma totale:  ${sommaTotale}`;
   }
 }
+
+document
+  .getElementById("generateButton")
+  .addEventListener("click", function () {
+    const randomGenerator = setInterval(generaNumeri, 150);
+
+    setTimeout(() => {
+      clearInterval(randomGenerator);
+      generaNumeri();
+    }, 500);
+  });

@@ -49,3 +49,14 @@ function lanciaMonete() {
       ? "Ha vinto la croce!"
       : "Pareggio!";
 }
+
+document
+  .getElementById("generateButton")
+  .addEventListener("click", function () {
+    const randomGenerator = setInterval(lanciaMonete, 150);
+
+    setTimeout(() => {
+      clearInterval(randomGenerator);
+      lanciaMonete();
+    }, 500);
+  });

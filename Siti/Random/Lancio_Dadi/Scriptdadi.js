@@ -125,3 +125,14 @@ const showImmagine = () =>
     (document.getElementById("grafico-barre").style.display = "none");
 
 init();
+
+document
+  .getElementById("generateButton")
+  .addEventListener("click", function () {
+    const randomGenerator = setInterval(generaNumeri, 150);
+
+    setTimeout(() => {
+      clearInterval(randomGenerator);
+      generaNumeri();
+    }, 500);
+  });
