@@ -232,7 +232,5 @@ function displayCategory(categoryName) {
       categoryName,
       category
     );
-  } else {
-    console.error(`La categoria "${categoryName}" non esiste.`);
   }
 }
