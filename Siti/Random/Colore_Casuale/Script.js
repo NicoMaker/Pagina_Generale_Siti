@@ -151,13 +151,22 @@ function generateColor() {
 }
 
 function printcolor(colors) {
-  randomColor(colors);
   let color = document.getElementById("color");
-
-  color.style.backgroundColor = randomColor;
   color.style.display = "block";
+
+  const randomGenerator = setInterval(function () {
+    color.style.backgroundColor = randomColor(colors);
+  }, 150);
+
+  setTimeout(() => {
+    clearInterval(randomGenerator);
+    color.style.backgroundColor = randomColor(colors);
+  }, 500);
 }
 
-let randomColor = (colors) =>
-  (document.getElementById("color").style.backgroundColor =
-    colors[Math.floor(Math.random() * colors.length)]);
+const randomColor = (colors) =>
+  colors[Math.floor(Math.random() * colors.length)];
+
+document
+  .getElementById("generateButton")
+  .addEventListener("click", generateColor);
