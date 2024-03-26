@@ -86,7 +86,8 @@ const dinosauri = [
 ];
 
 let indiceCorrente = 0,
-  dinosauroCorrente = dinosauri[indiceCorrente];
+  dinosauroCorrente = dinosauri[indiceCorrente],
+  stampaImg = "";
 
 document.getElementById("hint").textContent = dinosauroCorrente.indizi[0];
 
@@ -95,10 +96,10 @@ function controllaIndovinello() {
     indovinelloUtente = dinosauri[selezionato.value].nome.toLowerCase();
 
   if (indovinelloUtente === dinosauroCorrente.nome.toLowerCase()) {
-    let stampaImg = '<img src="Immagini/Immagine_contenta.jpg">';
+    stampaImg = '<img src="Immagini/Immagine_contenta.jpg">';
     document.getElementById("risultato").innerHTML = stampaImg;
   } else {
-    let stampaImg = '<img src="Immagini/Immagine_scontenta.jpg">';
+    stampaImg = '<img src="Immagini/Immagine_scontenta.jpg">';
     document.getElementById("risultato").innerHTML = stampaImg;
   }
 }
