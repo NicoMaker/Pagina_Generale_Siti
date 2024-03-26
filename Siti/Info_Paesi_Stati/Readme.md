@@ -1,4 +1,4 @@
-[Vai alla Readme Generale](../../Readme.md)
+[Vai alla Readme Dei Siti](../Readme.md)
 
 # Info Paesi Stati
 

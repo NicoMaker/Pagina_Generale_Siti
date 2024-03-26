@@ -1,19 +1,8 @@
-# Pagina Generale 
+# Pagina Generale
 
 ## Categorie sito che sel selezione nel Hamburger Menu dove lo puoi aprire o chiudere, se vuoi aprire un sito di quella categoria chiudi l'Hamburger Menu e clicchi sul sito interessato della categoria interessata
 
-### Le categore sono
-
-- [Matematica](Siti/Matematica/Readme.md) (21 siti)
-- [Bici](https://github.com/NicoMaker/Giri-in-bici) (1 sito)
-- [Opzioni Random](Siti/Random/Readme.md) (12 siti)
-- [Giochi](Siti/Giochi/Readme.md) (10 siti)
-- [Borsa](Siti/Borsa/Readme.md) (2 siti)
-- [Siti sul Calendario](Siti/Calendario/Readme.md) (5 siti)
-- [Info Paesi / stati](Siti/Info_Paesi_Stati/Readme.md) (2 siti)
-- [Siti sul Natale](Siti/Natale/Readme.md) (3 siti)
-- [Siti sulla Salute](Siti/Salute/Readme.md) (1 sito)
-- [Siti sulla Pasqua](Siti/Pasqua/Readme.md) (2 siti)
+[Visualizzazione Categorie dei Siti](Siti/Readme.md)
 
 ## Riferimento icone o immagini con link
 
