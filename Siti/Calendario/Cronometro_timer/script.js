@@ -1,4 +1,3 @@
-// Cronometro
 let cronometro,
   cronometroDisplay = document.getElementById("cronometroDisplay"),
   seconds = 0,
@@ -27,7 +26,7 @@ function startCronometro() {
 
 function stopCronometro() {
   clearInterval(cronometro);
-  cronometro = null; // Imposta la variabile a null per indicare che è stato fermato temporaneamente
+  cronometro = null;
 }
 
 function Reset() {
@@ -44,7 +43,6 @@ function Reset() {
   return seconds, minutes, hours;
 }
 
-// Timer
 let timerDisplay = document.getElementById("timerDisplay"),
   stopButton;
 

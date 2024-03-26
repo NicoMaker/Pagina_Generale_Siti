@@ -6,8 +6,8 @@ function fetchStockValue() {
     return;
   }
 
-  const apiKey = "V4B00MZ675MCO7ZQ";
-  const apiUrl = `https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${stockName}&interval=5min&apikey=${apiKey}`;
+  const apiKey = "V4B00MZ675MCO7ZQ",
+    apiUrl = `https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${stockName}&interval=5min&apikey=${apiKey}`;
 
   fetch(apiUrl)
     .then((response) => response.json())

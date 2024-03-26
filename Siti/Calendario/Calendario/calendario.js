@@ -1,4 +1,3 @@
-// JavaScript Code - calendario.js
 document.addEventListener("DOMContentLoaded", function () {
   const calendarTable = document.getElementById("calendarTable"),
     currentMonth = document.getElementById("currentMonth"),

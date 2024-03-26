@@ -1,40 +1,40 @@
 document.addEventListener("DOMContentLoaded", function () {
-  let dataCorrente = new Date(),
-    annoCorrente = dataCorrente.getFullYear(),
-    countDownDate = new Date(`Jan 1, ${annoCorrente + 1} 00:00:00`).getTime(),
-    x = setInterval(function () {
-      let now = new Date().getTime(),
-        distance = countDownDate - now;
+  const dataCorrente = new Date(),
+    annoCorrente = dataCorrente.getFullYear();
+  let countDownDate = new Date(`Jan 1, ${annoCorrente + 1} 00:00:00`).getTime();
 
-      if (
-        distance > 0 &&
-        dataCorrente.getMonth() == 0 &&
-        dataCorrente.getDate() == 1
-      )
-        document.getElementById(
-          "timer"
-        ).innerHTML = `HAPPY NEW YEAR ${annoCorrente}`;
-      else {
-        let days = Math.floor(distance / (1000 * 60 * 60 * 24)),
-          hours = Math.floor(
-            (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-          ),
-          minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
-          seconds = Math.floor((distance % (1000 * 60)) / 1000);
+  const timerInterval = setInterval(function () {
+    const now = new Date().getTime(),
+      distance = countDownDate - now;
 
-        document.getElementById("timer").innerHTML =
-          days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
-      }
+    if (
+      distance > 0 &&
+      dataCorrente.getMonth() === 0 &&
+      dataCorrente.getDate() === 1
+    )
+      document.getElementById(
+        "timer"
+      ).innerHTML = `HAPPY NEW YEAR ${annoCorrente}`;
+    else {
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24)),
+        hours = Math.floor(
+          (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+        ),
+        minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
+        seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-      if (distance < 0) {
-        clearInterval(x);
-        countDownDate = new Date(
-          `Jan 2, ${annoCorrente + 1} 00:00:00`
-        ).getTime();
-      }
-    }, 1000);
+      document.getElementById(
+        "timer"
+      ).innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+    }
 
-  let anno = `
+    if (distance < 0) {
+      clearInterval(timerInterval);
+      countDownDate = new Date(`Jan 2, ${annoCorrente + 1} 00:00:00`).getTime();
+    }
+  }, 1000);
+
+  const anno = `
     <p>&copy; ${annoCorrente} Il Mio Sito di Nuovo Anno</p>`;
   document.getElementById("anno").innerHTML = anno;
 });

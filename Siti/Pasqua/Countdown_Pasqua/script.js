@@ -13,8 +13,9 @@ document.addEventListener("DOMContentLoaded", function () {
         minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
         seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-      document.getElementById("timer").innerHTML =
-        days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
+        document.getElementById(
+          "timer"
+        ).innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
 
       if (distance < 0) {
         clearInterval(x);

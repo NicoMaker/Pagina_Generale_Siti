@@ -1,5 +1,5 @@
 function generateTriangle() {
-  let numberInput = document.getElementById("number"),
+  const numberInput = document.getElementById("number"),
     number = parseInt(numberInput.value);
 
   if (isNaN(number) || number < 1) {
@@ -7,39 +7,34 @@ function generateTriangle() {
     return;
   }
 
-  let triangle = [];
-  for (let i = 0; i < number; i++) {
-    triangle[i] = [];
-    triangle[i][0] = 1;
-    for (let j = 1; j < i; j++) {
-      triangle[i][j] = triangle[i - 1][j - 1] + triangle[i - 1][j];
-    }
-    triangle[i][i] = 1;
-  }
-
-  let outputDiv = document.getElementById("output");
+  const outputDiv = document.getElementById("output");
   outputDiv.innerHTML = "";
 
-  let maxNumber = Math.max(...triangle.flat());
-
+  let prevRow = [];
   for (let i = 0; i < number; i++) {
-    let rowDiv = document.createElement("div");
-    rowDiv.classList.add("triangle-row");
+    const row = [];
 
     for (let j = 0; j <= i; j++) {
-      let numberDiv = document.createElement("div");
-      numberDiv.classList.add("triangle-number");
+      if (j === 0 || j === i) row.push(1);
+      else row.push(prevRow[j - 1] + prevRow[j]);
+    }
 
-      if (triangle[i][j] > 99) {
+    const rowDiv = document.createElement("div");
+    rowDiv.classList.add("triangle-row");
+    outputDiv.appendChild(rowDiv);
+
+    row.forEach((value) => {
+      const numberDiv = document.createElement("div");
+      numberDiv.classList.add("triangle-number");
+      if (value > 99) {
         numberDiv.classList.add("small");
       }
-
-      let numberSpan = document.createElement("span");
-      numberSpan.innerText = triangle[i][j];
-
+      const numberSpan = document.createElement("span");
+      numberSpan.innerText = value;
       numberDiv.appendChild(numberSpan);
       rowDiv.appendChild(numberDiv);
-    }
-    outputDiv.appendChild(rowDiv);
+    });
+
+    prevRow = row;
   }
 }

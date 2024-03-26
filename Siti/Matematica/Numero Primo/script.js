@@ -4,7 +4,7 @@ function checkPrime() {
   Result(number);
 }
 
-let Number = () => document.getElementById("number").value;
+const Number = () => document.getElementById("number").value;
 
 function Result(number) {
   let result = document.getElementById("result");
