@@ -1,5 +1,77 @@
 {
   "categories": {
+    "Bici": [
+      { "name": "Giri In Bici", "link": "https://giri-in-bici.netlify.app/" }
+    ],
+    "Borsa": [
+      { "name": "Cambi Valute", "link": "Siti/Borsa/Cambi Valute/index.html" },
+      {
+        "name": "Valore Titoli di Borsa",
+        "link": "Siti/Borsa/Valore Titoli/index.html"
+      }
+    ],
+    "Calendario": [
+      {
+        "name": "Calcola Giorno della Settimana",
+        "link": "Siti/Calendario/Controllo_data/index.html"
+      },
+      {
+        "name": "Cronometro / Timer",
+        "link": "Siti/Calendario/Cronometro_timer/index.html"
+      },
+      { "name": "Calendario", "link": "Siti/Calendario/Calendario/index.html" },
+      {
+        "name": "Calcolatore di Tempo",
+        "link": "Siti/Calendario/Calcolatore_di_tempo/index.html"
+      },
+      {
+        "name": "Differenza Tra due Date",
+        "link": "Siti/Calendario/Differenza_Tra_Due_Date/index.html"
+      }
+    ],
+    "Giochi": [
+      {
+        "name": "Gioco della Tombola",
+        "link": "Siti/Giochi/Tombola/index.html"
+      },
+      {
+        "name": "Gioco Sasso Carta Forbice",
+        "link": "Siti/Giochi/Sasso_Carta_Forbice/index.html"
+      },
+      { "name": "Gioco del Tris", "link": "Siti/Giochi/Tris/index.html" },
+      { "name": "Forza 4", "link": "Siti/Giochi/Forza 4/index.html" },
+      { "name": "Snake Game", "link": "Siti/Giochi/SnakeGame/index.html" },
+      {
+        "name": "Indovinello dei Dinosauri",
+        "link": "Siti/Giochi/Dino-Game/Index.html"
+      },
+      {
+        "name": "Generazione 4 Lettere Casuali",
+        "link": "Siti/Giochi/Generated_4_Letters/index.html"
+      },
+      {
+        "name": "Slot Macchine",
+        "link": "Siti/Giochi/Slot_Macchine/index.html"
+      },
+      {
+        "name": "Generazione 4 Numeri Casuali",
+        "link": "Siti/Giochi/Generated_4_Numbers/index.html"
+      },
+      {
+        "name": "Rotella Movimentata",
+        "link": "Siti/Giochi/Rotella Movimentata/index.html"
+      }
+    ],
+    "Info_Paesi_Stati": [
+      {
+        "name": "Verifica Fuso Orario Città",
+        "link": "Siti/Info_Paesi_Stati/Fuso Orario/index.html"
+      },
+      {
+        "name": "Info Stato",
+        "link": "Siti/Info_Paesi_Stati/Stati_info/index.html"
+      }
+    ],
     "Matematica": [
       {
         "name": "Esercizio Trifase",
@@ -71,8 +143,29 @@
         "link": "Siti/Matematica/Trigonometria/index.html"
       }
     ],
-    "Bici": [
-      { "name": "Giri In Bici", "link": "https://giri-in-bici.netlify.app/" }
+    "Natale": [
+      {
+        "name": "Calendario dell'Avvento",
+        "link": "Siti/Natale/Advent-Calendar/index.html"
+      },
+      {
+        "name": "Conto alla rovescia data di Natale",
+        "link": "Siti/Natale/Countdown_Natale/index.html"
+      },
+      {
+        "name": "Conto Alla rovescia Anno Nuovo",
+        "link": "Siti/Natale/Countdown_anno_nuovo/index.html"
+      }
+    ],
+    "Pasqua": [
+      {
+        "name": "Calcola la Data di Pasqua",
+        "link": "Siti/Pasqua/Pasqua/index.html"
+      },
+      {
+        "name": "Conto alla rovescia data di Pasqua",
+        "link": "Siti/Pasqua/Countdown_Pasqua/index.html"
+      }
     ],
     "Random": [
       {
@@ -124,116 +217,23 @@
         "link": "Siti/Random/Colore_Casuale/index.html"
       }
     ],
-    "Giochi": [
-      {
-        "name": "Gioco della Tombola",
-        "link": "Siti/Giochi/Tombola/index.html"
-      },
-      {
-        "name": "Gioco Sasso Carta Forbice",
-        "link": "Siti/Giochi/Sasso_Carta_Forbice/index.html"
-      },
-      { "name": "Gioco del Tris", "link": "Siti/Giochi/Tris/index.html" },
-      { "name": "Forza 4", "link": "Siti/Giochi/Forza 4/index.html" },
-      { "name": "Snake Game", "link": "Siti/Giochi/SnakeGame/index.html" },
-      {
-        "name": "Indovinello dei Dinosauri",
-        "link": "Siti/Giochi/Dino-Game/Index.html"
-      },
-      {
-        "name": "Generazione 4 Lettere Casuali",
-        "link": "Siti/Giochi/Generated_4_Letters/index.html"
-      },
-      {
-        "name": "Slot Macchine",
-        "link": "Siti/Giochi/Slot_Macchine/index.html"
-      },
-      {
-        "name": "Generazione 4 Numeri Casuali",
-        "link": "Siti/Giochi/Generated_4_Numbers/index.html"
-      },
-      {
-        "name": "Rotella Movimentata",
-        "link": "Siti/Giochi/Rotella Movimentata/index.html"
-      }
-    ],
-    "Borsa": [
-      { "name": "Cambi Valute", "link": "Siti/Borsa/Cambi Valute/index.html" },
-      {
-        "name": "Valore Titoli di Borsa",
-        "link": "Siti/Borsa/Valore Titoli/index.html"
-      }
-    ],
-    "Calendario": [
-      {
-        "name": "Calcola Giorno della Settimana",
-        "link": "Siti/Calendario/Controllo_data/index.html"
-      },
-      {
-        "name": "Cronometro / Timer",
-        "link": "Siti/Calendario/Cronometro_timer/index.html"
-      },
-      { "name": "Calendario", "link": "Siti/Calendario/Calendario/index.html" },
-      {
-        "name": "Calcolatore di Tempo",
-        "link": "Siti/Calendario/Calcolatore_di_tempo/index.html"
-      },
-      {
-        "name":"Differenza Tra due Date",
-        "link":"Siti/Calendario/Differenza_Tra_Due_Date/index.html"
-      }
-    ],
-    "Info_Paesi_Stati": [
-      {
-        "name": "Verifica Fuso Orario Città",
-        "link": "Siti/Info_Paesi_Stati/Fuso Orario/index.html"
-      },
-      {
-        "name": "Info Stato",
-        "link": "Siti/Info_Paesi_Stati/Stati_info/index.html"
-      }
-    ],
-    "Natale": [
-      {
-        "name": "Calendario dell'Avvento",
-        "link": "Siti/Natale/Advent-Calendar/index.html"
-      },
-      {
-        "name": "Conto alla rovescia data di Natale",
-        "link": "Siti/Natale/Countdown_Natale/index.html"
-      },
-      {
-        "name": "Conto Alla rovescia Anno Nuovo",
-        "link": "Siti/Natale/Countdown_anno_nuovo/index.html"
-      }
-    ],
     "Salute": [
       {
         "name": "Sito che Calcola Altezza ideale o Peso Ideale",
         "link": "Siti/Salute/Calcolo_peso_altezza_ideale/index.html"
       }
-    ],
-    "Pasqua": [
-      {
-        "name": "Calcola la Data di Pasqua",
-        "link": "Siti/Pasqua/Pasqua/index.html"
-      },
-      {
-        "name": "Conto alla rovescia data di Pasqua",
-        "link": "Siti/Pasqua/Countdown_Pasqua/index.html"
-      }
     ]
   },
   "categoryClasses": {
     "Bici": "contenitore1",
-    "Salute": "contenitore1",
     "Borsa": "contenitore1",
-    "Info_Paesi_Stati": "contenitore1",
-    "Pasqua": "contenitore1",
     "Calendario": "contenitore1",
-    "Matematica": "contenitore3",
-    "Random": "contenitore2",
     "Giochi": "contenitore2",
-    "Natale": "contenitore1"
+    "Info_Paesi_Stati": "contenitore1",
+    "Matematica": "contenitore3",
+    "Natale": "contenitore1",
+    "Pasqua": "contenitore1",
+    "Random": "contenitore2",
+    "Salute": "contenitore1"
   }
 }

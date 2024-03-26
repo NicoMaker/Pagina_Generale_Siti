@@ -1,6 +1,6 @@
 [Vai alla Readme Dei Siti](../Readme.md)
 
-# Opzioni Radom
+# Radom
 
 - [Coach Life Genrator](Coach_Life_Generator)
 - [Genra un Colore Casuale](Colore_Casuale)
