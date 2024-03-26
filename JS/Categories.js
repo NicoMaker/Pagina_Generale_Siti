@@ -32,8 +32,6 @@ async function displayCategory(categoryName) {
         category,
         categoryClasses
       );
-    } else {
-      console.error(`La categoria '${categoryName}' non è stata trovata.`);
-    }
+    } else console.error(`La categoria '${categoryName}' non è stata trovata.`);
   }
 }
