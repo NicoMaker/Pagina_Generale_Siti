@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
   const dataCorrente = new Date(),
-    annoCorrente = dataCorrente.getFullYear();
-  let countDownDate = new Date(`Jan 1, ${annoCorrente + 1} 00:00:00`).getTime();
+    annoCorrente = dataCorrente.getFullYear(),
+    countDownDate = new Date(`Jan 1, ${annoCorrente + 1} 00:00:00`).getTime();
 
   const timerInterval = setInterval(function () {
     const now = new Date().getTime(),
@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }, 1000);
 
-  const anno = `
-    <p>&copy; ${annoCorrente} Il Mio Sito di Nuovo Anno</p>`;
-  document.getElementById("anno").innerHTML = anno;
+  document.getElementById(
+    "anno"
+  ).innerHTML = `<p>&copy; ${annoCorrente} Il Mio Sito di Nuovo Anno</p>`;
 });

@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
   let dataCorrente = new Date(),
-    annoCorrente = dataCorrente.getFullYear();
+    annoCorrente = dataCorrente.getFullYear(),
+    anno = dataCorrente.getFullYear();
 
   if (dataCorrente.getMonth() == 11 && dataCorrente.getDate() >= 26)
     annoCorrente++;
@@ -16,17 +17,16 @@ document.addEventListener("DOMContentLoaded", function () {
         minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
         seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-        document.getElementById(
-          "timer"
-        ).innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+      document.getElementById(
+        "timer"
+      ).innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
 
       if (distance < 0) {
         clearInterval(x);
         document.getElementById("timer").innerHTML = "MERRY CHRISTMAS!!";
       }
     }, 1000);
-
-  let anno = `
-        <p>&copy; ${annoCorrente} Il Mio Sito di Natale</p>`;
-  document.getElementById("anno").innerHTML = anno;
+  document.getElementById(
+    "anno"
+  ).innerHTML = `<p>&copy; ${anno} Il Mio Sito di Natale</p>`;
 });
