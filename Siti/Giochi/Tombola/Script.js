@@ -2,9 +2,7 @@ let orig = [],
   hist = new Set();
 
 function init() {
-  for (let ii = 1; ii <= 90; ii++) {
-    orig.push(ii);
-  }
+  for (let ii = 1; ii <= 90; ii++) orig.push(ii);
 }
 
 function BlinkNode(celnode, times, millis) {
@@ -67,9 +65,7 @@ function extractRandom() {
   if (!hist.has(nn)) selectNr(nn);
 }
 
-function manageKeyb() {
-  extractRandom();
-}
+const manageKeyb = () => extractRandom();
 
 init();
 document.onkeypress = manageKeyb;
