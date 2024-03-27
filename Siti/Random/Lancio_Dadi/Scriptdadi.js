@@ -76,19 +76,16 @@ function generaNumeri() {
     // Mostra la tabella valori_uscite solo se numeroDadi è maggiore di 0
     document.getElementById("valori_uscite").innerHTML = stampapercentuali;
     document.getElementById("valori_uscite").style.display = "block";
-  } else {
-    // Nascondi la tabella valori_uscite se numeroDadi non è maggiore di 0
-    document.getElementById("valori_uscite").style.display = "none";
   }
+  // Nascondi la tabella valori_uscite se numeroDadi non è maggiore di 0
+  else document.getElementById("valori_uscite").style.display = "none";
 }
 
 function updateGraficoBarre() {
   hideImmagine();
   showGrafico();
 
-  if (graficoBarre) {
-    graficoBarre.destroy();
-  }
+  if (graficoBarre) graficoBarre.destroy();
 
   let ctx = document.getElementById("grafico-barre").getContext("2d");
   graficoBarre = new Chart(ctx, {

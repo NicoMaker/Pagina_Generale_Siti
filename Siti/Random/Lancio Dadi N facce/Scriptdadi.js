@@ -5,15 +5,14 @@ function generaNumeri4() {
 
   for (let i = 0; i < numeroDadi; i++) {
     let numeroCasuale = Math.floor(Math.random() * 4) + 1; // Genera un numero casuale tra 1 e 4
-    sommaTotale += numeroCasuale;
-
-    let risultato =
-      '<div class="triangolo"><div class="figure-container">' +
-      '<span class="number">' +
-      numeroCasuale +
-      "</span>" +
-      "</div>" +
-      "</div>";
+    (sommaTotale += numeroCasuale),
+      (risultato =
+        '<div class="triangolo"><div class="figure-container">' +
+        '<span class="number">' +
+        numeroCasuale +
+        "</span>" +
+        "</div>" +
+        "</div>");
     somma += "<p>" + risultato + "</p>";
   }
 
@@ -68,11 +67,11 @@ function generaNumeri8() {
 }
 
 function generaNumeri10() {
-  var numeroDadi = parseInt(document.getElementById("numero-dadi").value);
-  var sommaTotale = 0;
-  var somma = "";
+  let numeroDadi = parseInt(document.getElementById("numero-dadi").value),
+    sommaTotale = 0,
+    somma = "";
 
-  for (var i = 0; i < numeroDadi; i++) {
+  for (let i = 0; i < numeroDadi; i++) {
     var numeroCasuale = Math.floor(Math.random() * 10) + 1; // Genera un numero casuale tra 1 e 10
     sommaTotale += numeroCasuale;
 
