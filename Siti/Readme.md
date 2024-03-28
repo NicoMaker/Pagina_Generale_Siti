@@ -4,12 +4,12 @@
 
 - [Bici](https://github.com/NicoMaker/Giri-in-bici) (1 sito)
 - [Borsa](Borsa/Readme.md) (2 siti)
-- [Opzioni con I Testi](Opzioni_Con_I_Testi/Readme.md)(2 Siti)
 - [Calendario](Calendario/Readme.md) (5 siti)
 - [Giochi](Giochi/Readme.md) (10 siti)
 - [Info Paesi / stati](Info_Paesi_Stati/Readme.md) (2 siti)
 - [Matematica](Matematica/Readme.md) (21 siti)
 - [Natale](Natale/Readme.md) (3 siti)
+- [Opzioni con le Frasi](Opzioni_Con_Le_Frasi/Readme.md)   (2 Siti)
 - [Pasqua](Pasqua/Readme.md) (2 siti)
 - [Random](Random/Readme.md) (12 siti)
 - [Salute](Salute/Readme.md) (1 sito)
