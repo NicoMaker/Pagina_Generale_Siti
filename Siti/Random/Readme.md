@@ -12,4 +12,4 @@
 - [Lettera Casuale](Lettera_Casuale)
 - [Nomi Casuali](Nomi%20Casuali)
 - [Numeri Casuali](Numeri_Casuali)
-- [Genratore di Password](Password)
+- [Generatore di Password](Password)
