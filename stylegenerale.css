@@ -252,19 +252,13 @@ button:hover {
 
 footer {
   background: linear-gradient(to right, green, white, white, red);
-  color: blue;
+  color: darkblue;
   position: fixed;
   bottom: 0;
   width: 100%;
   text-align: center;
+  left: 0;
   text-shadow: 2px 2px 4px black;
-  font-weight: bold;
-  margin: 0px;
-  border-radius: 50px;
-  left: 10px;
-  width: calc(100% - 20px);
-  font-weight: bold;
-  transform: translateX(-10px);
 }
 
 @media all and (max-width: 1024px) {
