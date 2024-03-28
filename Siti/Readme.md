@@ -4,7 +4,7 @@
 
 - [Bici](https://github.com/NicoMaker/Giri-in-bici) (1 sito)
 - [Borsa](Borsa/Readme.md) (2 siti)
-- [Decriptazione Testi](DecriptazioneTesti)(2 Siti)
+- [Opzioni con I Testi](Opzioni_Con_I_Testi/Readme.md)(2 Siti)
 - [Calendario](Calendario/Readme.md) (5 siti)
 - [Giochi](Giochi/Readme.md) (10 siti)
 - [Info Paesi / stati](Info_Paesi_Stati/Readme.md) (2 siti)
