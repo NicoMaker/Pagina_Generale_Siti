@@ -13,8 +13,8 @@ function CalcolaEuclide() {
     document.getElementById("passaggi").innerHTML = "";
     document.getElementById("risultato").innerHTML = StampaRisultato;
   } else {
-    const risultato = CalcolaRisultato(numero1, numero2);
-    const StampaRisultato = `MCD ---> ${risultato}`;
+    const risultato = CalcolaRisultato(numero1, numero2),
+      StampaRisultato = `MCD ---> ${risultato}`;
     document.getElementById("risultato").innerHTML = StampaRisultato;
   }
 }
