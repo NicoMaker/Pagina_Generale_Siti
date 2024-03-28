@@ -157,6 +157,16 @@
         "link": "Siti/Natale/Countdown_anno_nuovo/index.html"
       }
     ],
+    "Opzioni_Con_I_Testi":[
+      {
+        "name": "Criptazione con Alfabeto Opposto",
+        "link": "Siti/Opzioni_Con_I_Testi/Criptazione Alfabeto Contrario/index.html"
+      },
+      {
+        "name":"Stampa Frase Invertita",
+        "link":"Siti/Opzioni_Con_I_Testi/Stampa_Frase_Invertita/index.html"
+      }
+    ],
     "Pasqua": [
       {
         "name": "Calcola la Data di Pasqua",
@@ -201,10 +211,6 @@
         "link": "Siti/Random/Generatore di Carte/index.html"
       },
       {
-        "name": "Criptazione con Alfabeto Opposto",
-        "link": "Siti/Random/Criptazione Alfabeto Contrario/index.html"
-      },
-      {
         "name": "Genera Nomi Casuali",
         "link": "Siti/Random/Nomi Casuali/index.html"
       },
@@ -232,6 +238,7 @@
     "Info_Paesi_Stati": "contenitore1",
     "Matematica": "contenitore3",
     "Natale": "contenitore1",
+    "Opzioni_Con_I_Testi":"contenitore1",
     "Pasqua": "contenitore1",
     "Random": "contenitore2",
     "Salute": "contenitore1"

@@ -17,7 +17,7 @@ label {
 input {
   border-radius: 50px;
   text-align: center;
-  background-color: yellow;
+  background-color: white;
   font-size: 20px;
   text-align: center;
 }
@@ -27,7 +27,7 @@ button {
   text-shadow: 2px 2px 4px white;
   font-size: 35px;
   border-radius: 50px;
-  background: linear-gradient(to right, yellow, orange, red);
+  background: yellow;
 }
 
 p {

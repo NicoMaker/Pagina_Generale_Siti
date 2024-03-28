@@ -4,7 +4,6 @@
 
 - [Coach Life Genrator](Coach_Life_Generator)
 - [Genra un Colore Casuale](Colore_Casuale)
-- [Criptazione con alfabeto contrario](Criptazione%20Alfabeto%20Contrario)
 - [Generatore di Carte](Generatore%20di%20Carte)
 - [Lancio dei Dadi con n Facce Grafico](Lancio%20Dadi%20N%20facce)
 - [Lancio di n Monete](Lancio%20Monete)
