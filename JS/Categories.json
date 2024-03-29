@@ -4,229 +4,229 @@
       { "name": "Giri In Bici", "link": "https://giri-in-bici.netlify.app/" }
     ],
     "Borsa": [
-      { "name": "Cambi Valute", "link": "Siti/Borsa/Cambi Valute/index.html" },
+      { "name": "Cambi Valute", "link": "Site/Borsa/Cambi Valute/index.html" },
       {
         "name": "Valore Titoli di Borsa",
-        "link": "Siti/Borsa/Valore Titoli/index.html"
+        "link": "Site/Borsa/Valore Titoli/index.html"
       }
     ],
     "Calendario": [
       {
         "name": "Calcola Giorno della Settimana",
-        "link": "Siti/Calendario/Controllo_data/index.html"
+        "link": "Site/Calendario/Controllo_data/index.html"
       },
       {
         "name": "Cronometro / Timer",
-        "link": "Siti/Calendario/Cronometro_timer/index.html"
+        "link": "Site/Calendario/Cronometro_timer/index.html"
       },
-      { "name": "Calendario", "link": "Siti/Calendario/Calendario/index.html" },
+      { "name": "Calendario", "link": "Site/Calendario/Calendario/index.html" },
       {
         "name": "Calcolatore di Tempo",
-        "link": "Siti/Calendario/Calcolatore_di_tempo/index.html"
+        "link": "Site/Calendario/Calcolatore_di_tempo/index.html"
       },
       {
         "name": "Differenza Tra due Date",
-        "link": "Siti/Calendario/Differenza_Tra_Due_Date/index.html"
+        "link": "Site/Calendario/Differenza_Tra_Due_Date/index.html"
       }
     ],
     "Giochi": [
       {
         "name": "Gioco della Tombola",
-        "link": "Siti/Giochi/Tombola/index.html"
+        "link": "Site/Giochi/Tombola/index.html"
       },
       {
         "name": "Gioco Sasso Carta Forbice",
-        "link": "Siti/Giochi/Sasso_Carta_Forbice/index.html"
+        "link": "Site/Giochi/Sasso_Carta_Forbice/index.html"
       },
-      { "name": "Gioco del Tris", "link": "Siti/Giochi/Tris/index.html" },
-      { "name": "Forza 4", "link": "Siti/Giochi/Forza 4/index.html" },
-      { "name": "Snake Game", "link": "Siti/Giochi/SnakeGame/index.html" },
+      { "name": "Gioco del Tris", "link": "Site/Giochi/Tris/index.html" },
+      { "name": "Forza 4", "link": "Site/Giochi/Forza 4/index.html" },
+      { "name": "Snake Game", "link": "Site/Giochi/SnakeGame/index.html" },
       {
         "name": "Indovinello dei Dinosauri",
-        "link": "Siti/Giochi/Dino-Game/Index.html"
+        "link": "Site/Giochi/Dino-Game/Index.html"
       },
       {
         "name": "Generazione 4 Lettere Casuali",
-        "link": "Siti/Giochi/Generated_4_Letters/index.html"
+        "link": "Site/Giochi/Generated_4_Letters/index.html"
       },
       {
         "name": "Slot Macchine",
-        "link": "Siti/Giochi/Slot_Macchine/index.html"
+        "link": "Site/Giochi/Slot_Macchine/index.html"
       },
       {
         "name": "Generazione 4 Numeri Casuali",
-        "link": "Siti/Giochi/Generated_4_Numbers/index.html"
+        "link": "Site/Giochi/Generated_4_Numbers/index.html"
       },
       {
         "name": "Rotella Movimentata",
-        "link": "Siti/Giochi/Rotella Movimentata/index.html"
+        "link": "Site/Giochi/Rotella Movimentata/index.html"
       }
     ],
     "Info_Paesi_Stati": [
       {
         "name": "Verifica Fuso Orario Città",
-        "link": "Siti/Info_Paesi_Stati/Fuso Orario/index.html"
+        "link": "Site/Info_Paesi_Stati/Fuso Orario/index.html"
       },
       {
         "name": "Info Stato",
-        "link": "Siti/Info_Paesi_Stati/Stati_info/index.html"
+        "link": "Site/Info_Paesi_Stati/Stati_info/index.html"
       }
     ],
     "Matematica": [
       {
         "name": "Esercizio Trifase",
-        "link": "Siti/Matematica/Esercizio Trifase/index.html"
+        "link": "Site/Matematica/Esercizio Trifase/index.html"
       },
       {
         "name": "Biografia su Alan Turing",
-        "link": "Siti/Matematica/Biografia su Alan Turing/index.html"
+        "link": "Site/Matematica/Biografia su Alan Turing/index.html"
       },
       {
         "name": "Calcolatrice",
-        "link": "Siti/Matematica/Calcolatrice/index.html"
+        "link": "Site/Matematica/Calcolatrice/index.html"
       },
       {
         "name": "Conversioni Base",
-        "link": "Siti/Matematica/Conversione Basi/index.html"
+        "link": "Site/Matematica/Conversione Basi/index.html"
       },
       {
         "name": "Verifica Numero Primo",
-        "link": "Siti/Matematica/Numero Primo/index.html"
+        "link": "Site/Matematica/Numero Primo/index.html"
       },
       {
         "name": "Verifica Numeri Primi Precedenti",
-        "link": "Siti/Matematica/Verifica Numeri Primi Precedenti/index.html"
+        "link": "Site/Matematica/Verifica Numeri Primi Precedenti/index.html"
       },
-      { "name": "Tabelline", "link": "Siti/Matematica/Tabelline/index.html" },
+      { "name": "Tabelline", "link": "Site/Matematica/Tabelline/index.html" },
       {
         "name": "Triangolo di Tartaglia",
-        "link": "Siti/Matematica/Triangolo di Tartaglia/index.html"
+        "link": "Site/Matematica/Triangolo di Tartaglia/index.html"
       },
       {
         "name": "Calcola Esponenziali / Radici",
-        "link": "Siti/Matematica/Esponenziali  e Radici/index.html"
+        "link": "Site/Matematica/Esponenziali  e Radici/index.html"
       },
       {
         "name": "Calcola Logaritmi",
-        "link": "Siti/Matematica/Logaritmi/index.html"
+        "link": "Site/Matematica/Logaritmi/index.html"
       },
-      { "name": "Fattoriale", "link": "Siti/Matematica/Fattoriale/index.html" },
+      { "name": "Fattoriale", "link": "Site/Matematica/Fattoriale/index.html" },
       {
         "name": "Calcola Numero di Fibonacci",
-        "link": "Siti/Matematica/Fibonacci/index.html"
+        "link": "Site/Matematica/Fibonacci/index.html"
       },
       {
         "name": "Calcolatore Triangolo di Pitagora",
-        "link": "Siti/Matematica/Pitagora/index.html"
+        "link": "Site/Matematica/Pitagora/index.html"
       },
       {
         "name": "Gestione Punteggi",
-        "link": "Siti/Matematica/Punteggi/index.html"
+        "link": "Site/Matematica/Punteggi/index.html"
       },
       {
         "name": "Calcolo Segno Zodiacale",
-        "link": "Siti/Matematica/Segno_Zodiacale/index.html"
+        "link": "Site/Matematica/Segno_Zodiacale/index.html"
       },
       {
         "name": "Stampa Numeri Pari / Dispari o Tutti",
-        "link": "Siti/Matematica/StampaNumeri/index.html"
+        "link": "Site/Matematica/StampaNumeri/index.html"
       },
       {
         "name": "Calcolo Valore Assoluto",
-        "link": "Siti/Matematica/Valore_Assoluto/index.html"
+        "link": "Site/Matematica/Valore_Assoluto/index.html"
       },
-      { "name": "Ahmes", "link": "Siti/Matematica/Ahmes/index.html" },
-      { "name": "Euclide", "link": "Siti/Matematica/Euclide/index.html" },
-      { "name": "Collatz", "link": "Siti/Matematica/Collatz/index.html" },
+      { "name": "Ahmes", "link": "Site/Matematica/Ahmes/index.html" },
+      { "name": "Euclide", "link": "Site/Matematica/Euclide/index.html" },
+      { "name": "Collatz", "link": "Site/Matematica/Collatz/index.html" },
       {
         "name": "Calcolo Trigonometrico",
-        "link": "Siti/Matematica/Trigonometria/index.html"
+        "link": "Site/Matematica/Trigonometria/index.html"
       }
     ],
     "Natale": [
       {
         "name": "Calendario dell'Avvento",
-        "link": "Siti/Natale/Advent-Calendar/index.html"
+        "link": "Site/Natale/Advent-Calendar/index.html"
       },
       {
         "name": "Conto alla rovescia data di Natale",
-        "link": "Siti/Natale/Countdown_Natale/index.html"
+        "link": "Site/Natale/Countdown_Natale/index.html"
       },
       {
         "name": "Conto Alla rovescia Anno Nuovo",
-        "link": "Siti/Natale/Countdown_anno_nuovo/index.html"
+        "link": "Site/Natale/Countdown_anno_nuovo/index.html"
       }
     ],
     "Opzioni_Con_Le_Frasi":[
       {
         "name": "Criptazione con Alfabeto Opposto",
-        "link": "Siti/Opzioni_Con_Le_Frasi/Criptazione Alfabeto Contrario/index.html"
+        "link": "Site/Opzioni_Con_Le_Frasi/Criptazione Alfabeto Contrario/index.html"
       },
       {
         "name":"Stampa Frase Invertita",
-        "link":"Siti/Opzioni_Con_Le_Frasi/Stampa_Frase_Invertita/index.html"
+        "link":"Site/Opzioni_Con_Le_Frasi/Stampa_Frase_Invertita/index.html"
       }
     ],
     "Pasqua": [
       {
         "name": "Calcola la Data di Pasqua",
-        "link": "Siti/Pasqua/Pasqua/index.html"
+        "link": "Site/Pasqua/Pasqua/index.html"
       },
       {
         "name": "Conto alla rovescia data di Pasqua",
-        "link": "Siti/Pasqua/Countdown_Pasqua/index.html"
+        "link": "Site/Pasqua/Countdown_Pasqua/index.html"
       }
     ],
     "Random": [
       {
         "name": "Generatore Password",
-        "link": "Siti/Random/Password/index.html"
+        "link": "Site/Random/Password/index.html"
       },
       {
         "name": "Lancio dei dadi",
-        "link": "Siti/Random/Lancio_Dadi/index.html"
+        "link": "Site/Random/Lancio_Dadi/index.html"
       },
       {
         "name": "Lancio dei dadi con n facce Grafico",
-        "link": "Siti/Random/Lancio Dadi N facce/index.html"
+        "link": "Site/Random/Lancio Dadi N facce/index.html"
       },
       {
         "name": "Lancio dei dadi con n facce Normale",
-        "link": "Siti/Random/Lancio_dei_Dadi_N/index.html"
+        "link": "Site/Random/Lancio_dei_Dadi_N/index.html"
       },
       {
         "name": "Estrazione Lettera Casuale",
-        "link": "Siti/Random/Lettera_Casuale/index.html"
+        "link": "Site/Random/Lettera_Casuale/index.html"
       },
       {
         "name": "Estrazione Numeri Casuali tra un intervallo",
-        "link": "Siti/Random/Numeri_Casuali/index.html"
+        "link": "Site/Random/Numeri_Casuali/index.html"
       },
       {
         "name": "Estrazionne Lancio n Monete",
-        "link": "Siti/Random/Lancio Monete/index.html"
+        "link": "Site/Random/Lancio Monete/index.html"
       },
       {
         "name": "Generatore di Carte (Scala 40 o Briscola)",
-        "link": "Siti/Random/Generatore di Carte/index.html"
+        "link": "Site/Random/Generatore_di_Carte/index.html"
       },
       {
         "name": "Genera Nomi Casuali",
-        "link": "Siti/Random/Nomi Casuali/index.html"
+        "link": "Site/Random/Nomi Casuali/index.html"
       },
       {
         "name": "Coach Life Generator",
-        "link": "Siti/Random/Coach_Life_Generator/index.html"
+        "link": "Site/Random/Coach_Life_Generator/index.html"
       },
       {
         "name": "Generatore Colore Casuale",
-        "link": "Siti/Random/Colore_Casuale/index.html"
+        "link": "Site/Random/Colore_Casuale/index.html"
       }
     ],
     "Salute": [
       {
         "name": "Sito che Calcola Altezza ideale o Peso Ideale",
-        "link": "Siti/Salute/Calcolo_peso_altezza_ideale/index.html"
+        "link": "Site/Salute/Calcolo_peso_altezza_ideale/index.html"
       }
     ]
   },

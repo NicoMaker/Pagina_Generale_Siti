@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title> ESERCZIO TRIFASE</title>
+</head>
+<link rel="stylesheet" href="trifase.css" />
+
+<body>
+
+    <img src="img/Logo.jpg">
+
+    <h1>
+        ESERCIZIO TRIFASE CARICO A STELLA
+        <br>
+    </h1>
+
+    <img class="immagine" src="img/stella.JPG">
+
+    <h2>
+        DATI :
+        <br>
+    </h2>
+
+    <p>
+        R = 10 Ω;
+        Xl = 5 Ω;
+        alimentato 230/400 V;
+    </p>
+    <p>
+        I = ?;
+        P = ?;
+        Q = ?;
+        A = ?;
+    </p>
+
+    <H2>
+        SVOLGIMENTO :
+        <br>
+        </h1>
+
+        <p class="verde">Calcolo Z :</p>
+
+        <P>
+            Z <sup>2</sup> = R <sup>2</sup> + Xl <sup>2</sup>
+        </P>
+
+        <p>
+            Z <sup>2</sup> = 10 <sup>2</sup> + 5 <sup>2</sup>
+        </p>
+
+        <p>
+            Z <sup>2</sup> = 100 + 25
+        </p>
+
+        <p>
+            Z <sup>2</sup> = 125 Ω
+        </p>
+
+        <p>
+            Z = √125
+        </p>
+
+        <p>
+            Z = 11,18 Ω
+        </p>
+
+        <br>
+
+        <p class="verde">Triangolo delle impedenze :</p>
+        <img src="img/triangolo_impedenze.JPG">
+
+        <p class="verde"> Calcolo I :</p>
+
+        <p>
+            I = E / Z
+        </p>
+
+        <p>
+            I = 230/11,18
+        </p>
+
+        <p>
+            I = 20,57 A
+        </p>
+
+        <br>
+
+        <p class="verde"> Calcolo Φ :</p>
+
+        <p>
+            Φ = arctg (Xl/R)
+        </p>
+
+        <p>
+            Φ = arctg (5/10)
+        </p>
+
+        <p>
+            Φ = arctg (0,5)
+        </p>
+
+        <p>
+            Φ = 26,57 °
+        </p>
+
+        <br>
+
+        <p class="verde"> Calcolo P :</p>
+
+        <p>
+            P = √3 x V x I x cos Φ
+        </p>
+
+        <p>
+            P = √3 x 400 x 20,57 x cos (26,57°)
+        </p>
+
+        <p>
+            P = 12746 W o 12,75 kW
+        </p>
+
+        <br>
+
+        <p class="verde"> Calcolo Q :</p>
+
+        <p>
+            Q = √3 x V x I x sen Φ
+        </p>
+
+        <p>
+            Q = √3 x 400 x 20,57 x sen (26,57°)
+        </p>
+
+        <p>
+            Q = 6374 VAR o 6,374 kVAR
+        </p>
+
+        <br>
+
+        <p class="verde"> Calcolo A :</p>
+
+        <p>
+            A = √3 x V x I
+        </p>
+
+        <p>
+            A = √3 x 400 x 20,57
+        </p>
+
+        <p>
+            A = 14251 VA o 14,25 kVA
+        </p>
+
+        <br>
+
+        <p class="verde"> Triangolo delle Potenze :</p>
+        <img src="img/triangolo_potenze.JPG">
+
+        <h1>
+            ESERCIZIO TRIFASE CARICO A TRIANGOLO
+            <br>
+        </h1>
+
+        <img class="immagine" src="img/Triangolo.JPG">
+
+        <h2>
+            DATI :
+            <br>
+        </h2>
+
+        <p>
+            R = 13 Ω;
+            Xl =6,5 Ω;
+            alimentato 230/400 V;
+        </p>
+        <p>
+            Il = ?;
+            P = ?;
+            Q = ?;
+            A = ?;
+        </p>
+
+        <H2>
+            SVOLGIMENTO :
+            <br>
+            </h1>
+
+            <p class="verde">Calcolo Z :</p>
+
+            <P>
+                Z <sup>2</sup> = R <sup>2</sup> + Xl <sup>2</sup>
+            </P>
+
+            <p>
+                Z <sup>2</sup> = 13 <sup>2</sup> + 6,5 <sup>2</sup>
+            </p>
+
+            <p>
+                Z <sup>2</sup> = 169 + 42,25
+            </p>
+
+            <p>
+                Z <sup>2</sup> = 214,25 Ω
+            </p>
+
+            <p>
+                Z = √214,25
+            </p>
+
+            <p>
+                Z = 14,53 Ω
+            </p>
+
+            <br>
+
+            <p class="verde">Triangolo delle impedenze :</p>
+            <img src="img/triangolo_impedenze- t .JPG">
+
+            <p class="verde"> Calcolo If :</p>
+
+            <p>
+                If = V / Z
+            </p>
+
+            <p>
+                If = 400/14,53
+            </p>
+
+            <p>
+                If = 27,52 A
+            </p>
+
+            <br>
+
+            <p class="verde"> Calcolo Il :</p>
+
+            <p>
+                Il = √3 If
+            </p>
+
+            <p>
+                Il = √3 x 27,52
+            </p>
+
+            <p>
+                Il = 47,67 A
+            </p>
+
+            <br>
+
+            <p class="verde"> Calcolo Φ :</p>
+
+            <p>
+                Φ = arctg (6,5/13)
+            </p>
+
+            <p>
+                Φ = arctg (5/10)
+            </p>
+
+            <p>
+                Φ = arctg (0,5)
+            </p>
+
+            <p>
+                Φ = 26,57 °
+            </p>
+
+            <br>
+
+            <p class="verde"> Calcolo P :</p>
+
+            <p>
+                P = √3 x V x Il x cos Φ
+            </p>
+
+            <p>
+                P = √3 x 400 x 47,67 x cos (26,57°)
+            </p>
+
+            <p>
+                P = 29536 W o 29,54 kW
+            </p>
+
+            <br>
+
+            <p class="verde"> Calcolo Q :</p>
+
+            <p>
+                Q = √3 x V x Il x sen Φ
+            </p>
+
+            <p>
+                Q = √3 x 400 x 47,67 x sen (26,57°)
+            </p>
+
+            <p>
+                Q = 14771 VAR o 14,77 kVAR
+            </p>
+
+            <br>
+
+            <p class="verde"> Calcolo A :</p>
+
+            <p>
+                A = √3 x V x Il
+            </p>
+
+            <p>
+                A = √3 x 400 x 47,67
+            </p>
+
+            <p>
+                A = 33024 VA o 33,02 kVA
+            </p>
+
+            <br>
+
+            <p class="verde"> Triangolo delle Potenze :</p>
+            <img src="img/triangolo_potenze-T.JPG">
+
+            <p>Fatto da Nicola Marano</p>
+</body>
+
+</html>

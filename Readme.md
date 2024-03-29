@@ -2,7 +2,7 @@
 
 ## Categorie sito che sel selezione nel Hamburger Menu dove lo puoi aprire o chiudere, se vuoi aprire un sito di quella categoria chiudi l'Hamburger Menu e clicchi sul sito interessato della categoria interessata
 
-[Visualizzazione Categorie dei Siti](Siti/Readme.md)
+[Visualizzazione Categorie dei Siti](Site/Readme.md)
 
 ## Riferimento icone o immagini con link
 
