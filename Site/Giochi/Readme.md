@@ -8,7 +8,7 @@
 - [Genera 4 Numeri](Generated_4_Numbers)
 - [Rotella Movimentata](Rotella%20Movimentata)
 - [Sasso Carta Forbice](Sasso_Carta_Forbice)
-- [Slot Machine](Slot_Macchine)
+- [Slot Machine](Slot_Machine)
 - [Snake Game](Snakegame)
 - [Tombola](Tombola)
 - [Tris](Tris)
