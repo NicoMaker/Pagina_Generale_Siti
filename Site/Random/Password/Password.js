@@ -6,12 +6,30 @@ document
     let passwordLength = password();
 
     if (passwordLength < 8 || passwordLength > 20) {
-      alert(
-        "La lunghezza della password deve essere compresa tra 8 e 20 caratteri."
-      );
       return;
     }
     createpassword(passwordLength);
+  });
+
+document
+  .getElementById("generateButton")
+  .addEventListener("click", function () {
+    const passwordLength = password();
+
+    if (passwordLength < 8 || passwordLength > 20) {
+      document.getElementById("password-output").textContent =
+        "La lunghezza della password deve essere compresa tra 8 e 20 caratteri.";
+      return;
+    }
+
+    const randomGenerator = setInterval(() => {
+      createpassword(passwordLength);
+    }, 150);
+
+    setTimeout(() => {
+      clearInterval(randomGenerator);
+      createpassword(passwordLength);
+    }, 500);
   });
 
 const password = () => document.getElementById("password-length").value;
@@ -54,17 +72,3 @@ function createpassword(passwordLength) {
     "password-output"
   ).textContent = `Password generata: ${password}`;
 }
-
-document
-  .getElementById("generateButton")
-  .addEventListener("click", function () {
-    const passwordLength = password(),
-      randomGenerator = setInterval(() => {
-        createpassword(passwordLength);
-      }, 150);
-
-    setTimeout(() => {
-      clearInterval(randomGenerator);
-      createpassword(passwordLength);
-    }, 500);
-  });
