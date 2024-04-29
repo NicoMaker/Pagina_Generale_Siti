@@ -7,5 +7,5 @@ function invertiFrase() {
   document.getElementById("output").innerHTML =
     input === ""
       ? `<p class="viola">Inserisci una frase valida</p>`
-      : `<p>La frase ${input} è diventata: ${output}</p>`;
+      : `<p>La frase "${input}" è diventata: "${output}"</p>`;
 }
