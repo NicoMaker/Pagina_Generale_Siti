@@ -1,14 +1,10 @@
 function checkPrime() {
-  let number = Number();
-
-  Result(number);
+  const number = document.getElementById("number").value,
+    result = document.getElementById("result");
+  Result(number, result);
 }
 
-const Number = () => document.getElementById("number").value;
-
-function Result(number) {
-  let result = document.getElementById("result");
-
+function Result(number, result) {
   if (number < 1) {
     result.innerHTML = "Il numero deve essere maggiore di 1.";
     return;
