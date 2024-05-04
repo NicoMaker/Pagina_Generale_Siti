@@ -2,79 +2,78 @@
 <html>
 
 <head>
-    <title> Lancio Dei Dadi </title>
+    <title>Lancio Dei Dadi</title>
     <link rel="icon" href="https://static.vecteezy.com/ti/vettori-gratis/p1/2165690-line-icon-for-dice-vettoriale.jpg"
         type="image/jpg">
     <link rel="stylesheet" href="StyleDadi.css">
-    <script src="Scriptdadi.js" defer>
-    </script>
+    <script src="Scriptdadi.js" defer></script>
 </head>
 
 <body>
     <div class="container">
         <h1>Lancio dei Dadi</h1>
-        <label for="numero-dadi">Quanti dadi vuoi lanciare ?</label>
+        <label for="numero-dadi">Quanti dadi vuoi lanciare?</label>
         <input type="number" id="numero-dadi" min="1" value="1">
 
-        <p class="view"> solo per l'ultimo </p>
+        <p class="view">solo per l'ultimo</p>
 
-        <label for="facce-dadi"> inserisci numero delle facce per i dadi da lanciare ?</label>
+        <label for="facce-dadi">Inserisci numero delle facce per i dadi da lanciare?</label>
         <input type="number" id="facce-dadi" min="1" value="1">
 
         <br>
         <br>
         <br>
-        <button onclick="generaNumeri4()">
+
+        <!-- Singoli bottoni per generare numeri specifici di dadi -->
+        <button onclick="generaNumeri(4)">
             <div class="triangolo">
                 <div class="figure-container">
                     <span class="number">4</span>
                 </div>
             </div>
         </button>
-        <button onclick="generaNumeri6()">
+        <button onclick="generaNumeri(6)">
             <div class="quadrato">
                 <div class="figure-container">
                     <span class="number">6</span>
                 </div>
             </div>
         </button>
-        <button onclick="generaNumeri8()">
+        <button onclick="generaNumeri(8)">
             <div class="triangolo">
                 <div class="figure-container">
                     <span class="number">8</span>
                 </div>
             </div>
         </button>
-        <button onclick="generaNumeri10()">
+        <button onclick="generaNumeri(10)">
             <div class="rombo">
                 <div class="container">
                     <span class="number">10</span>
                 </div>
             </div>
         </button>
-        <button onclick="generaNumeri12()">
+        <button onclick="generaNumeri(12)">
             <div class="pentagono">
                 <div class="figure-container">
                     <span class="number">12</span>
                 </div>
             </div>
         </button>
-        <button onclick="generaNumeri20()">
+        <button onclick="generaNumeri(20)">
             <div class="esagono">
                 <div class="figure-container">
                     <span class="number">20</span>
                 </div>
             </div>
         </button>
-
-        <button onclick="generaNumeri100()">
+        <button onclick="generaNumeri(100)">
             <div class="rombo">
                 <div class="figure-container">
                     <span class="number">100</span>
                 </div>
             </div>
         </button>
-
         <button onclick="generaNumerin()">
             <div class="cerchio">
                 <div class="figure-container">

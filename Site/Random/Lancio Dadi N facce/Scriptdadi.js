@@ -1,18 +1,20 @@
-function generaNumeri4() {
+function generaNumeri(facceDado) {
   let numeroDadi = parseInt(document.getElementById("numero-dadi").value),
     sommaTotale = 0,
     somma = "";
 
   for (let i = 0; i < numeroDadi; i++) {
-    let numeroCasuale = Math.floor(Math.random() * 4) + 1; // Genera un numero casuale tra 1 e 4
+    let numeroCasuale = Math.floor(Math.random() * facceDado) + 1;
     (sommaTotale += numeroCasuale),
+      (figura = getFigura(facceDado)),
       (risultato =
-        '<div class="triangolo"><div class="figure-container">' +
+        '<div class="' +
+        figura +
+        '"><div class="figure-container">' +
         '<span class="number">' +
         numeroCasuale +
         "</span>" +
-        "</div>" +
-        "</div>");
+        "</div></div>");
     somma += "<p>" + risultato + "</p>";
   }
 
@@ -20,142 +22,23 @@ function generaNumeri4() {
   document.getElementById("somma-totale").innerHTML = sommaTotale;
 }
 
-function generaNumeri6() {
-  let numeroDadi = parseInt(document.getElementById("numero-dadi").value),
-    sommaTotale = 0,
-    somma = "";
-
-  for (let i = 0; i < numeroDadi; i++) {
-    let numeroCasuale = Math.floor(Math.random() * 6) + 1; // Genera un numero casuale tra 1 e 6
-    sommaTotale += numeroCasuale;
-
-    let risultato =
-      '<div class="quadrato"><div class="figure-container">' +
-      '<span class="number">' +
-      numeroCasuale +
-      "</span>" +
-      "</div>" +
-      "</div>";
-    somma += "<p>" + risultato + "</p>";
+function getFigura(facceDado) {
+  switch (facceDado) {
+    case 4:
+      return "triangolo";
+    case 6:
+      return "quadrato";
+    case 8:
+      return "triangolo";
+    case 10:
+      return "rombo";
+    case 12:
+      return "pentagono";
+    case 20:
+      return "esagono";
+    default:
+      return "cerchio";
   }
-
-  document.getElementById("risultato").innerHTML = somma;
-  document.getElementById("somma-totale").innerHTML = sommaTotale;
-}
-
-function generaNumeri8() {
-  let numeroDadi = parseInt(document.getElementById("numero-dadi").value),
-    sommaTotale = 0,
-    somma = "";
-
-  for (let i = 0; i < numeroDadi; i++) {
-    let numeroCasuale = Math.floor(Math.random() * 8) + 1; // Genera un numero casuale tra 1 e 8
-    sommaTotale += numeroCasuale;
-
-    var risultato =
-      '<div class="triangolo"><div class="figure-container">' +
-      '<span class="number">' +
-      numeroCasuale +
-      "</span>" +
-      "</div>" +
-      "</div>";
-    somma += "<p>" + risultato + "</p>";
-  }
-
-  document.getElementById("risultato").innerHTML = somma;
-  document.getElementById("somma-totale").innerHTML = sommaTotale;
-}
-
-function generaNumeri10() {
-  let numeroDadi = parseInt(document.getElementById("numero-dadi").value),
-    sommaTotale = 0,
-    somma = "";
-
-  for (let i = 0; i < numeroDadi; i++) {
-    var numeroCasuale = Math.floor(Math.random() * 10) + 1; // Genera un numero casuale tra 1 e 10
-    sommaTotale += numeroCasuale;
-
-    let risultato =
-      '<div class="rombo"><div class="figure-container">' +
-      '<span class="number">' +
-      numeroCasuale +
-      "</span>" +
-      "</div>" +
-      "</div>";
-    somma += "<p>" + risultato + "</p>";
-  }
-
-  document.getElementById("risultato").innerHTML = somma;
-  document.getElementById("somma-totale").innerHTML = sommaTotale;
-}
-
-function generaNumeri12() {
-  let numeroDadi = parseInt(document.getElementById("numero-dadi").value),
-    sommaTotale = 0,
-    somma = "";
-
-  for (let i = 0; i < numeroDadi; i++) {
-    let numeroCasuale = Math.floor(Math.random() * 12) + 1; // Genera un numero casuale tra 1 e 12
-    sommaTotale += numeroCasuale;
-
-    let risultato =
-      '<div class="pentagono"><div class="figure-container">' +
-      '<span class="number">' +
-      numeroCasuale +
-      "</span>" +
-      "</div>" +
-      "</div>";
-    somma += "<p>" + risultato + "</p>";
-  }
-
-  document.getElementById("risultato").innerHTML = somma;
-  document.getElementById("somma-totale").innerHTML = sommaTotale;
-}
-
-function generaNumeri20() {
-  let numeroDadi = parseInt(document.getElementById("numero-dadi").value),
-    sommaTotale = 0,
-    somma = "";
-
-  for (let i = 0; i < numeroDadi; i++) {
-    let numeroCasuale = Math.floor(Math.random() * 20) + 1; // Genera un numero casuale tra 1 e 20
-    sommaTotale += numeroCasuale;
-
-    let risultato =
-      '<div class="esagono"><div class="figure-container">' +
-      '<span class="number">' +
-      numeroCasuale +
-      "</span>" +
-      "</div>" +
-      "</div>";
-    somma += "<p>" + risultato + "</p>";
-  }
-
-  document.getElementById("risultato").innerHTML = somma;
-  document.getElementById("somma-totale").innerHTML = sommaTotale;
-}
-
-function generaNumeri100() {
-  let numeroDadi = parseInt(document.getElementById("numero-dadi").value),
-    sommaTotale = 0,
-    somma = "";
-
-  for (let i = 0; i < numeroDadi; i++) {
-    let numeroCasuale = Math.floor(Math.random() * 100) + 1; // Genera un numero casuale tra 1 e 100
-    sommaTotale += numeroCasuale;
-
-    let risultato =
-      '<div class="rombo"><div class="figure-container">' +
-      '<span class="number">' +
-      numeroCasuale +
-      "</span>" +
-      "</div>" +
-      "</div>";
-    somma += "<p>" + risultato + "</p>";
-  }
-
-  document.getElementById("risultato").innerHTML = somma;
-  document.getElementById("somma-totale").innerHTML = sommaTotale;
 }
 
 function generaNumerin() {
