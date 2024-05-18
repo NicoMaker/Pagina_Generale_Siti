@@ -5,7 +5,7 @@ let dinosauri = [],
 
 async function caricaDinosauri() {
   try {
-    const response = await fetch("dinosauri.json");
+    const response = await fetch("Dinosauri.json");
     dinosauri = await response.json();
     dinosauroCorrente = dinosauri[indiceCorrente];
     document.getElementById("hint").textContent = dinosauroCorrente.indizi[0];
