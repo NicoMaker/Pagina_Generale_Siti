@@ -75,72 +75,72 @@
     "Matematica": [
       {
         "name": "Esercizio Trifase",
-        "link": "Site/Matematica/Esercizio Trifase/index.html"
+        "link": "Site/Math/Esercizio Trifase/index.html"
       },
       {
         "name": "Biografia su Alan Turing",
-        "link": "Site/Matematica/Biografia su Alan Turing/index.html"
+        "link": "Site/Math/Biografia su Alan Turing/index.html"
       },
       {
         "name": "Calcolatrice",
-        "link": "Site/Matematica/Calcolatrice/index.html"
+        "link": "Site/Math/Calcolatrice/index.html"
       },
       {
         "name": "Conversioni Base",
-        "link": "Site/Matematica/Conversione Basi/index.html"
+        "link": "Site/Math/Conversione Basi/index.html"
       },
       {
         "name": "Verifica Numero Primo",
-        "link": "Site/Matematica/Numero Primo/index.html"
+        "link": "Site/Math/Numero Primo/index.html"
       },
       {
         "name": "Verifica Numeri Primi Precedenti",
-        "link": "Site/Matematica/Verifica Numeri Primi Precedenti/index.html"
+        "link": "Site/Math/Verifica Numeri Primi Precedenti/index.html"
       },
-      { "name": "Tabelline", "link": "Site/Matematica/Tabelline/index.html" },
+      { "name": "Tabelline", "link": "Site/Math/Tabelline/index.html" },
       {
         "name": "Triangolo di Tartaglia",
-        "link": "Site/Matematica/Triangolo di Tartaglia/index.html"
+        "link": "Site/Math/Triangolo di Tartaglia/index.html"
       },
       {
         "name": "Calcola Esponenziali / Radici",
-        "link": "Site/Matematica/Esponenziali  e Radici/index.html"
+        "link": "Site/Math/Esponenziali  e Radici/index.html"
       },
       {
         "name": "Calcola Logaritmi",
-        "link": "Site/Matematica/Logaritmi/index.html"
+        "link": "Site/Math/Logaritmi/index.html"
       },
-      { "name": "Fattoriale", "link": "Site/Matematica/Fattoriale/index.html" },
+      { "name": "Fattoriale", "link": "Site/Math/Fattoriale/index.html" },
       {
         "name": "Calcola Numero di Fibonacci",
-        "link": "Site/Matematica/Fibonacci/index.html"
+        "link": "Site/Math/Fibonacci/index.html"
       },
       {
         "name": "Calcolatore Triangolo di Pitagora",
-        "link": "Site/Matematica/Pitagora/index.html"
+        "link": "Site/Math/Pitagora/index.html"
       },
       {
         "name": "Gestione Punteggi",
-        "link": "Site/Matematica/Punteggi/index.html"
+        "link": "Site/Math/Punteggi/index.html"
       },
       {
         "name": "Calcolo Segno Zodiacale",
-        "link": "Site/Matematica/Segno_Zodiacale/index.html"
+        "link": "Site/Math/Segno_Zodiacale/index.html"
       },
       {
         "name": "Stampa Numeri Pari / Dispari o Tutti",
-        "link": "Site/Matematica/StampaNumeri/index.html"
+        "link": "Site/Math/StampaNumeri/index.html"
       },
       {
         "name": "Calcolo Valore Assoluto",
-        "link": "Site/Matematica/Valore_Assoluto/index.html"
+        "link": "Site/Math/Valore_Assoluto/index.html"
       },
-      { "name": "Ahmes", "link": "Site/Matematica/Ahmes/index.html" },
-      { "name": "Euclide", "link": "Site/Matematica/Euclide/index.html" },
-      { "name": "Collatz", "link": "Site/Matematica/Collatz/index.html" },
+      { "name": "Ahmes", "link": "Site/Math/Ahmes/index.html" },
+      { "name": "Euclide", "link": "Site/Math/Euclide/index.html" },
+      { "name": "Collatz", "link": "Site/Math/Collatz/index.html" },
       {
         "name": "Calcolo Trigonometrico",
-        "link": "Site/Matematica/Trigonometria/index.html"
+        "link": "Site/Math/Trigonometria/index.html"
       }
     ],
     "Natale": [
