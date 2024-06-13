@@ -48,8 +48,7 @@ a {
 .Immagineicona,
 .contenitore1,
 .contenitore2,
-.contenitore3,
-.contenitore4 {
+.contenitore3 {
   background-repeat: no-repeat;
   background-position: bottom left;
   background-size: 0% 50%;
@@ -58,8 +57,7 @@ a {
 
 .contenitore1,
 .contenitore2,
-.contenitore3,
-.contenitore4 {
+.contenitore3 {
   text-decoration: none;
   background-image: linear-gradient(to right, blue, cyan);
   font-family: "Roboto", sans-serif;
@@ -95,8 +93,7 @@ a {
 
 .contenitore1:nth-child(4n),
 .contenitore2:nth-child(4n),
-.contenitore3:nth-child(4n),
-.contenitore4:nth-child(4n) {
+.contenitore3:nth-child(4n) {
   background-color: yellow;
   border: 5px solid purple;
 }
