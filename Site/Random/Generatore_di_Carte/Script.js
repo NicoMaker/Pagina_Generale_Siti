@@ -14,11 +14,42 @@ function generateCard() {
     suits =
       gameType === "briscola"
         ? ["Coppe", "Denari", "Spade", "Bastoni"]
-        : ["Cuori", "Quadri", "Fiori", "Picche"],
+        : gameType === "scala-40"
+        ? ["Cuori", "Quadri", "Fiori", "Picche"]
+        : [
+            "Coppe",
+            "Denari",
+            "Spade",
+            "Bastoni",
+            "Cuori",
+            "Quadri",
+            "Fiori",
+            "Picche",
+          ],
     cardValues =
       gameType === "briscola"
         ? ["Asso", "2", "3", "4", "5", "6", "7", "Fante", "Cavallo", "Re"]
-        : ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"],
+        : gameType === "scala-40"
+        ? ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"]
+        : [
+            "Asso",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "Fante",
+            "Cavallo",
+            "Re",
+            "A",
+            "8",
+            "9",
+            "10",
+            "J",
+            "Q",
+            "K",
+          ],
     randomSuitIndex = Math.floor(Math.random() * suits.length),
     randomValueIndex = Math.floor(Math.random() * cardValues.length),
     suit = suits[randomSuitIndex],

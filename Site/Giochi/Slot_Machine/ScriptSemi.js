@@ -34,6 +34,10 @@ gameTypeSelect.addEventListener("change", function () {
       "img/Scala 40/Quadri.png",
       "img/Scala 40/Cuori.png",
       "img/Scala 40/Fiori.png",
+      "img/Briscola/Bastoni.png",
+      "img/Briscola/Coppe.png",
+      "img/Briscola/Denari.png",
+      "img/Briscola/Spade.png",
     ]);
 });
 
