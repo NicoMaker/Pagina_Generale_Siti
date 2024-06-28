@@ -8,12 +8,12 @@ function updateCurrentTime() {
       timeZone: selectedTimezone,
       weekday: "long",
       year: "numeric",
-      month: "long",
+      month: "numeric",
       day: "2-digit",
       hour: "2-digit",
       minute: "2-digit",
       second: "2-digit",
-      fractionalSecondDigits: 3,
+      fractionalSecondDigits: 3
     },
     nowString = now.toLocaleString("it-IT", options);
 
