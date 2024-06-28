@@ -6,21 +6,16 @@ function updateCurrentTime() {
     now = new Date(),
     options = {
       timeZone: selectedTimezone,
+      weekday: "long",
       year: "numeric",
-      month: "2-digit",
+      month: "long",
       day: "2-digit",
       hour: "2-digit",
       minute: "2-digit",
       second: "2-digit",
       fractionalSecondDigits: 3,
-      hour12: false,
     },
-    nowString = now.toLocaleString("it-IT", options),
-    timezoneOffset = now
-      .toLocaleTimeString("it-IT", {
-        timeZone: selectedTimezone,
-      })
-      .split(" ")[2];
+    nowString = now.toLocaleString("it-IT", options);
 
   currentTimeDisplay.textContent = `Ora corrente: ${nowString}`;
 }
