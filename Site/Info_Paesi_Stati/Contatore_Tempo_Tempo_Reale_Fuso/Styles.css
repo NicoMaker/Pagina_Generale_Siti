@@ -4,17 +4,12 @@ body {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-color: #f0f0f0;
+  background: linear-gradient(to right, #79E0EE, #B1AFFF, #79E0EE);
   margin: 0;
 }
 
 .container {
   text-align: center;
-}
-
-#timer {
-  font-size: 2em;
-  margin-top: 20px;
 }
 
 span {
@@ -27,7 +22,8 @@ body {
 
 h1 {
   color: red;
-  font-size: 50px;
+  font-size: 40px;
+  text-shadow: 2px 2px 4px #000000;
 }
 
 #current-time,

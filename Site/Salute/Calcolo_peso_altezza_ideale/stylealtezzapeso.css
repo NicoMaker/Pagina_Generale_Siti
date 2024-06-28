@@ -1,60 +1,58 @@
 body {
-    font-family: Arial, sans-serif;
-    margin: 20px;
-    background: linear-gradient(to right, #79E0EE, #B1AFFF, #79E0EE);
-    text-align: center
+  font-family: Arial, sans-serif;
+  margin: 20px;
+  background: linear-gradient(to right, #79e0ee, #b1afff, #79e0ee);
+  text-align: center;
 }
 
-h1
-{
-    color: red;
-    font-weight: bold;
-    font-size: 40px
+h1 {
+  color: red;
+  font-weight: bold;
+  font-size: 40px;
 }
 
 label {
-    display: block;
-    margin-bottom: 5px;
-    font-size: 20px;
-    text-shadow: 2px 2px 4px white;
+  display: block;
+  margin-bottom: 5px;
+  font-size: 20px;
+  text-shadow: 2px 2px 4px white;
 }
 
-input, select {
-    width: 100%;
-    padding: 8px;
-    margin-bottom: 10px;
-    border-radius: 50px;
-    color: black;
-    font-size: 25px;
-    text-align: center;
+input,
+select {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border-radius: 50px;
+  color: black;
+  font-size: 25px;
+  text-align: center;
 }
 
-input
-{
-    background-color: aqua;
+input {
+  background-color: aqua;
 }
 
 button {
-    padding: 10px;
-    background-color: yellow;
-    text-shadow: 2px 2px 4px red;
-    color: orange;
-    border: none;
-    cursor: pointer;
-    border-radius: 50px;
-    font-size: 50px;
+  padding: 10px;
+  background-color: yellow;
+  text-shadow: 2px 2px 4px red;
+  color: orange;
+  border: none;
+  cursor: pointer;
+  border-radius: 50px;
+  font-size: 50px;
 }
 
 #result {
-    margin-top: 40px;
-    font-weight: bold;
+  margin-top: 40px;
+  font-weight: bold;
 }
 
-#gender{
-    background-color:#79E0EE;
+#gender {
+  background-color: #79e0ee;
 }
 
-#calculationType
-{
-    background-color: #B1AFFF;
+#calculationType {
+  background-color: #b1afff;
 }
