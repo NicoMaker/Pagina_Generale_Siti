@@ -1,0 +1,46 @@
+body {
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f0f0f0;
+  margin: 0;
+}
+
+.container {
+  text-align: center;
+}
+
+#timer {
+  font-size: 2em;
+  margin-top: 20px;
+}
+
+span {
+  padding: 0 10px;
+}
+
+body {
+  text-align: center;
+}
+
+h1 {
+  color: red;
+  font-size: 50px;
+}
+
+#current-time,
+#timezone-select,
+label {
+  text-align: center;
+  font-size: 30px;
+}
+
+#current-time {
+  color: green;
+}
+
+select {
+  border-radius: 30px;
+}
