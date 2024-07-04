@@ -1,9 +1,10 @@
 const outputs = [
-  document.querySelector("#suit1"),
-  document.querySelector("#suit2"),
-  document.querySelector("#suit3"),
-  document.querySelector("#suit4"),
-],generate = document.querySelector("#generateButton"),
+    document.querySelector("#suit1"),
+    document.querySelector("#suit2"),
+    document.querySelector("#suit3"),
+    document.querySelector("#suit4"),
+  ],
+  generate = document.querySelector("#generateButton"),
   gameTypeSelect = document.querySelector("#gameType");
 
 let suits = [

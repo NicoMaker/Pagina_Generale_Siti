@@ -1,93 +1,13 @@
-const suitImages = {
-    Coppe: "Img/Briscola/Coppe.png",
-    Denari: "Img/Briscola/Denari.png",
-    Spade: "Img/Briscola/Spade.png",
-    Bastoni: "Img/Briscola/Bastoni.png",
-    Cuori: "Img/Scala 40/Cuori.png",
-    Quadri: "Img/Scala 40/Quadri.png",
-    Fiori: "Img/Scala 40/Fiori.png",
-    Picche: "Img/Scala 40/Picche.png",
-  },
-  cardValues = {
-    briscola: {
-      Coppe: ["Asso", "2", "3", "4", "5", "6", "7", "Fante", "Cavallo", "Re"],
-      Denari: ["Asso", "2", "3", "4", "5", "6", "7", "Fante", "Cavallo", "Re"],
-      Spade: ["Asso", "2", "3", "4", "5", "6", "7", "Fante", "Cavallo", "Re"],
-      Bastoni: ["Asso", "2", "3", "4", "5", "6", "7", "Fante", "Cavallo", "Re"],
-    },
-    "scala-40": {
-      Cuori: ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"],
-      Quadri: [
-        "A",
-        "2",
-        "3",
-        "4",
-        "5",
-        "6",
-        "7",
-        "8",
-        "9",
-        "10",
-        "J",
-        "Q",
-        "K",
-      ],
-      Fiori: ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"],
-      Picche: [
-        "A",
-        "2",
-        "3",
-        "4",
-        "5",
-        "6",
-        "7",
-        "8",
-        "9",
-        "10",
-        "J",
-        "Q",
-        "K",
-      ],
-    },
-    tutti: {
-      Coppe: ["Asso", "2", "3", "4", "5", "6", "7", "Fante", "Cavallo", "Re"],
-      Denari: ["Asso", "2", "3", "4", "5", "6", "7", "Fante", "Cavallo", "Re"],
-      Spade: ["Asso", "2", "3", "4", "5", "6", "7", "Fante", "Cavallo", "Re"],
-      Bastoni: ["Asso", "2", "3", "4", "5", "6", "7", "Fante", "Cavallo", "Re"],
-      Cuori: ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"],
-      Quadri: [
-        "A",
-        "2",
-        "3",
-        "4",
-        "5",
-        "6",
-        "7",
-        "8",
-        "9",
-        "10",
-        "J",
-        "Q",
-        "K",
-      ],
-      Fiori: ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"],
-      Picche: [
-        "A",
-        "2",
-        "3",
-        "4",
-        "5",
-        "6",
-        "7",
-        "8",
-        "9",
-        "10",
-        "J",
-        "Q",
-        "K",
-      ],
-    },
-  };
+let suitImages = {},
+  cardValues = {};
+
+fetch("cardsData.json")
+  .then((response) => response.json())
+  .then((data) => {
+    suitImages = data.suitImages;
+    cardValues = data.cardValues;
+  })
+  .catch((error) => console.error("Error fetching JSON:", error));
 
 function generateCard() {
   const gameType = document.getElementById("game-type").value;
