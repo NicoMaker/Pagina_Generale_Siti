@@ -5,9 +5,8 @@ function calculateIdeal() {
     idealWeight = "";
   let result = "";
 
-  if (isNaN(value) || value <= 0) {
-    result = "Inserisci un valore valido.";
-  } else {
+  if (isNaN(value) || value <= 0) result = "Inserisci un valore valido.";
+  else {
     if (calculationType === "weight") {
       if (gender === "male") {
         // Formula per calcolare il peso ideale per un uomo
