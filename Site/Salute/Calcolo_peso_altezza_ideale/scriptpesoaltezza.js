@@ -1,28 +1,24 @@
 function calculateIdeal() {
   const calculationType = document.getElementById("calculationType").value,
     gender = document.getElementById("gender").value,
-    value = parseFloat(document.getElementById("value").value),
-    idealWeight = "";
+    value = parseFloat(document.getElementById("value").value);
   let result = "";
 
   if (isNaN(value) || value <= 0) result = "Inserisci un valore valido.";
   else {
     if (calculationType === "weight") {
       if (gender === "male") {
-        // Formula per calcolare il peso ideale per un uomo
-        idealWeight = (value - 100) * 0.9;
+        const idealWeight = (value - 100) * 0.9;
         result = `Il peso ideale per un uomo con altezza ${value} cm è ${idealWeight.toFixed(
           2
         )} kg.`;
       } else if (gender === "female") {
-        // Formula per calcolare il peso ideale per una donna
-        idealWeight = (value - 100) * 0.85;
+        const idealWeight = (value - 100) * 0.85;
         result = `Il peso ideale per una donna con altezza ${value} cm è ${idealWeight.toFixed(
           2
         )} kg.`;
       }
     } else if (calculationType === "height") {
-      // Formula inversa per calcolare l'altezza ideale
       const idealHeightMale = value / 0.9 + 100,
         idealHeightFemale = value / 0.85 + 100;
 
