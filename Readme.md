@@ -21,7 +21,7 @@
 
 [Apertura sito Principale 1 link](https://paginageneralesiti.netlify.app/)
 
-[Apertura sito principlae 2 link](https://nicomaker.github.io/Pagina_Generale_Siti/)
+[Apertura sito Principale 2 link](https://nicomaker.github.io/Pagina_Generale_Siti/)
 
 # Linguaggi utilizzati
 
