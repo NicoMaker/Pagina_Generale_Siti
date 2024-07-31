@@ -4,18 +4,9 @@ h1 {
   text-align: center;
 }
 
-.grasetto {
-  font-weight: bold;
-}
-
 h2 {
   color: #2c0be6;
   font-size: 25px;
-}
-
-.immagine {
-  display: block;
-  margin: 0 auto;
 }
 
 .verde {
@@ -25,4 +16,72 @@ h2 {
 
 p {
   font-size: 20px;
+}
+
+.MathJax {
+  font-size: 20px;
+}
+
+.immagine {
+  display: block;
+  margin: 0 auto;
+}
+
+.logo{
+  height: 50px;
+  font-weight: 50px;
+}
+
+@media (max-width: 768px) {
+  h1 {
+    font-size: 40px;
+  }
+
+  h2 {
+    font-size: 20px;
+  }
+
+  .verde {
+    font-size: 18px;
+  }
+
+  p {
+    font-size: 18px;
+  }
+
+  .MathJax {
+    font-size: 18px;
+  }
+  .immagine,
+  img {
+    height: 150px;
+    font-weight: 150px;
+  }
+}
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: 30px;
+  }
+
+  h2 {
+    font-size: 18px;
+  }
+
+  .verde {
+    font-size: 16px;
+  }
+
+  p {
+    font-size: 16px;
+  }
+
+  .MathJax {
+    font-size: 16px;
+  }
+  .immagine,
+  img {
+    height: 150px;
+    font-weight: 150px;
+  }
 }
