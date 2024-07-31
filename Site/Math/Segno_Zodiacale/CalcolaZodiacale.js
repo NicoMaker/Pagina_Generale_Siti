@@ -116,6 +116,7 @@ function calcolaSegnoZodiacale() {
   if (!segno) {
     updateOutput("Data non valida", true);
     updateImmagine("img/segni.jpg");
+    document.getElementById("definition").innerHTML = "";
     return;
   }
 
