@@ -4,13 +4,12 @@ function calculateResult() {
     operation = document.getElementById("operation").value,
     result;
 
-  if (operation === "power") {
+  if (operation === "power") 
     result = Math.pow(number, exponent);
-  } else if (operation === "root") {
+  else if (operation === "root")
     result = Math.pow(number, 1 / exponent);
-  }
 
-  document.getElementById("result").innerText = "Il risultato e': " + result;
+  document.getElementById("result").innerText = `Il risultato e': ${result}`;
 }
 
 document.getElementById("calculate").addEventListener("click", calculateResult);
