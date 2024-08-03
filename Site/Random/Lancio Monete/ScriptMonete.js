@@ -1,34 +1,35 @@
 let myChart;
 
-function lanciaMonete() {
-  const numCoins = parseInt(document.getElementById("numCoins").value),
-    risultatoElement = document.getElementById("risultato"),
-    vincitoreElement = document.getElementById("vincitore");
-  let testaCount = 0,
-    croceCount = 0;
+function displayErrorMessage(message) {
+  document.getElementById("risultato").innerHTML = message;
+  document.getElementById("myChart").style.display = "none";
+  document.getElementById("vincitore").innerHTML = "";
+  if (myChart) myChart.destroy();
+}
 
-  if (isNaN(numCoins) || numCoins < 1) {
-    risultatoElement.innerHTML = "Inserisci un numero valido";
-    document.getElementById("myChart").style.display = "none";
-    vincitoreElement.innerHTML = "";
-    if (myChart) myChart.destroy();
-    return;
-  }
-
-  for (let i = 0; i < numCoins; i++)
-    Math.random() < 0.5 ? testaCount++ : croceCount++;
-
-  risultatoElement.innerHTML = `Numero di teste: ${testaCount}<br>${(
-    (testaCount / numCoins) *
-    100
-  ).toFixed(2)} %<br><br>
-  
+function updateResults(testaCount, croceCount, numCoins) {
+  document.getElementById("risultato").innerHTML = `
+    Numero di teste: ${testaCount}<br>${((testaCount / numCoins) * 100).toFixed(
+    2
+  )} %<br><br>
     Numero di croci: ${croceCount}<br>${((croceCount / numCoins) * 100).toFixed(
     2
-  )} %<br><br>`;
-
+  )} %<br><br>
+  `;
   document.getElementById("myChart").style.display = "block";
+}
 
+function displayWinner(testaCount, croceCount) {
+  const vincitoreElement = document.getElementById("vincitore");
+  vincitoreElement.innerHTML =
+    testaCount > croceCount
+      ? "Hanno vinto le teste!"
+      : croceCount > testaCount
+      ? "Ha vinto la croce!"
+      : "Pareggio!";
+}
+
+function updateChart(testaCount, croceCount) {
   if (myChart) myChart.destroy();
 
   const ctx = document.getElementById("myChart").getContext("2d");
@@ -41,22 +42,36 @@ function lanciaMonete() {
       ],
     },
   });
+}
 
-  vincitoreElement.innerHTML =
-    testaCount > croceCount
-      ? "Hanno vinto le teste!"
-      : croceCount > testaCount
-      ? "Ha vinto la croce!"
-      : "Pareggio!";
+function lanciaMonete() {
+  const numCoins = parseInt(document.getElementById("numCoins").value);
+
+  if (isNaN(numCoins) || numCoins < 1) {
+    displayErrorMessage("Inserisci un numero valido");
+    return;
+  }
+
+  let testaCount = 0,
+    croceCount = 0;
+
+  for (let i = 0; i < numCoins; i++)
+    Math.random() < 0.5 ? testaCount++ : croceCount++;
+
+  updateResults(testaCount, croceCount, numCoins);
+  updateChart(testaCount, croceCount);
+  displayWinner(testaCount, croceCount);
+}
+
+function startCoinTossing() {
+  const randomGenerator = setInterval(lanciaMonete, 150);
+
+  setTimeout(() => {
+    clearInterval(randomGenerator);
+    lanciaMonete();
+  }, 500);
 }
 
 document
   .getElementById("generateButton")
-  .addEventListener("click", function () {
-    const randomGenerator = setInterval(lanciaMonete, 150);
-
-    setTimeout(() => {
-      clearInterval(randomGenerator);
-      lanciaMonete();
-    }, 500);
-  });
+  .addEventListener("click", startCoinTossing);

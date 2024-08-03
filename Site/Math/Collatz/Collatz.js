@@ -9,7 +9,7 @@ const dati = {
     {
       label: "Dati Collatz",
       borderWidth: 1,
-      backgroundColor:["blue"],
+      backgroundColor: ["blue"],
       borderColor: ["blue"],
       data: [],
     },
@@ -18,21 +18,51 @@ const dati = {
 
 let myChart = null;
 
+function displayErrorMessage(message) {
+  document.getElementById("passaggi").innerHTML = "";
+  document.getElementById("risultato").innerHTML = message;
+  lineChartElement.style.display = "none";
+  imgElement.style.display = "block";
+}
+
+function showChart() {
+  lineChartElement.style.display = "block";
+  imgElement.style.display = "none";
+}
+
+function updateChart() {
+  if (myChart) myChart.destroy();
+
+  const config = {
+    type: "line",
+    data: dati,
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true,
+        },
+      },
+    },
+  };
+
+  const ctx = lineChartElement.getContext("2d");
+  myChart = new Chart(ctx, config);
+}
+
+function displayResults(k) {
+  document.getElementById("risultato").innerHTML = `K ---> ${k}`;
+  updateChart();
+}
+
 function CalcolaCollatz() {
   const numero = parseInt(document.getElementById("numero").value);
 
-  if (isNaN(numero) || numero <= 0 || numero === "") {
-    document.getElementById("passaggi").innerHTML = "";
-    document.getElementById("risultato").innerHTML =
-      "Inserisci un numero valido";
-    lineChartElement.style.display = "none";
-    imgElement.style.display = "block";
-  } else {
-    lineChartElement.style.display = "block";
-    imgElement.style.display = "none";
-
+  if (isNaN(numero) || numero <= 0 || numero === "") 
+    displayErrorMessage("Inserisci un numero valido");
+  else {
+    showChart();
     const risultato = CalcolaRisultato(numero);
-    document.getElementById("risultato").innerHTML = `K ---> ${risultato}`;
+    displayResults(risultato);
   }
 }
 
@@ -50,12 +80,9 @@ function CalcolaRisultato(numero) {
   while (numero > 1) {
     passaggi++;
     stampaHTML += ` ${numero} --> `;
-
     if (passaggi % 4 === 0) stampaHTML += "<br>";
-
     numero = numero % 2 === 0 ? numero / 2 : 3 * numero + 1;
     k++;
-
     dati.labels.push(passaggi);
     dati.datasets[0].data.push(numero);
   }
@@ -64,24 +91,6 @@ function CalcolaRisultato(numero) {
   stampaHTML += "<br><br>";
 
   document.getElementById("passaggi").innerHTML = stampaHTML;
-
-  if (myChart) myChart.destroy();
-
-  const config = {
-      type: "line",
-      data: dati,
-      options: {
-        scales: {
-          y: {
-            beginAtZero: true,
-          },
-        },
-      },
-    },
-    ctx = lineChartElement.getContext("2d");
-  myChart = new Chart(ctx, config);
-
-  imgElement.style.display = "none";
 
   return k;
 }

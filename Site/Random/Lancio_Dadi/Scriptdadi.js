@@ -10,78 +10,46 @@ function generaNumeri() {
   let numeroDadi = parseInt(document.getElementById("numero-dadi").value);
 
   if (isNaN(numeroDadi) || numeroDadi <= 0) {
-    document.getElementById("numeri-parziali").textContent =
-      "Numero non valido";
-    document.getElementById("somma-totale").textContent = "";
-    showImmagine();
-    hideGrafico();
-    document.getElementById("valori_uscite").style.display = "none";
+    mostraMessaggioErrore("Numero non valido");
     return;
   }
 
-  conteggioOccorrenze = [0, 0, 0, 0, 0, 0];
+  resetConteggioOccorrenze();
   let numeriParziali = [],
     sommaTotale = 0;
 
   for (let i = 0; i < numeroDadi; i++) {
-    let numeroCasuale = Math.floor(Math.random() * 6) + 1;
+    let numeroCasuale = generaNumeroCasuale();
     numeriParziali.push(numeroCasuale);
     sommaTotale += numeroCasuale;
     conteggioOccorrenze[numeroCasuale - 1]++;
   }
 
+  mostraRisultati(numeriParziali, sommaTotale);
+  aggiornaGraficoBarre();
+  aggiornaTabellaPercentuali(numeroDadi);
+}
+
+const resetConteggioOccorrenze = () =>
+    (conteggioOccorrenze = [0, 0, 0, 0, 0, 0]),
+  generaNumeroCasuale = () => Math.floor(Math.random() * 6) + 1;
+
+function mostraMessaggioErrore(messaggio) {
+  document.getElementById("numeri-parziali").textContent = messaggio;
+  document.getElementById("somma-totale").textContent = "";
+  showImmagine();
+  hideGrafico();
+  document.getElementById("valori_uscite").style.display = "none";
+}
+
+function mostraRisultati(numeriParziali, sommaTotale) {
   document.getElementById("numeri-parziali").textContent =
     "Numeri parziali: " + numeriParziali.join(", ");
   document.getElementById("somma-totale").textContent =
     "Somma totale: " + sommaTotale;
-  updateGraficoBarre();
-
-  if (numeroDadi > 0) {
-    stampapercentuali = `<table>
-    <tr>
-        <td>
-            Numero
-        </td>
-
-        <td>
-            Uscita Numero
-        </td>
-
-        <td>
-          Percentuale uscita numero
-        </td>
-    </tr>
-  `;
-    for (let i = 0; i < conteggioOccorrenze.length; i++) {
-      stampapercentuali += `
-    
-    <tr>
-      <td>
-          ${i + 1}
-      </td>
-
-      <td>
-          ${conteggioOccorrenze[i]}
-      </td>
-
-      <td>
-        ${parseFloat((conteggioOccorrenze[i] / numeroDadi) * 100).toFixed(2)} %
-      </td>
-
-    </tr>`;
-    }
-
-    stampapercentuali += `</table>`;
-
-    // Mostra la tabella valori_uscite solo se numeroDadi è maggiore di 0
-    document.getElementById("valori_uscite").innerHTML = stampapercentuali;
-    document.getElementById("valori_uscite").style.display = "block";
-  }
-  // Nascondi la tabella valori_uscite se numeroDadi non è maggiore di 0
-  else document.getElementById("valori_uscite").style.display = "none";
 }
 
-function updateGraficoBarre() {
+function aggiornaGraficoBarre() {
   hideImmagine();
   showGrafico();
 
@@ -110,6 +78,37 @@ function updateGraficoBarre() {
       ],
     },
   });
+}
+
+function aggiornaTabellaPercentuali(numeroDadi) {
+  if (numeroDadi > 0) {
+    let tabellaPercentuali = creaTabellaPercentuali(numeroDadi);
+    document.getElementById("valori_uscite").innerHTML = tabellaPercentuali;
+    document.getElementById("valori_uscite").style.display = "block";
+  } else {
+    document.getElementById("valori_uscite").style.display = "none";
+  }
+}
+
+function creaTabellaPercentuali(numeroDadi) {
+  let tabella = `<table>
+    <tr>
+        <td>Numero</td>
+        <td>Uscita Numero</td>
+        <td>Percentuale uscita numero</td>
+    </tr>`;
+
+  for (let i = 0; i < conteggioOccorrenze.length; i++) {
+    tabella += `
+    <tr>
+      <td>${i + 1}</td>
+      <td>${conteggioOccorrenze[i]}</td>
+      <td>${((conteggioOccorrenze[i] / numeroDadi) * 100).toFixed(2)} %</td>
+    </tr>`;
+  }
+
+  tabella += `</table>`;
+  return tabella;
 }
 
 const showImmagine = () =>
