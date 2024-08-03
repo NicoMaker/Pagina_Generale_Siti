@@ -7,39 +7,28 @@ const outputs = [
   generate = document.querySelector("#generateButton"),
   gameTypeSelect = document.querySelector("#gameType");
 
-let suits = [
-  "img/Briscola/Bastoni.png",
-  "img/Briscola/Coppe.png",
-  "img/Briscola/Denari.png",
-  "img/Briscola/Spade.png",
-];
+let suits = [];
+
+async function loadCards() {
+  const response = await fetch("cards.json"),
+    data = await response.json();
+  return data;
+}
+
+let cardsData;
+
+loadCards().then((data) => {
+  cardsData = data;
+  suits = cardsData.briscola;
+});
 
 gameTypeSelect.addEventListener("change", function () {
-  if (gameTypeSelect.value === "briscola")
-    suits = [
-      "img/Briscola/Bastoni.png",
-      "img/Briscola/Coppe.png",
-      "img/Briscola/Denari.png",
-      "img/Briscola/Spade.png",
-    ];
+  if (gameTypeSelect.value === "briscola") 
+    suits = cardsData.briscola;
   else if (gameTypeSelect.value === "scala40")
-    suits = [
-      "img/Scala 40/Picche.png",
-      "img/Scala 40/Quadri.png",
-      "img/Scala 40/Cuori.png",
-      "img/Scala 40/Fiori.png",
-    ];
+    suits = cardsData.scala40;
   else
-    suits = suits.concat([
-      "img/Scala 40/Picche.png",
-      "img/Scala 40/Quadri.png",
-      "img/Scala 40/Cuori.png",
-      "img/Scala 40/Fiori.png",
-      "img/Briscola/Bastoni.png",
-      "img/Briscola/Coppe.png",
-      "img/Briscola/Denari.png",
-      "img/Briscola/Spade.png",
-    ]);
+    suits = cardsData.briscola.concat(cardsData.scala40);
 });
 
 function setRandomImage(container) {

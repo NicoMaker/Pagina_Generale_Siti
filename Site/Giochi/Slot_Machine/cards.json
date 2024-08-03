@@ -1,0 +1,14 @@
+{
+  "briscola": [
+    "img/Briscola/Bastoni.png",
+    "img/Briscola/Coppe.png",
+    "img/Briscola/Denari.png",
+    "img/Briscola/Spade.png"
+  ],
+  "scala40": [
+    "img/Scala 40/Picche.png",
+    "img/Scala 40/Quadri.png",
+    "img/Scala 40/Cuori.png",
+    "img/Scala 40/Fiori.png"
+  ]
+}
