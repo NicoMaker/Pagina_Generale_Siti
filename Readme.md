@@ -2,7 +2,7 @@
 
 ## Categorie sito che sel selezione nel Hamburger Menu dove lo puoi aprire o chiudere, se vuoi aprire un sito di quella categoria chiudi l'Hamburger Menu e clicchi sul sito interessato della categoria interessata
 
-[Visualizzazione Categorie dei Siti](Site/Readme.md)
+**[Visualizzazione Categorie dei Siti](Site/Readme.md)**
 
 ## Riferimento icone o immagini con link
 
@@ -19,9 +19,9 @@
 
 ## Apertutra sito
 
-[Apertura sito Principale 1 link](https://paginageneralesiti.netlify.app/)
+**[Apertura sito Principale 1 link](https://paginageneralesiti.netlify.app/)**
 
-[Apertura sito Principale 2 link](https://nicomaker.github.io/Pagina_Generale_Siti/)
+**[Apertura sito Principale 2 link](https://nicomaker.github.io/Pagina_Generale_Siti/)**
 
 # Linguaggi utilizzati
 

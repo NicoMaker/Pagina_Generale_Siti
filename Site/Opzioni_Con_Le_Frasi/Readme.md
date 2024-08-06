@@ -1,6 +1,6 @@
-[Vai alla Readme Dei Siti](../Readme.md)
+**[Vai alla Readme Dei Siti](../Readme.md)**
 
 # Opzioni con Le Frasi
 
-- [Criptazione con alfabeto contrario](Criptazione%20Alfabeto%20Contrario)
-- [Stampa Frase Invertita](Stampa_Frase_Invertita)
+- **[Criptazione con alfabeto contrario](Criptazione%20Alfabeto%20Contrario)**
+- **[Stampa Frase Invertita](Stampa_Frase_Invertita)**
