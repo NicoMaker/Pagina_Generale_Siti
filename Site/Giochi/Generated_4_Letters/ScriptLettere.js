@@ -1,65 +1,18 @@
 const outputs = [
-  document.querySelector("#letter-display1"),
-  document.querySelector("#letter-display2"),
-  document.querySelector("#letter-display3"),
-  document.querySelector("#letter-display4"),
-];
+    document.querySelector("#letter-display1"),
+    document.querySelector("#letter-display2"),
+    document.querySelector("#letter-display3"),
+    document.querySelector("#letter-display4"),
+  ],
+  generate = document.querySelector("#generateButton");
 
-const generate = document.querySelector("#generateButton"),
-  alphabets = [
-    "a",
-    "b",
-    "c",
-    "d",
-    "e",
-    "f",
-    "g",
-    "h",
-    "i",
-    "j",
-    "k",
-    "l",
-    "m",
-    "n",
-    "o",
-    "p",
-    "q",
-    "r",
-    "s",
-    "t",
-    "u",
-    "v",
-    "w",
-    "x",
-    "y",
-    "z",
-    "A",
-    "B",
-    "C",
-    "D",
-    "E",
-    "F",
-    "G",
-    "H",
-    "I",
-    "J",
-    "K",
-    "L",
-    "M",
-    "N",
-    "O",
-    "P",
-    "Q",
-    "R",
-    "S",
-    "T",
-    "U",
-    "V",
-    "W",
-    "X",
-    "Y",
-    "Z",
-  ];
+let alphabets = [];
+
+fetch("alfabeto.json")
+  .then((response) => response.json())
+  .then((data) => {
+    alphabets = data.letters;
+  });
 
 function setRandom(output) {
   let randomIndex = Math.floor(Math.random() * alphabets.length),
@@ -74,7 +27,9 @@ function generateRandomColor() {
   let r = Math.floor(Math.random() * 106) + 150,
     g = Math.floor(Math.random() * 106) + 150,
     b = Math.floor(Math.random() * 106) + 150;
-  return `#${r.toString(16)}${g.toString(16)}${b.toString(16)}`;
+  return `#${r.toString(16)}${g.toString(16)}${b.toString(16)}${b.toString(
+    16
+  )}`;
 }
 
 generate.addEventListener("click", function () {

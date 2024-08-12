@@ -4,8 +4,15 @@ const outputs = [
     document.querySelector("#number-display3"),
     document.querySelector("#number-display4"),
   ],
-  generate = document.querySelector("#generateButton"),
-  numbersArray = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+  generate = document.querySelector("#generateButton");
+
+let numbersArray = [];
+
+fetch("numeri.json")
+  .then((response) => response.json())
+  .then((data) => {
+    numbersArray = data.numbers;
+  });
 
 function setRandom(output) {
   let randomIndex = Math.floor(Math.random() * numbersArray.length),

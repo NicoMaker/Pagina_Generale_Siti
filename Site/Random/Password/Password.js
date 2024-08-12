@@ -1,3 +1,8 @@
+async function loadPasswordConfig() {
+  const response = await fetch("configurazioni.json");
+  return await response.json();
+}
+
 document
   .getElementById("password-form")
   .addEventListener("submit", function (event) {
@@ -6,9 +11,14 @@ document
     let passwordLength = password();
 
     if (passwordLength < 8 || passwordLength > 20) {
+      document.getElementById("password-output").textContent =
+        "La lunghezza della password deve essere compresa tra 8 e 20 caratteri.";
       return;
     }
-    createpassword(passwordLength);
+
+    loadPasswordConfig().then((config) => {
+      createPassword(passwordLength, config);
+    });
   });
 
 document
@@ -22,23 +32,22 @@ document
       return;
     }
 
-    const randomGenerator = setInterval(() => {
-      createpassword(passwordLength);
-    }, 150);
+    loadPasswordConfig().then((config) => {
+      const randomGenerator = setInterval(() => {
+        createPassword(passwordLength, config);
+      }, 150);
 
-    setTimeout(() => {
-      clearInterval(randomGenerator);
-      createpassword(passwordLength);
-    }, 500);
+      setTimeout(() => {
+        clearInterval(randomGenerator);
+        createPassword(passwordLength, config);
+      }, 500);
+    });
   });
 
 const password = () => document.getElementById("password-length").value;
 
-function createpassword(passwordLength) {
-  let uppercaseChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
-    lowercaseChars = "abcdefghijklmnopqrstuvwxyz",
-    specialChars = "!@#$%^&*()",
-    numericChars = "0123456789";
+function createPassword(passwordLength, config) {
+  let { uppercaseChars, lowercaseChars, specialChars, numericChars } = config;
 
   let password = "";
   password += uppercaseChars[Math.floor(Math.random() * uppercaseChars.length)];

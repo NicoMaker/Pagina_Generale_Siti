@@ -1,69 +1,16 @@
-const output = document.querySelector("#letter-display"),
-  body = document.body,
-  generate = document.querySelector("#generateButton"),
-  alphabets = [
-    "a",
-    "b",
-    "c",
-    "d",
-    "e",
-    "f",
-    "g",
-    "h",
-    "i",
-    "j",
-    "k",
-    "l",
-    "m",
-    "n",
-    "o",
-    "p",
-    "q",
-    "r",
-    "s",
-    "t",
-    "u",
-    "v",
-    "w",
-    "x",
-    "y",
-    "z",
-    "A",
-    "B",
-    "C",
-    "D",
-    "E",
-    "F",
-    "G",
-    "H",
-    "I",
-    "J",
-    "K",
-    "L",
-    "M",
-    "N",
-    "O",
-    "P",
-    "Q",
-    "R",
-    "S",
-    "T",
-    "U",
-    "V",
-    "W",
-    "X",
-    "Y",
-    "Z",
-  ];
+async function loadAlphabets() {
+  const response = await fetch("letters.json"),
+    data = await response.json();
+  return data.alphabets;
+}
 
-function setRandom() {
+function setRandom(alphabets) {
   let random = Math.floor(Math.random() * alphabets.length),
     alphabet = alphabets[random],
     color = generateRandomColor();
 
-  body.style.backgroundColor = color;
-
-  output.innerText = alphabet;
+  document.body.style.backgroundColor = color;
+  document.querySelector("#letter-display").innerText = alphabet;
 }
 
 function generateRandomColor() {
@@ -74,13 +21,17 @@ function generateRandomColor() {
   return `#${r.toString(16)}${g.toString(16)}${b.toString(16)}`;
 }
 
-generate.addEventListener("click", function () {
-  let randomGenerator = setInterval(() => {
-    setRandom();
-  }, 150);
+document
+  .querySelector("#generateButton")
+  .addEventListener("click", function () {
+    loadAlphabets().then((alphabets) => {
+      let randomGenerator = setInterval(() => {
+        setRandom(alphabets);
+      }, 150);
 
-  setTimeout(() => {
-    clearInterval(randomGenerator);
-    setRandom();
-  }, 500);
-});
+      setTimeout(() => {
+        clearInterval(randomGenerator);
+        setRandom(alphabets);
+      }, 500);
+    });
+  });

@@ -1,0 +1,6 @@
+{
+  "uppercaseChars": "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+  "lowercaseChars": "abcdefghijklmnopqrstuvwxyz",
+  "specialChars": "!@#$%^&*()",
+  "numericChars": "0123456789"
+}
