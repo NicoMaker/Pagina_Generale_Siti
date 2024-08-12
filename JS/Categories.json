@@ -39,6 +39,7 @@
         "link": "Site/Giochi/Sasso_Carta_Forbice/index.html"
       },
       { "name": "Gioco del Tris", "link": "Site/Giochi/Tris/index.html" },
+      { "name": "Gioco del Tris versione 2", "link": "Site/Giochi/Tris2/index.html" },
       { "name": "Forza 4", "link": "Site/Giochi/Forza 4/index.html" },
       { "name": "Snake Game", "link": "Site/Giochi/SnakeGame/index.html" },
       {

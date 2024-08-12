@@ -5,7 +5,7 @@
 - **[Bici](https://github.com/NicoMaker/Giri-in-bici)** [1 sito]
 - **[Borsa](Borsa/Readme.md)** [2 siti]
 - **[Calendario](Calendario/Readme.md)** [5 siti]
-- **[Giochi](Giochi/Readme.md)** [10 siti]
+- **[Giochi](Giochi/Readme.md)** [11 siti]
 - **[Info Paesi / Stati](Info_Paesi_Stati/Readme.md)** [3 siti]
 - **[Matematica](Math/Readme.md)** [21 siti]
 - **[Natale](Natale/Readme.md)** [3 siti]
