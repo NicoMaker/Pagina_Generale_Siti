@@ -39,7 +39,10 @@
         "link": "Site/Giochi/Sasso_Carta_Forbice/index.html"
       },
       { "name": "Gioco del Tris", "link": "Site/Giochi/Tris/index.html" },
-      { "name": "Gioco del Tris versione 2", "link": "Site/Giochi/Tris2/index.html" },
+      {
+        "name": "Gioco del Tris versione 2",
+        "link": "Site/Giochi/Tris2/index.html"
+      },
       { "name": "Forza 4", "link": "Site/Giochi/Forza 4/index.html" },
       { "name": "Snake Game", "link": "Site/Giochi/SnakeGame/index.html" },
       {
@@ -73,8 +76,8 @@
         "link": "Site/Info_Paesi_Stati/Stati_info/index.html"
       },
       {
-        "name":"Contatore Fuso Orario in Tempo Reale",
-        "link":"Site/Info_Paesi_Stati/Contatore_Tempo_Tempo_Reale_Fuso/index.html"
+        "name": "Contatore Fuso Orario in Tempo Reale",
+        "link": "Site/Info_Paesi_Stati/Contatore_Tempo_Tempo_Reale_Fuso/index.html"
       }
     ],
     "Matematica": [
@@ -162,14 +165,14 @@
         "link": "Site/Natale/Countdown_anno_nuovo/index.html"
       }
     ],
-    "Opzioni_Con_Le_Frasi":[
+    "Opzioni_Con_Le_Frasi": [
       {
         "name": "Criptazione con Alfabeto Opposto",
         "link": "Site/Opzioni_Con_Le_Frasi/Criptazione Alfabeto Contrario/index.html"
       },
       {
-        "name":"Stampa Frase Invertita",
-        "link":"Site/Opzioni_Con_Le_Frasi/Stampa_Frase_Invertita/index.html"
+        "name": "Stampa Frase Invertita",
+        "link": "Site/Opzioni_Con_Le_Frasi/Stampa_Frase_Invertita/index.html"
       }
     ],
     "Pasqua": [
@@ -243,7 +246,7 @@
     "Info_Paesi_Stati": "contenitore1",
     "Matematica": "contenitore3",
     "Natale": "contenitore1",
-    "Opzioni_Con_Le_Frasi":"contenitore1",
+    "Opzioni_Con_Le_Frasi": "contenitore1",
     "Pasqua": "contenitore1",
     "Random": "contenitore2",
     "Salute": "contenitore1"
