@@ -12,9 +12,8 @@ const updateImmagine = (imageSrc) =>
   updateOutput = (text, isError = false) =>
     (output.innerHTML = `<p class="${
       isError ? "viola" : "colorSegno"
-    }">${text}</p>`);
-
-const monthDayToDate = (month, day) =>
+    }">${text}</p>`),
+monthDayToDate = (month, day) =>
   day > new Date(year, month + 1, 0).getDate()
     ? undefined
     : new Date(year, month, day);
