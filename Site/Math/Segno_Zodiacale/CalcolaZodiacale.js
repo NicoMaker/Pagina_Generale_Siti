@@ -13,10 +13,10 @@ const updateImmagine = (imageSrc) =>
     (output.innerHTML = `<p class="${
       isError ? "viola" : "colorSegno"
     }">${text}</p>`),
-monthDayToDate = (month, day) =>
-  day > new Date(year, month + 1, 0).getDate()
-    ? undefined
-    : new Date(year, month, day);
+  monthDayToDate = (month, day) =>
+    day > new Date(year, month + 1, 0).getDate()
+      ? undefined
+      : new Date(year, month, day);
 
 function parseDate(str) {
   const [month, day] = str.split("-").map(Number);

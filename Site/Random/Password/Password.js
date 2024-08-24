@@ -48,7 +48,7 @@ const password = () => document.getElementById("password-length").value;
 
 function createPassword(passwordLength, config) {
   let { uppercaseChars, lowercaseChars, specialChars, numericChars } = config,
-password = "";
+    password = "";
   password += uppercaseChars[Math.floor(Math.random() * uppercaseChars.length)];
   password += lowercaseChars[Math.floor(Math.random() * lowercaseChars.length)];
   password += specialChars[Math.floor(Math.random() * specialChars.length)];
