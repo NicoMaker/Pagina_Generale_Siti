@@ -1,40 +1,53 @@
+// Funzione principale per avviare il gioco
 function playGame() {
-  let player1 = Player1(),
-    player2 = Player2(),
-    options = ["sasso", "carta", "forbice"],
-    player1Choice = ResultGenerate(options),
-    player2Choice = ResultGenerate(options);
+  const options = ["sasso", "carta", "forbice"],
+    player1 = getPlayerName("player1"),
+    player2 = getPlayerName("player2"),
+    player1Choice = getRandomChoice(options),
+    player2Choice = getRandomChoice(options);
 
-  document.getElementById(
-    "result"
-  ).innerHTML = `${player1} : ${player1Choice} <br> ${player2} : ${player2Choice}`;
-
-  let winner = determineWinner(player1Choice, player2Choice, player1, player2);
-  document.getElementById("winner").innerHTML = winner;
-}
-
-let Player1 = () => document.getElementById("player1").value,
-  Player2 = () => document.getElementById("player2").value;
-
-let ResultGenerate = (options) =>
-  options[Math.floor(Math.random() * options.length)];
-
-function determineWinner(choice1, choice2, player1, player2) {
-  if (choice1 === choice2) return "Pareggio!";
-  else if (
-    (choice1 === "sasso" && choice2 === "forbice") ||
-    (choice1 === "carta" && choice2 === "sasso") ||
-    (choice1 === "forbice" && choice2 === "carta")
-  )
-    return `Giocatore 1 ${player1} vince!`;
-  else return `Giocatore 2 ${player2} vince!`;
-}
-
-const Regole = () =>
-  alert(
-    "------------------------------- REGOLE -------------------------------\n\n" +
-      "SASSO VINCE SU FORBICI MA PERDE CON CARTA\n" +
-      "CARTA VINCE SU SASSO MA PERDE CON FORBICI\n" +
-      "FORBICI VINCONO SU CARTA MA PERDONO CON SASSO\n" +
-      "SE SONO UGUALI, IL RISULTATO È UN PAREGGIO"
+  displayChoices(player1, player1Choice, player2, player2Choice);
+  displayWinner(
+    determineWinner(player1Choice, player2Choice, player1, player2)
   );
+}
+
+const getPlayerName = (playerId) => document.getElementById(playerId).value,
+  getRandomChoice = (options) =>
+    options[Math.floor(Math.random() * options.length)],
+  displayChoices = (player1, player1Choice, player2, player2Choice) =>
+    (document.getElementById(
+      "result"
+    ).innerHTML = `${player1} : ${player1Choice} <br> ${player2} : ${player2Choice}`),
+  determineWinner = (choice1, choice2, player1, player2) =>
+    choice1 === choice2
+      ? "Pareggio!"
+      : (choice1 === "sasso" && choice2 === "forbice") ||
+        (choice1 === "carta" && choice2 === "sasso") ||
+        (choice1 === "forbice" && choice2 === "carta")
+      ? `Giocatore 1 ${player1} vince!`
+      : `Giocatore 2 ${player2} vince!`,
+  displayWinner = (winner) =>
+    (document.getElementById("winner").innerHTML = winner),
+  Regole = () =>
+    alert(
+      "------------------------------- REGOLE -------------------------------\n\n" +
+        "SASSO VINCE SU FORBICI MA PERDE CON CARTA\n" +
+        "CARTA VINCE SU SASSO MA PERDE CON FORBICI\n" +
+        "FORBICI VINCONO SU CARTA MA PERDONO CON SASSO\n" +
+        "SE SONO UGUALI, IL RISULTATO È UN PAREGGIO"
+    );
+
+function setupGame() {
+  document.getElementById("generateButton").addEventListener("click", () => {
+    const interval = setInterval(playGame, 150);
+    setTimeout(() => {
+      clearInterval(interval);
+      playGame();
+    }, 500);
+  });
+
+  document.getElementById("rulesButton").addEventListener("click", showRules);
+}
+
+setupGame();
