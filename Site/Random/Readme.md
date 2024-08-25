@@ -4,6 +4,7 @@
 
 - **[Coach Life Generator](Coach_Life_Generator)**
 - **[Genera un Colore Casuale](Colore_Casuale)**
+- **[Estrattore Regione Casuale](Estrai_Regione)**
 - **[Generatore di Carte](Generatore_di_Carte)**
 - **[Lancio dei Dadi con n Facce Grafico](Lancio%20Dadi%20N%20facce)**
 - **[Lancio di n Monete](Lancio%20Monete)**

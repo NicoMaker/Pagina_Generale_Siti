@@ -1,0 +1,142 @@
+[
+  {
+    "nome": "Abruzzo",
+    "immagine": "Abruzzo.jpg",
+    "capoluogo": "L'Aquila",
+    "estensione_km2": 10763,
+    "popolazione": 1305000
+  },
+  {
+    "nome": "Basilicata",
+    "immagine": "Basilicata.jpg",
+    "capoluogo": "Potenza",
+    "estensione_km2": 9995,
+    "popolazione": 556000
+  },
+  {
+    "nome": "Calabria",
+    "immagine": "Calabria.jpg",
+    "capoluogo": "Catanzaro",
+    "estensione_km2": 15222,
+    "popolazione": 1894000
+  },
+  {
+    "nome": "Campania",
+    "immagine": "Campania.jpg",
+    "capoluogo": "Napoli",
+    "estensione_km2": 13590,
+    "popolazione": 5801000
+  },
+  {
+    "nome": "Emilia-Romagna",
+    "immagine": "Emilia.jpg",
+    "capoluogo": "Bologna",
+    "estensione_km2": 22446,
+    "popolazione": 4471000
+  },
+  {
+    "nome": "Friuli Venezia Giulia",
+    "immagine": "FVG.jpg",
+    "capoluogo": "Trieste",
+    "estensione_km2": 7858,
+    "popolazione": 1215000
+  },
+  {
+    "nome": "Lazio",
+    "immagine": "Lazio.jpg",
+    "capoluogo": "Roma",
+    "estensione_km2": 17232,
+    "popolazione": 5879000
+  },
+  {
+    "nome": "Liguria",
+    "immagine": "Liguria.jpg",
+    "capoluogo": "Genova",
+    "estensione_km2": 5422,
+    "popolazione": 1524000
+  },
+  {
+    "nome": "Lombardia",
+    "immagine": "Lombardia.jpg",
+    "capoluogo": "Milano",
+    "estensione_km2": 23864,
+    "popolazione": 10060000
+  },
+  {
+    "nome": "Marche",
+    "immagine": "Marche.jpg",
+    "capoluogo": "Ancona",
+    "estensione_km2": 9401,
+    "popolazione": 1510000
+  },
+  {
+    "nome": "Molise",
+    "immagine": "Molise.jpg",
+    "capoluogo": "Campobasso",
+    "estensione_km2": 4460,
+    "popolazione": 290000
+  },
+  {
+    "nome": "Piemonte",
+    "immagine": "Piemonte.jpg",
+    "capoluogo": "Torino",
+    "estensione_km2": 25402,
+    "popolazione": 4310000
+  },
+  {
+    "nome": "Puglia",
+    "immagine": "Puglia.jpg",
+    "capoluogo": "Bari",
+    "estensione_km2": 19366,
+    "popolazione": 4008000
+  },
+  {
+    "nome": "Sardegna",
+    "immagine": "Sardegna.jpg",
+    "capoluogo": "Cagliari",
+    "estensione_km2": 24100,
+    "popolazione": 1632000
+  },
+  {
+    "nome": "Sicilia",
+    "immagine": "Sicilia.jpg",
+    "capoluogo": "Palermo",
+    "estensione_km2": 25711,
+    "popolazione": 4968000
+  },
+  {
+    "nome": "Toscana",
+    "immagine": "Toscana.jpg",
+    "capoluogo": "Firenze",
+    "estensione_km2": 22987,
+    "popolazione": 3729000
+  },
+  {
+    "nome": "Trentino-Alto Adige",
+    "immagine": "TAA.jpg",
+    "capoluogo": "Trento",
+    "estensione_km2": 13607,
+    "popolazione": 1074000
+  },
+  {
+    "nome": "Umbria",
+    "immagine": "Umbria.jpg",
+    "capoluogo": "Perugia",
+    "estensione_km2": 8456,
+    "popolazione": 866000
+  },
+  {
+    "nome": "Valle d'Aosta",
+    "immagine": "VA.jpg",
+    "capoluogo": "Aosta",
+    "estensione_km2": 3262,
+    "popolazione": 123000
+  },
+  {
+    "nome": "Veneto",
+    "immagine": "Veneto.jpg",
+    "capoluogo": "Venezia",
+    "estensione_km2": 18398,
+    "popolazione": 4905000
+  }
+]
