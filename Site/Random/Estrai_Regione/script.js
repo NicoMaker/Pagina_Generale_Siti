@@ -1,7 +1,3 @@
-const output = document.getElementById("output"),
-  immagine = document.getElementById("immagine"),
-  outputregion = document.getElementById("outputregion");
-
 document
   .querySelector("#generateButton")
   .addEventListener("click", handleGenerateButtonClick);
@@ -11,29 +7,27 @@ async function loadRegioni() {
   return await response.json();
 }
 
-const calculateTotalValues = (regioni, key) =>
+const output = document.getElementById("output"),
+  calculateTotalValues = (regioni, key) =>
     regioni.reduce((total, regione) => total + regione[key], 0),
   calculatePercent = (value, total) => ((value / total) * 100).toFixed(2),
   calculateDensity = (population, area) => (population / area).toFixed(2),
   selectRandomRegione = (regioni) =>
-    regioni[Math.floor(Math.random() * regioni.length)];
-
-function updateUI(
-  regione,
-  percentualeEstensione,
-  percentualePopolazione,
-  DensitàRegione
-) {
-  outputregion.innerHTML = `<p class="colorRegione">${regione.nome}</p>`;
-  immagine.innerHTML = `<img src="img/${regione.immagine}" alt="${regione.nome}">`;
-  output.innerHTML = `
-    <p class="colorRegione">Il capoluogo è: ${regione.capoluogo}</p>
-    <p class="colorRegione">km<sup>2</sup> regione ${regione.estensione_km2} : ${percentualeEstensione} % dell'Italia</p>
-    <p class="colorRegione">Popolazione regione ${regione.popolazione} : ${percentualePopolazione} % dell'Italia</p>
-    <p class="colorRegione">Densità regione : ${DensitàRegione} ab/km<sup>2</sup></p>
-  `;
-}
-
+    regioni[Math.floor(Math.random() * regioni.length)],
+  updateUI = (
+    regione,
+    percentualeEstensione,
+    percentualePopolazione,
+    DensitàRegione
+  ) =>
+    (output.innerHTML = `
+  <p class="colorRegione">${regione.nome}</p>
+  <img src="img/${regione.immagine}" alt="${regione.nome}">
+  <p class="colorRegione">Il capoluogo è : ${regione.capoluogo}</p>
+  <p class="colorRegione">km<sup>2</sup> regione ${regione.estensione_km2} : ${percentualeEstensione} % dell'Italia</p>
+  <p class="colorRegione">Popolazione regione ${regione.popolazione} : ${percentualePopolazione} % dell'Italia</p>
+  <p class="colorRegione">Densità regione : ${DensitàRegione} ab/km<sup>2</sup></p>
+`);
 function handleGenerateButtonClick() {
   loadRegioni().then((regioni) => {
     const totalEstensione = calculateTotalValues(regioni, "estensione_km2"),
