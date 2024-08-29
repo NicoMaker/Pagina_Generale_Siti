@@ -1,3 +1,15 @@
+function calculateIdealWeight(height, gender) {
+  if (gender === "male") return (height - 100) * 0.9;
+  else if (gender === "female") return (height - 100) * 0.85;
+  return null;
+}
+
+function calculateIdealHeight(weight, gender) {
+  if (gender === "male") return weight / 0.9 + 100;
+  else if (gender === "female") return weight / 0.85 + 100;
+  return null;
+}
+
 function calculateIdeal() {
   const calculationType = document.getElementById("calculationType").value,
     gender = document.getElementById("gender").value,
@@ -7,29 +19,19 @@ function calculateIdeal() {
   if (isNaN(value) || value <= 0) result = "Inserisci un valore valido.";
   else {
     if (calculationType === "weight") {
-      if (gender === "male") {
-        const idealWeight = (value - 100) * 0.9;
-        result = `Il peso ideale per un uomo con altezza ${value} cm è ${idealWeight.toFixed(
-          2
-        )} kg.`;
-      } else if (gender === "female") {
-        const idealWeight = (value - 100) * 0.85;
-        result = `Il peso ideale per una donna con altezza ${value} cm è ${idealWeight.toFixed(
-          2
-        )} kg.`;
+      const idealWeight = calculateIdealWeight(value, gender);
+      if (idealWeight !== null) {
+        result = `Il peso ideale per ${
+          gender === "male" ? "un uomo" : "una donna"
+        } con altezza ${value} cm è ${idealWeight.toFixed(2)} kg.`;
       }
     } else if (calculationType === "height") {
-      const idealHeightMale = value / 0.9 + 100,
-        idealHeightFemale = value / 0.85 + 100;
-
-      if (gender === "male")
-        result = `Per un peso di ${value} kg, l'altezza ideale per un uomo è ${idealHeightMale.toFixed(
-          2
-        )} cm.`;
-      else if (gender === "female")
-        result = `Per un peso di ${value} kg, l'altezza ideale per una donna è ${idealHeightFemale.toFixed(
-          2
-        )} cm.`;
+      const idealHeight = calculateIdealHeight(value, gender);
+      if (idealHeight !== null) {
+        result = `Per un peso di ${value} kg, l'altezza ideale per ${
+          gender === "male" ? "un uomo" : "una donna"
+        } è ${idealHeight.toFixed(2)} cm.`;
+      }
     }
   }
 

@@ -47,6 +47,7 @@ button {
 #result {
   margin-top: 40px;
   font-weight: bold;
+  font-size: 50px;
 }
 
 #gender {
