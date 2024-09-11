@@ -1,39 +1,43 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Slot Machine</title>
+    <link
+      rel="icon"
+      href="https://img.freepik.com/premium-vector/poker-playing-cards-isolated-white-background-casino-leisure-game-vector-illustration_390775-659.jpg?size=626&ext=jpg"
+      type="image/png"
+    />
+    <link rel="stylesheet" href="StyleleSemi.css" />
+    <script src="ScriptSemi.js" defer></script>
+  </head>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Slot Machine</title>
-  <link rel="icon"
-    href="https://img.freepik.com/premium-vector/poker-playing-cards-isolated-white-background-casino-leisure-game-vector-illustration_390775-659.jpg?size=626&ext=jpg"
-    type="image/png">
-  <link rel="stylesheet" href="StyleleSemi.css">
-  <script src="ScriptSemi.js" defer></script>
-</head>
+  <body>
+    <h1>Slot Machine</h1>
+    <select id="gameType">
+      <option value="briscola">Briscola</option>
+      <option value="scala40">Scala 40</option>
+      <option value="regioni">Regioni</option>
+      <option value="regioni_briscola">Regioni e Briscola</option>
+      <option value="regioni_scala">Regioni e Scala 40</option>
+      <option value="briscola_scala40">Briscola e Scala 40</option>
+      <option value="All">Tutto</option>
+    </select>
+    <br />
+    <br />
 
-<body>
-  <h1>Slot Machine</h1>
-  <select id="gameType">
-    <option value="briscola">Briscola</option>
-    <option value="scala40">Scala 40</option>
-    <option value="All">Tutto</option>
-  </select>
-  <br>
-  <br>
+    <button id="generateButton">Estrai</button>
+    <br />
+    <br />
+    <br />
+    <div class="container">
+      <div id="suit1"></div>
+      <div id="suit2"></div>
+      <div id="suit3"></div>
+      <div id="suit4"></div>
+    </div>
 
-  <button id="generateButton">Estrai</button>
-  <br>
-  <br>
-  <br>
-  <div class="container">
-    <div id="suit1"></div>
-    <div id="suit2"></div>
-    <div id="suit3"></div>
-    <div id="suit4"></div>
-  </div>
-
-  <p id="Result"></p>
-</body>
-
+    <p id="Result"></p>
+  </body>
 </html>

@@ -4,139 +4,159 @@
     "immagine": "Abruzzo.jpg",
     "capoluogo": "L'Aquila",
     "estensione_km2": 10763,
-    "popolazione": 1305000
+    "popolazione": 1305000,
+    "province": ["L'Aquila", "Teramo", "Pescara", "Chieti"]
   },
   {
     "nome": "Basilicata",
     "immagine": "Basilicata.jpg",
     "capoluogo": "Potenza",
     "estensione_km2": 9995,
-    "popolazione": 556000
+    "popolazione": 556000,
+    "province": ["Potenza", "Matera"]
   },
   {
     "nome": "Calabria",
     "immagine": "Calabria.jpg",
     "capoluogo": "Catanzaro",
     "estensione_km2": 15222,
-    "popolazione": 1894000
+    "popolazione": 1894000,
+    "province": ["Catanzaro", "Cosenza", "Reggio Calabria", "Vibo Valentia"]
   },
   {
     "nome": "Campania",
     "immagine": "Campania.jpg",
     "capoluogo": "Napoli",
     "estensione_km2": 13590,
-    "popolazione": 5801000
+    "popolazione": 5801000,
+    "province": ["Napoli", "Avellino", "Benevento", "Caserta"]
   },
   {
     "nome": "Emilia-Romagna",
     "immagine": "Emilia.jpg",
     "capoluogo": "Bologna",
     "estensione_km2": 22446,
-    "popolazione": 4471000
+    "popolazione": 4471000,
+    "province": ["Bologna", "Modena", "Parma", "Reggio Emilia", "Ravenna", "Forlì-Cesena", "Ferrara"]
   },
   {
     "nome": "Friuli Venezia Giulia",
     "immagine": "FVG.jpg",
     "capoluogo": "Trieste",
     "estensione_km2": 7858,
-    "popolazione": 1215000
+    "popolazione": 1215000,
+    "province": ["Trieste", "Udine", "Pordenone", "Gorizia"]
   },
   {
     "nome": "Lazio",
     "immagine": "Lazio.jpg",
     "capoluogo": "Roma",
     "estensione_km2": 17232,
-    "popolazione": 5879000
+    "popolazione": 5879000,
+    "province": ["Roma", "Frosinone", "Latina", "Rieti"]
   },
   {
     "nome": "Liguria",
     "immagine": "Liguria.jpg",
     "capoluogo": "Genova",
     "estensione_km2": 5422,
-    "popolazione": 1524000
+    "popolazione": 1524000,
+    "province": ["Genova", "Imperia", "La Spezia", "Savona"]
   },
   {
     "nome": "Lombardia",
     "immagine": "Lombardia.jpg",
     "capoluogo": "Milano",
     "estensione_km2": 23864,
-    "popolazione": 10060000
+    "popolazione": 10060000,
+    "province": ["Milano", "Bergamo", "Brescia", "Como", "Cremona", "Lecco", "Lodi", "Mantova", "Monza e Brianza", "Pavia", "Sondrio", "Varese"]
   },
   {
     "nome": "Marche",
     "immagine": "Marche.jpg",
     "capoluogo": "Ancona",
     "estensione_km2": 9401,
-    "popolazione": 1510000
+    "popolazione": 1510000,
+    "province": ["Ancona", "Ascoli Piceno", "Fermo", "Macerata"]
   },
   {
     "nome": "Molise",
     "immagine": "Molise.jpg",
     "capoluogo": "Campobasso",
     "estensione_km2": 4460,
-    "popolazione": 290000
+    "popolazione": 290000,
+    "province": ["Campobasso", "Isernia"]
   },
   {
     "nome": "Piemonte",
     "immagine": "Piemonte.jpg",
     "capoluogo": "Torino",
     "estensione_km2": 25402,
-    "popolazione": 4310000
+    "popolazione": 4310000,
+    "province": ["Torino", "Alessandria", "Asti", "Biella", "Cuneo", "Novara", "Verbano-Cusio-Ossola", "Vercelli"]
   },
   {
     "nome": "Puglia",
     "immagine": "Puglia.jpg",
     "capoluogo": "Bari",
     "estensione_km2": 19366,
-    "popolazione": 4008000
+    "popolazione": 4008000,
+    "province": ["Bari", "Barletta-Andria-Trani", "Brindisi", "Foggia", "Lecce", "Taranto"]
   },
   {
     "nome": "Sardegna",
     "immagine": "Sardegna.jpg",
     "capoluogo": "Cagliari",
     "estensione_km2": 24100,
-    "popolazione": 1632000
+    "popolazione": 1632000,
+    "province": ["Cagliari", "Nuoro", "Oristano", "Sassari"]
   },
   {
     "nome": "Sicilia",
     "immagine": "Sicilia.jpg",
     "capoluogo": "Palermo",
     "estensione_km2": 25711,
-    "popolazione": 4968000
+    "popolazione": 4968000,
+    "province": ["Palermo", "Catania", "Messina", "Agrigento", "Caltanissetta", "Enna", "Ragusa", "Siracusa"]
   },
   {
     "nome": "Toscana",
     "immagine": "Toscana.jpg",
     "capoluogo": "Firenze",
     "estensione_km2": 22987,
-    "popolazione": 3729000
+    "popolazione": 3729000,
+    "province": ["Firenze", "Grosseto", "Livorno", "Lucca", "Massa-Carrara", "Pisa", "Pistoia", "Prato"]
   },
   {
     "nome": "Trentino-Alto Adige",
     "immagine": "TAA.jpg",
     "capoluogo": "Trento",
     "estensione_km2": 13607,
-    "popolazione": 1074000
+    "popolazione": 1074000,
+    "province": ["Trento", "Bolzano"]
   },
   {
     "nome": "Umbria",
     "immagine": "Umbria.jpg",
     "capoluogo": "Perugia",
     "estensione_km2": 8456,
-    "popolazione": 866000
+    "popolazione": 866000,
+    "province": ["Perugia", "Terni"]
   },
   {
     "nome": "Valle d'Aosta",
     "immagine": "VA.jpg",
     "capoluogo": "Aosta",
     "estensione_km2": 3262,
-    "popolazione": 123000
+    "popolazione": 123000,
+    "province": ["Aosta"]
   },
   {
     "nome": "Veneto",
     "immagine": "Veneto.jpg",
     "capoluogo": "Venezia",
     "estensione_km2": 18398,
-    "popolazione": 4905000
+    "popolazione": 4905000,
+    "province": ["Venezia", "Verona", "Vicenza", "Treviso", "Rovigo", "Padova"]
   }
 ]

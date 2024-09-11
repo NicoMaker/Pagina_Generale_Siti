@@ -19,16 +19,20 @@ let cardsData;
 
 loadCards().then((data) => {
   cardsData = data;
-  suits = cardsData.briscola;
+  suits = cardsData.briscola; // Set predefinito
 });
 
 gameTypeSelect.addEventListener("change", function () {
-  if (gameTypeSelect.value === "briscola") 
-    suits = cardsData.briscola;
-  else if (gameTypeSelect.value === "scala40")
-    suits = cardsData.scala40;
-  else
+  if (gameTypeSelect.value === "briscola") suits = cardsData.briscola;
+  else if (gameTypeSelect.value === "scala40") suits = cardsData.scala40;
+  else if (gameTypeSelect.value === "regioni") suits = cardsData.regioni;
+  else if (gameTypeSelect.value === "regioni_briscola")
+    suits = cardsData.briscola.concat(cardsData.regioni);
+  else if (gameTypeSelect.value === "regioni_scala")
+    suits = cardsData.scala40.concat(cardsData.regioni);
+  else if (gameTypeSelect.value === "briscola_scala40")
     suits = cardsData.briscola.concat(cardsData.scala40);
+  else suits = cardsData.briscola.concat(cardsData.scala40, cardsData.regioni);
 });
 
 function setRandomImage(container) {

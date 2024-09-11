@@ -6,9 +6,31 @@
     "img/Briscola/Spade.png"
   ],
   "scala40": [
-    "img/Scala 40/Picche.png",
-    "img/Scala 40/Quadri.png",
-    "img/Scala 40/Cuori.png",
-    "img/Scala 40/Fiori.png"
+    "img/Scala_40/Picche.png",
+    "img/Scala_40/Quadri.png",
+    "img/Scala_40/Cuori.png",
+    "img/Scala_40/Fiori.png"
+  ],
+  "regioni": [
+    "img/Regione/Abruzzo.jpg",
+    "img/Regione/Basilicata.jpg",
+    "img/Regione/Calabria.jpg",
+    "img/Regione/Campania.jpg",
+    "img/Regione/Emilia.jpg",
+    "img/Regione/FVG.jpg",
+    "img/Regione/Lazio.jpg",
+    "img/Regione/Liguria.jpg",
+    "img/Regione/Lombardia.jpg",
+    "img/Regione/Marche.jpg",
+    "img/Regione/Molise.jpg",
+    "img/Regione/Piemonte.jpg",
+    "img/Regione/Puglia.jpg",
+    "img/Regione/Sardegna.jpg",
+    "img/Regione/Sicilia.jpg",
+    "img/Regione/Toscana.jpg",
+    "img/Regione/TAA.jpg",
+    "img/Regione/Umbria.jpg",
+    "img/Regione/VA.jpg",
+    "img/Regione/Veneto.jpg"
   ]
 }
