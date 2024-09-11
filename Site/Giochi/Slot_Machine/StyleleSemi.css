@@ -80,3 +80,9 @@ select {
   text-align: center;
   text-align: center;
 }
+
+#gameType {
+  width: 300px;
+  height: 40px;
+  font-size: 30px;
+}
