@@ -36,7 +36,7 @@ async function loadCards() {
 loadCards().then((data) => {
   if (data) {
     cardsData = data;
-    suits = cardsData.briscola; // Set predefinito
+    suits = cardsData.briscola;
   }
 });
 
