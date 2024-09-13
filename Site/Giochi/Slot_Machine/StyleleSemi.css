@@ -11,6 +11,7 @@
   overflow: hidden;
   position: relative;
   border-radius: 50%;
+ border: solid 5px darkblue;
 }
 
 h1 {
