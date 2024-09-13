@@ -25,6 +25,11 @@ button {
   background-color: azure;
 }
 
+img{
+  border-radius: 20px; 
+ border: solid 2px darkblue;
+}
+
 @media all and (max-width: 1024px) {
   img {
     height: 400px;
