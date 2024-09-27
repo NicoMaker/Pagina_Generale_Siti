@@ -3,47 +3,38 @@ function calculateFibonacci() {
     outputDiv = document.getElementById("output");
   outputDiv.textContent = "";
 
-  let fibNumbers = [1],
-    somma = 0,
-    num = parseInt(numInput.value);
+  let num = parseInt(numInput.value);
   if (isNaN(num) || num < 0) {
     outputDiv.textContent = "Inserisci un numero valido.";
     return;
   }
 
-  switch (num) {
-    case 0:
-      somma = 1;
-      break;
-
-    case 1:
-      somma = 2;
-      fibNumbers = [1, 1];
-      break;
-
-    default:
-      fibNumbers = [1, 1];
-      break;
-  }
-
-  Sequenza(num, outputDiv, somma, fibNumbers);
+  const fibNumbers = generateFibonacci(num),
+    sum = calculateSumOfLastTwo(fibNumbers);
+  displayFibonacci(fibNumbers, sum, outputDiv);
 }
 
-function Sequenza(num, outputDiv, somma, fibNumbers) {
+function generateFibonacci(num) {
+  let fibNumbers = [1];
+
+  if (num === 0) return fibNumbers;
+
+  fibNumbers = [1, 1];
+
   for (let i = 2; i <= num; i++) {
     let nextFib = fibNumbers[i - 1] + fibNumbers[i - 2];
     fibNumbers.push(nextFib);
-
-    somma = fibNumbers[i] + fibNumbers[i - 1];
   }
 
-  let output = "";
-  for (let i = 0; i < fibNumbers.length; i++) {
-    output += fibNumbers[i];
-    if (i !== fibNumbers.length - 1) {
-      output += ", ";
-    }
-  }
+  return fibNumbers;
+}
 
-  outputDiv.textContent = `Sequenza di Fibonacci: ${output}  , Somma : ${somma}`;
+function calculateSumOfLastTwo(fibNumbers) {
+  const len = fibNumbers.length;
+  return len > 1 ? fibNumbers[len - 1] + fibNumbers[len - 2] : fibNumbers[0];
+}
+
+function displayFibonacci(fibNumbers, sum, outputDiv) {
+  let output = fibNumbers.join(", ");
+  outputDiv.textContent = `Sequenza di Fibonacci: ${output} , Somma: ${sum}`;
 }

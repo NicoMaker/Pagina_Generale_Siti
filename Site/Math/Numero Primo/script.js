@@ -1,30 +1,39 @@
 function checkPrime() {
-  const number = document.getElementById("number").value,
+  const number = parseInt(document.getElementById("number").value),
     result = document.getElementById("result");
-  Result(number, result);
-}
 
-function Result(number, result) {
-  if (number < 1) {
+  if (isNaN(number)) {
+    result.innerHTML = "Inserisci un numero valido.";
+    return;
+  }
+
+  if (number < 2) {
     result.innerHTML = "Il numero deve essere maggiore di 1.";
     return;
   }
 
-  let isPrime = 0,
-    divisors = [];
+  const { isPrime, divisors } = getPrimeStatus(number);
+  displayResult(number, isPrime, divisors, result);
+}
 
-  for (let i = 0; i <= number; i++) {
+function getPrimeStatus(number) {
+  let divisors = [],
+    isPrime = 0;
+
+  for (let i = 1; i <= number; i++) {
     if (number % i === 0) {
       isPrime++;
       divisors.push(i);
     }
   }
 
-  if (isPrime == 2) result.innerHTML = `${number} e' un numero primo`;
+  return { isPrime: isPrime === 2, divisors };
+}
+
+function displayResult(number, isPrime, divisors, result) {
+  if (isPrime) result.innerHTML = `${number} è un numero primo.`;
   else
-    result.innerHTML = `
-        ${number} non e' un numero primo. <br> <br> ${isPrime} Numeri divisibili: <br> <br> ${divisors.join(
+    result.innerHTML = `${number} non è un numero primo. <br> <br> Divisori: ${divisors.join(
       ", "
-    )}
-        `;
+    )}`;
 }

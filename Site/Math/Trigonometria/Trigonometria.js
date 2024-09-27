@@ -1,17 +1,25 @@
 function CalculateTrigonometrics() {
-  const gradi = parseFloat(document.getElementById("gradi-radianti").value),
-    options = document.getElementById("options").value,
-    info = options === "Rad" ? "Radianti" : "Gradi",
-    result = options === "Rad" ? gradi : (gradi * Math.PI) / 180;
+  const gradi = getGradi(),
+    options = getOptions(),
+    info = getInfo(options),
+    result = convertToRadians(gradi, options);
 
   if (isNaN(gradi)) {
-    document.getElementById("risultato").innerHTML =
-      "Inserisci un numero valido";
+    displayInvalidInput();
     return;
   }
 
   displayResult(info, gradi, result);
 }
+const getGradi = () =>
+    parseFloat(document.getElementById("gradi-radianti").value),
+  getOptions = () => document.getElementById("options").value,
+  getInfo = (options) => (options === "Rad" ? "Radianti" : "Gradi"),
+  convertToRadians = (gradi, options) =>
+    options === "Rad" ? gradi : (gradi * Math.PI) / 180,
+  displayInvalidInput = () =>
+    (document.getElementById("risultato").innerHTML =
+      "Inserisci un numero valido");
 
 function displayResult(info, gradi, result) {
   let stampaHTML = `Dati del calcolo di ${gradi} ${info}<br><br>`;

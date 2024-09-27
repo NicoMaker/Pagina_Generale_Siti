@@ -1,13 +1,7 @@
 const output = document.getElementById("output"),
   immagine = document.getElementById("immagine"),
-  year = new Date().getFullYear();
-
-async function loadZodiacConfig() {
-  const response = await fetch("configurazioni.json");
-  return await response.json();
-}
-
-const updateImmagine = (imageSrc) =>
+  year = new Date().getFullYear(),
+  updateImmagine = (imageSrc) =>
     (immagine.innerHTML = `<img src="${imageSrc}">`),
   updateOutput = (text, isError = false) =>
     (output.innerHTML = `<p class="${
@@ -17,6 +11,11 @@ const updateImmagine = (imageSrc) =>
     day > new Date(year, month + 1, 0).getDate()
       ? undefined
       : new Date(year, month, day);
+
+async function loadZodiacConfig() {
+  const response = await fetch("configurazioni.json");
+  return await response.json();
+}
 
 function parseDate(str) {
   const [month, day] = str.split("-").map(Number);
