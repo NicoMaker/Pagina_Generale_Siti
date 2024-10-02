@@ -1,3 +1,10 @@
+let temperatureData;
+
+async function loadTemperatureData() {
+  const response = await fetch("values.json");
+  temperatureData = await response.json();
+}
+
 function convertTemperature() {
   const temperature = parseFloat(
       document.getElementById("temperatureInput").value
@@ -11,44 +18,8 @@ function convertTemperature() {
     return;
   }
 
-  let convertedTemperature;
-  let symbol;
-
-  // Conversioni
-  if (fromUnit === "celsius") {
-    if (toUnit === "fahrenheit") {
-      convertedTemperature = (temperature * 9) / 5 + 32;
-      symbol = "°F";
-    } else if (toUnit === "kelvin") {
-      convertedTemperature = temperature + 273.15;
-      symbol = "K";
-    } else {
-      convertedTemperature = temperature;
-      symbol = "°C";
-    }
-  } else if (fromUnit === "fahrenheit") {
-    if (toUnit === "celsius") {
-      convertedTemperature = ((temperature - 32) * 5) / 9;
-      symbol = "°C";
-    } else if (toUnit === "kelvin") {
-      convertedTemperature = ((temperature - 32) * 5) / 9 + 273.15;
-      symbol = "K";
-    } else {
-      convertedTemperature = temperature;
-      symbol = "°F";
-    }
-  } else if (fromUnit === "kelvin") {
-    if (toUnit === "celsius") {
-      convertedTemperature = temperature - 273.15;
-      symbol = "°C";
-    } else if (toUnit === "fahrenheit") {
-      convertedTemperature = ((temperature - 273.15) * 9) / 5 + 32;
-      symbol = "°F";
-    } else {
-      convertedTemperature = temperature;
-      symbol = "K";
-    }
-  }
+  let convertedTemperature = applyConversion(temperature, fromUnit, toUnit),
+    symbol = temperatureData.units[toUnit].symbol;
 
   document.getElementById(
     "result"
@@ -56,3 +27,16 @@ function convertTemperature() {
     2
   )} ${symbol}`;
 }
+
+function applyConversion(temperature, fromUnit, toUnit) {
+  if (fromUnit === toUnit) return temperature;
+
+  const conversionFormula =
+    temperatureData.units[fromUnit][`to${capitalizeFirstLetter(toUnit)}`];
+  return eval(conversionFormula);
+}
+
+const capitalizeFirstLetter = (string) =>
+  string.charAt(0).toUpperCase() + string.slice(1);
+
+window.onload = loadTemperatureData;

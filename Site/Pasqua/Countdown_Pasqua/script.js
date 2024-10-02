@@ -1,27 +1,32 @@
 document.addEventListener("DOMContentLoaded", function () {
   let dataCorrente = new Date(),
     annoCorrente = dataCorrente.getFullYear(),
-    pasquaDate = calculateEasterDate(annoCorrente),
-    countDownDate = pasquaDate.getTime(),
-    x = setInterval(function () {
-      let now = new Date().getTime(),
-        distance = countDownDate - now,
-        days = Math.floor(distance / (1000 * 60 * 60 * 24)),
-        hours = Math.floor(
-          (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-        ),
-        minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
-        seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    pasquaDate = calculateEasterDate(annoCorrente);
 
-      document.getElementById(
-        "timer"
-      ).innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+  if (dataCorrente >= pasquaDate) {
+    annoCorrente++;
+    pasquaDate = calculateEasterDate(annoCorrente);
+  }
 
-      if (distance < 0) {
-        clearInterval(x);
-        document.getElementById("timer").innerHTML = "Happy Easter!!";
-      }
-    }, 1000);
+  let countDownDate = pasquaDate.getTime(),
+    tempoSimulato = dataCorrente.getTime();
+
+  let x = setInterval(function () {
+    tempoSimulato += 1000;
+
+    let distance = countDownDate - tempoSimulato,
+      days = Math.floor(distance / (1000 * 60 * 60 * 24)),
+      hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+      minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
+      seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    if (distance > 0)
+      document.getElementById("timer").innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+    else {
+      clearInterval(x);
+      document.getElementById("timer").innerHTML = "Happy Easter!!";
+    }
+  }, 1000);
 
   document.getElementById("anno").innerHTML = `
       <p>&copy; ${annoCorrente} Il Mio Sito di Pasqua</p>`;

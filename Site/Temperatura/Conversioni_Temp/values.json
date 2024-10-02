@@ -1,0 +1,19 @@
+{
+  "units": {
+    "celsius": {
+      "symbol": "°C",
+      "toFahrenheit": "(temperature * 9 / 5) + 32",
+      "toKelvin": "temperature + 273.15"
+    },
+    "fahrenheit": {
+      "symbol": "°F",
+      "toCelsius": "(temperature - 32) * 5 / 9",
+      "toKelvin": "((temperature - 32) * 5 / 9) + 273.15"
+    },
+    "kelvin": {
+      "symbol": "°K",
+      "toCelsius": "temperature - 273.15",
+      "toFahrenheit": "((temperature - 273.15) * 9 / 5) + 32"
+    }
+  }
+}
