@@ -21,7 +21,9 @@ document.addEventListener("DOMContentLoaded", function () {
       seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
     if (distance > 0)
-      document.getElementById("timer").innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+      document.getElementById(
+        "timer"
+      ).innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
     else {
       clearInterval(x);
       document.getElementById("timer").innerHTML = "Happy Easter!!";
@@ -29,7 +31,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }, 1000);
 
   document.getElementById("anno").innerHTML = `
-      <p>&copy; ${annoCorrente} Il Mio Sito di Pasqua</p>`;
+    <p>&copy; ${new Date().getFullYear()} Il Mio Sito di Pasqua</p>`;
 });
 
 function calculateEasterDate(year) {
