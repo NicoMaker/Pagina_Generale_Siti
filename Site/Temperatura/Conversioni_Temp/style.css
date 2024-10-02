@@ -32,6 +32,8 @@ input {
 
 select {
   font-size: 35px;
+  width: 300px;
+  height: 40px;
 }
 
 button {
