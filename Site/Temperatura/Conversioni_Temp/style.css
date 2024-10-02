@@ -26,9 +26,12 @@ button {
   border-radius: 50px;
 }
 
-select,
 input {
   font-size: 25px;
+}
+
+select {
+  font-size: 30px;
 }
 
 button {
