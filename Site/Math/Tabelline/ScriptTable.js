@@ -3,7 +3,6 @@ function generaTabellina() {
     min = insertmin(),
     max = insertmax();
 
-  // Inverti i valori min e max se min > max
   if (min > max) {
     let temp = min;
     min = max;
