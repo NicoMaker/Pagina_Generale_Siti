@@ -13,3 +13,4 @@
 - **[Pasqua](Pasqua/Readme.md)** [2 siti]
 - **[Random](Random/Readme.md)** [12 siti]
 - **[Salute](Salute/Readme.md)** [1 sito]
+- **[Temperatura](Temperatura/Readme.md)** [1 sito]

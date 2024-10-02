@@ -1,0 +1,46 @@
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  background: linear-gradient(to right, #79e0ee, #b1afff, #79e0ee);
+}
+
+#container {
+  margin: 20px;
+}
+
+h1 {
+  color: red;
+  font-size: 50px;
+  font-weight: bold;
+}
+
+p {
+  color: black;
+  font-size: 35px;
+}
+
+select,
+input,
+button {
+  text-align: center;
+  border-radius: 50px;
+}
+
+select,
+input {
+  font-size: 25px;
+}
+
+button {
+  background-color: aqua;
+  font-size: 50px;
+  color: green;
+}
+
+.rosso{
+    color:red;
+}
+
+.blu{
+    color:blue;
+}
