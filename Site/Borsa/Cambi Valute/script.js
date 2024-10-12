@@ -6,8 +6,8 @@ function convert() {
   fetch(`https://api.exchangerate-api.com/v4/latest/${from}`)
     .then((response) => response.json())
     .then((data) => {
-      const rate = data.rates[to];
-      const convertedAmount = (amount * rate).toFixed(2);
+      const rate = data.rates[to],
+        convertedAmount = (amount * rate).toFixed(2);
       document.getElementById(
         "result"
       ).innerText = `${amount} ${from} = ${convertedAmount} ${to}`;
