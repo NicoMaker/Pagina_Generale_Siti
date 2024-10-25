@@ -1,26 +1,26 @@
 let suitImages = {},
   cardValues = {};
 
-const initialize = () =>
+const initialize = () => {
     document
       .getElementById("generateButton")
-      .addEventListener("click", startCardAnimation),
-  displayCard = (card) =>
-    (document.getElementById(
+      .addEventListener("click", startCardAnimation);
+  },
+  displayCard = (card) => {
+    document.getElementById(
       "card"
-    ).innerHTML = `<img src="${card.image}" alt="${card.suit}"> <br> ${card.value}`),
+    ).innerHTML = `<img src="${card.image}" alt="${card.suit}"> <br> ${card.value}`;
+  },
   isValidGameType = (gameType) => Object.keys(cardValues).includes(gameType),
   getRandomCard = (gameType) => {
-    return {
-      suit: (suits = Object.keys(cardValues[gameType]))[
-        Math.floor(Math.random() * suits.length)
-      ],
-      value: (values =
-        cardValues[gameType][suits[Math.floor(Math.random() * suits.length)]])[
-        Math.floor(Math.random() * values.length)
-      ],
-      image: suitImages[suits[Math.floor(Math.random() * suits.length)]],
-    };
+    if (!isValidGameType(gameType)) return null;
+    const suits = Object.keys(cardValues[gameType]),
+      suit = suits[Math.floor(Math.random() * suits.length)],
+      values = cardValues[gameType][suit],
+      value = values[Math.floor(Math.random() * values.length)],
+      image = suitImages[suit];
+
+    return { suit, value, image };
   };
 
 function fetchData() {
@@ -42,7 +42,7 @@ function generateCard() {
   }
 
   const card = getRandomCard(gameType);
-  displayCard(card);
+  if (card) displayCard(card);
 }
 
 function startCardAnimation() {

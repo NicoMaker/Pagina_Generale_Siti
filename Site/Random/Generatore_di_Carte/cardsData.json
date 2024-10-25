@@ -7,7 +7,8 @@
     "Cuori": "Img/Scala 40/Cuori.png",
     "Quadri": "Img/Scala 40/Quadri.png",
     "Fiori": "Img/Scala 40/Fiori.png",
-    "Picche": "Img/Scala 40/Picche.png"
+    "Picche": "Img/Scala 40/Picche.png",
+    "Jolly": "Img/Scala 40/Jolly.jpg"
   },
   "cardValues": {
     "briscola": {
@@ -98,7 +99,8 @@
         "J",
         "Q",
         "K"
-      ]
+      ],
+      "Jolly": ["Rosso", "Nero"]
     },
     "tutti": {
       "Coppe": ["Asso", "2", "3", "4", "5", "6", "7", "Fante", "Cavallo", "Re"],
@@ -186,7 +188,8 @@
         "J",
         "Q",
         "K"
-      ]
+      ],
+      "Jolly": ["Rosso", "Nero"]
     }
   }
 }
