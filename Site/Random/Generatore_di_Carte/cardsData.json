@@ -37,7 +37,8 @@
         "Fante",
         "Cavallo",
         "Re"
-      ]
+      ],
+      "Jolly": ["Rosso", "Nero"]
     },
     "scala-40": {
       "Cuori": [
