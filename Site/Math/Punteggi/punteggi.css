@@ -84,8 +84,7 @@ label {
   gap: 8px;
   cursor: pointer;
   padding: 8px 16px;
-  border: 5px solid red;
-  border-radius: 5px;
+  border: 2px solid #007bff;
   transition: background-color 0.3s, color 0.3s;
   border-radius: 20px;
 }
