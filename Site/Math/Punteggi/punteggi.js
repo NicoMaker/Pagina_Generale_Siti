@@ -1,4 +1,5 @@
 const partecipanti = [];
+let modalitàVittoria = "max";
 
 function aggiungiPartecipante() {
   const nome = document.getElementById("participant-name").value;
@@ -17,11 +18,10 @@ function aggiungiPunti() {
     ).value;
   if (!isNaN(punti)) {
     if (selectedParticipantIndex === "all") {
-      // Aggiungi punti a tutti i partecipanti
       for (const partecipante of partecipanti) partecipante.punti += punti;
-    } else if (selectedParticipantIndex >= 0)
-      // Aggiungi punti solo al partecipante selezionato
+    } else if (selectedParticipantIndex >= 0) {
       partecipanti[selectedParticipantIndex].punti += punti;
+    }
     aggiornaListaPartecipanti();
     document.getElementById("points").value = "0";
   }
@@ -34,22 +34,29 @@ function togliPunti() {
     ).value;
   if (!isNaN(punti)) {
     if (selectedParticipantIndex === "all") {
-      // Togli punti a tutti i partecipanti
       for (const partecipante of partecipanti) partecipante.punti -= punti;
-    } else if (selectedParticipantIndex >= 0)
-      // Togli punti solo al partecipante selezionato
+    } else if (selectedParticipantIndex >= 0) {
       partecipanti[selectedParticipantIndex].punti -= punti;
+    }
     aggiornaListaPartecipanti();
     document.getElementById("points").value = "0";
   }
 }
 
+function impostaModalitàVittoria(modalità) {
+  modalitàVittoria = modalità;
+  aggiornaListaPartecipanti();
+}
+
 function trovaVincitore() {
   let vincitore = null,
-    massimoPunti = -Infinity;
+    massimoPunti = modalitàVittoria === "max" ? -Infinity : Infinity;
 
   for (const partecipante of partecipanti) {
-    if (partecipante.punti > massimoPunti) {
+    if (
+      (modalitàVittoria === "max" && partecipante.punti > massimoPunti) ||
+      (modalitàVittoria === "min" && partecipante.punti < massimoPunti)
+    ) {
       vincitore = partecipante.nome;
       massimoPunti = partecipante.punti;
     } else if (partecipante.punti === massimoPunti) vincitore = "Pareggio";
@@ -62,8 +69,8 @@ function trovaVincitore() {
 function aggiornaListaPartecipanti() {
   const listaPartecipanti = document.getElementById("participant-list");
   (listaPartecipanti.innerHTML = ""),
-    (partecipantiOrdinati = [...partecipanti].sort(
-      (a, b) => b.punti - a.punti
+    (partecipantiOrdinati = [...partecipanti].sort((a, b) =>
+      modalitàVittoria === "max" ? b.punti - a.punti : a.punti - b.punti
     ));
 
   for (const partecipante of partecipantiOrdinati) {
@@ -75,15 +82,15 @@ function aggiornaListaPartecipanti() {
 
 function aggiornaSelezionePartecipante() {
   const select = document.getElementById("selected-participant");
-  select.innerHTML = '<option value="-1">Seleziona un partecipante</option>';
-  select.innerHTML += '<option value="all">Tutti</option>';
+  select.innerHTML =
+    '<option value="-1">Seleziona un partecipante</option><option value="all">Tutti</option>';
 
-  for (let i = 0; i < partecipanti.length; i++) {
+  partecipanti.forEach((partecipante, index) => {
     const option = document.createElement("option");
-    option.value = i;
-    option.textContent = partecipanti[i].nome;
+    option.value = index;
+    option.textContent = partecipante.nome;
     select.appendChild(option);
-  }
+  });
 }
 
 aggiornaSelezionePartecipante();

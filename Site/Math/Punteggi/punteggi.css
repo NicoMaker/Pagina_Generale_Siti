@@ -1,68 +1,110 @@
 body {
-    font-family: Arial, sans-serif;
-    text-align: center;
-    background: linear-gradient(to right, #79E0EE, #B1AFFF, #79E0EE);
+  font-family: Arial, sans-serif;
+  text-align: center;
+  background: linear-gradient(to right, #79e0ee, #b1afff, #79e0ee);
 }
 
 #participants {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 
 h1 {
-    color: red;
-    font-size: 60px;
-    font-weight: bold;
+  color: red;
+  font-size: 60px;
+  font-weight: bold;
 }
 
 h2 {
-    color: green;
-    font-size: 50px;
+  color: green;
+  font-size: 50px;
 }
 
 input {
-    border-radius: 50px;
-    text-align: center;
+  border-radius: 50px;
+  text-align: center;
 }
 
 button {
-    border-radius: 50px;
-    font-size: 20px;
+  border-radius: 50px;
+  font-size: 20px;
 }
 
 label {
-    font-size: 20px;
+  font-size: 20px;
 }
 
 .aggiungi {
-    color: blue;
-    background-color: white;
+  color: blue;
+  background-color: white;
 }
 
 .aggiungipunti {
-    color: red;
-    background-color: yellow;
+  color: red;
+  background-color: yellow;
 }
 
 .toglipunti {
-    background-color: red;
-    color: azure;
+  background-color: red;
+  color: azure;
 }
 
 .end {
-    color: white;
-    font-size: 45px;
-    background-color: black;
+  color: white;
+  font-size: 45px;
+  background-color: black;
 }
 
 ul {
-    font-size: 35px;
-    list-style: none;
+  font-size: 35px;
+  list-style: none;
 }
 
 select {
-    border-radius: 50px;
-    text-align: center;
-    font-size: 20px;
-    color: aquamarine;
-    background-color: black;
+  border-radius: 50px;
+  text-align: center;
+  font-size: 20px;
+  color: aquamarine;
+  background-color: black;
+}
+
+label {
+  font-size: 35px;
+}
+
+.winning-mode-container {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin: 15px 0;
+}
+
+.winning-mode-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  padding: 8px 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.winning-mode-option input[type="radio"] {
+  display: none;
+}
+
+.winning-mode-option span {
+  font-weight: bold;
+}
+
+.winning-mode-option input[type="radio"]:checked + span {
+  background-color: #007bff;
+  color: #fff;
+  padding: 4px 12px;
+  border-radius: 5px;
+}
+
+.winning-mode-option:hover {
+  background-color: #f0f0f0;
+  border-color: #007bff;
 }
