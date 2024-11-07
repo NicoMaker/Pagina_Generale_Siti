@@ -61,9 +61,12 @@ function trovaVincitore() {
 
 function aggiornaListaPartecipanti() {
   const listaPartecipanti = document.getElementById("participant-list");
-  listaPartecipanti.innerHTML = "";
+  (listaPartecipanti.innerHTML = ""),
+    (partecipantiOrdinati = [...partecipanti].sort(
+      (a, b) => b.punti - a.punti
+    ));
 
-  for (const partecipante of partecipanti) {
+  for (const partecipante of partecipantiOrdinati) {
     const listItem = document.createElement("li");
     listItem.textContent = `${partecipante.nome} - Punti: ${partecipante.punti}`;
     listaPartecipanti.appendChild(listItem);
