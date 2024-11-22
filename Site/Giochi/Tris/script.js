@@ -58,7 +58,7 @@ function checkWin() {
 function endGame(winner) {
   gameEnded = true;
   let message =
-    winner === "draw" ? "It's a draw!" : "Player " + winner + " wins!";
+    winner === "draw" ? "It's a draw!" : `Player ${winner} 🏆🎉😊 wins!`;
   alert(message);
 }
 

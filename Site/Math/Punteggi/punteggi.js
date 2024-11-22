@@ -17,11 +17,11 @@ function aggiungiPunti() {
       "selected-participant"
     ).value;
   if (!isNaN(punti)) {
-    if (selectedParticipantIndex === "all") {
+    if (selectedParticipantIndex === "all")
       for (const partecipante of partecipanti) partecipante.punti += punti;
-    } else if (selectedParticipantIndex >= 0) {
+    else if (selectedParticipantIndex >= 0)
       partecipanti[selectedParticipantIndex].punti += punti;
-    }
+
     aggiornaListaPartecipanti();
     document.getElementById("points").value = "0";
   }
@@ -33,11 +33,10 @@ function togliPunti() {
       "selected-participant"
     ).value;
   if (!isNaN(punti)) {
-    if (selectedParticipantIndex === "all") {
+    if (selectedParticipantIndex === "all") 
       for (const partecipante of partecipanti) partecipante.punti -= punti;
-    } else if (selectedParticipantIndex >= 0) {
+    else if (selectedParticipantIndex >= 0)
       partecipanti[selectedParticipantIndex].punti -= punti;
-    }
     aggiornaListaPartecipanti();
     document.getElementById("points").value = "0";
   }
@@ -62,7 +61,7 @@ function trovaVincitore() {
     } else if (partecipante.punti === massimoPunti) vincitore = "Pareggio";
   }
 
-  if (vincitore) alert(`Il vincitore è: ${vincitore}`);
+  if (vincitore) alert(`Il vincitore è: ${vincitore} 🏆🎉😊`);
   else alert("Nessun vincitore.");
 }
 

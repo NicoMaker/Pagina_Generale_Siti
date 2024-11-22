@@ -30,7 +30,7 @@ function dropPiece(col) {
     );
     cell.classList.add(currentPlayer);
     if (checkWin(row, col)) {
-      alert(`Il giocatore ${currentPlayer} ha vinto!`);
+      alert(`Il giocatore ${currentPlayer} 🏆🎉😊 ha vinto!`);
     } else {
       currentPlayer = currentPlayer === "rosso" ? "giallo" : "rosso";
     }
