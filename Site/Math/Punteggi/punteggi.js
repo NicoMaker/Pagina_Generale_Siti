@@ -33,7 +33,7 @@ function togliPunti() {
       "selected-participant"
     ).value;
   if (!isNaN(punti)) {
-    if (selectedParticipantIndex === "all") 
+    if (selectedParticipantIndex === "all")
       for (const partecipante of partecipanti) partecipante.punti -= punti;
     else if (selectedParticipantIndex >= 0)
       partecipanti[selectedParticipantIndex].punti -= punti;
@@ -61,8 +61,13 @@ function trovaVincitore() {
     } else if (partecipante.punti === massimoPunti) vincitore = "Pareggio";
   }
 
-  if (vincitore) alert(`Il vincitore è: ${vincitore} 🏆🎉😊`);
-  else alert("Nessun vincitore.");
+  alert(
+    vincitore === "Pareggio"
+      ? `${vincitore}`
+      : vincitore
+      ? `Il vincitore è: ${vincitore} 🏆🎉😊`
+      : "Nessun vincitore."
+  );
 }
 
 function aggiornaListaPartecipanti() {
