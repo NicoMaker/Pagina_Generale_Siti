@@ -64,7 +64,7 @@ function startCountdown(targetDate) {
       ${hours} ${pluralize(hours, "ora", "ore")}, 
       ${minutes} ${pluralize(minutes, "minuto", "minuti")} e 
       ${seconds} ${pluralize(seconds, "secondo", "secondi")} 
-      all'apertura del calendario dell'avvento di Dicembre!</p>
+      all'apertura del calendario dell'avvento!</p>
     `;
   }
 
