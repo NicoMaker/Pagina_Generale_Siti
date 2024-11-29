@@ -59,7 +59,11 @@ function startCountdown(targetDate) {
       value === 1 ? singular : plural;
 
     countdownElement.innerHTML = `
-      <p>${pluralize(days, "Manca", "Mancano")}  ${days} ${pluralize(days, "giorno", "giorni")}, 
+      <p>${pluralize(days, "Manca", "Mancano")}  ${days} ${pluralize(
+      days,
+      "giorno",
+      "giorni"
+    )}, 
       ${hours} ${pluralize(hours, "ora", "ore")}, 
       ${minutes} ${pluralize(minutes, "minuto", "minuti")} e 
       ${seconds} ${pluralize(seconds, "secondo", "secondi")} 
@@ -72,13 +76,15 @@ function startCountdown(targetDate) {
 }
 
 function showDaysLeft(day, daysLeft) {
-  daysLeft > 0
-    ? alert(
-        `Manca ${daysLeft} ${
-          daysLeft === 1 ? "giorno" : "giorni"
-        } al giorno ${day}`
-      )
-    : (window.location.href = `Giorni/${day}.html`);
+  if (daysLeft > 0) {
+    alert(
+      `${
+        daysLeft === 1
+          ? `Manca ${daysLeft} giorno`
+          : `Mancano ${daysLeft} giorni`
+      } al giorno ${day}`
+    );
+  } else window.location.href = `Giorni/${day}.html`;
 }
 
 window.onload = generateCalendarLinks;
