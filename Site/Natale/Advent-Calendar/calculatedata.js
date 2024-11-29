@@ -55,12 +55,11 @@ function startCountdown(targetDate) {
       minutes = Math.floor((diffTime % (1000 * 60 * 60)) / (1000 * 60)),
       seconds = Math.floor((diffTime % (1000 * 60)) / 1000);
 
-    // Funzione per gestire il singolare/plurale
     const pluralize = (value, singular, plural) =>
       value === 1 ? singular : plural;
 
     countdownElement.innerHTML = `
-      <p>Mancano ${days} ${pluralize(days, "giorno", "giorni")}, 
+      <p>${pluralize(days, "Manca", "Mancano")}  ${days} ${pluralize(days, "giorno", "giorni")}, 
       ${hours} ${pluralize(hours, "ora", "ore")}, 
       ${minutes} ${pluralize(minutes, "minuto", "minuti")} e 
       ${seconds} ${pluralize(seconds, "secondo", "secondi")} 
