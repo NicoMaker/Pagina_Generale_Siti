@@ -11,6 +11,7 @@
 - **[Esponenziali e Radici](Esponenziali%20%20e%20Radici)**
 - **[Euclide](Euclide)**
 - **[Fattoriale](Fattoriale)**
+- **[Fibonacci](Fibonacci)**
 - **[Logaritmi](Logaritmi)**
 - **[Numero Primo](Numero%20Primo)**
 - **[Pitagora](Pitagora)**
