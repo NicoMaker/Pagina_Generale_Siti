@@ -35,3 +35,11 @@ async function displayCategory(categoryName) {
     } else console.error(`La categoria '${categoryName}' non è stata trovata.`);
   }
 }
+
+function contactEmail(emailsubject, subjetmail) {
+  const email = emailsubject,
+    subject = `info sul sito ${subjetmail}`,
+    mailtoLink = `mailto:${email}?subject=${encodeURIComponent(subject)}`;
+
+  window.location.href = mailtoLink;
+}
