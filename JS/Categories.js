@@ -44,4 +44,4 @@ function contactEmail(emailsubject, subjetmail) {
   window.location.href = mailtoLink;
 }
 
-const contactell = () => window.location.href = "tel:+393337024320";
+const contactCell = () => window.location.href = "tel:+393337024320";
