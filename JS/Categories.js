@@ -44,4 +44,9 @@ function contactEmail(emailsubject, subjetmail) {
   window.location.href = mailtoLink;
 }
 
-const contactCell = () => window.location.href = "tel:+393337024320";
+const contactCell = () => (window.location.href = "tel:+393337024320"),
+  openWhatsAppChat = () => {
+    const phoneNumber = "+393337024320",
+      message = encodeURIComponent("Info sul sito Pagina Genrale Siti");
+    window.location.href = `https://wa.me/${phoneNumber}?text=${message}`;
+  };
