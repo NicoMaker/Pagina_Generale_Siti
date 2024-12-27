@@ -1,3 +1,4 @@
+/* Applicazioni generali */
 body {
   font-family: Arial, sans-serif;
   text-align: center;
@@ -48,10 +49,26 @@ label {
   color: azure;
 }
 
-.end {
+.end,
+.reset {
   color: white;
   font-size: 45px;
+}
+
+.end {
   background-color: black;
+}
+
+.reset {
+  background-color: red;
+}
+
+.end:hover,
+.reset:hover,
+.aggiungi:hover,
+.aggiungipunti:hover,
+.toglipunti:hover {
+  background-color: green;
 }
 
 ul {
@@ -94,7 +111,7 @@ label {
 }
 
 .winning-mode-option span {
- font-weight: bold;
+  font-weight: bold;
 }
 
 .winning-mode-option input[type="radio"]:checked + span {
@@ -107,4 +124,37 @@ label {
 .winning-mode-option:hover {
   background-color: #f0f0f0;
   border-color: #007bff;
+}
+
+/* Bottoni generali senza animazione */
+button {
+  border-radius: 50px;
+  font-size: 20px;
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+}
+
+/* Bottoni normali - senza effetti di hover o transizioni */
+button:hover {
+  background-color: red; /* Colore di sfondo quando il mouse passa sopra */
+  transform: none; /* Non si applica l'ingrandimento */
+  color: white; /* Colore del testo */
+}
+
+button:focus {
+  outline: none;
+}
+
+/* Cestino specifico */
+.trash-button {
+  background-color: transparent;
+  color: red;
+  font-size: 30px;
+  transition: transform 0.2s ease, color 0.3s ease;
+}
+
+button.trash-button:hover {
+  color: darkred;
+  transform: scale(1.2); /* Ingrandimento del bottone del cestino */
 }
