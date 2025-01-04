@@ -32,6 +32,7 @@ h1 {
   border-radius: 10px; /* Angoli arrotondati */
   background-color: red; /* Sfondo rosso */
   padding: 5px; /* Margine interno */
+  border-radius: 50px;
 }
 
 .sub-table table {
@@ -74,6 +75,7 @@ input[type="button"] {
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
   cursor: pointer;
   font-size: 30px;
+  border-radius: 50px;
 }
 
 input[type="button"]:hover {

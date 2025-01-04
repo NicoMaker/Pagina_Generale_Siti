@@ -3,7 +3,9 @@
 
 /* Sfondo generale e titolo */
 body {
-  background-color: #f2f8f1; /* Verde menta chiaro per il corpo */
+  background-image: url(Conigletto.jpg);
+  background-size: cover;
+  background-position: center;
   color: #fff;
   text-align: center;
   font-family: Arial, sans-serif;
@@ -11,7 +13,7 @@ body {
 
 h1 {
   font-family: "Dancing Script", cursive;
-  color: #ff99cc; /* Rosa pastello per il titolo */
+  color: green; /* Rosa pastello per il titolo */
   text-shadow: 2px 2px 4px white;
   font-size: 50px;
 }
@@ -26,10 +28,11 @@ h1 {
 
 /* Stile delle cartelle */
 .sub-table {
-  border: 3px solid #ffcc99; /* Giallo pastello per il contorno */
+  border: 3px solid blue; /* Giallo pastello per il contorno */
   border-radius: 10px; /* Angoli arrotondati */
-  background-color: #fff5e6; /* Sfondo giallo chiaro */
+  background-color: lightgreen; /* Sfondo giallo chiaro */
   padding: 5px; /* Margine interno */
+  border-radius: 50px;
 }
 
 .sub-table table {
@@ -72,6 +75,7 @@ input[type="button"] {
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
   cursor: pointer;
   font-size: 30px;
+  border-radius: 50px;
 }
 
 input[type="button"]:hover {
