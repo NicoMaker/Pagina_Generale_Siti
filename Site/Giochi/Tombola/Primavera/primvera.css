@@ -1,102 +1,86 @@
 @import url("https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;wght@100&display=swap");
 
-body,
-table {
-  font-family: Arial;
-}
-
+/* Sfondo generale e titolo */
 body {
+  background-color: #f2f8f1; /* Verde menta chiaro per il corpo */
   color: #fff;
   text-align: center;
-  border: 5px;
-  background: linear-gradient(to right, #00ff9d, #21b17a);
-  background-size: cover;
+  font-family: Arial, sans-serif;
 }
 
 h1 {
   font-family: "Dancing Script", cursive;
-  color: red;
-  text-shadow: 2px 2px 4px black;
+  color: #ff99cc; /* Rosa pastello per il titolo */
+  text-shadow: 2px 2px 4px white;
+  font-size: 50px;
 }
 
-table {
-  width: 90%;
-  height: 500px;
-  margin: 0 auto;
+/* Contenitore delle cartelle */
+.table-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px; /* Spaziatura tra le cartelle */
 }
 
-td {
+/* Stile delle cartelle */
+.sub-table {
+  border: 3px solid #ffcc99; /* Giallo pastello per il contorno */
+  border-radius: 10px; /* Angoli arrotondati */
+  background-color: #fff5e6; /* Sfondo giallo chiaro */
+  padding: 5px; /* Margine interno */
+}
+
+.sub-table table {
+  border-spacing: 10px; /* Spaziatura tra le celle */
+}
+
+.sub-table td {
   text-align: center;
+  width: 60px;
+  height: 60px;
   font-size: 250%;
+  border: 2px solid #ffcc99; /* Bordo giallo pastello */
+  color: #ff66cc; /* Rosa per i numeri */
+  background-color: #ffffff; /* Sfondo bianco per i numeri */
+  border-radius: 50%; /* Celle rotonde */
+  text-shadow: 2px 2px 4px #000;
   cursor: pointer;
-  background-color: #eee;
-  color: #333;
-  border-radius: 9px;
-  margin-bottom: 20px;
-
-  background-color: white;
-  color: blue;
-
-  border-radius: 50px;
-
-  text-shadow: 2px 2px 4px #000000;
-
-  border: solid 2px orange;
 }
 
+/* Effetti per i numeri selezionati */
 td.blink {
-  background-color: chartreuse;
-  color: blue;
+  background-color: #99ff99; /* Verde pastello per i numeri lampeggianti */
   font-weight: bold;
 }
 
 td.on {
-  color: blue;
-  background-color: yellow;
+  background-color: #ffff99; /* Giallo pastello per i numeri attivi */
   font-weight: bold;
 }
 
-textarea {
+/* Stile per i bottoni */
+input[type="button"] {
+  font-size: 18px;
+  padding: 10px 20px;
+  margin: 10px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(to bottom, #ff99cc, #ff66cc); /* Gradiente rosa */
   color: white;
-  background-color: #000;
-  overflow: visible;
-  font-weight: bold;
-  width: 90%;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+  font-size: 30px;
 }
 
-input {
-  border-radius: 50px;
-  color: black;
-  background-color: yellow;
-  margin: 3px 0px;
-  font-size: 50px;
-  padding: 2px;
+input[type="button"]:hover {
+  background: linear-gradient(to bottom, #ff66cc, #ff99cc); /* Inversione dei colori al passaggio del mouse */
+  transform: scale(1.05);
+  transition: 0.2s;
 }
 
-.contenitore {
-  margin: 40px;
-  background-color: orange;
-}
-
-@media all and (max-width: 1024px) {
-  td {
-    font-size: 55px;
-    padding: 10px;
-  }
-
-  h1 {
-    font-size: 100px;
-  }
-}
-
-@media all and (min-width: 1024px) {
-  td {
-    font-size: 40px;
-    padding: 5px;
-  }
-
-  h1 {
-    font-size: 60px;
-  }
+input[type="button"]:active {
+  background: #ff3385; /* Rosa acceso per il bottone attivo */
+  transform: scale(1);
 }

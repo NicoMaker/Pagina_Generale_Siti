@@ -1,27 +1,27 @@
 <!DOCTYPE html>
-<html>
+<html lang="it">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="inverno.css">
     <link rel="icon" href="https://t4.ftcdn.net/jpg/00/58/07/35/360_F_58073555_yh2WGekTyxyQwd1ch5dp7hR99PNx0vap.jpg"
         type="image/jpg">
-
     <title>Tombola Tabellone Natale</title>
-    <script src="../Script.js"></script>
+    <script src="../Script.js" defer></script>
+</head>
 
 <body>
     <h1 id="tombtit">Tombola Tabellone Natale</h1>
 
-    <div class="contenitore">
-        <br>
-        <table>
-            <script type="text/javascript">tombola_writeln();</script>
-        </table>
-        <br>
+    <div class="table-wrapper" id="tombola-container">
+        <!-- La tombola verrà generata qui -->
     </div>
+
+    <br>
     <form name="f1">
-        <input type="button" value="Numero" onclick="extractRandom()" />
-        <input type="button" value="Reset" onclick="window.location.reload()" />
+        <input type="button" value="Estrai Numero" onclick="extractRandom()" />
+        <input type="button" value="Resetta Tabellone" onclick="window.location.reload()" />
     </form>
 </body>
 

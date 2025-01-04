@@ -71,15 +71,29 @@ init();
 document.onkeypress = manageKeyb;
 
 function tombola_writeln() {
-  let nr;
-  for (let yy = 0; yy < 9; yy++) {
-    document.writeln("<tr>");
-    for (let xx = 0; xx < 10; xx++) {
-      nr = yy * 10 + xx + 1;
-      document.writeln(
-        '<td id="nr' + nr + '" onclick="choseMe(this)">' + nr + "</td>"
-      );
+  const container = document.getElementById("tombola-container");
+  let tableContent = '';
+
+  for (let block = 0; block < 6; block++) { // 6 blocchi (cartelle)
+    tableContent += '<div class="sub-table"><table>';
+    
+    for (let row = 0; row < 3; row++) { // Ogni cartella ha 3 righe
+      tableContent += '<tr>';
+      
+      for (let col = 0; col < 5; col++) { // Ogni riga ha 5 numeri
+        let number = block * 15 + row * 5 + col + 1; // Calcola il numero corrente
+        tableContent += `<td id="nr${number}" onclick="choseMe(this)">${number}</td>`;
+      }
+      
+      tableContent += '</tr>';
     }
-    document.writeln("</tr>");
+    
+    tableContent += '</table></div>';
   }
+
+  container.innerHTML = tableContent; // Aggiorna il contenuto del contenitore
 }
+
+// Chiama la funzione per generare la tombola
+document.addEventListener("DOMContentLoaded", tombola_writeln);
+
