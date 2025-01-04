@@ -74,20 +74,21 @@ function tombola_writeln() {
   const container = document.getElementById("tombola-container");
   let tableContent = '';
 
-  for (let block = 0; block < 6; block++) { // 6 blocchi (cartelle)
+  for (let block = 0; block < 6; block++) { // 6 tabelle
     tableContent += '<div class="sub-table"><table>';
-    
-    for (let row = 0; row < 3; row++) { // Ogni cartella ha 3 righe
+
+    for (let row = 0; row < 3; row++) { // Ogni tabella ha 3 righe
       tableContent += '<tr>';
-      
+
       for (let col = 0; col < 5; col++) { // Ogni riga ha 5 numeri
-        let number = block * 15 + row * 5 + col + 1; // Calcola il numero corrente
+        // Calcola il numero corrente basato su blocco, riga e colonna
+        let number = block * 5 + row * 10 + col + 1; 
         tableContent += `<td id="nr${number}" onclick="choseMe(this)">${number}</td>`;
       }
-      
+
       tableContent += '</tr>';
     }
-    
+
     tableContent += '</table></div>';
   }
 
