@@ -123,7 +123,7 @@ input[type="button"]:active {
 
   /* Aumentare la dimensione dei numeri per tablet */
   .sub-table td {
-    font-size: 300%; /* Numeri più grandi su tablet */
+    font-size: 250%; /* Numeri più grandi su tablet */
     width: 80px; /* Aumentare anche la larghezza delle celle */
     height: 80px; /* Aumentare anche l'altezza delle celle */
   }
@@ -137,7 +137,7 @@ input[type="button"]:active {
 
   /* Aumentare la dimensione dei numeri per dispositivi mobili */
   .sub-table td {
-    font-size: 300%; /* Numeri più grandi su mobile */
+    font-size: 250%; /* Numeri più grandi su mobile */
     width: 80px; /* Aumentare anche la larghezza delle celle */
     height: 80px; /* Aumentare anche l'altezza delle celle */
   }
