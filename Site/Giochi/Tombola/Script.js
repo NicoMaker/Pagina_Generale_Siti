@@ -45,7 +45,7 @@ function resetNr(nn) {
 
 function dumpHist() {
   let ss = Array.from(hist).join(" ");
-  document.getElementById("dumplist").innerHTML = ss;
+  console.log("Numeri estratti: " + ss); // Puoi usare un elemento HTML per visualizzarli
 }
 
 function choseMe(anode) {
@@ -65,37 +65,42 @@ function extractRandom() {
   if (!hist.has(nn)) selectNr(nn);
 }
 
-const manageKeyb = () => extractRandom();
+async function fetchTables() {
+  const response = await fetch("../tables.json");
+  const data = await response.json();
+  return data.tables;
+}
 
-init();
-document.onkeypress = manageKeyb;
-
-function tombola_writeln() {
+function generateTables(tables) {
   const container = document.getElementById("tombola-container");
   let tableContent = "";
 
-  for (let block = 0; block < 6; block++) {
-    // 6 blocchi (cartelle)
-    tableContent += '<div class="sub-table"><table>';
+  tables.forEach((table) => {
+    tableContent += `<div class="sub-table"><table>`;
 
-    for (let row = 0; row < 3; row++) {
-      // Ogni cartella ha 3 righe
+    for (let i = 0; i < table.numbers.length; i += 5) {
       tableContent += "<tr>";
 
-      for (let col = 0; col < 5; col++) {
-        // Ogni riga ha 5 numeri
-        let number = block * 15 + row * 5 + col + 1; // Calcola il numero corrente
-        tableContent += `<td id="nr${number}" onclick="choseMe(this)">${number}</td>`;
+      for (let j = 0; j < 5; j++) {
+        const number = table.numbers[i + j];
+        if (number) {
+          tableContent += `<td id="nr${number}" onclick="choseMe(this)">${number}</td>`;
+        } else {
+          tableContent += "<td></td>";
+        }
       }
 
       tableContent += "</tr>";
     }
 
     tableContent += "</table></div>";
-  }
+  });
 
-  container.innerHTML = tableContent; // Aggiorna il contenuto del contenitore
+  container.innerHTML = tableContent;
 }
 
-// Chiama la funzione per generare la tombola
-document.addEventListener("DOMContentLoaded", tombola_writeln);
+document.addEventListener("DOMContentLoaded", async () => {
+  init();
+  const tables = await fetchTables();
+  generateTables(tables);
+});
