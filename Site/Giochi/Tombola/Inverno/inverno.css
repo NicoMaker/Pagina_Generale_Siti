@@ -114,3 +114,31 @@ input[type="button"]:active {
   transform: scale(1.1); /* Leggero ingrandimento */
   transition: all 0.3s ease; /* Transizione fluida */
 }
+
+/* Media query per tablet */
+@media (max-width: 1024px) {
+  .sub-table {
+    width: calc(50% - 20px); /* 2 tabelle per riga su tablet */
+  }
+
+  /* Aumentare la dimensione dei numeri per tablet */
+  .sub-table td {
+    font-size: 300%; /* Numeri più grandi su tablet */
+    width: 80px; /* Aumentare anche la larghezza delle celle */
+    height: 80px; /* Aumentare anche l'altezza delle celle */
+  }
+}
+
+/* Media query per dispositivi mobili */
+@media (max-width: 768px) {
+  .sub-table {
+    width: 100%; /* 1 tabella per riga su dispositivi mobili */
+  }
+
+  /* Aumentare la dimensione dei numeri per dispositivi mobili */
+  .sub-table td {
+    font-size: 300%; /* Numeri più grandi su mobile */
+    width: 80px; /* Aumentare anche la larghezza delle celle */
+    height: 80px; /* Aumentare anche l'altezza delle celle */
+  }
+}

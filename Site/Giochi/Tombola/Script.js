@@ -43,10 +43,7 @@ function resetNr(nn) {
   dumpHist();
 }
 
-function dumpHist() {
-  let ss = Array.from(hist).join(" ");
-  console.log("Numeri estratti: " + ss); // Puoi usare un elemento HTML per visualizzarli
-}
+const dumpHist = () => (ss = Array.from(hist).join(" "));
 
 function choseMe(anode) {
   let id = anode.id,
