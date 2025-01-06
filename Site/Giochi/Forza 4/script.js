@@ -7,6 +7,7 @@ let currentPlayer = "rosso",
 // Funzione per generare la griglia di gioco
 function createBoard() {
   const boardDiv = document.getElementById("board");
+  boardDiv.innerHTML = ""; // Resetta la griglia esistente
   for (let i = 0; i < rows; i++) {
     for (let j = 0; j < cols; j++) {
       const cell = document.createElement("div");
@@ -30,9 +31,11 @@ function dropPiece(col) {
     );
     cell.classList.add(currentPlayer);
     if (checkWin(row, col)) {
+      highlightWinningCellsAnimation(); // Attiva l'animazione
       alert(`Il giocatore ${currentPlayer} 🏆🎉😊 ha vinto!`);
     } else {
       currentPlayer = currentPlayer === "rosso" ? "giallo" : "rosso";
+      updateCurrentPlayerIndicator();
     }
   }
 }
@@ -52,12 +55,15 @@ function checkWin(row, col) {
   const directions = [
     [0, 1], // Destra
     [1, 0], // Giù
-    [1, 1], // Giù a destra
-    [1, -1], // Giù a sinistra
+    [1, 1], // Diagonale a destra
+    [1, -1], // Diagonale a sinistra
   ];
 
   for (const [dx, dy] of directions) {
     let count = 1;
+    const winningCells = [[row, col]];
+
+    // Controlla nella direzione positiva
     for (let i = 1; i < 4; i++) {
       const newRow = row + i * dx,
         newCol = col + i * dy;
@@ -67,10 +73,13 @@ function checkWin(row, col) {
         newCol >= 0 &&
         newCol < cols &&
         gameBoard[newRow][newCol] === currentPlayer
-      )
+      ) {
         count++;
-      else break;
+        winningCells.push([newRow, newCol]);
+      } else break;
     }
+
+    // Controlla nella direzione negativa
     for (let i = -1; i > -4; i--) {
       const newRow = row + i * dx,
         newCol = col + i * dy;
@@ -80,15 +89,44 @@ function checkWin(row, col) {
         newCol >= 0 &&
         newCol < cols &&
         gameBoard[newRow][newCol] === currentPlayer
-      )
+      ) {
         count++;
-      else break;
+        winningCells.push([newRow, newCol]);
+      } else break;
     }
 
-    if (count >= 4) return true;
+    if (count >= 4) {
+      highlightWinningCells(winningCells); // Evidenzia le celle vincenti
+      return true;
+    }
   }
 
   return false;
+}
+
+// Funzione per evidenziare le celle vincenti
+function highlightWinningCells(cells) {
+  cells.forEach(([row, col]) => {
+    const cell = document.querySelector(
+      `[data-row="${row}"][data-col="${col}"]`
+    );
+    cell.classList.add("winning");
+  });
+}
+
+// Funzione per attivare l'animazione delle celle vincenti
+function highlightWinningCellsAnimation() {
+  const winningCells = document.querySelectorAll(".winning"),
+    winClass = currentPlayer === "rosso" ? "rossoWin" : "gialloWin";
+  winningCells.forEach((cell) => {
+    cell.classList.add(winClass);
+  });
+}
+
+// Funzione per aggiornare l'indicatore del giocatore corrente
+function updateCurrentPlayerIndicator() {
+  const indicator = document.getElementById("currentPlayerIndicator");
+  indicator.className = currentPlayer; // Aggiorna il colore
 }
 
 // Funzione per resettare il gioco
@@ -96,9 +134,17 @@ function resetGame() {
   gameBoard = Array.from({ length: rows }, () => Array(cols).fill(null));
   const cells = document.querySelectorAll(".cell");
   cells.forEach((cell) => {
-    cell.classList.remove("rosso", "giallo");
+    cell.classList.remove(
+      "rosso",
+      "giallo",
+      "winning",
+      "rossoWin",
+      "gialloWin"
+    );
   });
   currentPlayer = "rosso";
+  updateCurrentPlayerIndicator();
 }
 
-createBoard(); // Inizializza la griglia di gioco all'avvio della pagina
+// Inizializza la griglia di gioco all'avvio della pagina
+createBoard();

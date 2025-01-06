@@ -87,3 +87,122 @@ h1 {
     border-radius: 15px;
   }
 }
+
+.winning {
+  animation: glow 1s infinite alternate;
+}
+
+.winning {
+  animation: glow 1s infinite alternate;
+}
+
+#currentPlayerContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+#currentPlayerIndicator {
+  width: 40px;
+  height: 40px;
+  margin-left: 10px;
+  border-radius: 50%;
+  border: 3px solid black;
+}
+
+#currentPlayerContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+#currentPlayerIndicator {
+  width: 40px;
+  height: 40px;
+  margin-left: 10px;
+  border-radius: 50%;
+  border: 3px solid black;
+}
+
+.board {
+  position: relative;
+  display: grid;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: blue;
+  padding: 10px;
+  border-radius: 10px;
+  border: 3px solid black;
+}
+
+.cell {
+  border-radius: 50%;
+  background-color: white;
+  border: 3px solid black;
+}
+
+.rosso {
+  background-color: red;
+}
+
+.giallo {
+  background-color: yellow;
+}
+
+body {
+  text-align: center;
+}
+
+.winning {
+  animation: glow 1s infinite alternate;
+}
+
+@keyframes rossoWin {
+  0% {
+    background-color: red;
+  }
+  50% {
+    background-color: white;
+  }
+  100% {
+    background-color: red;
+  }
+}
+
+@keyframes gialloWin {
+  0% {
+    background-color: yellow;
+  }
+  50% {
+    background-color: white;
+  }
+  100% {
+    background-color: yellow;
+  }
+}
+
+.rossoWin {
+  animation: rossoWin 1s infinite alternate;
+}
+
+.gialloWin {
+  animation: gialloWin 1s infinite alternate;
+}
+
+.winning {
+  border: 3px solid black;
+}
+
+.rossoWin {
+  animation: rossoWin 2s infinite alternate;
+}
+
+.gialloWin {
+  animation: gialloWin 2s infinite alternate;
+}
+
+span {
+  font-size: 50px;
+}
