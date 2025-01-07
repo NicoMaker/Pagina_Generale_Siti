@@ -48,7 +48,7 @@ async function calcolaSegnoZodiacale() {
 
   document.getElementById("definition").innerHTML = `
     <span class="viola">Elemento del segno:</span> ${segno.Elemento}<br><br>
-    <span class="viola">Caratteristiche del segno:</span> ${caratteristicheFormatte}
+    <span class="viola">Caratteristiche del segno:</span> <br>${caratteristicheFormatte}
   `;
 }
 
