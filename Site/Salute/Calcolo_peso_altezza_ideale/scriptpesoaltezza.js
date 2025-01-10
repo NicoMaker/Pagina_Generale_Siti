@@ -1,39 +1,46 @@
-function calculateIdealWeight(height, gender) {
-  if (gender === "male") return (height - 100) * 0.9;
-  else if (gender === "female") return (height - 100) * 0.85;
-  return null;
-}
+let formulas = {};
 
-function calculateIdealHeight(weight, gender) {
-  if (gender === "male") return weight / 0.9 + 100;
-  else if (gender === "female") return weight / 0.85 + 100;
-  return null;
+// Carica le formule dal file JSON
+async function loadFormulas() {
+  try {
+    const response = await fetch("formulas.json");
+    formulas = await response.json();
+  } catch (error) {
+    console.error("Errore nel caricamento delle formule:", error);
+  }
 }
 
 function calculateIdeal() {
   const calculationType = document.getElementById("calculationType").value,
     gender = document.getElementById("gender").value,
     value = parseFloat(document.getElementById("value").value);
+
   let result = "";
 
-  if (isNaN(value) || value <= 0) result = "Inserisci un valore valido.";
-  else {
-    if (calculationType === "weight") {
-      const idealWeight = calculateIdealWeight(value, gender);
-      if (idealWeight !== null) {
+  if (isNaN(value) || value <= 0) {
+    result = "Inserisci un valore valido.";
+  } else {
+    try {
+      const formula = formulas[calculationType][gender];
+      const calculation = eval(formula.replace(/height|weight/g, value));
+
+      if (calculationType === "weight") {
         result = `Il peso ideale per ${
           gender === "male" ? "un uomo" : "una donna"
-        } con altezza ${value} cm è ${idealWeight.toFixed(2)} kg.`;
-      }
-    } else if (calculationType === "height") {
-      const idealHeight = calculateIdealHeight(value, gender);
-      if (idealHeight !== null) {
-        result = `Per un peso di ${value} kg, l'altezza ideale per ${
+        } con altezza ${value} cm è ${calculation.toFixed(2)} kg.`;
+      } else if (calculationType === "height") {
+        result = `L'altezza ideale per ${
           gender === "male" ? "un uomo" : "una donna"
-        } è ${idealHeight.toFixed(2)} cm.`;
+        } con peso ${value} kg è ${calculation.toFixed(2)} cm.`;
       }
+    } catch (error) {
+      result = "Errore nel calcolo. Controlla le formule.";
+      console.error("Errore nel calcolo:", error);
     }
   }
 
   document.getElementById("result").innerHTML = result;
 }
+
+// Carica le formule al caricamento della pagina
+document.addEventListener("DOMContentLoaded", loadFormulas);

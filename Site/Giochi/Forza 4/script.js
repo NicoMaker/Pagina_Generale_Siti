@@ -2,7 +2,15 @@
 const rows = 6,
   cols = 7;
 let currentPlayer = "rosso",
-  gameBoard = [];
+  gameBoard = [],
+  winningDirections = [];
+
+// Funzione per caricare le direzioni di vittoria dal file JSON
+async function loadWinningDirections() {
+  const response = await fetch("directions.json"),
+    data = await response.json();
+  winningDirections = data.directions;
+}
 
 // Funzione per generare la griglia di gioco
 function createBoard() {
@@ -52,14 +60,7 @@ function getEmptyRow(col) {
 
 // Funzione per verificare le combinazioni vincenti
 function checkWin(row, col) {
-  const directions = [
-    [0, 1], // Destra
-    [1, 0], // Giù
-    [1, 1], // Diagonale a destra
-    [1, -1], // Diagonale a sinistra
-  ];
-
-  for (const [dx, dy] of directions) {
+  for (const [dx, dy] of winningDirections) {
     let count = 1;
     const winningCells = [[row, col]];
 
@@ -147,4 +148,10 @@ function resetGame() {
 }
 
 // Inizializza la griglia di gioco all'avvio della pagina
-createBoard();
+async function initializeGame() {
+  await loadWinningDirections(); // Carica le direzioni di vittoria
+  createBoard();
+}
+
+// Avvia il gioco
+initializeGame();

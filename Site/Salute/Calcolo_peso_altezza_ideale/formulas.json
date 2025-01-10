@@ -1,0 +1,10 @@
+{
+  "weight": {
+    "male": "(height - 100) * 0.9",
+    "female": "(height - 100) * 0.85"
+  },
+  "height": {
+    "male": "(weight / 0.9) + 100",
+    "female": "(weight / 0.85) + 100"
+  }
+}
