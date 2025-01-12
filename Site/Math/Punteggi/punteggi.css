@@ -158,3 +158,69 @@ button.trash-button:hover {
   color: darkred;
   transform: scale(1.2); /* Ingrandimento del bottone del cestino */
 }
+
+/* Stile migliorato per i bottoni "Salva su File" e "Carica da File" */
+.button-container {
+  display: flex;
+  justify-content: center; /* Allinea i bottoni al centro */
+  gap: 20px; /* Aggiungi spazio tra i bottoni */
+  margin-bottom: 20px; /* Aggiungi spazio sotto i bottoni */
+}
+
+button.save,
+button.load {
+  font-size: 24px;
+  padding: 12px 30px;
+  border-radius: 50px;
+  cursor: pointer;
+  color: white;
+  border: 2px solid transparent;
+  background: linear-gradient(45deg, #4caf50, #81c784);
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+button.save:hover,
+button.load:hover {
+  background: linear-gradient(45deg, #66bb6a, #388e3c);
+  transform: translateY(-4px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+button.save:active,
+button.load:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+button.save {
+  background: linear-gradient(45deg, #2196f3, #42a5f5);
+}
+
+button.load {
+  background: linear-gradient(45deg, #ff9800, #ffb74d);
+}
+
+button span {
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+button:focus {
+  outline: none;
+  border-color: #ffffff;
+}
+
+/* Media query per schermi più piccoli */
+@media (max-width: 600px) {
+  .button-container {
+    flex-direction: column; /* I bottoni saranno disposti in colonna */
+    gap: 10px; /* Spazio più ridotto tra i bottoni */
+  }
+
+  button.save,
+  button.load {
+    font-size: 18px; /* Riduci la dimensione del testo sui dispositivi mobili */
+    padding: 10px 25px; /* Riduci il padding per i dispositivi mobili */
+  }
+}

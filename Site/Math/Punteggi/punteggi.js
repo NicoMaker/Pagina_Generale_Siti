@@ -84,7 +84,7 @@ function aggiornaListaPartecipanti() {
     const listItem = document.createElement("li");
 
     // Aggiungi il nome e i punti
-    listItem.textContent = `${partecipante.nome} - Punti: ${partecipante.punti}`;
+    listItem.textContent = `${partecipante.nome} : ${partecipante.punti}`;
 
     // Creazione del bottone del cestino con classe 'trash-button'
     const trashButton = document.createElement("button");
@@ -132,3 +132,80 @@ function eliminaPartecipante(index) {
 }
 
 aggiornaSelezionePartecipante();
+
+function salvaSuFile() {
+  // Crea il contenuto in formato leggibile
+  const contenuto = partecipanti
+    .map((partecipante) => `${partecipante.nome}:${partecipante.punti}`)
+    .join("\n");
+
+  // Crea un blob per il download
+  const blob = new Blob([contenuto], { type: "text/plain" }),
+    url = URL.createObjectURL(blob);
+
+  // Crea un link temporaneo per il download
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "partecipanti.txt";
+  a.click();
+
+  // Revoca l'URL per liberare memoria
+  URL.revokeObjectURL(url);
+}
+
+function caricaDaFile() {
+  // Crea un input di tipo file
+  const input = document.createElement("input");
+  input.type = "file";
+  input.accept = "text/plain";
+
+  // Gestisci il caricamento del file
+  input.addEventListener("change", (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+
+      reader.onload = (e) => {
+        try {
+          // Leggi il contenuto del file
+          const contenuto = e.target.result;
+
+          // Parso il contenuto: ogni riga rappresenta un partecipante
+          const righe = contenuto
+              .split("\n")
+              .filter((riga) => riga.trim() !== ""),
+            datiCaricati = righe.map((riga) => {
+              const [nome, punti] = riga.split(":");
+              return {
+                nome: nome.trim(),
+                punti: parseFloat(punti) || 0, // Se non è un numero valido, default a 0
+              };
+            });
+
+          // Valida e aggiorna i partecipanti
+          if (
+            datiCaricati.every(
+              (partecipante) => partecipante.nome && !isNaN(partecipante.punti)
+            )
+          ) {
+            partecipanti.length = 0; // Resetta l'array attuale
+            partecipanti.push(...datiCaricati); // Aggiorna l'array con i nuovi dati
+
+            aggiornaListaPartecipanti(); // Aggiorna la lista dei partecipanti visivamente
+            aggiornaSelezionePartecipante(); // Aggiorna il menu a tendina dei partecipanti
+          } else
+            alert("Il file contiene dati non validi. Correggere e riprovare.");
+        } catch (error) {
+          console.error("Errore durante il caricamento del file:", error);
+          alert("Errore durante il caricamento del file.");
+        }
+      };
+
+      // Leggi il file come testo
+      reader.readAsText(file);
+    } else alert("Nessun file selezionato.");
+  });
+
+  // Simula il clic per aprire il dialogo file
+  input.click();
+}

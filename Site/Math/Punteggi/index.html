@@ -4,92 +4,79 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Gestione Punteggi</title>
-
     <link rel="stylesheet" href="punteggi.css" />
-    <link
-      rel="icon"
-      href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT30tUM6cuipo6LWz3q7Hi3XwULn6UTTU2N5dZ4iJ6zmumSnDjFl3_SSRXS9F_Jk4S3xZA&usqp=CAU"
-      type="image/jpg"
-    />
     <script src="punteggi.js" defer></script>
   </head>
-
   <body>
     <h1>Gestione Punteggi</h1>
+
+    <div class="button-container">
+      <button class="load" onclick="caricaDaFile()">Carica da File</button>
+      <button class="save" onclick="salvaSuFile()">Salva su File</button>
+    </div>
+
     <div id="participants">
       <h2>Partecipanti</h2>
       <ul id="participant-list"></ul>
     </div>
+
     <div>
-      <label for="participant-name">Nome del partecipante:</label>
-      <br />
-      <input type="text" id="participant-name" />
-      <br />
-      <br />
+      <label for="participant-name">Nome del partecipante:</label><br />
+      <input type="text" id="participant-name" /><br /><br />
       <button class="aggiungi" onclick="aggiungiPartecipante()">
         Aggiungi Partecipante
       </button>
     </div>
 
     <br />
+
     <div>
-      <label for="points">Punti:</label>
-      <br />
-      <input type="number" id="points" step="1" value="0" />
-      <br />
-      <br />
+      <label for="points">Punti:</label><br />
+      <input type="number" id="points" step="1" value="0" /><br /><br />
       <select id="selected-participant">
-        <br />
-        <br />
         <option value="-1">Seleziona un partecipante</option>
-        <option value="all">Tutti</option>
-      </select>
-      <br />
-      <br />
+        <option value="all">Tutti</option></select
+      ><br /><br />
       <button class="aggiungipunti" onclick="aggiungiPunti()">
         Aggiungi Punti
       </button>
       <button class="toglipunti" onclick="togliPunti()">Togli Punti</button>
-      <br />
-      <br />
-      <br />
-      <br />
+    </div>
 
-      <div>
-        <label>Modalità Vittoria:</label>
-        <br />
+    <br />
 
-        <div class="winning-mode-container">
-          <label class="winning-mode-option">
-            <input
-              type="radio"
-              name="winning-mode"
-              value="max"
-              checked
-              onclick="impostaModalitàVittoria('max')"
-            />
-            <span>Più punti</span>
-          </label>
-          <label class="winning-mode-option">
-            <input
-              type="radio"
-              name="winning-mode"
-              value="min"
-              onclick="impostaModalitàVittoria('min')"
-            />
-            <span>Meno punti</span>
-          </label>
-        </div>
+    <div>
+      <label>Modalità Vittoria:</label><br />
+      <div class="winning-mode-container">
+        <label class="winning-mode-option">
+          <input
+            type="radio"
+            name="winning-mode"
+            value="max"
+            checked
+            onclick="impostaModalitàVittoria('max')"
+          />
+          <span>Più punti</span>
+        </label>
+        <label class="winning-mode-option">
+          <input
+            type="radio"
+            name="winning-mode"
+            value="min"
+            onclick="impostaModalitàVittoria('min')"
+          />
+          <span>Meno punti</span>
+        </label>
       </div>
     </div>
+
     <br />
     <button class="end" onclick="trovaVincitore()">Fine</button>
-    <br>
-    <br>
+    <br />
+    <br />
     <button class="reset" onclick="resettaPunti()">Reset Punti</button>
-    <br/>
-    <br/>
-    <br/>
+    <br />
+    <br />
     <button class="reset" onclick="resettaTotale()">Reset Totale</button>
   </body>
 </html>
