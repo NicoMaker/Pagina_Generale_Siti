@@ -20,7 +20,7 @@ const outputs = [
 
 let suits = [],
   cardsData = {},
-  gameStarted = false; // Variabile per tracciare se il gioco è stato avviato
+  gameStarted = false;
 
 async function loadCards() {
   try {
@@ -41,15 +41,14 @@ loadCards().then((data) => {
   }
 });
 
-// Funzione per impostare immagini iniziali (default)
 function setInitialImages() {
-  const defaultImage = "Img/Imagine.jpg"; // Sostituisci con il link delle immagini iniziali
+  const defaultImage = "Img/Imagine.jpg";
   outputs.forEach((output) => {
     output.innerHTML = `<img src="${defaultImage}" alt="Immagine di default" />`;
+    output.style.backgroundColor = ""; // Resetta il colore
   });
 }
 
-// Funzione per impostare le carte casuali
 function setRandomImage(container) {
   if (suits.length > 0)
     container.innerHTML = `<img src="${
@@ -58,7 +57,6 @@ function setRandomImage(container) {
   else container.innerHTML = `<p>Immagini non disponibili</p>`;
 }
 
-// Gestione della selezione del tipo di gioco
 gameTypeSelect.addEventListener("change", function () {
   if (!cardsData || Object.keys(cardsData).length === 0) {
     resultElement.innerHTML = "<p>Attendi il caricamento delle carte...</p>";
@@ -66,9 +64,49 @@ gameTypeSelect.addEventListener("change", function () {
   }
   const selectedGameType = gameTypeSelect.value;
   suits = (gameTypes[selectedGameType] || gameTypes.default)();
-  gameStarted = false; // Resetta lo stato del gioco quando cambia il tipo di gioco
-  setInitialImages(); // Mostra le immagini iniziali
+  gameStarted = false;
+  setInitialImages();
 });
+
+function playVictoryAnimation() {
+  let iteration = 0;
+  const interval = setInterval(() => {
+    outputs.forEach((output) => {
+      output.style.backgroundColor =
+        output.style.backgroundColor === "yellow" ? "" : "yellow";
+    });
+    iteration++;
+    if (iteration >= 5) clearInterval(interval);
+  }, 300);
+
+  createConfetti(); // Avvia i coriandoli
+}
+
+function createConfetti() {
+  const confettiContainer = document.createElement("div");
+  confettiContainer.className = "confetti-container";
+  document.body.appendChild(confettiContainer);
+
+  for (let i = 0; i < 200; i++) {
+    const confetti = document.createElement("div");
+    confetti.className = "confetti";
+    confetti.style.left = `${Math.random() * 100}%`;
+    confetti.style.top = `${Math.random() * 100}%`;
+    confetti.style.animationDuration = `${Math.random() * 2 + 3}s`;
+    confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+    confettiContainer.appendChild(confetti);
+  }
+
+  setTimeout(() => {
+    confettiContainer.remove(); // Rimuovi i coriandoli dopo 5 secondi
+  }, 5000);
+}
+
+function resetBackgroundColors() {
+  outputs.forEach((output) => {
+    output.style.backgroundColor = ""; // Rimuovi il colore di sfondo
+  });
+}
 
 generate.addEventListener("click", function () {
   if (suits.length === 0) {
@@ -76,20 +114,19 @@ generate.addEventListener("click", function () {
     return;
   }
 
+  // Ripristina i colori prima di rigenerare
+  resetBackgroundColors();
+
   if (!gameStarted) {
-    // Impostare immagini iniziali prima della generazione
     setInitialImages();
-    gameStarted = true; // Segna che il gioco è stato avviato
+    gameStarted = true;
   }
 
-  // Dopo 500ms, inizia la generazione delle carte casuali
   setTimeout(() => {
-    // Genera le immagini in modo casuale
     let randomGenerator = setInterval(() => {
       outputs.forEach((output) => setRandomImage(output));
     }, 150);
 
-    // Dopo 500ms, interrompe la generazione casuale e mostra il risultato
     setTimeout(() => {
       clearInterval(randomGenerator);
       const suitImages = outputs.map(
@@ -98,8 +135,9 @@ generate.addEventListener("click", function () {
         allEqual = suitImages.every((val, i, arr) => val === arr[0]);
 
       resultElement.innerHTML = `<p>${
-        allEqual ? "Hai Vinto" : "Non Hai Vinto"
+        allEqual ? "Hai Vinto!" : "Non Hai Vinto"
       }</p>`;
-    }, 500); // La generazione si ferma dopo 500ms
-  }, 500); // Aspetta prima di iniziare la generazione
+      if (allEqual) playVictoryAnimation();
+    }, 500);
+  }, 500);
 });

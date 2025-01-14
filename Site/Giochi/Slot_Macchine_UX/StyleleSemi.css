@@ -48,14 +48,6 @@ select {
   appearance: none;
 }
 
-option {
-  font-size: 1.5rem;
-  color: #333;
-  background-color: #ffebcd;
-  padding: 10px;
-  text-align: center;
-}
-
 button {
   padding: 15px 25px;
   font-size: 1.8rem;
@@ -102,7 +94,6 @@ select:hover {
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
 }
 
-/* Immagini */
 .suit img {
   width: 90%;
   height: 90%;
@@ -117,51 +108,73 @@ p {
 }
 
 /* Responsive Design */
-
-/* Versione per Tablet */
-@media (max-width: 1024px) and (min-width: 769px) {
+@media (max-width: 1024px) {
   h1 {
     font-size: 2.5rem;
     margin-bottom: 20px;
   }
-
-  select,
-  button {
-    padding: 12px 20px;
-    font-size: 1.6rem;
-  }
-
   .suit {
     width: 130px;
     height: 130px;
   }
-
-  p {
-    font-size: 2.1rem;
-  }
-
-  .container {
-    gap: 15px;
-  }
 }
 
-/* Versione Mobile */
 @media (max-width: 768px) {
   h1 {
-    font-size: 2.5rem;
+    font-size: 2.2rem;
   }
-
-  select,
-  button {
-    font-size: 1.5rem;
-  }
-
   .suit {
     width: 120px;
     height: 120px;
   }
+}
 
-  p {
-    font-size: 1.4rem;
+/* Styles for the Result Message */
+#Result {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-top: 30px;
+  text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+
+.confetti-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw; /* Assicurati che copra l'intera larghezza della finestra */
+  height: 100vh; /* Assicurati che copra l'intera altezza della finestra */
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 9999;
+}
+
+.confetti {
+  position: absolute;
+  width: 10px; /* Dimensione di un singolo coriandolo */
+  height: 20px;
+  opacity: 0.8;
+  animation: fall 5s linear infinite, spin 2s linear infinite;
+}
+
+/* Effetto di caduta dei coriandoli */
+@keyframes fall {
+  0% {
+    transform: translateY(-100px) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) rotate(360deg); /* Cadono fino al fondo dello schermo */
+    opacity: 0;
+  }
+}
+
+/* Effetto di rotazione */
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
   }
 }
