@@ -58,6 +58,10 @@
         "link": "Site/Giochi/Slot_Machine/index.html"
       },
       {
+        "name": "Slot Machine UX",
+        "link": "Site/Giochi/Slot_Macchine_UX/index.html"
+      },
+      {
         "name": "Generazione 4 Numeri Casuali",
         "link": "Site/Giochi/Generated_4_Numbers/index.html"
       },
@@ -251,7 +255,7 @@
     "Bici": "contenitore1",
     "Borsa": "contenitore1",
     "Calendario": "contenitore1",
-    "Giochi": "contenitore2",
+    "Giochi": "contenitore3",
     "Info_Paesi_Stati": "contenitore1",
     "Matematica": "contenitore3",
     "Natale": "contenitore1",

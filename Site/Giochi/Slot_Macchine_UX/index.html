@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Slot Machine</title>
+    <link rel="icon" href="Img/Imagine.jpg" type="image/png" />
+    <link rel="stylesheet" href="StyleleSemi.css" />
+    <script src="ScriptSemi.js" defer></script>
+  </head>
+  <body>
+    <main class="wrapper">
+      <h1>Slot Machine</h1>
+      <div class="controls">
+        <select id="gameType">
+          <option value="briscola">Briscola</option>
+          <option value="scala40">Scala 40</option>
+          <option value="regioni">Regioni</option>
+          <option value="regioni_briscola">Regioni e Briscola</option>
+          <option value="regioni_scala">Regioni e Scala 40</option>
+          <option value="briscola_scala40">Briscola e Scala 40</option>
+          <option value="All">Tutto</option>
+        </select>
+        <button id="generateButton">Estrai</button>
+      </div>
+      <div class="container">
+        <button id="suit1" class="suit">
+          <img src="Img/Imagine.jpg" alt="Immagine 1" />
+        </button>
+        <button id="suit2" class="suit">
+          <img src="Img/Imagine.jpg" alt="Immagine 2" />
+        </button>
+        <button id="suit3" class="suit">
+          <img src="Img/Imagine.jpg" alt="Immagine 3" />
+        </button>
+        <button id="suit4" class="suit">
+          <img src="Img/Imagine.jpg" alt="Immagine 4" />
+        </button>
+      </div>
+
+      <p id="Result"></p>
+    </main>
+  </body>
+</html>
