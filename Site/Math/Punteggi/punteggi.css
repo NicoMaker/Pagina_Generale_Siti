@@ -114,7 +114,7 @@ label {
   font-weight: bold;
 }
 
-.winning-mode-option input[type="radio"]:checked + span {
+.winning-mode-option input[type="radio"]:checked+span {
   background-color: #007bff;
   color: #fff;
   padding: 4px 12px;
@@ -137,9 +137,12 @@ button {
 
 /* Bottoni normali - senza effetti di hover o transizioni */
 button:hover {
-  background-color: red; /* Colore di sfondo quando il mouse passa sopra */
-  transform: none; /* Non si applica l'ingrandimento */
-  color: white; /* Colore del testo */
+  background-color: red;
+  /* Colore di sfondo quando il mouse passa sopra */
+  transform: none;
+  /* Non si applica l'ingrandimento */
+  color: white;
+  /* Colore del testo */
 }
 
 button:focus {
@@ -156,15 +159,18 @@ button:focus {
 
 button.trash-button:hover {
   color: darkred;
-  transform: scale(1.2); /* Ingrandimento del bottone del cestino */
+  transform: scale(1.2);
+  /* Ingrandimento del bottone del cestino */
 }
 
 /* Stile migliorato per i bottoni "Salva su File" e "Carica da File" */
 .button-container {
   display: flex;
-  justify-content: center; /* Allinea i bottoni al centro */
-  gap: 20px; /* Aggiungi spazio tra i bottoni */
-  margin-bottom: 20px; /* Aggiungi spazio sotto i bottoni */
+  justify-content: center;
+  /* Allinea i bottoni al centro */
+  gap: 20px;
+  /* Aggiungi spazio tra i bottoni */
+  margin-bottom: 20px;
 }
 
 button.save,
@@ -194,11 +200,13 @@ button.load:active {
 }
 
 button.save {
-  background: linear-gradient(45deg, #673ab7, #9575cd); /* Viola per il salvataggio */
+  background: linear-gradient(45deg, #673ab7, #9575cd);
+  /* Viola per il salvataggio */
 }
 
 button.load {
-  background: linear-gradient(45deg, #f44336, #e57373); /* Rosso per il caricamento */
+  background: linear-gradient(45deg, #f44336, #e57373);
+  /* Rosso per il caricamento */
 }
 
 
@@ -215,19 +223,149 @@ button:focus {
 /* Media query per schermi più piccoli */
 @media (max-width: 600px) {
   .button-container {
-    flex-direction: column; /* I bottoni saranno disposti in colonna */
-    gap: 10px; /* Spazio più ridotto tra i bottoni */
+    flex-direction: column;
+    /* I bottoni saranno disposti in colonna */
+    gap: 10px;
+    /* Spazio più ridotto tra i bottoni */
+    padding: 10px;
+    margin: 0.5%;
+  }
+
+  button {
+    font-size: 16px;
+    /* Riduce la dimensione del testo per i bottoni */
+    padding: 8px 15px;
+    /* Riduce il padding interno dei bottoni */
   }
 
   button.save,
   button.load {
-    font-size: 18px; /* Riduci la dimensione del testo sui dispositivi mobili */
-    padding: 10px 25px; /* Riduci il padding per i dispositivi mobili */
+    font-size: 18px;
+    /* Riduci la dimensione del testo sui dispositivi mobili */
+    padding: 10px 25px;
+    /* Riduci il padding per i dispositivi mobili */
   }
 }
 
 button span.material-icons {
-  vertical-align: middle; /* Allinea l'icona con il testo */
-  font-size: 30px; /* Imposta la dimensione dell'icona */
-  margin-right: 10px; /* Distanza tra l'icona e il testo */
+  vertical-align: middle;
+  /* Allinea l'icona con il testo */
+  font-size: 30px;
+  /* Imposta la dimensione dell'icona */
+  margin-right: 10px;
+  /* Distanza tra l'icona e il testo */
+}
+
+/* Animazioni per bottoni di Download e Upload */
+button.save:hover,
+button.load:hover {
+  background: linear-gradient(45deg, #66bb6a, #388e3c);
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+button.save:active,
+button.load:active {
+  transform: translateY(2px) scale(0.95);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+button span.material-icons {
+  font-size: 30px;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+button.save:hover span.material-icons,
+button.load:hover span.material-icons {
+  transform: rotate(360deg);
+  /* Rotazione completa dell'icona */
+  color: #ffffff;
+  /* Cambia il colore dell'icona a bianco */
+}
+
+/* Animazioni per bottoni di Download e Upload */
+button.save:hover,
+button.load:hover {
+  background: linear-gradient(45deg, #66bb6a, #388e3c);
+  transform: translateY(-4px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+button.save:active,
+button.load:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+button span.material-icons {
+  font-size: 30px;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+button.save:hover span.material-icons,
+button.load:hover span.material-icons {
+  transform: scale(1.5);
+  /* Ingrandisce l'icona */
+  color: #ffffff;
+  /* Cambia il colore dell'icona a bianco */
+}
+
+/* Bottone Salva e Carica con i colori originali */
+button.save,
+button.load {
+  font-size: 24px;
+  padding: 12px 30px;
+  border-radius: 50px;
+  cursor: pointer;
+  color: white;
+  border: 2px solid transparent;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+button.save:hover,
+button.load:hover {
+  background: linear-gradient(45deg, #66bb6a, #388e3c); /* Colori hover originali */
+  transform: translateY(-4px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+button.save:active,
+button.load:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Stile per l'icona */
+button span.material-icons {
+  font-size: 30px;
+  transition: transform 0.3s ease, color 0.3s ease;
+  margin-right: 8px; /* Distanza tra l'icona e il testo */
+}
+
+/* Anima l'icona al passaggio del mouse */
+button.save:hover span.material-icons,
+button.load:hover span.material-icons {
+  transform: scale(1.5); /* Ingrandisce l'icona */
+  color: #ffffff; /* Colore bianco dell'icona */
+}
+
+/* Centra il testo e l'icona */
+button.save,
+button.load {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+button span.material-icons,
+button span {
+  display: inline-block;
+  vertical-align: middle;
+  text-align: center;
 }
