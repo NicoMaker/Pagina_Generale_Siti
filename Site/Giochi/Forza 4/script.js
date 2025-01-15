@@ -51,9 +51,7 @@ function dropPiece(col) {
 // Funzione per ottenere la riga vuota in cui posizionare la pedina
 function getEmptyRow(col) {
   for (let i = rows - 1; i >= 0; i--) {
-    if (!gameBoard[i][col]) {
-      return i;
-    }
+    if (!gameBoard[i][col]) return i;
   }
   return -1; // Colonna piena
 }
