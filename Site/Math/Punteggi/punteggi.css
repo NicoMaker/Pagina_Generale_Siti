@@ -43,11 +43,13 @@ label {
 .aggiungipunti {
   color: red;
   background-color: yellow;
+  font-size: 25px;
 }
 
 .toglipunti {
   background-color: red;
   color: azure;
+  font-size: 25px;
 }
 
 .end,
