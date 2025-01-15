@@ -194,12 +194,13 @@ button.load:active {
 }
 
 button.save {
-  background: linear-gradient(45deg, #2196f3, #42a5f5);
+  background: linear-gradient(45deg, #673ab7, #9575cd); /* Viola per il salvataggio */
 }
 
 button.load {
-  background: linear-gradient(45deg, #ff9800, #ffb74d);
+  background: linear-gradient(45deg, #f44336, #e57373); /* Rosso per il caricamento */
 }
+
 
 button span {
   font-weight: bold;
@@ -223,4 +224,10 @@ button:focus {
     font-size: 18px; /* Riduci la dimensione del testo sui dispositivi mobili */
     padding: 10px 25px; /* Riduci il padding per i dispositivi mobili */
   }
+}
+
+button span.material-icons {
+  vertical-align: middle; /* Allinea l'icona con il testo */
+  font-size: 30px; /* Imposta la dimensione dell'icona */
+  margin-right: 10px; /* Distanza tra l'icona e il testo */
 }

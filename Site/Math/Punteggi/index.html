@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Gestione Punteggi</title>
     <link rel="stylesheet" href="punteggi.css" />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+
     <script src="punteggi.js" defer></script>
   </head>
   <body>
@@ -14,8 +19,12 @@
     <br />
 
     <div class="button-container">
-      <button class="load" onclick="caricaDaFile()">Carica da File</button>
-      <button class="save" onclick="salvaSuFile()">Salva su File</button>
+      <button class="load" onclick="caricaDaFile()">
+        <span class="material-icons">upload</span> Carica da File
+      </button>
+      <button class="save" onclick="salvaSuFile()">
+        <span class="material-icons">download</span> Salva su File
+      </button>
     </div>
 
     <div id="participants">
