@@ -275,14 +275,6 @@ button span.material-icons {
   transition: transform 0.3s ease, color 0.3s ease;
 }
 
-button.save:hover span.material-icons,
-button.load:hover span.material-icons {
-  transform: rotate(360deg);
-  /* Rotazione completa dell'icona */
-  color: #ffffff;
-  /* Cambia il colore dell'icona a bianco */
-}
-
 /* Animazioni per bottoni di Download e Upload */
 button.save:hover,
 button.load:hover {
