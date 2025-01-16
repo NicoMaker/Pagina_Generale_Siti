@@ -117,7 +117,7 @@ label {
   font-weight: bold;
 }
 
-.winning-mode-option input[type="radio"]:checked+span {
+.winning-mode-option input[type="radio"]:checked + span {
   background-color: #007bff;
   color: #fff;
   padding: 4px 12px;
@@ -211,7 +211,6 @@ button.load {
   background: linear-gradient(45deg, #f44336, #e57373);
   /* Rosso per il caricamento */
 }
-
 
 button span {
   font-weight: bold;
@@ -324,7 +323,11 @@ button.load {
 
 button.save:hover,
 button.load:hover {
-  background: linear-gradient(45deg, #66bb6a, #388e3c); /* Colori hover originali */
+  background: linear-gradient(
+    45deg,
+    #66bb6a,
+    #388e3c
+  ); /* Colori hover originali */
   transform: translateY(-4px);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
