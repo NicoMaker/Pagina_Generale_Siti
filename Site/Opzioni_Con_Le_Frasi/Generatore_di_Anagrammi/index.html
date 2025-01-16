@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Generatore di Anagrammi</title>
+    <link
+      rel="icon"
+      href="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png"
+      type="image/png"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <header>
+      <h1>Generatore di Anagrammi</h1>
+      <p>
+        Inserisci una parola per trovare tutti gli anagrammi possibili e il loro
+        conteggio.
+      </p>
+    </header>
+
+    <form id="anagramForm">
+      <input
+        type="text"
+        id="wordInput"
+        placeholder="Inserisci una parola"
+        required
+      />
+      <button type="submit">Genera Anagrammi</button>
+    </form>
+
+    <div id="results" style="display: none">
+      <div class="anagrams"></div>
+    </div>
+
+    <br>
+    <div class="count"></div>
+  </body>
+</html>

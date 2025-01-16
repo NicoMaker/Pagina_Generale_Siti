@@ -9,7 +9,7 @@
 - **[Info Paesi / Stati](Info_Paesi_Stati/Readme.md)** [3 siti]
 - **[Matematica](Math/Readme.md)** [21 siti]
 - **[Natale](Natale/Readme.md)** [3 siti]
-- **[Opzioni con le Frasi](Opzioni_Con_Le_Frasi/Readme.md)** [2 Siti]
+- **[Opzioni con le Frasi](Opzioni_Con_Le_Frasi/Readme.md)** [3 Siti]
 - **[Pasqua](Pasqua/Readme.md)** [2 siti]
 - **[Random](Random/Readme.md)** [12 siti]
 - **[Salute](Salute/Readme.md)** [1 sito]

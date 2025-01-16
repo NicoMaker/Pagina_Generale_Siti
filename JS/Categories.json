@@ -177,6 +177,10 @@
       {
         "name": "Stampa Frase Invertita",
         "link": "Site/Opzioni_Con_Le_Frasi/Stampa_Frase_Invertita/index.html"
+      },
+      {
+        "name": "Generatore di Anagrammi",
+        "link": "Site/Opzioni_Con_Le_Frasi/Generatore_di_Anagrammi/index.html"
       }
     ],
     "Pasqua": [
