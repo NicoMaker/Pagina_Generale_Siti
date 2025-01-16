@@ -21,14 +21,18 @@ function calculateIdeal() {
     result = "Inserisci un valore valido.";
   } else {
     try {
+      // Ottieni la formula
       const formula = formulas[calculationType][gender];
-      const calculation = eval(formula.replace(/height|weight/g, value));
 
+      // Sostituisci height o weight nella formula
+      let calculation;
       if (calculationType === "weight") {
+        calculation = new Function("height", `return ${formula};`)(value);
         result = `Il peso ideale per ${
           gender === "male" ? "un uomo" : "una donna"
         } con altezza ${value} cm è ${calculation.toFixed(2)} kg.`;
       } else if (calculationType === "height") {
+        calculation = new Function("weight", `return ${formula};`)(value);
         result = `L'altezza ideale per ${
           gender === "male" ? "un uomo" : "una donna"
         } con peso ${value} kg è ${calculation.toFixed(2)} cm.`;
