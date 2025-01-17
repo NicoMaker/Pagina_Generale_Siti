@@ -14,7 +14,9 @@ async function loadFormulas() {
 }
 
 // Funzione per calcolare il peso o l'altezza ideale
-function calculateIdeal() {
+function calculateIdeal(event) {
+  event.preventDefault(); // Impedisce il comportamento predefinito del form
+
   const calculationType = document.getElementById("calculationType").value,
     gender = document.getElementById("gender").value,
     value = parseFloat(document.getElementById("value").value);
@@ -68,3 +70,8 @@ function calculateIdeal() {
 
 // Carica le formule al caricamento della pagina
 document.addEventListener("DOMContentLoaded", loadFormulas);
+
+// Aggiungi evento al form
+document
+  .getElementById("calculatorForm")
+  .addEventListener("submit", calculateIdeal);

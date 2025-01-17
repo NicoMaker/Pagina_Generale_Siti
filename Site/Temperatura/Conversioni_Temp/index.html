@@ -16,29 +16,32 @@
     <div id="container">
       <h1>Convertitore di Temperatura</h1>
 
-      <p>Inserisci la temperatura:</p>
-      <input
-        type="number"
-        id="temperatureInput"
-        placeholder="Inserisci Temperatura"
-      />
+      <form id="temperatureForm">
+        <p>Inserisci la temperatura:</p>
+        <input
+          type="number"
+          id="temperatureInput"
+          placeholder="Inserisci Temperatura"
+          required
+        />
 
-      <p class="rosso">Seleziona l'unità di misura di partenza:</p>
-      <select id="fromUnit">
-        <option value="celsius">Celsius</option>
-        <option value="fahrenheit">Fahrenheit</option>
-        <option value="kelvin">Kelvin</option>
-      </select>
+        <p class="rosso">Seleziona l'unità di misura di partenza:</p>
+        <select id="fromUnit">
+          <option value="celsius">Celsius</option>
+          <option value="fahrenheit">Fahrenheit</option>
+          <option value="kelvin">Kelvin</option>
+        </select>
 
-      <p class="blu">Seleziona l'unità di misura di arrivo:</p>
-      <select id="toUnit">
-        <option value="celsius">Celsius</option>
-        <option value="fahrenheit">Fahrenheit</option>
-        <option value="kelvin">Kelvin</option>
-      </select>
+        <p class="blu">Seleziona l'unità di misura di arrivo:</p>
+        <select id="toUnit">
+          <option value="celsius">Celsius</option>
+          <option value="fahrenheit">Fahrenheit</option>
+          <option value="kelvin">Kelvin</option>
+        </select>
 
-      <br /><br />
-      <button onclick="convertTemperature()">Converti</button>
+        <br /><br />
+        <button type="submit">Converti</button>
+      </form>
 
       <p id="result"></p>
     </div>
