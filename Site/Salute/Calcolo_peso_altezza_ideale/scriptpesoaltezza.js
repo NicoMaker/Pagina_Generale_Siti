@@ -1,4 +1,3 @@
-
 let formulas = {};
 
 // Carica le formule dal file JSON
