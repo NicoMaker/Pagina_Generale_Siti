@@ -56,3 +56,13 @@ button {
 #calculationType {
   background-color: #b1afff;
 }
+
+#result {
+  margin-top: 40px;
+  font-size: 40px;
+  color: green;
+}
+
+#result.error {
+  color: red;
+}
