@@ -27,7 +27,10 @@
         id="wordInput"
         placeholder="Inserisci una parola"
         required
+        oninvalid="this.setCustomValidity('Compila questo campo')"
+        oninput="setCustomValidity('')"
       />
+
       <button type="submit">Genera Anagrammi</button>
     </form>
 
@@ -35,7 +38,7 @@
       <div class="anagrams"></div>
     </div>
 
-    <br>
+    <br />
     <div class="count"></div>
   </body>
 </html>
