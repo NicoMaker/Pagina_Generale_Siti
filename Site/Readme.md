@@ -11,6 +11,7 @@
 - **[Natale](Natale/Readme.md)** [3 siti]
 - **[Opzioni con le Frasi](Opzioni_Con_Le_Frasi/Readme.md)** [3 Siti]
 - **[Pasqua](Pasqua/Readme.md)** [2 siti]
+- **[Pokemon](https://github.com/NicoMaker/PokeApi)** [1 sito]
 - **[Random](Random/Readme.md)** [12 siti]
 - **[Salute](Salute/Readme.md)** [1 sito]
 - **[Temperatura](Temperatura/Readme.md)** [1 sito]

@@ -242,6 +242,12 @@
       "link": "Site/Random/Estrai_Regione/index.html"
     }
     ],
+    "Pokemon": [
+      {
+        "name": "Sito sui Pokemon",
+        "link": "https://pokeapinico.netlify.app/"
+      }
+    ],
     "Salute": [
       {
         "name": "Sito che Calcola Altezza ideale o Peso Ideale",
@@ -265,6 +271,7 @@
     "Natale": "contenitore1",
     "Opzioni_Con_Le_Frasi": "contenitore1",
     "Pasqua": "contenitore1",
+    "Pokemon": "contenitore1",
     "Random": "contenitore3",
     "Salute": "contenitore1",
     "Temperatura":"contenitore1"
