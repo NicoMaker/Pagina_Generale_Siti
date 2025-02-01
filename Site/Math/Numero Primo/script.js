@@ -1,6 +1,7 @@
 function checkPrime() {
   const number = parseInt(document.getElementById("number").value),
-    result = document.getElementById("result");
+    result = document.getElementById("result"),
+    numbersaddivisor = 0;
 
   if (isNaN(number)) {
     result.innerHTML = "Inserisci un numero valido.";
@@ -12,28 +13,30 @@ function checkPrime() {
     return;
   }
 
-  const { isPrime, divisors } = getPrimeStatus(number);
-  displayResult(number, isPrime, divisors, result);
+  const { isPrime, divisors, numbersaddivisor: newNumbersaddivisor } = getPrimeStatus(number, numbersaddivisor);
+  displayResult(number, isPrime, divisors, result, newNumbersaddivisor);
 }
 
-function getPrimeStatus(number) {
+function getPrimeStatus(number, numbersaddivisor) {
   let divisors = [],
     isPrime = 0;
+    
 
   for (let i = 1; i <= number; i++) {
     if (number % i === 0) {
       isPrime++;
       divisors.push(i);
+      numbersaddivisor++;
     }
   }
 
-  return { isPrime: isPrime === 2, divisors };
+  return { isPrime: isPrime === 2, divisors, numbersaddivisor };
 }
 
-function displayResult(number, isPrime, divisors, result) {
+function displayResult(number, isPrime, divisors, result, numbersaddivisor) {
   if (isPrime) result.innerHTML = `${number} è un numero primo.`;
   else
-    result.innerHTML = `${number} non è un numero primo. <br> <br> Divisori: ${divisors.join(
+    result.innerHTML = `${number} non è un numero primo avendo ${numbersaddivisor} divisori. <br> <br> Divisori: ${divisors.join(
       ", "
     )}`;
 }
