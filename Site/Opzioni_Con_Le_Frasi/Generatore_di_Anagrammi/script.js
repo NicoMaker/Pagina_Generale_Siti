@@ -2,7 +2,7 @@ function generateAnagrams(word) {
   if (word.length === 1) return [word];
 
   const anagrams = [];
-  for (let i = 0; i < word.length; i++) {
+  for (const i in word) {
     const char = word[i],
       remainingChars = word.slice(0, i) + word.slice(i + 1);
     for (const subAnagram of generateAnagrams(remainingChars))
