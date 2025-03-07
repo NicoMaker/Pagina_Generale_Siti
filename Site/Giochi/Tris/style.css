@@ -13,54 +13,58 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
+  max-width: 400px;
+  padding: 20px;
 }
 
 #game-board {
-  position: relative;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 10px;
-  width: 300px;
-  margin-bottom: 10px;
+  width: 100%;
+  max-width: 300px;
   text-align: center;
-  left: 50%;
-  transform: translateX(-50%);
 }
 
 .cell {
-  width: 100px;
-  height: 100px;
+  width: 100%;
+  aspect-ratio: 1;
   border: 2px solid black;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 48px;
+  font-size: 2.5rem;
   cursor: pointer;
   transition: background-color 0.3s ease-in-out;
   background-color: white;
-  border-radius: 50px;
+  border-radius: 50%;
 }
 
 button {
-  font-size: 45px;
+  font-size: 1.5rem;
   border-radius: 50px;
   background-color: yellow;
   color: orangered;
-  padding: 10px 20px;
+  padding: 15px 25px;
   border: none;
   cursor: pointer;
   margin-top: 15px;
+  width: 100%;
+  max-width: 250px;
 }
 
+/* Testo Responsive */
 h1 {
   color: red;
-  font-size: 50px;
+  font-size: 2rem;
 }
 
 h2 {
-  font-size: 30px;
+  font-size: 1.5rem;
 }
 
+/* Effetto Vittoria */
 .win-cell {
   animation: blink 1s infinite alternate;
 }
@@ -71,5 +75,21 @@ h2 {
   }
   to {
     background-color: yellow;
+  }
+}
+
+/* Media Query per dispositivi più piccoli */
+@media (max-width: 500px) {
+  .container {
+    max-width: 90%;
+  }
+
+  .cell {
+    font-size: 2rem;
+  }
+
+  button {
+    font-size: 1.2rem;
+    padding: 12px 20px;
   }
 }
