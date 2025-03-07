@@ -1,71 +1,117 @@
 let currentPlayer = "X",
   gameEnded = false,
-  board = ["", "", "", "", "", "", "", "", ""];
+  board = Array(9).fill(""),
+  winPatterns = [];
 
-document.addEventListener("DOMContentLoaded", function () {
-  createGameBoard();
-});
+document.addEventListener("DOMContentLoaded", initializeGame);
 
+// Inizializza il gioco caricando la configurazione
+function initializeGame() {
+  loadConfig().then(() => {
+    createGameBoard();
+    updateTurnIndicator();
+  });
+}
+
+// Carica il file JSON con le combinazioni vincenti
+async function loadConfig() {
+  try {
+    const response = await fetch("config.json");
+    const data = await response.json();
+    winPatterns = data.winCombinations;
+  } catch (error) {
+    console.error("Errore nel caricamento del JSON:", error);
+  }
+}
+
+// Crea la griglia di gioco dinamicamente
 function createGameBoard() {
-  let gameBoard = document.getElementById("game-board");
+  const gameBoard = document.getElementById("game-board");
+  gameBoard.innerHTML = "";
 
   for (let i = 0; i < 9; i++) {
-    let cell = document.createElement("div");
+    const cell = document.createElement("div");
     cell.className = "cell";
     cell.setAttribute("data-index", i);
-    cell.addEventListener("click", function () {
-      makeMove(this.getAttribute("data-index"));
-    });
+    cell.addEventListener("click", () => handleCellClick(i));
 
     gameBoard.appendChild(cell);
   }
 }
 
-function makeMove(index) {
-  if (board[index] === "" && !gameEnded) {
-    board[index] = currentPlayer;
-    document.getElementsByClassName("cell")[index].textContent = currentPlayer;
-    checkWin();
-    togglePlayer();
-  }
+// Gestisce il click su una cella
+function handleCellClick(index) {
+  if (board[index] !== "" || gameEnded) return;
+
+  board[index] = currentPlayer;
+  updateUI(index);
+  checkWin();
+
+  if (!gameEnded) togglePlayer();
 }
 
-const togglePlayer = () => (currentPlayer = currentPlayer === "X" ? "O" : "X");
+// Cambia il giocatore corrente
+function togglePlayer() {
+  currentPlayer = currentPlayer === "X" ? "O" : "X";
+  updateTurnIndicator();
+}
 
+// Aggiorna l'interfaccia utente
+function updateUI(index) {
+  document.getElementsByClassName("cell")[index].textContent = currentPlayer;
+}
+
+// Aggiorna il turno visualizzato
+function updateTurnIndicator() {
+  document.getElementById(
+    "turn-indicator"
+  ).textContent = `Turno del giocatore: ${currentPlayer}`;
+}
+
+// Controlla se c'è un vincitore o un pareggio
 function checkWin() {
-  let winningCombinations = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6],
-  ];
-
-  for (let i = 0; i < winningCombinations.length; i++) {
-    let [a, b, c] = winningCombinations[i];
-    if (board[a] !== "" && board[a] === board[b] && board[a] === board[c]) {
+  for (const pattern of winPatterns) {
+    const [a, b, c] = pattern;
+    if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+      highlightWin(pattern);
       endGame(board[a]);
-      break;
+      return;
     }
   }
 
   if (!board.includes("") && !gameEnded) endGame("draw");
 }
 
-function endGame(winner) {
+// Evidenzia le celle vincenti
+function highlightWin(cells) {
   gameEnded = true;
-  let message =
-    winner === "draw" ? "It's a draw!" : `Player ${winner} 🏆🎉😊 wins!`;
-  alert(message);
+  cells.forEach((index) => {
+    document.getElementsByClassName("cell")[index].classList.add("win-cell");
+  });
 }
 
+// Termina la partita e mostra il vincitore
+function endGame(winner) {
+  gameEnded = true;
+  setTimeout(() =>
+    alert(
+      winner === "draw"
+        ? "È un pareggio! 😐"
+        : `Giocatore ${winner} vince! 🏆🎉`
+    )
+  );
+}
+
+// Resetta il tabellone e riavvia la partita
 function resetBoard() {
   currentPlayer = "X";
   gameEnded = false;
-  board = ["", "", "", "", "", "", "", "", ""];
-  let cells = document.getElementsByClassName("cell");
-  for (let i = 0; i < cells.length; i++) cells[i].textContent = "";
+  board.fill("");
+
+  document.querySelectorAll(".cell").forEach((cell) => {
+    cell.textContent = "";
+    cell.classList.remove("win-cell");
+  });
+
+  updateTurnIndicator();
 }
