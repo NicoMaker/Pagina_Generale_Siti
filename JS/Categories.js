@@ -62,10 +62,13 @@ document.addEventListener("DOMContentLoaded", function () {
   noResultsMessage.textContent = "Nessuna categoria trovata.";
   noResultsMessage.style.color = "red";
   noResultsMessage.style.textAlign = "center";
+  noResultsMessage.style.fontSize = "24px"; // Dimensione più grande per il testo
+  noResultsMessage.style.fontWeight = "bold"; // Aggiungi un po' di enfasi al testo
+  noResultsMessage.style.marginBottom = "20px"; // Distanza tra il messaggio e il menu
   noResultsMessage.style.display = "none"; // Inizialmente nascosto
 
   // Aggiungi il messaggio al contenitore del menu
-  menuContainer.appendChild(noResultsMessage);
+  menuContainer.insertBefore(noResultsMessage, menuContainer.firstChild); // Inserisce sopra gli altri elementi
 
   searchInput.addEventListener("input", function () {
     const filter = searchInput.value.toLowerCase().trim();
