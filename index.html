@@ -35,7 +35,7 @@
     <a href="https://github.com/NicoMaker" target="_blank">
       <img class="immagginelogo" src="Icons/Logo.jpg" />
     </a>
-
+  
     <br />
     <br />
     <br />
@@ -47,17 +47,17 @@
     <br />
     <br />
     <br />
-
+  
     <h1>Pagina Generale Siti</h1>
-
+  
     <div class="container_immagine">
+      <p id="noResultsMessage" style="display:none; color:red; text-align:center; font-size:24px; font-weight:bold; margin-bottom:20px;">Nessuna categoria trovata.</p>
       <img class="immagine" src="Icons/Immagine_mondo.jpg" />
       <img class="immagine" src="Icons/infinito.jpg" />
     </div>
-
+  
     <br />
     <br />
-
     <ul class="menu">
       <br />
       <br />
@@ -65,76 +65,52 @@
       <input type="text" id="searchInput" placeholder="Cerca..." />
       <li><button onclick="displayCategory('Bici')">Bici</button></li>
       <li><button onclick="displayCategory('Borsa')">Borsa</button></li>
-      <li>
-        <button onclick="displayCategory('Calendario')">Calendario</button>
-      </li>
+      <li><button onclick="displayCategory('Calendario')">Calendario</button></li>
       <li><button onclick="displayCategory('Giochi')">Giochi</button></li>
-      <li>
-        <button onclick="displayCategory('Info_Paesi_Stati')">
-          Info Paesi / Stati
-        </button>
-      </li>
-      <li>
-        <button onclick="displayCategory('Matematica')">Matematica</button>
-      </li>
+      <li><button onclick="displayCategory('Info_Paesi_Stati')">Info Paesi / Stati</button></li>
+      <li><button onclick="displayCategory('Matematica')">Matematica</button></li>
       <li><button onclick="displayCategory('Natale')">Natale</button></li>
-      <li>
-        <button onclick="displayCategory('Opzioni_Con_Le_Frasi')">
-          Opzioni con Le Frasi
-        </button>
-      </li>
+      <li><button onclick="displayCategory('Opzioni_Con_Le_Frasi')">Opzioni con Le Frasi</button></li>
       <li><button onclick="displayCategory('Pasqua')">Pasqua</button></li>
       <li><button onclick="displayCategory('Pokemon')">Pokemon</button></li>
       <li><button onclick="displayCategory('Random')">Random</button></li>
       <li><button onclick="displayCategory('Salute')">Salute</button></li>
-      <li>
-        <button onclick="displayCategory('Temperatura')">Temperatura</button>
-      </li>
-
+      <li><button onclick="displayCategory('Temperatura')">Temperatura</button></li>
+  
       <br />
       <a href="https://github.com/NicoMaker" target="_blank">
         <img class="immaginerobot" src="Icons/Robot.jpg" />
       </a>
       <br />
       <br />
-
       <h1>Contatti:</h1>
-
+  
       <button class="Icona">
-        <a
-          href="https://drive.google.com/file/d/1jouYKNyfHzE5lnQHvGRPCnzWrS_c2aas/view?usp=sharing"
-          target="_blank"
-        >
+        <a href="https://drive.google.com/file/d/1jouYKNyfHzE5lnQHvGRPCnzWrS_c2aas/view?usp=sharing" target="_blank">
           <img class="Immagineicona" src="Icons/qr_code.png" />
         </a>
       </button>
-
+  
       <button class="Icona">
-        <a
-          href="https://github.com/NicoMaker/Pagina_Generale_Siti"
-          target="_blank"
-        >
+        <a href="https://github.com/NicoMaker/Pagina_Generale_Siti" target="_blank">
           <img class="Immagineicona" src="Icons/GitHub.png" />
         </a>
       </button>
-
+  
       <button class="Icona">
         <a href="https://github.com/NicoMaker" target="_blank">
           <img class="Immagineicona" src="Icons/Logo Scuro.jpg" />
         </a>
       </button>
-
-      <button
-        class="Icona"
-        onclick=" contactEmail(`Nicola.marano02@gmail.com`,`Pagina Generale Siti`)"
-      >
+  
+      <button class="Icona" onclick=" contactEmail('Nicola.marano02@gmail.com','Pagina Generale Siti')">
         <img class="Immagineicona" src="Icons/Gmail.png" />
       </button>
-
+  
       <button class="Icona" onclick=" contactCell()">
         <img class="Immagineicona" src="Icons/Telefono.png" />
       </button>
-
+  
       <button class="Icona" onclick=" openWhatsAppChat()">
         <img class="Immagineicona" src="Icons/Whatsapp.png" />
       </button>
@@ -142,7 +118,7 @@
       <br />
       <br />
     </ul>
-
+  
     <button class="hamburger">
       <i class="MenuIcon">
         <span class="material-icons">menu</span>
@@ -151,9 +127,9 @@
         <span class="material-icons">close</span>
       </i>
     </button>
-
+  
     <div id="dati"></div>
-
+  
     <br />
     <br />
     <br />
@@ -164,14 +140,12 @@
     <br />
     <br />
     <br />
-
+  
     <footer>
-      <a
-        href="https://drive.google.com/file/d/1jouYKNyfHzE5lnQHvGRPCnzWrS_c2aas/view?usp=sharing"
-        target="_blank"
-      >
+      <a href="https://drive.google.com/file/d/1jouYKNyfHzE5lnQHvGRPCnzWrS_c2aas/view?usp=sharing" target="_blank">
         <p>&copy; Nico Maker Pagina Generale Siti</p>
       </a>
     </footer>
   </body>
+  
 </html>
