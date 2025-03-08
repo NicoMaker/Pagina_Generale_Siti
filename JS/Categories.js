@@ -51,6 +51,7 @@ const contactCell = () => (window.location.href = "tel:+393337024320"),
     window.location.href = `https://wa.me/${phoneNumber}?text=${message}`;
   };
 
+
 document.addEventListener("DOMContentLoaded", function () {
   const searchInput = document.getElementById("searchInput"),
     menuItems = document.querySelectorAll(".menu li"),
@@ -62,32 +63,32 @@ document.addEventListener("DOMContentLoaded", function () {
   noResultsMessage.textContent = "Nessuna categoria trovata.";
   noResultsMessage.style.color = "red";
   noResultsMessage.style.textAlign = "center";
-  noResultsMessage.style.fontSize = "24px"; // Dimensione più grande per il testo
-  noResultsMessage.style.fontWeight = "bold"; // Aggiungi un po' di enfasi al testo
-  noResultsMessage.style.marginBottom = "20px"; // Distanza tra il messaggio e il menu
+  noResultsMessage.style.fontSize = "24px"; // Imposta la dimensione del testo a 24px
+  noResultsMessage.style.fontWeight = "bold"; // Imposta il testo in grassetto
+  noResultsMessage.style.marginBottom = "20px"; // Spazio sotto il messaggio
   noResultsMessage.style.display = "none"; // Inizialmente nascosto
 
-  // Aggiungi il messaggio al contenitore del menu
-  menuContainer.insertBefore(noResultsMessage, menuContainer.firstChild); // Inserisce sopra gli altri elementi
+  // Aggiungi il messaggio al contenitore del menu sopra le immagini
+  menuContainer.insertBefore(noResultsMessage, menuContainer.firstChild);
 
   searchInput.addEventListener("input", function () {
     const filter = searchInput.value.toLowerCase().trim();
     let found = false;
 
-    menuItems.forEach((item) => {
-      const button = item.querySelector("button");
-      if (button) {
-        const text = button.textContent.toLowerCase();
-        if (text.includes(filter)) {
-          item.style.display = ""; // Mantiene lo stile originale
-          found = true;
-        } else {
-          item.style.display = "none";
-        }
-      }
-    });
+    menuItems.forEach((item) => {  
+      const button = item.querySelector("button");  
+      if (button) {  
+        const text = button.textContent.toLowerCase();  
+        if (text.includes(filter)) {  
+          item.style.display = ""; // Mantiene lo stile originale  
+          found = true;  
+        } else {  
+          item.style.display = "none";  
+        }  
+      }  
+    });  
 
-    // Mostra o nasconde il messaggio "Nessuna categoria trovata"
+    // Mostra o nasconde il messaggio "Nessuna categoria trovata"  
     noResultsMessage.style.display = found ? "none" : "block";
   });
 });
