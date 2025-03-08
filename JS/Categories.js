@@ -50,3 +50,20 @@ const contactCell = () => (window.location.href = "tel:+393337024320"),
       message = encodeURIComponent("*Info sul sito Pagina Generale Siti*");
     window.location.href = `https://wa.me/${phoneNumber}?text=${message}`;
   };
+
+document.addEventListener("DOMContentLoaded", function () {
+  const searchInput = document.getElementById("searchInput"),
+    menuItems = document.querySelectorAll(".menu li");
+
+  searchInput.addEventListener("input", function () {
+    const filter = searchInput.value.toLowerCase().trim();
+
+    menuItems.forEach((item) => {
+      const button = item.querySelector("button");
+      if (button) {
+        const text = button.textContent.toLowerCase();
+        item.style.display = text.includes(filter) ? "block" : "none";
+      }
+    });
+  });
+});

@@ -301,3 +301,20 @@ footer {
 .CloseIcon:hover {
   color: red;
 }
+
+#searchInput {
+  width: 75%;
+  padding: 10px;
+  margin-bottom: 12px;
+  border: 2px solid #007bff; /* Colore più visibile */
+  border-radius: 6px;
+  font-size: 16px;
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  border-radius: 20px;
+}
+
+#searchInput:focus {
+  border-color: #0056b3;
+  box-shadow: 0 0 5px rgba(0, 91, 187, 0.5);
+}
