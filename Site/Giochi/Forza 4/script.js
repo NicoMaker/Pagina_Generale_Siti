@@ -3,7 +3,8 @@ const rows = 6,
   cols = 7;
 let currentPlayer = "rosso",
   gameBoard = [],
-  winningDirections = [];
+  winningDirections = [],
+  gameOver = false; // Nuova variabile per controllare se la partita è finita
 
 // Funzione per caricare le direzioni di vittoria dal file JSON
 async function loadWinningDirections() {
@@ -31,6 +32,8 @@ function createBoard() {
 
 // Funzione per inserire una pedina
 function dropPiece(col) {
+  if (gameOver) return; // Impedisce di giocare dopo la vittoria
+
   const row = getEmptyRow(col);
   if (row !== -1) {
     gameBoard[row][col] = currentPlayer;
@@ -39,8 +42,12 @@ function dropPiece(col) {
     );
     cell.classList.add(currentPlayer);
     if (checkWin(row, col)) {
+      gameOver = true; // Impedisce di continuare a giocare
       highlightWinningCellsAnimation(); // Attiva l'animazione
-      alert(`Il giocatore ${currentPlayer} 🏆🎉😊 ha vinto!`);
+      setTimeout(
+        () => alert(`Il giocatore ${currentPlayer} 🏆🎉😊 ha vinto!`),
+        300
+      );
     } else {
       currentPlayer = currentPlayer === "rosso" ? "giallo" : "rosso";
       updateCurrentPlayerIndicator();
@@ -130,6 +137,7 @@ function updateCurrentPlayerIndicator() {
 
 // Funzione per resettare il gioco
 function resetGame() {
+  gameOver = false; // Ripristina lo stato del gioco
   gameBoard = Array.from({ length: rows }, () => Array(cols).fill(null));
   const cells = document.querySelectorAll(".cell");
   cells.forEach((cell) => {
@@ -153,3 +161,6 @@ async function initializeGame() {
 
 // Avvia il gioco
 initializeGame();
+
+// Aggiungo un bottone per resettare la partita manualmente
+document.getElementById("resetButton").addEventListener("click", resetGame);
