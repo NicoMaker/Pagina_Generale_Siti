@@ -435,3 +435,21 @@ input{
   }
 }
 
+
+/*  media all query per tabelt e mobile */
+
+#categoryItemSearch{
+  font-size: 25px;
+}
+
+@media only screen and (max-width: 1024px) {
+
+  #categoryItemSearch{
+    font-size: 35px;
+  }
+
+  .no-items-found{
+    font-size: 30px;
+  }
+  
+}
