@@ -11,7 +11,8 @@ async function loadCategoriesFromJSON() {
 
 function generateCategoryHTML(categoryName, category, categoryClasses) {
   const containerClass = categoryClasses[categoryName],
-    linksHTML = category
+    sortedCategory = category.sort((a, b) => a.name.localeCompare(b.name)),
+    linksHTML = sortedCategory
       .map(
         (item) =>
           `<div class="${containerClass}"><a href="${item.link}" target="_blank">${item.name}</a></div>`
@@ -80,8 +81,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (text.includes(filter)) {
           item.style.display = ""; // Mantiene lo stile originale
           found = true;
-        } else 
-          item.style.display = "none";
+        } else item.style.display = "none";
       }
     });
 
