@@ -319,7 +319,7 @@ footer {
   box-shadow: 0 0 5px rgba(0, 91, 187, 0.5);
 }
 
-input{
+input {
   text-align: center;
 }
 
@@ -342,7 +342,11 @@ input{
   transition: all 0.3s ease;
   text-align: center;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  background: linear-gradient(to right, rgba(255, 255, 255, 0.9), rgba(240, 240, 255, 0.9));
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0.9),
+    rgba(240, 240, 255, 0.9)
+  );
   color: #333;
 }
 
@@ -375,18 +379,37 @@ input{
   margin-right: auto;
 }
 
+/* Stile per il messaggio "Nessun elemento trovato" */
+.no-items-found {
+  color: red;
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  margin: 20px 0;
+  padding: 10px;
+  display: none;
+  animation: pulsate 1.5s 1 forwards; /* L'animazione avviene una sola volta */
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 15px;
+  max-width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+  transition: opacity 0.3s ease-in-out;
+}
+
 /* Animazione pulsante per il messaggio "Nessun elemento trovato" */
 @keyframes pulsate {
   0% {
-    opacity: 0.7;
-    transform: scale(1);
+    opacity: 0;
+    transform: scale(0.9);
   }
   50% {
     opacity: 1;
     transform: scale(1.05);
   }
   100% {
-    opacity: 0.7;
+    opacity: 1;
     transform: scale(1);
   }
 }
@@ -398,7 +421,7 @@ input{
     font-size: 18px;
     padding: 10px 15px;
   }
-  
+
   .no-items-found {
     font-size: 22px;
     max-width: 90%;
@@ -410,7 +433,7 @@ input{
     width: 95%;
     font-size: 16px;
   }
-  
+
   .no-items-found {
     font-size: 20px;
   }
@@ -435,21 +458,18 @@ input{
   }
 }
 
-
 /*  media all query per tabelt e mobile */
 
-#categoryItemSearch{
+#categoryItemSearch {
   font-size: 25px;
 }
 
 @media only screen and (max-width: 1024px) {
-
-  #categoryItemSearch{
+  #categoryItemSearch {
     font-size: 35px;
   }
 
-  .no-items-found{
+  .no-items-found {
     font-size: 30px;
   }
-  
 }
