@@ -15,10 +15,21 @@ function generateCategoryHTML(categoryName, category, categoryClasses) {
     linksHTML = sortedCategory
       .map(
         (item) =>
-          `<div class="${containerClass}"><a href="${item.link}" target="_blank">${item.name}</a></div>`
+          `<div class="${containerClass}" data-name="${item.name.toLowerCase()}"><a href="${
+            item.link
+          }" target="_blank">${item.name}</a></div>`
       )
       .join("");
-  return `<h2>${categoryName}</h2><br><div class="container">${linksHTML}</div>`;
+
+  // Aggiungi la barra di ricerca per gli elementi della categoria
+  const searchBarHTML = `
+    <div class="category-search-container">
+      <input type="text" id="categoryItemSearch" placeholder="Cerca in ${categoryName}..." class="category-search-input">
+    </div>
+    <div id="noItemsFound" class="no-items-found">Nessun elemento trovato.</div>
+  `;
+
+  return `<h2>${categoryName}</h2><br>${searchBarHTML}<div class="container" id="categoryItemsContainer">${linksHTML}</div>`;
 }
 
 async function displayCategory(categoryName) {
@@ -33,7 +44,58 @@ async function displayCategory(categoryName) {
         category,
         categoryClasses
       );
+
+      // Aggiungi l'event listener per la ricerca degli elementi della categoria
+      setupCategoryItemSearch();
     } else console.error(`La categoria '${categoryName}' non è stata trovata.`);
+  }
+}
+
+// Nuova funzione per configurare la ricerca degli elementi della categoria
+function setupCategoryItemSearch() {
+  const searchInput = document.getElementById("categoryItemSearch"),
+    noItemsFound = document.getElementById("noItemsFound"),
+    itemsContainer = document.getElementById("categoryItemsContainer"),
+    allItems = itemsContainer.querySelectorAll("div[data-name]");
+
+  // Nascondi inizialmente il messaggio "Nessun elemento trovato"
+  noItemsFound.style.display = "none";
+
+  searchInput.addEventListener("input", function () {
+    const searchTerm = this.value.toLowerCase().trim();
+    let visibleCount = 0;
+
+    allItems.forEach((item) => {
+      const itemName = item.getAttribute("data-name");
+      if (itemName.includes(searchTerm)) {
+        item.style.display = "";
+        visibleCount++;
+      } else {
+        item.style.display = "none";
+      }
+    });
+
+    // Mostra o nascondi il messaggio "Nessun elemento trovato"
+    if (visibleCount === 0 && searchTerm !== "") {
+      noItemsFound.style.display = "block";
+    } else {
+      noItemsFound.style.display = "none";
+    }
+
+    // Adatta il contenitore in base al numero di elementi visibili
+    adjustContainerLayout(visibleCount);
+  });
+}
+
+// Funzione per adattare il layout del contenitore in base al numero di elementi visibili
+function adjustContainerLayout(visibleCount) {
+  const itemsContainer = document.getElementById("categoryItemsContainer");
+
+  // Se ci sono solo 1, 2 o 3 elementi, aggiungi una classe per adattare il layout
+  if (visibleCount <= 3) {
+    itemsContainer.classList.add("adjusted-layout");
+  } else {
+    itemsContainer.classList.remove("adjusted-layout");
   }
 }
 

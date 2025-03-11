@@ -322,3 +322,116 @@ footer {
 input{
   text-align: center;
 }
+
+/* Stile per la barra di ricerca degli elementi della categoria */
+.category-search-container {
+  width: 100%;
+  max-width: 600px;
+  margin: 15px auto 25px auto;
+  position: relative;
+}
+
+.category-search-input {
+  width: 85%;
+  padding: 12px 20px;
+  border: 3px solid #007bff;
+  border-radius: 30px;
+  font-size: 20px;
+  font-family: "Roboto", sans-serif;
+  outline: none;
+  transition: all 0.3s ease;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(to right, rgba(255, 255, 255, 0.9), rgba(240, 240, 255, 0.9));
+  color: #333;
+}
+
+.category-search-input:focus {
+  border-color: #0056b3;
+  box-shadow: 0 0 12px rgba(0, 123, 255, 0.6);
+  transform: scale(1.02);
+}
+
+.category-search-input::placeholder {
+  color: #6c757d;
+  opacity: 0.8;
+}
+
+/* Stile per il messaggio "Nessun elemento trovato" */
+.no-items-found {
+  color: red;
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  margin: 20px 0;
+  padding: 10px;
+  display: none;
+  animation: pulsate 2s infinite;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 15px;
+  max-width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Animazione pulsante per il messaggio "Nessun elemento trovato" */
+@keyframes pulsate {
+  0% {
+    opacity: 0.7;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  100% {
+    opacity: 0.7;
+    transform: scale(1);
+  }
+}
+
+/* Stili responsive */
+@media all and (max-width: 768px) {
+  .category-search-input {
+    width: 90%;
+    font-size: 18px;
+    padding: 10px 15px;
+  }
+  
+  .no-items-found {
+    font-size: 22px;
+    max-width: 90%;
+  }
+}
+
+@media all and (max-width: 480px) {
+  .category-search-input {
+    width: 95%;
+    font-size: 16px;
+  }
+  
+  .no-items-found {
+    font-size: 20px;
+  }
+}
+
+/* Aggiunta di un'icona di ricerca (opzionale) */
+.category-search-container::before {
+  content: "🔍";
+  position: absolute;
+  left: 12%;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 20px;
+  color: #007bff;
+  pointer-events: none;
+}
+
+/* Aggiustamento del padding per l'icona */
+@media all and (min-width: 768px) {
+  .category-search-input {
+    padding-left: 45px;
+  }
+}
+
