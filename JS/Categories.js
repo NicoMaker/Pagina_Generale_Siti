@@ -32,6 +32,7 @@ const generateLinksHTML = (sortedCategory, containerClass) =>
     <div class="category-search-container">
       <input type="text" id="categoryItemSearch" placeholder="Cerca in ${categoryName}..." class="category-search-input">
     </div>
+    <br> 
     <div id="noItemsFound" class="no-items-found">Nessun elemento trovato.</div>
   `;
 
