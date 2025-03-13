@@ -12,6 +12,7 @@ input {
 button {
   border-radius: 50px;
   font-size: 40px;
+  cursor: pointer;
 }
 
 h1 {
@@ -21,7 +22,18 @@ h1 {
 
 #nomiInseriti {
   color: blue;
-  font-size: 40px;
+  font-size: 30px;
+  list-style-type: none;
+  padding: 0;
+}
+
+#nomiInseriti li {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  font-size: 30px;
+  color: darkblue;
 }
 
 #nomeCasuale {
@@ -37,4 +49,80 @@ h1 {
 #generateButton {
   background-color: brown;
   color: white;
+}
+
+li {
+  font-size: 35px;
+}
+
+#nomiInseriti {
+  color: blue;
+  font-size: 30px;
+  list-style-type: none;
+  padding: 0;
+}
+
+#nomiInseriti li {
+  display: flex;
+  justify-content: space-between; /* Allinea il testo a sinistra e il cestino a destra */
+  align-items: center;
+  gap: 15px;
+  font-size: 35px;
+  color: darkblue;
+  background: white;
+  padding: 10px 15px;
+  margin: 5px auto;
+  border-radius: 10px;
+  width: 50%;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+#nomiInseriti li span {
+  cursor: pointer;
+  font-size: 30px;
+  color: red;
+  transition: transform 0.2s, color 0.2s;
+}
+
+#nomiInseriti li span:hover {
+  color: darkred;
+  transform: scale(1.2);
+}
+
+#nomiInseriti {
+  color: blue;
+  font-size: 30px;
+  list-style-type: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centra gli elementi della lista */
+}
+
+#nomiInseriti li {
+  display: flex;
+  justify-content: center; /* Centra il testo */
+  align-items: center;
+  gap: 15px;
+  font-size: 35px;
+  color: darkblue;
+  background: white;
+  padding: 15px;
+  margin: 5px 0;
+  border-radius: 10px;
+  width: 60%;
+  text-align: center; /* Centra il testo dentro il li */
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+#nomiInseriti li span {
+  cursor: pointer;
+  font-size: 30px;
+  color: red;
+  transition: transform 0.2s, color 0.2s;
+}
+
+#nomiInseriti li span:hover {
+  color: darkred;
+  transform: scale(1.2);
 }
