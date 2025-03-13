@@ -14,8 +14,8 @@ const calculateTotalValues = (regioni, key) =>
   selectRandomRegione = (regioni) =>
     regioni[Math.floor(Math.random() * regioni.length)],
   generateProvinceList = (province) =>
-    province.map((provincia) => `<li>${provincia}</li>`).join(""),
-  updateUI = (html) => (document.getElementById("output").innerHTML = html);
+  province.sort().map((provincia) => `<li>${provincia}</li>`).join(""),
+ updateUI = (html) => (document.getElementById("output").innerHTML = html);
 
 function generateRegioneHTML(
   regione,
