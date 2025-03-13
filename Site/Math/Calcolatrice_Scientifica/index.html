@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calcolatrice</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="script.js" defer></script>
+    <link
+      href="https://fonts.cdnfonts.com/css/seven-segment"
+      rel="stylesheet"
+    />
+    <!-- fav icon calcolatrice -->
+    <link
+      rel="icon"
+      href="https://th.bing.com/th?id=OPEC.4gu6OEifyPblXA474C474&w=248&h=248&o=5&dpr=1.1&pid=21.1"
+      type="image/jpg"
+    />
+  </head>
+  <body>
+    <div class="centrato">
+      <h1>Calculator</h1>
+      <input type="text" id="result" disabled placeholder="0" />
+
+      <div class="grid">
+        <!-- Pulsanti operazioni speciali -->
+        <button class="btn special" onclick="calculator.clear()">C</button>
+        <button id="backspace" class="btn special">⬅</button>
+        <button
+          class="btn special"
+          onclick="calculator.appendOperator('Math.sqrt(')"
+        >
+          √
+        </button>
+        <button class="btn special" onclick="calculator.appendOperator('/')">
+          ÷
+        </button>
+
+        <!-- Numeri e operazioni -->
+        <button class="btn" onclick="calculator.appendNumber('7')">7</button>
+        <button class="btn" onclick="calculator.appendNumber('8')">8</button>
+        <button class="btn" onclick="calculator.appendNumber('9')">9</button>
+        <button class="btn special" onclick="calculator.appendOperator('*')">
+          ×
+        </button>
+
+        <button class="btn" onclick="calculator.appendNumber('4')">4</button>
+        <button class="btn" onclick="calculator.appendNumber('5')">5</button>
+        <button class="btn" onclick="calculator.appendNumber('6')">6</button>
+        <button class="btn special" onclick="calculator.appendOperator('-')">
+          −
+        </button>
+
+        <button class="btn" onclick="calculator.appendNumber('1')">1</button>
+        <button class="btn" onclick="calculator.appendNumber('2')">2</button>
+        <button class="btn" onclick="calculator.appendNumber('3')">3</button>
+        <button class="btn special" onclick="calculator.appendOperator('+')">
+          +
+        </button>
+
+        <button class="btn" onclick="calculator.appendNumber('0')">0</button>
+        <button class="btn" onclick="calculator.appendNumber('.')">.</button>
+        <button class="btn special" onclick="calculator.calculate()">=</button>
+
+        <!-- Parentesi e funzioni inverse -->
+        <button class="btn special" onclick="calculator.appendOperator('(')">
+          (
+        </button>
+        <button class="btn special" onclick="calculator.appendOperator(')')">
+          )
+        </button>
+
+        <button class="btn special" onclick="calculator.appendOperator('**')">
+          xʸ
+        </button>
+        <button class="btn special" onclick="calculator.appendOperator('!')">
+          !
+        </button>
+        <!-- Aggiungi il pulsante per pi greco -->
+        <button
+          class="btn special"
+          onclick="calculator.appendOperator('Math.PI')"
+        >
+          π
+        </button>
+        <!-- Funzioni trigonometriche e logaritmi -->
+        <button
+          class="btn special"
+          onclick="calculator.appendOperator('Math.sin(')"
+        >
+          sin
+        </button>
+        <button
+          class="btn special"
+          onclick="calculator.appendOperator('Math.cos(')"
+        >
+          cos
+        </button>
+        <button
+          class="btn special"
+          onclick="calculator.appendOperator('Math.tan(')"
+        >
+          tan
+        </button>
+
+        <button
+          class="btn special"
+          onclick="calculator.appendOperator('Math.asin(')"
+        >
+          asin
+        </button>
+        <button
+          class="btn special"
+          onclick="calculator.appendOperator('Math.acos(')"
+        >
+          acos
+        </button>
+
+        <button
+          class="btn special"
+          onclick="calculator.appendOperator('Math.atan(')"
+        >
+          atan
+        </button>
+
+        <!-- Funzione Rad/Deg -->
+        <button
+          id="toggleRadians"
+          class="btn special"
+          onclick="calculator.toggleRadians()"
+        >
+          Rad
+          <br />
+          Deg
+        </button>
+
+        <!-- Pulsanti operazioni avanzate -->
+        <button
+          class="btn special"
+          onclick="calculator.appendOperator('Math.log(')"
+        >
+          log
+        </button>
+        <button
+          class="btn special"
+          onclick="calculator.appendOperator('Math.exp(')"
+        >
+          e^x
+        </button>
+        <!-- Funzioni logaritmiche -->
+        <button
+          class="btn special"
+          onclick="calculator.appendOperator('Math.log(')"
+        >
+          ln
+        </button>
+      </div>
+    </div>
+  </body>
+</html>

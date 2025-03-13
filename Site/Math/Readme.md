@@ -5,6 +5,7 @@
 - **[Ahmes](Ahmes)**
 - **[Biografia su Alan Turing](Biografia%20Su%20Alan%20Turing)**
 - **[Calcolatrice](Calcolatrice)**
+- **[Calcolatrice Scientifica](Calcolatrice_Scientifica)**
 - **[Collatz](Collatz)**
 - **[Conversione Basi](Conversione%20Basi)**
 - **[Esercizio Trifase](Esercizio%20trifase)**

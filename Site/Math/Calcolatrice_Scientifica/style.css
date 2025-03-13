@@ -1,0 +1,296 @@
+/* Import del font Seven Segment */
+@import url("https://fonts.cdnfonts.com/css/seven-segment");
+
+/* Stile globale */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #222;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* Allinea il contenuto all'inizio */
+  height: 100vh;
+  margin: 0;
+  flex-direction: column; /* Disposizione verticale */
+  padding-top: 100px; /* Spazio per far vedere il contenuto sotto la barra fissa */
+}
+
+/* Stile del contenitore centrale */
+.centrato {
+  text-align: center;
+  width: 100%;
+  margin: 0;
+}
+
+/* Stile dell'intestazione */
+h1 {
+  color: #ff9f00;
+  font-weight: bold;
+  font-size: 50px;
+  margin-bottom: 20px;
+  position: fixed; /* Fissa il titolo */
+  top: 20px; /* Posiziona il titolo 20px dalla parte superiore */
+  left: 50%;
+  transform: translateX(-50%); /* Centra il titolo orizzontalmente */
+  z-index: 10; /* Assicura che il titolo resti sopra al resto del contenuto */
+}
+
+/* Stile dell'input risultato */
+input {
+  width: 425px;
+  height: 100px;
+  text-align: center;
+  font-size: 45px;
+  border: solid cyan 10px;
+  border-radius: 80px;
+  margin-bottom: 20px;
+  font-family: "Seven Segment", sans-serif;
+  position: fixed; /* Fissa l'input del risultato */
+  top: 120px; /* Posiziona la barra del risultato sotto il titolo */
+  left: 50%;
+  transform: translateX(-50%); /* Centra l'input orizzontalmente */
+  z-index: 9; /* Assicura che l'input resti sopra al resto del contenuto */
+}
+
+/* Griglia dei pulsanti */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 100px);
+  grid-gap: 10px;
+  justify-content: center;
+  margin-top: 240px; /* Dà spazio ai pulsanti sotto la barra fissa */
+}
+
+/* Pulsanti generali */
+.btn {
+  width: 100px;
+  height: 100px;
+  font-size: 45px;
+  background-color: white;
+  color: black;
+  border-radius: 50px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.1s;
+}
+
+.btn:hover {
+  background-color: #f0f0f0;
+}
+
+.btn:active {
+  transform: scale(0.95);
+}
+
+/* Pulsanti speciali (operazioni e funzioni) */
+.special {
+  background-color: #ff9f00;
+  color: white;
+}
+
+.special:hover {
+  background-color: #e68a00;
+}
+
+.special:active {
+  background-color: #e68a00;
+}
+
+/* Stile per il pulsante "C" */
+.Cancella {
+  width: 425px;
+  height: 100px;
+  font-size: 45px;
+  background-color: cyan;
+  color: green;
+  border-radius: 50px;
+}
+
+/* Stile per il testo di output */
+#result {
+  font-family: "Seven Segment", sans-serif;
+}
+/* Media Queries per dispositivi mobili */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 30px;
+  }
+
+  input {
+    width: 80%;
+    height: 80px;
+    font-size: 35px;
+  }
+
+  .grid {
+    grid-template-columns: repeat(4, 80px);
+    grid-gap: 8px;
+  }
+
+  .btn {
+    width: 80px;
+    height: 80px;
+    font-size: 35px;
+  }
+
+  .special {
+    font-size: 35px;
+  }
+
+  .Cancella {
+    width: 80%;
+    height: 80px;
+    font-size: 35px;
+  }
+
+  #result {
+    font-size: 35px;
+  }
+}
+
+/* Media Queries per schermi ancora più piccoli */
+@media (max-width: 480px) {
+  h1 {
+    font-size: 25px;
+  }
+
+  input {
+    width: 70%;
+    height: 70px;
+    font-size: 30px;
+  }
+
+  .grid {
+    grid-template-columns: repeat(4, 70px);
+    grid-gap: 6px;
+  }
+
+  .btn {
+    width: 70px;
+    height: 70px;
+    font-size: 30px;
+  }
+
+  .special {
+    font-size: 30px;
+  }
+
+  .Cancella {
+    width: 70%;
+    height: 70px;
+    font-size: 30px;
+  }
+
+  #result {
+    font-size: 30px;
+  }
+}
+
+input {
+  color: white;
+  background-color: #222;
+}
+
+h1 {
+  background-color: #222;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 100px);
+  grid-gap: 10px;
+  justify-content: center;
+  margin-top: 240px; /* Abbassa i pulsanti per evitare che si sovrappongano al risultato */
+  padding-top: 180px; /* Dà spazio sopra la griglia per compensare l'input fisso */
+}
+
+#toggleRadians {
+  font-size: 16-px; /* Dimensione leggibile */
+  font-weight: bold; /* Testo più chiaro */
+  text-align: center;
+  background: #007bff; /* Blu acceso */
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+#toggleRadians:hover {
+  background: #0056b3; /* Scuro al passaggio del mouse */
+}
+
+/* Media Queries per dispositivi mobili */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 30px;
+  }
+
+  input {
+    width: 80%;
+    height: 80px;
+    font-size: 35px;
+  }
+
+  .grid {
+    grid-template-columns: repeat(4, 80px);
+    grid-gap: 5px; /* Ridotto lo spazio tra i bottoni */
+  }
+
+  .btn {
+    width: 80px;
+    height: 80px;
+    font-size: 35px;
+  }
+
+  .special {
+    font-size: 35px;
+  }
+
+  .Cancella {
+    width: 80%;
+    height: 80px;
+    font-size: 35px;
+  }
+
+  #result {
+    font-size: 35px;
+  }
+}
+
+/* Media Queries per schermi ancora più piccoli */
+@media (max-width: 480px) {
+  h1 {
+    font-size: 25px;
+  }
+
+  input {
+    width: 70%;
+    height: 70px;
+    font-size: 30px;
+  }
+
+  .grid {
+    grid-template-columns: repeat(4, 70px);
+    grid-gap: 4px; /* Ridotto ancora di più lo spazio tra i bottoni */
+  }
+
+  .btn {
+    width: 70px;
+    height: 70px;
+    font-size: 30px;
+  }
+
+  .special {
+    font-size: 30px;
+  }
+
+  .Cancella {
+    width: 70%;
+    height: 70px;
+    font-size: 30px;
+  }
+
+  #result {
+    font-size: 30px;
+  }
+}
