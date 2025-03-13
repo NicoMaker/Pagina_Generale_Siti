@@ -23,6 +23,11 @@ class Calculator {
     this.updateDisplay();
   }
 
+  appendExp() {
+    this.expression += "Math.exp(1)";
+    this.updateDisplay();
+  }
+
   clear() {
     this.expression = "";
     this.updateDisplay();
