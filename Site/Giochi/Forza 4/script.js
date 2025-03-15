@@ -164,3 +164,98 @@ initializeGame();
 
 // Aggiungo un bottone per resettare la partita manualmente
 document.getElementById("resetButton").addEventListener("click", resetGame);
+
+function dropPiece(col) {
+  if (gameOver) return; // Impedisce di giocare dopo la vittoria
+
+  const row = getEmptyRow(col);
+  if (row !== -1) {
+    gameBoard[row][col] = currentPlayer;
+    const cell = document.querySelector(
+      `[data-row="${row}"][data-col="${col}"]`
+    );
+    cell.classList.add(currentPlayer);
+
+    if (checkWin(row, col)) {
+      gameOver = true; // Impedisce di continuare a giocare
+      highlightWinningCellsAnimation();
+      updateWinnerMessage(`${currentPlayer} ha vinto! 🏆🎉😊`);
+    } else if (isBoardFull()) {
+      gameOver = true;
+      updateWinnerMessage("Pareggio! 😲 Nessuno ha vinto.");
+    } else {
+      currentPlayer = currentPlayer === "rosso" ? "giallo" : "rosso";
+      updateCurrentPlayerIndicator();
+    }
+  }
+}
+
+// Funzione per verificare se la griglia è piena (pareggio)
+function isBoardFull() {
+  return gameBoard.every((row) => row.every((cell) => cell !== null));
+}
+
+// Funzione per aggiornare il messaggio di stato (turno o vincitore)
+function updateWinnerMessage(message) {
+  const container = document.getElementById("currentPlayerContainer");
+  container.innerHTML = `<span class="${currentPlayer}">${message}</span>`;
+}
+
+// Modifica la funzione resetGame per ripristinare il turno
+function resetGame() {
+  gameOver = false;
+  gameBoard = Array.from({ length: rows }, () => Array(cols).fill(null));
+
+  document.getElementById("currentPlayerContainer").innerHTML = `
+    <span>Turno:</span>
+    <div id="currentPlayerIndicator" class="cell rosso"></div>
+  `;
+
+  document.querySelectorAll(".cell").forEach((cell) => {
+    cell.classList.remove(
+      "rosso",
+      "giallo",
+      "winning",
+      "rossoWin",
+      "gialloWin"
+    );
+  });
+
+  currentPlayer = "rosso";
+  updateCurrentPlayerIndicator();
+}
+
+// Funzione per aggiornare il messaggio di stato (turno o vincitore)
+function updateWinnerMessage(message) {
+  const container = document.getElementById("currentPlayerContainer");
+  container.innerHTML = `<span class="${currentPlayer} victoryMessage">${message}</span>`;
+
+  const winnerMessage = container.querySelector("span");
+
+  if (currentPlayer === "rosso") winnerMessage.classList.add("rossoWin");
+  else if (currentPlayer === "giallo") winnerMessage.classList.add("gialloWin");
+  else if (message === "Pareggio! 😲 Nessuno ha vinto.")
+    winnerMessage.classList.add("draw");
+
+  winnerMessage.style.padding = "10px";
+  winnerMessage.style.borderRadius = "5px";
+}
+
+// Funzione per aggiornare l'indicatore del giocatore corrente
+function updateCurrentPlayerIndicator() {
+  const indicator = document.getElementById("currentPlayerIndicator");
+  indicator.className = currentPlayer; // Aggiorna il colore
+  indicator.classList.add("animatedIndicator"); // Aggiungi l'animazione
+
+  // Rimuovi l'animazione dopo che è stata eseguita una volta
+  setTimeout(() => {
+    indicator.classList.remove("animatedIndicator");
+  }, 1500); // Rimuovi l'animazione dopo 1,5 secondi (durata dell'animazione)
+}
+
+// Inizializza il gioco (attiva l'animazione per il primo turno)
+async function initializeGame() {
+  await loadWinningDirections(); // Carica le direzioni di vittoria
+  createBoard();
+  updateCurrentPlayerIndicator(); // Aggiungi l'animazione all'inizio
+}

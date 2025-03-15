@@ -206,3 +206,63 @@ body {
 span {
   font-size: 50px;
 }
+
+.rosso {
+  color: red;
+}
+
+.giallo {
+  color: gold;
+}
+
+/* Aggiungi questa classe al tuo CSS */
+@keyframes highlightPlayer {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.animatedIndicator {
+  animation: highlightPlayer 1.5s ease-in-out;
+}
+
+/* Aggiungi questa classe al tuo CSS */
+@keyframes victoryAnimation {
+  0% { opacity: 0; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.1); }
+  100% { opacity: 0; transform: scale(0.8); }
+}
+
+.victoryMessage {
+  animation: victoryAnimation 2s ease-out;
+  font-weight: bold;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+/* Classi per colore del vincitore */
+.rossoWin {
+  background-color: red;
+  color: yellow; /* Scritta gialla per la vittoria del rosso */
+}
+
+.gialloWin {
+  background-color: yellow;
+  color: red; /* Scritta rossa per la vittoria del giallo */
+}
+
+.draw {
+  background-color: gray;
+  color: white; /* Scritta bianca per il pareggio */
+}
+
+/* Aggiungi questa classe per il messaggio di vittoria */
+.victoryMessage {
+  border-radius: 20px; /* Raggio del bordo di 20px */
+}
