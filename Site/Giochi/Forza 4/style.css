@@ -257,9 +257,15 @@ span {
   color: red; /* Scritta rossa per la vittoria del giallo */
 }
 
+/* Nuova classe per il messaggio di pareggio */
 .draw {
-  background-color: gray;
-  color: white; /* Scritta bianca per il pareggio */
+  background-color: white; /* Sfondo bianco */
+  color: blue; /* Scritta blu */
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 25px;
+  font-weight: bold;
+  display: inline-block;
 }
 
 /* Aggiungi questa classe per il messaggio di vittoria */

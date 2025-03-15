@@ -30,30 +30,6 @@ function createBoard() {
   resetGame();
 }
 
-// Funzione per inserire una pedina
-function dropPiece(col) {
-  if (gameOver) return; // Impedisce di giocare dopo la vittoria
-
-  const row = getEmptyRow(col);
-  if (row !== -1) {
-    gameBoard[row][col] = currentPlayer;
-    const cell = document.querySelector(
-      `[data-row="${row}"][data-col="${col}"]`
-    );
-    cell.classList.add(currentPlayer);
-    if (checkWin(row, col)) {
-      gameOver = true; // Impedisce di continuare a giocare
-      highlightWinningCellsAnimation(); // Attiva l'animazione
-      setTimeout(
-        () => alert(`Il giocatore ${currentPlayer} 🏆🎉😊 ha vinto!`),
-        300
-      );
-    } else {
-      currentPlayer = currentPlayer === "rosso" ? "giallo" : "rosso";
-      updateCurrentPlayerIndicator();
-    }
-  }
-}
 
 // Funzione per ottenere la riga vuota in cui posizionare la pedina
 function getEmptyRow(col) {
@@ -135,23 +111,6 @@ function updateCurrentPlayerIndicator() {
   indicator.className = currentPlayer; // Aggiorna il colore
 }
 
-// Funzione per resettare il gioco
-function resetGame() {
-  gameOver = false; // Ripristina lo stato del gioco
-  gameBoard = Array.from({ length: rows }, () => Array(cols).fill(null));
-  const cells = document.querySelectorAll(".cell");
-  cells.forEach((cell) => {
-    cell.classList.remove(
-      "rosso",
-      "giallo",
-      "winning",
-      "rossoWin",
-      "gialloWin"
-    );
-  });
-  currentPlayer = "rosso";
-  updateCurrentPlayerIndicator();
-}
 
 // Inizializza la griglia di gioco all'avvio della pagina
 async function initializeGame() {
@@ -196,10 +155,7 @@ function isBoardFull() {
 }
 
 // Funzione per aggiornare il messaggio di stato (turno o vincitore)
-function updateWinnerMessage(message) {
-  const container = document.getElementById("currentPlayerContainer");
-  container.innerHTML = `<span class="${currentPlayer}">${message}</span>`;
-}
+
 
 // Modifica la funzione resetGame per ripristinare il turno
 function resetGame() {
@@ -235,7 +191,7 @@ function updateWinnerMessage(message) {
   if (currentPlayer === "rosso") winnerMessage.classList.add("rossoWin");
   else if (currentPlayer === "giallo") winnerMessage.classList.add("gialloWin");
   else if (message === "Pareggio! 😲 Nessuno ha vinto.")
-    winnerMessage.classList.add("draw");
+    winnerMessage.classList.add("draw"); // Aggiungi la classe "draw" per il pareggio
 
   winnerMessage.style.padding = "10px";
   winnerMessage.style.borderRadius = "5px";
