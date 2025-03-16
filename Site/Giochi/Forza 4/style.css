@@ -254,3 +254,16 @@ span {
   box-shadow: 0px 0px 15px white;
 }
 
+.rossoWin,
+.gialloWin,
+.draw {
+  font-size: 20px;
+}
+
+.victoryMessage {
+  animation: victoryAnimation 2s ease-out;
+  font-weight: bold;
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 50px; /* Grandezza del testo più moderata */
+}
