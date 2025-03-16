@@ -179,7 +179,6 @@ function restoreGameState(state) {
   // Aggiorna lo stato dei pulsanti
   updateControlButtons();
 }
-
 // Funzione per trovare e evidenziare le celle vincenti dopo un ripristino
 function findAndHighlightWinningCells() {
   // Controlla tutte le celle per trovare combinazioni vincenti
@@ -200,6 +199,7 @@ function updateBoardUI() {
   for (let i = 0; i < rows; i++) {
     for (let j = 0; j < cols; j++) {
       const cell = document.querySelector(`[data-row="${i}"][data-col="${j}"]`);
+
       // Rimuovi tutte le classi di colore e vincita
       cell.classList.remove(
         "rosso",
@@ -210,9 +210,7 @@ function updateBoardUI() {
       );
 
       // Aggiungi la classe appropriata in base allo stato della cella
-      if (gameBoard[i][j]) {
-        cell.classList.add(gameBoard[i][j]);
-      }
+      if (gameBoard[i][j]) cell.classList.add(gameBoard[i][j]);
     }
   }
 }
