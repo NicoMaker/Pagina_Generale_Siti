@@ -4,9 +4,7 @@ const rows = 6,
 let currentPlayer = "rosso",
   gameBoard = [],
   winningDirections = [],
-  gameOver = false,
-  gameHistory = [], // Array per memorizzare la storia delle mosse
-  currentHistoryIndex = -1; // Indice corrente nella storia
+  gameOver = false; // Rimuovi la cronologia delle mosse
 
 // Funzione per caricare le direzioni di vittoria dal file JSON
 async function loadWinningDirections() {
@@ -127,73 +125,6 @@ function updateCurrentPlayerIndicator() {
   }, 1500); // Rimuovi l'animazione dopo 1,5 secondi (durata dell'animazione)
 }
 
-// Funzione per salvare lo stato corrente nella storia
-function saveGameState() {
-  // Crea una copia profonda della griglia di gioco
-  const boardCopy = gameBoard.map((row) => [...row]);
-
-  // Se stiamo facendo una nuova mossa dopo aver annullato, elimina la storia futura
-  if (currentHistoryIndex < gameHistory.length - 1)
-    gameHistory = gameHistory.slice(0, currentHistoryIndex + 1);
-
-  // Aggiungi lo stato corrente alla storia
-  gameHistory.push({
-    board: boardCopy,
-    player: currentPlayer,
-    gameOver: gameOver,
-  });
-
-  currentHistoryIndex = gameHistory.length - 1;
-
-  // Aggiorna lo stato dei pulsanti
-  updateControlButtons();
-}
-
-// Funzione per ripristinare uno stato dalla storia
-function restoreGameState(state) {
-  gameBoard = state.board.map((row) => [...row]);
-  currentPlayer = state.player;
-  gameOver = state.gameOver;
-
-  // Aggiorna la UI
-  updateBoardUI();
-
-  if (gameOver) {
-    // Se il gioco è finito, mostra il messaggio appropriato
-    if (isBoardFull()) updateWinnerMessage("Pareggio! 😲 Nessuno ha vinto.");
-    else {
-      updateWinnerMessage(`il ${currentPlayer} ha vinto! 🏆🎉😊`);
-      // Trova e evidenzia le celle vincenti
-      findAndHighlightWinningCells();
-    }
-  } else {
-    // Altrimenti, aggiorna l'indicatore del giocatore corrente
-    const container = document.getElementById("currentPlayerContainer");
-    container.innerHTML = `
-      <span>Turno:</span>
-      <div id="currentPlayerIndicator" class="cell ${currentPlayer}"></div>
-    `;
-    updateCurrentPlayerIndicator();
-  }
-
-  // Aggiorna lo stato dei pulsanti
-  updateControlButtons();
-}
-// Funzione per trovare e evidenziare le celle vincenti dopo un ripristino
-function findAndHighlightWinningCells() {
-  // Controlla tutte le celle per trovare combinazioni vincenti
-  for (let row = 0; row < rows; row++) {
-    for (let col = 0; col < cols; col++) {
-      if (gameBoard[row][col] === currentPlayer) {
-        if (checkWin(row, col)) {
-          highlightWinningCellsAnimation();
-          return; // Esci dopo aver trovato una combinazione vincente
-        }
-      }
-    }
-  }
-}
-
 // Funzione per aggiornare la UI della griglia
 function updateBoardUI() {
   for (let i = 0; i < rows; i++) {
@@ -215,34 +146,6 @@ function updateBoardUI() {
   }
 }
 
-// Funzione per aggiornare lo stato dei pulsanti di controllo
-function updateControlButtons() {
-  const undoButton = document.getElementById("undoButton");
-  const redoButton = document.getElementById("redoButton");
-
-  // Disabilita il pulsante Undo se siamo all'inizio della storia o non ci sono mosse
-  undoButton.disabled = currentHistoryIndex <= 0;
-
-  // Disabilita il pulsante Redo se siamo alla fine della storia
-  redoButton.disabled = currentHistoryIndex >= gameHistory.length - 1;
-}
-
-// Funzione per annullare l'ultima mossa
-function undoMove() {
-  if (currentHistoryIndex > 0) {
-    currentHistoryIndex--;
-    restoreGameState(gameHistory[currentHistoryIndex]);
-  }
-}
-
-// Funzione per ripetere una mossa annullata
-function redoMove() {
-  if (currentHistoryIndex < gameHistory.length - 1) {
-    currentHistoryIndex++;
-    restoreGameState(gameHistory[currentHistoryIndex]);
-  }
-}
-
 function dropPiece(col) {
   if (gameOver) return; // Impedisce di giocare dopo la vittoria
 
@@ -254,9 +157,7 @@ function dropPiece(col) {
     );
     cell.classList.add(currentPlayer);
 
-    // Salva lo stato prima di verificare la vittoria
-    saveGameState();
-
+    // Verifica la vittoria
     if (checkWin(row, col)) {
       gameOver = true; // Impedisce di continuare a giocare
       highlightWinningCellsAnimation();
@@ -296,13 +197,6 @@ function resetGame() {
 
   currentPlayer = "rosso";
   updateCurrentPlayerIndicator();
-
-  // Resetta la storia del gioco
-  gameHistory = [];
-  currentHistoryIndex = -1;
-
-  // Salva lo stato iniziale
-  saveGameState();
 }
 
 // Funzione per aggiornare il messaggio di stato (turno o vincitore)
@@ -330,13 +224,6 @@ function updateWinnerMessage(message) {
 async function initializeGame() {
   await loadWinningDirections(); // Carica le direzioni di vittoria
   createBoard();
-
-  // Aggiungi gli event listener per i pulsanti di controllo
-  document.getElementById("undoButton").addEventListener("click", undoMove);
-  document.getElementById("redoButton").addEventListener("click", redoMove);
-
-  // Disabilita inizialmente i pulsanti
-  updateControlButtons();
 }
 
 // Avvia il gioco
