@@ -18,7 +18,10 @@ async function loadWinningDirections() {
     console.error("Errore nel caricamento delle direzioni:", error);
     // Direzioni di default in caso di errore
     winningDirections = [
-      [0, 1], [1, 0], [1, 1], [1, -1]
+      [0, 1],
+      [1, 0],
+      [1, 1],
+      [1, -1],
     ];
   }
 }
@@ -127,40 +130,38 @@ function updateCurrentPlayerIndicator() {
 // Funzione per salvare lo stato corrente nella storia
 function saveGameState() {
   // Crea una copia profonda della griglia di gioco
-  const boardCopy = gameBoard.map(row => [...row]);
-  
+  const boardCopy = gameBoard.map((row) => [...row]);
+
   // Se stiamo facendo una nuova mossa dopo aver annullato, elimina la storia futura
-  if (currentHistoryIndex < gameHistory.length - 1) {
+  if (currentHistoryIndex < gameHistory.length - 1)
     gameHistory = gameHistory.slice(0, currentHistoryIndex + 1);
-  }
-  
+
   // Aggiungi lo stato corrente alla storia
   gameHistory.push({
     board: boardCopy,
     player: currentPlayer,
-    gameOver: gameOver
+    gameOver: gameOver,
   });
-  
+
   currentHistoryIndex = gameHistory.length - 1;
-  
+
   // Aggiorna lo stato dei pulsanti
   updateControlButtons();
 }
 
 // Funzione per ripristinare uno stato dalla storia
 function restoreGameState(state) {
-  gameBoard = state.board.map(row => [...row]);
+  gameBoard = state.board.map((row) => [...row]);
   currentPlayer = state.player;
   gameOver = state.gameOver;
-  
+
   // Aggiorna la UI
   updateBoardUI();
-  
+
   if (gameOver) {
     // Se il gioco è finito, mostra il messaggio appropriato
-    if (isBoardFull()) {
-      updateWinnerMessage("Pareggio! 😲 Nessuno ha vinto.");
-    } else {
+    if (isBoardFull()) updateWinnerMessage("Pareggio! 😲 Nessuno ha vinto.");
+    else {
       updateWinnerMessage(`il ${currentPlayer} ha vinto! 🏆🎉😊`);
       // Trova e evidenzia le celle vincenti
       findAndHighlightWinningCells();
@@ -174,7 +175,7 @@ function restoreGameState(state) {
     `;
     updateCurrentPlayerIndicator();
   }
-  
+
   // Aggiorna lo stato dei pulsanti
   updateControlButtons();
 }
@@ -200,8 +201,14 @@ function updateBoardUI() {
     for (let j = 0; j < cols; j++) {
       const cell = document.querySelector(`[data-row="${i}"][data-col="${j}"]`);
       // Rimuovi tutte le classi di colore e vincita
-      cell.classList.remove("rosso", "giallo", "winning", "rossoWin", "gialloWin");
-      
+      cell.classList.remove(
+        "rosso",
+        "giallo",
+        "winning",
+        "rossoWin",
+        "gialloWin"
+      );
+
       // Aggiungi la classe appropriata in base allo stato della cella
       if (gameBoard[i][j]) {
         cell.classList.add(gameBoard[i][j]);
@@ -214,10 +221,10 @@ function updateBoardUI() {
 function updateControlButtons() {
   const undoButton = document.getElementById("undoButton");
   const redoButton = document.getElementById("redoButton");
-  
+
   // Disabilita il pulsante Undo se siamo all'inizio della storia o non ci sono mosse
   undoButton.disabled = currentHistoryIndex <= 0;
-  
+
   // Disabilita il pulsante Redo se siamo alla fine della storia
   redoButton.disabled = currentHistoryIndex >= gameHistory.length - 1;
 }
@@ -291,11 +298,11 @@ function resetGame() {
 
   currentPlayer = "rosso";
   updateCurrentPlayerIndicator();
-  
+
   // Resetta la storia del gioco
   gameHistory = [];
   currentHistoryIndex = -1;
-  
+
   // Salva lo stato iniziale
   saveGameState();
 }
@@ -325,11 +332,11 @@ function updateWinnerMessage(message) {
 async function initializeGame() {
   await loadWinningDirections(); // Carica le direzioni di vittoria
   createBoard();
-  
+
   // Aggiungi gli event listener per i pulsanti di controllo
   document.getElementById("undoButton").addEventListener("click", undoMove);
   document.getElementById("redoButton").addEventListener("click", redoMove);
-  
+
   // Disabilita inizialmente i pulsanti
   updateControlButtons();
 }
