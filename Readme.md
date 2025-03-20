@@ -1,5 +1,5 @@
 
-# Pagina 📋 Generale
+# Pagina 📋 Generale Siti
 
 ## Navigazione 🌐 e Categorie del Sito 🌐
 
