@@ -12,6 +12,18 @@ class Calculator {
   }
 
   appendNumber(num) {
+    // Controlla se la lunghezza dell'espressione è già 20 caratteri
+    if (this.expression.length >= 20) {
+      alert("Hai raggiunto il limite massimo di 20 cifre.");
+      return;
+    }
+
+    // Controlla se l'utente sta cercando di aggiungere un punto
+    if (num === "." && this.expression.includes(".")) {
+      alert("Non è possibile mettere due volte il punto.");
+      return;
+    }
+
     this.expression += num;
     this.updateDisplay();
   }
@@ -39,14 +51,13 @@ class Calculator {
   }
 
   updateToggleButton = () =>
-    this.toggleButton.textContent = this.isRadians ? "Rad" : "Deg";
-
+    (this.toggleButton.textContent = this.isRadians ? "Rad" : "Deg");
 
   backspace() {
     this.expression = this.expression.trim().slice(0, -1);
     this.updateDisplay();
   }
-  
+
   factorial(n) {
     if (n === 0 || n === 1) return 1;
     return n * this.factorial(n - 1);
