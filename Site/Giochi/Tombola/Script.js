@@ -20,26 +20,27 @@ function BlinkNode(celnode, times, millis) {
   };
 }
 
+function announceNumber(nn) {
+  const utterance = new SpeechSynthesisUtterance(`È uscito il numero ${nn}`);
+  speechSynthesis.speak(utterance);
+}
+
 function selectNr(nn) {
   let celnode = document.getElementById("nr" + nn);
   celnode.className = "on";
-
   orig.splice(orig.indexOf(nn), 1);
   hist.add(nn);
-
   let cc = new BlinkNode(celnode, 9, 300);
   cc.blink();
-
+  announceNumber(nn);
   dumpHist();
 }
 
 function resetNr(nn) {
   let celnode = document.getElementById("nr" + nn);
   celnode.className = "";
-
   hist.delete(nn);
   orig.push(nn);
-
   dumpHist();
 }
 
@@ -48,17 +49,14 @@ const dumpHist = () => (ss = Array.from(hist).join(" "));
 function choseMe(anode) {
   let id = anode.id,
     nn = +id.match(/\d+/)[0];
-
   if (!hist.has(nn)) selectNr(nn);
   else resetNr(nn);
 }
 
 function extractRandom() {
   if (orig.length <= 0) return;
-
   let idx = Math.floor(Math.random() * orig.length),
     nn = orig[idx];
-
   if (!hist.has(nn)) selectNr(nn);
 }
 
@@ -71,28 +69,20 @@ async function fetchTables() {
 function generateTables(tables) {
   const container = document.getElementById("tombola-container");
   let tableContent = "";
-
   tables.forEach((table) => {
     tableContent += `<div class="sub-table"><table>`;
-
     for (let i = 0; i < table.numbers.length; i += 5) {
       tableContent += "<tr>";
-
       for (let j = 0; j < 5; j++) {
         const number = table.numbers[i + j];
-        if (number) {
+        if (number)
           tableContent += `<td id="nr${number}" onclick="choseMe(this)">${number}</td>`;
-        } else {
-          tableContent += "<td></td>";
-        }
+        else tableContent += "<td></td>";
       }
-
       tableContent += "</tr>";
     }
-
     tableContent += "</table></div>";
   });
-
   container.innerHTML = tableContent;
 }
 
