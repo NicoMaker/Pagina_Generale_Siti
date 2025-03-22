@@ -87,12 +87,8 @@ async function loadCountriesData() {
 
     // Organizza i dati per codice ISO alpha-2 e alpha-3
     data.forEach((country) => {
-      if (country.cca2) {
-        countriesData[country.cca2.toLowerCase()] = country;
-      }
-      if (country.cca3) {
-        countriesData[country.cca3.toLowerCase()] = country;
-      }
+      if (country.cca2) countriesData[country.cca2.toLowerCase()] = country;
+      if (country.cca3) countriesData[country.cca3.toLowerCase()] = country;
     });
 
     // Carica il planisfero dettagliato
@@ -264,8 +260,8 @@ function setupDragFunctionality() {
   document.addEventListener("touchmove", function (e) {
     if (!isDragging) return;
 
-    const dx = e.touches[0].clientX - startX;
-    const dy = e.touches[0].clientY - startY;
+    const dx = e.touches[0].clientX - startX,
+      dy = e.touches[0].clientY - startY;
 
     translateX = startTranslateX + dx;
     translateY = startTranslateY + dy;
@@ -357,10 +353,10 @@ function showCountryInfo(countryId) {
     // Nome nativo (prendi il primo disponibile)
     if (country.name.nativeName) {
       const nativeNameKey = Object.keys(country.name.nativeName)[0];
-      if (nativeNameKey) {
+      if (nativeNameKey)
         nativeName.textContent =
           country.name.nativeName[nativeNameKey].common || "";
-      } else nativeName.textContent = "";
+      else nativeName.textContent = "";
     } else nativeName.textContent = "";
 
     // Capitale
@@ -394,9 +390,7 @@ function showCountryInfo(countryId) {
     if (country.languages) {
       const languageList = Object.values(country.languages).join(", ");
       countryLanguages.textContent = languageList || "N/A";
-    } else {
-      countryLanguages.textContent = "N/A";
-    }
+    } else countryLanguages.textContent = "N/A";
 
     // Fusi orari
     countryTimezones.textContent = country.timezones
