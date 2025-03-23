@@ -435,3 +435,63 @@ function showCountryInfo(countryId) {
 window.addEventListener("DOMContentLoaded", function () {
   loadCountriesData();
 });
+
+// Aggiungi queste variabili all'inizio del file, dopo le altre dichiarazioni di elementi DOM
+const countrySearch = document.getElementById("country-search"),
+  noResultsMessage = document.getElementById("no-results");
+
+// Modifica la funzione createCountriesList per aggiungere la funzionalità di ricerca
+function createCountriesList(countries) {
+  // Pulisci l'elenco
+  countriesGrid.innerHTML = "";
+
+  // Ordina i paesi per nome
+  countries.sort((a, b) => a.name.common.localeCompare(b.name.common));
+
+  // Crea un elemento per ogni paese
+  countries.forEach((country) => {
+    const countryItem = document.createElement("div");
+    countryItem.className = "country-item";
+    countryItem.textContent = country.name.common;
+    countryItem.setAttribute("data-id", country.cca3.toLowerCase());
+
+    // Aggiungi l'event listener per il click
+    countryItem.addEventListener("click", function () {
+      const countryId = this.getAttribute("data-id");
+      showCountryInfo(countryId);
+    });
+
+    countriesGrid.appendChild(countryItem);
+  });
+
+  // Aggiungi l'event listener per la ricerca
+  countrySearch.addEventListener("input", function () {
+    const searchTerm = this.value.toLowerCase().trim(),
+      countryItems = document.querySelectorAll(".country-item");
+    let resultsFound = false;
+
+    countryItems.forEach((item) => {
+      const countryName = item.textContent.toLowerCase();
+      if (countryName.includes(searchTerm)) {
+        item.style.display = "block";
+        resultsFound = true;
+      } else item.style.display = "none";
+    });
+
+    // Mostra o nascondi il messaggio "nessuna nazione trovata"
+    if (searchTerm && !resultsFound) noResultsMessage.style.display = "block";
+    else noResultsMessage.style.display = "none";
+  });
+
+  // Aggiungi l'event listener per resettare la ricerca quando si passa dalla vista mappa alla vista elenco
+  toggleViewBtn.addEventListener("click", function () {
+    if (viewMode === "list") {
+      countrySearch.value = "";
+      const countryItems = document.querySelectorAll(".country-item");
+      countryItems.forEach((item) => {
+        item.style.display = "block";
+      });
+      noResultsMessage.style.display = "none";
+    }
+  });
+}

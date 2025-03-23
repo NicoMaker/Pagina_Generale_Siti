@@ -320,3 +320,35 @@ svg {
 #world-map {
   background-color: #e6f7ff;
 }
+
+/* Aggiungi questi stili alla fine del file CSS */
+.search-container {
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.search-input {
+  width: 100%;
+  padding: 10px 15px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #2c3e50;
+  box-shadow: 0 0 5px rgba(44, 62, 80, 0.2);
+}
+
+.no-results-message {
+  display: none;
+  text-align: center;
+  padding: 15px;
+  color: #e74c3c;
+  font-weight: bold;
+  background-color: #f9e7e7;
+  border-radius: 4px;
+  margin-top: 10px;
+}
