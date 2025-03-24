@@ -12,15 +12,27 @@ class Calculator {
   }
 
   appendNumber(num) {
-    // Controlla se la lunghezza dell'espressione è già 20 caratteri
-    if (this.expression.length >= 20) {
-      alert("Hai raggiunto il limite massimo di 20 cifre.");
+    // Controlla se la lunghezza dell'espressione è già 10 cifre numeriche
+    const numbersOnly = this.expression.replace(/[^0-9.]/g, "");
+    if (numbersOnly.length >= 10 && !this.expression.includes(".")) {
+      alert("Hai raggiunto il limite massimo di 10 cifre numeriche.");
       return;
     }
 
     // Controlla se l'utente sta cercando di aggiungere un punto
     if (num === "." && this.expression.includes(".")) {
       alert("Non è possibile mettere due volte il punto.");
+      return;
+    }
+
+    // Controlla se il punto è all'interno di una funzione matematica
+    if (
+      this.expression.includes("(") &&
+      num === "." &&
+      !this.expression.includes(")")
+    ) {
+      this.expression += num;
+      this.updateDisplay();
       return;
     }
 
@@ -63,6 +75,19 @@ class Calculator {
     return n * this.factorial(n - 1);
   }
 
+  // Funzione per il calcolo delle radici
+  sqrt(n) {
+    return Math.sqrt(n);
+  }
+
+  cbrt(n) {
+    return Math.cbrt(n);
+  }
+
+  root(base, n) {
+    return Math.pow(n, 1 / base);
+  }
+
   calculate() {
     try {
       let expr = this.expression
@@ -94,7 +119,20 @@ class Calculator {
         .replace(/Math\.log\(/g, `Math.log(`)
         .replace(/Math\.exp\(/g, `Math.exp(`)
         .replace(/(\d+)\^(\d+)/g, (match, base, exp) => `${base}**${exp}`)
-        .replace(/(\d+)!/g, (match, num) => `${this.factorial(Number(num))}`);
+        .replace(/(\d+)!/g, (match, num) => `${this.factorial(Number(num))}`)
+        // Supporto per le radici
+        .replace(
+          /sqrt\((\d+(\.\d+)?)\)/g,
+          (match, n) => `${this.sqrt(Number(n))}`
+        )
+        .replace(
+          /cbrt\((\d+(\.\d+)?)\)/g,
+          (match, n) => `${this.cbrt(Number(n))}`
+        )
+        .replace(
+          /root\((\d+(\.\d+)?),(\d+(\.\d+)?)\)/g,
+          (match, base, _, n) => `${this.root(Number(base), Number(n))}`
+        );
 
       if (this.expression.includes("log")) {
         let base = prompt("Inserisci la base per il logaritmo:", "10");
