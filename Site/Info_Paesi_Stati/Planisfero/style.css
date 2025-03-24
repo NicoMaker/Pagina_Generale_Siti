@@ -263,6 +263,11 @@ svg {
   background-color: #e0e0e0;
 }
 
+.country-item.selected {
+  background-color: #ff6b6b;
+  color: white;
+}
+
 .toggle-view {
   text-align: center;
   margin: 20px 0;
@@ -321,7 +326,7 @@ svg {
   background-color: #e6f7ff;
 }
 
-/* Aggiungi questi stili alla fine del file CSS */
+/* Stili per la ricerca */
 .search-container {
   margin-bottom: 20px;
   position: relative;
@@ -351,4 +356,187 @@ svg {
   background-color: #f9e7e7;
   border-radius: 4px;
   margin-top: 10px;
+}
+
+/* Stili per i filtri per continente */
+.continent-filters {
+  margin-bottom: 20px;
+}
+
+.continent-filter-title {
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #2c3e50;
+}
+
+#continent-filters-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.continent-filter {
+  display: flex;
+  align-items: center;
+  background-color: #f1f1f1;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.continent-filter:hover {
+  filter: brightness(0.9);
+}
+
+.continent-filter.active {
+  font-weight: bold;
+}
+
+/* Eccezione per il filtro "Tutti" */
+.continent-filter[data-continent="all"].active {
+  background-color: #2c3e50;
+  color: white;
+}
+
+.continent-filter.highlighted {
+  background-color: #ff6b6b;
+  color: white;
+}
+
+/* Colori specifici per ogni continente */
+.continent-filter[data-continent="Africa"],
+.continent-header[data-continent="Africa"] {
+  border-left: 4px solid #ffa726;
+}
+
+.continent-filter[data-continent="Africa"].active,
+.continent-section[data-continent="Africa"] .continent-header {
+  background-color: #ffa726;
+}
+
+.continent-filter[data-continent="Americas"],
+.continent-header[data-continent="Americas"] {
+  border-left: 4px solid #66bb6a;
+}
+
+.continent-filter[data-continent="Americas"].active,
+.continent-section[data-continent="Americas"] .continent-header {
+  background-color: #66bb6a;
+}
+
+.continent-filter[data-continent="Asia"],
+.continent-header[data-continent="Asia"] {
+  border-left: 4px solid #42a5f5;
+}
+
+.continent-filter[data-continent="Asia"].active,
+.continent-section[data-continent="Asia"] .continent-header {
+  background-color: #42a5f5;
+}
+
+.continent-filter[data-continent="Europe"],
+.continent-header[data-continent="Europe"] {
+  border-left: 4px solid #ec407a;
+}
+
+.continent-filter[data-continent="Europe"].active,
+.continent-section[data-continent="Europe"] .continent-header {
+  background-color: #ec407a;
+}
+
+.continent-filter[data-continent="Oceania"],
+.continent-header[data-continent="Oceania"] {
+  border-left: 4px solid #ab47bc;
+}
+
+.continent-filter[data-continent="Oceania"].active,
+.continent-section[data-continent="Oceania"] .continent-header {
+  background-color: #ab47bc;
+}
+
+.continent-filter[data-continent="Antarctic"],
+.continent-header[data-continent="Antarctic"] {
+  border-left: 4px solid #78909c;
+}
+
+.continent-filter[data-continent="Antarctic"].active,
+.continent-section[data-continent="Antarctic"] .continent-header {
+  background-color: #78909c;
+}
+
+.continent-filter[data-continent="Altro"],
+.continent-header[data-continent="Altro"] {
+  border-left: 4px solid #9e9e9e;
+}
+
+.continent-filter[data-continent="Altro"].active,
+.continent-section[data-continent="Altro"] .continent-header {
+  background-color: #9e9e9e;
+}
+
+.continent-toggle {
+  margin-left: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.7);
+  transition: all 0.2s;
+  color: #333;
+}
+
+.continent-toggle:hover {
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+.continent-toggle.active {
+  background-color: #27ae60;
+  color: white;
+}
+
+.continent-toggle.inactive {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.continent-toggle.highlighted {
+  background-color: #ff6b6b;
+  color: white;
+}
+
+/* Stili per i paesi raggruppati per continente */
+.continent-section {
+  margin-bottom: 20px;
+}
+
+.continent-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #f1f1f1;
+  padding: 10px 15px;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  color: white;
+}
+
+.continent-name {
+  font-weight: bold;
+}
+
+.continent-countries {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.continent-countries.hidden {
+  display: none;
 }

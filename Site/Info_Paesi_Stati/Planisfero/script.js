@@ -9,7 +9,13 @@ const mapView = document.getElementById("map-view"),
   closePopup = document.getElementById("close-popup"),
   zoomIn = document.getElementById("zoom-in"),
   zoomOut = document.getElementById("zoom-out"),
-  zoomReset = document.getElementById("zoom-reset");
+  zoomReset = document.getElementById("zoom-reset"),
+  countrySearch = document.getElementById("country-search"),
+  noResultsMessage = document.getElementById("no-results"),
+  continentFiltersContainer = document.getElementById(
+    "continent-filters-container"
+  ),
+  countriesByContinent = document.getElementById("countries-by-continent");
 
 // Elementi del popup
 const countryFlag = document.getElementById("country-flag"),
@@ -28,18 +34,28 @@ const countryFlag = document.getElementById("country-flag"),
 // Dati delle nazioni
 let countriesData = {},
   selectedCountry = null,
-  viewMode = "map"; // 'map' o 'list'
+  selectedCountryRegion = null, // Per tenere traccia del continente della nazione selezionata
+  viewMode = "map", // 'map' o 'list'
+  continents = {},
+  continentsList = [], // Lista ordinata dei continenti
+  activeContinents = new Set(["all"]), // Set per tenere traccia dei continenti attivi
+  continentVisibility = {}; // Per tenere traccia della visibilità dei continenti
+
 let scale = 1,
   translateX = 0,
   translateY = 0;
 
 // Alterna tra vista mappa ed elenco
-toggleViewBtn.addEventListener("click", function () {
+toggleViewBtn.addEventListener("click", () => {
   if (viewMode === "map") {
     mapView.style.display = "none";
     listView.style.display = "block";
     toggleViewBtn.textContent = "Passa alla vista mappa";
     viewMode = "list";
+
+    // Aggiorna la visualizzazione per evidenziare il continente selezionato
+    if (selectedCountryRegion) highlightContinent(selectedCountryRegion);
+    updateCountriesDisplay();
   } else {
     mapView.style.display = "block";
     listView.style.display = "none";
@@ -49,18 +65,18 @@ toggleViewBtn.addEventListener("click", function () {
 });
 
 // Controlli di zoom
-zoomIn.addEventListener("click", function () {
+zoomIn.addEventListener("click", () => {
   scale *= 1.2;
   updateMapTransform();
 });
 
-zoomOut.addEventListener("click", function () {
+zoomOut.addEventListener("click", () => {
   scale /= 1.2;
   if (scale < 1) scale = 1;
   updateMapTransform();
 });
 
-zoomReset.addEventListener("click", function () {
+zoomReset.addEventListener("click", () => {
   scale = 1;
   translateX = 0;
   translateY = 0;
@@ -91,11 +107,17 @@ async function loadCountriesData() {
       if (country.cca3) countriesData[country.cca3.toLowerCase()] = country;
     });
 
+    // Organizza i paesi per continente
+    organizeCountriesByContinent(data);
+
     // Carica il planisfero dettagliato
     await loadDetailedWorldMap();
 
     // Crea l'elenco dei paesi
     createCountriesList(data);
+
+    // Crea i filtri per continente
+    createContinentFilters();
 
     loadingIndicator.style.display = "none";
     return true;
@@ -105,6 +127,342 @@ async function loadCountriesData() {
     worldMapContainer.innerHTML = `<div class="error-message">Errore nel caricamento dei dati: ${error.message}</div>`;
     return false;
   }
+}
+
+// Organizza i paesi per continente
+function organizeCountriesByContinent(countries) {
+  continents = {};
+
+  // Raggruppa i paesi per continente
+  countries.forEach((country) => {
+    const region = country.region || "Altro";
+
+    if (!continents[region]) {
+      continents[region] = [];
+      // Inizializza la visibilità del continente (true = visibile)
+      continentVisibility[region] = true;
+    }
+
+    continents[region].push(country);
+  });
+
+  // Ordina i paesi all'interno di ogni continente
+  for (const region in continents) {
+    continents[region].sort((a, b) =>
+      a.name.common.localeCompare(b.name.common)
+    );
+  }
+
+  // Crea una lista ordinata dei continenti
+  continentsList = Object.keys(continents).sort();
+}
+
+// Crea i filtri per continente
+function createContinentFilters() {
+  continentFiltersContainer.innerHTML = "";
+
+  // Aggiungi il filtro "Tutti"
+  const allFilter = document.createElement("div");
+  allFilter.className = "continent-filter active";
+  allFilter.textContent = "Tutti";
+  allFilter.setAttribute("data-continent", "all");
+  allFilter.addEventListener("click", () => {
+    toggleContinentFilter("all");
+  });
+
+  continentFiltersContainer.appendChild(allFilter);
+
+  // Aggiungi un filtro per ogni continente in ordine alfabetico
+  continentsList.forEach((region) => {
+    const continentFilter = document.createElement("div");
+    continentFilter.className = "continent-filter";
+    continentFilter.setAttribute("data-continent", region);
+
+    // Aggiungi il nome del continente
+    const continentName = document.createElement("span");
+    continentName.textContent = region;
+    continentFilter.appendChild(continentName);
+
+    // Aggiungi il toggle per mostrare/nascondere i paesi del continente
+    const continentToggle = document.createElement("span");
+    continentToggle.className = "continent-toggle active";
+    continentToggle.textContent = "v";
+    continentToggle.setAttribute("data-continent", region);
+    continentToggle.addEventListener("click", (e) => {
+      e.stopPropagation(); // Evita che il click si propaghi al filtro del continente
+      toggleContinentVisibility(region);
+    });
+
+    continentFilter.appendChild(continentToggle);
+
+    // Aggiungi l'event listener per il filtro del continente
+    continentFilter.addEventListener("click", () => {
+      toggleContinentFilter(region);
+    });
+
+    continentFiltersContainer.appendChild(continentFilter);
+  });
+}
+
+// Alterna l'attivazione di un continente
+function toggleContinentFilter(continent) {
+  if (continent === "all") {
+    // Se si clicca su "Tutti", disattiva tutti gli altri filtri
+    activeContinents.clear();
+    activeContinents.add("all");
+  } else {
+    // Se si clicca su un continente specifico
+    if (activeContinents.has("all")) {
+      // Se "Tutti" è attivo, rimuovilo e aggiungi solo il continente selezionato
+      activeContinents.clear();
+      activeContinents.add(continent);
+    } else if (activeContinents.has(continent)) {
+      // Se il continente è già attivo, rimuovilo
+      activeContinents.delete(continent);
+      // Se non ci sono più continenti attivi, attiva "Tutti"
+      if (activeContinents.size === 0) {
+        activeContinents.add("all");
+      }
+    } else {
+      // Altrimenti, aggiungi il continente ai filtri attivi
+      activeContinents.add(continent);
+
+      // Controlla se tutti i continenti sono selezionati
+      checkAllContinentsSelected();
+    }
+  }
+
+  // Aggiorna la classe active sui filtri
+  updateContinentFiltersUI();
+
+  // Aggiorna la visualizzazione dei paesi
+  updateCountriesDisplay();
+}
+
+// Controlla se tutti i continenti sono selezionati e attiva "Tutti" in quel caso
+function checkAllContinentsSelected() {
+  // Se "Tutti" è già attivo, non fare nulla
+  if (activeContinents.has("all")) return;
+
+  // Controlla se tutti i continenti sono selezionati
+  const allSelected = continentsList.every((continent) =>
+    activeContinents.has(continent)
+  );
+
+  if (allSelected) {
+    // Se tutti i continenti sono selezionati, attiva "Tutti" e rimuovi gli altri
+    activeContinents.clear();
+    activeContinents.add("all");
+  }
+}
+
+// Aggiorna l'interfaccia utente dei filtri per continente
+function updateContinentFiltersUI() {
+  const filters = document.querySelectorAll(".continent-filter");
+  filters.forEach((filter) => {
+    const continent = filter.getAttribute("data-continent");
+    if (activeContinents.has(continent)) {
+      filter.classList.add("active");
+    } else filter.classList.remove("active");
+  });
+}
+
+// Alterna la visibilità dei paesi di un continente
+function toggleContinentVisibility(continent) {
+  continentVisibility[continent] = !continentVisibility[continent];
+
+  // Aggiorna la classe active sul toggle
+  const toggles = document.querySelectorAll(".continent-toggle");
+  toggles.forEach((toggle) => {
+    if (toggle.getAttribute("data-continent") === continent) {
+      if (continentVisibility[continent]) {
+        toggle.classList.add("active");
+        toggle.classList.remove("inactive");
+      } else {
+        toggle.classList.remove("active");
+        toggle.classList.add("inactive");
+      }
+    }
+  });
+
+  // Aggiorna la visualizzazione dei paesi
+  updateCountriesDisplay();
+}
+
+// Evidenzia il continente di una nazione selezionata
+function highlightContinent(region) {
+  // Prima rimuovi tutte le evidenziazioni
+  clearContinentHighlights();
+
+  if (!region) return;
+
+  // Evidenzia il filtro del continente
+  const continentFilters = document.querySelectorAll(".continent-filter");
+  continentFilters.forEach((filter) => {
+    if (filter.getAttribute("data-continent") === region) {
+      filter.classList.add("highlighted");
+
+      // Evidenzia anche il toggle
+      const toggle = filter.querySelector(".continent-toggle");
+      if (toggle) toggle.classList.add("highlighted");
+    }
+  });
+
+  // Evidenzia l'intestazione del continente nella lista
+  const continentHeaders = document.querySelectorAll(".continent-header");
+  continentHeaders.forEach((header) => {
+    if (header.getAttribute("data-continent") === region) {
+      header.classList.add("highlighted");
+
+      // Evidenzia anche il toggle
+      const toggle = header.querySelector(".continent-toggle");
+      if (toggle) toggle.classList.add("highlighted");
+    }
+  });
+}
+
+// Rimuovi tutte le evidenziazioni dei continenti
+function clearContinentHighlights() {
+  // Rimuovi l'evidenziazione dai filtri
+  const continentFilters = document.querySelectorAll(".continent-filter");
+  continentFilters.forEach((filter) => {
+    filter.classList.remove("highlighted");
+
+    // Rimuovi anche dal toggle
+    const toggle = filter.querySelector(".continent-toggle");
+    if (toggle) {
+      toggle.classList.remove("highlighted");
+    }
+  });
+
+  // Rimuovi l'evidenziazione dalle intestazioni
+  const continentHeaders = document.querySelectorAll(".continent-header");
+  continentHeaders.forEach((header) => {
+    header.classList.remove("highlighted");
+
+    // Rimuovi anche dal toggle
+    const toggle = header.querySelector(".continent-toggle");
+    if (toggle) {
+      toggle.classList.remove("highlighted");
+    }
+  });
+
+  // Rimuovi l'evidenziazione dagli elementi paese
+  const countryItems = document.querySelectorAll(".country-item");
+  countryItems.forEach((item) => {
+    item.classList.remove("selected");
+  });
+}
+
+// Aggiorna la visualizzazione dei paesi in base al filtro e alla visibilità dei continenti
+function updateCountriesDisplay() {
+  const searchTerm = countrySearch.value.toLowerCase().trim();
+
+  // Pulisci la visualizzazione attuale
+  countriesByContinent.innerHTML = "";
+
+  // Determina quali continenti mostrare
+  let continentsToShow = [];
+
+  if (activeContinents.has("all"))
+    // Usa la lista ordinata dei continenti
+    continentsToShow = [...continentsList];
+  // Ordina i continenti attivi alfabeticamente
+  else continentsToShow = Array.from(activeContinents).sort();
+
+  // Crea una sezione per ogni continente da mostrare
+  continentsToShow.forEach((region) => {
+    // Salta il continente se è nascosto
+    if (!continentVisibility[region]) return;
+
+    const continentSection = document.createElement("div");
+    continentSection.className = "continent-section";
+    continentSection.setAttribute("data-continent", region);
+
+    // Crea l'intestazione del continente
+    const continentHeader = document.createElement("div");
+    continentHeader.className = "continent-header";
+    continentHeader.setAttribute("data-continent", region);
+
+    // Evidenzia l'intestazione se corrisponde al continente della nazione selezionata
+    if (region === selectedCountryRegion)
+      continentHeader.classList.add("highlighted");
+
+    const continentName = document.createElement("div");
+    continentName.className = "continent-name";
+    (continentName.textContent = region),
+      (continentToggle = document.createElement("span"));
+    continentToggle.className = "continent-toggle active";
+    continentToggle.textContent = "v";
+    continentToggle.setAttribute("data-continent", region);
+
+    // Evidenzia il toggle se corrisponde al continente della nazione selezionata
+    if (region === selectedCountryRegion)
+      continentToggle.classList.add("highlighted");
+
+    continentToggle.addEventListener("click", function () {
+      const countriesContainer = continentSection.querySelector(
+        ".continent-countries"
+      );
+      countriesContainer.classList.toggle("hidden");
+      this.classList.toggle("active");
+
+      // Mantieni l'evidenziazione anche quando si espande/comprime
+      if (region === selectedCountryRegion) {
+        this.classList.add("highlighted");
+      }
+    });
+
+    continentHeader.appendChild(continentName);
+    continentHeader.appendChild(continentToggle);
+    continentSection.appendChild(continentHeader);
+
+    // Crea il contenitore per i paesi di questo continente
+    const countriesContainer = document.createElement("div");
+    countriesContainer.className = "continent-countries";
+
+    // Filtra i paesi in base al termine di ricerca
+    const filteredCountries = continents[region].filter((country) =>
+      country.name.common.toLowerCase().includes(searchTerm)
+    );
+
+    // Se non ci sono paesi che corrispondono alla ricerca, salta questo continente
+    if (filteredCountries.length === 0) return;
+
+    // Aggiungi i paesi filtrati
+    filteredCountries.forEach((country) => {
+      const countryItem = document.createElement("div");
+      countryItem.className = "country-item";
+      const countryId = country.cca3.toLowerCase();
+
+      // Evidenzia il paese se è quello selezionato
+      if (countryId === selectedCountry) countryItem.classList.add("selected");
+
+      countryItem.textContent = country.name.common;
+      countryItem.setAttribute("data-id", countryId);
+
+      countryItem.addEventListener("click", function () {
+        // Rimuovi la selezione da tutti i paesi
+        const allCountryItems = document.querySelectorAll(".country-item");
+        allCountryItems.forEach((item) => item.classList.remove("selected"));
+
+        // Evidenzia questo paese
+        this.classList.add("selected");
+
+        const countryId = this.getAttribute("data-id");
+        showCountryInfo(countryId);
+      });
+
+      countriesContainer.appendChild(countryItem);
+    });
+
+    continentSection.appendChild(countriesContainer);
+    countriesByContinent.appendChild(continentSection);
+  });
+
+  // Mostra o nascondi il messaggio "nessuna nazione trovata"
+  const hasResults = countriesByContinent.children.length > 0;
+  noResultsMessage.style.display = searchTerm && !hasResults ? "block" : "none";
 }
 
 // Carica il planisfero dettagliato
@@ -129,13 +487,7 @@ async function loadDetailedWorldMap() {
 }
 
 // Crea la mappa mondiale da dati GeoJSON
-function createWorldMapFromGeoJSON(geoData) {
-  // Implementazione semplificata - in un'applicazione reale si userebbe D3.js o una libreria simile
-  // per convertire correttamente i dati GeoJSON in SVG
-
-  // Fallback alla mappa semplificata
-  createSimplifiedWorldMap();
-}
+const createWorldMapFromGeoJSON = () => createSimplifiedWorldMap();
 
 // Crea una mappa mondiale semplificata
 function createSimplifiedWorldMap() {
@@ -218,7 +570,7 @@ function setupDragFunctionality() {
     startTranslateX = translateX,
     startTranslateY = translateY;
 
-  worldMap.addEventListener("mousedown", function (e) {
+  worldMap.addEventListener("mousedown", (e) => {
     if (e.target.classList.contains("country")) return; // Non trascinare quando si clicca su un paese
 
     isDragging = true;
@@ -229,7 +581,7 @@ function setupDragFunctionality() {
     worldMap.style.cursor = "grabbing";
   });
 
-  document.addEventListener("mousemove", function (e) {
+  document.addEventListener("mousemove", (e) => {
     if (!isDragging) return;
 
     const dx = e.clientX - startX,
@@ -241,13 +593,13 @@ function setupDragFunctionality() {
     updateMapTransform();
   });
 
-  document.addEventListener("mouseup", function () {
+  document.addEventListener("mouseup", () => {
     isDragging = false;
     worldMap.style.cursor = "grab";
   });
 
   // Versione touch per dispositivi mobili
-  worldMap.addEventListener("touchstart", function (e) {
+  worldMap.addEventListener("touchstart", (e) => {
     if (e.target.classList.contains("country")) return;
 
     isDragging = true;
@@ -257,7 +609,7 @@ function setupDragFunctionality() {
     startTranslateY = translateY;
   });
 
-  document.addEventListener("touchmove", function (e) {
+  document.addEventListener("touchmove", (e) => {
     if (!isDragging) return;
 
     const dx = e.touches[0].clientX - startX,
@@ -269,7 +621,7 @@ function setupDragFunctionality() {
     updateMapTransform();
   });
 
-  document.addEventListener("touchend", function () {
+  document.addEventListener("touchend", () => {
     isDragging = false;
   });
 }
@@ -295,48 +647,47 @@ function setupEventListeners() {
   });
 
   // Chiudi il popup quando si clicca sul pulsante di chiusura
-  closePopup.addEventListener("click", function () {
+  closePopup.addEventListener("click", () => {
     popup.style.display = "none";
     // Rimuovi l'evidenziazione da tutti i paesi
     const countries = document.querySelectorAll(".country");
     countries.forEach((country) => country.classList.remove("selected"));
     selectedCountry = null;
+    selectedCountryRegion = null;
+
+    // Rimuovi l'evidenziazione dai continenti
+    clearContinentHighlights();
   });
 
   // Chiudi il popup quando si clicca fuori dal contenuto del popup
-  popup.addEventListener("click", function (event) {
+  popup.addEventListener("click", (event) => {
     if (event.target === popup) {
       popup.style.display = "none";
       // Rimuovi l'evidenziazione da tutti i paesi
       const countries = document.querySelectorAll(".country");
       countries.forEach((country) => country.classList.remove("selected"));
       selectedCountry = null;
+      selectedCountryRegion = null;
+
+      // Rimuovi l'evidenziazione dai continenti
+      clearContinentHighlights();
     }
   });
 }
 
 // Crea l'elenco dei paesi
 function createCountriesList(countries) {
-  // Pulisci l'elenco
-  countriesGrid.innerHTML = "";
+  // Aggiungi l'event listener per la ricerca
+  countrySearch.addEventListener("input", () => {
+    updateCountriesDisplay();
+  });
 
-  // Ordina i paesi per nome
-  countries.sort((a, b) => a.name.common.localeCompare(b.name.common));
-
-  // Crea un elemento per ogni paese
-  countries.forEach((country) => {
-    const countryItem = document.createElement("div");
-    countryItem.className = "country-item";
-    countryItem.textContent = country.name.common;
-    countryItem.setAttribute("data-id", country.cca3.toLowerCase());
-
-    // Aggiungi l'event listener per il click
-    countryItem.addEventListener("click", function () {
-      const countryId = this.getAttribute("data-id");
-      showCountryInfo(countryId);
-    });
-
-    countriesGrid.appendChild(countryItem);
+  // Aggiungi l'event listener per resettare la ricerca quando si passa dalla vista mappa alla vista elenco
+  toggleViewBtn.addEventListener("click", () => {
+    if (viewMode === "list") {
+      countrySearch.value = "";
+      updateCountriesDisplay();
+    }
   });
 }
 
@@ -345,6 +696,13 @@ function showCountryInfo(countryId) {
   const country = countriesData[countryId];
 
   if (country) {
+    // Salva il continente della nazione selezionata
+    selectedCountryRegion = country.region || null;
+
+    // Evidenzia il continente nella vista elenco
+    if (viewMode === "list" && selectedCountryRegion)
+      highlightContinent(selectedCountryRegion);
+
     // Imposta le informazioni del paese
     countryFlag.src = country.flags.png;
     countryFlag.alt = `Bandiera di ${country.name.common}`;
@@ -406,7 +764,7 @@ function showCountryInfo(countryId) {
           const borderElement = document.createElement("div");
           borderElement.className = "border-country";
           borderElement.textContent = borderCountry.name.common;
-          borderElement.addEventListener("click", function () {
+          borderElement.addEventListener("click", () => {
             showCountryInfo(borderCode.toLowerCase());
 
             // Se siamo in modalità mappa, evidenzia il paese sulla mappa
@@ -432,66 +790,6 @@ function showCountryInfo(countryId) {
 }
 
 // Carica i dati all'avvio
-window.addEventListener("DOMContentLoaded", function () {
+window.addEventListener("DOMContentLoaded", () => {
   loadCountriesData();
 });
-
-// Aggiungi queste variabili all'inizio del file, dopo le altre dichiarazioni di elementi DOM
-const countrySearch = document.getElementById("country-search"),
-  noResultsMessage = document.getElementById("no-results");
-
-// Modifica la funzione createCountriesList per aggiungere la funzionalità di ricerca
-function createCountriesList(countries) {
-  // Pulisci l'elenco
-  countriesGrid.innerHTML = "";
-
-  // Ordina i paesi per nome
-  countries.sort((a, b) => a.name.common.localeCompare(b.name.common));
-
-  // Crea un elemento per ogni paese
-  countries.forEach((country) => {
-    const countryItem = document.createElement("div");
-    countryItem.className = "country-item";
-    countryItem.textContent = country.name.common;
-    countryItem.setAttribute("data-id", country.cca3.toLowerCase());
-
-    // Aggiungi l'event listener per il click
-    countryItem.addEventListener("click", function () {
-      const countryId = this.getAttribute("data-id");
-      showCountryInfo(countryId);
-    });
-
-    countriesGrid.appendChild(countryItem);
-  });
-
-  // Aggiungi l'event listener per la ricerca
-  countrySearch.addEventListener("input", function () {
-    const searchTerm = this.value.toLowerCase().trim(),
-      countryItems = document.querySelectorAll(".country-item");
-    let resultsFound = false;
-
-    countryItems.forEach((item) => {
-      const countryName = item.textContent.toLowerCase();
-      if (countryName.includes(searchTerm)) {
-        item.style.display = "block";
-        resultsFound = true;
-      } else item.style.display = "none";
-    });
-
-    // Mostra o nascondi il messaggio "nessuna nazione trovata"
-    if (searchTerm && !resultsFound) noResultsMessage.style.display = "block";
-    else noResultsMessage.style.display = "none";
-  });
-
-  // Aggiungi l'event listener per resettare la ricerca quando si passa dalla vista mappa alla vista elenco
-  toggleViewBtn.addEventListener("click", function () {
-    if (viewMode === "list") {
-      countrySearch.value = "";
-      const countryItems = document.querySelectorAll(".country-item");
-      countryItems.forEach((item) => {
-        item.style.display = "block";
-      });
-      noResultsMessage.style.display = "none";
-    }
-  });
-}
