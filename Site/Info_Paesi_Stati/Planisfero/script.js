@@ -220,9 +220,7 @@ function toggleContinentFilter(continent) {
       // Se il continente è già attivo, rimuovilo
       activeContinents.delete(continent);
       // Se non ci sono più continenti attivi, attiva "Tutti"
-      if (activeContinents.size === 0) {
-        activeContinents.add("all");
-      }
+      if (activeContinents.size === 0) activeContinents.add("all");
     } else {
       // Altrimenti, aggiungi il continente ai filtri attivi
       activeContinents.add(continent);
@@ -330,9 +328,7 @@ function clearContinentHighlights() {
 
     // Rimuovi anche dal toggle
     const toggle = filter.querySelector(".continent-toggle");
-    if (toggle) {
-      toggle.classList.remove("highlighted");
-    }
+    if (toggle) toggle.classList.remove("highlighted");
   });
 
   // Rimuovi l'evidenziazione dalle intestazioni
@@ -342,9 +338,7 @@ function clearContinentHighlights() {
 
     // Rimuovi anche dal toggle
     const toggle = header.querySelector(".continent-toggle");
-    if (toggle) {
-      toggle.classList.remove("highlighted");
-    }
+    if (toggle) toggle.classList.remove("highlighted");
   });
 
   // Rimuovi l'evidenziazione dagli elementi paese
