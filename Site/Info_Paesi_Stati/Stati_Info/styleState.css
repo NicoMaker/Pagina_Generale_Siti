@@ -1,38 +1,38 @@
 body {
-    font-family: Arial, sans-serif;
-    text-align: center;
-    background: linear-gradient(to right, #79E0EE, #B1AFFF, #79E0EE);
+  font-family: Arial, sans-serif;
+  text-align: center;
+  background: linear-gradient(to right, #79e0ee, #b1afff, #79e0ee);
 }
 
 h1 {
-    font-size: 50px;
-    color: red;
+  font-size: 50px;
+  color: red;
 }
 
 #stateInput {
-    padding: 5px;
-    margin-right: 10px;
-    border-radius: 50px;
-    font-size: 25px;
-    text-align: center;
+  padding: 5px;
+  margin-right: 10px;
+  border-radius: 50px;
+  font-size: 25px;
+  text-align: center;
 }
 
 button {
-    color: forestgreen;
-    border-radius: 50px;
-    padding: 5px 10px;
-    font-size: 30px;
-    background-color: yellow;
+  color: forestgreen;
+  border-radius: 50px;
+  padding: 5px 10px;
+  font-size: 30px;
+  background-color: yellow;
 }
 
 #info {
-    margin-top: 20px;
-    text-align: center;
-    font-size: 30px;
+  margin-top: 20px;
+  text-align: center;
+  font-size: 30px;
 }
 
 #flag {
-    margin-top: 20px;
-    max-width: 200px;
-    border-radius: 5px;
+  margin-top: 20px;
+  max-width: 200px;
+  border-radius: 5px;
 }
