@@ -163,6 +163,61 @@ svg {
   font-size: 16px;
 }
 
+/* Nuovi stili per gli elenchi numerati */
+.list-container {
+  margin-top: 5px;
+}
+
+.list-container ol {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.list-container li {
+  margin-bottom: 5px;
+  color: #2c3e50;
+  padding: 2px 0;
+}
+
+/* Stili per l'elenco numerato dei paesi confinanti */
+.borders-list-numbered {
+  margin: 0;
+  padding-left: 20px;
+  list-style-position: outside;
+}
+
+.border-country-item {
+  margin-bottom: 8px;
+}
+
+.border-country {
+  background-color: #f1f1f1;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  display: inline-block;
+}
+
+.border-country:hover {
+  background-color: #e0e0e0;
+}
+
+/* Rimuovo gli stili precedenti dei tag che non servono più */
+.list-item {
+  background-color: #f1f1f1;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 14px;
+  display: inline-block;
+  margin-bottom: 5px;
+}
+
+.list-item:hover {
+  background-color: #e0e0e0;
+}
+
 .map-section {
   margin-bottom: 20px;
 }

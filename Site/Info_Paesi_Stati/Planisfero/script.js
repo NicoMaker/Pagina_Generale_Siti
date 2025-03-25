@@ -384,8 +384,8 @@ function updateCountriesDisplay() {
 
     const continentName = document.createElement("div");
     continentName.className = "continent-name";
-    (continentName.textContent = region),
-      (continentToggle = document.createElement("span"));
+    continentName.textContent = region;
+    const continentToggle = document.createElement("span");
     continentToggle.className = "continent-toggle active";
     continentToggle.textContent = "v";
     continentToggle.setAttribute("data-continent", region);
@@ -685,6 +685,33 @@ function createCountriesList(countries) {
   });
 }
 
+// Funzione per creare elementi di lista numerata
+function createListItems(container, items) {
+  container.innerHTML = "";
+
+  if (!items || items.length === 0) {
+    container.textContent = "N/A";
+    return;
+  }
+
+  // Se c'è un solo elemento, mostralo come testo normale
+  if (items.length === 1) {
+    container.textContent = items[0];
+    return;
+  }
+
+  // Creo un elenco numerato per più elementi
+  const orderedList = document.createElement("ol");
+
+  items.forEach((item) => {
+    const listItem = document.createElement("li");
+    listItem.textContent = item;
+    orderedList.appendChild(listItem);
+  });
+
+  container.appendChild(orderedList);
+}
+
 // Mostra le informazioni del paese
 function showCountryInfo(countryId) {
   const country = countriesData[countryId];
@@ -730,29 +757,37 @@ function showCountryInfo(countryId) {
     countryRegion.textContent = country.region || "N/A";
     countrySubregion.textContent = country.subregion || "N/A";
 
-    // Valute
+    // Valute - Usa la nuova funzione per creare elementi di lista
     if (country.currencies) {
-      const currencyList = Object.values(country.currencies)
-        .map((currency) => `${currency.name} (${currency.symbol || ""})`)
-        .join(", ");
-      countryCurrencies.textContent = currencyList || "N/A";
-    } else countryCurrencies.textContent = "N/A";
+      const currencyItems = Object.values(country.currencies).map(
+        (currency) => `${currency.name} (${currency.symbol || ""})`
+      );
+      createListItems(countryCurrencies, currencyItems);
+    } else {
+      countryCurrencies.textContent = "N/A";
+    }
 
-    // Lingue
+    // Lingue - Usa la nuova funzione per creare elementi di lista
     if (country.languages) {
-      const languageList = Object.values(country.languages).join(", ");
-      countryLanguages.textContent = languageList || "N/A";
-    } else countryLanguages.textContent = "N/A";
+      const languageItems = Object.values(country.languages);
+      createListItems(countryLanguages, languageItems);
+    } else {
+      countryLanguages.textContent = "N/A";
+    }
 
-    // Fusi orari
-    countryTimezones.textContent = country.timezones
-      ? country.timezones.join(", ")
-      : "N/A";
+    // Fusi orari - Usa la nuova funzione per creare elementi di lista
+    if (country.timezones && country.timezones.length > 0) {
+      createListItems(countryTimezones, country.timezones);
+    } else {
+      countryTimezones.textContent = "N/A";
+    }
 
     // Paesi confinanti
     borderCountries.innerHTML = "";
     if (country.borders && country.borders.length > 0) {
-      country.borders.forEach((borderCode) => {
+      // Se c'è un solo paese confinante, mostralo come elemento singolo
+      if (country.borders.length === 1) {
+        const borderCode = country.borders[0];
         const borderCountry = countriesData[borderCode.toLowerCase()];
         if (borderCountry) {
           const borderElement = document.createElement("div");
@@ -775,7 +810,43 @@ function showCountryInfo(countryId) {
           });
           borderCountries.appendChild(borderElement);
         }
-      });
+      } else {
+        // Se ci sono più paesi confinanti, crea un elenco numerato
+        const orderedList = document.createElement("ol");
+        orderedList.className = "borders-list-numbered";
+
+        country.borders.forEach((borderCode) => {
+          const borderCountry = countriesData[borderCode.toLowerCase()];
+          if (borderCountry) {
+            const listItem = document.createElement("li");
+            listItem.className = "border-country-item";
+
+            const borderLink = document.createElement("span");
+            borderLink.className = "border-country";
+            borderLink.textContent = borderCountry.name.common;
+            borderLink.addEventListener("click", () => {
+              showCountryInfo(borderCode.toLowerCase());
+
+              // Se siamo in modalità mappa, evidenzia il paese sulla mappa
+              if (viewMode === "map") {
+                const countries = document.querySelectorAll(".country");
+                countries.forEach((c) => c.classList.remove("selected"));
+
+                const borderCountryElement = document.getElementById(
+                  borderCode.toLowerCase()
+                );
+                if (borderCountryElement)
+                  borderCountryElement.classList.add("selected");
+              }
+            });
+
+            listItem.appendChild(borderLink);
+            orderedList.appendChild(listItem);
+          }
+        });
+
+        borderCountries.appendChild(orderedList);
+      }
     } else borderCountries.textContent = "Nessun paese confinante";
 
     // Mostra il popup
