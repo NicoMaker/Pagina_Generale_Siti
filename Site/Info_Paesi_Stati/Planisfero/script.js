@@ -712,6 +712,17 @@ function createListItems(container, items) {
   container.appendChild(orderedList);
 }
 
+// Calcola la densità di popolazione (abitanti per km²)
+function calculatePopulationDensity(population, area) {
+  if (!population || !area || area === 0) return "N/A";
+
+  // Calcola la densità con due cifre decimali
+  const density = (population / area).toFixed(2);
+
+  // Formatta con due cifre decimali anche dopo l'unità di misura
+  return `${density} ab/km²`;
+}
+
 // Mostra le informazioni del paese
 function showCountryInfo(countryId) {
   const country = countriesData[countryId];
@@ -752,6 +763,45 @@ function showCountryInfo(countryId) {
     countryArea.textContent = country.area
       ? `${country.area.toLocaleString()} km²`
       : "N/A";
+
+    // Aggiungi la densità di popolazione
+    // Crea un nuovo elemento per la densità di popolazione
+    const infoGrid = document.querySelector(".info-grid");
+
+    // Verifica se l'elemento per la densità esiste già
+    let densityItem = document.getElementById("density-item");
+    if (!densityItem) {
+      // Se non esiste, crealo
+      densityItem = document.createElement("div");
+      densityItem.className = "info-item";
+      densityItem.id = "density-item";
+
+      const densityLabel = document.createElement("div");
+      densityLabel.className = "info-label";
+      densityLabel.textContent = "Densità:";
+
+      const densityValue = document.createElement("div");
+      densityValue.className = "info-value";
+      densityValue.id = "country-density";
+
+      densityItem.appendChild(densityLabel);
+      densityItem.appendChild(densityValue);
+
+      // Inserisci dopo l'area
+      const areaItem = document.querySelector(".info-item:nth-child(3)");
+      if (areaItem && areaItem.nextSibling) {
+        infoGrid.insertBefore(densityItem, areaItem.nextSibling);
+      } else {
+        infoGrid.appendChild(densityItem);
+      }
+    }
+
+    // Aggiorna il valore della densità
+    const countryDensity = document.getElementById("country-density");
+    countryDensity.textContent = calculatePopulationDensity(
+      country.population,
+      country.area
+    );
 
     // Regione e sottoregione
     countryRegion.textContent = country.region || "N/A";
