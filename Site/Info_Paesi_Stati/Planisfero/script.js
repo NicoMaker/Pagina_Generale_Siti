@@ -718,11 +718,13 @@ function createListItems(container, items) {
 function calculatePopulationDensity(population, area) {
   if (!population || !area || area === 0) return "N/A";
 
-  // Calcola la densità con due cifre decimali
-  const density = (population / area).toFixed(2);
+  const densityValue = population / area;
+  if (densityValue <= 0) return "N/A"; // Controlla anche casi negativi
 
-  // Formatta con due cifre decimali anche dopo l'unità di misura
-  return `${density} ab/km²`;
+  const formattedDensity =
+    densityValue % 1 === 0 ? densityValue.toFixed(0) : densityValue.toFixed(2);
+
+  return formattedDensity === "0.00" ? "N/A" : `${formattedDensity} ab/km²`;
 }
 
 // Mostra le informazioni del paese
