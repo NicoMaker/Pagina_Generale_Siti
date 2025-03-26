@@ -3,7 +3,6 @@ const mapView = document.getElementById("map-view"),
   listView = document.getElementById("list-view"),
   toggleViewBtn = document.getElementById("toggle-view-btn"),
   worldMapContainer = document.getElementById("world-map-container"),
-  countriesGrid = document.getElementById("countries-grid"),
   loadingIndicator = document.getElementById("loading"),
   popup = document.getElementById("country-popup"),
   closePopup = document.getElementById("close-popup"),
@@ -31,16 +30,17 @@ const countryFlag = document.getElementById("country-flag"),
   countryTimezones = document.getElementById("country-timezones"),
   borderCountries = document.getElementById("border-countries");
 
-// Dati delle nazioni
+// Stato dell'applicazione
 let countriesData = {},
   selectedCountry = null,
-  selectedCountryRegion = null, // Per tenere traccia del continente della nazione selezionata
-  viewMode = "map", // 'map' o 'list'
+  selectedCountryRegion = null,
+  viewMode = "map",
   continents = {},
-  continentsList = [], // Lista ordinata dei continenti
-  activeContinents = new Set(["all"]), // Set per tenere traccia dei continenti attivi
-  continentVisibility = {}; // Per tenere traccia della visibilità dei continenti
+  continentsList = [],
+  activeContinents = new Set(["all"]),
+  continentVisibility = {};
 
+// Stato della mappa
 let scale = 1,
   translateX = 0,
   translateY = 0;
@@ -50,7 +50,8 @@ toggleViewBtn.addEventListener("click", () => {
   if (viewMode === "map") {
     mapView.style.display = "none";
     listView.style.display = "block";
-    toggleViewBtn.textContent = "Passa alla vista mappa";
+    toggleViewBtn.innerHTML =
+      '<span class="btn-icon">🗺️</span><span class="btn-text">Passa alla vista mappa</span>';
     viewMode = "list";
 
     // Aggiorna la visualizzazione per evidenziare il continente selezionato
@@ -59,7 +60,8 @@ toggleViewBtn.addEventListener("click", () => {
   } else {
     mapView.style.display = "block";
     listView.style.display = "none";
-    toggleViewBtn.textContent = "Passa alla vista elenco";
+    toggleViewBtn.innerHTML =
+      '<span class="btn-icon">📋</span><span class="btn-text">Passa alla vista elenco</span>';
     viewMode = "map";
   }
 });
@@ -93,7 +95,7 @@ function updateMapTransform() {
 
 // Carica i dati delle nazioni dall'API
 async function loadCountriesData() {
-  loadingIndicator.style.display = "block";
+  loadingIndicator.style.display = "flex";
   try {
     const response = await fetch("https://restcountries.com/v3.1/all");
     if (!response.ok)
@@ -384,8 +386,8 @@ function updateCountriesDisplay() {
 
     const continentName = document.createElement("div");
     continentName.className = "continent-name";
-    continentName.textContent = region;
-    const continentToggle = document.createElement("span");
+    (continentName.textContent = region),
+      (continentToggle = document.createElement("span"));
     continentToggle.className = "continent-toggle active";
     continentToggle.textContent = "v";
     continentToggle.setAttribute("data-continent", region);
@@ -486,65 +488,65 @@ const createWorldMapFromGeoJSON = () => createSimplifiedWorldMap();
 // Crea una mappa mondiale semplificata
 function createSimplifiedWorldMap() {
   const worldMapSvg = `
-        <svg id="world-map" viewBox="0 0 1000 500" style="transition: transform 0.3s ease;">
-          <rect x="0" y="0" width="1000" height="500" fill="#e6f7ff" />
-          
-          <!-- Continenti e paesi principali -->
-          <!-- Nord America -->
-          <path id="usa" class="country" d="M180,150 L280,150 L280,200 L180,200 Z" />
-          <path id="can" class="country" d="M180,100 L280,100 L280,145 L180,145 Z" />
-          <path id="mex" class="country" d="M180,205 L250,205 L250,230 L180,230 Z" />
-          
-          <!-- Sud America -->
-          <path id="bra" class="country" d="M250,250 L300,250 L300,300 L250,300 Z" />
-          <path id="arg" class="country" d="M250,305 L290,305 L290,340 L250,340 Z" />
-          <path id="col" class="country" d="M220,235 L260,235 L260,260 L220,260 Z" />
-          
-          <!-- Europa -->
-          <path id="gbr" class="country" d="M450,140 L470,140 L470,155 L450,155 Z" />
-          <path id="fra" class="country" d="M450,160 L480,160 L480,175 L450,175 Z" />
-          <path id="deu" class="country" d="M480,145 L500,145 L500,160 L480,160 Z" />
-          <path id="ita" class="country" d="M470,175 L490,175 L490,195 L470,195 Z" />
-          <path id="esp" class="country" d="M430,175 L450,175 L450,195 L430,195 Z" />
-          
-          <!-- Africa -->
-          <path id="egy" class="country" d="M500,200 L530,200 L530,220 L500,220 Z" />
-          <path id="nga" class="country" d="M470,230 L490,230 L490,250 L470,250 Z" />
-          <path id="zaf" class="country" d="M490,280 L510,280 L510,300 L490,300 Z" />
-          
-          <!-- Asia -->
-          <path id="rus" class="country" d="M500,100 L650,100 L650,150 L500,150 Z" />
-          <path id="chn" class="country" d="M650,170 L700,170 L700,210 L650,210 Z" />
-          <path id="ind" class="country" d="M630,210 L670,210 L670,240 L630,240 Z" />
-          <path id="jpn" class="country" d="M730,170 L750,170 L750,190 L730,190 Z" />
-          
-          <!-- Oceania -->
-          <path id="aus" class="country" d="M700,300 L750,300 L750,340 L700,340 Z" />
-          <path id="nzl" class="country" d="M760,340 L780,340 L780,355 L760,355 Z" />
-          
-          <!-- Etichette dei paesi -->
-          <text x="230" y="175" font-size="10" text-anchor="middle">USA</text>
-          <text x="230" y="125" font-size="10" text-anchor="middle">Canada</text>
-          <text x="215" y="220" font-size="10" text-anchor="middle">Messico</text>
-          <text x="275" y="275" font-size="10" text-anchor="middle">Brasile</text>
-          <text x="270" y="325" font-size="10" text-anchor="middle">Argentina</text>
-          <text x="240" y="250" font-size="10" text-anchor="middle">Colombia</text>
-          <text x="460" y="150" font-size="10" text-anchor="middle">UK</text>
-          <text x="465" y="170" font-size="10" text-anchor="middle">Francia</text>
-          <text x="490" y="155" font-size="10" text-anchor="middle">Germania</text>
-          <text x="480" y="185" font-size="10" text-anchor="middle">Italia</text>
-          <text x="440" y="185" font-size="10" text-anchor="middle">Spagna</text>
-          <text x="515" y="210" font-size="10" text-anchor="middle">Egitto</text>
-          <text x="480" y="240" font-size="10" text-anchor="middle">Nigeria</text>
-          <text x="500" y="290" font-size="10" text-anchor="middle">Sudafrica</text>
-          <text x="575" y="125" font-size="10" text-anchor="middle">Russia</text>
-          <text x="675" y="190" font-size="10" text-anchor="middle">Cina</text>
-          <text x="650" y="225" font-size="10" text-anchor="middle">India</text>
-          <text x="740" y="180" font-size="10" text-anchor="middle">Giappone</text>
-          <text x="725" y="320" font-size="10" text-anchor="middle">Australia</text>
-          <text x="770" y="350" font-size="10" text-anchor="middle">N. Zelanda</text>
-        </svg>
-      `;
+      <svg id="world-map" viewBox="0 0 1000 500" style="transition: transform 0.3s ease;">
+        <rect x="0" y="0" width="1000" height="500" fill="#e6f7ff" />
+        
+        <!-- Continenti e paesi principali -->
+        <!-- Nord America -->
+        <path id="usa" class="country" d="M180,150 L280,150 L280,200 L180,200 Z" />
+        <path id="can" class="country" d="M180,100 L280,100 L280,145 L180,145 Z" />
+        <path id="mex" class="country" d="M180,205 L250,205 L250,230 L180,230 Z" />
+        
+        <!-- Sud America -->
+        <path id="bra" class="country" d="M250,250 L300,250 L300,300 L250,300 Z" />
+        <path id="arg" class="country" d="M250,305 L290,305 L290,340 L250,340 Z" />
+        <path id="col" class="country" d="M220,235 L260,235 L260,260 L220,260 Z" />
+        
+        <!-- Europa -->
+        <path id="gbr" class="country" d="M450,140 L470,140 L470,155 L450,155 Z" />
+        <path id="fra" class="country" d="M450,160 L480,160 L480,175 L450,175 Z" />
+        <path id="deu" class="country" d="M480,145 L500,145 L500,160 L480,160 Z" />
+        <path id="ita" class="country" d="M470,175 L490,175 L490,195 L470,195 Z" />
+        <path id="esp" class="country" d="M430,175 L450,175 L450,195 L430,195 Z" />
+        
+        <!-- Africa -->
+        <path id="egy" class="country" d="M500,200 L530,200 L530,220 L500,220 Z" />
+        <path id="nga" class="country" d="M470,230 L490,230 L490,250 L470,250 Z" />
+        <path id="zaf" class="country" d="M490,280 L510,280 L510,300 L490,300 Z" />
+        
+        <!-- Asia -->
+        <path id="rus" class="country" d="M500,100 L650,100 L650,150 L500,150 Z" />
+        <path id="chn" class="country" d="M650,170 L700,170 L700,210 L650,210 Z" />
+        <path id="ind" class="country" d="M630,210 L670,210 L670,240 L630,240 Z" />
+        <path id="jpn" class="country" d="M730,170 L750,170 L750,190 L730,190 Z" />
+        
+        <!-- Oceania -->
+        <path id="aus" class="country" d="M700,300 L750,300 L750,340 L700,340 Z" />
+        <path id="nzl" class="country" d="M760,340 L780,340 L780,355 L760,355 Z" />
+        
+        <!-- Etichette dei paesi -->
+        <text x="230" y="175" font-size="10" text-anchor="middle">USA</text>
+        <text x="230" y="125" font-size="10" text-anchor="middle">Canada</text>
+        <text x="215" y="220" font-size="10" text-anchor="middle">Messico</text>
+        <text x="275" y="275" font-size="10" text-anchor="middle">Brasile</text>
+        <text x="270" y="325" font-size="10" text-anchor="middle">Argentina</text>
+        <text x="240" y="250" font-size="10" text-anchor="middle">Colombia</text>
+        <text x="460" y="150" font-size="10" text-anchor="middle">UK</text>
+        <text x="465" y="170" font-size="10" text-anchor="middle">Francia</text>
+        <text x="490" y="155" font-size="10" text-anchor="middle">Germania</text>
+        <text x="480" y="185" font-size="10" text-anchor="middle">Italia</text>
+        <text x="440" y="185" font-size="10" text-anchor="middle">Spagna</text>
+        <text x="515" y="210" font-size="10" text-anchor="middle">Egitto</text>
+        <text x="480" y="240" font-size="10" text-anchor="middle">Nigeria</text>
+        <text x="500" y="290" font-size="10" text-anchor="middle">Sudafrica</text>
+        <text x="575" y="125" font-size="10" text-anchor="middle">Russia</text>
+        <text x="675" y="190" font-size="10" text-anchor="middle">Cina</text>
+        <text x="650" y="225" font-size="10" text-anchor="middle">India</text>
+        <text x="740" y="180" font-size="10" text-anchor="middle">Giappone</text>
+        <text x="725" y="320" font-size="10" text-anchor="middle">Australia</text>
+        <text x="770" y="350" font-size="10" text-anchor="middle">N. Zelanda</text>
+      </svg>
+    `;
 
   worldMapContainer.innerHTML = worldMapSvg;
 
@@ -778,9 +780,8 @@ function showCountryInfo(countryId) {
 
       const densityLabel = document.createElement("div");
       densityLabel.className = "info-label";
-      densityLabel.textContent = "Densità:";
-
-      const densityValue = document.createElement("div");
+      (densityLabel.textContent = "Densità"),
+        (densityValue = document.createElement("div"));
       densityValue.className = "info-value";
       densityValue.id = "country-density";
 
@@ -791,9 +792,7 @@ function showCountryInfo(countryId) {
       const areaItem = document.querySelector(".info-item:nth-child(3)");
       if (areaItem && areaItem.nextSibling) {
         infoGrid.insertBefore(densityItem, areaItem.nextSibling);
-      } else {
-        infoGrid.appendChild(densityItem);
-      }
+      } else infoGrid.appendChild(densityItem);
     }
 
     // Aggiorna il valore della densità
@@ -826,19 +825,17 @@ function showCountryInfo(countryId) {
     }
 
     // Fusi orari - Usa la nuova funzione per creare elementi di lista
-    if (country.timezones && country.timezones.length > 0) {
+    if (country.timezones && country.timezones.length > 0)
       createListItems(countryTimezones, country.timezones);
-    } else {
-      countryTimezones.textContent = "N/A";
-    }
+    else countryTimezones.textContent = "N/A";
 
     // Paesi confinanti
     borderCountries.innerHTML = "";
     if (country.borders && country.borders.length > 0) {
       // Se c'è un solo paese confinante, mostralo come elemento singolo
       if (country.borders.length === 1) {
-        const borderCode = country.borders[0];
-        const borderCountry = countriesData[borderCode.toLowerCase()];
+        const borderCode = country.borders[0],
+          borderCountry = countriesData[borderCode.toLowerCase()];
         if (borderCountry) {
           const borderElement = document.createElement("div");
           borderElement.className = "border-country";
@@ -908,3 +905,17 @@ function showCountryInfo(countryId) {
 window.addEventListener("DOMContentLoaded", () => {
   loadCountriesData();
 });
+
+document.getElementById("footer").innerHTML = ` <footer class="app-footer">
+    <div class="container">
+      <p>
+        © ${new Date().getFullYear()} Planisfero Interattivo - Dati forniti da
+        <a
+          href="https://restcountries.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          >REST Countries API</a
+        >
+      </p>
+  </div>
+</footer>`;

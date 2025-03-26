@@ -3,72 +3,95 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Planisfero Interattivo Dettagliato</title>
+    <title>Planisfero Interattivo</title>
     <link rel="stylesheet" href="style.css" />
-    <script src="script.js" defer></script>
-
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
     <link
       rel="icon"
       href="https://th.bing.com/th/id/R.d3f6be99a93c8e8eb7007186e5bb1512?rik=T4ZYLOQRwq4nqw&riu=http%3a%2f%2fwww.cacheirofrias.com.ar%2fMapa_del_mundo.gif&ehk=XFf%2f0dW6Xtqy747ZNp61mQ1Twcnni2BkzHg0ye2wHaw%3d&risl=&pid=ImgRaw&r=0"
       type="image/jpg"
     />
+    <script src="script.js" defer></script>
   </head>
   <body>
-    <div class="container">
-      <h1>Planisfero Interattivo Dettagliato</h1>
-      <p class="subtitle">
-        Clicca su qualsiasi nazione per visualizzare informazioni dettagliate
-      </p>
+    <header class="app-header">
+      <div class="container">
+        <h1>Planisfero Interattivo</h1>
+        <p class="subtitle">
+          Esplora il mondo e scopri informazioni dettagliate su ogni nazione
+        </p>
+      </div>
+    </header>
 
-      <div class="toggle-view">
-        <button id="toggle-view-btn" class="toggle-btn">
-          Passa alla vista elenco
+    <main class="container">
+      <div class="view-controls">
+        <button id="toggle-view-btn" class="btn btn-primary">
+          <span class="btn-icon">📋</span>
+          <span class="btn-text">Passa alla vista elenco</span>
         </button>
       </div>
 
       <div class="map-container" id="map-view">
-        <div id="loading">Caricamento dei dati...</div>
-        <div id="world-map-container">
+        <div id="loading" class="loading-indicator">
+          <div class="loading-spinner"></div>
+          <span>Caricamento dei dati...</span>
+        </div>
+        <div id="world-map-container" class="world-map-wrapper">
           <!-- Qui verrà inserito il planisfero dettagliato -->
         </div>
         <div class="zoom-controls">
-          <button id="zoom-in" class="zoom-btn">+</button>
-          <button id="zoom-out" class="zoom-btn">-</button>
-          <button id="zoom-reset" class="zoom-btn">↺</button>
+          <button id="zoom-in" class="zoom-btn" aria-label="Zoom in">+</button>
+          <button id="zoom-out" class="zoom-btn" aria-label="Zoom out">
+            −
+          </button>
+          <button id="zoom-reset" class="zoom-btn" aria-label="Reset zoom">
+            ↺
+          </button>
         </div>
       </div>
 
       <div class="countries-list" id="list-view">
-        <h3>Elenco Paesi</h3>
+        <h2>Elenco Paesi</h2>
+
         <div class="search-container">
-          <input
-            type="text"
-            id="country-search"
-            placeholder="Cerca una nazione..."
-            class="search-input"
-          />
+          <div class="search-input-wrapper">
+            <span class="search-icon">🔍</span>
+            <input
+              type="text"
+              id="country-search"
+              placeholder="Cerca una nazione..."
+              class="search-input"
+              aria-label="Cerca una nazione"
+            />
+          </div>
           <div id="no-results" class="no-results-message">
             Nessuna nazione trovata
           </div>
         </div>
 
-        <!-- Aggiunto: Filtro per continenti -->
         <div class="continent-filters">
-          <div class="continent-filter-title">Filtra per continente:</div>
-          <div id="continent-filters-container">
+          <h3 class="continent-filter-title">Filtra per continente</h3>
+          <div id="continent-filters-container" class="filters-container">
             <!-- I filtri per continente verranno aggiunti qui dinamicamente -->
           </div>
         </div>
 
-        <div id="countries-by-continent">
+        <div id="countries-by-continent" class="countries-by-continent">
           <!-- I paesi raggruppati per continente verranno aggiunti qui -->
         </div>
       </div>
-    </div>
+    </main>
 
     <div class="popup" id="country-popup">
       <div class="popup-content">
-        <span class="close-btn" id="close-popup">&times;</span>
+        <button id="close-popup" class="close-btn" aria-label="Chiudi">
+          ×
+        </button>
 
         <div class="country-header">
           <img
@@ -77,7 +100,7 @@
             src="/placeholder.svg"
             alt="Bandiera"
           />
-          <div>
+          <div class="country-title">
             <h2 id="country-name" class="country-name"></h2>
             <div id="native-name" class="native-name"></div>
           </div>
@@ -85,48 +108,50 @@
 
         <div class="info-grid">
           <div class="info-item">
-            <div class="info-label">Capitale:</div>
+            <div class="info-label">Capitale</div>
             <div class="info-value" id="country-capital"></div>
           </div>
           <div class="info-item">
-            <div class="info-label">Popolazione:</div>
+            <div class="info-label">Popolazione</div>
             <div class="info-value" id="country-population"></div>
           </div>
           <div class="info-item">
-            <div class="info-label">Area:</div>
+            <div class="info-label">Area</div>
             <div class="info-value" id="country-area"></div>
           </div>
           <!-- La densità di popolazione verrà aggiunta qui dinamicamente -->
           <div class="info-item">
-            <div class="info-label">Continente:</div>
+            <div class="info-label">Continente</div>
             <div class="info-value" id="country-region"></div>
           </div>
           <div class="info-item">
-            <div class="info-label">Sottoregione:</div>
+            <div class="info-label">Sottoregione</div>
             <div class="info-value" id="country-subregion"></div>
           </div>
           <div class="info-item">
-            <div class="info-label">Valute:</div>
+            <div class="info-label">Valute</div>
             <div
               class="info-value list-container"
               id="country-currencies"
             ></div>
           </div>
           <div class="info-item">
-            <div class="info-label">Lingue:</div>
+            <div class="info-label">Lingue</div>
             <div class="info-value list-container" id="country-languages"></div>
           </div>
           <div class="info-item">
-            <div class="info-label">Fuso orario:</div>
+            <div class="info-label">Fuso orario</div>
             <div class="info-value list-container" id="country-timezones"></div>
           </div>
         </div>
 
         <div class="map-section">
-          <div class="section-title">Paesi confinanti</div>
+          <h3 class="section-title">Paesi confinanti</h3>
           <div id="border-countries" class="borders-list"></div>
         </div>
       </div>
     </div>
+
+    <div id="footer"></div>
   </body>
 </html>
