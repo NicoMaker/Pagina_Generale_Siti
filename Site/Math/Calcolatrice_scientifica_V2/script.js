@@ -35,34 +35,34 @@ class Calculator {
   }
 
   appendOperator(operator) {
-    // Se stiamo aspettando un valore per la radice, completa l'operazione di radice
+    // If operator is a minus sign and current number is empty, treat it as a negative number
+    if (operator === "-" && this.currentNumber === "") {
+      this.currentNumber = "-";
+      this.updateDisplay();
+      return;
+    }
+  
+    // If waiting for root or log value, complete the operation first
     if (this.waitingForRootValue && this.currentNumber !== "") {
       this.completeCustomRoot();
     }
-
-    // Se stiamo aspettando un valore per il logaritmo, completa l'operazione di logaritmo
     if (this.waitingForLogValue && this.currentNumber !== "") {
       this.completeCustomLog();
     }
-
-    if (
-      this.currentNumber !== "" ||
-      operator === "(" ||
-      operator === "Math.PI"
-    ) {
+  
+    if (this.currentNumber !== "" || operator === "(" || operator === "Math.PI") {
       if (this.currentNumber !== "") {
         this.expression += this.currentNumber;
         this.displayExpression += this.currentNumber;
         this.currentNumber = "";
       }
-
+  
       if (operator === "!") {
         this.expression += operator;
         this.displayExpression += "!";
       } else if (operator.includes("Math.")) {
         this.expression += operator;
-        this.displayExpression +=
-          operator === "Math.PI" ? "π" : operator.replace("Math.", "");
+        this.displayExpression += operator === "Math.PI" ? "π" : operator.replace("Math.", "");
       } else {
         this.expression += operator;
         this.displayExpression += operator;
@@ -70,6 +70,7 @@ class Calculator {
     }
     this.updateDisplay();
   }
+  
 
   appendFunction(func) {
     // Se stiamo aspettando un valore per la radice, completa l'operazione di radice
@@ -313,12 +314,10 @@ class Calculator {
 
   calculate() {
     try {
-      // Se stiamo aspettando un valore per la radice, completa l'operazione di radice
+      // If we're waiting for a root or log value, complete those operations first
       if (this.waitingForRootValue && this.currentNumber !== "") {
         this.completeCustomRoot();
-      }
-      // Se stiamo aspettando un valore per il logaritmo, completa l'operazione di logaritmo
-      else if (this.waitingForLogValue && this.currentNumber !== "") {
+      } else if (this.waitingForLogValue && this.currentNumber !== "") {
         this.completeCustomLog();
       } else if (this.currentNumber !== "") {
         this.expression += this.currentNumber;
@@ -326,10 +325,9 @@ class Calculator {
         this.currentNumber = "";
       }
 
-      // Completa eventuali parentesi aperte
+      // Complete any open parentheses
       const openParenCount = (this.expression.match(/\(/g) || []).length;
       const closeParenCount = (this.expression.match(/\)/g) || []).length;
-
       if (openParenCount > closeParenCount) {
         const diff = openParenCount - closeParenCount;
         for (let i = 0; i < diff; i++) {
@@ -338,41 +336,45 @@ class Calculator {
         }
       }
 
-      // Gestisci il fattoriale
+      // Replace factorials in the expression
       const expr = this.expression.replace(/(\d+)!/g, (match, num) => {
         return this.factorial(Number.parseInt(num));
       });
 
-      console.log("Espressione da calcolare:", expr);
+      // Now calculate the result
+      const result = this.safeEvaluate(expr);
 
-      // Esegui il calcolo
-      const result = eval(expr);
-
-      console.log("Risultato calcolato:", result);
-
-      // Formatta il risultato
       if (Number.isInteger(result)) {
         this.lastResult = result.toString();
       } else {
-        // Limita a 8 decimali per evitare numeri troppo lunghi
+        // Limit result to 8 decimals
         this.lastResult = Number.parseFloat(result.toFixed(8)).toString();
       }
 
-      // Salva l'espressione calcolata
+      // Save the calculated expression
       const calculatedExpression = this.displayExpression;
 
-      // Aggiorna i display
+      // Update displays
       this.resultElement.value = this.lastResult;
       this.operationElement.value = calculatedExpression + " =";
 
-      // Resetta le espressioni ma mantieni il risultato per operazioni future
+      // Reset for future calculations
       this.expression = "";
       this.displayExpression = "";
       this.currentNumber = "";
     } catch (error) {
-      console.error("Errore nel calcolo:", error);
-      this.resultElement.value = "Errore";
-      this.operationElement.value = "Espressione non valida";
+      console.error("Calculation Error:", error);
+      this.resultElement.value = "Error";
+      this.operationElement.value = "";
+    }
+  }
+
+  safeEvaluate(expression) {
+    // Here you can replace eval() with a safe math expression parser
+    try {
+      return new Function("return " + expression)();
+    } catch (e) {
+      throw new Error("Invalid expression");
     }
   }
 
@@ -380,6 +382,7 @@ class Calculator {
     this.resultElement.value = this.currentNumber || this.lastResult || "0";
     this.operationElement.value = this.displayExpression;
   }
+  
 }
 
 document.addEventListener("DOMContentLoaded", () => {
