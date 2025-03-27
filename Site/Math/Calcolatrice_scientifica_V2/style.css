@@ -1,0 +1,205 @@
+/* Import del font Seven Segment */
+@import url("https://fonts.cdnfonts.com/css/seven-segment");
+
+/* Stile globale */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #222;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  height: 100vh;
+  margin: 0;
+  flex-direction: column;
+  padding-top: 100px;
+}
+
+/* Stile del contenitore centrale */
+.centrato {
+  text-align: center;
+  width: 100%;
+  margin: 0;
+}
+
+/* Stile dell'intestazione */
+h1 {
+  color: #ff9f00;
+  font-weight: bold;
+  font-size: 50px;
+  margin-bottom: 20px;
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  background-color: #222;
+}
+
+/* Contenitore del display */
+.display-container {
+  position: fixed;
+  top: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9;
+  width: 425px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Stile dell'input operazione */
+#operation {
+  width: 100%;
+  height: 40px;
+  text-align: right;
+  font-size: 20px;
+  border: solid #ff9f00 5px;
+  border-radius: 20px;
+  padding: 5px 15px;
+  box-sizing: border-box;
+  font-family: "Arial", sans-serif;
+  color: #aaa;
+  background-color: #333;
+}
+
+/* Stile dell'input risultato */
+#result {
+  width: 100%;
+  height: 80px;
+  text-align: right;
+  font-size: 45px;
+  border: solid cyan 10px;
+  border-radius: 40px;
+  padding: 5px 15px;
+  box-sizing: border-box;
+  font-family: "Seven Segment", sans-serif;
+  color: white;
+  background-color: #222;
+}
+
+/* Griglia dei pulsanti */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 100px);
+  grid-gap: 10px;
+  justify-content: center;
+  margin-top: 240px;
+  padding-top: 180px;
+}
+
+/* Pulsanti generali */
+.btn {
+  width: 100px;
+  height: 100px;
+  font-size: 35px;
+  background-color: white;
+  color: black;
+  border-radius: 50px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.1s;
+}
+
+.btn:hover {
+  background-color: #f0f0f0;
+}
+
+.btn:active {
+  transform: scale(0.95);
+}
+
+/* Pulsanti speciali (operazioni e funzioni) */
+.special {
+  background-color: #ff9f00;
+  color: white;
+}
+
+.special:hover {
+  background-color: #e68a00;
+}
+
+.special:active {
+  background-color: #e68a00;
+}
+
+/* Stile per il pulsante Rad/Deg */
+#toggleRadians {
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  background: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+#toggleRadians:hover {
+  background: #0056b3;
+}
+
+/* Media Queries per dispositivi mobili */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 30px;
+  }
+
+  .display-container {
+    width: 80%;
+  }
+
+  #operation {
+    height: 35px;
+    font-size: 18px;
+  }
+
+  #result {
+    height: 70px;
+    font-size: 35px;
+  }
+
+  .grid {
+    grid-template-columns: repeat(4, 80px);
+    grid-gap: 5px;
+  }
+
+  .btn {
+    width: 80px;
+    height: 80px;
+    font-size: 30px;
+  }
+}
+
+/* Media Queries per schermi ancora più piccoli */
+@media (max-width: 480px) {
+  h1 {
+    font-size: 25px;
+  }
+
+  .display-container {
+    width: 90%;
+  }
+
+  #operation {
+    height: 30px;
+    font-size: 16px;
+  }
+
+  #result {
+    height: 60px;
+    font-size: 30px;
+  }
+
+  .grid {
+    grid-template-columns: repeat(4, 70px);
+    grid-gap: 4px;
+  }
+
+  .btn {
+    width: 70px;
+    height: 70px;
+    font-size: 25px;
+  }
+}

@@ -106,6 +106,10 @@
         "link": "Site/Math/Calcolatrice_Scientifica/index.html"
       },
       {
+        "name": "Calcolatrice Scientifica V2",
+        "link": "Site/Math/Calcolatrice_scientifica_V2/index.html"
+      },
+      {
         "name": "Conversioni Base",
         "link": "Site/Math/Conversione Basi/index.html"
       },
@@ -275,7 +279,7 @@
     "Calendario": "contenitore1",
     "Giochi": "contenitore3",
     "Info_Paesi_Stati": "contenitore2",
-    "Matematica": "contenitore2",
+    "Matematica": "contenitore3",
     "Natale": "contenitore1",
     "Opzioni_Con_Le_Frasi": "contenitore1",
     "Pasqua": "contenitore1",
