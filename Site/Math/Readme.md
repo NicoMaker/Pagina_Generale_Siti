@@ -6,7 +6,7 @@
 - **[Biografia su Alan Turing](Biografia%20Su%20Alan%20Turing)**
 - **[Calcolatrice](Calcolatrice)**
 - **[Calcolatrice Scientifica](Calcolatrice_Scientifica)**
-- ** [Calcolatrice Scientifica V2](Calcolatrice_scientifica_V2)**
+- **[Calcolatrice Scientifica V2](Calcolatrice_scientifica_V2)**
 - **[Collatz](Collatz)**
 - **[Conversione Basi](Conversione%20Basi)**
 - **[Esercizio Trifase](Esercizio%20trifase)**
