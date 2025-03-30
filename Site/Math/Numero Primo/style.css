@@ -1,38 +1,101 @@
+/* Stile responsive con Flexbox */
 body {
-  font-family: Arial, sans-serif;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f4f4f4;
 }
+
 .container {
-  max-width: 400px;
-  margin: 0 auto;
-  text-align: center;
-  padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 90%;
 }
 
 h1 {
-  color: red;
-  font-size: 70px;
+    color: red;
+    font-size: 2em;
+    margin-bottom: 10px;
 }
 
 label {
-  font-size: 35px;
+    font-size: 1.2em;
+    margin-bottom: 10px;
 }
 
 input {
-  font-size: 20px;
-  text-align: center;
-  border-radius: 50px;
+    font-size: 1em;
+    text-align: center;
+    border-radius: 25px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    width: 100%;
+    max-width: 300px;
+    margin-bottom: 15px;
 }
 
 button {
-  text-align: center;
-  background-color: aqua;
-  color: brown;
-  font-size: 50px;
-  border-radius: 50px;
+    background-color: aqua;
+    color: brown;
+    font-size: 1.2em;
+    border-radius: 25px;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+button:hover {
+    background-color: #00cccc;
 }
 
 #result {
-  text-align: center;
-  font-size: 40px;
-  color: green;
+    text-align: center;
+    font-size: 1.5em;
+    color: green;
+    margin-top: 15px;
 }
+
+/* Media query per tablet */
+@media (max-width: 768px) {
+    .container {
+        max-width: 90%;
+    }
+
+    h1 {
+        font-size: 1.8em;
+    }
+
+    button {
+        font-size: 1em;
+    }
+}
+
+/* Media query per smartphone */
+@media (max-width: 480px) {
+    h1 {
+        font-size: 1.5em;
+    }
+
+    label, input, button {
+        font-size: 1em;
+    }
+
+    button {
+        padding: 8px 16px;
+    }
+}
+
+
+Ora il CSS utilizza Flexbox per un layout centrato e adattabile su PC, tablet e smartphone. Se hai preferenze sui colori o sulle dimensioni, fammelo sapere!
+
