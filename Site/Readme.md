@@ -5,7 +5,7 @@
 - **[Bici](https://github.com/NicoMaker/Giri-in-bici)** [1 sito]
 - **[Borsa](Borsa/Readme.md)** [2 siti]
 - **[Calendario](Calendario/Readme.md)** [5 siti]
-- **[Calcio](Chttps://github.com/NicoMaker/Tabellone_Serie_A)** [1 sito]
+- **[Calcio](https://github.com/NicoMaker/Tabellone_Serie_A)** [1 sito]
 - **[Giochi](Giochi/Readme.md)** [12 siti]
 - **[Info Paesi / Stati](Info_Paesi_Stati/Readme.md)** [4 siti]
 - **[Matematica](Math/Readme.md)** [23 siti]
