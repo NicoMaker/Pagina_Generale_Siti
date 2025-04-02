@@ -29,6 +29,12 @@
         "link": "Site/Calendario/Differenza_Tra_Due_Date/index.html"
       }
     ],
+    "Calcio": [
+      {
+        "name": "Tabellone Serie A ",
+        "link": "https://tabelloneseriea.netlify.app/"
+      }
+    ],
     "Giochi": [
       {
         "name": "Gioco della Tombola",
@@ -277,6 +283,7 @@
     "Bici": "contenitore1",
     "Borsa": "contenitore1",
     "Calendario": "contenitore1",
+    "Calcio":"contenitore1",
     "Giochi": "contenitore3",
     "Info_Paesi_Stati": "contenitore2",
     "Matematica": "contenitore3",
