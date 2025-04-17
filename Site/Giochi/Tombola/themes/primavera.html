@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tombola di Pasqua</title>
+    <link rel="stylesheet" href="../css/main.css" />
+    <link rel="stylesheet" href="../css/themes.css" />
+    <link rel="icon" href="../assets/images/Conigletto.jpg" type="image/png" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <script src="../js/game.js" defer></script>
+  </head>
+  <body class="game-page spring-theme">
+    <div class="game-container">
+      <header class="game-header">
+        <a href="../index.html" class="back-btn"
+          ><i class="fas fa-arrow-left"></i> Indietro</a
+        >
+        <h1 class="game-title">Tombola di Pasqua</h1>
+      </header>
+
+      <div class="game-controls">
+        <button id="extractBtn" class="game-btn primary">
+          <i class="fas fa-random"></i> Estrai Numero
+        </button>
+        <button id="resetBtn" class="game-btn secondary">
+          <i class="fas fa-redo"></i> Resetta Tabellone
+        </button>
+      </div>
+
+      <div class="current-number-display">
+        <div class="number-circle" id="currentNumber">
+          <span>?</span>
+        </div>
+        <p>Ultimo numero estratto</p>
+      </div>
+
+      <div class="extracted-numbers">
+        <h3>Numeri Estratti</h3>
+        <div id="extractedNumbersList" class="numbers-list"></div>
+      </div>
+
+      <div id="tombola-container" class="tombola-board">
+        <!-- La tombola verrà generata qui -->
+      </div>
+    </div>
+
+    <div class="confetti-container" id="confettiContainer"></div>
+  </body>
+</html>
