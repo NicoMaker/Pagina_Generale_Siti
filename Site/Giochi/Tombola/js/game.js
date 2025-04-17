@@ -159,8 +159,6 @@ function updateUI() {
     currentNumberDisplay.querySelector("span").textContent = "?";
   }
 
-  // Update extracted numbers list
-  extractedNumbersList.innerHTML = "";
 
   const sortedNumbers = Array.from(extractedNumbers).sort((a, b) => a - b);
 
