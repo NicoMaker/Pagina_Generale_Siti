@@ -12,6 +12,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!-- Aggiungi Font Awesome per le icone social -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 
   <link rel="icon"
@@ -273,30 +275,51 @@
         <div class="share-options">
           <button class="share-option" onclick="condividiSuWhatsApp()" aria-label="Condividi su WhatsApp">
             <div class="share-icon whatsapp-icon">
-              <span class="material-icons">whatsapp</span>
+              <i class="fab fa-whatsapp"></i>
             </div>
             <span>WhatsApp</span>
           </button>
 
           <button class="share-option" onclick="condividiSuTelegram()" aria-label="Condividi su Telegram">
             <div class="share-icon telegram-icon">
-              <span class="material-icons">telegram</span>
+              <i class="fab fa-telegram-plane"></i>
             </div>
             <span>Telegram</span>
           </button>
 
+          <button class="share-option" onclick="condividiSuFacebook()" aria-label="Condividi su Facebook">
+            <div class="share-icon facebook-icon">
+              <i class="fab fa-facebook-f"></i>
+            </div>
+            <span>Facebook</span>
+          </button>
+
+          <button class="share-option" onclick="condividiSuTwitter()" aria-label="Condividi su Twitter">
+            <div class="share-icon twitter-icon">
+              <i class="fab fa-twitter"></i>
+            </div>
+            <span>Twitter</span>
+          </button>
+
+          <button class="share-option" onclick="condividiSuLinkedIn()" aria-label="Condividi su LinkedIn">
+            <div class="share-icon linkedin-icon">
+              <i class="fab fa-linkedin-in"></i>
+            </div>
+            <span>LinkedIn</span>
+          </button>
+
           <button class="share-option" onclick="condividiSuEmail()" aria-label="Condividi via Email">
             <div class="share-icon email-icon">
-              <span class="material-icons">email</span>
+              <i class="fas fa-envelope"></i>
             </div>
             <span>Email</span>
           </button>
 
           <button class="share-option" onclick="copiaTestoClassifica()" aria-label="Copia testo">
             <div class="share-icon copy-icon">
-              <span class="material-icons">content_copy</span>
+              <i class="fas fa-copy"></i>
             </div>
-            <span>Copia Testo</span>
+            <span>Copia</span>
           </button>
         </div>
 
