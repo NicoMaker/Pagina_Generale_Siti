@@ -4,7 +4,7 @@ const rows = 6,
 let currentPlayer = "rosso",
   gameBoard = [],
   winningDirections = [],
-  gameOver = false; // Rimuovi la cronologia delle mosse
+  gameOver = false;
 
 // Funzione per caricare le direzioni di vittoria dal file JSON
 async function loadWinningDirections() {
@@ -28,6 +28,11 @@ async function loadWinningDirections() {
 function createBoard() {
   const boardDiv = document.getElementById("board");
   boardDiv.innerHTML = ""; // Resetta la griglia esistente
+
+  // Aggiungi attributi ARIA per accessibilità
+  boardDiv.setAttribute("role", "grid");
+  boardDiv.setAttribute("aria-label", "Griglia di gioco Forza 4");
+
   for (let i = 0; i < rows; i++) {
     for (let j = 0; j < cols; j++) {
       const cell = document.createElement("div");
@@ -35,6 +40,22 @@ function createBoard() {
       cell.dataset.row = i;
       cell.dataset.col = j;
       cell.onclick = () => dropPiece(j);
+
+      // Aggiungi attributi per accessibilità
+      cell.setAttribute("role", "gridcell");
+      cell.setAttribute("tabindex", "0");
+      cell.setAttribute(
+        "aria-label",
+        `Cella vuota, riga ${i + 1}, colonna ${j + 1}`
+      );
+
+      // Aggiungi gestione tastiera per accessibilità
+      cell.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          dropPiece(j);
+        }
+      });
+
       boardDiv.appendChild(cell);
     }
   }
@@ -116,13 +137,23 @@ function highlightWinningCellsAnimation() {
 // Funzione per aggiornare l'indicatore del giocatore corrente
 function updateCurrentPlayerIndicator() {
   const indicator = document.getElementById("currentPlayerIndicator");
-  indicator.className = "cell " + currentPlayer; // Aggiorna il colore
-  indicator.classList.add("animatedIndicator"); // Aggiungi l'animazione
+
+  // Rimuovi tutte le classi di colore
+  indicator.classList.remove("rosso", "giallo");
+
+  // Aggiungi la classe del giocatore corrente
+  indicator.classList.add(currentPlayer);
+
+  // Aggiorna l'attributo aria-label per l'accessibilità
+  indicator.setAttribute("aria-label", `Giocatore ${currentPlayer}`);
+
+  // Aggiungi l'animazione
+  indicator.classList.add("animatedIndicator");
 
   // Rimuovi l'animazione dopo che è stata eseguita una volta
   setTimeout(() => {
     indicator.classList.remove("animatedIndicator");
-  }, 1500); // Rimuovi l'animazione dopo 1,5 secondi (durata dell'animazione)
+  }, 1500);
 }
 
 // Funzione per aggiornare la UI della griglia
@@ -141,7 +172,20 @@ function updateBoardUI() {
       );
 
       // Aggiungi la classe appropriata in base allo stato della cella
-      if (gameBoard[i][j]) cell.classList.add(gameBoard[i][j]);
+      if (gameBoard[i][j]) {
+        cell.classList.add(gameBoard[i][j]);
+        cell.setAttribute(
+          "aria-label",
+          `Cella con gettone ${gameBoard[i][j]}, riga ${i + 1}, colonna ${
+            j + 1
+          }`
+        );
+      } else {
+        cell.setAttribute(
+          "aria-label",
+          `Cella vuota, riga ${i + 1}, colonna ${j + 1}`
+        );
+      }
     }
   }
 }
@@ -157,11 +201,22 @@ function dropPiece(col) {
     );
     cell.classList.add(currentPlayer);
 
+    // Aggiorna l'attributo aria-label per l'accessibilità
+    cell.setAttribute(
+      "aria-label",
+      `Cella con gettone ${currentPlayer}, riga ${row + 1}, colonna ${col + 1}`
+    );
+
+    // Aggiungi feedback sonoro (opzionale)
+    playDropSound();
+
     // Verifica la vittoria
     if (checkWin(row, col)) {
       gameOver = true; // Impedisce di continuare a giocare
       highlightWinningCellsAnimation();
-      updateWinnerMessage(`il ${currentPlayer} ha vinto! 🏆🎉😊`);
+      updateWinnerMessage(
+        `Il ${currentPlayer === "rosso" ? "Rosso" : "Giallo"} ha vinto! 🏆🎉`
+      );
     } else if (isBoardFull()) {
       gameOver = true;
       updateWinnerMessage("Pareggio! 😲 Nessuno ha vinto.");
@@ -169,7 +224,28 @@ function dropPiece(col) {
       currentPlayer = currentPlayer === "rosso" ? "giallo" : "rosso";
       updateCurrentPlayerIndicator();
     }
+  } else {
+    // Feedback per colonna piena
+    showColumnFullFeedback(col);
   }
+}
+
+// Funzione per mostrare feedback quando una colonna è piena
+function showColumnFullFeedback(col) {
+  const columnCells = document.querySelectorAll(`[data-col="${col}"]`);
+  columnCells.forEach((cell) => {
+    cell.classList.add("column-full-feedback");
+    setTimeout(() => {
+      cell.classList.remove("column-full-feedback");
+    }, 500);
+  });
+}
+
+// Funzione per riprodurre un suono quando viene inserito un gettone (opzionale)
+function playDropSound() {
+  // Implementazione opzionale del suono
+  // const sound = new Audio('drop-sound.mp3');
+  // sound.play();
 }
 
 const isBoardFull = () =>
@@ -182,7 +258,7 @@ function resetGame() {
 
   document.getElementById("currentPlayerContainer").innerHTML = `
     <span>Turno:</span>
-    <div id="currentPlayerIndicator" class="cell rosso"></div>
+    <div id="currentPlayerIndicator" class="cell rosso" aria-label="Giocatore rosso"></div>
   `;
 
   document.querySelectorAll(".cell").forEach((cell) => {
@@ -193,31 +269,58 @@ function resetGame() {
       "rossoWin",
       "gialloWin"
     );
+
+    // Reimposta gli attributi ARIA
+    const row = cell.dataset.row;
+    const col = cell.dataset.col;
+    cell.setAttribute(
+      "aria-label",
+      `Cella vuota, riga ${Number.parseInt(row) + 1}, colonna ${
+        Number.parseInt(col) + 1
+      }`
+    );
   });
 
   currentPlayer = "rosso";
   updateCurrentPlayerIndicator();
+
+  // Annuncia il reset del gioco per screen reader
+  announceForScreenReader("Nuova partita iniziata. Turno del giocatore rosso.");
+}
+
+// Funzione per annunciare messaggi per screen reader
+function announceForScreenReader(message) {
+  const announcer = document.createElement("div");
+  announcer.setAttribute("aria-live", "assertive");
+  announcer.setAttribute("class", "sr-only");
+  announcer.textContent = message;
+  document.body.appendChild(announcer);
+
+  setTimeout(() => {
+    document.body.removeChild(announcer);
+  }, 1000);
 }
 
 // Funzione per aggiornare il messaggio di stato (turno o vincitore)
 function updateWinnerMessage(message) {
   const container = document.getElementById("currentPlayerContainer");
-  container.innerHTML = `<span class="${currentPlayer} victoryMessage">${message}</span>`;
 
-  const winnerMessage = container.querySelector("span");
+  // Determina la classe CSS appropriata
+  let messageClass = "";
+  if (gameOver) {
+    if (isBoardFull()) {
+      messageClass = "draw";
+    } else if (currentPlayer === "rosso") {
+      messageClass = "rossoWin";
+    } else {
+      messageClass = "gialloWin";
+    }
+  }
 
-  if (currentPlayer === "rosso") winnerMessage.classList.add("rossoWin");
-  else if (currentPlayer === "giallo") winnerMessage.classList.add("gialloWin");
-  else winnerMessage.classList.add("draw"); // Aggiungi la classe "draw" per il pareggio
+  container.innerHTML = `<span class="victoryMessage ${messageClass}">${message}</span>`;
 
-  if (gameOver && isBoardFull())
-    winnerMessage.classList.add("draw"); // Pareggio
-  else if (currentPlayer === "rosso")
-    winnerMessage.classList.add("rossoWin"); // Vince rosso
-  else winnerMessage.classList.add("gialloWin"); // Vince giallo
-
-  winnerMessage.style.padding = "10px";
-  winnerMessage.style.borderRadius = "5px";
+  // Annuncia il messaggio per screen reader
+  announceForScreenReader(message);
 }
 
 // Inizializza la griglia di gioco all'avvio della pagina
@@ -227,4 +330,4 @@ async function initializeGame() {
 }
 
 // Avvia il gioco
-initializeGame();
+document.addEventListener("DOMContentLoaded", initializeGame);

@@ -1,29 +1,58 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <link
-      rel="icon"
-      href="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Puissance4_01.svg/260px-Puissance4_01.svg.png"
-      type="image/jpg"
-    />
-    <title>Forza 4</title>
-    <link rel="stylesheet" href="style.css" />
-    <script src="script.js" defer></script>
-  </head>
+<html lang="it">
 
-  <body>
-    <h1>Forza 4</h1>
-    <div id="currentPlayerContainer">
-      <span>Turno:</span>
-      <div id="currentPlayerIndicator" class="cell rosso"></div>
-    </div>
-    <br />
-    <br />
-    <div class="contenitore">
-      <div class="board" id="board"></div>
-    </div>
-    <br />
-    <br />
-    <button onclick="resetGame()">Resetta</button>
-  </body>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon"
+    href="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Puissance4_01.svg/260px-Puissance4_01.svg.png"
+    type="image/jpg" />
+  <title>Forza 4</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <script src="script.js" defer></script>
+</head>
+
+<body>
+  <div class="game-container">
+    <header>
+      <h1>Forza 4</h1>
+      <div class="game-info">
+        <div id="currentPlayerContainer" aria-live="polite">
+          <span>Turno:</span>
+          <div id="currentPlayerIndicator" class="cell rosso" aria-label="Giocatore rosso"></div>
+        </div>
+        <button id="resetButton" onclick="resetGame()" aria-label="Resetta il gioco">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+            <path d="M3 3v5h5"></path>
+          </svg>
+          Nuova Partita
+        </button>
+      </div>
+    </header>
+
+    <main>
+      <div class="board-container">
+        <div class="board" id="board" role="grid" aria-label="Griglia di gioco Forza 4"></div>
+      </div>
+    </main>
+
+    <footer>
+      <div class="instructions">
+        <details>
+          <summary>Come si gioca</summary>
+          <div class="instructions-content">
+            <p>Inserisci i gettoni a turno cliccando sulla colonna desiderata. Vince chi allinea 4 gettoni dello stesso
+              colore in orizzontale, verticale o diagonale.</p>
+          </div>
+        </details>
+      </div>
+    </footer>
+  </div>
+</body>
+
 </html>

@@ -1,78 +1,196 @@
+:root {
+  --color-primary: #2563eb;
+  --color-primary-dark: #1d4ed8;
+  --color-red: #ef4444;
+  --color-red-dark: #dc2626;
+  --color-yellow: #fbbf24;
+  --color-yellow-dark: #f59e0b;
+  --color-background: #f8fafc;
+  --color-text: #1e293b;
+  --color-border: #cbd5e1;
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --border-radius: 12px;
+  --transition: all 0.3s ease;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+  background-color: var(--color-background);
+  color: var(--color-text);
+  line-height: 1.6;
+  text-align: center;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.game-container {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+h1 {
+  color: var(--color-primary);
+  font-weight: 700;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  margin: 0;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.game-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+}
+
+@media (min-width: 640px) {
+  .game-info {
+    flex-direction: row;
+    justify-content: center;
+  }
+}
+
+#currentPlayerContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1.5rem;
+  background-color: white;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-md);
+}
+
+#currentPlayerContainer span {
+  font-size: clamp(1rem, 3vw, 1.25rem);
+  font-weight: 600;
+}
+
+#currentPlayerIndicator {
+  width: clamp(2rem, 5vw, 2.5rem);
+  height: clamp(2rem, 5vw, 2.5rem);
+  border-radius: 50%;
+  border: 3px solid rgba(0, 0, 0, 0.2);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background-color: var(--color-primary);
+  color: white;
+  font-weight: 600;
+  font-size: clamp(0.875rem, 3vw, 1rem);
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: var(--shadow-md);
+}
+
+button:hover {
+  background-color: var(--color-primary-dark);
+  transform: translateY(-2px);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+.board-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding: 1rem;
+}
+
 .board {
-  position: relative;
   display: grid;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: blue;
+  background-color: var(--color-primary);
   padding: 10px;
-  border-radius: 10px;
-  border: 3px solid black;
+  border-radius: var(--border-radius);
+  border: 3px solid var(--color-primary-dark);
+  box-shadow: var(--shadow-lg);
+  gap: 8px;
 }
 
 .cell {
   border-radius: 50%;
   background-color: white;
-  border: 3px solid black;
+  border: 3px solid var(--color-border);
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.cell:not(.rosso):not(.giallo):hover {
+  background-color: rgba(255, 255, 255, 0.8);
 }
 
 .rosso {
-  background-color: red;
-  border: 3px solid black;
+  background-color: var(--color-red);
+  border: 3px solid var(--color-red-dark);
 }
 
 .giallo {
-  background-color: yellow;
-  border: 3px solid black;
+  background-color: var(--color-yellow);
+  border: 3px solid var(--color-yellow-dark);
 }
 
-body {
-  text-align: center;
-}
-
-.contenitore {
-  display: flex;
-}
-
-button {
-  color: white;
-  font-weight: bold;
-  padding: 15px;
-  background-color: blue;
-}
-
-h1 {
-  color: red;
-  font-weight: bold;
-  margin: 35;
-}
-
-@media all and (max-width: 1024px) {
+/* Responsive grid sizes */
+@media (max-width: 640px) {
   .cell {
-    width: 130px;
-    height: 130px;
+    width: 40px;
+    height: 40px;
   }
 
   .board {
-    grid-template-columns: repeat(7, 135px);
-    grid-template-rows: repeat(6, 140px);
-  }
-
-  h1 {
-    font-size: 200px;
-  }
-
-  button {
-    font-size: 130px;
-    border-radius: 15px;
-  }
-
-  .control-button {
-    font-size: 100px;
-    padding: 20px 40px;
+    grid-template-columns: repeat(7, 45px);
+    grid-template-rows: repeat(6, 45px);
   }
 }
 
-@media all and (min-width: 1024px) {
+@media (min-width: 641px) and (max-width: 1023px) {
+  .cell {
+    width: 60px;
+    height: 60px;
+  }
+
+  .board {
+    grid-template-columns: repeat(7, 65px);
+    grid-template-rows: repeat(6, 65px);
+  }
+}
+
+@media (min-width: 1024px) {
   .cell {
     width: 70px;
     height: 70px;
@@ -82,119 +200,81 @@ h1 {
     grid-template-columns: repeat(7, 75px);
     grid-template-rows: repeat(6, 75px);
   }
-
-  h1 {
-    font-size: 70px;
-  }
-
-  button {
-    font-size: 50px;
-    border-radius: 15px;
-  }
-
-  .control-button {
-    font-size: 30px;
-    padding: 10px 20px;
-  }
 }
 
 .winning {
   animation: glow 1s infinite alternate;
 }
 
-#currentPlayerContainer {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 20px;
-}
-
-#currentPlayerIndicator {
-  width: 40px;
-  height: 40px;
-  margin-left: 10px;
-  border-radius: 50%;
-  border: 3px solid black;
-}
-
-.winning {
-  animation: glow 1s infinite alternate;
+@keyframes glow {
+  from {
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+  }
+  to {
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.9);
+  }
 }
 
 @keyframes rossoWin {
   0% {
-    background-color: red;
+    background-color: var(--color-red);
   }
   50% {
     background-color: white;
+    transform: scale(1.05);
   }
   100% {
-    background-color: red;
+    background-color: var(--color-red);
   }
 }
 
 @keyframes gialloWin {
   0% {
-    background-color: yellow;
+    background-color: var(--color-yellow);
   }
   50% {
     background-color: white;
+    transform: scale(1.05);
   }
   100% {
-    background-color: yellow;
+    background-color: var(--color-yellow);
   }
 }
 
 .rossoWin {
-  animation: rossoWin 1s infinite alternate;
+  animation: rossoWin 1.5s infinite alternate;
 }
 
 .gialloWin {
-  animation: gialloWin 1s infinite alternate;
-}
-
-.winning {
-  border: 3px solid black;
-}
-
-.rossoWin {
-  animation: rossoWin 2s infinite alternate;
-}
-
-.gialloWin {
-  animation: gialloWin 2s infinite alternate;
-}
-
-span {
-  font-size: 50px;
-}
-
-.rosso {
-  color: red;
-}
-
-.giallo {
-  color: gold;
-}
-
-/* Aggiungi questa classe al tuo CSS */
-@keyframes highlightPlayer {
-  0% {
-    opacity: 0;
-  }
-  50% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-  }
+  animation: gialloWin 1.5s infinite alternate;
 }
 
 .animatedIndicator {
   animation: highlightPlayer 1.5s ease-in-out;
 }
 
-/* Aggiungi questa classe al tuo CSS */
+@keyframes highlightPlayer {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.victoryMessage {
+  animation: victoryAnimation 2s ease-out;
+  font-weight: bold;
+  padding: 1rem;
+  border-radius: var(--border-radius);
+  font-size: clamp(1.25rem, 4vw, 1.5rem);
+  display: inline-block;
+  box-shadow: var(--shadow-md);
+}
+
 @keyframes victoryAnimation {
   0% {
     opacity: 0;
@@ -202,68 +282,78 @@ span {
   }
   50% {
     opacity: 1;
-    transform: scale(1.1);
+    transform: scale(1.05);
   }
   100% {
-    opacity: 0;
-    transform: scale(0.8);
+    opacity: 1;
+    transform: scale(1);
   }
 }
 
-.victoryMessage {
-  animation: victoryAnimation 2s ease-out;
-  font-weight: bold;
-  padding: 10px;
-  border-radius: 5px;
-}
-
-/* Classi per colore del vincitore */
 .rossoWin {
-  background-color: red;
-  color: yellow; /* Scritta gialla per la vittoria del rosso */
+  background-color: var(--color-red);
+  color: white;
 }
 
 .gialloWin {
-  background-color: yellow;
-  color: red; /* Scritta rossa per la vittoria del giallo */
+  background-color: var(--color-yellow);
+  color: var(--color-text);
 }
 
-/* Nuova classe per il messaggio di pareggio */
 .draw {
-  background-color: white; /* Sfondo bianco */
-  color: blue; /* Scritta blu */
-  padding: 10px;
-  border-radius: 5px;
-  font-size: 25px;
-  font-weight: bold;
-  display: inline-block;
+  background-color: white;
+  color: var(--color-primary);
+  border: 2px solid var(--color-primary);
 }
 
-.rossoWin:hover {
-  transform: scale(1.1);
-  box-shadow: 0px 0px 15px red;
+footer {
+  margin-top: 2rem;
 }
 
-.gialloWin:hover {
-  transform: scale(1.1);
-  box-shadow: 0px 0px 15px yellow;
+.instructions {
+  max-width: 600px;
+  margin: 0 auto;
 }
 
-.draw:hover {
-  transform: scale(1.1);
-  box-shadow: 0px 0px 15px white;
+.instructions summary {
+  cursor: pointer;
+  color: var(--color-primary);
+  font-weight: 600;
+  padding: 0.5rem;
+  border-radius: var(--border-radius);
+  transition: var(--transition);
 }
 
-.rossoWin,
-.gialloWin,
-.draw {
-  font-size: 20px;
+.instructions summary:hover {
+  background-color: rgba(37, 99, 235, 0.1);
 }
 
-.victoryMessage {
-  animation: victoryAnimation 2s ease-out;
-  font-weight: bold;
-  padding: 10px;
-  border-radius: 5px;
-  font-size: 50px; /* Grandezza del testo più moderata */
+.instructions-content {
+  background-color: white;
+  padding: 1rem;
+  border-radius: var(--border-radius);
+  margin-top: 0.5rem;
+  box-shadow: var(--shadow-md);
+  text-align: left;
+}
+
+/* Focus styles for accessibility */
+button:focus-visible,
+.cell:focus-visible,
+summary:focus-visible {
+  outline: 3px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* Screen reader only class */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
 }
