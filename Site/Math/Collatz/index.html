@@ -1,98 +1,217 @@
 <!DOCTYPE html>
 <html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Congettura di Collatz - Calcolatore</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Congettura di Collatz</title>
-  <link rel="stylesheet" href="StyleCollatz.css" />
-  <link rel="icon" href="Collatz.png" type="image/jpg" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap"
-    rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="Collatz.js" defer></script>
-</head>
+    <link
+    rel="icon"
+    href="Collatz.png"
+    type="image/jpg"
+  />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>Congettura di Collatz</h1>
+        <button id="info-button" class="info-button" aria-label="Informazioni">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="16" x2="12" y2="12"></line>
+            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+          </svg>
+        </button>
+      </header>
 
-<body>
-  <div class="container">
-    <header>
-      <h1>Congettura di Collatz</h1>
-      <button id="info-button" class="info-button" aria-label="Informazioni">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="12" r="10"></circle>
-          <line x1="12" y1="16" x2="12" y2="12"></line>
-          <line x1="12" y1="8" x2="12.01" y2="8"></line>
-        </svg>
-      </button>
-    </header>
+      <main>
+        <section class="input-section">
+          <div class="card">
+            <h2>Inserisci un numero</h2>
+            <div class="input-container">
+              <input
+                type="number"
+                id="numero"
+                placeholder="Numero intero positivo"
+                min="1"
+                aria-label="Inserisci un numero intero positivo"
+              />
+              <button id="calcola-button" class="primary-button">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="button-icon"
+                >
+                  <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline>
+                  <polyline points="16 7 22 7 22 13"></polyline>
+                </svg>
+                Calcola
+              </button>
+            </div>
+          </div>
+        </section>
 
-    <main>
-      <section class="input-section">
-        <div class="input-container">
-          <input type="number" id="numero" placeholder="Inserisci un numero" min="1" />
-          <button onclick="CalcolaCollatz()">Calcola</button>
+        <section id="results-section" class="results-section hidden">
+          <div class="card chart-card">
+            <h2>Visualizzazione Grafica</h2>
+            <div class="chart-container">
+              <canvas id="collatz-chart"></canvas>
+            </div>
+          </div>
+
+          <div class="results-grid">
+            <div class="card">
+              <h2>Statistiche</h2>
+              <div class="stats-container">
+                <div class="stat-item">
+                  <span class="stat-label">Numero iniziale:</span>
+                  <span id="initial-number" class="stat-value">-</span>
+                </div>
+                <div class="stat-item">
+                  <span class="stat-label">Numero di passi:</span>
+                  <span id="steps-count" class="stat-value">-</span>
+                </div>
+                <div class="stat-item">
+                  <span class="stat-label">Valore massimo:</span>
+                  <span id="max-value" class="stat-value">-</span>
+                </div>
+                <div class="stat-item">
+                  <span class="stat-label">Valore finale:</span>
+                  <span id="final-value" class="stat-value">-</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <h2>Sequenza</h2>
+              <div id="sequence-container" class="sequence-container">
+                <p class="empty-state">
+                  La sequenza apparirà qui dopo il calcolo
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer>
+        <p>Esplora la bellezza matematica della Congettura di Collatz</p>
+        <div id="footer"></div>
+      </footer>
+    </div>
+
+    <!-- Modal Informazioni -->
+    <div id="info-modal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>La Congettura di Collatz</h2>
+          <button class="close-button" aria-label="Chiudi">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
         </div>
-      </section>
+        <div class="modal-body">
+          <section class="info-section">
+            <h3>Cos'è la Congettura di Collatz?</h3>
+            <p>
+              La congettura di Collatz, formulata dal matematico tedesco Lothar
+              Collatz nel 1937, è uno dei problemi irrisolti più famosi della
+              matematica.
+            </p>
+            <p>
+              La congettura afferma che, partendo da un numero intero positivo
+              qualsiasi e applicando ripetutamente le seguenti regole, si
+              arriverà sempre a 1:
+            </p>
+            <ul>
+              <li>Se il numero è <strong>pari</strong>, dividilo per 2</li>
+              <li>
+                Se il numero è <strong>dispari</strong>, moltiplicalo per 3 e
+                aggiungi 1
+              </li>
+            </ul>
+          </section>
 
-      <section class="result-section">
-        <div class="chart-container">
-          <canvas id="line-chart"></canvas>
-          <img id="img" src="Collatz.png" alt="Illustrazione della Congettura di Collatz" />
+          <section class="info-section">
+            <h3>Esempio</h3>
+            <p>Partendo dal numero 6:</p>
+            <ol>
+              <li>6 è pari, quindi 6 ÷ 2 = 3</li>
+              <li>3 è dispari, quindi 3 × 3 + 1 = 10</li>
+              <li>10 è pari, quindi 10 ÷ 2 = 5</li>
+              <li>5 è dispari, quindi 5 × 3 + 1 = 16</li>
+              <li>16 è pari, quindi 16 ÷ 2 = 8</li>
+              <li>8 è pari, quindi 8 ÷ 2 = 4</li>
+              <li>4 è pari, quindi 4 ÷ 2 = 2</li>
+              <li>2 è pari, quindi 2 ÷ 2 = 1</li>
+            </ol>
+            <p>Abbiamo raggiunto 1 in 8 passi.</p>
+          </section>
+
+          <section class="info-section">
+            <h3>Curiosità</h3>
+            <ul>
+              <li>
+                Nonostante la sua semplicità, questa congettura non è ancora
+                stata dimostrata matematicamente per tutti i numeri interi
+                positivi.
+              </li>
+              <li>
+                È stata verificata per tutti i numeri fino a 2<sup>68</sup>
+                (circa 295 trilioni).
+              </li>
+              <li>
+                Il numero 27 genera una sequenza che raggiunge il valore massimo
+                di 9.232 prima di scendere a 1.
+              </li>
+              <li>
+                La sequenza più lunga per numeri sotto 100 milioni è generata
+                dal numero 63.728.127, che richiede 949 passi per raggiungere 1.
+              </li>
+            </ul>
+          </section>
         </div>
-
-        <div class="steps-container">
-          <h2>Sequenza</h2>
-          <div id="passaggi" class="steps"></div>
-        </div>
-
-        <div class="result-container">
-          <div id="risultato" class="result"></div>
-        </div>
-      </section>
-    </main>
-
-    <footer>
-      <p>Esplora la bellezza matematica della Congettura di Collatz</p>
-    </footer>
-  </div>
-
-  <!-- Modal Informazioni -->
-  <div id="info-modal" class="modal">
-    <div class="modal-content">
-      <span class="close-button">&times;</span>
-      <h2>La Congettura di Collatz</h2>
-      <div class="info-content">
-        <p>La congettura di Collatz afferma che, partendo da un numero intero positivo qualsiasi e applicando
-          ripetutamente le seguenti regole, si arriverà sempre a 1:</p>
-        <ul>
-          <li>Se il numero è pari, dividilo per 2</li>
-          <li>Se il numero è dispari, moltiplicalo per 3 e aggiungi 1</li>
-        </ul>
-
-        <h3>Esempio</h3>
-        <p>Partendo dal numero 6:</p>
-        <ol>
-          <li>6 è pari, quindi 6 ÷ 2 = 3</li>
-          <li>3 è dispari, quindi 3 × 3 + 1 = 10</li>
-          <li>10 è pari, quindi 10 ÷ 2 = 5</li>
-          <li>5 è dispari, quindi 5 × 3 + 1 = 16</li>
-          <li>16 è pari, quindi 16 ÷ 2 = 8</li>
-          <li>8 è pari, quindi 8 ÷ 2 = 4</li>
-          <li>4 è pari, quindi 4 ÷ 2 = 2</li>
-          <li>2 è pari, quindi 2 ÷ 2 = 1</li>
-        </ol>
-        <p>Abbiamo raggiunto 1 in 8 passi.</p>
-
-        <h3>Curiosità</h3>
-        <p>Nonostante la sua semplicità, questa congettura non è ancora stata dimostrata matematicamente per tutti i
-          numeri interi positivi.</p>
       </div>
     </div>
-  </div>
-</body>
 
+    <script src="script.js"></script>
+  </body>
 </html>
