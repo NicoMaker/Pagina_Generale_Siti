@@ -148,6 +148,9 @@ function setupEventListeners() {
       if (shareModal.style.display === "flex") {
         hideShareModal();
       }
+      if (resetModal.style.display === "flex") {
+        hideResetModal();
+      }
     }
   });
 
@@ -529,15 +532,34 @@ function condividiClassifica() {
   shareModal.style.display = "flex";
   shareModal.setAttribute("aria-hidden", "false");
 
+  // Assicurati che il pulsante di chiusura funzioni
+  if (closeShareModalBtn) {
+    // Rimuovi eventuali listener esistenti
+    const newCloseBtn = closeShareModalBtn.cloneNode(true);
+    closeShareModalBtn.parentNode.replaceChild(newCloseBtn, closeShareModalBtn);
+    
+    // Aggiorna il riferimento al nuovo pulsante
+    const updatedCloseBtn = document.getElementById("close-share-modal");
+    
+    // Aggiungi un nuovo event listener
+    updatedCloseBtn.addEventListener("click", function() {
+      hideShareModal();
+    });
+  }
+
   // Focus sul pulsante di chiusura
   setTimeout(() => {
-    closeShareModalBtn.focus();
+    const updatedCloseBtn = document.getElementById("close-share-modal");
+    if (updatedCloseBtn) updatedCloseBtn.focus();
   }, 100);
 }
 
 function hideShareModal() {
-  shareModal.style.display = "none";
-  shareModal.setAttribute("aria-hidden", "true");
+  if (shareModal) {
+    shareModal.style.display = "none";
+    shareModal.setAttribute("aria-hidden", "true");
+    console.log("Share modal hidden");
+  }
 }
 
 function condividiSuWhatsApp() {
@@ -548,6 +570,23 @@ function condividiSuWhatsApp() {
 function condividiSuTelegram() {
   const testo = encodeURIComponent(shareTextPreview.textContent);
   window.open(`https://t.me/share/url?url=&text=${testo}`, "_blank");
+}
+
+function condividiSuFacebook() {
+  const testo = encodeURIComponent(shareTextPreview.textContent);
+  const url = encodeURIComponent(window.location.href);
+  window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}&quote=${testo}`, "_blank");
+}
+
+function condividiSuTwitter() {
+  const testo = encodeURIComponent(shareTextPreview.textContent);
+  window.open(`https://twitter.com/intent/tweet?text=${testo}`, "_blank");
+}
+
+function condividiSuLinkedIn() {
+  const testo = encodeURIComponent(shareTextPreview.textContent);
+  const url = encodeURIComponent(window.location.href);
+  window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${url}&summary=${testo}`, "_blank");
 }
 
 function condividiSuEmail() {
@@ -742,6 +781,8 @@ function aggiungiPartecipante() {
 
   showToast(`${nome} (ID: ${id}) aggiunto con successo`, "success");
 }
+
+// Update the eliminaPartecipante function to use  (ID: ${id}) aggiunto con successo`, "success");
 
 // Update the eliminaPartecipante function to use the ID
 function eliminaPartecipante(index) {
