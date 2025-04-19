@@ -1,0 +1,69 @@
+/* Add this as a new CSS file or include in styles.css */
+
+.custom-dialog {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 2000;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  padding: var(--space-md);
+}
+
+.dialog-content {
+  background-color: var(--color-surface);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-lg);
+  width: 100%;
+  max-width: 400px;
+  animation: modalFadeIn 0.3s ease;
+  padding: var(--space-lg);
+}
+
+.dialog-content h3 {
+  margin-top: 0;
+  margin-bottom: var(--space-lg);
+  color: var(--color-primary);
+}
+
+.dialog-body {
+  margin-bottom: var(--space-lg);
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-md);
+}
+
+.format-options {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.format-option {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm);
+  border-radius: var(--border-radius-md);
+  transition: background-color var(--transition-fast);
+}
+
+.format-option:hover {
+  background-color: rgba(67, 97, 238, 0.05);
+}
+
+.format-option input[type="radio"] {
+  width: auto;
+}
+
+.format-option label {
+  margin-bottom: 0;
+  cursor: pointer;
+}
