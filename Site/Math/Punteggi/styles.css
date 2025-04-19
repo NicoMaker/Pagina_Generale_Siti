@@ -1503,3 +1503,44 @@ textarea:focus-visible {
   background-color: rgba(255, 152, 0, 0.1);
   border-left: 3px solid var(--color-warning);
 }
+
+/* Enhanced close button styles for the share modal */
+.share-modal .close-btn {
+  position: relative;
+  z-index: 1100;
+  cursor: pointer;
+  padding: 8px;
+  background-color: transparent;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  transition: all 0.2s ease;
+}
+
+.share-modal .close-btn:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+  color: var(--color-danger);
+  transform: scale(1.1);
+}
+
+.share-modal .close-btn:active {
+  background-color: rgba(0, 0, 0, 0.2);
+  transform: scale(0.95);
+}
+
+.share-modal .close-btn .material-icons {
+  font-size: 24px;
+  pointer-events: none; /* Prevents event bubbling issues */
+}
+
+/* Ensure modal header has proper z-index */
+.share-modal .modal-header {
+  position: relative;
+  z-index: 1050;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
