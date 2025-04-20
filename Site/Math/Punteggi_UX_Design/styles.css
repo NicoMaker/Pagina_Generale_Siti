@@ -433,7 +433,7 @@ input[type="number"]::-webkit-outer-spin-button {
   margin-right: var(--space-xs);
 }
 
-.radio-option input[type="radio"]:checked + .radio-label {
+.radio-option input[type="radio"]:checked+.radio-label {
   color: var(--color-primary);
   font-weight: 600;
 }
@@ -703,6 +703,7 @@ footer {
     opacity: 0;
     transform: translateY(-20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -775,9 +776,11 @@ textarea:focus-visible {
   0% {
     transform: scale(1);
   }
+
   50% {
     transform: scale(1.05);
   }
+
   100% {
     transform: scale(1);
   }
@@ -821,12 +824,10 @@ textarea:focus-visible {
   left: -50%;
   width: 200%;
   height: 200%;
-  background: linear-gradient(
-    45deg,
-    rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 0.1) 50%,
-    rgba(255, 255, 255, 0) 100%
-  );
+  background: linear-gradient(45deg,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.1) 50%,
+      rgba(255, 255, 255, 0) 100%);
   transform: rotate(45deg);
   animation: shimmer 2s infinite;
   z-index: 1;
@@ -841,6 +842,7 @@ textarea:focus-visible {
   0% {
     transform: translateX(-150%) rotate(45deg);
   }
+
   100% {
     transform: translateX(150%) rotate(45deg);
   }
@@ -856,22 +858,18 @@ textarea:focus-visible {
 }
 
 .victory-content {
-  background: linear-gradient(
-    135deg,
-    var(--color-victory-gradient-1),
-    var(--color-victory-gradient-2),
-    var(--color-victory-gradient-3)
-  );
+  background: linear-gradient(135deg,
+      var(--color-victory-gradient-1),
+      var(--color-victory-gradient-2),
+      var(--color-victory-gradient-3));
   color: white;
   position: relative;
 }
 
 .tie-content {
-  background: linear-gradient(
-    135deg,
-    var(--color-tie-gradient-1),
-    var(--color-tie-gradient-2)
-  );
+  background: linear-gradient(135deg,
+      var(--color-tie-gradient-1),
+      var(--color-tie-gradient-2));
   color: white;
   position: relative;
 }
@@ -958,6 +956,7 @@ textarea:focus-visible {
 
 /* Animazioni per la vittoria */
 @keyframes bounce {
+
   0%,
   20%,
   50%,
@@ -965,9 +964,11 @@ textarea:focus-visible {
   100% {
     transform: translateY(0);
   }
+
   40% {
     transform: translateY(-30px);
   }
+
   60% {
     transform: translateY(-15px);
   }
@@ -978,6 +979,7 @@ textarea:focus-visible {
     opacity: 0;
     transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -988,9 +990,11 @@ textarea:focus-visible {
   0% {
     box-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
   }
+
   50% {
     box-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
   }
+
   100% {
     box-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
   }
@@ -1082,11 +1086,9 @@ textarea:focus-visible {
 
 .podium-block {
   width: 100px;
-  background: linear-gradient(
-    to bottom,
-    var(--color-primary-light),
-    var(--color-primary)
-  );
+  background: linear-gradient(to bottom,
+      var(--color-primary-light),
+      var(--color-primary));
   border-radius: var(--border-radius-md) var(--border-radius-md) 0 0;
   display: flex;
   justify-content: center;
@@ -1267,6 +1269,7 @@ textarea:focus-visible {
 
 /* Responsive per la vittoria e leaderboard */
 @media (max-width: 768px) {
+
   .victory-title,
   .tie-title,
   .leaderboard-title {
@@ -1533,7 +1536,8 @@ textarea:focus-visible {
 
 .share-modal .close-btn .material-icons {
   font-size: 24px;
-  pointer-events: none; /* Prevents event bubbling issues */
+  pointer-events: none;
+  /* Prevents event bubbling issues */
 }
 
 /* Ensure modal header has proper z-index */

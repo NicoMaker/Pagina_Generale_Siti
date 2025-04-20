@@ -1,429 +1,625 @@
 <!DOCTYPE html>
 <html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Applicazione per la gestione dei punteggi dei partecipanti"
+    />
+    <title>Gestione Punteggi</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="dialog.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <!-- Aggiungi Font Awesome per le icone social -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Applicazione per la gestione dei punteggi dei partecipanti">
-  <title>Gestione Punteggi</title>
-  <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="dialog.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <!-- Aggiungi Font Awesome per le icone social -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <link
+      rel="icon"
+      href="https://c8.alamy.com/compit/2pa6njw/punteggio-simbolo-dell-icona-di-scorecard-da-utilizzare-su-app-mobili-supporti-di-stampa-e-web-design-o-qualsiasi-tipo-di-progetto-di-progettazione-2pa6njw.jpg"
+      type="image/jpg"
+    />
 
-  <link rel="icon"
-    href="https://c8.alamy.com/compit/2pa6njw/punteggio-simbolo-dell-icona-di-scorecard-da-utilizzare-su-app-mobili-supporti-di-stampa-e-web-design-o-qualsiasi-tipo-di-progetto-di-progettazione-2pa6njw.jpg"
-    type="image/jpg">
-</head>
+    <script src="script.js" defer></script>
+    <script src="share-modal-fix.js" defer></script>
+  </head>
 
-<body>
-  <div class="app-container">
-    <header>
-      <h1>Gestione Punteggi</h1>
-      <div class="theme-toggle">
-        <button id="theme-toggle-btn" aria-label="Cambia tema">
-          <span class="material-icons" id="theme-icon">dark_mode</span>
-        </button>
-      </div>
-    </header>
-
-    <main>
-      <section class="card file-operations">
-        <h2>Operazioni File</h2>
-        <div class="button-group">
-          <button class="btn btn-primary" id="load-btn" onclick="caricaDaFile()">
-            <span class="material-icons">upload_file</span>
-            <span>Carica da File</span>
-          </button>
-          <button class="btn btn-secondary" id="save-btn" onclick="salvaSuFile()">
-            <span class="material-icons">download</span>
-            <span>Salva su File</span>
+  <body>
+    <div class="app-container">
+      <header>
+        <h1>Gestione Punteggi</h1>
+        <div class="theme-toggle">
+          <button id="theme-toggle-btn" aria-label="Cambia tema">
+            <span class="material-icons" id="theme-icon">dark_mode</span>
           </button>
         </div>
-      </section>
+      </header>
 
-      <section class="card participants-section">
-        <h2>Partecipanti</h2>
-        <div class="participants-container">
-          <ul id="participant-list" class="participant-list" aria-live="polite"></ul>
-        </div>
-      </section>
-
-      <section class="card add-participant">
-        <h2>Aggiungi Partecipante</h2>
-        <div class="form-group">
-          <label for="participant-name">Nome del partecipante</label>
-          <div class="input-with-button">
-            <input type="text" id="participant-name" placeholder="Inserisci nome" aria-label="Nome del partecipante">
-            <button class="btn btn-icon" id="add-participant-btn" onclick="aggiungiPartecipante()"
-              aria-label="Aggiungi partecipante">
-              <span class="material-icons">person_add</span>
+      <main>
+        <section class="card file-operations">
+          <h2>Operazioni File</h2>
+          <div class="button-group">
+            <button
+              class="btn btn-primary"
+              id="load-btn"
+              onclick="caricaDaFile()"
+            >
+              <span class="material-icons">upload_file</span>
+              <span>Carica da File</span>
+            </button>
+            <button
+              class="btn btn-secondary"
+              id="save-btn"
+              onclick="salvaSuFile()"
+            >
+              <span class="material-icons">download</span>
+              <span>Salva su File</span>
             </button>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section class="card points-management">
-        <h2>Gestione Punti</h2>
-        <div class="form-group">
-          <label for="points">Punti</label>
-          <input type="number" id="points" step="1" value="0" min="0" aria-label="Numero di punti">
-        </div>
+        <section class="card participants-section">
+          <h2>Partecipanti</h2>
+          <div class="participants-container">
+            <ul
+              id="participant-list"
+              class="participant-list"
+              aria-live="polite"
+            ></ul>
+          </div>
+        </section>
 
-        <div class="form-group">
-          <label for="selected-participant">Seleziona Partecipante</label>
-          <select id="selected-participant" aria-label="Seleziona partecipante">
-            <option value="-1">Seleziona un partecipante</option>
-            <option value="all">Tutti</option>
-          </select>
-        </div>
+        <section class="card add-participant">
+          <h2>Aggiungi Partecipante</h2>
+          <div class="form-group">
+            <label for="participant-name">Nome del partecipante</label>
+            <div class="input-with-button">
+              <input
+                type="text"
+                id="participant-name"
+                placeholder="Inserisci nome"
+                aria-label="Nome del partecipante"
+              />
+              <button
+                class="btn btn-icon"
+                id="add-participant-btn"
+                onclick="aggiungiPartecipante()"
+                aria-label="Aggiungi partecipante"
+              >
+                <span class="material-icons">person_add</span>
+              </button>
+            </div>
+          </div>
+        </section>
 
-        <div class="button-group">
-          <button class="btn btn-success" onclick="aggiungiPunti()" aria-label="Aggiungi punti">
-            <span class="material-icons">add_circle</span>
-            <span>Aggiungi</span>
+        <section class="card points-management">
+          <h2>Gestione Punti</h2>
+          <div class="form-group">
+            <label for="points">Punti</label>
+            <input
+              type="number"
+              id="points"
+              step="1"
+              value="0"
+              min="0"
+              aria-label="Numero di punti"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="selected-participant">Seleziona Partecipante</label>
+            <select
+              id="selected-participant"
+              aria-label="Seleziona partecipante"
+            >
+              <option value="-1">Seleziona un partecipante</option>
+              <option value="all">Tutti</option>
+            </select>
+          </div>
+
+          <div class="button-group">
+            <button
+              class="btn btn-success"
+              onclick="aggiungiPunti()"
+              aria-label="Aggiungi punti"
+            >
+              <span class="material-icons">add_circle</span>
+              <span>Aggiungi</span>
+            </button>
+            <button
+              class="btn btn-danger"
+              onclick="togliPunti()"
+              aria-label="Togli punti"
+            >
+              <span class="material-icons">remove_circle</span>
+              <span>Togli</span>
+            </button>
+          </div>
+        </section>
+
+        <section class="card winning-mode">
+          <h2>Modalità Vittoria</h2>
+          <div
+            class="radio-group"
+            role="radiogroup"
+            aria-labelledby="winning-mode-label"
+          >
+            <span id="winning-mode-label" class="sr-only"
+              >Seleziona modalità vittoria</span
+            >
+            <label class="radio-option">
+              <input
+                type="radio"
+                name="winning-mode"
+                value="max"
+                checked
+                onclick="impostaModalitàVittoria('max')"
+              />
+              <span class="radio-label">Più punti</span>
+            </label>
+            <label class="radio-option">
+              <input
+                type="radio"
+                name="winning-mode"
+                value="min"
+                onclick="impostaModalitàVittoria('min')"
+              />
+              <span class="radio-label">Meno punti</span>
+            </label>
+          </div>
+        </section>
+
+        <section class="card actions">
+          <div class="button-group">
+            <button
+              class="btn btn-primary btn-lg victory-btn"
+              onclick="trovaVincitore()"
+              aria-label="Trova vincitore"
+            >
+              <span class="material-icons">emoji_events</span>
+              <span>Trova Vincitore</span>
+            </button>
+            <button
+              class="btn btn-info btn-lg"
+              onclick="mostraClassifica()"
+              aria-label="Mostra classifica"
+            >
+              <span class="material-icons">leaderboard</span>
+              <span>Classifica</span>
+            </button>
+          </div>
+
+          <div class="button-group">
+            <button
+              class="btn btn-danger"
+              onclick="mostraResetModal('all')"
+              aria-label="Resetta tutto"
+            >
+              <span class="material-icons">delete_forever</span>
+              <span>Opzioni Reset</span>
+            </button>
+          </div>
+        </section>
+      </main>
+
+      <div id="footer"></div>
+    </div>
+
+    <!-- Modal per l'accessibilità -->
+    <div id="accessibility-modal" class="modal" aria-hidden="true">
+      <div class="modal-content" role="dialog" aria-labelledby="modal-title">
+        <div class="modal-header">
+          <h2 id="modal-title">Informazioni sull'accessibilità</h2>
+          <button class="close-btn" id="close-modal" aria-label="Chiudi">
+            <span class="material-icons">close</span>
           </button>
-          <button class="btn btn-danger" onclick="togliPunti()" aria-label="Togli punti">
-            <span class="material-icons">remove_circle</span>
-            <span>Togli</span>
-          </button>
         </div>
-      </section>
-
-      <section class="card winning-mode">
-        <h2>Modalità Vittoria</h2>
-        <div class="radio-group" role="radiogroup" aria-labelledby="winning-mode-label">
-          <span id="winning-mode-label" class="sr-only">Seleziona modalità vittoria</span>
-          <label class="radio-option">
-            <input type="radio" name="winning-mode" value="max" checked onclick="impostaModalitàVittoria('max')">
-            <span class="radio-label">Più punti</span>
-          </label>
-          <label class="radio-option">
-            <input type="radio" name="winning-mode" value="min" onclick="impostaModalitàVittoria('min')">
-            <span class="radio-label">Meno punti</span>
-          </label>
+        <div class="modal-body">
+          <p>
+            Questa applicazione è stata progettata per essere accessibile a
+            tutti gli utenti, incluse le persone con disabilità.
+          </p>
+          <h3>Caratteristiche di accessibilità:</h3>
+          <ul>
+            <li>Supporto completo per screen reader</li>
+            <li>Navigazione da tastiera</li>
+            <li>Contrasto di colore ottimizzato</li>
+            <li>Modalità chiara e scura</li>
+            <li>Testo ridimensionabile</li>
+            <li>Design responsivo per tutti i dispositivi</li>
+          </ul>
+          <p>
+            Per navigare con la tastiera, usa il tasto Tab per spostarti tra gli
+            elementi e Invio per attivare i pulsanti.
+          </p>
         </div>
-      </section>
+      </div>
+    </div>
 
-      <section class="card actions">
-        <div class="button-group">
-          <button class="btn btn-primary btn-lg victory-btn" onclick="trovaVincitore()" aria-label="Trova vincitore">
-            <span class="material-icons">emoji_events</span>
-            <span>Trova Vincitore</span>
+    <!-- Modal per la vittoria -->
+    <div id="victory-modal" class="modal victory-modal" aria-hidden="true">
+      <div
+        class="modal-content victory-content"
+        role="dialog"
+        aria-labelledby="victory-title"
+      >
+        <div class="confetti-container" id="confetti-container"></div>
+        <div class="trophy-icon">
+          <span class="material-icons">emoji_events</span>
+        </div>
+        <h2 id="victory-title" class="victory-title">Abbiamo un Vincitore!</h2>
+        <div class="victory-message" id="victory-message"></div>
+        <div class="victory-details" id="victory-details"></div>
+        <div class="victory-actions">
+          <button
+            class="btn btn-primary"
+            id="close-victory-modal"
+            aria-label="Chiudi"
+          >
+            <span class="material-icons">check_circle</span>
+            <span>Continua</span>
           </button>
-          <button class="btn btn-info btn-lg" onclick="mostraClassifica()" aria-label="Mostra classifica">
+          <button
+            class="btn btn-secondary"
+            onclick="mostraClassifica()"
+            aria-label="Mostra classifica"
+          >
             <span class="material-icons">leaderboard</span>
             <span>Classifica</span>
           </button>
         </div>
+      </div>
+    </div>
 
-        <div class="button-group">
-          <button class="btn btn-warning" onclick="mostraResetModal('points')" aria-label="Resetta punti">
-            <span class="material-icons">refresh</span>
-            <span>Reset Punti</span>
+    <!-- Modal per il pareggio -->
+    <div id="tie-modal" class="modal tie-modal" aria-hidden="true">
+      <div
+        class="modal-content tie-content"
+        role="dialog"
+        aria-labelledby="tie-title"
+      >
+        <div class="tie-icon">
+          <span class="material-icons">balance</span>
+        </div>
+        <h2 id="tie-title" class="tie-title">Pareggio!</h2>
+        <div class="tie-message" id="tie-message"></div>
+        <div class="tie-details" id="tie-details"></div>
+        <div class="tie-actions">
+          <button
+            class="btn btn-primary"
+            id="close-tie-modal"
+            aria-label="Chiudi"
+          >
+            <span class="material-icons">check_circle</span>
+            <span>Continua</span>
           </button>
-          <button class="btn btn-danger" onclick="mostraResetModal('all')" aria-label="Resetta tutto">
-            <span class="material-icons">delete_forever</span>
-            <span>Reset Totale</span>
+          <button
+            class="btn btn-secondary"
+            onclick="mostraClassifica()"
+            aria-label="Mostra classifica"
+          >
+            <span class="material-icons">leaderboard</span>
+            <span>Classifica</span>
           </button>
         </div>
-      </section>
-    </main>
-
-    <div id="footer"></div>
-  </div>
-
-  <!-- Modal per l'accessibilità -->
-  <div id="accessibility-modal" class="modal" aria-hidden="true">
-    <div class="modal-content" role="dialog" aria-labelledby="modal-title">
-      <div class="modal-header">
-        <h2 id="modal-title">Informazioni sull'accessibilità</h2>
-        <button class="close-btn" id="close-modal" aria-label="Chiudi">
-          <span class="material-icons">close</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <p>Questa applicazione è stata progettata per essere accessibile a tutti gli utenti, incluse le persone con
-          disabilità.</p>
-        <h3>Caratteristiche di accessibilità:</h3>
-        <ul>
-          <li>Supporto completo per screen reader</li>
-          <li>Navigazione da tastiera</li>
-          <li>Contrasto di colore ottimizzato</li>
-          <li>Modalità chiara e scura</li>
-          <li>Testo ridimensionabile</li>
-          <li>Design responsivo per tutti i dispositivi</li>
-        </ul>
-        <p>Per navigare con la tastiera, usa il tasto Tab per spostarti tra gli elementi e Invio per attivare i
-          pulsanti.</p>
       </div>
     </div>
-  </div>
 
-  <!-- Modal per la vittoria -->
-  <div id="victory-modal" class="modal victory-modal" aria-hidden="true">
-    <div class="modal-content victory-content" role="dialog" aria-labelledby="victory-title">
-      <div class="confetti-container" id="confetti-container"></div>
-      <div class="trophy-icon">
-        <span class="material-icons">emoji_events</span>
-      </div>
-      <h2 id="victory-title" class="victory-title">Abbiamo un Vincitore!</h2>
-      <div class="victory-message" id="victory-message"></div>
-      <div class="victory-details" id="victory-details"></div>
-      <div class="victory-actions">
-        <button class="btn btn-primary" id="close-victory-modal" aria-label="Chiudi">
-          <span class="material-icons">check_circle</span>
-          <span>Continua</span>
-        </button>
-        <button class="btn btn-secondary" onclick="mostraClassifica()" aria-label="Mostra classifica">
-          <span class="material-icons">leaderboard</span>
-          <span>Classifica</span>
-        </button>
-      </div>
-    </div>
-  </div>
+    <!-- Modal per la classifica -->
+    <div
+      id="leaderboard-modal"
+      class="modal leaderboard-modal"
+      aria-hidden="true"
+    >
+      <div
+        class="modal-content leaderboard-content"
+        role="dialog"
+        aria-labelledby="leaderboard-title"
+      >
+        <div class="modal-header">
+          <h2 id="leaderboard-title" class="leaderboard-title">Classifica</h2>
+          <button
+            class="close-btn"
+            id="close-leaderboard-modal"
+            aria-label="Chiudi"
+          >
+            <span class="material-icons">close</span>
+          </button>
+        </div>
 
-  <!-- Modal per il pareggio -->
-  <div id="tie-modal" class="modal tie-modal" aria-hidden="true">
-    <div class="modal-content tie-content" role="dialog" aria-labelledby="tie-title">
-      <div class="tie-icon">
-        <span class="material-icons">balance</span>
-      </div>
-      <h2 id="tie-title" class="tie-title">Pareggio!</h2>
-      <div class="tie-message" id="tie-message"></div>
-      <div class="tie-details" id="tie-details"></div>
-      <div class="tie-actions">
-        <button class="btn btn-primary" id="close-tie-modal" aria-label="Chiudi">
-          <span class="material-icons">check_circle</span>
-          <span>Continua</span>
-        </button>
-        <button class="btn btn-secondary" onclick="mostraClassifica()" aria-label="Mostra classifica">
-          <span class="material-icons">leaderboard</span>
-          <span>Classifica</span>
-        </button>
-      </div>
-    </div>
-  </div>
+        <div class="modal-body">
+          <div id="leaderboard-container" class="leaderboard-container">
+            <div class="leaderboard-header">
+              <div class="leaderboard-date" id="leaderboard-date"></div>
+              <div class="leaderboard-mode" id="leaderboard-mode"></div>
+            </div>
 
-  <!-- Modal per la classifica -->
-  <div id="leaderboard-modal" class="modal leaderboard-modal" aria-hidden="true">
-    <div class="modal-content leaderboard-content" role="dialog" aria-labelledby="leaderboard-title">
-      <div class="modal-header">
-        <h2 id="leaderboard-title" class="leaderboard-title">Classifica</h2>
-        <button class="close-btn" id="close-leaderboard-modal" aria-label="Chiudi">
-          <span class="material-icons">close</span>
-        </button>
-      </div>
+            <div class="podium-container" id="podium-container">
+              <!-- Podio generato dinamicamente -->
+            </div>
 
-      <div class="modal-body">
-        <div id="leaderboard-container" class="leaderboard-container">
-          <div class="leaderboard-header">
-            <div class="leaderboard-date" id="leaderboard-date"></div>
-            <div class="leaderboard-mode" id="leaderboard-mode"></div>
+            <div class="leaderboard-table-container">
+              <table class="leaderboard-table" id="leaderboard-table">
+                <thead>
+                  <tr>
+                    <th>Pos.</th>
+                    <th>Partecipante</th>
+                    <th>Punti</th>
+                  </tr>
+                </thead>
+                <tbody id="leaderboard-body">
+                  <!-- Righe generate dinamicamente -->
+                </tbody>
+              </table>
+            </div>
           </div>
 
-          <div class="podium-container" id="podium-container">
-            <!-- Podio generato dinamicamente -->
-          </div>
-
-          <div class="leaderboard-table-container">
-            <table class="leaderboard-table" id="leaderboard-table">
-              <thead>
-                <tr>
-                  <th>Pos.</th>
-                  <th>Partecipante</th>
-                  <th>Punti</th>
-                </tr>
-              </thead>
-              <tbody id="leaderboard-body">
-                <!-- Righe generate dinamicamente -->
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <div class="leaderboard-actions">
-          <button class="btn btn-primary" onclick="condividiClassifica()" aria-label="Condividi classifica">
-            <span class="material-icons">share</span>
-            <span>Condividi</span>
-          </button>
-          <button class="btn btn-secondary" onclick="salvaClassificaImmagine()" aria-label="Salva come immagine">
-            <span class="material-icons">image</span>
-            <span>Salva Immagine</span>
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal per la condivisione -->
-  <div id="share-modal" class="modal share-modal" aria-hidden="true">
-    <div class="modal-content share-content" role="dialog" aria-labelledby="share-title">
-      <div class="modal-header">
-        <h2 id="share-title">Condividi Classifica</h2>
-        <button type="button" class="close-btn" id="close-share-modal" aria-label="Chiudi">
-          <span class="material-icons">close</span>
-        </button>
-      </div>
-
-      <div class="modal-body">
-        <div class="share-options">
-          <button class="share-option" onclick="condividiSuWhatsApp()" aria-label="Condividi su WhatsApp">
-            <div class="share-icon whatsapp-icon">
-              <i class="fab fa-whatsapp"></i>
-            </div>
-            <span>WhatsApp</span>
-          </button>
-
-          <button class="share-option" onclick="condividiSuTelegram()" aria-label="Condividi su Telegram">
-            <div class="share-icon telegram-icon">
-              <i class="fab fa-telegram-plane"></i>
-            </div>
-            <span>Telegram</span>
-          </button>
-
-          <button class="share-option" onclick="condividiSuFacebook()" aria-label="Condividi su Facebook">
-            <div class="share-icon facebook-icon">
-              <i class="fab fa-facebook-f"></i>
-            </div>
-            <span>Facebook</span>
-          </button>
-
-          <button class="share-option" onclick="condividiSuTwitter()" aria-label="Condividi su Twitter">
-            <div class="share-icon twitter-icon">
-              <i class="fab fa-twitter"></i>
-            </div>
-            <span>Twitter</span>
-          </button>
-
-          <button class="share-option" onclick="condividiSuLinkedIn()" aria-label="Condividi su LinkedIn">
-            <div class="share-icon linkedin-icon">
-              <i class="fab fa-linkedin-in"></i>
-            </div>
-            <span>LinkedIn</span>
-          </button>
-
-          <button class="share-option" onclick="condividiSuEmail()" aria-label="Condividi via Email">
-            <div class="share-icon email-icon">
-              <i class="fas fa-envelope"></i>
-            </div>
-            <span>Email</span>
-          </button>
-
-          <button class="share-option" onclick="copiaTestoClassifica()" aria-label="Copia testo">
-            <div class="share-icon copy-icon">
-              <i class="fas fa-copy"></i>
-            </div>
-            <span>Copia</span>
-          </button>
-        </div>
-
-        <div class="share-preview">
-          <h3>Anteprima</h3>
-          <div class="share-text-preview" id="share-text-preview">
-            <!-- Testo generato dinamicamente -->
+          <div class="leaderboard-actions">
+            <button
+              class="btn btn-primary"
+              onclick="condividiClassifica()"
+              aria-label="Condividi classifica"
+            >
+              <span class="material-icons">share</span>
+              <span>Condividi</span>
+            </button>
+            <button
+              class="btn btn-secondary"
+              onclick="salvaClassificaImmagine()"
+              aria-label="Salva come immagine"
+            >
+              <span class="material-icons">image</span>
+              <span>Salva Immagine</span>
+            </button>
           </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- Modal per reset confirmation -->
-  <div id="reset-modal" class="modal reset-modal" aria-hidden="true">
-    <div class="modal-content" role="dialog" aria-labelledby="reset-title">
-      <div class="modal-header">
-        <h2 id="reset-title">Conferma Reset</h2>
-        <button class="close-btn" id="close-reset-modal" aria-label="Chiudi">
-          <span class="material-icons">close</span>
-        </button>
-      </div>
+    <!-- Modal per la condivisione -->
+    <div id="share-modal" class="modal share-modal" aria-hidden="true">
+      <div
+        class="modal-content share-content"
+        role="dialog"
+        aria-labelledby="share-title"
+      >
+        <div class="modal-header">
+          <h2 id="share-title">Condividi Classifica</h2>
+          <button
+            type="button"
+            class="close-btn"
+            id="close-share-modal"
+            aria-label="Chiudi"
+          >
+            <span class="material-icons">close</span>
+          </button>
+        </div>
 
-      <div class="modal-body">
-        <p>Seleziona cosa vuoi resettare:</p>
+        <div class="modal-body">
+          <div class="share-options">
+            <button
+              class="share-option"
+              onclick="condividiSuWhatsApp()"
+              aria-label="Condividi su WhatsApp"
+            >
+              <div class="share-icon whatsapp-icon">
+                <i class="fab fa-whatsapp"></i>
+              </div>
+              <span>WhatsApp</span>
+            </button>
 
-        <div class="reset-options">
-          <div class="reset-option" id="reset-points-option" onclick="selectResetOption('points')">
-            <div class="reset-option-icon">
-              <span class="material-icons">refresh</span>
+            <button
+              class="share-option"
+              onclick="condividiSuTelegram()"
+              aria-label="Condividi su Telegram"
+            >
+              <div class="share-icon telegram-icon">
+                <i class="fab fa-telegram-plane"></i>
+              </div>
+              <span>Telegram</span>
+            </button>
+
+            <button
+              class="share-option"
+              onclick="condividiSuFacebook()"
+              aria-label="Condividi su Facebook"
+            >
+              <div class="share-icon facebook-icon">
+                <i class="fab fa-facebook-f"></i>
+              </div>
+              <span>Facebook</span>
+            </button>
+
+            <button
+              class="share-option"
+              onclick="condividiSuTwitter()"
+              aria-label="Condividi su Twitter"
+            >
+              <div class="share-icon twitter-icon">
+                <i class="fab fa-twitter"></i>
+              </div>
+              <span>Twitter</span>
+            </button>
+
+            <button
+              class="share-option"
+              onclick="condividiSuLinkedIn()"
+              aria-label="Condividi su LinkedIn"
+            >
+              <div class="share-icon linkedin-icon">
+                <i class="fab fa-linkedin-in"></i>
+              </div>
+              <span>LinkedIn</span>
+            </button>
+
+            <button
+              class="share-option"
+              onclick="condividiSuEmail()"
+              aria-label="Condividi via Email"
+            >
+              <div class="share-icon email-icon">
+                <i class="fas fa-envelope"></i>
+              </div>
+              <span>Email</span>
+            </button>
+
+            <button
+              class="share-option"
+              onclick="copiaTestoClassifica()"
+              aria-label="Copia testo"
+            >
+              <div class="share-icon copy-icon">
+                <i class="fas fa-copy"></i>
+              </div>
+              <span>Copia</span>
+            </button>
+          </div>
+
+          <div class="share-preview">
+            <h3>Anteprima</h3>
+            <div class="share-text-preview" id="share-text-preview">
+              <!-- Testo generato dinamicamente -->
             </div>
-            <div class="reset-option-content">
-              <div class="reset-option-title">Reset Punteggi</div>
-              <div class="reset-option-description">Azzera i punteggi di tutti i partecipanti mantenendo i loro nomi
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal per reset confirmation -->
+    <div id="reset-modal" class="modal reset-modal" aria-hidden="true">
+      <div class="modal-content" role="dialog" aria-labelledby="reset-title">
+        <div class="modal-header">
+          <h2 id="reset-title">Conferma Reset</h2>
+          <button class="close-btn" id="close-reset-modal" aria-label="Chiudi">
+            <span class="material-icons">close</span>
+          </button>
+        </div>
+
+        <div class="modal-body">
+          <p>Seleziona cosa vuoi resettare:</p>
+
+          <div class="reset-options">
+            <div
+              class="reset-option"
+              id="reset-points-option"
+              onclick="selectResetOption('points')"
+            >
+              <div class="reset-option-icon">
+                <span class="material-icons">refresh</span>
+              </div>
+              <div class="reset-option-content">
+                <div class="reset-option-title">Reset Punteggi</div>
+                <div class="reset-option-description">
+                  Azzera i punteggi di tutti i partecipanti mantenendo i loro
+                  nomi
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="reset-option"
+              id="reset-all-option"
+              onclick="selectResetOption('all')"
+            >
+              <div class="reset-option-icon">
+                <span class="material-icons">delete_forever</span>
+              </div>
+              <div class="reset-option-content">
+                <div class="reset-option-title">Reset Totale</div>
+                <div class="reset-option-description">
+                  Elimina tutti i partecipanti e i loro punteggi
+                </div>
               </div>
             </div>
           </div>
 
-          <div class="reset-option" id="reset-all-option" onclick="selectResetOption('all')">
-            <div class="reset-option-icon">
-              <span class="material-icons">delete_forever</span>
-            </div>
-            <div class="reset-option-content">
-              <div class="reset-option-title">Reset Totale</div>
-              <div class="reset-option-description">Elimina tutti i partecipanti e i loro punteggi</div>
-            </div>
+          <div
+            id="reset-progress-container"
+            class="progress-container"
+            style="display: none"
+          >
+            <div id="reset-progress-bar" class="progress-bar"></div>
+          </div>
+
+          <div class="reset-actions">
+            <button class="btn btn-secondary" id="cancel-reset-btn">
+              Annulla
+            </button>
+            <button class="btn btn-danger" id="confirm-reset-btn">
+              <span id="reset-btn-text">Conferma Reset</span>
+            </button>
           </div>
         </div>
+      </div>
+    </div>
 
-        <div id="reset-progress-container" class="progress-container" style="display: none;">
-          <div id="reset-progress-bar" class="progress-bar"></div>
-        </div>
-
-        <div class="reset-actions">
-          <button class="btn btn-secondary" id="cancel-reset-btn">Annulla</button>
-          <button class="btn btn-danger" id="confirm-reset-btn">
-            <span id="reset-btn-text">Conferma Reset</span>
+    <!-- Modal per file upload feedback -->
+    <div id="file-feedback-modal" class="modal" aria-hidden="true">
+      <div
+        class="modal-content"
+        role="dialog"
+        aria-labelledby="file-feedback-title"
+      >
+        <div class="modal-header">
+          <h2 id="file-feedback-title">Risultato Caricamento File</h2>
+          <button
+            class="close-btn"
+            id="close-file-feedback-modal"
+            aria-label="Chiudi"
+          >
+            <span class="material-icons">close</span>
           </button>
         </div>
-      </div>
-    </div>
-  </div>
 
-  <!-- Modal per file upload feedback -->
-  <div id="file-feedback-modal" class="modal" aria-hidden="true">
-    <div class="modal-content" role="dialog" aria-labelledby="file-feedback-title">
-      <div class="modal-header">
-        <h2 id="file-feedback-title">Risultato Caricamento File</h2>
-        <button class="close-btn" id="close-file-feedback-modal" aria-label="Chiudi">
-          <span class="material-icons">close</span>
-        </button>
-      </div>
-
-      <div class="modal-body">
-        <div class="file-feedback">
-          <div class="file-feedback-header">
-            <div class="file-feedback-title">
-              <span id="file-feedback-icon" class="material-icons">info</span>
-              <span id="file-feedback-status">Elaborazione completata</span>
+        <div class="modal-body">
+          <div class="file-feedback">
+            <div class="file-feedback-header">
+              <div class="file-feedback-title">
+                <span id="file-feedback-icon" class="material-icons">info</span>
+                <span id="file-feedback-status">Elaborazione completata</span>
+              </div>
+              <div id="file-feedback-count"></div>
             </div>
-            <div id="file-feedback-count"></div>
-          </div>
 
-          <div class="file-feedback-list" id="file-feedback-list">
-            <!-- Items will be added dynamically -->
-          </div>
+            <div class="file-feedback-list" id="file-feedback-list">
+              <!-- Items will be added dynamically -->
+            </div>
 
-          <div class="file-feedback-summary" id="file-feedback-summary">
-            <!-- Summary will be added dynamically -->
-          </div>
+            <div class="file-feedback-summary" id="file-feedback-summary">
+              <!-- Summary will be added dynamically -->
+            </div>
 
-          <div class="file-feedback-actions">
-            <button class="btn btn-primary" id="file-feedback-ok-btn">OK</button>
+            <div class="file-feedback-actions">
+              <button class="btn btn-primary" id="file-feedback-ok-btn">
+                OK
+              </button>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- Toast per le notifiche -->
-  <div id="toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true"></div>
+    <!-- Toast per le notifiche -->
+    <div
+      id="toast"
+      class="toast"
+      role="alert"
+      aria-live="assertive"
+      aria-atomic="true"
+    ></div>
 
-  <script src="script.js" defer></script>
-  <script src="share-modal-fix.js" defer></script>
-</body>
-
+  </body>
 </html>
