@@ -3,5 +3,5 @@
 # Borsa
 
 - **[Cambi Valute](Cambi%20Valute)**
-[Valori Titoli di Borsa](Valore%20Titoli)
+- **[Valori Titoli di Borsa](Valore%20Titoli)**
 
