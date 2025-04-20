@@ -18,6 +18,7 @@
 - **[Numero Primo](Numero%20Primo)**
 - **[Pitagora](Pitagora)**
 - **[Gestione Punteggi](Punteggi)**
+- **[Gestione Punteggi UX Design](Punteggi_Ux_Design)**
 - **[Calcolo Segno Zodiacale](Segno_Zodiacale)**
 - **[Stampa numeri pari o dispari o tutti](StampaNumeri)**
 - **[Tabelline](Tabelline)**

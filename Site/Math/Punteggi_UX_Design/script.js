@@ -12,7 +12,6 @@ const selectedParticipantSelect = document.getElementById(
 );
 const themeToggleBtn = document.getElementById("theme-toggle-btn");
 const themeIcon = document.getElementById("theme-icon");
-const accessibilityBtn = document.getElementById("accessibility-btn");
 const accessibilityModal = document.getElementById("accessibility-modal");
 const closeModalBtn = document.getElementById("close-modal");
 const toastElement = document.getElementById("toast");
@@ -75,6 +74,9 @@ const confettiColors = [
   "#f44336",
 ];
 
+// Declare html2canvas
+let html2canvas;
+
 // Inizializzazione
 document.addEventListener("DOMContentLoaded", () => {
   // Carica il tema salvato
@@ -86,99 +88,144 @@ document.addEventListener("DOMContentLoaded", () => {
   // Inizializza l'interfaccia
   aggiornaListaPartecipanti();
   aggiornaSelezionePartecipante();
+
+  // Initialize the footer with the accessibility button
+  initializeFooter();
 });
+
+// Function to initialize the footer with the accessibility button
+function initializeFooter() {
+  const footer = document.getElementById("footer");
+  if (footer) {
+    footer.innerHTML = `
+      <footer>
+        <p>© ${new Date().getFullYear()} Gestione Punteggi | <button class="link-button" id="accessibility-btn">Accessibilità</button></p>
+      </footer>
+    `;
+
+    // Now that we've created the accessibility button, we can add the event listener
+    const accessibilityBtn = document.getElementById("accessibility-btn");
+    if (accessibilityBtn) {
+      accessibilityBtn.addEventListener("click", showAccessibilityModal);
+    }
+  }
+}
 
 // Funzione per impostare gli event listeners
 function setupEventListeners() {
   // Gestione tema
-  themeToggleBtn.addEventListener("click", toggleTheme);
+  if (themeToggleBtn) {
+    themeToggleBtn.addEventListener("click", toggleTheme);
+  }
 
   // Gestione modale accessibilità
-  accessibilityBtn.addEventListener("click", showAccessibilityModal);
-  closeModalBtn.addEventListener("click", hideAccessibilityModal);
+  if (closeModalBtn) {
+    closeModalBtn.addEventListener("click", hideAccessibilityModal);
+  }
+
   window.addEventListener("click", (e) => {
-    if (e.target === accessibilityModal) {
+    if (accessibilityModal && e.target === accessibilityModal) {
       hideAccessibilityModal();
+    }
+    if (victoryModal && e.target === victoryModal) {
+      hideVictoryModal();
+    }
+    if (tieModal && e.target === tieModal) {
+      hideTieModal();
+    }
+    if (leaderboardModal && e.target === leaderboardModal) {
+      hideLeaderboardModal();
+    }
+    if (shareModal && e.target === shareModal) {
+      hideShareModal();
+    }
+    if (resetModal && e.target === resetModal) {
+      hideResetModal();
+    }
+    if (fileFeedbackModal && e.target === fileFeedbackModal) {
+      hideFileFeedbackModal();
     }
   });
 
   // Gestione modale vittoria
-  closeVictoryModalBtn.addEventListener("click", hideVictoryModal);
-  closeTieModalBtn.addEventListener("click", hideTieModal);
-  window.addEventListener("click", (e) => {
-    if (e.target === victoryModal) {
-      hideVictoryModal();
-    }
-    if (e.target === tieModal) {
-      hideTieModal();
-    }
-  });
+  if (closeVictoryModalBtn) {
+    closeVictoryModalBtn.addEventListener("click", hideVictoryModal);
+  }
+
+  if (closeTieModalBtn) {
+    closeTieModalBtn.addEventListener("click", hideTieModal);
+  }
 
   // Gestione modale classifica
-  closeLeaderboardModalBtn.addEventListener("click", hideLeaderboardModal);
-  window.addEventListener("click", (e) => {
-    if (e.target === leaderboardModal) {
-      hideLeaderboardModal();
-    }
-  });
+  if (closeLeaderboardModalBtn) {
+    closeLeaderboardModalBtn.addEventListener("click", hideLeaderboardModal);
+  }
 
   // Gestione modale condivisione
-  closeShareModalBtn.addEventListener("click", hideShareModal);
-  window.addEventListener("click", (e) => {
-    if (e.target === shareModal) {
-      hideShareModal();
-    }
-  });
+  if (closeShareModalBtn) {
+    closeShareModalBtn.addEventListener("click", hideShareModal);
+  }
 
   // Gestione tasti per accessibilità
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") {
-      if (accessibilityModal.style.display === "flex") {
+      if (accessibilityModal && accessibilityModal.style.display === "flex") {
         hideAccessibilityModal();
       }
-      if (victoryModal.style.display === "flex") {
+      if (victoryModal && victoryModal.style.display === "flex") {
         hideVictoryModal();
       }
-      if (tieModal.style.display === "flex") {
+      if (tieModal && tieModal.style.display === "flex") {
         hideTieModal();
       }
-      if (leaderboardModal.style.display === "flex") {
+      if (leaderboardModal && leaderboardModal.style.display === "flex") {
         hideLeaderboardModal();
       }
-      if (shareModal.style.display === "flex") {
+      if (shareModal && shareModal.style.display === "flex") {
         hideShareModal();
       }
-      if (resetModal.style.display === "flex") {
+      if (resetModal && resetModal.style.display === "flex") {
         hideResetModal();
+      }
+      if (fileFeedbackModal && fileFeedbackModal.style.display === "flex") {
+        hideFileFeedbackModal();
       }
     }
   });
 
   // Gestione invio per aggiungere partecipante
-  participantNameInput.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") {
-      aggiungiPartecipante();
-    }
-  });
+  if (participantNameInput) {
+    participantNameInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        aggiungiPartecipante();
+      }
+    });
+  }
 
   // Reset modal event listeners
-  closeResetModalBtn.addEventListener("click", hideResetModal);
-  cancelResetBtn.addEventListener("click", hideResetModal);
-  confirmResetBtn.addEventListener("click", eseguiReset);
-  window.addEventListener("click", (e) => {
-    if (e.target === resetModal) {
-      hideResetModal();
-    }
-  });
+  if (closeResetModalBtn) {
+    closeResetModalBtn.addEventListener("click", hideResetModal);
+  }
+
+  if (cancelResetBtn) {
+    cancelResetBtn.addEventListener("click", hideResetModal);
+  }
+
+  if (confirmResetBtn) {
+    confirmResetBtn.addEventListener("click", eseguiReset);
+  }
 
   // File feedback modal event listeners
-  closeFileFeedbackModalBtn.addEventListener("click", hideFileFeedbackModal);
-  fileFeedbackOkBtn.addEventListener("click", hideFileFeedbackModal);
-  window.addEventListener("click", (e) => {
-    if (e.target === fileFeedbackModal) {
-      hideFileFeedbackModal();
-    }
-  });
+  if (closeFileFeedbackModalBtn) {
+    closeFileFeedbackModalBtn.addEventListener("click", hideFileFeedbackModal);
+  }
+
+  if (fileFeedbackOkBtn) {
+    fileFeedbackOkBtn.addEventListener("click", hideFileFeedbackModal);
+  }
+
+  // Setup share modal close button
+  setupShareModalCloseButton();
 }
 
 // Funzioni per la gestione del tema
@@ -207,33 +254,46 @@ function loadThemePreference() {
 
   if (savedTheme === "dark") {
     document.body.setAttribute("data-theme", "dark");
-    themeIcon.textContent = "light_mode";
-  } else {
+    if (themeIcon) {
+      themeIcon.textContent = "light_mode";
+    }
+  } else if (themeIcon) {
     themeIcon.textContent = "dark_mode";
   }
 }
 
 // Funzioni per la gestione della modale
 function showAccessibilityModal() {
-  accessibilityModal.style.display = "flex";
-  accessibilityModal.setAttribute("aria-hidden", "false");
+  if (accessibilityModal) {
+    accessibilityModal.style.display = "flex";
+    accessibilityModal.setAttribute("aria-hidden", "false");
 
-  // Focus sul primo elemento interattivo della modale
-  setTimeout(() => {
-    closeModalBtn.focus();
-  }, 100);
+    // Focus sul primo elemento interattivo della modale
+    setTimeout(() => {
+      if (closeModalBtn) {
+        closeModalBtn.focus();
+      }
+    }, 100);
+  }
 }
 
 function hideAccessibilityModal() {
-  accessibilityModal.style.display = "none";
-  accessibilityModal.setAttribute("aria-hidden", "true");
+  if (accessibilityModal) {
+    accessibilityModal.style.display = "none";
+    accessibilityModal.setAttribute("aria-hidden", "true");
 
-  // Ripristina il focus sull'elemento che ha aperto la modale
-  accessibilityBtn.focus();
+    // Ripristina il focus sull'elemento che ha aperto la modale
+    const accessibilityBtn = document.getElementById("accessibility-btn");
+    if (accessibilityBtn) {
+      accessibilityBtn.focus();
+    }
+  }
 }
 
 // Funzioni per la gestione della modale di vittoria
 function showVictoryModal(vincitore, punti, id) {
+  if (!victoryModal || !victoryMessage || !victoryDetails) return;
+
   // Imposta il messaggio di vittoria
   victoryMessage.innerHTML = `<span class="winner-name">${vincitore} <span class="winner-id">#${id}</span></span> ha vinto!`;
   victoryDetails.innerHTML = `Con un punteggio di <strong>${punti}</strong> punti`;
@@ -246,13 +306,19 @@ function showVictoryModal(vincitore, punti, id) {
   createConfetti();
 
   // Aggiungi animazioni
-  document.querySelector(".trophy-icon").classList.add("bounce");
-  document.querySelector(".victory-message").classList.add("fade-in-up");
-  document.querySelector(".victory-details").classList.add("fade-in-up");
+  const trophyIcon = document.querySelector(".trophy-icon");
+  const victoryMessageEl = document.querySelector(".victory-message");
+  const victoryDetailsEl = document.querySelector(".victory-details");
+
+  if (trophyIcon) trophyIcon.classList.add("bounce");
+  if (victoryMessageEl) victoryMessageEl.classList.add("fade-in-up");
+  if (victoryDetailsEl) victoryDetailsEl.classList.add("fade-in-up");
 
   // Focus sul pulsante di chiusura
   setTimeout(() => {
-    closeVictoryModalBtn.focus();
+    if (closeVictoryModalBtn) {
+      closeVictoryModalBtn.focus();
+    }
   }, 500);
 
   // Leggi per screen reader
@@ -262,6 +328,8 @@ function showVictoryModal(vincitore, punti, id) {
 
 // Update the showTieModal function to display the IDs
 function showTieModal(vincitori, punti) {
+  if (!tieModal || !tieMessage || !tieDetails) return;
+
   // Imposta il messaggio di pareggio
   tieMessage.innerHTML = `Pareggio tra ${vincitori.length} partecipanti!`;
 
@@ -284,13 +352,19 @@ function showTieModal(vincitori, punti) {
   tieModal.setAttribute("aria-hidden", "false");
 
   // Aggiungi animazioni
-  document.querySelector(".tie-icon").classList.add("bounce");
-  document.querySelector(".tie-message").classList.add("fade-in-up");
-  document.querySelector(".tie-details").classList.add("fade-in-up");
+  const tieIcon = document.querySelector(".tie-icon");
+  const tieMessageEl = document.querySelector(".tie-message");
+  const tieDetailsEl = document.querySelector(".tie-details");
+
+  if (tieIcon) tieIcon.classList.add("bounce");
+  if (tieMessageEl) tieMessageEl.classList.add("fade-in-up");
+  if (tieDetailsEl) tieDetailsEl.classList.add("fade-in-up");
 
   // Focus sul pulsante di chiusura
   setTimeout(() => {
-    closeTieModalBtn.focus();
+    if (closeTieModalBtn) {
+      closeTieModalBtn.focus();
+    }
   }, 500);
 
   // Leggi per screen reader
@@ -301,30 +375,46 @@ function showTieModal(vincitori, punti) {
 }
 
 function hideVictoryModal() {
+  if (!victoryModal) return;
+
   victoryModal.style.display = "none";
   victoryModal.setAttribute("aria-hidden", "true");
 
   // Rimuovi i coriandoli
-  confettiContainer.innerHTML = "";
+  if (confettiContainer) {
+    confettiContainer.innerHTML = "";
+  }
 
   // Rimuovi le classi di animazione
-  document.querySelector(".trophy-icon").classList.remove("bounce");
-  document.querySelector(".victory-message").classList.remove("fade-in-up");
-  document.querySelector(".victory-details").classList.remove("fade-in-up");
+  const trophyIcon = document.querySelector(".trophy-icon");
+  const victoryMessageEl = document.querySelector(".victory-message");
+  const victoryDetailsEl = document.querySelector(".victory-details");
+
+  if (trophyIcon) trophyIcon.classList.remove("bounce");
+  if (victoryMessageEl) victoryMessageEl.classList.remove("fade-in-up");
+  if (victoryDetailsEl) victoryDetailsEl.classList.remove("fade-in-up");
 }
 
 function hideTieModal() {
+  if (!tieModal) return;
+
   tieModal.style.display = "none";
   tieModal.setAttribute("aria-hidden", "true");
 
   // Rimuovi le classi di animazione
-  document.querySelector(".tie-icon").classList.remove("bounce");
-  document.querySelector(".tie-message").classList.remove("fade-in-up");
-  document.querySelector(".tie-details").classList.remove("fade-in-up");
+  const tieIcon = document.querySelector(".tie-icon");
+  const tieMessageEl = document.querySelector(".tie-message");
+  const tieDetailsEl = document.querySelector(".tie-details");
+
+  if (tieIcon) tieIcon.classList.remove("bounce");
+  if (tieMessageEl) tieMessageEl.classList.remove("fade-in-up");
+  if (tieDetailsEl) tieDetailsEl.classList.remove("fade-in-up");
 }
 
 // Funzioni per la gestione della modale classifica
 function mostraClassifica() {
+  if (!leaderboardModal || !leaderboardDate || !leaderboardMode) return;
+
   // Aggiorna la data e la modalità
   const oggi = new Date();
   const opzioniData = {
@@ -356,17 +446,23 @@ function mostraClassifica() {
 
   // Focus sul pulsante di chiusura
   setTimeout(() => {
-    closeLeaderboardModalBtn.focus();
+    if (closeLeaderboardModalBtn) {
+      closeLeaderboardModalBtn.focus();
+    }
   }, 100);
 }
 
 function hideLeaderboardModal() {
-  leaderboardModal.style.display = "none";
-  leaderboardModal.setAttribute("aria-hidden", "true");
+  if (leaderboardModal) {
+    leaderboardModal.style.display = "none";
+    leaderboardModal.setAttribute("aria-hidden", "true");
+  }
 }
 
 // Update the creaPodio function to display IDs
 function creaPodio(partecipantiOrdinati) {
+  if (!podiumContainer) return;
+
   // Pulisci il contenitore del podio
   podiumContainer.innerHTML = "";
 
@@ -431,6 +527,8 @@ function creaPodio(partecipantiOrdinati) {
 
 // Update the creaTabellaCassifica function to display IDs
 function creaTabellaCassifica(partecipantiOrdinati) {
+  if (!leaderboardBody) return;
+
   // Pulisci la tabella
   leaderboardBody.innerHTML = "";
 
@@ -500,6 +598,8 @@ function creaTabellaCassifica(partecipantiOrdinati) {
 // Funzioni per la condivisione
 // Update the condividiClassifica function to include IDs
 function condividiClassifica() {
+  if (!shareModal || !shareTextPreview) return;
+
   // Ottieni i dati della classifica
   const partecipantiOrdinati = [...partecipanti].sort((a, b) =>
     modalitàVittoria === "max" ? b.punti - a.punti : a.punti - b.punti
@@ -532,20 +632,8 @@ function condividiClassifica() {
   shareModal.style.display = "flex";
   shareModal.setAttribute("aria-hidden", "false");
 
-  // Assicurati che il pulsante di chiusura funzioni
-  if (closeShareModalBtn) {
-    // Rimuovi eventuali listener esistenti
-    const newCloseBtn = closeShareModalBtn.cloneNode(true);
-    closeShareModalBtn.parentNode.replaceChild(newCloseBtn, closeShareModalBtn);
-    
-    // Aggiorna il riferimento al nuovo pulsante
-    const updatedCloseBtn = document.getElementById("close-share-modal");
-    
-    // Aggiungi un nuovo event listener
-    updatedCloseBtn.addEventListener("click", function() {
-      hideShareModal();
-    });
-  }
+  // Ensure the close button works
+  setupShareModalCloseButton();
 
   // Focus sul pulsante di chiusura
   setTimeout(() => {
@@ -558,43 +646,70 @@ function hideShareModal() {
   if (shareModal) {
     shareModal.style.display = "none";
     shareModal.setAttribute("aria-hidden", "true");
-    console.log("Share modal hidden");
+  }
+}
+
+// Add a dedicated function to properly handle the share modal close button
+function setupShareModalCloseButton() {
+  const closeBtn = document.getElementById("close-share-modal");
+  if (closeBtn && shareModal) {
+    // Remove any existing event listeners by cloning and replacing
+    const newCloseBtn = closeBtn.cloneNode(true);
+    closeBtn.parentNode.replaceChild(newCloseBtn, closeBtn);
+
+    // Add the event listener to the new button
+    newCloseBtn.addEventListener("click", () => {
+      hideShareModal();
+    });
   }
 }
 
 function condividiSuWhatsApp() {
+  if (!shareTextPreview) return;
   const testo = encodeURIComponent(shareTextPreview.textContent);
   window.open(`https://wa.me/?text=${testo}`, "_blank");
 }
 
 function condividiSuTelegram() {
+  if (!shareTextPreview) return;
   const testo = encodeURIComponent(shareTextPreview.textContent);
   window.open(`https://t.me/share/url?url=&text=${testo}`, "_blank");
 }
 
 function condividiSuFacebook() {
+  if (!shareTextPreview) return;
   const testo = encodeURIComponent(shareTextPreview.textContent);
   const url = encodeURIComponent(window.location.href);
-  window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}&quote=${testo}`, "_blank");
+  window.open(
+    `https://www.facebook.com/sharer/sharer.php?u=${url}&quote=${testo}`,
+    "_blank"
+  );
 }
 
 function condividiSuTwitter() {
+  if (!shareTextPreview) return;
   const testo = encodeURIComponent(shareTextPreview.textContent);
   window.open(`https://twitter.com/intent/tweet?text=${testo}`, "_blank");
 }
 
 function condividiSuLinkedIn() {
+  if (!shareTextPreview) return;
   const testo = encodeURIComponent(shareTextPreview.textContent);
   const url = encodeURIComponent(window.location.href);
-  window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${url}&summary=${testo}`, "_blank");
+  window.open(
+    `https://www.linkedin.com/sharing/share-offsite/?url=${url}&summary=${testo}`,
+    "_blank"
+  );
 }
 
 function condividiSuEmail() {
+  if (!shareTextPreview) return;
   const testo = encodeURIComponent(shareTextPreview.textContent);
   window.open(`mailto:?subject=Classifica&body=${testo}`, "_blank");
 }
 
 function copiaTestoClassifica() {
+  if (!shareTextPreview) return;
   const testo = shareTextPreview.textContent;
 
   if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -636,14 +751,12 @@ function copiaTestoClassifica() {
 
 function salvaClassificaImmagine() {
   const leaderboardContainer = document.getElementById("leaderboard-container");
+  if (!leaderboardContainer) return;
 
   // Aggiungi una classe temporanea per lo screenshot
   leaderboardContainer.classList.add("screenshot-mode");
 
   // Usa html2canvas per catturare l'immagine
-  // html2canvas is not defined, so we need to declare it
-  // This assumes html2canvas is loaded via a script tag.
-  // If it's a module, you'd import it instead.
   if (typeof html2canvas !== "undefined") {
     html2canvas(leaderboardContainer)
       .then((canvas) => {
@@ -682,6 +795,8 @@ function salvaClassificaImmagine() {
 
 // Funzione per creare coriandoli
 function createConfetti() {
+  if (!confettiContainer) return;
+
   confettiContainer.innerHTML = "";
 
   for (let i = 0; i < 100; i++) {
@@ -739,6 +854,8 @@ function announceForScreenReader(message) {
 
 // Funzione per mostrare toast di notifica
 function showToast(message, type = "info") {
+  if (!toastElement) return;
+
   toastElement.textContent = message;
   toastElement.className = "toast " + type;
   toastElement.classList.add("show");
@@ -759,6 +876,8 @@ function showToast(message, type = "info") {
 // Funzioni per la gestione dei partecipanti
 // Update the aggiungiPartecipante function to assign a unique ID
 function aggiungiPartecipante() {
+  if (!participantNameInput) return;
+
   const nome = participantNameInput.value.trim();
 
   if (nome === "") {
@@ -782,8 +901,6 @@ function aggiungiPartecipante() {
   showToast(`${nome} (ID: ${id}) aggiunto con successo`, "success");
 }
 
-// Update the eliminaPartecipante function to use  (ID: ${id}) aggiunto con successo`, "success");
-
 // Update the eliminaPartecipante function to use the ID
 function eliminaPartecipante(index) {
   const partecipante = partecipanti[index];
@@ -796,6 +913,8 @@ function eliminaPartecipante(index) {
 
 // Update the aggiornaListaPartecipanti function to display the ID
 function aggiornaListaPartecipanti() {
+  if (!participantList) return;
+
   participantList.innerHTML = "";
 
   // Ordina i partecipanti in base alla modalità vittoria
@@ -871,6 +990,8 @@ function aggiornaListaPartecipanti() {
 
 // Update the aggiornaSelezionePartecipante function to display the ID
 function aggiornaSelezionePartecipante() {
+  if (!selectedParticipantSelect) return;
+
   selectedParticipantSelect.innerHTML = "";
 
   // Opzioni di default
@@ -895,6 +1016,8 @@ function aggiornaSelezionePartecipante() {
 
 // Funzioni per la gestione dei punti
 function aggiungiPunti() {
+  if (!pointsInput || !selectedParticipantSelect) return;
+
   const punti = Number.parseFloat(pointsInput.value);
   const selectedParticipantIndex = selectedParticipantSelect.value;
 
@@ -930,6 +1053,8 @@ function aggiungiPunti() {
 }
 
 function togliPunti() {
+  if (!pointsInput || !selectedParticipantSelect) return;
+
   const punti = Number.parseFloat(pointsInput.value);
   const selectedParticipantIndex = selectedParticipantSelect.value;
 
@@ -1015,6 +1140,8 @@ let resetType = null;
 
 // Reset modal functions
 function mostraResetModal(type) {
+  if (!resetModal || !resetPointsOption || !resetAllOption) return;
+
   resetType = type;
 
   // Reset the UI
@@ -1029,12 +1156,22 @@ function mostraResetModal(type) {
   }
 
   // Reset progress bar
-  resetProgressContainer.style.display = "none";
-  resetProgressBar.style.width = "0%";
+  if (resetProgressContainer) {
+    resetProgressContainer.style.display = "none";
+  }
+
+  if (resetProgressBar) {
+    resetProgressBar.style.width = "0%";
+  }
 
   // Reset button text
-  resetBtnText.textContent = "Conferma Reset";
-  confirmResetBtn.disabled = false;
+  if (resetBtnText) {
+    resetBtnText.textContent = "Conferma Reset";
+  }
+
+  if (confirmResetBtn) {
+    confirmResetBtn.disabled = false;
+  }
 
   // Show the modal
   resetModal.style.display = "flex";
@@ -1042,11 +1179,15 @@ function mostraResetModal(type) {
 }
 
 function hideResetModal() {
-  resetModal.style.display = "none";
-  resetModal.setAttribute("aria-hidden", "true");
+  if (resetModal) {
+    resetModal.style.display = "none";
+    resetModal.setAttribute("aria-hidden", "true");
+  }
 }
 
 function selectResetOption(type) {
+  if (!resetPointsOption || !resetAllOption) return;
+
   resetType = type;
 
   // Update UI
@@ -1061,7 +1202,13 @@ function selectResetOption(type) {
 }
 
 function eseguiReset() {
-  if (!resetType) return;
+  if (
+    !resetType ||
+    !resetProgressContainer ||
+    !resetProgressBar ||
+    !resetBtnText
+  )
+    return;
 
   if (partecipanti.length === 0) {
     showToast("Nessun partecipante disponibile", "warning");
@@ -1070,7 +1217,10 @@ function eseguiReset() {
   }
 
   // Disable the button and show progress
-  confirmResetBtn.disabled = true;
+  if (confirmResetBtn) {
+    confirmResetBtn.disabled = true;
+  }
+
   resetBtnText.innerHTML =
     '<span class="loading-spinner"></span> Resettando...';
   resetProgressContainer.style.display = "block";
@@ -1108,6 +1258,16 @@ function eseguiReset() {
 
 // File feedback modal functions
 function showFileFeedbackModal(results) {
+  if (
+    !fileFeedbackModal ||
+    !fileFeedbackIcon ||
+    !fileFeedbackStatus ||
+    !fileFeedbackCount ||
+    !fileFeedbackList ||
+    !fileFeedbackSummary
+  )
+    return;
+
   // Set the status icon and text based on results
   if (results.errors.length > 0) {
     fileFeedbackIcon.textContent = "error";
@@ -1184,13 +1344,17 @@ function showFileFeedbackModal(results) {
 
   // Focus on the OK button
   setTimeout(() => {
-    fileFeedbackOkBtn.focus();
+    if (fileFeedbackOkBtn) {
+      fileFeedbackOkBtn.focus();
+    }
   }, 100);
 }
 
 function hideFileFeedbackModal() {
-  fileFeedbackModal.style.display = "none";
-  fileFeedbackModal.setAttribute("aria-hidden", "true");
+  if (fileFeedbackModal) {
+    fileFeedbackModal.style.display = "none";
+    fileFeedbackModal.setAttribute("aria-hidden", "true");
+  }
 }
 
 // Replace the existing caricaDaFile function with this enhanced version
@@ -1494,9 +1658,3 @@ function resettaPunti() {
 function resettaTotale() {
   mostraResetModal("all");
 }
-
-document.getElementById("footer").innerHTML = `
-    <footer>
-      <p>© ${new Date().getFullYear()} Gestione Punteggi | <button class="link-button" id="accessibility-btn">Accessibilità</button></p>
-    </footer>
-  `;

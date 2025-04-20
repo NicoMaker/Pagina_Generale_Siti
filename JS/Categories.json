@@ -158,6 +158,10 @@
         "link": "Site/Math/Punteggi/index.html"
       },
       {
+        "name": "Gestione Punteggi UX Design",
+        "link": "Site/Math/Punteggi_UX_Design/index.html"
+      },
+      {
         "name": "Calcolo Segno Zodiacale",
         "link": "Site/Math/Segno_Zodiacale/index.html"
       },
