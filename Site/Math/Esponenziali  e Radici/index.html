@@ -1,35 +1,197 @@
 <!DOCTYPE html>
-<html>
+<html lang="it">
 
 <head>
-    <title>Calcolatore di esponenti e radici</title>
-    <link rel="stylesheet" href="Style-esp-rad.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calcolatore di Esponenti e Radici</title>
+    <link rel="stylesheet" href="styles.css">
     <link rel="icon"
         href="https://thumbs.dreamstime.com/b/radice-quadrata-dell-immagine-semplice-di-stile-piano-illustrazione-colore-del-nero-icona-ascissa-112487912.jpg"
         type="image/png">
-    <script src="Script-esp-rad.js" defer>
-    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <script src="script.js" defer></script>
 </head>
 
 <body>
-    <h1>Calcolatore di esponenti e radici</h1>
-    <label> Inserisci Numero</label>
-    <input type="number" id="number" required>
-    <br>
-    <br>
-    <label> inserisci Esponente</label>
-    <input type="number" id="exponent" required>
+    <div class="math-bg-pattern"></div>
 
-    <br>
-    <br>
+    <div class="calculator-container">
+        <header class="calculator-header">
+            <div class="logo">
+                <div class="logo-symbol">√</div>
+                <h1>Calcolatore di Esponenti e Radici</h1>
+            </div>
+            <div class="theme-toggle" id="themeToggle">
+                <svg class="light-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="5"></circle>
+                    <line x1="12" y1="1" x2="12" y2="3"></line>
+                    <line x1="12" y1="21" x2="12" y2="23"></line>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                    <line x1="1" y1="12" x2="3" y2="12"></line>
+                    <line x1="21" y1="12" x2="23" y2="12"></line>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                </svg>
+                <svg class="dark-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                </svg>
+            </div>
+        </header>
 
-    <label for="operation">Seleziona l'operazione:</label>
-    <select id="operation">
-        <option value="power">Eleva all'esponente</option>
-        <option value="root">Radice</option>
-    </select>
-    <button id="calculate">Calcola</button>
-    <div id="result"></div>
+        <main class="calculator-body">
+            <div class="input-card">
+                <div class="card-header">
+                    <div class="card-title">Input</div>
+                    <div class="card-subtitle">Inserisci i valori per il calcolo</div>
+                </div>
+
+                <div class="input-group">
+                    <label for="number" class="input-label">
+                        <span class="label-text">Numero Base</span>
+                        <span class="label-symbol">x</span>
+                    </label>
+                    <div class="input-wrapper">
+                        <input type="number" id="number" class="math-input" placeholder="Inserisci un numero" required>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="exponent" class="input-label">
+                        <span class="label-text">Esponente / Indice</span>
+                        <span class="label-symbol">n</span>
+                    </label>
+                    <div class="input-wrapper">
+                        <input type="number" id="exponent" class="math-input" placeholder="Inserisci un valore"
+                            required>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="operation" class="input-label">
+                        <span class="label-text">Operazione</span>
+                        <span class="label-symbol">ƒ</span>
+                    </label>
+                    <div class="select-wrapper">
+                        <select id="operation" class="math-select">
+                            <option value="power">Elevamento a potenza (x^n)</option>
+                            <option value="root">Estrazione di radice (x^(1/n))</option>
+                        </select>
+                        <div class="select-arrow">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <button id="calculate" class="calculate-button">
+                    <span class="button-text">Calcola</span>
+                    <span class="button-icon">=</span>
+                </button>
+            </div>
+
+            <div class="result-card">
+                <div class="card-header">
+                    <div class="card-title">Risultato</div>
+                    <div class="card-subtitle">Output dell'operazione</div>
+                </div>
+
+                <div class="result-display">
+                    <div class="result-placeholder" id="resultPlaceholder">
+                        <div class="placeholder-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="12" y1="8" x2="12" y2="16"></line>
+                                <line x1="8" y1="12" x2="16" y2="12"></line>
+                            </svg>
+                        </div>
+                        <div class="placeholder-text">Il risultato apparirà qui</div>
+                    </div>
+
+                    <div class="result-content" id="resultContent">
+                        <div class="result-equation" id="resultEquation"></div>
+                        <div class="result-value" id="resultValue"></div>
+                    </div>
+                </div>
+
+                <div class="result-actions">
+                    <button id="copyResult" class="action-button">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                        </svg>
+                        <span>Copia</span>
+                    </button>
+                    <button id="clearResult" class="action-button">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="3 6 5 6 21 6"></polyline>
+                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                            </path>
+                        </svg>
+                        <span>Cancella</span>
+                    </button>
+                </div>
+            </div>
+        </main>
+
+        <div class="formula-reference">
+            <div class="formula-card">
+                <div class="formula-title">Formule di Riferimento</div>
+                <div class="formula-content">
+                    <div class="formula-item">
+                        <div class="formula-name">Potenza</div>
+                        <div class="formula-equation">x<sup>n</sup> = x × x × ... × x (n volte)</div>
+                    </div>
+                    <div class="formula-item">
+                        <div class="formula-name">Radice</div>
+                        <div class="formula-equation"><sup>n</sup>√x = x<sup>1/n</sup></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="calculator-footer">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <p>Calcolatore Matematico © 2024</p>
+                </div>
+                <div class="footer-links">
+                    <a href="#" class="footer-link">Guida</a>
+                    <a href="#" class="footer-link">Informazioni</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <div class="toast" id="toast">
+        <div class="toast-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+        </div>
+        <div class="toast-message" id="toastMessage"></div>
+        <button class="toast-close" id="toastClose">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        </button>
+    </div>
 </body>
 
 </html>
