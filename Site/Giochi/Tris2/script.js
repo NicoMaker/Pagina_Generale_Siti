@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
   // Elementi DOM
-  const span = document.getElementsByTagName("span");
+  const cells = document.querySelectorAll(".game-cell");
   const resetButton = document.getElementById("resetButton");
   const resetAllButton = document.getElementById("resetAllButton");
   const playerTurnDisplay = document.getElementById("playerTurnDisplay");
@@ -100,33 +100,33 @@ document.addEventListener("DOMContentLoaded", () => {
   function checkWinner() {
     // Combinazioni vincenti (indici delle celle)
     const winningCombinations = [
-      [0, 1, 2],
-      [3, 4, 5],
-      [6, 7, 8], // Righe
-      [0, 3, 6],
-      [1, 4, 7],
-      [2, 5, 8], // Colonne
-      [0, 4, 8],
-      [2, 4, 6], // Diagonali
+      [0, 1, 2], // Prima riga
+      [3, 4, 5], // Seconda riga
+      [6, 7, 8], // Terza riga
+      [0, 3, 6], // Prima colonna
+      [1, 4, 7], // Seconda colonna
+      [2, 5, 8], // Terza colonna
+      [0, 4, 8], // Diagonale principale
+      [2, 4, 6], // Diagonale secondaria
     ];
 
-    // Controlla ogni combinazione
-    for (let i = 0; i < winningCombinations.length; i++) {
-      const [a, b, c] = winningCombinations[i];
+    // Ottieni lo stato attuale della tavola
+    const board = Array.from(cells).map((cell) => cell.dataset.player);
 
-      // Verifica se i tre elementi hanno lo stesso giocatore e non sono vuoti
+    // Controlla ogni combinazione vincente
+    for (const [a, b, c] of winningCombinations) {
       if (
-        span[a].dataset.player !== "none" &&
-        span[a].dataset.player === span[b].dataset.player &&
-        span[b].dataset.player === span[c].dataset.player
+        board[a] !== "none" &&
+        board[a] === board[b] &&
+        board[b] === board[c]
       ) {
         // Abbiamo un vincitore!
-        const winner = span[a].dataset.player;
+        const winner = board[a];
 
         // Evidenzia le celle vincenti
-        span[a].parentNode.classList.add("activeBox");
-        span[b].parentNode.classList.add("activeBox");
-        span[c].parentNode.classList.add("activeBox");
+        cells[a].parentNode.classList.add("activeBox");
+        cells[b].parentNode.classList.add("activeBox");
+        cells[c].parentNode.classList.add("activeBox");
 
         // Aggiorna il punteggio
         scores[winner]++;
@@ -290,6 +290,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Resetta il gioco
   function resetGame() {
+    // Rimuovi eventuali messaggi di fine partita
+    const alerts = document.querySelectorAll(".alert");
+    alerts.forEach((alert) => {
+      if (alert.parentNode) {
+        document.body.removeChild(alert);
+      }
+    });
+
     // Resetta lo stato del gioco
     playerTurn = "x";
     moves = 0;
@@ -299,12 +307,12 @@ document.addEventListener("DOMContentLoaded", () => {
     updateTurnDisplay();
 
     // Resetta tutte le celle
-    for (let i = 0; i < span.length; i++) {
-      span[i].textContent = "";
-      span[i].dataset.player = "none";
-      span[i].classList.remove("player-x", "player-o");
-      span[i].parentNode.classList.remove("activeBox");
-    }
+    cells.forEach((cell) => {
+      cell.textContent = "";
+      cell.dataset.player = "none";
+      cell.classList.remove("player-x", "player-o");
+      cell.parentNode.classList.remove("activeBox");
+    });
   }
 
   // Reset completo (punteggi e cronologia)
