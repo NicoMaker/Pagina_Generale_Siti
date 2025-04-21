@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html>
+<html lang="it">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Cedarville+Cursive&family=Delicious+Handrawn&family=Roboto&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Cedarville+Cursive&family=Delicious+Handrawn&family=Roboto:wght@400;500;700&display=swap"
         rel="stylesheet">
     <link rel="icon"
         href="https://media.istockphoto.com/id/1284999664/it/vettoriale/calendario-della-pagina-dellicona-pianificazione-scadenza-data-app.jpg?s=612x612&w=0&k=20&c=e50UBBega1vlu6Mnxhuy-cFUSSIcZofUiSsEIzbl4CY="
@@ -16,60 +18,84 @@
 </head>
 
 <body>
+    <div class="app-container">
+        <header>
+            <h1 class="app-title">Calendario Impegni</h1>
+            
+            <div class="links-container">
+                <button class="link-button bottone">
+                    <a href="https://github.com/NicoMaker/Calendario" target="_blank" aria-label="GitHub Repository">
+                        <img src="img/GitHub.jpg" alt="GitHub">
+                    </a>
+                </button>
 
-    <br>
+                <button class="link-button bottoneuniversitaTS">
+                    <a href="https://www.units.it/" target="_blank" aria-label="Università di Trieste">
+                        <img class="universitaTS" src="img/units.jpg" alt="Università di Trieste">
+                    </a>
+                </button>
 
-    <button class="bottone">
-        <a href="https://github.com/NicoMaker/Calendario" target="_blank">
-            <img src="img/GitHub.jpg">
-        </a>
-    </button>
-
-    <button class="bottoneuniversitaTS">
-        <a href="https://www.units.it/" target="_blank">
-            <img class="universitaTS" src="img/units.jpg">
-        </a>
-    </button>
-
-    <button class="bottoneItsAltoAdriatico">
-        <a href="https://www.itsaltoadriatico.it/?gclid=CjwKCAjwtuOlBhBREiwA7agf1k6bEyp2rhhDjYz5xeixgHU8_pzpwWIG-2UjMcJ3mih7U4HswlUu1RoCXxIQAvD_BwE"
-            target="_blank">
-            <img class="ItsAltoAdriatico" src="img/ItsAltoAdriatico.jpg">
-        </a>
-    </button>
-
-    <div class="calendar">
-        <div class="month">
-            <div class="month-header">
-                <h1 id="currentMonth">Mese/Anno</h1>
-                <button id="prevMonthBtn">&lt;</button>
-                <button id="nextMonthBtn">&gt;</button>
+                <button class="link-button bottoneItsAltoAdriatico">
+                    <a href="https://www.itsaltoadriatico.it/?gclid=CjwKCAjwtuOlBhBREiwA7agf1k6bEyp2rhhDjYz5xeixgHU8_pzpwWIG-2UjMcJ3mih7U4HswlUu1RoCXxIQAvD_BwE"
+                        target="_blank" aria-label="ITS Alto Adriatico">
+                        <img class="ItsAltoAdriatico" src="img/ItsAltoAdriatico.jpg" alt="ITS Alto Adriatico">
+                    </a>
+                </button>
             </div>
+        </header>
 
-            <br>
-            <br>
+        <main>
+            <div class="calendar-container">
+                <div class="month-navigation">
+                    <button id="prevMonthBtn" class="nav-button" aria-label="Mese precedente">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="15 18 9 12 15 6"></polyline>
+                        </svg>
+                    </button>
+                    <h2 id="currentMonth" class="current-month">Mese/Anno</h2>
+                    <button id="nextMonthBtn" class="nav-button" aria-label="Mese successivo">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                    </button>
+                </div>
 
-            <table class="calendar-table" id="calendarTable">
-                <tr>
-                    <th>Dom</th>
-                    <th>Lun</th>
-                    <th>Mar</th>
-                    <th>Mer</th>
-                    <th>Gio</th>
-                    <th>Ven</th>
-                    <th>Sab</th>
-                </tr>
-            </table>
-        </div>
+                <div class="calendar-wrapper">
+                    <table class="calendar-table" id="calendarTable">
+                        <thead>
+                            <tr>
+                                <th>Dom</th>
+                                <th>Lun</th>
+                                <th>Mar</th>
+                                <th>Mer</th>
+                                <th>Gio</th>
+                                <th>Ven</th>
+                                <th>Sab</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Calendar cells will be generated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="calendar-legend">
+                    <div class="legend-item">
+                        <div class="legend-color today"></div>
+                        <span>Oggi</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color has-event"></div>
+                        <span>Con impegno</span>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p class="footer-text">Realizzata da Nico Maker</p>
+        </footer>
     </div>
-
-    <br>
-    <br>
-
-    <p> Realizzata da Nico Maker </p>
-
-    <br>
-
 </body>
 
 </html>

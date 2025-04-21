@@ -1,24 +1,75 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Calcolatore di tempo</title>
-    <script src="script_different_time.js" defer></script>
-    <link rel="icon" href="orario.jpg" type="image/jpg" />
-    <link rel="stylesheet" href="stylehour.css" />
+    <title>Calcolatore di Tempo</title>
+    <link rel="icon" href="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/orario.jpg-bwLyWDVgYfKO728g47FMJnndOa08nt.png" type="image/png" />
+    <link rel="stylesheet" href="style.css" />
+    <script src="script.js" defer></script>
   </head>
   <body>
-    <h1>Calcolatore di tempo</h1>
-    <label>Inserisci una data:</label>
-    <input type="datetime-local" id="inputDate" />
-    <br />
-    <br />
-    <br />
-    <button onclick="calcolaTempoTrascorso()">Calcola</button>
-    <br />
-    <br />
-    <img src="orario.jpg" />
-    <p id="risultato"></p>
+    <div class="app-container">
+      <header>
+        <div class="logo">
+          <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/orario.jpg-bwLyWDVgYfKO728g47FMJnndOa08nt.png" alt="Orologio" />
+          <h1>Calcolatore di Tempo</h1>
+        </div>
+        <p class="subtitle">Calcola il tempo trascorso o rimanente tra due date</p>
+      </header>
+
+      <main class="card">
+        <div class="input-section">
+          <div class="date-input">
+            <label for="inputDate">Seleziona una data e ora:</label>
+            <input type="datetime-local" id="inputDate" />
+          </div>
+          
+          <button id="calculate-btn" onclick="calcolaTempoTrascorso()">
+            <span class="btn-text">Calcola</span>
+            <span class="btn-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+            </span>
+          </button>
+        </div>
+
+        <div id="result-container" class="result-container hidden">
+          <div class="time-units">
+            <div class="time-unit">
+              <span id="years" class="time-value">0</span>
+              <span class="time-label">Anni</span>
+            </div>
+            <div class="time-unit">
+              <span id="months" class="time-value">0</span>
+              <span class="time-label">Mesi</span>
+            </div>
+            <div class="time-unit">
+              <span id="days" class="time-value">0</span>
+              <span class="time-label">Giorni</span>
+            </div>
+            <div class="time-unit">
+              <span id="hours" class="time-value">0</span>
+              <span class="time-label">Ore</span>
+            </div>
+            <div class="time-unit">
+              <span id="minutes" class="time-value">0</span>
+              <span class="time-label">Minuti</span>
+            </div>
+            <div class="time-unit">
+              <span id="seconds" class="time-value">0</span>
+              <span class="time-label">Secondi</span>
+            </div>
+          </div>
+          <p id="risultato" class="result-text"></p>
+        </div>
+      </main>
+
+      <footer>
+        <p>© 2025 Calcolatore di Tempo | Tutti i diritti riservati</p>
+      </footer>
+    </div>
   </body>
 </html>
