@@ -1,227 +1,662 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>ESERCIZIO TRIFASE</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="trifase.css" />
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calcolatore Trifase | Sistemi Elettrici</title>
+    <link rel="stylesheet" href="trifase.css">
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-    <script
-      type="text/javascript"
-      id="MathJax-script"
-      async
-      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
-    ></script>
-    <link rel="icon" href="Img/Trifase.png" type="image/jpg" />
-  </head>
-
-  <body>
-    <img class="logo" src="img/Logo.jpg" alt="Logo" />
-
-    <h1>
-      ESERCIZIO TRIFASE CARICO A STELLA
-      <br />
-    </h1>
-
-    <img class="immagine" src="img/stella.JPG" alt="Stella" />
-
-    <h2>
-      DATI :
-      <br />
-    </h2>
-
-    <p>
-      \( R = 10 \, \Omega \); \( X_{l} = 5 \, \Omega \); alimentato 230/400 V;
-    </p>
-    <p>\( I = ? \); \( P = ? \); \( Q = ? \); \( A = ? \);</p>
-
-    <h2>
-      SVOLGIMENTO :
-      <br />
-    </h2>
-
-    <p class="verde">Calcolo \( Z \) :</p>
-
-    <p>\( Z^2 = R^2 + X_{l}^2 \)</p>
-
-    <p>\( Z^2 = 10^2 + 5^2 \)</p>
-
-    <p>\( Z^2 = 100 + 25 \)</p>
-
-    <p>\( Z^2 = 125 \, \Omega^2 \)</p>
-
-    <p>\( Z = \sqrt{125} \)</p>
-
-    <p>\( Z = 11.18 \, \Omega \)</p>
-
-    <br />
-
-    <p class="verde">Triangolo delle impedenze :</p>
-    <img src="img/triangolo_impedenze.JPG" alt="Triangolo delle Impedenze" />
-
-    <p class="verde">Calcolo \( I \) :</p>
-
-    <p>\( I = \frac{E}{Z} \)</p>
-
-    <p>\( I = \frac{230}{11.18} \)</p>
-
-    <p>\( I = 20.57 \, A \)</p>
-
-    <br />
-
-    <p class="verde">Calcolo \( \Phi \) :</p>
-
-    <p>\( \Phi = \arctan \left( \frac{X_{l}}{R} \right) \)</p>
-
-    <p>\( \Phi = \arctan \left( \frac{5}{10} \right) \)</p>
-
-    <p>\( \Phi = \arctan \left( 0.5 \right) \)</p>
-
-    <p>\( \Phi = 26.57^\circ \)</p>
-
-    <br />
-
-    <p class="verde">Calcolo \( P \) :</p>
-
-    <p>\( P = \sqrt{3} \times V \times I \times \cos \Phi \)</p>
-
-    <p>\( P = \sqrt{3} \times 400 \times 20.57 \times \cos (26.57^\circ) \)</p>
-
-    <p>\( P = 12746 \, W \) o \( 12.75 \, kW \)</p>
-
-    <br />
-
-    <p class="verde">Calcolo \( Q \) :</p>
-
-    <p>\( Q = \sqrt{3} \times V \times I \times \sin \Phi \)</p>
-
-    <p>\( Q = \sqrt{3} \times 400 \times 20.57 \times \sin (26.57^\circ) \)</p>
-
-    <p>\( Q = 6374 \, VAR \) o \( 6.374 \, kVAR \)</p>
-
-    <br />
-
-    <p class="verde">Calcolo \( A \) :</p>
-
-    <p>\( A = \sqrt{3} \times V \times I \)</p>
-
-    <p>\( A = \sqrt{3} \times 400 \times 20.57 \)</p>
-
-    <p>\( A = 14251 \, VA \) o \( 14.25 \, kVA \)</p>
-
-    <br />
-
-    <p class="verde">Triangolo delle Potenze :</p>
-    <img src="img/triangolo_potenze.JPG" alt="Triangolo delle Potenze" />
-
-    <h1>
-      ESERCIZIO TRIFASE CARICO A TRIANGOLO
-      <br />
-    </h1>
-
-    <img class="immagine" src="img/Triangolo.JPG" alt="Triangolo" />
-
-    <h2>
-      DATI :
-      <br />
-    </h2>
-
-    <p>
-      \( R = 13 \, \Omega \); \( X_{l} = 6.5 \, \Omega \); alimentato 230/400 V;
-    </p>
-    <p>\( I_{l} = ? \); \( P = ? \); \( Q = ? \); \( A = ? \);</p>
-
-    <h2>
-      SVOLGIMENTO :
-      <br />
-    </h2>
-
-    <p class="verde">Calcolo \( Z \) :</p>
-
-    <p>\( Z^2 = R^2 + X_{l}^2 \)</p>
-
-    <p>\( Z^2 = 13^2 + 6.5^2 \)</p>
-
-    <p>\( Z^2 = 169 + 42.25 \)</p>
-
-    <p>\( Z^2 = 214.25 \, \Omega^2 \)</p>
-
-    <p>\( Z = \sqrt{214.25} \)</p>
-
-    <p>\( Z = 14.53 \, \Omega \)</p>
-
-    <br />
-
-    <p class="verde">Triangolo delle impedenze :</p>
-    <img
-      src="img/triangolo_impedenze- t .JPG"
-      alt="Triangolo delle Impedenze"
-    />
-
-    <p class="verde">Calcolo \( I_f \) :</p>
-
-    <p>\( I_{f} = \frac{V}{Z} \)</p>
-
-    <p>\( I_{f} = \frac{400}{14.53} \)</p>
-
-    <p>\( I_{f} = 27.52 \, A \)</p>
-
-    <br />
-
-    <p class="verde">Calcolo \( I_l \) :</p>
-
-    <p>\( I_{l} = \sqrt{3} \times I_{f} \)</p>
-
-    <p>\( I_{l} = \sqrt{3} \times 27.52 \)</p>
-
-    <p>\( I_{l} = 47.67 \, A \)</p>
-
-    <br />
-
-    <p class="verde">Calcolo \( \Phi \) :</p>
-
-    <p>\( \Phi = \arctan \left( \frac{6.5}{13} \right) \)</p>
-
-    <p>\( \Phi = \arctan \left( \frac{5}{10} \right) \)</p>
-
-    <p>\( \Phi = \arctan \left( 0.5 \right) \)</p>
-
-    <p>\( \Phi = 26.57^\circ \)</p>
-
-    <br />
-
-    <p class="verde">Calcolo \( P \) :</p>
-
-    <p>\( P = \sqrt{3} \times V \times I_{l} \times \cos \Phi \)</p>
-
-    <p>\( P = \sqrt{3} \times 400 \times 47.67 \times \cos (26.57^\circ) \)</p>
-
-    <p>\( P = 29536 \, W \) o \( 29.54 \, kW \)</p>
-
-    <br />
-
-    <p class="verde">Calcolo \( Q \) :</p>
-
-    <p>\( Q = \sqrt{3} \times V \times I_{l} \times \sin \Phi \)</p>
-
-    <p>\( Q = \sqrt{3} \times 400 \times 47.67 \times \sin (26.57^\circ) \)</p>
-
-    <p>\( Q = 14771 \, VAR \) o \( 14.77 \, kVAR \)</p>
-
-    <br />
-
-    <p class="verde">Calcolo \( A \) :</p>
-
-    <p>\( A = \sqrt{3} \times V \times I_{l} \)</p>
-
-    <p>\( A = \sqrt{3} \times 400 \times 47.67 \)</p>
-
-    <p>\( A = 33024 \, VA \) o \( 33.02 \, kVA \)</p>
-
-    <br />
-
-    <p class="verde">Triangolo delle Potenze :</p>
-    <img src="img/triangolo_potenze-T.JPG" alt="Triangolo delle Potenze" />
-
-    <p>Fatto da Nicola Marano</p>
-  </body>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="icon" href="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Trifase-Zbi9eqRMufwCey3gdgKhgrSUWNmSNP.png" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script src="trifase.js" defer></script>
+</head>
+
+<body>
+    <header class="app-header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo-container">
+                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Logo.JPG-bmqQPmO3wdinDHYzBOyHqwwjkMOnhG.jpeg" alt="Zanussi Logo" class="logo">
+                </div>
+                <div class="header-title">
+                    <h1>Calcolatore Trifase</h1>
+                    <p class="subtitle">Strumento di calcolo per sistemi trifase a stella e triangolo</p>
+                </div>
+                <div class="theme-toggle" id="themeToggle">
+                    <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                    <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <nav class="app-nav">
+        <div class="container">
+            <div class="nav-tabs">
+                <button class="nav-tab active" data-target="star-section">Carico a Stella</button>
+                <button class="nav-tab" data-target="delta-section">Carico a Triangolo</button>
+                <button class="nav-tab" data-target="calculator-section">Calcolatore</button>
+                <button class="nav-tab" data-target="theory-section">Teoria</button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="app-main">
+        <div class="container">
+            <!-- Star Configuration Section -->
+            <section id="star-section" class="content-section active">
+                <div class="section-header">
+                    <h2>Carico a Stella (Y)</h2>
+                    <div class="section-actions">
+                        <button class="action-button print-button" onclick="printSection('star-section')">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 6 2 18 2 18 9"></polyline>
+                                <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+                                <rect x="6" y="14" width="12" height="8"></rect>
+                            </svg>
+                            <span>Stampa</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Schema del Circuito</h3>
+                    </div>
+                    <div class="card-body centered">
+                        <div class="circuit-diagram">
+                            <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/stella.JPG-vxeok0sWB4JZYBWavDHrmNHk8xk3i6.jpeg" alt="Schema Carico a Stella" class="diagram-image">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Dati del Problema</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="data-grid">
+                            <div class="data-item">
+                                <div class="data-label">Resistenza</div>
+                                <div class="data-value">$$ R = 10 \, \Omega $$</div>
+                            </div>
+                            <div class="data-item">
+                                <div class="data-label">Reattanza Induttiva</div>
+                                <div class="data-value">$$ X_{l} = 5 \, \Omega $$</div>
+                            </div>
+                            <div class="data-item">
+                                <div class="data-label">Alimentazione</div>
+                                <div class="data-value">230/400 V</div>
+                            </div>
+                        </div>
+                        <div class="data-objectives">
+                            <div class="objective-label">Obiettivi:</div>
+                            <div class="objective-items">
+                                <span class="objective-item">$$ I = ? $$</span>
+                                <span class="objective-item">$$ P = ? $$</span>
+                                <span class="objective-item">$$ Q = ? $$</span>
+                                <span class="objective-item">$$ A = ? $$</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="calculation-steps">
+                    <div class="step-container">
+                        <div class="step-header" onclick="toggleStep(this)">
+                            <div class="step-number">1</div>
+                            <h3>Calcolo dell'Impedenza $$ Z $$</h3>
+                            <div class="step-toggle">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="step-content">
+                            <div class="formula-line">$$ Z^2 = R^2 + X_{l}^2 $$</div>
+                            <div class="formula-line">$$ Z^2 = 10^2 + 5^2 $$</div>
+                            <div class="formula-line">$$ Z^2 = 100 + 25 $$</div>
+                            <div class="formula-line">$$ Z^2 = 125 \, \Omega^2 $$</div>
+                            <div class="formula-line">$$ Z = \sqrt{125} $$</div>
+                            <div class="formula-line result">$$ Z = 11.18 \, \Omega $$</div>
+                            
+                            <div class="diagram-container">
+                                <h4>Triangolo delle Impedenze</h4>
+                                <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/triangolo_impedenze.JPG-majAxDwMHZkFf4kVzkPT0PhA4rEn4t.jpeg" alt="Triangolo delle Impedenze" class="formula-diagram">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-container">
+                        <div class="step-header" onclick="toggleStep(this)">
+                            <div class="step-number">2</div>
+                            <h3>Calcolo della Corrente $$ I $$</h3>
+                            <div class="step-toggle">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="step-content">
+                            <div class="formula-line">$$ I = \frac{E}{Z} $$</div>
+                            <div class="formula-line">$$ I = \frac{230}{11.18} $$</div>
+                            <div class="formula-line result">$$ I = 20.57 \, A $$</div>
+                        </div>
+                    </div>
+
+                    <div class="step-container">
+                        <div class="step-header" onclick="toggleStep(this)">
+                            <div class="step-number">3</div>
+                            <h3>Calcolo dell'Angolo di Fase $$ \Phi $$</h3>
+                            <div class="step-toggle">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="step-content">
+                            <div class="formula-line">$$ \Phi = \arctan \left( \frac{X_{l}}{R} \right) $$</div>
+                            <div class="formula-line">$$ \Phi = \arctan \left( \frac{5}{10} \right) $$</div>
+                            <div class="formula-line">$$ \Phi = \arctan \left( 0.5 \right) $$</div>
+                            <div class="formula-line result">$$ \Phi = 26.57^\circ $$</div>
+                        </div>
+                    </div>
+
+                    <div class="step-container">
+                        <div class="step-header" onclick="toggleStep(this)">
+                            <div class="step-number">4</div>
+                            <h3>Calcolo della Potenza Attiva $$ P $$</h3>
+                            <div class="step-toggle">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="step-content">
+                            <div class="formula-line">$$ P = \sqrt{3} \times V \times I \times \cos \Phi $$</div>
+                            <div class="formula-line">$$ P = \sqrt{3} \times 400 \times 20.57 \times \cos (26.57^\circ) $$</div>
+                            <div class="formula-line result">$$ P = 12746 \, W $$ o $$ 12.75 \, kW $$</div>
+                        </div>
+                    </div>
+
+                    <div class="step-container">
+                        <div class="step-header" onclick="toggleStep(this)">
+                            <div class="step-number">5</div>
+                            <h3>Calcolo della Potenza Reattiva $$ Q $$</h3>
+                            <div class="step-toggle">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="step-content">
+                            <div class="formula-line">$$ Q = \sqrt{3} \times V \times I \times \sin \Phi $$</div>
+                            <div class="formula-line">$$ Q = \sqrt{3} \times 400 \times 20.57 \times \sin (26.57^\circ) $$</div>
+                            <div class="formula-line result">$$ Q = 6374 \, VAR $$ o $$ 6.374 \, kVAR $$</div>
+                        </div>
+                    </div>
+
+                    <div class="step-container">
+                        <div class="step-header" onclick="toggleStep(this)">
+                            <div class="step-number">6</div>
+                            <h3>Calcolo della Potenza Apparente $$ A $$</h3>
+                            <div class="step-toggle">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="step-content">
+                            <div class="formula-line">$$ A = \sqrt{3} \times V \times I $$</div>
+                            <div class="formula-line">$$ A = \sqrt{3} \times 400 \times 20.57 $$</div>
+                            <div class="formula-line result">$$ A = 14251 \, VA $$ o $$ 14.25 \, kVA $$</div>
+                            
+                            <div class="diagram-container">
+                                <h4>Triangolo delle Potenze</h4>
+                                <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/triangolo_potenze.JPG-YtvP3bzkcS7G6DhnaVgHqhnrdz6NJh.jpeg" alt="Triangolo delle Potenze" class="formula-diagram">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Delta Configuration Section -->
+            <section id="delta-section" class="content-section">
+                <div class="section-header">
+                    <h2>Carico a Triangolo (Δ)</h2>
+                    <div class="section-actions">
+                        <button class="action-button print-button" onclick="printSection('delta-section')">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 6 2 18 2 18 9"></polyline>
+                                <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+                                <rect x="6" y="14" width="12" height="8"></rect>
+                            </svg>
+                            <span>Stampa</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Schema del Circuito</h3>
+                    </div>
+                    <div class="card-body centered">
+                        <div class="circuit-diagram">
+                            <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Triangolo.JPG-9BJnKbHbNrXKX59Wr41Y1q1oeTBf3p.jpeg" alt="Schema Carico a Triangolo" class="diagram-image">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Dati del Problema</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="data-grid">
+                            <div class="data-item">
+                                <div class="data-label">Resistenza</div>
+                                <div class="data-value">$$ R = 13 \, \Omega $$</div>
+                            </div>
+                            <div class="data-item">
+                                <div class="data-label">Reattanza Induttiva</div>
+                                <div class="data-value">$$ X_{l} = 6.5 \, \Omega $$</div>
+                            </div>
+                            <div class="data-item">
+                                <div class="data-label">Alimentazione</div>
+                                <div class="data-value">230/400 V</div>
+                            </div>
+                        </div>
+                        <div class="data-objectives">
+                            <div class="objective-label">Obiettivi:</div>
+                            <div class="objective-items">
+                                <span class="objective-item">$$ I_{l} = ? $$</span>
+                                <span class="objective-item">$$ P = ? $$</span>
+                                <span class="objective-item">$$ Q = ? $$</span>
+                                <span class="objective-item">$$ A = ? $$</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="calculation-steps">
+                    <div class="step-container">
+                        <div class="step-header" onclick="toggleStep(this)">
+                            <div class="step-number">1</div>
+                            <h3>Calcolo dell'Impedenza $$ Z $$</h3>
+                            <div class="step-toggle">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="step-content">
+                            <div class="formula-line">$$ Z^2 = R^2 + X_{l}^2 $$</div>
+                            <div class="formula-line">$$ Z^2 = 13^2 + 6.5^2 $$</div>
+                            <div class="formula-line">$$ Z^2 = 169 + 42.25 $$</div>
+                            <div class="formula-line">$$ Z^2 = 214.25 \, \Omega^2 $$</div>
+                            <div class="formula-line">$$ Z = \sqrt{214.25} $$</div>
+                            <div class="formula-line result">$$ Z = 14.53 \, \Omega $$</div>
+                            
+                            <div class="diagram-container">
+                                <h4>Triangolo delle Impedenze</h4>
+                                <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/triangolo_impedenze-%20t%20.JPG-FZ5EHFk98tTox3K57v9EZ5m2RPzY4O.jpeg" alt="Triangolo delle Impedenze" class="formula-diagram">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-container">
+                        <div class="step-header" onclick="toggleStep(this)">
+                            <div class="step-number">2</div>
+                            <h3>Calcolo della Corrente di Fase $$ I_f $$</h3>
+                            <div class="step-toggle">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="step-content">
+                            <div class="formula-line">$$ I_{f} = \frac{V}{Z} $$</div>
+                            <div class="formula-line">$$ I_{f} = \frac{400}{14.53} $$</div>
+                            <div class="formula-line result">$$ I_{f} = 27.52 \, A $$</div>
+                        </div>
+                    </div>
+
+                    <div class="step-container">
+                        <div class="step-header" onclick="toggleStep(this)">
+                            <div class="step-number">3</div>
+                            <h3>Calcolo della Corrente di Linea $$ I_l $$</h3>
+                            <div class="step-toggle">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="step-content">
+                            <div class="formula-line">$$ I_{l} = \sqrt{3} \times I_{f} $$</div>
+                            <div class="formula-line">$$ I_{l} = \sqrt{3} \times 27.52 $$</div>
+                            <div class="formula-line result">$$ I_{l} = 47.67 \, A $$</div>
+                        </div>
+                    </div>
+
+                    <div class="step-container">
+                        <div class="step-header" onclick="toggleStep(this)">
+                            <div class="step-number">4</div>
+                            <h3>Calcolo dell'Angolo di Fase $$ \Phi $$</h3>
+                            <div class="step-toggle">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="step-content">
+                            <div class="formula-line">$$ \Phi = \arctan \left( \frac{X_{l}}{R} \right) $$</div>
+                            <div class="formula-line">$$ \Phi = \arctan \left( \frac{6.5}{13} \right) $$</div>
+                            <div class="formula-line">$$ \Phi = \arctan \left( 0.5 \right) $$</div>
+                            <div class="formula-line result">$$ \Phi = 26.57^\circ $$</div>
+                        </div>
+                    </div>
+
+                    <div class="step-container">
+                        <div class="step-header" onclick="toggleStep(this)">
+                            <div class="step-number">5</div>
+                            <h3>Calcolo della Potenza Attiva $$ P $$</h3>
+                            <div class="step-toggle">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="step-content">
+                            <div class="formula-line">$$ P = \sqrt{3} \times V \times I_{l} \times \cos \Phi $$</div>
+                            <div class="formula-line">$$ P = \sqrt{3} \times 400 \times 47.67 \times \cos (26.57^\circ) $$</div>
+                            <div class="formula-line result">$$ P = 29536 \, W $$ o $$ 29.54 \, kW $$</div>
+                        </div>
+                    </div>
+
+                    <div class="step-container">
+                        <div class="step-header" onclick="toggleStep(this)">
+                            <div class="step-number">6</div>
+                            <h3>Calcolo della Potenza Reattiva $$ Q $$</h3>
+                            <div class="step-toggle">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="step-content">
+                            <div class="formula-line">$$ Q = \sqrt{3} \times V \times I_{l} \times \sin \Phi $$</div>
+                            <div class="formula-line">$$ Q = \sqrt{3} \times 400 \times 47.67 \times \sin (26.57^\circ) $$</div>
+                            <div class="formula-line result">$$ Q = 14771 \, VAR $$ o $$ 14.77 \, kVAR $$</div>
+                        </div>
+                    </div>
+
+                    <div class="step-container">
+                        <div class="step-header" onclick="toggleStep(this)">
+                            <div class="step-number">7</div>
+                            <h3>Calcolo della Potenza Apparente $$ A $$</h3>
+                            <div class="step-toggle">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="step-content">
+                            <div class="formula-line">$$ A = \sqrt{3} \times V \times I_{l} $$</div>
+                            <div class="formula-line">$$ A = \sqrt{3} \times 400 \times 47.67 $$</div>
+                            <div class="formula-line result">$$ A = 33024 \, VA $$ o $$ 33.02 \, kVA $$</div>
+                            
+                            <div class="diagram-container">
+                                <h4>Triangolo delle Potenze</h4>
+                                <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/triangolo_potenze-T.JPG-dRKOSvFgXQM3OiPCxY1HoDeTyWGX7c.jpeg" alt="Triangolo delle Potenze" class="formula-diagram">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Interactive Calculator Section -->
+            <section id="calculator-section" class="content-section">
+                <div class="section-header">
+                    <h2>Calcolatore Interattivo</h2>
+                    <div class="section-actions">
+                        <button class="action-button reset-button" id="resetCalculator">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M3 2v6h6"></path>
+                                <path d="M21 12A9 9 0 0 0 6 5.3L3 8"></path>
+                                <path d="M21 22v-6h-6"></path>
+                                <path d="M3 12a9 9 0 0 0 15 6.7l3-2.7"></path>
+                            </svg>
+                            <span>Reset</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="calculator-container">
+                    <div class="calculator-form">
+                        <div class="form-group">
+                            <label for="configType">Configurazione</label>
+                            <div class="select-wrapper">
+                                <select id="configType" class="form-control">
+                                    <option value="star">Carico a Stella (Y)</option>
+                                    <option value="delta">Carico a Triangolo (Δ)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="resistance">Resistenza (Ω)</label>
+                                <input type="number" id="resistance" class="form-control" placeholder="R" step="0.1" min="0">
+                            </div>
+                            <div class="form-group">
+                                <label for="reactance">Reattanza (Ω)</label>
+                                <input type="number" id="reactance" class="form-control" placeholder="Xl" step="0.1" min="0">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="voltage">Tensione (V)</label>
+                                <input type="number" id="voltage" class="form-control" placeholder="V" value="400">
+                            </div>
+                            <div class="form-group">
+                                <label for="phaseVoltage">Tensione di Fase (V)</label>
+                                <input type="number" id="phaseVoltage" class="form-control" placeholder="E" value="230" readonly>
+                            </div>
+                        </div>
+
+                        <button id="calculateButton" class="primary-button">
+                            <span>Calcola</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="9 18 15 12 9 6"></polyline>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <div class="results-container">
+                        <div class="results-header">
+                            <h3>Risultati</h3>
+                        </div>
+                        <div class="results-body">
+                            <div class="result-group">
+                                <div class="result-item">
+                                    <div class="result-label">Impedenza (Z)</div>
+                                    <div class="result-value" id="resultZ">-</div>
+                                </div>
+                                <div class="result-item">
+                                    <div class="result-label">Angolo di Fase (Φ)</div>
+                                    <div class="result-value" id="resultPhi">-</div>
+                                </div>
+                            </div>
+                            
+                            <div class="result-group">
+                                <div class="result-item">
+                                    <div class="result-label">Corrente di Fase (If)</div>
+                                    <div class="result-value" id="resultIf">-</div>
+                                </div>
+                                <div class="result-item">
+                                    <div class="result-label">Corrente di Linea (Il)</div>
+                                    <div class="result-value" id="resultIl">-</div>
+                                </div>
+                            </div>
+                            
+                            <div class="result-group">
+                                <div class="result-item">
+                                    <div class="result-label">Potenza Attiva (P)</div>
+                                    <div class="result-value" id="resultP">-</div>
+                                </div>
+                                <div class="result-item">
+                                    <div class="result-label">Potenza Reattiva (Q)</div>
+                                    <div class="result-value" id="resultQ">-</div>
+                                </div>
+                                <div class="result-item">
+                                    <div class="result-label">Potenza Apparente (A)</div>
+                                    <div class="result-value" id="resultA">-</div>
+                                </div>
+                            </div>
+                            
+                            <div class="power-triangle">
+                                <canvas id="powerTriangle" width="300" height="200"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Theory Section -->
+            <section id="theory-section" class="content-section">
+                <div class="section-header">
+                    <h2>Teoria dei Sistemi Trifase</h2>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Introduzione ai Sistemi Trifase</h3>
+                    </div>
+                    <div class="card-body">
+                        <p>Un sistema trifase è un sistema di produzione, distribuzione e utilizzo dell'energia elettrica che impiega tre correnti alternate della stessa frequenza, sfasate tra loro di un terzo di periodo.</p>
+                        
+                        <div class="theory-image-container">
+                            <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Trifase-Zbi9eqRMufwCey3gdgKhgrSUWNmSNP.png" alt="Onde Trifase" class="theory-image">
+                            <div class="image-caption">Rappresentazione delle tre fasi sfasate di 120°</div>
+                        </div>
+                        
+                        <p>I sistemi trifase sono ampiamente utilizzati nella generazione, trasmissione e distribuzione dell'energia elettrica, nonché nei motori elettrici industriali, per la loro efficienza e costanza di potenza.</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Configurazioni: Stella e Triangolo</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="theory-columns">
+                            <div class="theory-column">
+                                <h4>Configurazione a Stella (Y)</h4>
+                                <div class="theory-image-container">
+                                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/stella.JPG-vxeok0sWB4JZYBWavDHrmNHk8xk3i6.jpeg" alt="Configurazione a Stella" class="theory-image small">
+                                </div>
+                                <p>Nella configurazione a stella, un terminale di ciascun carico è collegato a un punto comune (neutro), mentre gli altri terminali sono collegati alle tre fasi.</p>
+                                <ul class="theory-list">
+                                    <li>Relazione tra tensione di linea e di fase: $$V_L = \sqrt{3} \times V_F$$</li>
+                                    <li>Corrente di linea uguale alla corrente di fase: $$I_L = I_F$$</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="theory-column">
+                                <h4>Configurazione a Triangolo (Δ)</h4>
+                                <div class="theory-image-container">
+                                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Triangolo.JPG-9BJnKbHbNrXKX59Wr41Y1q1oeTBf3p.jpeg" alt="Configurazione a Triangolo" class="theory-image small">
+                                </div>
+                                <p>Nella configurazione a triangolo, i carichi sono collegati direttamente tra le fasi, formando un circuito chiuso.</p>
+                                <ul class="theory-list">
+                                    <li>Tensione di fase uguale alla tensione di linea: $$V_F = V_L$$</li>
+                                    <li>Relazione tra corrente di linea e di fase: $$I_L = \sqrt{3} \times I_F$$</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Triangolo delle Potenze</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="theory-columns">
+                            <div class="theory-column">
+                                <p>Il triangolo delle potenze è una rappresentazione grafica delle relazioni tra le diverse potenze in un circuito elettrico:</p>
+                                <ul class="theory-list">
+                                    <li><strong>Potenza Attiva (P)</strong>: misurata in Watt (W), è la potenza realmente utilizzata per compiere lavoro.</li>
+                                    <li><strong>Potenza Reattiva (Q)</strong>: misurata in Volt-Ampere Reattivi (VAR), è la potenza scambiata tra il generatore e i componenti reattivi del circuito.</li>
+                                    <li><strong>Potenza Apparente (A)</strong>: misurata in Volt-Ampere (VA), è la potenza totale fornita dal generatore.</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="theory-column">
+                                <div class="theory-image-container">
+                                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/triangolo_potenze.JPG-YtvP3bzkcS7G6DhnaVgHqhnrdz6NJh.jpeg" alt="Triangolo delle Potenze" class="theory-image">
+                                </div>
+                                <p>Le relazioni tra queste potenze sono:</p>
+                                <ul class="theory-list">
+                                    <li>$$A^2 = P^2 + Q^2$$</li>
+                                    <li>$$P = A \times \cos\Phi$$</li>
+                                    <li>$$Q = A \times \sin\Phi$$</li>
+                                    <li>$$\cos\Phi$$ è il fattore di potenza</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="app-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <p>© 2024 Calcolatore Trifase | Sviluppato da Nicola Marano</p>
+                </div>
+                <div class="footer-links">
+                    <a href="#" class="footer-link">Guida</a>
+                    <a href="#" class="footer-link">Riferimenti</a>
+                    <a href="#" class="footer-link">Contatti</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <div class="toast" id="notificationToast">
+        <div class="toast-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+        </div>
+        <div class="toast-message">Operazione completata con successo</div>
+        <button class="toast-close" onclick="closeToast()">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        </button>
+    </div>
+</body>
 </html>
+
