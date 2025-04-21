@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   // Elementi DOM
   const playButton = document.getElementById("playButton");
+  const resetButton = document.getElementById("resetButton");
   const player1Input = document.getElementById("player1");
   const player2Input = document.getElementById("player2");
   const player1NameDisplay = document.getElementById("player1-name-display");
@@ -12,6 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const player1Score = document.getElementById("player1-score");
   const player2Score = document.getElementById("player2-score");
   const historyContainer = document.getElementById("history-container");
+  const gameHistorySection = document.getElementById("game-history-section");
   const rulesButton = document.getElementById("rulesButton");
   const rulesModal = document.getElementById("rulesModal");
   const closeButton = document.querySelector(".close-button");
@@ -30,6 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
     player2: 0,
   };
   let gameHistory = [];
+  let gameStarted = false;
 
   // Inizializza il gioco
   function initGame() {
@@ -42,8 +45,8 @@ document.addEventListener("DOMContentLoaded", () => {
     // Aggiorna i punteggi visualizzati
     updateScoreDisplay();
 
-    // Carica la cronologia delle partite
-    loadHistory();
+    // Nascondi la sezione della cronologia all'inizio
+    gameHistorySection.classList.remove("visible");
   }
 
   // Aggiorna i nomi dei giocatori visualizzati
@@ -167,6 +170,12 @@ document.addEventListener("DOMContentLoaded", () => {
     updateScoreDisplay();
     saveScores();
 
+    // Mostra la sezione della cronologia se è la prima partita
+    if (!gameStarted) {
+      gameStarted = true;
+      gameHistorySection.classList.add("visible");
+    }
+
     // Aggiungi alla cronologia
     addToHistory(
       player1Name,
@@ -238,7 +247,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const savedHistory = localStorage.getItem("rpsHistory");
     if (savedHistory) {
       gameHistory = JSON.parse(savedHistory);
-      renderHistory();
+
+      // Se ci sono partite nella cronologia, mostra la sezione
+      if (gameHistory.length > 0) {
+        gameStarted = true;
+        gameHistorySection.classList.add("visible");
+      }
     }
   }
 
@@ -303,6 +317,52 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // Resetta il gioco
+  function resetGame() {
+    // Resetta i punteggi
+    scores = {
+      player1: 0,
+      player2: 0,
+    };
+
+    // Aggiorna i punteggi visualizzati
+    updateScoreDisplay();
+
+    // Salva i punteggi resettati
+    saveScores();
+
+    // Resetta la cronologia
+    gameHistory = [];
+    saveHistory();
+
+    // Nascondi la sezione della cronologia
+    gameStarted = false;
+    gameHistorySection.classList.remove("visible");
+
+    // Renderizza la cronologia vuota
+    renderHistory();
+
+    // Nascondi i risultati precedenti
+    resultMessage.classList.remove("show");
+    winnerMessage.classList.remove("show");
+
+    // Resetta le scelte
+    document.querySelectorAll(".choice-icon").forEach((icon) => {
+      icon.textContent = "";
+      icon.classList.remove("show");
+    });
+
+    document.querySelectorAll(".choice-placeholder").forEach((placeholder) => {
+      placeholder.style.opacity = "0.3";
+    });
+
+    // Animazione per il reset
+    resetButton.classList.add("pulse");
+    setTimeout(() => {
+      resetButton.classList.remove("pulse");
+    }, 1000);
+  }
+
   // Gestisci il click sul pulsante di gioco
   playButton.addEventListener("click", async () => {
     // Disabilita il pulsante durante il gioco
@@ -343,6 +403,9 @@ document.addEventListener("DOMContentLoaded", () => {
       playButton.disabled = false;
     }, 1000);
   });
+
+  // Gestisci il click sul pulsante di reset
+  resetButton.addEventListener("click", resetGame);
 
   // Gestisci il modal delle regole
   rulesButton.addEventListener("click", () => {

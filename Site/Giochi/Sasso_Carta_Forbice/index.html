@@ -1,15 +1,19 @@
 <!DOCTYPE html>
 <html lang="it">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sasso, Carta, Forbice | Gioco Classico</title>
-  <link rel="icon" href="https://us.123rf.com/450wm/kayocci/kayocci2008/kayocci200800030/154248597-icone-di-forbici-di-carta-sasso-illustrazione-vettoriale-isolata.jpg?ver=6" type="image/jpg">
+  <link rel="icon"
+    href="https://us.123rf.com/450wm/kayocci/kayocci2008/kayocci200800030/154248597-icone-di-forbici-di-carta-sasso-illustrazione-vettoriale-isolata.jpg?ver=6"
+    type="image/jpg">
   <link rel="stylesheet" href="style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <script src="script.js" defer></script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Rubik:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
 </head>
 
 <body>
@@ -19,7 +23,7 @@
       <div class="shape shape-2"></div>
       <div class="shape shape-3"></div>
     </div>
-    
+
     <header>
       <h1 class="game-title">
         <span class="title-icon rock">✊</span>
@@ -34,7 +38,8 @@
         <div class="players-container">
           <div class="player-card">
             <div class="player-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                 <circle cx="12" cy="7" r="4"></circle>
               </svg>
@@ -45,11 +50,13 @@
             </div>
             <div class="player-score" id="player1-score">0</div>
           </div>
-          
-          
+
+          <div class="vs-badge">VS</div>
+
           <div class="player-card">
             <div class="player-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                 <circle cx="12" cy="7" r="4"></circle>
               </svg>
@@ -61,15 +68,28 @@
             <div class="player-score" id="player2-score">0</div>
           </div>
         </div>
-        
-        <button id="playButton" class="play-button">
-          <span class="button-text">Gioca</span>
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="button-icon">
-            <polygon points="5 3 19 12 5 21 5 3"></polygon>
-          </svg>
-        </button>
+
+        <div class="game-controls">
+          <button id="playButton" class="play-button">
+            <span class="button-text">Gioca</span>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="button-icon">
+              <polygon points="5 3 19 12 5 21 5 3"></polygon>
+            </svg>
+          </button>
+
+          <button id="resetButton" class="reset-button">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="button-icon">
+              <path d="M3 12a9 9 0 1 0 18 0 9 9 0 0 0-18 0z"></path>
+              <path d="M17 12H3"></path>
+              <path d="m11 8-4 4 4 4"></path>
+            </svg>
+            <span>Reset</span>
+          </button>
+        </div>
       </section>
-      
+
       <section class="game-arena">
         <div class="choices-container">
           <div class="choice-card" id="player1-choice">
@@ -77,37 +97,38 @@
             <div class="choice-icon"></div>
             <div class="player-name" id="player1-name-display">Giocatore 1</div>
           </div>
-          
+
           <div class="choice-card" id="player2-choice">
             <div class="choice-placeholder">?</div>
             <div class="choice-icon"></div>
             <div class="player-name" id="player2-name-display">Giocatore 2</div>
           </div>
         </div>
-        
+
         <div class="result-container">
           <div class="result-message" id="result-message"></div>
           <div class="winner-message" id="winner-message"></div>
         </div>
       </section>
-      
-      <section class="game-history">
+
+      <section class="game-history" id="game-history-section">
         <h2>Ultime partite</h2>
         <div class="history-container" id="history-container">
           <p class="empty-history">Le partite giocate appariranno qui</p>
         </div>
       </section>
     </main>
-    
+
     <button id="rulesButton" class="rules-button">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round">
         <circle cx="12" cy="12" r="10"></circle>
         <line x1="12" y1="16" x2="12" y2="12"></line>
         <line x1="12" y1="8" x2="12.01" y2="8"></line>
       </svg>
       <span>Regole</span>
     </button>
-    
+
     <div id="rulesModal" class="modal">
       <div class="modal-content">
         <div class="modal-header">
@@ -124,7 +145,7 @@
               </div>
               <p>Sasso vince su Forbice</p>
             </div>
-            
+
             <div class="rule-item">
               <div class="rule-icons">
                 <span class="rule-icon paper">✋</span>
@@ -133,7 +154,7 @@
               </div>
               <p>Carta vince su Sasso</p>
             </div>
-            
+
             <div class="rule-item">
               <div class="rule-icons">
                 <span class="rule-icon scissors">✌️</span>
@@ -142,7 +163,7 @@
               </div>
               <p>Forbice vince su Carta</p>
             </div>
-            
+
             <div class="rule-item tie">
               <div class="rule-icons">
                 <span class="rule-icon rock">✊</span>
@@ -155,10 +176,13 @@
         </div>
       </div>
     </div>
-    
+
     <footer>
       <p>© 2025 Sasso, Carta, Forbice | Creato con <span class="heart">♥</span></p>
     </footer>
   </div>
+
+  <script src="script.js"></script>
 </body>
+
 </html>
