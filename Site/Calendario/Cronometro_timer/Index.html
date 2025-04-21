@@ -1,26 +1,157 @@
 <!DOCTYPE html>
-<html>
+<html lang="it">
 
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Timer e Cronometro</title>
-  <link rel="stylesheet" type="text/css" href="style.css">
+  <link rel="stylesheet" href="style.css">
   <link rel="icon" href="https://www.nikelshop.it/wp-content/uploads/2019/07/Orologio-42-cm-alluminio-kriptonite.jpg"
     type="image/jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="script.js" defer></script>
 </head>
 
 <body>
-  <h1>Benvenuto nella pagina introduttiva Timer o Cronometro</h1>
+  <div class="app-container">
+    <header>
+      <div class="logo">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polyline points="12 6 12 12 16 14"></polyline>
+        </svg>
+        <h1>Timer & Cronometro</h1>
+      </div>
+      <p class="subtitle">Strumenti di misurazione del tempo precisi e facili da usare</p>
+    </header>
 
-  <img class="immagine"
-    src="https://www.nikelshop.it/wp-content/uploads/2019/07/Orologio-42-cm-alluminio-kriptonite.jpg">
+    <main>
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="cronometro">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
+          </svg>
+          Cronometro
+        </button>
+        <button class="tab-btn" data-tab="timer">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+          Timer
+        </button>
+      </div>
 
-  <button class="bottone">
-    <a href="cronometro.html">Vai al cronometro</a>
-  </button>
-  <br>
-  <button class="bottone">
-    <a href="timer.html">Vai al timer</a>
-  </button>
+      <div class="tab-content active" id="cronometro-tab">
+        <div class="card">
+          <div class="time-display" id="cronometroDisplay">00:00:00</div>
+          <div class="progress-ring-container">
+            <svg class="progress-ring" width="240" height="240">
+              <circle class="progress-ring-circle" stroke="#e0e0e0" stroke-width="8" fill="transparent" r="110" cx="120"
+                cy="120" />
+              <circle class="progress-ring-circle progress-ring-circle-progress" id="cronometroProgress"
+                stroke="#4361ee" stroke-width="8" fill="transparent" r="110" cx="120" cy="120" stroke-dasharray="691.15"
+                stroke-dashoffset="691.15" />
+            </svg>
+          </div>
+          <div class="controls">
+            <button class="control-btn start-btn" id="startCronometroBtn" onclick="startCronometro()">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="5 3 19 12 5 21 5 3"></polygon>
+              </svg>
+              <span>Avvia</span>
+            </button>
+            <button class="control-btn stop-btn" id="stopCronometroBtn" onclick="stopCronometro()" disabled>
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="6" y="4" width="4" height="16"></rect>
+                <rect x="14" y="4" width="4" height="16"></rect>
+              </svg>
+              <span>Pausa</span>
+            </button>
+            <button class="control-btn reset-btn" id="resetCronometroBtn" onclick="resetCronometro()" disabled>
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 2v6h6"></path>
+                <path d="M21 12A9 9 0 0 0 6 5.3L3 8"></path>
+                <path d="M21 22v-6h-6"></path>
+                <path d="M3 12a9 9 0 0 0 15 6.7l3-2.7"></path>
+              </svg>
+              <span>Reset</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-content" id="timer-tab">
+        <div class="card">
+          <div class="time-display" id="timerDisplay">00:00:00</div>
+          <div class="progress-ring-container">
+            <svg class="progress-ring" width="240" height="240">
+              <circle class="progress-ring-circle" stroke="#e0e0e0" stroke-width="8" fill="transparent" r="110" cx="120"
+                cy="120" />
+              <circle class="progress-ring-circle progress-ring-circle-progress" id="timerProgress" stroke="#f72585"
+                stroke-width="8" fill="transparent" r="110" cx="120" cy="120" stroke-dasharray="691.15"
+                stroke-dashoffset="0" />
+            </svg>
+          </div>
+          <div class="time-inputs">
+            <div class="time-input">
+              <label for="ore">Ore</label>
+              <input type="number" id="ore" min="0" max="24" value="0">
+            </div>
+            <div class="time-input">
+              <label for="minuti">Minuti</label>
+              <input type="number" id="minuti" min="0" max="59" value="0">
+            </div>
+            <div class="time-input">
+              <label for="secondi">Secondi</label>
+              <input type="number" id="secondi" min="0" max="59" value="0">
+            </div>
+          </div>
+          <div class="controls">
+            <button class="control-btn start-btn" id="startTimerBtn" onclick="impostaTimer()">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="5 3 19 12 5 21 5 3"></polygon>
+              </svg>
+              <span>Avvia</span>
+            </button>
+            <button class="control-btn stop-btn" id="stopTimerBtn" onclick="stopTimer()" disabled>
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="6" y="4" width="4" height="16"></rect>
+                <rect x="14" y="4" width="4" height="16"></rect>
+              </svg>
+              <span>Stop</span>
+            </button>
+            <button class="control-btn reset-btn" id="resetTimerBtn" onclick="resetTimer()" disabled>
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 2v6h6"></path>
+                <path d="M21 12A9 9 0 0 0 6 5.3L3 8"></path>
+                <path d="M21 22v-6h-6"></path>
+                <path d="M3 12a9 9 0 0 0 15 6.7l3-2.7"></path>
+              </svg>
+              <span>Reset</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <p>© 2025 Timer & Cronometro | Tutti i diritti riservati</p>
+    </footer>
+  </div>
 </body>
 
 </html>

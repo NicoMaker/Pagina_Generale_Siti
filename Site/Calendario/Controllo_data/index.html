@@ -1,30 +1,113 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="it">
 <head>
-  <title>Verifica giorno della data</title>
-  <link rel="stylesheet" href="styledta.css">
-  <link rel="icon"
-    href="https://c8.alamy.com/compit/2a24ekg/icona-del-calendario-in-un-elegante-stile-piatto-isolato-su-sfondo-grigio-simbolo-del-calendario-design-logo-app-ui-illustrazione-vettoriale-2a24ekg.jpg"
-    type="image/jpg">
-  <script src="scriptdata.js" defer>
-  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verifica Giorno della Data</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="https://c8.alamy.com/compit/2a24ekg/icona-del-calendario-in-un-elegante-stile-piatto-isolato-su-sfondo-grigio-simbolo-del-calendario-design-logo-app-ui-illustrazione-vettoriale-2a24ekg.jpg" type="image/jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="script.js" defer></script>
 </head>
-
 <body>
-  <h1>Verifica giorno della data</h1>
-  <div class="input-container">
-    <label for="input-date">Inserisci una data (GG/MM/AAAA):</label>
-    <input type="text" id="input-date" placeholder="GG/MM/AAAA">
-    <br>
-    <br>
-    <br>
-    <br>
-    <button onclick="checkDay()">Verifica</button>
-  </div>
-  <br>
-  <div id="result"></div>
-  <div id="error-message" class="error-message"></div>
-</body>
+  <div class="app-container">
+    <header>
+      <div class="logo">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+          <line x1="16" y1="2" x2="16" y2="6"></line>
+          <line x1="8" y1="2" x2="8" y2="6"></line>
+          <line x1="3" y1="10" x2="21" y2="10"></line>
+        </svg>
+        <h1>Verifica Giorno della Data</h1>
+      </div>
+      <p class="subtitle">Scopri a quale giorno della settimana corrisponde una data</p>
+    </header>
 
+    <main class="card">
+      <div class="input-section">
+        <div class="input-group">
+          <label for="input-date">Inserisci una data:</label>
+          <div class="date-input-wrapper">
+            <input type="text" id="input-date" placeholder="GG/MM/AAAA" maxlength="10">
+            <div class="date-format-hint">Formato: GG/MM/AAAA</div>
+          </div>
+        </div>
+        
+        <div class="alternative-input">
+          <span>oppure</span>
+          <button id="date-picker-btn" class="secondary-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+              <line x1="16" y1="2" x2="16" y2="6"></line>
+              <line x1="8" y1="2" x2="8" y2="6"></line>
+              <line x1="3" y1="10" x2="21" y2="10"></line>
+            </svg>
+            Seleziona dal calendario
+          </button>
+          <input type="date" id="native-date-picker" class="hidden">
+        </div>
+        
+        <button id="check-btn" class="primary-btn" onclick="checkDay()">
+          <span class="btn-text">Verifica</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9 11 12 14 22 4"></polyline>
+            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+          </svg>
+        </button>
+      </div>
+
+      <div id="result-container" class="result-container hidden">
+        <div class="result-icon success">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+          </svg>
+        </div>
+        <div id="result" class="result-text"></div>
+      </div>
+
+      <div id="error-container" class="result-container hidden">
+        <div class="result-icon error">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+        </div>
+        <div id="error-message" class="result-text"></div>
+      </div>
+    </main>
+
+    <div class="day-cards">
+      <div class="day-card" data-day="Lunedì">
+        <div class="day-name">Lun</div>
+      </div>
+      <div class="day-card" data-day="Martedì">
+        <div class="day-name">Mar</div>
+      </div>
+      <div class="day-card" data-day="Mercoledì">
+        <div class="day-name">Mer</div>
+      </div>
+      <div class="day-card" data-day="Giovedì">
+        <div class="day-name">Gio</div>
+      </div>
+      <div class="day-card" data-day="Venerdì">
+        <div class="day-name">Ven</div>
+      </div>
+      <div class="day-card weekend" data-day="Sabato">
+        <div class="day-name">Sab</div>
+      </div>
+      <div class="day-card weekend" data-day="Domenica">
+        <div class="day-name">Dom</div>
+      </div>
+    </div>
+
+    <footer>
+      <p>© 2025 Verifica Giorno della Data | Tutti i diritti riservati</p>
+    </footer>
+  </div>
+</body>
 </html>

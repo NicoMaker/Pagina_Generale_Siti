@@ -1,26 +1,175 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="it">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calcolatore differenza di giorni</title>
-    <script src="script_calcolo_giorni.js" defer></script>
-    <link rel="icon" href="orario.jpg" type="image/jpg" />
-    <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calcolatore Differenza Date</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/orario.jpg-XSpUx2YcNQYMKnSox3FGgZCMWLrzk9.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script src="script.js" defer></script>
 </head>
-
 <body>
-    <h1>Calcolatore differenza di giorni</h1>
-    <label>Inserisci la prima data:</label>
-    <input type="datetime-local" id="inputDate1" />
-    <br /><br />
-    <label>Inserisci la seconda data:</label>
-    <input type="datetime-local" id="inputDate2" />
-    <br /><br />
-    <button onclick="calcolaDifferenzaTempo()">Calcola</button>
-    <br />
-    <p id="risultato"></p>
-</body>
+  <div class="app-container">
+    <div class="background-shapes">
+      <div class="shape shape-1"></div>
+      <div class="shape shape-2"></div>
+      <div class="shape shape-3"></div>
+    </div>
+    
+    <header>
+      <div class="logo">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polyline points="12 6 12 12 16 14"></polyline>
+        </svg>
+        <h1>Calcolatore Differenza Date</h1>
+      </div>
+      <p class="subtitle">Calcolatore elegante di differenze temporali</p>
+    </header>
 
+    <main>
+      <div class="card">
+        <div class="card-header">
+          <h2>Calcola la differenza tra due date</h2>
+          <p>Inserisci due date e orari per calcolare l'intervallo di tempo tra di esse</p>
+        </div>
+        
+        <div class="date-inputs">
+          <div class="date-input">
+            <label for="inputDate1">Data di inizio</label>
+            <div class="input-wrapper">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="16" y1="2" x2="16" y2="6"></line>
+                <line x1="8" y1="2" x2="8" y2="6"></line>
+                <line x1="3" y1="10" x2="21" y2="10"></line>
+              </svg>
+              <input type="datetime-local" id="inputDate1" class="date-time-input">
+            </div>
+          </div>
+          
+          <div class="divider">
+            <div class="line"></div>
+            <div class="arrow">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <polyline points="19 12 12 19 5 12"></polyline>
+              </svg>
+            </div>
+            <div class="line"></div>
+          </div>
+          
+          <div class="date-input">
+            <label for="inputDate2">Data di fine</label>
+            <div class="input-wrapper">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="16" y1="2" x2="16" y2="6"></line>
+                <line x1="8" y1="2" x2="8" y2="6"></line>
+                <line x1="3" y1="10" x2="21" y2="10"></line>
+              </svg>
+              <input type="datetime-local" id="inputDate2" class="date-time-input">
+            </div>
+          </div>
+        </div>
+        
+        <div class="actions">
+          <button id="calcButton" class="primary-button" onclick="calcolaDifferenzaTempo()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline>
+              <polyline points="16 7 22 7 22 13"></polyline>
+            </svg>
+            Calcola differenza
+          </button>
+          <button id="resetButton" class="secondary-button" onclick="resetForm()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 2v6h6"></path>
+              <path d="M21 12A9 9 0 0 0 6 5.3L3 8"></path>
+              <path d="M21 22v-6h-6"></path>
+              <path d="M3 12a9 9 0 0 0 15 6.7l3-2.7"></path>
+            </svg>
+            Reimposta
+          </button>
+        </div>
+      </div>
+      
+      <div id="result-card" class="card result-card hidden">
+        <div class="result-header">
+          <h3>Risultato</h3>
+          <button class="close-button" onclick="closeResult()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+        
+        <div class="result-content">
+          <div id="risultato" class="result-text"></div>
+          
+          <div class="time-units">
+            <div class="time-unit">
+              <div id="years" class="time-value">0</div>
+              <div class="time-label">Anni</div>
+            </div>
+            <div class="time-unit">
+              <div id="days" class="time-value">0</div>
+              <div class="time-label">Giorni</div>
+            </div>
+            <div class="time-unit">
+              <div id="hours" class="time-value">0</div>
+              <div class="time-label">Ore</div>
+            </div>
+            <div class="time-unit">
+              <div id="minutes" class="time-value">0</div>
+              <div class="time-label">Minuti</div>
+            </div>
+            <div class="time-unit">
+              <div id="seconds" class="time-value">0</div>
+              <div class="time-label">Secondi</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="quick-actions">
+        <button class="quick-action" onclick="setToday()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="16" y1="2" x2="16" y2="6"></line>
+            <line x1="8" y1="2" x2="8" y2="6"></line>
+            <line x1="3" y1="10" x2="21" y2="10"></line>
+          </svg>
+          Oggi
+        </button>
+        <button class="quick-action" onclick="setOneWeek()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+          </svg>
+          Una settimana
+        </button>
+        <button class="quick-action" onclick="setOneMonth()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+          </svg>
+          Un mese
+        </button>
+        <button class="quick-action" onclick="setOneYear()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="8" r="7"></circle>
+            <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>
+          </svg>
+          Un anno
+        </button>
+      </div>
+    </main>
+
+    <footer>
+      <p>© 2025 Chronos | Calcolatore elegante di differenze temporali</p>
+    </footer>
+  </div>
+</body>
 </html>

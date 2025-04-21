@@ -1,63 +1,430 @@
+:root {
+  --primary: #4361ee;
+  --primary-light: #4895ef;
+  --primary-dark: #3a0ca3;
+  --secondary: #f72585;
+  --secondary-light: #ff8fab;
+  --secondary-dark: #d10a6c;
+  --background: linear-gradient(135deg, #4cc9f0, #4361ee);
+  --card-bg: #ffffff;
+  --text: #333333;
+  --text-light: #6c757d;
+  --border: #dee2e6;
+  --shadow: 0 10px 30px rgba(67, 97, 238, 0.1);
+  --transition: all 0.3s ease;
+  --radius: 12px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
-    text-align: center;
+  font-family: "Poppins", sans-serif;
+  background: var(--background);
+  color: var(--text);
+  line-height: 1.6;
+  min-height: 100vh;
 }
 
-input[type="number"] {
-    width: 65px;
-    text-align: center;
-    font-size: 35px;
-    border-radius: 40px;
+.app-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
-button {
-    margin-top: 10px;
+/* Header Styles */
+header {
+  text-align: center;
+  margin-bottom: 2rem;
 }
 
-#cronometroDisplay,
-#timerDisplay {
-    font-size: 48px;
-    margin-top: 20px;
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
 }
 
-a {
-    display: block;
-    margin-top: 20px;
-    text-decoration: none;
-    color: lawngreen;
-    font-size: 50px;
+.logo svg {
+  color: white;
+  width: 32px;
+  height: 32px;
 }
 
-h1
-{
-    color: red;
-    font-size: 100px;
+h1 {
+  color: white;
+  font-size: 2.5rem;
+  font-weight: 700;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-label
-{
-    font-size: 50px;
+.subtitle {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1.1rem;
+  margin-top: 0.5rem;
 }
 
-button
-{
-    color: aqua;
-    font-size: 50px;
-    border-radius: 50px;
-    background-color: blueviolet;
+/* Tabs */
+.tabs {
+  display: flex;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius);
+  margin-bottom: 2rem;
+  padding: 0.5rem;
+  backdrop-filter: blur(10px);
 }
 
-.immagine{
-    display: block;
-    margin: 0 auto;
-    width: auto;
-    height: 350px;
+.tab-btn {
+  flex: 1;
+  padding: 1rem;
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 1rem;
+  font-weight: 500;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
 }
 
-.bottone
-{
-    color: aqua;
-    font-size: 50px;
-    border-radius: 50px;
-    background-color: white;
-    border: 1px solid white;
+.tab-btn.active {
+  background-color: white;
+  color: var(--primary);
+}
+
+.tab-btn.active svg {
+  color: var(--primary);
+}
+
+.tab-btn svg {
+  color: white;
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+  animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Card Styles */
+.card {
+  background-color: var(--card-bg);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 2rem;
+  margin-bottom: 2rem;
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+.card:hover {
+  box-shadow: 0 15px 40px rgba(67, 97, 238, 0.15);
+  transform: translateY(-5px);
+}
+
+/* Time Display */
+.time-display {
+  font-size: 3rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+  position: relative;
+  z-index: 2;
+}
+
+/* Progress Ring */
+.progress-ring-container {
+  position: relative;
+  width: 240px;
+  height: 240px;
+  margin: 0 auto 2rem;
+}
+
+.progress-ring {
+  transform: rotate(-90deg);
+}
+
+.progress-ring-circle {
+  transition: stroke-dashoffset 0.3s;
+}
+
+/* Controls */
+.controls {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.control-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: var(--radius);
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+  color: white;
+}
+
+.control-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.start-btn {
+  background-color: var(--primary);
+}
+
+.start-btn:hover:not(:disabled) {
+  background-color: var(--primary-dark);
+}
+
+.stop-btn {
+  background-color: var(--secondary);
+}
+
+.stop-btn:hover:not(:disabled) {
+  background-color: var(--secondary-dark);
+}
+
+.reset-btn {
+  background-color: var(--text-light);
+}
+
+.reset-btn:hover:not(:disabled) {
+  background-color: var(--text);
+}
+
+/* Time Inputs */
+.time-inputs {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  justify-content: center;
+}
+
+.time-input {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.time-input label {
+  font-size: 0.9rem;
+  color: var(--text-light);
+}
+
+.time-input input {
+  width: 80px;
+  padding: 0.75rem;
+  text-align: center;
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 1.1rem;
+  font-weight: 500;
+  transition: var(--transition);
+}
+
+.time-input input:focus {
+  border-color: var(--primary);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+}
+
+/* Footer */
+footer {
+  margin-top: auto;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.9rem;
+  padding: 1rem 0;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .app-container {
+    padding: 1.5rem;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  .time-display {
+    font-size: 2.5rem;
+  }
+
+  .progress-ring-container {
+    width: 200px;
+    height: 200px;
+  }
+
+  .progress-ring {
+    width: 200px;
+    height: 200px;
+  }
+
+  .progress-ring-circle {
+    r: 90;
+    cx: 100;
+    cy: 100;
+  }
+
+  .controls {
+    flex-wrap: wrap;
+  }
+
+  .control-btn {
+    flex: 1;
+    min-width: 100px;
+  }
+}
+
+@media (max-width: 480px) {
+  .app-container {
+    padding: 1rem;
+  }
+
+  h1 {
+    font-size: 1.8rem;
+  }
+
+  .subtitle {
+    font-size: 0.9rem;
+  }
+
+  .time-display {
+    font-size: 2rem;
+  }
+
+  .progress-ring-container {
+    width: 160px;
+    height: 160px;
+  }
+
+  .progress-ring {
+    width: 160px;
+    height: 160px;
+  }
+
+  .progress-ring-circle {
+    r: 70;
+    cx: 80;
+    cy: 80;
+    stroke-width: 6;
+  }
+
+  .time-inputs {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .time-input {
+    width: 100%;
+    max-width: 200px;
+  }
+
+  .time-input input {
+    width: 100%;
+  }
+
+  .control-btn {
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+  }
+
+  .control-btn span {
+    display: none;
+  }
+}
+
+/* Animations */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.pulse {
+  animation: pulse 1s infinite;
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    transform: translateX(-5px);
+  }
+  20%,
+  40%,
+  60%,
+  80% {
+    transform: translateX(5px);
+  }
+}
+
+.shake {
+  animation: shake 0.5s;
+}
+
+/* Timer Completed Animation */
+@keyframes completed {
+  0% {
+    box-shadow: 0 0 0 0 rgba(247, 37, 133, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 20px rgba(247, 37, 133, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(247, 37, 133, 0);
+  }
+}
+
+.completed {
+  animation: completed 1.5s infinite;
 }

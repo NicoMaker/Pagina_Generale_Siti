@@ -1,90 +1,242 @@
-let cronometro,
-  cronometroDisplay = document.getElementById("cronometroDisplay"),
-  seconds = 0,
-  minutes = 0,
-  hours = 0;
+document.addEventListener("DOMContentLoaded", () => {
+  // Elementi DOM
+  const tabButtons = document.querySelectorAll(".tab-btn");
+  const tabContents = document.querySelectorAll(".tab-content");
 
-function startCronometro() {
-  cronometro = setInterval(() => {
-    seconds++;
+  // Cronometro
+  const cronometroDisplay = document.getElementById("cronometroDisplay");
+  const cronometroProgress = document.getElementById("cronometroProgress");
+  const startCronometroBtn = document.getElementById("startCronometroBtn");
+  const stopCronometroBtn = document.getElementById("stopCronometroBtn");
+  const resetCronometroBtn = document.getElementById("resetCronometroBtn");
 
-    if (seconds >= 60) {
-      seconds = 0;
-      minutes++;
+  // Timer
+  const timerDisplay = document.getElementById("timerDisplay");
+  const timerProgress = document.getElementById("timerProgress");
+  const startTimerBtn = document.getElementById("startTimerBtn");
+  const stopTimerBtn = document.getElementById("stopTimerBtn");
+  const resetTimerBtn = document.getElementById("resetTimerBtn");
+
+  // Variabili cronometro
+  let cronometro;
+  let seconds = 0;
+  let minutes = 0;
+  let hours = 0;
+  let isRunning = false;
+
+  // Variabili timer
+  let timer;
+  let timerTotalSeconds = 0;
+  let timerRemainingSeconds = 0;
+  let timerIsRunning = false;
+
+  // Gestione delle tab
+  tabButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      // Rimuovi la classe active da tutti i pulsanti e contenuti
+      tabButtons.forEach((btn) => btn.classList.remove("active"));
+      tabContents.forEach((content) => content.classList.remove("active"));
+
+      // Aggiungi la classe active al pulsante cliccato e al contenuto corrispondente
+      button.classList.add("active");
+      const tabId = button.getAttribute("data-tab");
+      document.getElementById(`${tabId}-tab`).classList.add("active");
+    });
+  });
+
+  // Funzioni cronometro
+  window.startCronometro = () => {
+    if (!isRunning) {
+      isRunning = true;
+      cronometro = setInterval(() => {
+        seconds++;
+
+        if (seconds >= 60) {
+          seconds = 0;
+          minutes++;
+        }
+
+        if (minutes >= 60) {
+          minutes = 0;
+          hours++;
+        }
+
+        updateCronometroDisplay();
+      }, 1000);
+
+      // Aggiorna i pulsanti
+      startCronometroBtn.disabled = true;
+      stopCronometroBtn.disabled = false;
+      resetCronometroBtn.disabled = false;
     }
+  };
 
-    if (minutes >= 60) {
-      minutes = 0;
-      hours++;
+  window.stopCronometro = () => {
+    if (isRunning) {
+      clearInterval(cronometro);
+      isRunning = false;
+
+      // Aggiorna i pulsanti
+      startCronometroBtn.disabled = false;
+      stopCronometroBtn.disabled = true;
     }
+  };
 
-    cronometroDisplay.textContent = `${hours}:${minutes
+  window.resetCronometro = () => {
+    clearInterval(cronometro);
+    isRunning = false;
+    seconds = 0;
+    minutes = 0;
+    hours = 0;
+
+    updateCronometroDisplay();
+
+    // Aggiorna i pulsanti
+    startCronometroBtn.disabled = false;
+    stopCronometroBtn.disabled = true;
+    resetCronometroBtn.disabled = true;
+
+    // Resetta l'anello di progresso
+    cronometroProgress.style.strokeDashoffset = 691.15;
+  };
+
+  function updateCronometroDisplay() {
+    cronometroDisplay.textContent = `${hours
       .toString()
-      .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
-  }, 1000);
-}
+      .padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds
+      .toString()
+      .padStart(2, "0")}`;
 
-function stopCronometro() {
-  clearInterval(cronometro);
-  cronometro = null;
-}
-
-function Reset() {
-  seconds = 0;
-  minutes = 0;
-  hours = 0;
-
-  clearInterval(cronometro);
-  cronometro = null;
-  cronometroDisplay.textContent = `${hours}:${minutes
-    .toString()
-    .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
-
-  return seconds, minutes, hours;
-}
-
-let timerDisplay = document.getElementById("timerDisplay"),
-  stopButton;
-
-function impostaTimer() {
-  let ore = parseInt(document.getElementById("ore").value) || 0,
-    minuti = parseInt(document.getElementById("minuti").value) || 0,
-    secondi = parseInt(document.getElementById("secondi").value) || 0;
-
-  let totaleSecondi = ore * 3600 + minuti * 60 + secondi;
-
-  if (totaleSecondi <= 0) {
-    alert("Inserisci un tempo valido");
-    return;
+    // Aggiorna l'anello di progresso (per semplicità, basato sui secondi)
+    const totalSeconds = hours * 3600 + minutes * 60 + seconds;
+    const progressValue = totalSeconds % 60;
+    const circumference = 691.15; // 2 * π * r (110)
+    const offset = circumference - (progressValue / 60) * circumference;
+    cronometroProgress.style.strokeDashoffset = offset;
   }
 
-  let timer = setInterval(() => {
-    totaleSecondi--;
+  // Funzioni timer
+  window.impostaTimer = () => {
+    const ore = Number.parseInt(document.getElementById("ore").value) || 0;
+    const minuti =
+      Number.parseInt(document.getElementById("minuti").value) || 0;
+    const secondi =
+      Number.parseInt(document.getElementById("secondi").value) || 0;
 
-    if (totaleSecondi <= 0) {
-      clearInterval(timer);
-      timerDisplay.textContent = "Tempo scaduto!";
-      riproduciMessaggioVocale("Timer finito!");
-    } else {
-      let h = Math.floor(totaleSecondi / 3600),
-        m = Math.floor((totaleSecondi % 3600) / 60),
-        s = totaleSecondi % 60;
+    timerTotalSeconds = ore * 3600 + minuti * 60 + secondi;
 
-      timerDisplay.textContent = `${h}:${m.toString().padStart(2, "0")}:${s
-        .toString()
-        .padStart(2, "0")}`;
+    if (timerTotalSeconds <= 0) {
+      timerDisplay.classList.add("shake");
+      setTimeout(() => {
+        timerDisplay.classList.remove("shake");
+      }, 500);
+      return;
     }
-  }, 1000);
-}
 
-function riproduciMessaggioVocale(messaggio) {
-  let synthesis = window.speechSynthesis,
-    utterance = new SpeechSynthesisUtterance(messaggio);
-  synthesis.speak(utterance);
-}
+    timerRemainingSeconds = timerTotalSeconds;
 
-function stopTimer() {
-  clearInterval(timer);
-  timerDisplay.textContent = "";
-  document.body.removeChild(stopButton);
-}
+    // Aggiorna i pulsanti
+    startTimerBtn.disabled = true;
+    stopTimerBtn.disabled = false;
+    resetTimerBtn.disabled = false;
+
+    // Disabilita gli input
+    document.getElementById("ore").disabled = true;
+    document.getElementById("minuti").disabled = true;
+    document.getElementById("secondi").disabled = true;
+
+    updateTimerDisplay();
+
+    timerIsRunning = true;
+    timer = setInterval(() => {
+      timerRemainingSeconds--;
+
+      if (timerRemainingSeconds <= 0) {
+        clearInterval(timer);
+        timerIsRunning = false;
+        timerDisplay.textContent = "Tempo scaduto!";
+        timerDisplay.classList.add("pulse");
+        document.querySelector(".card").classList.add("completed");
+        riproduciMessaggioVocale("Timer finito!");
+
+        // Aggiorna i pulsanti
+        startTimerBtn.disabled = false;
+        stopTimerBtn.disabled = true;
+      } else {
+        updateTimerDisplay();
+      }
+    }, 1000);
+  };
+
+  window.stopTimer = () => {
+    if (timerIsRunning) {
+      clearInterval(timer);
+      timerIsRunning = false;
+
+      // Aggiorna i pulsanti
+      startTimerBtn.disabled = false;
+      stopTimerBtn.disabled = true;
+    }
+  };
+
+  window.resetTimer = () => {
+    clearInterval(timer);
+    timerIsRunning = false;
+    timerRemainingSeconds = 0;
+
+    // Resetta il display
+    timerDisplay.textContent = "00:00:00";
+    timerDisplay.classList.remove("pulse");
+    document.querySelector(".card").classList.remove("completed");
+
+    // Abilita gli input
+    document.getElementById("ore").disabled = false;
+    document.getElementById("minuti").disabled = false;
+    document.getElementById("secondi").disabled = false;
+
+    // Resetta gli input
+    document.getElementById("ore").value = 0;
+    document.getElementById("minuti").value = 0;
+    document.getElementById("secondi").value = 0;
+
+    // Aggiorna i pulsanti
+    startTimerBtn.disabled = false;
+    stopTimerBtn.disabled = true;
+    resetTimerBtn.disabled = true;
+
+    // Resetta l'anello di progresso
+    timerProgress.style.strokeDashoffset = 0;
+  };
+
+  function updateTimerDisplay() {
+    const h = Math.floor(timerRemainingSeconds / 3600);
+    const m = Math.floor((timerRemainingSeconds % 3600) / 60);
+    const s = timerRemainingSeconds % 60;
+
+    timerDisplay.textContent = `${h.toString().padStart(2, "0")}:${m
+      .toString()
+      .padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
+
+    // Aggiorna l'anello di progresso
+    const circumference = 691.15; // 2 * π * r (110)
+    const offset = (timerRemainingSeconds / timerTotalSeconds) * circumference;
+    timerProgress.style.strokeDashoffset = circumference - offset;
+  }
+
+  function riproduciMessaggioVocale(messaggio) {
+    const synthesis = window.speechSynthesis;
+    const utterance = new SpeechSynthesisUtterance(messaggio);
+
+    // Imposta la lingua italiana se disponibile
+    const voci = synthesis.getVoices();
+    const voceItaliana = voci.find((voce) => voce.lang === "it-IT");
+    if (voceItaliana) {
+      utterance.voice = voceItaliana;
+    }
+
+    synthesis.speak(utterance);
+  }
+
+  // Inizializzazione
+  updateCronometroDisplay();
+});
