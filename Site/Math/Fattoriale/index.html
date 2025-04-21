@@ -1,25 +1,51 @@
 <!DOCTYPE html>
-<html>
+<html lang="it">
 
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Calcolo Fattoriale</title>
-  <link rel="stylesheet" href="StyelFact.css">
+  <link rel="stylesheet" href="styles.css">
   <link rel="icon" href="image.jpg" type="image/png">
-  <script src="Scriptfact.js" defer>
-  </script>
 </head>
 
 <body>
-  <h1>Calcolo Fattoriale</h1>
+  <div class="container">
+    <header>
+      <img src="image.jpg" alt="Factorial Logo" class="logo">
+      <h1>Calcolo Fattoriale</h1>
+    </header>
 
-  <img src="image.jpg">
-  <label for="number">Inserisci un numero:</label>
-  <input type="number" id="number" min="0">
-  <br>
-  <br>
-  <button onclick="calculateFactorial()">Calcola!</button>
+    <main>
+      <div class="calculator">
+        <label for="number">Inserisci un numero:</label>
+        <input type="number" id="number" min="0" placeholder="0" aria-describedby="hint">
+        <p id="hint" class="hint">Inserisci un numero intero non negativo</p>
 
-  <div id="result"></div>
+        <button id="calculate-btn" onclick="calculateFactorial()">Calcola!</button>
+
+        <div id="loading" class="loading hidden">
+          <div class="spinner"></div>
+          <span>Calcolando...</span>
+        </div>
+
+        <div id="result" class="result"></div>
+      </div>
+
+      <div class="info-box">
+        <h2>Cos'è il Fattoriale?</h2>
+        <p>Il fattoriale di un numero intero positivo n è il prodotto di tutti i numeri interi positivi minori o uguali
+          a n.</p>
+        <p class="example">Esempio: 5! = 5 × 4 × 3 × 2 × 1 = 120</p>
+      </div>
+    </main>
+
+    <footer>
+      <p>Calcolatore Fattoriale © 2025</p>
+    </footer>
+  </div>
+
+  <script src="script.js" defer></script>
 </body>
 
 </html>
