@@ -1,29 +1,117 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="it">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Estrai 4 numeri casuali tra 0 e 9</title>
+  <title>Numerica | Generatore di Numeri</title>
   <link rel="icon" href="https://m.media-amazon.com/images/I/51HsxlBPexL.png" type="image/png">
-  <link rel="stylesheet" href="StyleleNumbers.css">
-  <script src="ScriptNumbers.js" defer></script>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="script.js" defer></script>
 </head>
-
 <body>
-  <h1>Estrai 4 numeri casuali tra 0 e 9</h1>
-  <button id="generateButton">Estrai</button>
-  <br>
-  <br>
-  <br>
-  <div class="container">
-    <div class="container2" id="number-display1"></div>
-    <div class="container2" id="number-display2"></div>
-    <div class="container2" id="number-display3"></div>
-    <div class="container2" id="number-display4"></div>
+  <div class="app-container">
+    <div class="background-shapes">
+      <div class="shape shape-1"></div>
+      <div class="shape shape-2"></div>
+      <div class="shape shape-3"></div>
+    </div>
+    
+    <header>
+      <div class="logo">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="logo-icon">
+          <rect x="2" y="2" width="20" height="20" rx="5"></rect>
+          <path d="M9 8h6"></path>
+          <path d="M12 16V8"></path>
+        </svg>
+        <h1>Numerica</h1>
+      </div>
+      <p class="subtitle">Generatore di numeri casuali</p>
+    </header>
+
+    <main>
+      <section class="game-info">
+        <div class="info-card">
+          <div class="info-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="16" x2="12" y2="12"></line>
+              <line x1="12" y1="8" x2="12.01" y2="8"></line>
+            </svg>
+          </div>
+          <div class="info-content">
+            <h2>Come si gioca</h2>
+            <p>Premi il pulsante "Estrai" per generare 4 numeri casuali tra 0 e 9. Se tutti i numeri sono uguali, hai vinto!</p>
+          </div>
+        </div>
+        
+        <div class="stats-container">
+          <div class="stat-card">
+            <div class="stat-value" id="attempts">0</div>
+            <div class="stat-label">Tentativi</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" id="wins">0</div>
+            <div class="stat-label">Vittorie</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="number-generator">
+        <div class="number-container">
+          <div class="number-card" id="number-display1">
+            <div class="number-front">?</div>
+            <div class="number-back"></div>
+          </div>
+          <div class="number-card" id="number-display2">
+            <div class="number-front">?</div>
+            <div class="number-back"></div>
+          </div>
+          <div class="number-card" id="number-display3">
+            <div class="number-front">?</div>
+            <div class="number-back"></div>
+          </div>
+          <div class="number-card" id="number-display4">
+            <div class="number-front">?</div>
+            <div class="number-back"></div>
+          </div>
+        </div>
+
+        <div class="probability-info">
+          <div class="probability-text">Probabilità di vincita: <span>1 su 10.000</span></div>
+          <div class="probability-bar">
+            <div class="probability-fill"></div>
+          </div>
+        </div>
+
+        <button id="generateButton" class="generate-button">
+          <span class="button-text">Estrai</span>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="button-icon">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M16 8l-8 8"></path>
+            <path d="M8 8l8 8"></path>
+          </svg>
+        </button>
+      </section>
+
+      <section class="result-container">
+        <div id="result" class="result-message"></div>
+        <div class="confetti-container" id="confetti-container"></div>
+      </section>
+
+      <section class="last-numbers">
+        <h2>Ultime estrazioni</h2>
+        <div class="history-container" id="history-container">
+          <!-- Le estrazioni precedenti verranno generate qui -->
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p>© 2025 Numerica | Creato con <span class="heart">♥</span> per i numeri</p>
+    </footer>
   </div>
-
-  <p id="Result"></p>
 </body>
-
 </html>
