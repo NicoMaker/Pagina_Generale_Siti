@@ -1,36 +1,215 @@
 <!DOCTYPE html>
-<html>
+<html lang="it">
 
 <head>
-    <title>Snake Game</title>
-    <link rel="stylesheet" href="styleSnake.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/47/47229.png" type="image/jpg">
-    <script src="ScriptSnake.js" defer></script>
+    <title>Snake Game | Gioco del Serpente</title>
+    <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/47/47229.png" type="image/png">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Press+Start+2P&display=swap"
+        rel="stylesheet">
+    <script src="script.js" defer></script>
 </head>
 
 <body>
-    <h1>Snake Game</h1>
-    <span>Score :</span>
-    <div id="score">0</div>
-    <button id="button">RESET GAME</button>
-    <br>
-    <br>
+    <div class="app-container">
+        <div class="background-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+            <div class="shape shape-3"></div>
+        </div>
 
-    <canvas id="gameCanvas" width="300" height="300"></canvas>
+        <header>
+            <h1 class="game-title">Snake Game</h1>
+            <p class="subtitle">Il classico gioco del serpente</p>
+        </header>
 
-    <br>
-    <br>
+        <main>
+            <div class="game-wrapper">
+                <div class="game-info">
+                    <div class="score-container">
+                        <div class="score-label">Punteggio</div>
+                        <div class="score-value" id="score">0</div>
+                    </div>
 
-    <div class="arrow-buttons">
-        <button id="upButtonMobile">Su</button>
-        <button id="downButtonMobile">Giù</button>
-        <button id="leftButtonMobile">Sinistra</button>
-        <button id="rightButtonMobile">Destra</button>
+                    <div class="high-score-container">
+                        <div class="score-label">Record</div>
+                        <div class="score-value" id="highScore">0</div>
+                    </div>
+
+                    <div class="controls-container">
+                        <button id="pauseButton" class="control-button">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="6" y="4" width="4" height="16"></rect>
+                                <rect x="14" y="4" width="4" height="16"></rect>
+                            </svg>
+                            <span>Pausa</span>
+                        </button>
+
+                        <button id="resetButton" class="control-button">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M3 2v6h6"></path>
+                                <path d="M21 12A9 9 0 0 0 6 5.3L3 8"></path>
+                                <path d="M21 22v-6h-6"></path>
+                                <path d="M3 12a9 9 0 0 0 15 6.7l3-2.7"></path>
+                            </svg>
+                            <span>Riavvia</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="canvas-container">
+                    <canvas id="gameCanvas" width="400" height="400"></canvas>
+
+                    <div id="gameOverlay" class="game-overlay">
+                        <div class="overlay-content">
+                            <h2 id="overlayTitle">Pausa</h2>
+                            <p id="overlayMessage">Premi il pulsante Riprendi per continuare</p>
+                            <button id="overlayButton" class="overlay-button">Riprendi</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="difficulty-container">
+                    <div class="difficulty-label">Difficoltà:</div>
+                    <div class="difficulty-options">
+                        <button class="difficulty-button active" data-speed="200">Facile</button>
+                        <button class="difficulty-button" data-speed="150">Medio</button>
+                        <button class="difficulty-button" data-speed="100">Difficile</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mobile-controls">
+                <div class="mobile-controls-row">
+                    <button id="upButton" class="direction-button">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="18 15 12 9 6 15"></polyline>
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="mobile-controls-row">
+                    <button id="leftButton" class="direction-button">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="15 18 9 12 15 6"></polyline>
+                        </svg>
+                    </button>
+
+                    <button id="downButton" class="direction-button">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
+
+                    <button id="rightButton" class="direction-button">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </main>
+
+        <div id="rulesButton" class="rules-button">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="16" x2="12" y2="12"></line>
+                <line x1="12" y1="8" x2="12.01" y2="8"></line>
+            </svg>
+            <span>Come giocare</span>
+        </div>
+
+        <div id="rulesModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Come giocare</h2>
+                    <button class="close-button">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="rules-container">
+                        <div class="rule-item">
+                            <div class="rule-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <polyline points="9 18 15 12 9 6"></polyline>
+                                </svg>
+                            </div>
+                            <div class="rule-text">
+                                <h3>Controlli</h3>
+                                <p>Usa i tasti freccia o i pulsanti sullo schermo per muovere il serpente.</p>
+                            </div>
+                        </div>
+
+                        <div class="rule-item">
+                            <div class="rule-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                            </div>
+                            <div class="rule-text">
+                                <h3>Obiettivo</h3>
+                                <p>Mangia il cibo (punti rossi) per far crescere il serpente e aumentare il punteggio.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="rule-item">
+                            <div class="rule-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path
+                                        d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z">
+                                    </path>
+                                    <line x1="12" y1="9" x2="12" y2="13"></line>
+                                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                                </svg>
+                            </div>
+                            <div class="rule-text">
+                                <h3>Game Over</h3>
+                                <p>Il gioco termina se il serpente colpisce se stesso. I bordi sono attraversabili.</p>
+                            </div>
+                        </div>
+
+                        <div class="rule-item">
+                            <div class="rule-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <polyline points="12 6 12 12 16 14"></polyline>
+                                </svg>
+                            </div>
+                            <div class="rule-text">
+                                <h3>Difficoltà</h3>
+                                <p>Scegli tra tre livelli di difficoltà che influenzano la velocità del serpente.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>© 2025 Snake Game | Creato con <span class="heart">♥</span></p>
+        </footer>
     </div>
-
 </body>
-
 
 </html>
