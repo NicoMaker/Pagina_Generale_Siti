@@ -1,36 +1,101 @@
 <!DOCTYPE html>
-<html>
+<html lang="it">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ahmes</title>
+    <title>Calcolatore di Ahmes | Matematica dell'Antico Egitto</title>
     <link rel="stylesheet" href="StyleAhmes.css" />
-    <link rel="icon" href="Ahmes.jpg" type="image/jpg">
+    <link rel="icon"
+        href="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Ahmes.jpg-DWt7DuLKrXrDXg9M9gkbjSj7B1nTTR.jpeg"
+        type="image/jpeg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;800&family=Noto+Serif:wght@400;600&display=swap"
+        rel="stylesheet">
     <script src="Ahmes.js" defer></script>
 </head>
 
 <body>
-    <h1>Calcolatore Numero di Ahmes con i passaggi</h1>
+    <div class="papyrus-container">
+        <header>
+            <div class="header-decoration">
+                <div class="scarab-icon"></div>
+            </div>
+            <h1>Calcolatore del Numero di Ahmes</h1>
+            <p class="subtitle">Scopri l'antica matematica egizia</p>
+        </header>
 
-    <input type="number" id="numero1" placeholder="inserisci numero1">
-    <br>
-    <br>
+        <main>
+            <div class="temple-columns">
+                <div class="column left"></div>
+                <div class="calculator-container">
+                    <div class="hieroglyphic-border top"></div>
 
-    <input type="number" id="numero2" placeholder="inserisci numero2">
+                    <div class="calculator-content">
+                        <div class="ahmes-portrait">
+                            <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Ahmes.jpg-DWt7DuLKrXrDXg9M9gkbjSj7B1nTTR.jpeg"
+                                alt="Ritratto di Ahmes">
+                            <div class="portrait-frame"></div>
+                        </div>
 
-    <br>
-    <br>
+                        <p class="description">
+                            Ahmes fu uno scriba egizio del 1650 a.C. che documentò antichi metodi matematici nel Papiro
+                            di Rhind.
+                            Questo calcolatore utilizza il suo metodo di moltiplicazione.
+                        </p>
 
-    <button onclick="CalcolaAhmes()">Calcola il numero</button>
+                        <div class="input-section">
+                            <div class="input-group">
+                                <label for="numero1">Primo Numero</label>
+                                <input type="number" id="numero1" placeholder="Inserisci il primo numero">
+                                <div class="hieroglyphic-numbers" id="hieroglyphic1"></div>
+                            </div>
 
-    <br>
-    <br>
-    <div id="passaggi"></div>
-    <img src="Ahmes.jpg">
-    <br>
-    <div id="risultato"></div>
+                            <div class="ankh-divider"></div>
 
+                            <div class="input-group">
+                                <label for="numero2">Secondo Numero</label>
+                                <input type="number" id="numero2" placeholder="Inserisci il secondo numero">
+                                <div class="hieroglyphic-numbers" id="hieroglyphic2"></div>
+                            </div>
+
+                            <button id="calculate-btn" onclick="CalcolaAhmes()">
+                                <span class="btn-text">Calcola con il Metodo di Ahmes</span>
+                                <span class="btn-icon"></span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="hieroglyphic-border bottom"></div>
+                </div>
+                <div class="column right"></div>
+            </div>
+
+            <div class="results-scroll" id="results-container">
+                <div class="scroll-handles">
+                    <div class="scroll-handle left"></div>
+                    <div class="scroll-handle right"></div>
+                </div>
+                <div class="scroll-content">
+                    <h2>Passaggi del Calcolo</h2>
+                    <div id="passaggi" class="steps"></div>
+                    <div id="risultato" class="result"></div>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>Creato in onore della matematica dell'antico Egitto • <span class="ankh-symbol">☥</span> • 2024</p>
+        </footer>
+    </div>
+
+    <div class="notification" id="notification">
+        <div class="notification-content">
+            <p id="notification-text"></p>
+        </div>
+    </div>
 </body>
 
 </html>
