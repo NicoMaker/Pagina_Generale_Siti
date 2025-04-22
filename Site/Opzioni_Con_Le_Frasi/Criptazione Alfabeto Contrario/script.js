@@ -23,18 +23,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
 document.addEventListener("DOMContentLoaded", () => {
   // DOM Elements
-  const anagramForm = document.getElementById("anagramForm");
-  const wordInput = document.getElementById("wordInput");
+  const inputText = document.getElementById("input-text");
   const clearBtn = document.getElementById("clear-btn");
   const randomBtn = document.getElementById("random-btn");
-  const generateBtn = document.getElementById("generate-btn");
+  const encryptBtn = document.getElementById("encrypt-btn");
+  const decryptBtn = document.getElementById("decrypt-btn");
   const copyBtn = document.getElementById("copy-btn");
-  const filterInput = document.getElementById("filter-input");
-  const charCount = document.getElementById("char-count");
-  const resultsCard = document.getElementById("results-card");
-  const resultsSummary = document.getElementById("results-summary");
-  const anagramsGrid = document.getElementById("anagrams-grid");
-  const loadingContainer = document.getElementById("loading-container");
+  const resultDiv = document.getElementById("result");
+  const charCount = document.querySelector(".char-count");
+  const exampleItems = document.querySelectorAll(".example-item");
   const themeToggle = document.getElementById("theme-toggle");
   const currentYearSpan = document.getElementById("current-year");
 
@@ -59,108 +56,72 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // Update character count
-  wordInput.addEventListener("input", () => {
-    const count = wordInput.value.length;
-    charCount.textContent = `${count}/8`;
-
-    // Add warning color if approaching limit
-    if (count >= 6) {
-      charCount.style.color = "var(--warning)";
-    } else {
-      charCount.style.color = "var(--text-light)";
-    }
+  inputText.addEventListener("input", () => {
+    const count = inputText.value.length;
+    charCount.textContent = `${count} caratteri`;
   });
 
   // Clear input
   clearBtn.addEventListener("click", () => {
-    wordInput.value = "";
-    charCount.textContent = "0/8";
-    charCount.style.color = "var(--text-light)";
-    wordInput.focus();
+    inputText.value = "";
+    charCount.textContent = "0 caratteri";
+    resultDiv.innerHTML =
+      '<div class="placeholder-text">Il testo cifrato o decifrato apparirà qui</div>';
+    inputText.focus();
   });
 
-  // Random word
+  // Random example
   randomBtn.addEventListener("click", () => {
-    const randomWords = [
-      "roma",
-      "amore",
-      "cane",
-      "arte",
-      "sole",
-      "mare",
-      "vita",
-      "casa",
+    const examples = [
+      "Hello World!",
+      "Questo è un messaggio segreto.",
+      "ATBASH è un antico cifrario.",
+      "La crittografia è affascinante!",
+      "Puoi cifrare e decifrare facilmente.",
     ];
-    const randomWord =
-      randomWords[Math.floor(Math.random() * randomWords.length)];
-    wordInput.value = randomWord;
-    charCount.textContent = `${randomWord.length}/8`;
-    charCount.style.color =
-      randomWord.length >= 6 ? "var(--warning)" : "var(--text-light)";
-    wordInput.focus();
+    const randomExample = examples[Math.floor(Math.random() * examples.length)];
+    inputText.value = randomExample;
+    charCount.textContent = `${randomExample.length} caratteri`;
+    inputText.focus();
   });
 
-  // Form submission
-  anagramForm.addEventListener("submit", (e) => {
-    e.preventDefault();
-
-    const word = wordInput.value.trim().toLowerCase();
-
-    if (!word) {
-      showError("Inserisci una parola per generare gli anagrammi");
+  // Encrypt button
+  encryptBtn.addEventListener("click", () => {
+    if (!inputText.value.trim()) {
+      showError("Inserisci del testo da cifrare");
       return;
     }
 
-    if (word.length > 8) {
-      showError("Per prestazioni ottimali, usa parole con massimo 8 caratteri");
+    const result = processText(inputText.value);
+    showResult("Testo cifrato:", result);
+  });
+
+  // Decrypt button
+  decryptBtn.addEventListener("click", () => {
+    if (!inputText.value.trim()) {
+      showError("Inserisci del testo da decifrare");
       return;
     }
 
-    // Show loading state
-    loadingContainer.style.display = "flex";
-    anagramsGrid.innerHTML = "";
-    resultsSummary.innerHTML = "";
-
-    // Use setTimeout to allow the loading spinner to render
-    setTimeout(() => {
-      generateAnagrams(word);
-    }, 100);
+    const result = processText(inputText.value);
+    showResult("Testo decifrato:", result);
   });
 
-  // Filter anagrams
-  filterInput.addEventListener("input", () => {
-    const filterText = filterInput.value.trim().toLowerCase();
-    const anagramItems = document.querySelectorAll(".anagram-item");
-
-    anagramItems.forEach((item) => {
-      const anagramText = item.textContent.toLowerCase();
-      if (anagramText.includes(filterText)) {
-        item.style.display = "block";
-      } else {
-        item.style.display = "none";
-      }
-    });
-
-    // Update visible count
-    const visibleCount = Array.from(anagramItems).filter(
-      (item) => item.style.display !== "none"
-    ).length;
-    updateSummary(visibleCount, anagramItems.length);
-  });
-
-  // Copy all anagrams
+  // Copy result
   copyBtn.addEventListener("click", () => {
-    const anagramItems = document.querySelectorAll(".anagram-item");
-    if (anagramItems.length === 0) return;
-
-    const anagramTexts = Array.from(anagramItems).map(
-      (item) => item.textContent
-    );
-    const textToCopy = anagramTexts.join(", ");
+    const resultText = resultDiv.textContent;
+    if (
+      resultText.includes("Il testo cifrato o decifrato apparirà qui") ||
+      resultText.includes("Inserisci del testo")
+    ) {
+      return;
+    }
 
     // Create a temporary textarea to copy the text
     const textarea = document.createElement("textarea");
-    textarea.value = textToCopy;
+    textarea.value = resultText
+      .replace("Testo cifrato: ", "")
+      .replace("Testo decifrato: ", "");
     document.body.appendChild(textarea);
     textarea.select();
     document.execCommand("copy");
@@ -171,6 +132,8 @@ document.addEventListener("DOMContentLoaded", () => {
     copyBtn.innerHTML = `
       <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <polyline points="20 6 9 17 4 12"></polyline>
+      </svg>  stroke-linejoin="round">
+        <polyline points="20 6 9 17 4 12"></polyline>
       </svg>
     `;
 
@@ -179,126 +142,49 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 2000);
   });
 
-  // Generate anagrams function
-  function generateAnagrams(word) {
-    // For longer words, use a more efficient algorithm
-    let anagrams;
+  // Example items click
+  exampleItems.forEach((item) => {
+    item.addEventListener("click", () => {
+      const exampleText = item.getAttribute("data-text");
+      inputText.value = exampleText;
+      charCount.textContent = `${exampleText.length} caratteri`;
+      inputText.focus();
+    });
+  });
 
-    if (word.length <= 8) {
-      anagrams = generateAllAnagrams(word);
-    } else {
-      // For longer words, limit the number of anagrams
-      anagrams = generateLimitedAnagrams(word, 1000);
-    }
+  // Process text (encrypt/decrypt)
+  function processText(text) {
+    let result = "";
 
-    // Remove duplicates
-    anagrams = [...new Set(anagrams)];
-
-    // Hide loading state
-    loadingContainer.style.display = "none";
-
-    // Display results
-    displayResults(word, anagrams);
-  }
-
-  // Generate all possible anagrams (recursive)
-  function generateAllAnagrams(word) {
-    if (word.length <= 1) return [word];
-
-    const anagrams = [];
-
-    for (let i = 0; i < word.length; i++) {
-      const char = word[i];
-      const remainingChars = word.slice(0, i) + word.slice(i + 1);
-
-      for (const subAnagram of generateAllAnagrams(remainingChars)) {
-        anagrams.push(char + subAnagram);
+    for (let i = 0; i < text.length; i++) {
+      const char = text.charAt(i);
+      if (char.match(/[a-z]/i)) {
+        const ascii = char.charCodeAt(0);
+        if (char === char.toUpperCase()) {
+          result += String.fromCharCode(90 - (ascii - 65));
+        } else {
+          result += String.fromCharCode(122 - (ascii - 97));
+        }
+      } else {
+        result += char;
       }
     }
 
-    return anagrams;
+    return result;
   }
 
-  // Generate limited number of anagrams for longer words
-  function generateLimitedAnagrams(word, limit) {
-    const anagrams = new Set();
-    const chars = word.split("");
-
-    for (let i = 0; i < limit; i++) {
-      // Shuffle the characters
-      shuffleArray(chars);
-      anagrams.add(chars.join(""));
-
-      if (anagrams.size >= limit) break;
-    }
-
-    return [...anagrams];
+  // Show result
+  function showResult(prefix, text) {
+    resultDiv.textContent = `${prefix} ${text}`;
+    resultDiv.classList.add("highlight");
+    setTimeout(() => {
+      resultDiv.classList.remove("highlight");
+    }, 1500);
   }
 
-  // Fisher-Yates shuffle algorithm
-  function shuffleArray(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
-    }
-    return array;
-  }
-
-  // Display results
-  function displayResults(word, anagrams) {
-    // Clear previous results
-    anagramsGrid.innerHTML = "";
-
-    // Update summary
-    updateSummary(anagrams.length, anagrams.length);
-
-    // Create anagram items with staggered animation
-    anagrams.forEach((anagram, index) => {
-      const anagramItem = document.createElement("div");
-      anagramItem.className = "anagram-item";
-      anagramItem.textContent = anagram;
-      anagramItem.style.opacity = "0";
-      anagramItem.style.transform = "translateY(10px)";
-
-      // Add click to copy functionality
-      anagramItem.addEventListener("click", () => {
-        navigator.clipboard.writeText(anagram).then(() => {
-          anagramItem.classList.add("highlight");
-          setTimeout(() => {
-            anagramItem.classList.remove("highlight");
-          }, 1500);
-        });
-      });
-
-      anagramsGrid.appendChild(anagramItem);
-
-      // Staggered animation (limit to improve performance)
-      setTimeout(() => {
-        anagramItem.style.transition = "opacity 0.3s ease, transform 0.3s ease";
-        anagramItem.style.opacity = "1";
-        anagramItem.style.transform = "translateY(0)";
-      }, Math.min(index, 100) * 10);
-    });
-
-    // Reset filter
-    filterInput.value = "";
-  }
-
-  // Update summary text
-  function updateSummary(visibleCount, totalCount) {
-    resultsSummary.innerHTML = `
-      <div class="summary-content">
-        <strong>${visibleCount}</strong> anagrammi ${
-      visibleCount !== totalCount ? `(su ${totalCount} totali)` : ""
-    } 
-        ${visibleCount === 1 ? "trovato" : "trovati"}
-      </div>
-    `;
-  }
-
-  // Show error message
+  // Show error
   function showError(message) {
-    resultsSummary.innerHTML = `
+    resultDiv.innerHTML = `
       <div class="error-message">
         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="12" cy="12" r="10"></circle>
@@ -311,10 +197,11 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Add keyboard support
-  wordInput.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      generateBtn.click();
+  inputText.addEventListener("keydown", (e) => {
+    if (e.ctrlKey && e.key === "Enter") {
+      encryptBtn.click();
+    } else if (e.altKey && e.key === "Enter") {
+      decryptBtn.click();
     }
   });
 
@@ -326,13 +213,9 @@ document.addEventListener("DOMContentLoaded", () => {
       align-items: center;
       gap: 10px;
       color: var(--error);
-      padding: 10px;
+      padding: 15px;
       background-color: rgba(239, 68, 68, 0.1);
       border-radius: var(--radius);
-    }
-    
-    .summary-content {
-      text-align: center;
     }
   `;
   document.head.appendChild(style);

@@ -30,7 +30,7 @@ function calculateFactorial() {
     return;
   }
 
-  if (number > 170) {
+  if (number > 20) {
     showError("Il numero è troppo grande per calcolare il fattoriale.");
     return;
   }
