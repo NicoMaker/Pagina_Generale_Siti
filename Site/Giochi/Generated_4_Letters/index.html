@@ -101,6 +101,15 @@
             <line x1="12" y1="22.08" x2="12" y2="12"></line>
           </svg>
         </button>
+
+        <button id="resetButton" class="reset-button">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round" class="reset-icon">
+            <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+            <path d="M3 3v5h5"></path>
+          </svg>
+          <span>Reset Statistiche</span>
+        </button>
       </section>
 
       <section class="result-container">
@@ -112,6 +121,19 @@
     <footer>
       <p>© 2025 Letterario | Creato con <span class="heart">♥</span> per le parole</p>
     </footer>
+
+    <!-- Modal di conferma -->
+    <div id="resetModal" class="modal-overlay">
+      <div class="modal">
+        <h3 class="modal-title">Conferma Reset</h3>
+        <p class="modal-content">Sei sicuro di voler cancellare tutte le statistiche? Questa azione non può essere
+          annullata.</p>
+        <div class="modal-buttons">
+          <button id="cancelReset" class="modal-button cancel">Annulla</button>
+          <button id="confirmReset" class="modal-button confirm">Conferma</button>
+        </div>
+      </div>
+    </div>
   </div>
 </body>
 

@@ -13,12 +13,16 @@ const numberCards = [
   document.querySelector("#number-display4"),
 ];
 const generateButton = document.querySelector("#generateButton");
+const resetButton = document.querySelector("#resetButton");
 const resultElement = document.querySelector("#result");
 const attemptsElement = document.querySelector("#attempts");
 const winsElement = document.querySelector("#wins");
 const confettiContainer = document.querySelector("#confetti-container");
 const historyContainer = document.querySelector("#history-container");
 const probabilityFill = document.querySelector(".probability-fill");
+const resetModal = document.querySelector("#resetModal");
+const confirmResetButton = document.querySelector("#confirmReset");
+const cancelResetButton = document.querySelector("#cancelReset");
 
 // Carica i numeri dal file JSON
 async function loadNumbers() {
@@ -78,6 +82,35 @@ function saveStats() {
   localStorage.setItem("numerica_attempts", attempts.toString());
   localStorage.setItem("numerica_wins", wins.toString());
   localStorage.setItem("numerica_history", JSON.stringify(history));
+}
+
+// Reset delle statistiche
+function resetStats() {
+  attempts = 0;
+  wins = 0;
+  history = [];
+
+  updateStatsDisplay();
+  updateProbabilityBar();
+  renderHistory();
+  saveStats();
+
+  // Resetta anche le carte
+  numberCards.forEach((card) => {
+    card.classList.remove("flipped");
+    const frontElement = card.querySelector(".number-front");
+    frontElement.textContent = "?";
+  });
+
+  // Nascondi il risultato
+  hideResult();
+
+  // Mostra un messaggio di conferma
+  showResult(
+    false,
+    ["0", "0", "0", "0"],
+    "Statistiche resettate con successo!"
+  );
 }
 
 // Genera un numero casuale
@@ -172,22 +205,28 @@ function checkWin(numbers) {
 }
 
 // Mostra il risultato
-function showResult(hasWon, numbers) {
-  resultElement.textContent = hasWon
-    ? "Hai vinto! Tutti i numeri sono uguali!"
-    : "Non hai vinto. Prova ancora!";
+function showResult(hasWon, numbers, customMessage = null) {
+  if (customMessage) {
+    resultElement.textContent = customMessage;
+    resultElement.className = "result-message show";
+  } else {
+    resultElement.textContent = hasWon
+      ? "Hai vinto! Tutti i numeri sono uguali!"
+      : "Non hai vinto. Prova ancora!";
 
-  resultElement.className = "result-message show " + (hasWon ? "win" : "lose");
+    resultElement.className =
+      "result-message show " + (hasWon ? "win" : "lose");
 
-  if (hasWon) {
-    createConfetti();
-    wins++;
+    if (hasWon) {
+      createConfetti();
+      wins++;
+    }
+
+    attempts++;
+
+    // Aggiungi alla cronologia
+    addToHistory(numbers, hasWon);
   }
-
-  attempts++;
-
-  // Aggiungi alla cronologia
-  addToHistory(numbers, hasWon);
 
   updateStatsDisplay();
   updateProbabilityBar();
@@ -307,6 +346,16 @@ function createConfetti() {
   }, 5000);
 }
 
+// Mostra il modal di conferma
+function showResetModal() {
+  resetModal.classList.add("show");
+}
+
+// Nascondi il modal di conferma
+function hideResetModal() {
+  resetModal.classList.remove("show");
+}
+
 // Gestisci il click sul pulsante di generazione
 generateButton.addEventListener("click", async () => {
   if (isAnimating) return;
@@ -334,6 +383,29 @@ generateButton.addEventListener("click", async () => {
       generateButton.classList.remove("disabled");
       isAnimating = false;
     }, 1000);
+  }
+});
+
+// Gestisci il click sul pulsante di reset
+resetButton.addEventListener("click", () => {
+  showResetModal();
+});
+
+// Gestisci il click sul pulsante di conferma reset
+confirmResetButton.addEventListener("click", () => {
+  resetStats();
+  hideResetModal();
+});
+
+// Gestisci il click sul pulsante di annulla reset
+cancelResetButton.addEventListener("click", () => {
+  hideResetModal();
+});
+
+// Chiudi il modal se l'utente clicca fuori da esso
+resetModal.addEventListener("click", (event) => {
+  if (event.target === resetModal) {
+    hideResetModal();
   }
 });
 
