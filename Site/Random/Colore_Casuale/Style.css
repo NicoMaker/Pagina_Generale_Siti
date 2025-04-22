@@ -1,32 +1,357 @@
+:root {
+  --primary: #6366f1;
+  --primary-light: #818cf8;
+  --primary-dark: #4f46e5;
+  --secondary: #ec4899;
+  --accent: #f59e0b;
+  --background: #f8fafc;
+  --text: #1e293b;
+  --text-light: #64748b;
+  --card-bg: #ffffff;
+  --border-radius: 16px;
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  --transition: all 0.3s ease;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
-  font-family: Arial, sans-serif;
+  font-family: "Poppins", sans-serif;
+  background: linear-gradient(135deg, #a5f3fc, #c4b5fd, #a5f3fc);
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.app-container {
+  max-width: 800px;
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+header {
   text-align: center;
-  background: linear-gradient(to right, #79e0ee, #b1afff, #79e0ee);
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
+
 h1 {
-  font-size: 40px;
-  color: red;
+  font-size: 2.5rem;
+  font-weight: 700;
+  background: linear-gradient(to right, var(--primary), var(--secondary));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin-bottom: 10px;
 }
 
-button {
-  border-radius: 50px;
-  font-size: 40px;
-  background-color: cyan;
+.subtitle {
+  font-size: 1.1rem;
+  color: var(--text-light);
 }
 
+main {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
 
-#color {
+.color-display-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 250px;
+}
+
+.color-display {
+  width: 250px;
+  height: 250px;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  display: none;
+  position: relative;
+  transition: var(--transition);
+  overflow: hidden;
+}
+
+.color-display:hover {
+  transform: scale(1.02);
+}
+
+.color-info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  text-align: center;
+  transition: var(--transition);
+}
+
+.color-display:hover .color-info {
+  padding-bottom: 20px;
+}
+
+#color-name {
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+#color-hex {
+  font-family: monospace;
+  font-size: 1rem;
+}
+
+#image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#image img {
   width: 200px;
   height: 200px;
-  position: relative;
-  border: 5px solid black;
-  padding: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: none;
+  object-fit: contain;
+  border-radius: var(--border-radius);
+  transition: var(--transition);
 }
 
-img{
-  height: 200px;
-  width: 200px; 
+.controls {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.generate-btn,
+.copy-btn {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: white;
+  border: none;
+  border-radius: 50px;
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 10px rgba(99, 102, 241, 0.3);
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+.generate-btn::before,
+.copy-btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: 0.5s;
+}
+
+.generate-btn:hover,
+.copy-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(99, 102, 241, 0.4);
+}
+
+.generate-btn:hover::before,
+.copy-btn:hover::before {
+  left: 100%;
+}
+
+.generate-btn:active,
+.copy-btn:active {
+  transform: translateY(0);
+}
+
+.copy-btn {
+  background: linear-gradient(135deg, var(--secondary), #db2777);
+  box-shadow: 0 4px 10px rgba(236, 72, 153, 0.3);
+}
+
+.copy-btn:hover {
+  box-shadow: 0 6px 15px rgba(236, 72, 153, 0.4);
+}
+
+.copy-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.copy-btn:disabled:hover {
+  transform: none;
+  box-shadow: 0 4px 10px rgba(236, 72, 153, 0.3);
+}
+
+.btn-icon {
+  font-size: 1.2rem;
+}
+
+.color-history {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.color-history h2 {
+  font-size: 1.3rem;
+  color: var(--text);
+  text-align: center;
+}
+
+.history-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.history-item {
+  width: 60px;
+  height: 60px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: var(--transition);
+  position: relative;
+}
+
+.history-item:hover {
+  transform: scale(1.1);
+}
+
+.history-item::after {
+  content: attr(data-color);
+  position: absolute;
+  bottom: -25px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.7rem;
+  white-space: nowrap;
+  opacity: 0;
+  transition: var(--transition);
+}
+
+.history-item:hover::after {
+  opacity: 1;
+}
+
+footer {
+  text-align: center;
+  color: var(--text-light);
+  font-size: 0.9rem;
+  padding-top: 20px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.toast {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background-color: var(--text);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 50px;
+  font-size: 0.9rem;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  transition: all 0.3s ease;
+  z-index: 1000;
+}
+
+.toast.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+/* Animation for color generation */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.pulse {
+  animation: pulse 0.5s ease;
+}
+
+/* Responsive styles */
+@media (max-width: 600px) {
+  .app-container {
+    padding: 20px;
+  }
+
+  h1 {
+    font-size: 1.8rem;
+  }
+
+  .subtitle {
+    font-size: 0.9rem;
+  }
+
+  .color-display {
+    width: 200px;
+    height: 200px;
+  }
+
+  .generate-btn,
+  .copy-btn {
+    padding: 10px 20px;
+    font-size: 0.9rem;
+  }
+
+  .history-item {
+    width: 50px;
+    height: 50px;
+  }
 }

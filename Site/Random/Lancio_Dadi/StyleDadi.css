@@ -1,83 +1,659 @@
-.container {
-  max-width: 1500px;
-  margin: 0 auto;
+:root {
+  --primary: #6200ea;
+  --primary-light: #9d46ff;
+  --primary-dark: #0a00b6;
+  --secondary: #00bcd4;
+  --secondary-light: #62efff;
+  --secondary-dark: #008ba3;
+  --background: #f5f5f5;
+  --card-bg: #ffffff;
+  --text: #212121;
+  --text-light: #757575;
+  --border-radius: 16px;
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  --transition: all 0.3s ease;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--background);
+  color: var(--text);
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-image: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+header {
   text-align: center;
-  padding: 20px;
-}
-
-label {
-  font-size: 25px;
-}
-
-button {
-  border-radius: 50px;
-  background-color: aqua;
-  font-size: 40px;
-}
-
-input {
-  text-align: center;
-  border-radius: 50px;
-  font-size: 25px;
+  padding: 40px 20px;
+  background: linear-gradient(
+    135deg,
+    var(--primary) 0%,
+    var(--primary-dark) 100%
+  );
+  color: white;
 }
 
 h1 {
-  color: red;
-  font-size: 60px;
+  font-size: 3rem;
+  margin-bottom: 10px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-p {
-  font-size: 45px;
-  text-align: center;
+.subtitle {
+  font-size: 1.2rem;
+  opacity: 0.9;
 }
 
-img {
-  display: block;
+main {
+  flex: 1;
+  padding: 20px;
+  max-width: 1200px;
   margin: 0 auto;
-  width: auto;
-  height: 350px;
+  width: 100%;
 }
-#grafico-barre {
+
+.game-card {
+  background-color: var(--card-bg);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  padding: 30px;
+  margin-bottom: 30px;
+  transition: var(--transition);
+}
+
+.game-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+}
+
+.dice-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+label {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.number-input {
+  display: flex;
+  align-items: center;
+  border: 2px solid #e0e0e0;
+  border-radius: 50px;
+  overflow: hidden;
+  width: 180px;
+}
+
+.number-input button {
+  background-color: #f5f5f5;
+  border: none;
+  color: var(--text);
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1rem;
+}
+
+.number-input button:hover {
+  background-color: #e0e0e0;
+}
+
+.number-input input {
+  flex: 1;
+  border: none;
+  text-align: center;
+  font-size: 1.1rem;
+  padding: 8px;
+  width: 60px;
+}
+
+.number-input input:focus {
+  outline: none;
+}
+
+.roll-button {
+  background: linear-gradient(45deg, var(--primary), var(--primary-light));
+  color: white;
+  border: none;
+  border-radius: 50px;
+  padding: 12px 30px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: var(--transition);
+  box-shadow: 0 4px 10px rgba(98, 0, 234, 0.3);
+}
+
+.roll-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(98, 0, 234, 0.4);
+}
+
+.roll-button:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 5px rgba(98, 0, 234, 0.4);
+}
+
+.roll-button i {
+  font-size: 1.2rem;
+}
+
+/* Dice Container */
+.dice-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  min-height: 150px;
+  margin-bottom: 30px;
+  perspective: 1000px;
+}
+
+/* 3D Dice */
+.dice {
+  width: 80px;
+  height: 80px;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 1.5s ease;
+}
+
+.dice.rolling {
+  animation: rolling 1.5s ease;
+}
+
+@keyframes rolling {
+  0% {
+    transform: rotateX(0) rotateY(0) rotateZ(0);
+  }
+  25% {
+    transform: rotateX(90deg) rotateY(45deg) rotateZ(45deg);
+  }
+  50% {
+    transform: rotateX(180deg) rotateY(90deg) rotateZ(90deg);
+  }
+  75% {
+    transform: rotateX(270deg) rotateY(135deg) rotateZ(135deg);
+  }
+  100% {
+    transform: rotateX(360deg) rotateY(180deg) rotateZ(180deg);
+  }
+}
+
+.dice-face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0;
+  background-color: white;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+  border: 2px solid var(--primary);
+  backface-visibility: hidden;
+}
+
+.dice-dot {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin: 3px;
+  background-color: var(--primary);
+}
+
+/* Dice Faces */
+.dice-face:nth-child(1) {
+  /* Front */
+  transform: translateZ(40px);
+}
+
+.dice-face:nth-child(2) {
+  /* Back */
+  transform: rotateY(180deg) translateZ(40px);
+}
+
+.dice-face:nth-child(3) {
+  /* Right */
+  transform: rotateY(90deg) translateZ(40px);
+}
+
+.dice-face:nth-child(4) {
+  /* Left */
+  transform: rotateY(-90deg) translateZ(40px);
+}
+
+.dice-face:nth-child(5) {
+  /* Top */
+  transform: rotateX(90deg) translateZ(40px);
+}
+
+.dice-face:nth-child(6) {
+  /* Bottom */
+  transform: rotateX(-90deg) translateZ(40px);
+}
+
+/* Dice Dots Patterns */
+.dice-face[data-value="1"] {
+  justify-content: center;
+  align-items: center;
+}
+
+.dice-face[data-value="2"] {
+  justify-content: space-between;
+  padding: 15px;
+}
+
+.dice-face[data-value="2"] .dice-dot:nth-child(2) {
+  align-self: flex-end;
+}
+
+.dice-face[data-value="3"] {
+  justify-content: space-between;
+  padding: 15px;
+}
+
+.dice-face[data-value="3"] .dice-dot:nth-child(1) {
+  align-self: flex-start;
+}
+
+.dice-face[data-value="3"] .dice-dot:nth-child(2) {
+  align-self: center;
+}
+
+.dice-face[data-value="3"] .dice-dot:nth-child(3) {
+  align-self: flex-end;
+}
+
+.dice-face[data-value="4"] {
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 15px;
+}
+
+.dice-face[data-value="5"] {
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 15px;
+}
+
+.dice-face[data-value="5"] .dice-dot:nth-child(5) {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.dice-face[data-value="6"] {
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 15px;
+}
+
+.dice-face[data-value="6"] .dice-dot:nth-child(3),
+.dice-face[data-value="6"] .dice-dot:nth-child(4) {
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+/* Results Panel */
+.results-panel {
+  margin-bottom: 20px;
+}
+
+.result-card {
+  background-color: #f9f9f9;
+  border-radius: var(--border-radius);
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.result-icon {
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(45deg, var(--primary), var(--primary-light));
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 1.8rem;
+}
+
+.result-details {
+  flex: 1;
+}
+
+.result-details h3 {
+  font-size: 1.2rem;
+  margin-bottom: 5px;
+  color: var(--text);
+}
+
+.result-text {
+  font-size: 1rem;
+  color: var(--text-light);
+}
+
+.total-sum {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin-top: 5px;
+}
+
+/* Stats Card */
+.stats-card {
+  background-color: var(--card-bg);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  padding: 30px;
+  margin-bottom: 30px;
+}
+
+.tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #f0f0f0;
+  padding-bottom: 15px;
+}
+
+.tab-button {
+  background-color: transparent;
+  border: none;
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-light);
+  cursor: pointer;
+  transition: var(--transition);
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tab-button i {
+  font-size: 1.1rem;
+}
+
+.tab-button:hover {
+  background-color: #f5f5f5;
+  color: var(--text);
+}
+
+.tab-button.active {
+  background-color: var(--primary);
+  color: white;
+}
+
+.tab-content {
   display: none;
 }
 
-.grafico {
+.tab-content.active {
+  display: block;
+}
+
+.chart-container {
+  height: 400px;
   position: relative;
-  width: 1000px;
-  height: 1000px;
-  left: 50%;
-  transform: translateX(-50%);
+}
+
+/* Table */
+.table-container {
+  overflow-x: auto;
 }
 
 table {
   border-collapse: collapse;
   width: 100%;
-  font-size: 35px;
+  font-size: 1rem;
 }
 
 td {
-  border: 1px solid black;
-  padding: 8px;
+  border: 1px solid #e0e0e0;
+  padding: 12px;
   text-align: center;
-  width: 100%;
 }
 
-/**colore riga alternato pari**/
 tr:nth-child(2n) {
-  background-color: #09ff0059;
+  background-color: rgba(9, 255, 0, 0.05);
 }
 
-/**colore riga alternato dispari**/
 tr:nth-child(2n + 3) {
-  background-color: #f0ec067e;
+  background-color: rgba(240, 236, 6, 0.05);
 }
 
-/***colore prima linea tabella**/
 tr:nth-child(-n + 1) {
-  background-color: #0400ff60;
+  background-color: rgba(98, 0, 234, 0.1);
+  color: var(--text);
+  font-weight: 700;
 }
 
-tr:nth-child(2n + 3):hover,
-tr:nth-child(2n):hover {
-  background-color: cyan;
+tr:hover:not(:first-child) {
+  background-color: rgba(0, 188, 212, 0.1);
+}
+
+/* History */
+.history-container {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.history-item {
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: var(--transition);
+}
+
+.history-item:hover {
+  background-color: #f0f0f0;
+  transform: translateX(5px);
+}
+
+.history-info {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.history-time {
+  font-size: 0.8rem;
+  color: var(--text-light);
+}
+
+.history-result {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.history-dice {
+  display: flex;
+  gap: 5px;
+}
+
+.history-dice-item {
+  width: 30px;
+  height: 30px;
+  background-color: var(--primary);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.empty-history {
+  text-align: center;
+  padding: 30px;
+  color: var(--text-light);
+  font-style: italic;
+}
+
+footer {
+  text-align: center;
+  padding: 20px;
+  background-color: var(--primary-dark);
+  color: white;
+  font-size: 0.9rem;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .dice-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .number-input {
+    width: 100%;
+  }
+
+  .dice {
+    width: 70px;
+    height: 70px;
+  }
+
+  .dice-face:nth-child(1) {
+    transform: translateZ(35px);
+  }
+  .dice-face:nth-child(2) {
+    transform: rotateY(180deg) translateZ(35px);
+  }
+  .dice-face:nth-child(3) {
+    transform: rotateY(90deg) translateZ(35px);
+  }
+  .dice-face:nth-child(4) {
+    transform: rotateY(-90deg) translateZ(35px);
+  }
+  .dice-face:nth-child(5) {
+    transform: rotateX(90deg) translateZ(35px);
+  }
+  .dice-face:nth-child(6) {
+    transform: rotateX(-90deg) translateZ(35px);
+  }
+
+  .dice-dot {
+    width: 10px;
+    height: 10px;
+    margin: 2px;
+  }
+
+  .result-card {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .tabs {
+    flex-wrap: wrap;
+  }
+
+  .tab-button {
+    flex: 1;
+    min-width: 120px;
+    justify-content: center;
+  }
+
+  .chart-container {
+    height: 300px;
+  }
+}
+
+@media (max-width: 480px) {
+  .dice {
+    width: 60px;
+    height: 60px;
+  }
+
+  .dice-face:nth-child(1) {
+    transform: translateZ(30px);
+  }
+  .dice-face:nth-child(2) {
+    transform: rotateY(180deg) translateZ(30px);
+  }
+  .dice-face:nth-child(3) {
+    transform: rotateY(90deg) translateZ(30px);
+  }
+  .dice-face:nth-child(4) {
+    transform: rotateY(-90deg) translateZ(30px);
+  }
+  .dice-face:nth-child(5) {
+    transform: rotateX(90deg) translateZ(30px);
+  }
+  .dice-face:nth-child(6) {
+    transform: rotateX(-90deg) translateZ(30px);
+  }
+
+  .dice-dot {
+    width: 8px;
+    height: 8px;
+    margin: 2px;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+  }
+
+  .game-card,
+  .stats-card {
+    padding: 20px;
+  }
 }

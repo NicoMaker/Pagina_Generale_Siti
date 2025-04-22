@@ -1,84 +1,290 @@
-document
-  .querySelector("#generateButton")
-  .addEventListener("click", handleGenerateButtonClick);
+// Global variables
+let regionsData = [];
+let extractedRegions = [];
+const MAX_HISTORY = 8;
 
-async function loadRegioni() {
-  const response = await fetch("configurazioni.json");
-  return response.json();
+// Initialize the application
+document.addEventListener("DOMContentLoaded", initialize);
+
+async function initialize() {
+  try {
+    // Load regions data
+    regionsData = await loadRegioni();
+
+    // Add event listeners
+    document
+      .getElementById("generateButton")
+      .addEventListener("click", handleGenerateButtonClick);
+
+    // Calculate totals for display
+    const totalEstensione = calculateTotalValues(regionsData, "estensione_km2");
+    const totalPopolazione = calculateTotalValues(regionsData, "popolazione");
+
+    // Update total stats display
+    document.getElementById("total-population").textContent =
+      formatNumber(totalPopolazione) + " abitanti";
+    document.getElementById("total-area").textContent =
+      formatNumber(totalEstensione) + " km²";
+  } catch (error) {
+    console.error("Error initializing the application:", error);
+    showErrorMessage(
+      "Si è verificato un errore durante l'inizializzazione dell'applicazione."
+    );
+  }
 }
 
-const calculateTotalValues = (regioni, key) =>
-    regioni.reduce((total, regione) => total + regione[key], 0),
-  calculatePercent = (value, total) => ((value / total) * 100).toFixed(2),
-  calculateDensity = (population, area) => (population / area).toFixed(2),
-  selectRandomRegione = (regioni) =>
-    regioni[Math.floor(Math.random() * regioni.length)],
-  generateProvinceList = (province) =>
-    province
-      .sort()
-      .map((provincia) => `<li>${provincia}</li>`)
-      .join(""),
-  updateUI = (html) => (document.getElementById("output").innerHTML = html);
+// Load regions data from JSON file
+async function loadRegioni() {
+  try {
+    const response = await fetch("configurazioni.json");
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    return await response.json();
+  } catch (error) {
+    console.error("Error loading regions:", error);
+    showErrorMessage("Impossibile caricare i dati delle regioni.");
+    return [];
+  }
+}
 
+// Calculate total values for a specific key across all regions
+function calculateTotalValues(regioni, key) {
+  return regioni.reduce((total, regione) => total + regione[key], 0);
+}
+
+// Calculate percentage of a value relative to a total
+function calculatePercent(value, total) {
+  return ((value / total) * 100).toFixed(2);
+}
+
+// Calculate population density
+function calculateDensity(population, area) {
+  return (population / area).toFixed(2);
+}
+
+// Select a random region
+function selectRandomRegione(regioni) {
+  return regioni[Math.floor(Math.random() * regioni.length)];
+}
+
+// Format a number with thousands separators
+function formatNumber(number) {
+  return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+}
+
+// Handle the generate button click
+function handleGenerateButtonClick() {
+  const totalEstensione = calculateTotalValues(regionsData, "estensione_km2");
+  const totalPopolazione = calculateTotalValues(regionsData, "popolazione");
+
+  // Add pulse animation to the button
+  const button = document.getElementById("generateButton");
+  button.classList.add("pulse");
+  setTimeout(() => {
+    button.classList.remove("pulse");
+  }, 500);
+
+  // Create a shuffling effect
+  let counter = 0;
+  const maxIterations = 10;
+  const intervalId = setInterval(() => {
+    displayRandomRegione(regionsData, totalEstensione, totalPopolazione, true);
+    counter++;
+
+    if (counter >= maxIterations) {
+      clearInterval(intervalId);
+      const finalRegion = displayRandomRegione(
+        regionsData,
+        totalEstensione,
+        totalPopolazione,
+        false
+      );
+      addToHistory(finalRegion);
+    }
+  }, 100);
+}
+
+// Display a random region
+function displayRandomRegione(
+  regioni,
+  totalEstensione,
+  totalPopolazione,
+  isShuffling
+) {
+  const regioneCasuale = selectRandomRegione(regioni);
+  const percentualeEstensione = calculatePercent(
+    regioneCasuale.estensione_km2,
+    totalEstensione
+  );
+  const percentualePopolazione = calculatePercent(
+    regioneCasuale.popolazione,
+    totalPopolazione
+  );
+  const densitaRegione = calculateDensity(
+    regioneCasuale.popolazione,
+    regioneCasuale.estensione_km2
+  );
+
+  const regioneHTML = generateRegioneHTML(
+    regioneCasuale,
+    percentualeEstensione,
+    percentualePopolazione,
+    densitaRegione,
+    isShuffling
+  );
+
+  updateUI(regioneHTML);
+  return regioneCasuale;
+}
+
+// Generate HTML for a region
 function generateRegioneHTML(
   regione,
   percentualeEstensione,
   percentualePopolazione,
-  DensitàRegione
+  densitaRegione,
+  isShuffling
 ) {
   const { nome, immagine, capoluogo, estensione_km2, popolazione, province } =
-      regione,
-    numeroProvince = province.length,
-    elencoProvince = generateProvinceList(province);
+    regione;
+  const numeroProvince = province.length;
+
+  // Generate provinces list
+  const provinceHTML = province
+    .sort()
+    .map((provincia) => `<li class="province-item">${provincia}</li>`)
+    .join("");
+
+  // Apply animation class based on whether we're shuffling or showing the final result
+  const animationClass = isShuffling ? "" : "fade-in";
 
   return `
-      <p class="colorRegione">${nome}</p>
-      <img src="img/${immagine}" alt="${nome}">
-      <p class="colorRegione"><strong> Il capoluogo è :</strong> ${capoluogo}</p>
-      <p class="colorRegione"><strong>km<sup>2</sup> regione ${estensione_km2} :</strong> ${percentualeEstensione}% dell'Italia</p>
-      <p class="colorRegione"><strong>Popolazione regione ${popolazione} :</strong> ${percentualePopolazione}% dell'Italia</p>
-      <p class="colorRegione"><strong>Densità regione :</strong> ${DensitàRegione} ab/km<sup>2</sup></p>
-      <p class="colorRegione"><strong>Numero di province :</strong> ${numeroProvince}</p>
-      <p class="colorRegione"><strong>Province :</strong></p>
-      <ol class="colorRegione">${elencoProvince}</ol>
-    `;
+    <div class="region-content ${animationClass}">
+      <div class="region-header">
+        <h2 class="region-name">${nome}</h2>
+        <div class="region-capital">Capoluogo: ${capoluogo}</div>
+      </div>
+      
+      <img src="img/${immagine}" alt="${nome}" class="region-image">
+      
+      <div class="region-stats">
+        <div class="stat-item">
+          <div class="stat-label">Superficie</div>
+          <div class="stat-value">${formatNumber(estensione_km2)} km²</div>
+          <div class="stat-detail">${percentualeEstensione}% dell'Italia</div>
+        </div>
+        
+        <div class="stat-item">
+          <div class="stat-label">Popolazione</div>
+          <div class="stat-value">${formatNumber(popolazione)}</div>
+          <div class="stat-detail">${percentualePopolazione}% dell'Italia</div>
+        </div>
+        
+        <div class="stat-item">
+          <div class="stat-label">Densità</div>
+          <div class="stat-value">${densitaRegione} ab/km²</div>
+        </div>
+      </div>
+      
+      <div class="region-provinces">
+        <h3 class="provinces-title">Province (${numeroProvince})</h3>
+        <ul class="provinces-list">
+          ${provinceHTML}
+        </ul>
+      </div>
+    </div>
+  `;
 }
 
-function handleGenerateButtonClick() {
-  loadRegioni().then((regioni) => {
-    const totalEstensione = calculateTotalValues(regioni, "estensione_km2"),
-      totalPopolazione = calculateTotalValues(regioni, "popolazione"),
-      intervalId = setInterval(() => {
-        displayRandomRegione(regioni, totalEstensione, totalPopolazione);
-      }, 150);
+// Update the UI with the generated HTML
+function updateUI(html) {
+  const outputElement = document.getElementById("output");
+  outputElement.innerHTML = html;
+}
 
-    setTimeout(() => {
-      clearInterval(intervalId);
-      displayRandomRegione(regioni, totalEstensione, totalPopolazione);
-    }, 500);
+// Add a region to the history
+function addToHistory(region) {
+  // Don't add duplicates consecutively
+  if (extractedRegions.length > 0 && extractedRegions[0].nome === region.nome) {
+    return;
+  }
+
+  // Add to beginning of array
+  extractedRegions.unshift(region);
+
+  // Limit history size
+  if (extractedRegions.length > MAX_HISTORY) {
+    extractedRegions.pop();
+  }
+
+  // Update history display
+  updateHistoryDisplay();
+}
+
+// Update the history display
+function updateHistoryDisplay() {
+  const historyContainer = document.getElementById("history");
+  historyContainer.innerHTML = "";
+
+  if (extractedRegions.length === 0) {
+    historyContainer.innerHTML =
+      "<p class='no-history'>Nessuna regione estratta</p>";
+    return;
+  }
+
+  extractedRegions.forEach((region) => {
+    const historyItem = document.createElement("div");
+    historyItem.className = "history-item";
+
+    historyItem.innerHTML = `
+      <img src="img/${region.immagine}" alt="${region.nome}" class="history-image">
+      <div class="history-name">${region.nome}</div>
+    `;
+
+    // Add click event to display this region again
+    historyItem.addEventListener("click", () => {
+      const totalEstensione = calculateTotalValues(
+        regionsData,
+        "estensione_km2"
+      );
+      const totalPopolazione = calculateTotalValues(regionsData, "popolazione");
+
+      const percentualeEstensione = calculatePercent(
+        region.estensione_km2,
+        totalEstensione
+      );
+      const percentualePopolazione = calculatePercent(
+        region.popolazione,
+        totalPopolazione
+      );
+      const densitaRegione = calculateDensity(
+        region.popolazione,
+        region.estensione_km2
+      );
+
+      const regioneHTML = generateRegioneHTML(
+        region,
+        percentualeEstensione,
+        percentualePopolazione,
+        densitaRegione,
+        false
+      );
+
+      updateUI(regioneHTML);
+    });
+
+    historyContainer.appendChild(historyItem);
   });
 }
 
-function displayRandomRegione(regioni, totalEstensione, totalPopolazione) {
-  const regioneCasuale = selectRandomRegione(regioni),
-    percentualeEstensione = calculatePercent(
-      regioneCasuale.estensione_km2,
-      totalEstensione
-    ),
-    percentualePopolazione = calculatePercent(
-      regioneCasuale.popolazione,
-      totalPopolazione
-    ),
-    DensitàRegione = calculateDensity(
-      regioneCasuale.popolazione,
-      regioneCasuale.estensione_km2
-    ),
-    regioneHTML = generateRegioneHTML(
-      regioneCasuale,
-      percentualeEstensione,
-      percentualePopolazione,
-      DensitàRegione
-    );
-
-  updateUI(regioneHTML);
+// Show error message
+function showErrorMessage(message) {
+  const outputElement = document.getElementById("output");
+  outputElement.innerHTML = `
+    <div class="error-message">
+      <div class="error-icon">⚠️</div>
+      <p>${message}</p>
+    </div>
+  `;
 }

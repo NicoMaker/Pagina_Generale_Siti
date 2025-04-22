@@ -1,44 +1,115 @@
 <!DOCTYPE html>
-<html>
+<html lang="it">
 
 <head>
-    <title> Lancio Dei Dadi Da N Facce </title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lancio Dei Dadi</title>
     <link rel="icon" href="https://static.vecteezy.com/ti/vettori-gratis/p1/2165690-line-icon-for-dice-vettoriale.jpg"
         type="image/jpg">
     <link rel="stylesheet" href="StyleDadi.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="Scriptdadi.js" defer>
-    </script>
 </head>
 
 <body>
-    <div class="container">
-        <h1>Lancio dei dadi da N Facce</h1>
-        <label for="numero-dadi">Quanti dadi vuoi lanciare?</label>
-        <input type="number" id="numero-dadi" min="1" value="1">
-        <br>
-        <br>
-        <label for="facce-dadi"> inserisci numero delle facce per i dadi da lanciare ?</label>
-        <input type="number" id="facce-dadi" min="1" value="1">
-        <br>
-        <br>
-        <button id="generateButton">Genera numeri</button>
-        <br>
-        <br>
+    <div class="app-container">
+        <header>
+            <h1>Lancio dei Dadi</h1>
+            <p class="subtitle">Genera numeri casuali con dadi personalizzabili</p>
+        </header>
 
-        <img id="immagine-dadi"
-            src="https://static.vecteezy.com/ti/vettori-gratis/p1/2165690-line-icon-for-dice-vettoriale.jpg">
-        
-        <p id="numeri-parziali"></p>
-        <canvas id="grafico" width="400" height="200"></canvas>
-        <br>
-        <br>
-        <div id="valori_uscite"></div>
+        <main>
+            <div class="control-panel">
+                <div class="input-group">
+                    <label for="numero-dadi">
+                        <i class="fas fa-dice"></i>
+                        Numero di dadi
+                    </label>
+                    <div class="number-input">
+                        <button class="decrement" id="decrement-dadi">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <input type="number" id="numero-dadi" min="1" value="2">
+                        <button class="increment" id="increment-dadi">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                </div>
 
-        <br>
-        
-        <p id="somma-totale"></p>
+                <div class="input-group">
+                    <label for="facce-dadi">
+                        <i class="fas fa-dice-d20"></i>
+                        Numero di facce
+                    </label>
+                    <div class="number-input">
+                        <button class="decrement" id="decrement-facce">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <input type="number" id="facce-dadi" min="1" value="6">
+                        <button class="increment" id="increment-facce">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <button id="generateButton" class="roll-button">
+                    <span class="button-text">Lancia i dadi</span>
+                    <i class="fas fa-dice"></i>
+                </button>
+            </div>
+
+            <div class="results-container">
+                <div class="dice-display" id="dice-display">
+                    <img id="immagine-dadi"
+                        src="https://static.vecteezy.com/ti/vettori-gratis/p1/2165690-line-icon-for-dice-vettoriale.jpg">
+                    <div id="dice-container" class="dice-container"></div>
+                </div>
+
+                <div class="results-panel">
+                    <div class="result-card">
+                        <div class="result-icon">
+                            <i class="fas fa-dice-d6"></i>
+                        </div>
+                        <div class="result-details">
+                            <h3>Risultato</h3>
+                            <p id="numeri-parziali" class="result-text">Lancia i dadi per vedere i risultati</p>
+                            <p id="somma-totale" class="total-sum"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stats-container">
+                <div class="tabs">
+                    <button class="tab-button active" data-tab="chart">
+                        <i class="fas fa-chart-bar"></i> Grafico
+                    </button>
+                    <button class="tab-button" data-tab="table">
+                        <i class="fas fa-table"></i> Tabella
+                    </button>
+                </div>
+
+                <div class="tab-content active" id="chart-tab">
+                    <div class="chart-container">
+                        <canvas id="grafico"></canvas>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="table-tab">
+                    <div class="table-container">
+                        <div id="valori_uscite"></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>Generatore di Dadi &copy; 2023 | Creato per gli amanti dei giochi da tavolo</p>
+        </footer>
     </div>
+
+    <script src="Scriptdadi.js"></script>
 </body>
 
 </html>

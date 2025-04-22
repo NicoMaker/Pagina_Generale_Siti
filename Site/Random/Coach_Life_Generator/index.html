@@ -1,27 +1,54 @@
 <!DOCTYPE html>
-<html>
+<html lang="it">
 
 <head>
-    <title> Coach Life Generator </title>
-    <link rel="stylesheet" href="Style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coach Life Generator</title>
+    <link rel="stylesheet" href="styles.css">
     <link rel="icon" href="https://cdn0.lefrasi.it/it/posts/4/4/1/frasi_motivazionali_144_orig.jpg" type="image/jpg">
-    <script src="Script.js" defer>
-    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap"
+        rel="stylesheet">
 </head>
 
 <body>
-    <h1>Coach Life Generator</h1>
+    <div class="container">
+        <header>
+            <h1>Coach Life Generator</h1>
+            <p class="subtitle">Frasi che ispirano, motivano e trasformano</p>
+        </header>
 
-    <button id="generateButton">Genera Frase</button>
-    <br>
-    <br>
-    <br>
-    <img src="https://cdn0.lefrasi.it/it/posts/4/4/1/frasi_motivazionali_144_orig.jpg">
-    <br>
-    <br>
-    <div id="frase"></div>
-    <div id="phrase"></div>
+        <main>
+            <div class="quote-container">
+                <div class="quote-card">
+                    <div class="quote-icon">"</div>
+                    <div id="frase" class="quote-text"></div>
+                    <div id="phrase" class="quote-text"></div>
+                    <div class="quote-icon closing">"</div>
+                </div>
+            </div>
 
+            <button id="generateButton" class="generate-btn">
+                <span class="btn-text">Genera Frase</span>
+                <span class="btn-icon">✨</span>
+            </button>
+        </main>
+
+        <div class="decoration">
+            <div class="circle circle-1"></div>
+            <div class="circle circle-2"></div>
+            <div class="circle circle-3"></div>
+        </div>
+
+        <footer>
+            <p>Trova la tua ispirazione quotidiana</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 
 </html>

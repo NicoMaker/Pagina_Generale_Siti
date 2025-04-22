@@ -1,25 +1,65 @@
 <!DOCTYPE html>
-<html>
+<html lang="it">
 
 <head>
-    <title>Generatore Colore Casuale</title>
-    <link rel="stylesheet" href="Style.css">
-    <link rel="icon" href="https://play-lh.googleusercontent.com/QrRqkT5mYIAcSDxFTNmopGNU7VJPZN3lZGP2HrWkObRyCeLoNvbKAsUL9bZ1P2GZ9H8" type="image/jpg">
-    <script src="Script.js" defer></script>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generatore Colore Casuale</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon"
+        href="https://play-lh.googleusercontent.com/QrRqkT5mYIAcSDxFTNmopGNU7VJPZN3lZGP2HrWkObRyCeLoNvbKAsUL9bZ1P2GZ9H8"
+        type="image/jpg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
-    <h1>Generatore Colore Casuale</h1>
+    <div class="app-container">
+        <header>
+            <h1>Generatore Colore Casuale</h1>
+            <p class="subtitle">Scopri nuovi colori con un click</p>
+        </header>
 
-    <button id="generateButton">Genera Colore</button>
-    <br>
-    <br>
-    <br>
-    <div id="image">
-        <img src="https://play-lh.googleusercontent.com/QrRqkT5mYIAcSDxFTNmopGNU7VJPZN3lZGP2HrWkObRyCeLoNvbKAsUL9bZ1P2GZ9H8" alt="Image">
-      </div>
-    <div id="color"></div>
+        <main>
+            <div class="color-display-container">
+                <div id="image">
+                    <img src="https://play-lh.googleusercontent.com/QrRqkT5mYIAcSDxFTNmopGNU7VJPZN3lZGP2HrWkObRyCeLoNvbKAsUL9bZ1P2GZ9H8"
+                        alt="Color palette icon">
+                </div>
+                <div id="color" class="color-display">
+                    <div class="color-info">
+                        <span id="color-name">Nome Colore</span>
+                        <span id="color-hex">#RRGGBB</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="controls">
+                <button id="generateButton" class="generate-btn">
+                    <span class="btn-text">Genera Colore</span>
+                    <span class="btn-icon">🎨</span>
+                </button>
+                <button id="copyButton" class="copy-btn" disabled>
+                    <span class="btn-text">Copia Codice</span>
+                    <span class="btn-icon">📋</span>
+                </button>
+            </div>
+
+            <div class="color-history">
+                <h2>Colori Recenti</h2>
+                <div id="history-container" class="history-items"></div>
+            </div>
+        </main>
+
+        <footer>
+            <p>Creato con ❤️ per gli amanti dei colori</p>
+        </footer>
+    </div>
+
+    <div id="toast" class="toast">Codice colore copiato!</div>
+
+    <script src="script.js"></script>
 </body>
 
 </html>

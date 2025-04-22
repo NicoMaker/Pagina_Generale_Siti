@@ -1,29 +1,88 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>Generatore di carte</title>
-    <link rel="stylesheet" href="Style.css" />
-    <link rel="icon" href="Img/image.jpg" type="image/jpg" />
-    <script src="Script.js" defer></script>
-  </head>
+<html lang="it">
 
-  <body>
-    <h1>Generatore di Carte</h1>
-    <div>
-      <label for="game-type">Scegli il gioco: </label>
-      <select id="game-type">
-        <option value="briscola">Briscola</option>
-        <img src="" />
-        <option value="scala-40">Scala 40</option>
-        <option value="tutti">Tutti</option>
-      </select>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Generatore di Carte</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="Img/image.jpg" type="image/jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+</head>
+
+<body>
+  <div class="app-container">
+    <div class="card-table">
+      <header>
+        <h1>Generatore di Carte</h1>
+        <p class="subtitle">Estrai carte casuali per diversi giochi</p>
+      </header>
+
+      <div class="game-selector">
+        <div class="game-options">
+          <div class="game-option" data-game="briscola">
+            <div class="game-icon">♣️</div>
+            <div class="game-name">Briscola</div>
+          </div>
+          <div class="game-option" data-game="scala-40">
+            <div class="game-icon">♠️</div>
+            <div class="game-name">Scala 40</div>
+          </div>
+          <div class="game-option" data-game="tutti">
+            <div class="game-icon">🃏</div>
+            <div class="game-name">Tutti</div>
+          </div>
+        </div>
+        <select id="game-type" class="game-select">
+          <option value="briscola">Briscola</option>
+          <option value="scala-40">Scala 40</option>
+          <option value="tutti">Tutti</option>
+        </select>
+      </div>
+
+      <div class="card-display-area">
+        <div class="card-placeholder">
+          <div class="card-back">
+            <div class="card-pattern"></div>
+          </div>
+        </div>
+        <div id="card" class="card-result"></div>
+      </div>
+
+      <button id="generateButton" class="generate-btn">
+        <span class="btn-text">Estrai Carta</span>
+        <span class="btn-icon">🎴</span>
+      </button>
+
+      <div class="card-history">
+        <h2>Carte Precedenti</h2>
+        <div id="history-container" class="history-cards"></div>
+      </div>
     </div>
 
-    <br />
-    <br />
-    <button id="generateButton">Genera Carta</button>
-    <br />
-    <br />
-    <div id="card"></div>
-  </body>
+    <div class="game-info">
+      <div class="info-panel briscola-info">
+        <h3>Briscola</h3>
+        <p>Gioco di carte italiano tradizionale. Utilizza un mazzo di 40 carte italiane con semi di Coppe, Denari, Spade
+          e Bastoni e le carte Jolly.</p>
+      </div>
+      <div class="info-panel scala40-info">
+        <h3>Scala 40</h3>
+        <p>Gioco di carte che utilizza un mazzo di carte francesi con semi di Cuori, Quadri, Fiori e Picche, più i
+          Jolly.</p>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>Generatore di Carte &copy; 2023 | Creato con ❤️ per gli amanti dei giochi di carte</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+
 </html>

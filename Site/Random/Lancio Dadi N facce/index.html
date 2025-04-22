@@ -1,97 +1,154 @@
 <!DOCTYPE html>
-<html>
+<html lang="it">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lancio Dei Dadi</title>
     <link rel="icon" href="https://static.vecteezy.com/ti/vettori-gratis/p1/2165690-line-icon-for-dice-vettoriale.jpg"
         type="image/jpg">
-    <link rel="stylesheet" href="StyleDadi.css">
-    <script src="Scriptdadi.js" defer></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
 </head>
 
 <body>
-    <div class="container">
-        <h1>Lancio dei Dadi</h1>
-        <label for="numero-dadi">Quanti dadi vuoi lanciare?</label>
-        <input type="number" id="numero-dadi" min="1" value="1">
+    <div class="app-container">
+        <div class="parchment">
+            <header>
+                <h1>Lancio dei Dadi</h1>
+                <p class="subtitle">Strumento per giochi di ruolo e da tavolo</p>
+            </header>
 
-        <p class="view">solo per l'ultimo</p>
+            <div class="controls-section">
+                <div class="control-group">
+                    <label for="numero-dadi">Numero di dadi</label>
+                    <div class="number-input">
+                        <button class="decrement" type="button">-</button>
+                        <input type="number" id="numero-dadi" min="1" max="10" value="1">
+                        <button class="increment" type="button">+</button>
+                    </div>
+                </div>
 
-        <label for="facce-dadi">Inserisci numero delle facce per i dadi da lanciare?</label>
-        <input type="number" id="facce-dadi" min="1" value="1">
-
-        <br>
-        <br>
-        <br>
-
-        <!-- Singoli bottoni per generare numeri specifici di dadi -->
-        <button onclick="generaNumeri(4)">
-            <div class="triangolo">
-                <div class="figure-container">
-                    <span class="number">4</span>
+                <div class="control-group custom-faces">
+                    <label for="facce-dadi">Facce personalizzate</label>
+                    <div class="number-input">
+                        <button class="decrement" type="button">-</button>
+                        <input type="number" id="facce-dadi" min="1" max="1000" value="6">
+                        <button class="increment" type="button">+</button>
+                    </div>
+                    <p class="hint">Per il dado personalizzato (N)</p>
                 </div>
             </div>
-        </button>
-        <button onclick="generaNumeri(6)">
-            <div class="quadrato">
-                <div class="figure-container">
-                    <span class="number">6</span>
-                </div>
-            </div>
-        </button>
-        <button onclick="generaNumeri(8)">
-            <div class="triangolo">
-                <div class="figure-container">
-                    <span class="number">8</span>
-                </div>
-            </div>
-        </button>
-        <button onclick="generaNumeri(10)">
-            <div class="rombo">
-                <div class="container">
-                    <span class="number">10</span>
-                </div>
-            </div>
-        </button>
-        <button onclick="generaNumeri(12)">
-            <div class="pentagono">
-                <div class="figure-container">
-                    <span class="number">12</span>
-                </div>
-            </div>
-        </button>
-        <button onclick="generaNumeri(20)">
-            <div class="esagono">
-                <div class="figure-container">
-                    <span class="number">20</span>
-                </div>
-            </div>
-        </button>
-        <button onclick="generaNumeri(100)">
-            <div class="rombo">
-                <div class="figure-container">
-                    <span class="number">100</span>
-                </div>
-            </div>
-        </button>
-        <button onclick="generaNumerin()">
-            <div class="cerchio">
-                <div class="figure-container">
-                    <span class="number">N</span>
-                </div>
-            </div>
-        </button>
 
-        <h2>Risultati</h2>
+            <div class="dice-selection">
+                <h2>Seleziona tipo di dado</h2>
+                <div class="dice-buttons">
+                    <button class="dice-btn d4" data-faces="4">
+                        <div class="dice-icon">
+                            <div class="dice-shape d4-shape">
+                                <span>4</span>
+                            </div>
+                        </div>
+                        <span class="dice-label">D4</span>
+                    </button>
 
-        <br>
+                    <button class="dice-btn d6" data-faces="6">
+                        <div class="dice-icon">
+                            <div class="dice-shape d6-shape">
+                                <span>6</span>
+                            </div>
+                        </div>
+                        <span class="dice-label">D6</span>
+                    </button>
 
-        <div id="risultato"></div>
+                    <button class="dice-btn d8" data-faces="8">
+                        <div class="dice-icon">
+                            <div class="dice-shape d8-shape">
+                                <span>8</span>
+                            </div>
+                        </div>
+                        <span class="dice-label">D8</span>
+                    </button>
 
-        <br>
+                    <button class="dice-btn d10" data-faces="10">
+                        <div class="dice-icon">
+                            <div class="dice-shape d10-shape">
+                                <span>10</span>
+                            </div>
+                        </div>
+                        <span class="dice-label">D10</span>
+                    </button>
 
-        <p id="somma-totale"></p>
+                    <button class="dice-btn d12" data-faces="12">
+                        <div class="dice-icon">
+                            <div class="dice-shape d12-shape">
+                                <span>12</span>
+                            </div>
+                        </div>
+                        <span class="dice-label">D12</span>
+                    </button>
+
+                    <button class="dice-btn d20" data-faces="20">
+                        <div class="dice-icon">
+                            <div class="dice-shape d20-shape">
+                                <span>20</span>
+                            </div>
+                        </div>
+                        <span class="dice-label">D20</span>
+                    </button>
+
+                    <button class="dice-btn d100" data-faces="100">
+                        <div class="dice-icon">
+                            <div class="dice-shape d100-shape">
+                                <span>100</span>
+                            </div>
+                        </div>
+                        <span class="dice-label">D100</span>
+                    </button>
+
+                    <button class="dice-btn dn" data-faces="custom">
+                        <div class="dice-icon">
+                            <div class="dice-shape dn-shape">
+                                <span>N</span>
+                            </div>
+                        </div>
+                        <span class="dice-label">DN</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="results-section">
+                <div class="results-header">
+                    <h2>Risultati</h2>
+                    <button id="clear-results" class="clear-btn">Cancella</button>
+                </div>
+
+                <div class="results-display">
+                    <div id="risultato" class="dice-results"></div>
+
+                    <div class="total-container">
+                        <div class="total-label">Somma totale:</div>
+                        <div id="somma-totale" class="total-value">0</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="history-section">
+                <h2>Lanci precedenti</h2>
+                <div id="roll-history" class="history-list"></div>
+            </div>
+        </div>
     </div>
+
+    <footer>
+        <p>Dice Roller &copy; 2023 | Creato per gli amanti dei giochi di ruolo</p>
+    </footer>
+
+    <script src="script.js"></script>
 </body>
 
 </html>
