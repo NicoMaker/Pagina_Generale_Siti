@@ -1,37 +1,160 @@
 <!DOCTYPE html>
-<html>
-    <!-- let dataCorrente = new Date("2025-04-22T00:00:00"), -->
+<html lang="it">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
-    <script src="script.js" defer></script>
-    <title>Il Mio Sito di Pasqua</title>
+    <title>Buona Pasqua | Countdown Festivo</title>
     <link rel="icon"
         href="https://img.freepik.com/free-photo/happy-bunny-with-many-easter-eggs-grass-festive-background-decorative-design_90220-1091.jpg?size=626&ext=jpg&ga=GA1.1.1546980028.1703721600&semt=sph"
         type="image/jpg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@700;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
 </head>
 
 <body>
-    <header>
-        <h1>Benvenuto nel Mio Sito di Pasqua!</h1>
-    </header>
+    <div class="theme-toggle-container">
+        <button id="theme-toggle" class="theme-toggle" aria-label="Cambia tema chiaro/scuro">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="moon">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="sun">
+                <circle cx="12" cy="12" r="5"></circle>
+                <line x1="12" y1="1" x2="12" y2="3"></line>
+                <line x1="12" y1="21" x2="12" y2="23"></line>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                <line x1="1" y1="12" x2="3" y2="12"></line>
+                <line x1="21" y1="12" x2="23" y2="12"></line>
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+        </button>
+    </div>
 
-    <main>
-        <section id="countdown">
-            <h2>Countdown to Easter</h2>
-            <img
-                src="https://img.freepik.com/free-photo/happy-bunny-with-many-easter-eggs-grass-festive-background-decorative-design_90220-1091.jpg?size=626&ext=jpg&ga=GA1.1.1546980028.1703721600&semt=sph">
-            <div id="timer"></div>
-        </section>
-    </main>
-    
-    <footer>
-        <p id="anno">
+    <div id="egg-container" class="egg-container"></div>
+
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <div class="logo">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="logo-icon">
+                        <path d="M12 2a10 10 0 1 0 10 10H12V2z"></path>
+                        <path d="M12 2a10 10 0 0 1 10 10H12V2z"></path>
+                        <path d="M12 12l9.3 2.5"></path>
+                        <path d="M12 12l-9.3 2.5"></path>
+                        <path d="M12 12l2.5 9.3"></path>
+                        <path d="M12 12l2.5-9.3"></path>
+                        <path d="M12 12l-2.5 9.3"></path>
+                        <path d="M12 12l-2.5-9.3"></path>
+                    </svg>
+                </div>
+                <h1>Buona Pasqua</h1>
             </div>
-        </p>
-    </footer>
+            <p class="subtitle">Celebra la primavera e la rinascita</p>
+        </header>
+
+        <main>
+            <section class="countdown-section">
+                <div class="countdown-header">
+                    <h2>Manca alla Pasqua</h2>
+                    <div class="easter-date" id="easter-date">Domenica, 20 Aprile 2025</div>
+                </div>
+
+                <div class="countdown-container">
+                    <div class="countdown-box">
+                        <div class="countdown-value" id="days">00</div>
+                        <div class="countdown-label">Giorni</div>
+                    </div>
+                    <div class="countdown-box">
+                        <div class="countdown-value" id="hours">00</div>
+                        <div class="countdown-label">Ore</div>
+                    </div>
+                    <div class="countdown-box">
+                        <div class="countdown-value" id="minutes">00</div>
+                        <div class="countdown-label">Minuti</div>
+                    </div>
+                    <div class="countdown-box">
+                        <div class="countdown-value" id="seconds">00</div>
+                        <div class="countdown-label">Secondi</div>
+                    </div>
+                </div>
+
+                <div class="celebration-message" id="celebration-message">
+                    <h3>Buona Pasqua!</h3>
+                    <p>Che questa giornata porti gioia, pace e serenità a te e alla tua famiglia.</p>
+                    <button id="celebrate-btn" class="celebrate-btn">Festeggia!</button>
+                </div>
+            </section>
+
+            <section class="easter-image-section">
+                <div class="image-container">
+                    <img src="https://img.freepik.com/free-photo/happy-bunny-with-many-easter-eggs-grass-festive-background-decorative-design_90220-1091.jpg?size=626&ext=jpg&ga=GA1.1.1546980028.1703721600&semt=sph"
+                        alt="Coniglietto di Pasqua con uova colorate" class="easter-image">
+                    <div class="image-overlay"></div>
+                </div>
+            </section>
+
+            <section class="easter-traditions">
+                <h2>Tradizioni Pasquali</h2>
+                <div class="traditions-grid">
+                    <div class="tradition-card">
+                        <div class="tradition-icon">🥚</div>
+                        <h3>Uova di Pasqua</h3>
+                        <p>Le uova simboleggiano la nuova vita e la rinascita, temi centrali della Pasqua.</p>
+                    </div>
+                    <div class="tradition-card">
+                        <div class="tradition-icon">🐰</div>
+                        <h3>Coniglio Pasquale</h3>
+                        <p>Il coniglio è simbolo di fertilità e rappresenta l'arrivo della primavera.</p>
+                    </div>
+                    <div class="tradition-card">
+                        <div class="tradition-icon">🍫</div>
+                        <h3>Cioccolato</h3>
+                        <p>Le uova di cioccolato sono un dolce tradizionale che delizia grandi e piccini.</p>
+                    </div>
+                    <div class="tradition-card">
+                        <div class="tradition-icon">🌷</div>
+                        <h3>Fiori Primaverili</h3>
+                        <p>Gigli, tulipani e narcisi sono fiori tipici che decorano le case durante la Pasqua.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="pasquetta-section">
+                <div class="pasquetta-content">
+                    <h2>Buona Pasquetta!</h2>
+                    <p>Il lunedì dopo Pasqua, conosciuto come Pasquetta o Lunedì dell'Angelo, è tradizionalmente
+                        dedicato alle gite fuori porta e ai picnic con amici e familiari.</p>
+                    <div class="pasquetta-countdown" id="pasquetta-countdown">
+                        <span>Mancano</span>
+                        <span class="pasquetta-days" id="pasquetta-days">1</span>
+                        <span>giorni alla Pasquetta</span>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <div class="footer-content">
+                <p>&copy; <span id="current-year">2024</span> Buona Pasqua | Tutti i diritti riservati</p>
+                <div class="footer-links">
+                    <a href="#" class="footer-link">Privacy</a>
+                    <a href="#" class="footer-link">Termini</a>
+                    <a href="#" class="footer-link">Contatti</a>
+                </div>
+            </div>
+        </footer>
+    </div>
 </body>
 
 </html>
