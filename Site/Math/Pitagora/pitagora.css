@@ -1,60 +1,238 @@
+:root {
+  --color-terracotta: #c8553d;
+  --color-olive: #626c66;
+  --color-gold: #d4af37;
+  --color-navy: #28536b;
+  --color-cream: #f2e9d8;
+  --color-dark: #2d2d2a;
+  --golden-ratio: 1.618;
+}
+
 body {
-    font-family: Arial, sans-serif;
-    text-align: center;
+  font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+  background-color: var(--color-cream);
+  color: var(--color-dark);
+  line-height: 1.6;
+  padding: 2rem;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
 }
 
-label {
-    font-weight: bold;
+.container {
+  max-width: 800px;
+  width: 100%;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.9),
+    rgba(255, 255, 255, 0.7)
+  );
+  border: 1px solid var(--color-gold);
+  border-radius: 8px;
+  padding: 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
 }
 
-input {
-    margin-bottom: 10px;
+.container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 8px;
+  background: linear-gradient(
+    90deg,
+    var(--color-terracotta),
+    var(--color-gold),
+    var(--color-navy)
+  );
+}
+
+.greek-pattern {
+  height: 30px;
+  width: 100%;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='20' viewBox='0 0 100 20'%3E%3Cpath d='M0,10 L10,0 L20,10 L30,0 L40,10 L50,0 L60,10 L70,0 L80,10 L90,0 L100,10 L100,20 L0,20 Z' fill='%23d4af37' /%3E%3C/svg%3E");
+  background-repeat: repeat-x;
+  margin: 1rem 0;
+  opacity: 0.7;
 }
 
 h1 {
-    font-size: 100px;
-    color: rebeccapurple;
+  font-size: 2.5rem;
+  color: var(--color-navy);
+  text-align: center;
+  margin-bottom: 0.5rem;
+  letter-spacing: 1px;
+  font-weight: normal;
+  position: relative;
+  display: inline-block;
+}
+
+h1::after {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: var(--color-gold);
+}
+
+.subtitle {
+  text-align: center;
+  font-style: italic;
+  color: var(--color-olive);
+  margin-bottom: 2rem;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  color: var(--color-navy);
+  font-size: 1.1rem;
+}
+
+select,
+input {
+  width: 100%;
+  padding: 0.8rem;
+  border: 1px solid var(--color-olive);
+  border-radius: 4px;
+  font-size: 1rem;
+  background-color: rgba(255, 255, 255, 0.9);
+  color: var(--color-dark);
+  font-family: inherit;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M6,9L0,3h12L6,9z' fill='%2328536b'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  padding-right: 2.5rem;
+}
+
+select:focus,
+input:focus {
+  outline: none;
+  border-color: var(--color-gold);
+  box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2);
+}
+
+.input-container {
+  margin-bottom: 1rem;
+  transition: opacity 0.3s, transform 0.3s;
 }
 
 button {
-    background-color: aqua;
-    text-align: center;
-    color: green;
-    border-radius: 50px;;
-    font-size: 40px
+  background-color: var(--color-navy);
+  color: white;
+  border: none;
+  padding: 0.8rem 2rem;
+  font-size: 1.1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+  display: block;
+  margin: 1.5rem auto;
+  font-family: inherit;
 }
 
-label
-{
-    color: black;
-    font-size: 30px;
+button:hover {
+  background-color: var(--color-terracotta);
+  transform: translateY(-2px);
 }
 
-select
-{
-    text-align: center;
-    color: azure;
-    background-color: black;
-    font-size: 30px;
-    border-radius: 50px;
+button:active {
+  transform: translateY(0);
 }
 
-input
-{
-    text-align: center;
-    font-size: 30px;
-    border-radius: 50px;
+.result-container {
+  margin-top: 2rem;
+  text-align: center;
+  position: relative;
 }
 
-#risultato
-{
-    color: blue;
-    font-size: 50px;
+#risultato {
+  font-size: 1.5rem;
+  color: var(--color-navy);
+  font-weight: bold;
+  margin-top: 1rem;
+  padding: 1rem;
+  border-radius: 4px;
+  background-color: rgba(255, 255, 255, 0.7);
+  display: inline-block;
+  min-width: 60%;
+  transition: all 0.3s ease;
 }
 
-img {
-    display: block;
-    margin: 0 auto;
-    width: auto;
-    height: 350px;
+.triangle-diagram {
+  width: 200px;
+  height: 200px;
+  margin: 0 auto 2rem;
+  position: relative;
+}
+
+.triangle-diagram svg {
+  width: 100%;
+  height: 100%;
+}
+
+.triangle-labels text {
+  font-size: 14px;
+  font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+  fill: var(--color-navy);
+}
+
+.pentagram {
+  position: absolute;
+  bottom: -20px;
+  right: -20px;
+  width: 60px;
+  height: 60px;
+  opacity: 0.2;
+}
+
+.hidden {
+  display: none;
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 1.5rem;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  .triangle-diagram {
+    width: 150px;
+    height: 150px;
+  }
 }

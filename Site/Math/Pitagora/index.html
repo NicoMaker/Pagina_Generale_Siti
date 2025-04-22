@@ -1,56 +1,88 @@
 <!DOCTYPE html>
-<html>
+<html lang="it">
 
 <head>
-    <title>Calcolatore Teorema di Pitagora</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teorema di Pitagora</title>
     <link rel="stylesheet" href="pitagora.css">
     <link rel="icon"
         href="https://previews.123rf.com/images/claudiodivizia/claudiodivizia1312/claudiodivizia131200266/24487449-teorema-retr%C3%B2-cercando-di-pitagora-di-triangoli-rettangoli.jpg"
         type="image/jpg">
-
-    <script src="Pitagora.js" defer>
-    </script>
 </head>
 
 <body>
-    <h1>Calcolatore Teorema di Pitagora</h1>
+    <div class="container">
+        <h1>Teorema di Pitagora</h1>
+        <p class="subtitle">Ἡ τοῦ ὀρθογωνίου τριγώνου ὑποτείνουσα</p>
 
-    <label for="input-type">Seleziona il tipo di calcolo:</label>
+        <div class="greek-pattern"></div>
 
-    <select id="input-type">
-        <option value="ipotenusa">Ipotenusa</option>
-        <option value="cateto">Cateto</option>
-        <br>
-    </select>
-    <br>
-    <br>
+        <div class="triangle-diagram">
+            <svg viewBox="0 0 200 200">
+                <!-- Right triangle -->
+                <polygon points="20,180 180,180 20,20" fill="none" stroke="#28536b" stroke-width="3" />
+                <!-- Right angle marker -->
+                <polyline points="40,180 40,160 60,160" fill="none" stroke="#28536b" stroke-width="2" />
 
-    <div id="ipotenusa-inputs" style="display: block">
-        <label for="cateto1">Cateto 1:</label>
-        <input type="number" id="cateto1">
-        <br>
-        <label for="cateto2">Cateto 2:</label>
-        <input type="number" id="cateto2">
-        <br>
+                <!-- Labels -->
+                <g class="triangle-labels">
+                    <text x="95" y="190">a</text>
+                    <text x="5" y="100">b</text>
+                    <text x="95" y="100" transform="rotate(-45, 95, 100)">c</text>
+                </g>
+
+                <!-- Pythagorean formula -->
+                <text x="60" y="140" font-size="16" fill="#c8553d">a² + b² = c²</text>
+            </svg>
+        </div>
+
+        <div class="form-group">
+            <label for="input-type">Seleziona il tipo di calcolo:</label>
+            <select id="input-type">
+                <option value="ipotenusa">Calcola l'Ipotenusa</option>
+                <option value="cateto">Calcola il Cateto</option>
+            </select>
+        </div>
+
+        <div id="ipotenusa-inputs" class="input-container">
+            <div class="form-group">
+                <label for="cateto1">Cateto 1 (a):</label>
+                <input type="number" id="cateto1" min="0" step="any" placeholder="Inserisci il valore">
+            </div>
+            <div class="form-group">
+                <label for="cateto2">Cateto 2 (b):</label>
+                <input type="number" id="cateto2" min="0" step="any" placeholder="Inserisci il valore">
+            </div>
+        </div>
+
+        <div id="cateto-inputs" class="input-container hidden">
+            <div class="form-group">
+                <label for="ipotenusa">Ipotenusa (c):</label>
+                <input type="number" id="ipotenusa" min="0" step="any" placeholder="Inserisci il valore">
+            </div>
+            <div class="form-group">
+                <label for="cateto">Cateto noto (a):</label>
+                <input type="number" id="cateto" min="0" step="any" placeholder="Inserisci il valore">
+            </div>
+        </div>
+
+        <button onclick="calcola()">Calcola</button>
+
+        <div class="result-container">
+            <p id="risultato"></p>
+        </div>
+
+        <div class="greek-pattern"></div>
+
+        <!-- Pentagram symbol (Pythagorean symbol) -->
+        <svg class="pentagram" viewBox="0 0 100 100">
+            <polygon points="50,5 61,40 100,40 69,62 79,95 50,75 21,95 31,62 0,40 39,40" fill="none" stroke="#d4af37"
+                stroke-width="2" />
+        </svg>
     </div>
 
-    <div id="cateto-inputs" style="display: none;">
-        <label for="ipotenusa">Ipotenusa:</label>
-        <input type="number" id="ipotenusa">
-        <br>
-        <label for="cateto">Cateto:</label>
-        <input type="number" id="cateto">
-        <br>
-    </div>
-
-    <br>
-    <button onclick="calcola()">Calcola</button>
-    <br>
-    <br>
-
-    <img
-        src="https://previews.123rf.com/images/claudiodivizia/claudiodivizia1312/claudiodivizia131200266/24487449-teorema-retr%C3%B2-cercando-di-pitagora-di-triangoli-rettangoli.jpg">
-    <p id="risultato"></p>
+    <script src="Pitagora.js"></script>
 </body>
 
 </html>

@@ -1,32 +1,45 @@
 <!DOCTYPE html>
-<html>
+<html lang="it">
 
 <head>
-    <link rel="icon" href="https://cdn.studenti.stbm.it/images/2022/06/07/numeri-fortunati-della-maturita-2022-orig.jpeg" type="image/jpg">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stampa numeri pari / dispari o tutti i precedenti</title>
+    <title>Generatore di Numeri</title>
+    <link rel="icon"
+        href="https://cdn.studenti.stbm.it/images/2022/06/07/numeri-fortunati-della-maturita-2022-orig.jpeg"
+        type="image/jpg">
     <link rel="stylesheet" href="stylenumber.css">
-    <script src="scriptnumber.js" defer>
-    </script>
 </head>
 
 <body>
-    <h1>Stampa numeri pari / dispari o tutti i precedenti</h1>
+    <div class="container">
+        <h1>Generatore di Sequenze Numeriche</h1>
 
-    <input type="number" id="numero" placeholder="inserisci un numero">
-    <br>
-    <br>
-    <select id="scelta">
-        <option value="tutti">Tutti</option>
-        <option value="pari">Pari</option>
-        <option value="dispari">Dispari</option>
-    </select>
-    <br>
-    <br>
-    <button onclick="generaTabella()">Genera Tabella</button>
-    <br><br>
-    <div id="risultato"></div>
+        <div class="form-group">
+            <label for="numero">Inserisci un numero</label>
+            <input type="number" id="numero" placeholder="Es. 20" min="1">
+        </div>
+
+        <div class="form-group">
+            <label for="scelta">Seleziona il tipo di sequenza</label>
+            <select id="scelta">
+                <option value="tutti">Tutti i numeri</option>
+                <option value="pari">Solo numeri pari</option>
+                <option value="dispari">Solo numeri dispari</option>
+            </select>
+        </div>
+
+        <button onclick="generaTabella()">Genera Sequenza</button>
+
+        <div class="result-container">
+            <div id="risultato">
+                <!-- I risultati appariranno qui -->
+                <p class="placeholder-text">I numeri generati appariranno qui</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="scriptnumber.js"></script>
 </body>
 
 </html>
