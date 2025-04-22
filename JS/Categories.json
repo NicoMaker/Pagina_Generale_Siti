@@ -291,21 +291,5 @@
         "link": "Site/Temperatura/Conversioni_Temp/index.html"
       }
     ]
-  },
-  "categoryClasses": {
-    "Bici": "contenitore1",
-    "Borsa": "contenitore1",
-    "Calendario": "contenitore1",
-    "Calcio": "contenitore1",
-    "Giochi": "contenitore3",
-    "Info_Paesi_Stati": "contenitore2",
-    "Matematica": "contenitore3",
-    "Natale": "contenitore1",
-    "Opzioni_Con_Le_Frasi": "contenitore1",
-    "Pasqua": "contenitore1",
-    "Pokemon": "contenitore1",
-    "Random": "contenitore3",
-    "Salute": "contenitore1",
-    "Temperatura": "contenitore1"
   }
 }
