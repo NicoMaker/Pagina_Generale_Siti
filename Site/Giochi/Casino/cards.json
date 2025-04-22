@@ -1,0 +1,37 @@
+{
+  "briscola": [
+    "Img/Briscola/Bastoni.png",
+    "Img/Briscola/Coppe.png",
+    "Img/Briscola/Denari.png",
+    "Img/Briscola/Spade.png"
+  ],
+  "scala40": [
+    "Img/Scala_40/Picche.png",
+    "Img/Scala_40/Quadri.png",
+    "Img/Scala_40/Cuori.png",
+    "Img/Scala_40/Fiori.png",
+    "Img/Scala_40/Jolly.jpg"
+  ],
+  "regioni": [
+    "Img/Regione/Abruzzo.jpg",
+    "Img/Regione/Basilicata.jpg",
+    "Img/Regione/Calabria.jpg",
+    "Img/Regione/Campania.jpg",
+    "Img/Regione/Emilia.jpg",
+    "Img/Regione/FVG.jpg",
+    "Img/Regione/Lazio.jpg",
+    "Img/Regione/Liguria.jpg",
+    "Img/Regione/Lombardia.jpg",
+    "Img/Regione/Marche.jpg",
+    "Img/Regione/Molise.jpg",
+    "Img/Regione/Piemonte.jpg",
+    "Img/Regione/Puglia.jpg",
+    "Img/Regione/Sardegna.jpg",
+    "Img/Regione/Sicilia.jpg",
+    "Img/Regione/Toscana.jpg",
+    "Img/Regione/TAA.jpg",
+    "Img/Regione/Umbria.jpg",
+    "Img/Regione/VA.jpg",
+    "Img/Regione/Veneto.jpg"
+  ]
+}

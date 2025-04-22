@@ -35,8 +35,8 @@
         "link": "https://tabelloneseriea.netlify.app/"
       },
       {
-        "name":"Rosa Milan",
-        "link":"https://milannico.netlify.app/"
+        "name": "Rosa Milan",
+        "link": "https://milannico.netlify.app/"
       }
     ],
     "Giochi": [
@@ -78,6 +78,10 @@
       {
         "name": "Rotella Movimentata",
         "link": "Site/Giochi/Rotella Movimentata/index.html"
+      },
+      {
+        "name": "Casinò",
+        "link": "Site/Giochi/Casino/index.html"
       }
     ],
     "Info_Paesi_Stati": [
@@ -263,10 +267,11 @@
       {
         "name": "Generatore Colore Casuale",
         "link": "Site/Random/Colore_Casuale/index.html"
-      },{
-      "name": "Estattore Regione Casuale",
-      "link": "Site/Random/Estrai_Regione/index.html"
-    }
+      },
+      {
+        "name": "Estattore Regione Casuale",
+        "link": "Site/Random/Estrai_Regione/index.html"
+      }
     ],
     "Pokemon": [
       {
@@ -291,7 +296,7 @@
     "Bici": "contenitore1",
     "Borsa": "contenitore1",
     "Calendario": "contenitore1",
-    "Calcio":"contenitore1",
+    "Calcio": "contenitore1",
     "Giochi": "contenitore3",
     "Info_Paesi_Stati": "contenitore2",
     "Matematica": "contenitore3",
@@ -301,6 +306,6 @@
     "Pokemon": "contenitore1",
     "Random": "contenitore3",
     "Salute": "contenitore1",
-    "Temperatura":"contenitore1"
+    "Temperatura": "contenitore1"
   }
 }

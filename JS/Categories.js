@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const searchInput = document.getElementById("searchInput");
   const projectSearchInput = document.getElementById("projectSearchInput");
   const noProjectsFound = document.getElementById("noProjectsFound");
+  const noCategoriesFound = document.getElementById("noCategoriesFound"); // Nuovo elemento
   const menuToggle = document.querySelector(".menu-toggle");
 
   // Category icons mapping
@@ -49,19 +50,21 @@ document.addEventListener("DOMContentLoaded", function () {
     setupEventListeners(data);
   }
 
-  // Render category cards
+  // Render category cards (sorted alphabetically)
   function renderCategories(categories) {
     categoriesGrid.innerHTML = "";
 
-    Object.keys(categories).forEach((categoryName) => {
-      const displayName = categoryName.replace(/_/g, " ");
-      const iconClass = categoryIcons[categoryName] || "fa-folder";
+    Object.keys(categories)
+      .sort((a, b) => a.replace(/_/g, " ").localeCompare(b.replace(/_/g, " ")))
+      .forEach((categoryName) => {
+        const displayName = categoryName.replace(/_/g, " ");
+        const iconClass = categoryIcons[categoryName] || "fa-folder";
 
-      const categoryCard = document.createElement("div");
-      categoryCard.className = "category-card fade-in";
-      categoryCard.dataset.category = categoryName;
+        const categoryCard = document.createElement("div");
+        categoryCard.className = "category-card fade-in";
+        categoryCard.dataset.category = categoryName;
 
-      categoryCard.innerHTML = `
+        categoryCard.innerHTML = `
           <div class="category-card-content">
             <i class="fas ${iconClass} category-icon"></i>
             <h3>${displayName}</h3>
@@ -69,21 +72,27 @@ document.addEventListener("DOMContentLoaded", function () {
           </div>
         `;
 
-      categoriesGrid.appendChild(categoryCard);
-    });
+        categoriesGrid.appendChild(categoryCard);
+      });
   }
 
-  // Render projects for a specific category
+  // Render projects for a specific category (sorted alphabetically)
   function renderProjects(categoryName, projects) {
     projectsGrid.innerHTML = "";
     categoryTitle.textContent = categoryName.replace(/_/g, " ");
 
-    projects.forEach((project) => {
-      const projectCard = document.createElement("div");
-      projectCard.className = "project-card fade-in";
-      projectCard.dataset.name = project.name.toLowerCase();
+    // Nascondi il messaggio "nessun progetto trovato" all'inizio
+    noProjectsFound.style.display = "none";
 
-      projectCard.innerHTML = `
+    projects
+      .slice()
+      .sort((a, b) => a.name.localeCompare(b.name))
+      .forEach((project) => {
+        const projectCard = document.createElement("div");
+        projectCard.className = "project-card fade-in";
+        projectCard.dataset.name = project.name.toLowerCase();
+
+        projectCard.innerHTML = `
           <div class="project-card-content">
             <h3>${project.name}</h3>
             <div class="project-card-footer">
@@ -94,8 +103,8 @@ document.addEventListener("DOMContentLoaded", function () {
           </div>
         `;
 
-      projectsGrid.appendChild(projectCard);
-    });
+        projectsGrid.appendChild(projectCard);
+      });
 
     // Show projects section
     projectsSection.style.display = "block";
@@ -120,6 +129,9 @@ document.addEventListener("DOMContentLoaded", function () {
         card.style.display = "none";
       }
     });
+
+    // Mostra o nascondi il messaggio "nessuna categoria trovata"
+    noCategoriesFound.style.display = visibleCount === 0 ? "block" : "none";
   }
 
   // Filter projects based on search input
@@ -138,6 +150,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
 
+    // Mostra o nascondi il messaggio "nessun progetto trovato"
     noProjectsFound.style.display = visibleCount === 0 ? "block" : "none";
   }
 
@@ -153,6 +166,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
       if (projects) {
         renderProjects(categoryName, projects);
+        // Reset project search input
+        projectSearchInput.value = "";
       }
     });
 

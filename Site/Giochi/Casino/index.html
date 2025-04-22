@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Casino Slot Machine</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+  <div class="background-overlay"></div>
+
+  <div class="casino-container">
+    <header>
+      <div class="logo">
+        <i class="fas fa-dice"></i>
+        <h1>Lucky Spin Casino</h1>
+      </div>
+      <div class="stats">
+        <div class="stat-item">
+          <span class="stat-label">Crediti</span>
+          <span id="credits" class="stat-value">1000</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Vincite</span>
+          <span id="wins" class="stat-value">0</span>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <div class="game-container">
+        <div class="machine">
+          <div class="machine-top">
+            <div class="lights">
+              <div class="light"></div>
+              <div class="light"></div>
+              <div class="light"></div>
+              <div class="light"></div>
+              <div class="light"></div>
+            </div>
+          </div>
+
+          <div class="reels-container">
+            <div class="reel-window">
+              <div id="reel1" class="reel">
+                <div class="reel-strip"></div>
+              </div>
+              <button id="stop1" class="stop-button">STOP</button>
+            </div>
+
+            <div class="reel-window">
+              <div id="reel2" class="reel">
+                <div class="reel-strip"></div>
+              </div>
+              <button id="stop2" class="stop-button">STOP</button>
+            </div>
+
+            <div class="reel-window">
+              <div id="reel3" class="reel">
+                <div class="reel-strip"></div>
+              </div>
+              <button id="stop3" class="stop-button">STOP</button>
+            </div>
+
+            <div class="reel-window">
+              <div id="reel4" class="reel">
+                <div class="reel-strip"></div>
+              </div>
+              <button id="stop4" class="stop-button">STOP</button>
+            </div>
+          </div>
+
+          <!-- Aggiungi questo codice nella sezione machine-bottom, prima di result-display -->
+          <div class="timer-container"></div>
+
+          <div class="machine-bottom">
+            <div class="result-display">
+              <div id="result-message">Premi SPIN per iniziare</div>
+              <div id="win-amount" class="win-amount hidden">+0</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="controls-panel">
+          <div class="game-settings">
+            <div class="setting">
+              <label for="gameType">Tipo di Gioco:</label>
+              <select id="gameType" class="control-input">
+                <option value="briscola">Briscola</option>
+                <option value="scala40">Scala 40</option>
+                <option value="regioni">Regioni</option>
+                <option value="regioni_briscola">Regioni e Briscola</option>
+                <option value="regioni_scala">Regioni e Scala 40</option>
+                <option value="briscola_scala40">Briscola e Scala 40</option>
+                <option value="All">Tutto</option>
+              </select>
+            </div>
+
+            <div class="setting">
+              <label for="betAmount">Puntata:</label>
+              <div class="bet-controls">
+                <button id="decreaseBet" class="bet-button"><i class="fas fa-minus"></i></button>
+                <span id="betAmount" class="bet-amount">10</span>
+                <button id="increaseBet" class="bet-button"><i class="fas fa-plus"></i></button>
+              </div>
+            </div>
+          </div>
+
+          <div class="action-buttons">
+            <button id="maxBetButton" class="control-button max-bet">
+              <i class="fas fa-coins"></i>
+              <span>MAX BET</span>
+            </button>
+
+            <button id="spinButton" class="control-button spin">
+              <i class="fas fa-play"></i>
+              <span>SPIN</span>
+            </button>
+
+            <button id="autoSpinButton" class="control-button auto">
+              <i class="fas fa-sync-alt"></i>
+              <span>AUTO</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <div id="jackpot-modal" class="modal">
+      <div class="modal-content">
+        <h2>JACKPOT!</h2>
+        <p>Hai vinto il jackpot!</p>
+        <div class="jackpot-amount">+<span id="jackpot-value">500</span></div>
+        <button id="closeJackpot" class="modal-button">CONTINUA</button>
+      </div>
+    </div>
+
+    <div id="game-over-modal" class="modal">
+      <div class="modal-content">
+        <h2>GAME OVER</h2>
+        <p>Hai finito i crediti!</p>
+        <button id="restartGame" class="modal-button">RICOMINCIA</button>
+      </div>
+    </div>
+
+    <footer>
+      <p>© 2025 Lucky Spin Casino - Solo per divertimento, non si vince denaro reale</p>
+    </footer>
+  </div>
+
+  <div id="confetti-container" class="confetti-container"></div>
+
+  <script src="script.js"></script>
+</body>
+
+</html>

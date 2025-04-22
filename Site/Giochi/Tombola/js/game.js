@@ -4,10 +4,14 @@ let extractedNumbers = new Set();
 let isFirstStart = true;
 let gameStarted = false;
 let currentNumber = null;
+let autoGenerateInterval = null;
+let secondsInterval = 3; // Default interval in seconds
 
 // DOM Elements
 const extractBtn = document.getElementById("extractBtn");
 const resetBtn = document.getElementById("resetBtn");
+const autoBtn = document.getElementById("autoBtn");
+const intervalInput = document.getElementById("intervalInput");
 const currentNumberDisplay = document.getElementById("currentNumber");
 const extractedNumbersList = document.getElementById("extractedNumbersList");
 const tombolaContainer = document.getElementById("tombola-container");
@@ -35,6 +39,16 @@ async function initGame() {
   // Add event listeners
   extractBtn.addEventListener("click", startGame);
   resetBtn.addEventListener("click", resetGame);
+
+  // Auto-generate event listeners
+  if (autoBtn) {
+    autoBtn.addEventListener("click", toggleAutoGenerate);
+  }
+
+  if (intervalInput) {
+    intervalInput.addEventListener("change", updateInterval);
+    intervalInput.value = secondsInterval;
+  }
 
   // Update UI
   updateUI();
@@ -78,14 +92,81 @@ function startGame() {
     speechSynthesis.speak(new SpeechSynthesisUtterance("Si inizia!"));
     isFirstStart = false;
     gameStarted = true;
+    extractBtn.innerHTML = '<i class="fas fa-random"></i> Estrai Numero';
     return;
   }
   extractRandom();
 }
 
+
+function toggleAutoGenerate() {
+  if (autoGenerateInterval) {
+    // Stop auto-generation
+    clearInterval(autoGenerateInterval);
+    autoGenerateInterval = null;
+    autoBtn.innerHTML = '<i class="fas fa-play"></i> Avvia Automatico';
+    autoBtn.classList.remove("danger");
+    autoBtn.classList.add("success");
+    intervalInput.disabled = false;
+
+    // Announce stop
+    speechSynthesis.speak(
+      new SpeechSynthesisUtterance("Estrazione automatica fermata")
+    );
+  } else {
+    // Start auto-generation
+    if (isFirstStart) {
+      // Initialize game if it's the first start
+      startGame();
+    }
+
+    // Make sure we have numbers to extract
+    if (numbers.length <= 0) {
+      alert("Tutti i numeri sono stati estratti!");
+      return;
+    }
+
+    // Set up the UI first
+    secondsInterval = parseInt(intervalInput.value) || 3;
+    autoBtn.innerHTML = '<i class="fas fa-pause"></i> Ferma Automatico';
+    autoBtn.classList.remove("success");
+    autoBtn.classList.add("danger");
+    intervalInput.disabled = true;
+
+    // Extract the first number immediately
+    extractRandom();
+
+    // Then announce the automatic extraction
+    speechSynthesis.speak(
+      new SpeechSynthesisUtterance(
+        `Estrazione automatica ogni ${secondsInterval} secondi`
+      )
+    );
+
+    // Finally, start the interval for subsequent numbers
+    autoGenerateInterval = setInterval(extractRandom, secondsInterval * 1000);
+  }
+}
+// Update interval time
+function updateInterval() {
+  const value = parseInt(intervalInput.value);
+  if (value && value > 0) {
+    secondsInterval = value;
+  } else {
+    intervalInput.value = secondsInterval;
+  }
+}
+
 // Extract a random number
 function extractRandom() {
-  if (numbers.length <= 0) return;
+  if (numbers.length <= 0) {
+    // If auto-generate is running, stop it
+    if (autoGenerateInterval) {
+      toggleAutoGenerate();
+      alert("Tutti i numeri sono stati estratti!");
+    }
+    return;
+  }
 
   const idx = Math.floor(Math.random() * numbers.length);
   const num = numbers[idx];
@@ -159,19 +240,39 @@ function updateUI() {
     currentNumberDisplay.querySelector("span").textContent = "?";
   }
 
+  // Update extracted numbers list
+  if (extractedNumbersList) {
+    extractedNumbersList.innerHTML = "";
 
-  const sortedNumbers = Array.from(extractedNumbers).sort((a, b) => a - b);
+    const sortedNumbers = Array.from(extractedNumbers).sort((a, b) => a - b);
 
-  sortedNumbers.forEach((number) => {
-    const numberTag = document.createElement("div");
-    numberTag.className = "number-tag";
-    numberTag.textContent = number;
-    extractedNumbersList.appendChild(numberTag);
-  });
+    sortedNumbers.forEach((number) => {
+      const numberTag = document.createElement("div");
+      numberTag.className = "number-tag";
+      numberTag.textContent = number;
+      extractedNumbersList.appendChild(numberTag);
+    });
+  }
 }
 
 // Reset the game
 function resetGame() {
+  // Stop auto-generation if it's running
+  if (autoGenerateInterval) {
+    clearInterval(autoGenerateInterval);
+    autoGenerateInterval = null;
+
+    if (autoBtn) {
+      autoBtn.innerHTML = '<i class="fas fa-play"></i> Avvia Automatico';
+      autoBtn.classList.remove("danger");
+      autoBtn.classList.add("success");
+    }
+
+    if (intervalInput) {
+      intervalInput.disabled = false;
+    }
+  }
+
   // Announce reset
   speechSynthesis.speak(new SpeechSynthesisUtterance("Tabellone resettato!"));
 
@@ -188,6 +289,11 @@ function resetGame() {
 
   // Update UI
   updateUI();
+
+  // Reset extract button text
+  if (extractBtn) {
+    extractBtn.innerHTML = '<i class="fas fa-random"></i> Estrai Numero';
+  }
 
   // After a short delay, announce "Si inizia!" again
   setTimeout(() => {

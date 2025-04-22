@@ -6,6 +6,20 @@ let currentPlayer = "rosso",
   winningDirections = [],
   gameOver = false;
 
+// Variabili per il sistema di punteggio
+let scores = {
+  rosso: {
+    wins: 0,
+    yellowCards: 0,
+    redCards: 0,
+  },
+  giallo: {
+    wins: 0,
+    yellowCards: 0,
+    redCards: 0,
+  },
+};
+
 // Funzione per caricare le direzioni di vittoria dal file JSON
 async function loadWinningDirections() {
   try {
@@ -60,6 +74,9 @@ function createBoard() {
     }
   }
   resetGame();
+  loadScores(); // Carica i punteggi salvati
+  updateScoreDisplay(); // Aggiorna la visualizzazione dei punteggi
+  initializeTimeline(); // Inizializza la timeline
 }
 
 // Funzione per ottenere la riga vuota in cui posizionare la pedina
@@ -207,6 +224,13 @@ function dropPiece(col) {
       `Cella con gettone ${currentPlayer}, riga ${row + 1}, colonna ${col + 1}`
     );
 
+    // Aggiungi evento alla timeline
+    addTimelineEvent(
+      `Giocatore ${currentPlayer} ha inserito un gettone nella colonna ${
+        col + 1
+      }`
+    );
+
     // Aggiungi feedback sonoro (opzionale)
     playDropSound();
 
@@ -214,11 +238,24 @@ function dropPiece(col) {
     if (checkWin(row, col)) {
       gameOver = true; // Impedisce di continuare a giocare
       highlightWinningCellsAnimation();
+
+      // Aggiorna il punteggio
+      scores[currentPlayer].wins++;
+      saveScores();
+      updateScoreDisplay();
+
+      // Aggiorna la timeline
+      addTimelineEvent(`Giocatore ${currentPlayer} ha vinto la partita!`, true);
+
       updateWinnerMessage(
         `Il ${currentPlayer === "rosso" ? "Rosso" : "Giallo"} ha vinto! 🏆🎉`
       );
     } else if (isBoardFull()) {
       gameOver = true;
+
+      // Aggiorna la timeline
+      addTimelineEvent(`Partita terminata in pareggio!`, true);
+
       updateWinnerMessage("Pareggio! 😲 Nessuno ha vinto.");
     } else {
       currentPlayer = currentPlayer === "rosso" ? "giallo" : "rosso";
@@ -284,6 +321,9 @@ function resetGame() {
   currentPlayer = "rosso";
   updateCurrentPlayerIndicator();
 
+  // Aggiungi evento alla timeline
+  addTimelineEvent("Nuova partita iniziata");
+
   // Annuncia il reset del gioco per screen reader
   announceForScreenReader("Nuova partita iniziata. Turno del giocatore rosso.");
 }
@@ -321,6 +361,155 @@ function updateWinnerMessage(message) {
 
   // Annuncia il messaggio per screen reader
   announceForScreenReader(message);
+}
+
+// Funzioni per il sistema di punteggio
+function updateScoreDisplay() {
+  // Aggiorna i valori visualizzati
+  document.getElementById("rossoWins").textContent = scores.rosso.wins;
+  document.getElementById("rossoYellowCards").textContent =
+    scores.rosso.yellowCards;
+  document.getElementById("rossoRedCards").textContent = scores.rosso.redCards;
+
+  document.getElementById("gialloWins").textContent = scores.giallo.wins;
+  document.getElementById("gialloYellowCards").textContent =
+    scores.giallo.yellowCards;
+  document.getElementById("gialloRedCards").textContent =
+    scores.giallo.redCards;
+}
+
+function saveScores() {
+  localStorage.setItem("forza4Scores", JSON.stringify(scores));
+}
+
+function loadScores() {
+  const savedScores = localStorage.getItem("forza4Scores");
+  if (savedScores) {
+    scores = JSON.parse(savedScores);
+  }
+}
+
+function resetStats() {
+  // Conferma prima di resettare
+  if (confirm("Sei sicuro di voler azzerare tutte le statistiche?")) {
+    scores = {
+      rosso: {
+        wins: 0,
+        yellowCards: 0,
+        redCards: 0,
+      },
+      giallo: {
+        wins: 0,
+        yellowCards: 0,
+        redCards: 0,
+      },
+    };
+
+    saveScores();
+    updateScoreDisplay();
+
+    // Aggiorna la timeline
+    addTimelineEvent("Statistiche azzerate");
+
+    // Feedback per l'utente
+    announceForScreenReader("Statistiche azzerate con successo");
+  }
+}
+
+// Funzione per aggiungere cartellini
+function addCard(player, cardType) {
+  if (cardType === "yellow") {
+    scores[player].yellowCards++;
+    addTimelineEvent(`Cartellino GIALLO assegnato al giocatore ${player}`);
+  } else if (cardType === "red") {
+    scores[player].redCards++;
+    addTimelineEvent(`Cartellino ROSSO assegnato al giocatore ${player}`);
+  }
+
+  saveScores();
+  updateScoreDisplay();
+
+  // Animazione per evidenziare l'aggiornamento
+  const elementId = `${player}${cardType === "yellow" ? "Yellow" : "Red"}Cards`;
+  const element = document.getElementById(elementId);
+  element.classList.add("stat-updated");
+
+  setTimeout(() => {
+    element.classList.remove("stat-updated");
+  }, 600);
+}
+
+// Funzioni per la timeline
+function initializeTimeline() {
+  const timeline = document.getElementById("timeline");
+  timeline.innerHTML =
+    '<div class="empty-timeline">Nessun evento registrato</div>';
+}
+
+function addTimelineEvent(message, isImportant = false) {
+  const timeline = document.getElementById("timeline");
+
+  // Rimuovi il messaggio "vuoto" se presente
+  const emptyMessage = timeline.querySelector(".empty-timeline");
+  if (emptyMessage) {
+    timeline.removeChild(emptyMessage);
+  }
+
+  // Crea l'elemento dell'evento
+  const eventElement = document.createElement("div");
+
+  // Determina la classe in base al giocatore corrente
+  let eventClass = "timeline-event";
+  if (isImportant) {
+    eventClass += " important-event";
+  } else if (message.includes("Rosso") || message.includes("rosso")) {
+    eventClass += " rosso-event";
+  } else if (message.includes("Giallo") || message.includes("giallo")) {
+    eventClass += " giallo-event";
+  }
+
+  eventElement.className = eventClass;
+
+  // Ottieni l'ora corrente
+  const now = new Date();
+  const timeString = now.toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  });
+
+  // Determina l'icona appropriata
+  let icon = "🔄";
+  if (message.includes("vinto")) {
+    icon = "🏆";
+  } else if (message.includes("gettone")) {
+    icon = currentPlayer === "rosso" ? "🔴" : "🟡";
+  } else if (message.includes("GIALLO")) {
+    icon = "🟨";
+  } else if (message.includes("ROSSO")) {
+    icon = "🟥";
+  } else if (message.includes("pareggio")) {
+    icon = "🤝";
+  } else if (message.includes("Statistiche")) {
+    icon = "🗑️";
+  }
+
+  // Imposta il contenuto HTML
+  eventElement.innerHTML = `
+    <div class="timeline-event-icon">${icon}</div>
+    <div class="timeline-event-text">${message}</div>
+    <div class="timeline-event-time">${timeString}</div>
+  `;
+
+  // Aggiungi l'evento all'inizio della timeline
+  timeline.insertBefore(eventElement, timeline.firstChild);
+
+  // Limita il numero di eventi nella timeline (opzionale)
+  const maxEvents = 20;
+  const events = timeline.querySelectorAll(".timeline-event");
+  if (events.length > maxEvents) {
+    timeline.removeChild(events[events.length - 1]);
+  }
 }
 
 // Inizializza la griglia di gioco all'avvio della pagina
