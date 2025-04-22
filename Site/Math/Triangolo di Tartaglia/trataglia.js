@@ -19,9 +19,9 @@ function generateTriangle() {
   if (isNaN(number) || number < 1) {
     number = 1;
     numberInput.value = 1;
-  } else if (number > 20) {
-    number = 20;
-    numberInput.value = 20;
+  } else if (number > 10) {
+    number = 10;
+    numberInput.value = 10;
   }
 
   // Get output container
@@ -52,7 +52,7 @@ function generateTriangle() {
       const rowDiv = document.createElement("div");
       rowDiv.classList.add("triangle-row");
       rowDiv.style.opacity = "0";
-      rowDiv.style.transform = "translateY(20px)";
+      rowDiv.style.transform = "translateY(10px)";
       outputDiv.appendChild(rowDiv);
 
       // Add numbers to row with animation
@@ -165,8 +165,8 @@ document.head.insertAdjacentHTML(
 <style>
 .binomial-info {
   position: absolute;
-  top: 20px;
-  right: 20px;
+  top: 10px;
+  right: 10px;
   background-color: var(--color-light);
   border: 2px solid var(--color-gold);
   border-radius: var(--border-radius);
@@ -239,7 +239,7 @@ document.head.insertAdjacentHTML(
 
 .loading {
   position: relative;
-  min-height: 200px;
+  min-height: 100px;
 }
 
 .loading::after {
