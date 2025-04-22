@@ -1,29 +1,119 @@
 <!DOCTYPE html>
 <html lang="it">
-  <head>
-    <link
-      rel="icon"
-      href="https://i0.wp.com/www.albertopiccini.it/wp-content/uploads/2020/04/wheelofnames_1.png?resize=550%2C523&ssl=1"
-      type="image/jpg"
-    />
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Genera Nomi Casuali</title>
-    <link rel="stylesheet" href="stylename.css" />
-    <script src="scriptname.js" defer></script>
-  </head>
 
-  <body>
-    <h1>Genera Nomi Casuali</h1>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Generatore di Nomi Casuali</title>
+  <link rel="icon"
+    href="https://i0.wp.com/www.albertopiccini.it/wp-content/uploads/2020/04/wheelofnames_1.png?resize=550%2C523&ssl=1"
+    type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
 
-    <input type="text" id="nomeInput" placeholder="Inserisci un nome" />
-    <br /><br />
-    <button class="aggiungi" onclick="aggiungiNome()">Aggiungi Nome</button>
-    <br /><br />
-    <button id="generateButton">Genera Nome Casuale</button>
-    <br /><br />
+<body>
+  <div class="app-container">
+    <header>
+      <div class="logo">
+        <i class="fas fa-random"></i>
+      </div>
+      <h1>Generatore di Nomi Casuali</h1>
+      <p class="subtitle">Aggiungi nomi alla lista ed estrai un vincitore casuale</p>
+    </header>
 
-    <ul id="nomiInseriti"></ul>
-    <p id="nomeCasuale"></p>
-  </body>
+    <main>
+      <div class="input-section">
+        <div class="input-container">
+          <input type="text" id="nomeInput" placeholder="Inserisci un nome" autocomplete="off">
+          <button id="aggiungiButton" class="add-button">
+            <i class="fas fa-plus"></i>
+          </button>
+        </div>
+        <div class="quick-actions">
+          <button id="clearAllButton" class="action-button" title="Cancella tutti i nomi">
+            <i class="fas fa-trash-alt"></i>
+            <span>Cancella tutti</span>
+          </button>
+          <button id="importButton" class="action-button" title="Importa nomi">
+            <i class="fas fa-file-import"></i>
+            <span>Importa</span>
+          </button>
+          <button id="exportButton" class="action-button" title="Esporta nomi">
+            <i class="fas fa-file-export"></i>
+            <span>Esporta</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="names-section">
+        <div class="names-container">
+          <h2>
+            <i class="fas fa-list"></i>
+            Nomi nella lista
+            <span id="nameCount" class="name-count">0</span>
+          </h2>
+          <div class="names-list-container">
+            <ul id="nomiInseriti" class="names-list"></ul>
+            <div id="emptyState" class="empty-state">
+              <i class="fas fa-user-plus"></i>
+              <p>Aggiungi nomi alla lista per iniziare</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="result-section">
+        <button id="generateButton" class="generate-button">
+          <i class="fas fa-dice"></i>
+          <span>Estrai Nome Casuale</span>
+        </button>
+
+        <div id="resultContainer" class="result-container">
+          <div id="resultWheel" class="result-wheel">
+            <div id="resultDisplay" class="result-display">
+              <div id="nomeCasuale" class="random-name">Premi il pulsante per estrarre</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <p>Creato con <i class="fas fa-heart"></i> per semplificare le estrazioni casuali</p>
+    </footer>
+  </div>
+
+  <!-- Modal per importazione -->
+  <div id="importModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Importa Nomi</h3>
+        <button class="close-button" id="closeImportModal">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Inserisci i nomi separati da virgola o uno per riga:</p>
+        <textarea id="importText" rows="8" placeholder="Mario, Luigi, Peach&#10;Bowser&#10;Toad"></textarea>
+      </div>
+      <div class="modal-footer">
+        <button id="confirmImport" class="primary-button">Importa</button>
+        <button id="cancelImport" class="secondary-button">Annulla</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast notifications -->
+  <div id="toastContainer" class="toast-container"></div>
+
+  <!-- Confetti container -->
+  <div id="confettiContainer" class="confetti-container"></div>
+
+  <script src="script.js"></script>
+</body>
+
 </html>
