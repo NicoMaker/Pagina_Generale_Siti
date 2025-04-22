@@ -14,6 +14,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const toast = document.getElementById("toast");
   const toastMessage = document.getElementById("toastMessage");
   const toastClose = document.getElementById("toastClose");
+  const numberError = document.getElementById("numberError");
+  const exponentError = document.getElementById("exponentError");
 
   // Theme Toggle
   themeToggle.addEventListener("click", () => {
@@ -27,11 +29,37 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  // Support keyboard navigation for theme toggle
+  themeToggle.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      themeToggle.click();
+    }
+  });
+
   // Check for saved theme preference
   const savedTheme = localStorage.getItem("theme");
   if (savedTheme === "dark") {
     document.body.classList.add("dark-mode");
+  } else if (
+    savedTheme === null &&
+    window.matchMedia("(prefers-color-scheme: dark)").matches
+  ) {
+    // If no saved preference, check system preference
+    document.body.classList.add("dark-mode");
+    localStorage.setItem("theme", "dark");
   }
+
+  // Clear error messages when input changes
+  numberInput.addEventListener("input", () => {
+    numberInput.classList.remove("error");
+    numberError.textContent = "";
+  });
+
+  exponentInput.addEventListener("input", () => {
+    exponentInput.classList.remove("error");
+    exponentError.textContent = "";
+  });
 
   // Calculate Result
   calculateButton.addEventListener("click", () => {
@@ -68,13 +96,19 @@ document.addEventListener("DOMContentLoaded", () => {
       // Format result for display
       const formattedResult = formatResult(result);
 
-      // Update UI
+      // Update UI with animation
       resultEquation.innerHTML = equation;
       resultValue.textContent = formattedResult;
 
-      // Show result and hide placeholder
+      // Show result and hide placeholder with animation
       resultPlaceholder.style.display = "none";
       resultContent.style.display = "block";
+      resultContent.classList.add("fade-in");
+
+      // Remove animation class after animation completes
+      setTimeout(() => {
+        resultContent.classList.remove("fade-in");
+      }, 300);
 
       // Show success toast
       showToast("Calcolo completato con successo!", "success");
@@ -88,16 +122,21 @@ document.addEventListener("DOMContentLoaded", () => {
   function validateInputs() {
     let isValid = true;
 
+    // Reset error states
+    numberInput.classList.remove("error");
+    exponentInput.classList.remove("error");
+    numberError.textContent = "";
+    exponentError.textContent = "";
+
     // Check if number input is valid
     if (
       numberInput.value.trim() === "" ||
       isNaN(Number.parseFloat(numberInput.value))
     ) {
       numberInput.classList.add("error");
+      numberError.textContent = "Inserisci un numero valido.";
       showToast("Inserisci un numero valido.", "error");
       isValid = false;
-    } else {
-      numberInput.classList.remove("error");
     }
 
     // Check if exponent input is valid
@@ -106,19 +145,20 @@ document.addEventListener("DOMContentLoaded", () => {
       isNaN(Number.parseFloat(exponentInput.value))
     ) {
       exponentInput.classList.add("error");
+      exponentError.textContent = "Inserisci un esponente valido.";
       showToast("Inserisci un esponente valido.", "error");
       isValid = false;
-    } else {
-      exponentInput.classList.remove("error");
     }
 
     // Additional validation for root operation
-    if (operationSelect.value === "root") {
+    if (operationSelect.value === "root" && isValid) {
       const exponent = Number.parseFloat(exponentInput.value);
 
       // Check if exponent is zero
       if (exponent === 0) {
         exponentInput.classList.add("error");
+        exponentError.textContent =
+          "L'indice della radice non può essere zero.";
         showToast("L'indice della radice non può essere zero.", "error");
         isValid = false;
       }
@@ -127,6 +167,8 @@ document.addEventListener("DOMContentLoaded", () => {
       const number = Number.parseFloat(numberInput.value);
       if (number < 0 && exponent % 2 === 0) {
         numberInput.classList.add("error");
+        numberError.textContent =
+          "Non è possibile calcolare una radice di indice pari di un numero negativo.";
         showToast(
           "Non è possibile calcolare una radice di indice pari di un numero negativo.",
           "error"
@@ -186,6 +228,8 @@ document.addEventListener("DOMContentLoaded", () => {
     // Remove error classes
     numberInput.classList.remove("error");
     exponentInput.classList.remove("error");
+    numberError.textContent = "";
+    exponentError.textContent = "";
 
     // Focus on number input
     numberInput.focus();
