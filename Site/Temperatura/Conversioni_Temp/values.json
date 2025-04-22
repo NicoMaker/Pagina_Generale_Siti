@@ -11,7 +11,7 @@
       "toKelvin": "((temperature - 32) * 5 / 9) + 273.15"
     },
     "kelvin": {
-      "symbol": "°K",
+      "symbol": "K",
       "toCelsius": "temperature - 273.15",
       "toFahrenheit": "((temperature - 273.15) * 9 / 5) + 32"
     }
