@@ -68,7 +68,10 @@ document.addEventListener("DOMContentLoaded", function () {
           <div class="category-card-content">
             <i class="fas ${iconClass} category-icon"></i>
             <h3>${displayName}</h3>
-            <p>${categories[categoryName].length} progetti</p>
+            <p>${categories[categoryName].length} ${
+          categories[categoryName].length === 1 ? "progetto" : "progetti"
+        }</p>
+
           </div>
         `;
 
