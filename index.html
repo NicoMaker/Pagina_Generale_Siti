@@ -1,152 +1,114 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <link rel="stylesheet" href="stylegenerale.css" />
-    <link
-      rel="icon"
-      href="https://th.bing.com/th/id/OIP.-jLu0ZtLGW3rmhl8991jWwHaHa?rs=1&pid=ImgDetMain"
-      type="image/jpg"
-    />
+<html lang="it">
 
-    <meta name="author" content="Nico Maker" />
-    <meta name="language" content="italian" />
-    <meta
-      name="keyword"
-      content="Pagina Generale tutti i siti, WEB SITE, WEB APP, Nico Maker"
-    />
-    <meta name="generator" content="HTML, CSS, JS" />
-    <meta
-      name="description"
-      content="Nel Seguente sito si vedono tutti i miei siti realizzati"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/icon?family=Material+Icons"
-    />
-    <script src="JS/Hamburger.js" defer></script>
-    <script src="JS/Categories.js" defer></script>
-    <script type="module" src="JS/animation.js" defer></script>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pagina Generale Siti | Nico Maker</title>
+  <meta name="author" content="Nico Maker">
+  <meta name="language" content="italian">
+  <meta name="keywords" content="Pagina Generale tutti i siti, WEB SITE, WEB APP, Nico Maker">
+  <meta name="description" content="Nel Seguente sito si vedono tutti i miei siti realizzati">
+  <link rel="icon" href="https://th.bing.com/th/id/OIP.-jLu0ZtLGW3rmhl8991jWwHaHa?rs=1&pid=ImgDetMain" type="image/jpg">
+  <link rel="stylesheet" href="stylegenerale.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="JS/Categories.js"></script>
+</head>
 
-    <title>Pagina Generale Siti</title>
-  </head>
-
-  <body>
-    <br />
-    <a href="https://github.com/NicoMaker" target="_blank">
-      <img class="immagginelogo" src="Icons/Logo.jpg" />
-    </a>
-  
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-  
-    <h1>Pagina Generale Siti</h1>
-  
-    <div class="container_immagine">
-      <p id="noResultsMessage" style="display:none; color:red; text-align:center; font-size:24px; font-weight:bold; margin-bottom:20px;">Nessuna categoria trovata.</p>
-      <img class="immagine" src="Icons/Immagine_mondo.jpg" />
-      <img class="immagine" src="Icons/infinito.jpg" />
+<body>
+  <header class="header">
+    <div class="container">
+      <div class="header-content">
+        <a href="https://github.com/NicoMaker" target="_blank" class="logo">
+          <img src="https://th.bing.com/th/id/OIP.-jLu0ZtLGW3rmhl8991jWwHaHa?rs=1&pid=ImgDetMain" alt="Nico Maker Logo">
+          <span>Nico Maker</span>
+        </a>
+      </div>
     </div>
-  
-    <br />
-    <br />
-    <ul class="menu">
-      <br />
-      <br />
-      <h1>Menu dove trovi tutte le categorie dei siti scritti</h1>
-      <input type="text" id="searchInput" placeholder="Cerca..." />
-      <li><button onclick="displayCategory('Bici')">Bici</button></li>
-      <li><button onclick="displayCategory('Borsa')">Borsa</button></li>
-      <li><button onclick="displayCategory('Calendario')">Calendario</button></li>
-      <li><button onclick="displayCategory('Calcio')">Calcio</button></li>
-      <li><button onclick="displayCategory('Giochi')">Giochi</button></li>
-      <li><button onclick="displayCategory('Info_Paesi_Stati')">Info Paesi / Stati</button></li>
-      <li><button onclick="displayCategory('Matematica')">Matematica</button></li>
-      <li><button onclick="displayCategory('Natale')">Natale</button></li>
-      <li><button onclick="displayCategory('Opzioni_Con_Le_Frasi')">Opzioni con Le Frasi</button></li>
-      <li><button onclick="displayCategory('Pasqua')">Pasqua</button></li>
-      <li><button onclick="displayCategory('Pokemon')">Pokemon</button></li>
-      <li><button onclick="displayCategory('Random')">Random</button></li>
-      <li><button onclick="displayCategory('Salute')">Salute</button></li>
-      <li><button onclick="displayCategory('Temperatura')">Temperatura</button></li>
-  
-      <br />
-      <a href="https://github.com/NicoMaker" target="_blank">
-        <img class="immaginerobot" src="Icons/Robot.jpg" />
-      </a>
-      <br />
-      <br />
-      <h1>Contatti:</h1>
-  
-      <button class="Icona">
-        <a href="https://drive.google.com/file/d/1jouYKNyfHzE5lnQHvGRPCnzWrS_c2aas/view?usp=sharing" target="_blank">
-          <img class="Immagineicona" src="Icons/qr_code.png" />
-        </a>
-      </button>
-  
-      <button class="Icona">
-        <a href="https://github.com/NicoMaker/Pagina_Generale_Siti" target="_blank">
-          <img class="Immagineicona" src="Icons/GitHub.png" />
-        </a>
-      </button>
-  
-      <button class="Icona">
-        <a href="https://github.com/NicoMaker" target="_blank">
-          <img class="Immagineicona" src="Icons/Logo Scuro.jpg" />
-        </a>
-      </button>
-  
-      <button class="Icona" onclick=" contactEmail('Nicola.marano02@gmail.com','Pagina Generale Siti')">
-        <img class="Immagineicona" src="Icons/Gmail.png" />
-      </button>
-  
-      <button class="Icona" onclick=" contactCell()">
-        <img class="Immagineicona" src="Icons/Telefono.png" />
-      </button>
-  
-      <button class="Icona" onclick=" openWhatsAppChat()">
-        <img class="Immagineicona" src="Icons/Whatsapp.png" />
-      </button>
-      <br />
-      <br />
-      <br />
-    </ul>
-  
-    <button class="hamburger">
-      <i class="MenuIcon">
-        <span class="material-icons">menu</span>
-      </i>
-      <i class="CloseIcon">
-        <span class="material-icons">close</span>
-      </i>
-    </button>
-  
-    <div id="dati"></div>
-  
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-  
-    <footer>
-      <a href="https://drive.google.com/file/d/1jouYKNyfHzE5lnQHvGRPCnzWrS_c2aas/view?usp=sharing" target="_blank">
-        <p>&copy; Nico Maker Pagina Generale Siti</p>
-      </a>
-    </footer>
-  </body>
-  
+  </header>
+
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <h1>Pagina Generale Siti</h1>
+        <p>Esplora la mia collezione di progetti web organizzati per categoria</p>
+        <div class="hero-images">
+          <img src="Icons/Avatar.jpg" alt="Immagine mondo" class="hero-image">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="categories">
+    <div class="container">
+      <h2>Categorie</h2>
+      <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Cerca categoria..." aria-label="Cerca categoria">
+        <i class="fas fa-search search-icon"></i>
+      </div>
+      <div class="categories-grid" id="categoriesGrid">
+        <!-- Categories will be populated by JavaScript -->
+      </div>
+    </div>
+  </section>
+
+  <section class="projects" id="projectsSection">
+    <div class="container">
+      <div class="projects-header">
+        <h2 id="categoryTitle">Seleziona una categoria</h2>
+        <button class="back-button" id="backButton">
+          <i class="fas fa-arrow-left"></i> Torna alle categorie
+        </button>
+      </div>
+      <div class="search-container" id="projectSearchContainer">
+        <input type="text" id="projectSearchInput" placeholder="Cerca progetto..." aria-label="Cerca progetto">
+        <i class="fas fa-search search-icon"></i>
+      </div>
+      <div class="projects-grid" id="projectsGrid">
+        <!-- Projects will be populated by JavaScript -->
+      </div>
+      <p id="noProjectsFound" class="no-results">Nessun progetto trovato.</p>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-info">
+          <h3>Contatti</h3>
+          <div class="contact-buttons">
+            <a href="https://drive.google.com/file/d/1jouYKNyfHzE5lnQHvGRPCnzWrS_c2aas/view?usp=sharing" target="_blank"
+              class="contact-button" aria-label="QR Code">
+              <i class="fas fa-qrcode"></i>
+            </a>
+            <a href="https://github.com/NicoMaker/Pagina_Generale_Siti" target="_blank" class="contact-button"
+              aria-label="GitHub Repository">
+              <i class="fab fa-github"></i>
+            </a>
+            <a href="https://github.com/NicoMaker" target="_blank" class="contact-button" aria-label="GitHub Profile">
+              <i class="fas fa-code-branch"></i>
+            </a>
+            <button class="contact-button" onclick="contactEmail('Nicola.marano02@gmail.com','Pagina Generale Siti')"
+              aria-label="Email">
+              <i class="fas fa-envelope"></i>
+            </button>
+            <button class="contact-button" onclick="contactCell()" aria-label="Telefono">
+              <i class="fas fa-phone"></i>
+            </button>
+            <button class="contact-button" onclick="openWhatsAppChat()" aria-label="WhatsApp">
+              <i class="fab fa-whatsapp"></i>
+            </button>
+          </div>
+        </div>
+        <p class="copyright">
+          <a href="https://drive.google.com/file/d/1jouYKNyfHzE5lnQHvGRPCnzWrS_c2aas/view?usp=sharing" target="_blank">
+            &copy; Nico Maker Pagina Generale Siti
+          </a>
+        </p>
+      </div>
+    </div>
+  </footer>
+</body>
+
 </html>

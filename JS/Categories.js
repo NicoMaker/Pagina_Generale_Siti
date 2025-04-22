@@ -1,155 +1,205 @@
-async function loadCategoriesFromJSON() {
-  try {
-    const response = await fetch("JS/Categories.json"),
-      data = await response.json();
-    return data;
-  } catch (error) {
-    console.error("Errore durante il caricamento dei dati JSON:", error);
-    return null;
+document.addEventListener("DOMContentLoaded", function () {
+  // DOM Elements
+  const categoriesGrid = document.getElementById("categoriesGrid");
+  const projectsSection = document.getElementById("projectsSection");
+  const projectsGrid = document.getElementById("projectsGrid");
+  const categoryTitle = document.getElementById("categoryTitle");
+  const backButton = document.getElementById("backButton");
+  const searchInput = document.getElementById("searchInput");
+  const projectSearchInput = document.getElementById("projectSearchInput");
+  const noProjectsFound = document.getElementById("noProjectsFound");
+  const menuToggle = document.querySelector(".menu-toggle");
+
+  // Category icons mapping
+  const categoryIcons = {
+    Bici: "fa-bicycle",
+    Borsa: "fa-chart-line",
+    Calendario: "fa-calendar-alt",
+    Calcio: "fa-futbol",
+    Giochi: "fa-gamepad",
+    Info_Paesi_Stati: "fa-globe",
+    Matematica: "fa-calculator",
+    Natale: "fa-gifts",
+    Opzioni_Con_Le_Frasi: "fa-font",
+    Pasqua: "fa-egg",
+    Pokemon: "fa-dragon",
+    Random: "fa-random",
+    Salute: "fa-heartbeat",
+    Temperatura: "fa-temperature-high",
+  };
+
+  // Load categories and projects data
+  async function loadData() {
+    try {
+      const response = await fetch("JS/Categories.json");
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error("Error loading data:", error);
+      return null;
+    }
   }
-}
 
-function generateCategoryHTML(categoryName, category, categoryClasses) {
-  const containerClass = categoryClasses[categoryName],
-    sortedCategory = category.sort((a, b) => a.name.localeCompare(b.name)),
-    linksHTML = generateLinksHTML(sortedCategory, containerClass),
-    searchBarHTML = generateSearchBarHTML(categoryName);
+  // Initialize the application
+  async function init() {
+    const data = await loadData();
+    if (!data) return;
 
-  return `<h2>${categoryName}</h2><br>${searchBarHTML}<div class="container" id="categoryItemsContainer">${linksHTML}</div>`;
-}
-
-const generateLinksHTML = (sortedCategory, containerClass) =>
-    sortedCategory
-      .map(
-        (item) =>
-          `<div class="${containerClass}" data-name="${item.name.toLowerCase()}"><a href="${
-            item.link
-          }" target="_blank">${item.name}</a></div>`
-      )
-      .join(""),
-  generateSearchBarHTML = (categoryName) =>
-    `
-    <div class="category-search-container">
-      <input type="text" id="categoryItemSearch" placeholder="Cerca in ${categoryName}..." class="category-search-input">
-    </div>
-    <br> 
-    <div id="noItemsFound" class="no-items-found">Nessun elemento trovato.</div>
-  `;
-
-async function displayCategory(categoryName) {
-  const data = await loadCategoriesFromJSON();
-  if (data) {
-    const categories = data.categories,
-      categoryClasses = data.categoryClasses,
-      category = categories[categoryName];
-
-    if (category) {
-      document.getElementById("dati").innerHTML = generateCategoryHTML(
-        categoryName,
-        category,
-        categoryClasses
-      );
-      setupCategoryItemSearch();
-    } else console.error(`La categoria '${categoryName}' non è stata trovata.`);
+    renderCategories(data.categories);
+    setupEventListeners(data);
   }
-}
 
-function setupCategoryItemSearch() {
-  const searchInput = document.getElementById("categoryItemSearch"),
-    noItemsFound = document.getElementById("noItemsFound"),
-    itemsContainer = document.getElementById("categoryItemsContainer"),
-    allItems = itemsContainer.querySelectorAll("div[data-name]");
+  // Render category cards
+  function renderCategories(categories) {
+    categoriesGrid.innerHTML = "";
 
-  noItemsFound.style.display = "none";
+    Object.keys(categories).forEach((categoryName) => {
+      const displayName = categoryName.replace(/_/g, " ");
+      const iconClass = categoryIcons[categoryName] || "fa-folder";
 
-  searchInput.addEventListener("input", function () {
-    const searchTerm = this.value.toLowerCase().trim();
-    filterItems(allItems, searchTerm, noItemsFound);
-  });
-}
+      const categoryCard = document.createElement("div");
+      categoryCard.className = "category-card fade-in";
+      categoryCard.dataset.category = categoryName;
 
-function filterItems(allItems, searchTerm, noItemsFound) {
-  let visibleCount = 0;
+      categoryCard.innerHTML = `
+          <div class="category-card-content">
+            <i class="fas ${iconClass} category-icon"></i>
+            <h3>${displayName}</h3>
+            <p>${categories[categoryName].length} progetti</p>
+          </div>
+        `;
 
-  allItems.forEach((item) => {
-    const itemName = item.getAttribute("data-name");
-    if (itemName.includes(searchTerm)) {
-      item.style.display = "";
-      visibleCount++;
-    } else item.style.display = "none";
-  });
+      categoriesGrid.appendChild(categoryCard);
+    });
+  }
 
-  // Mostra o nascondi il messaggio "Nessun elemento trovato"
-  noItemsFound.style.display =
-    visibleCount === 0 && searchTerm !== "" ? "block" : "none";
-  adjustContainerLayout(visibleCount);
-}
+  // Render projects for a specific category
+  function renderProjects(categoryName, projects) {
+    projectsGrid.innerHTML = "";
+    categoryTitle.textContent = categoryName.replace(/_/g, " ");
 
-// Funzione per adattare il layout del contenitore in base al numero di elementi visibili
-function adjustContainerLayout(visibleCount) {
-  const itemsContainer = document.getElementById("categoryItemsContainer");
+    projects.forEach((project) => {
+      const projectCard = document.createElement("div");
+      projectCard.className = "project-card fade-in";
+      projectCard.dataset.name = project.name.toLowerCase();
 
-  if (visibleCount <= 3) itemsContainer.classList.add("adjusted-layout");
-  else itemsContainer.classList.remove("adjusted-layout");
-}
+      projectCard.innerHTML = `
+          <div class="project-card-content">
+            <h3>${project.name}</h3>
+            <div class="project-card-footer">
+              <a href="${project.link}" target="_blank" class="project-link">
+                Visita Progetto
+              </a>
+            </div>
+          </div>
+        `;
 
-// Funzione per generare il link per inviare un'email
-function contactEmail(emailsubject, subjetmail) {
-  const email = emailsubject,
-    subject = `info sul sito ${subjetmail}`,
-    mailtoLink = `mailto:${email}?subject=${encodeURIComponent(subject)}`;
+      projectsGrid.appendChild(projectCard);
+    });
 
-  window.location.href = mailtoLink;
-}
+    // Show projects section
+    projectsSection.style.display = "block";
+    // Scroll to projects section
+    projectsSection.scrollIntoView({ behavior: "smooth" });
+  }
 
-const contactCell = () => (window.location.href = "tel:+393337024320");
+  // Filter categories based on search input
+  function filterCategories(searchTerm) {
+    const categoryCards = document.querySelectorAll(".category-card");
+    let visibleCount = 0;
 
-function openWhatsAppChat() {
-  const phoneNumber = "+393337024320",
-    message = encodeURIComponent("*Info sul sito Pagina Generale Siti*");
-  window.location.href = `https://wa.me/${phoneNumber}?text=${message}`;
-}
+    categoryCards.forEach((card) => {
+      const categoryName = card.dataset.category
+        .toLowerCase()
+        .replace(/_/g, " ");
 
-// Funzione per la ricerca nel menu delle categorie
-function setupMenuSearch() {
-  const searchInput = document.getElementById("searchInput"),
-    menuItems = document.querySelectorAll(".menu li"),
-    menuContainer = document.querySelector(".menu"),
-    noResultsMessage = createNoResultsMessage(menuContainer);
+      if (categoryName.includes(searchTerm.toLowerCase())) {
+        card.style.display = "";
+        visibleCount++;
+      } else {
+        card.style.display = "none";
+      }
+    });
+  }
 
-  searchInput.addEventListener("input", function () {
-    const filter = searchInput.value.toLowerCase().trim();
-    let found = false;
+  // Filter projects based on search input
+  function filterProjects(searchTerm) {
+    const projectCards = document.querySelectorAll(".project-card");
+    let visibleCount = 0;
 
-    menuItems.forEach((item) => {
-      const button = item.querySelector("button");
-      if (button) {
-        const text = button.textContent.toLowerCase();
-        if (text.includes(filter)) {
-          item.style.display = "";
-          found = true;
-        } else item.style.display = "none";
+    projectCards.forEach((card) => {
+      const projectName = card.dataset.name;
+
+      if (projectName.includes(searchTerm.toLowerCase())) {
+        card.style.display = "";
+        visibleCount++;
+      } else {
+        card.style.display = "none";
       }
     });
 
-    noResultsMessage.style.display = found ? "none" : "block";
-  });
-}
+    noProjectsFound.style.display = visibleCount === 0 ? "block" : "none";
+  }
 
-// Funzione per creare il messaggio "Nessuna categoria trovata"
-function createNoResultsMessage(menuContainer) {
-  const noResultsMessage = document.createElement("li");
-  noResultsMessage.id = "noResultsMessage";
-  noResultsMessage.textContent = "Nessuna categoria trovata.";
-  noResultsMessage.style.color = "red";
-  noResultsMessage.style.textAlign = "center";
-  noResultsMessage.style.fontSize = "24px";
-  noResultsMessage.style.fontWeight = "bold";
-  noResultsMessage.style.display = "none";
+  // Setup event listeners
+  function setupEventListeners(data) {
+    // Category click event
+    categoriesGrid.addEventListener("click", function (e) {
+      const categoryCard = e.target.closest(".category-card");
+      if (!categoryCard) return;
 
-  menuContainer.appendChild(noResultsMessage);
-  return noResultsMessage;
-}
+      const categoryName = categoryCard.dataset.category;
+      const projects = data.categories[categoryName];
 
-// Inizializza la ricerca nel menu quando il documento è pronto
-document.addEventListener("DOMContentLoaded", setupMenuSearch);
+      if (projects) {
+        renderProjects(categoryName, projects);
+      }
+    });
+
+    // Back button click event
+    backButton.addEventListener("click", function () {
+      projectsSection.style.display = "none";
+      window.scrollTo({
+        top: document.querySelector(".categories").offsetTop - 80,
+        behavior: "smooth",
+      });
+    });
+
+    // Category search input event
+    searchInput.addEventListener("input", function () {
+      filterCategories(this.value);
+    });
+
+    // Project search input event
+    projectSearchInput.addEventListener("input", function () {
+      filterProjects(this.value);
+    });
+
+    // Menu toggle event
+    menuToggle.addEventListener("click", function () {
+      this.classList.toggle("active");
+      // Add mobile menu functionality here if needed
+    });
+  }
+
+  // Contact functions
+  window.contactEmail = function (email, subject) {
+    const mailtoLink = `mailto:${email}?subject=${encodeURIComponent(
+      `Info sul sito ${subject}`
+    )}`;
+    window.location.href = mailtoLink;
+  };
+
+  window.contactCell = function () {
+    window.location.href = "tel:+393337024320";
+  };
+
+  window.openWhatsAppChat = function () {
+    const phoneNumber = "+393337024320";
+    const message = encodeURIComponent("*Info sul sito Pagina Generale Siti*");
+    window.location.href = `https://wa.me/${phoneNumber}?text=${message}`;
+  };
+
+  // Initialize the app
+  init();
+});
