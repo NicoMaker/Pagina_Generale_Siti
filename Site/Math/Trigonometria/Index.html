@@ -1,38 +1,91 @@
 <!DOCTYPE html>
-<html>
+<html lang="it">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trigonometria</title>
-    <link rel="stylesheet" href="StyleTrigo.css" />
-    <link rel="icon" href="Trigo.gif" type="image/jpg">
-    <script src="Trigonometria.js" defer></script>
+    <title>Calcolatore Trigonometrico</title>
+    <link rel="stylesheet" href="StyleTrigo.css">
+    <link rel="icon"
+        href="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Trigo-vF0D1OW1tNtLxyPL7kunUkVUFfCiQM.gif"
+        type="image/gif">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap"
+        rel="stylesheet">
 </head>
 
 <body>
+    <div class="app-container">
+        <header>
+            <h1>Calcolatore Trigonometrico</h1>
+            <p class="subtitle">Calcola le funzioni trigonometriche di un angolo</p>
+        </header>
 
-    <h1>Calcolatore Trigonometria</h1>
+        <main>
+            <div class="card calculator">
+                <div class="input-group">
+                    <label for="gradi-radianti">Valore dell'angolo</label>
+                    <div class="input-wrapper">
+                        <input type="number" id="gradi-radianti" placeholder="Inserisci un valore">
+                    </div>
+                </div>
 
-    <input type="number" id="gradi-radianti" placeholder="Inserisci l'angolo">
-    <br>
-    <br>
-    <select id="options">
-        <option value="Grad">Gradi</option>
-        <option value="Rad">Radianti</option>
-    </select>
+                <div class="input-group">
+                    <label for="options">Unità di misura</label>
+                    <div class="select-wrapper">
+                        <select id="options">
+                            <option value="Grad">Gradi (°)</option>
+                            <option value="Rad">Radianti (rad)</option>
+                        </select>
+                    </div>
+                </div>
 
-    <br>
-    <br>
+                <button id="calculate-btn" onclick="CalculateTrigonometrics()">
+                    <span>Calcola</span>
+                </button>
+            </div>
 
-    <button onclick="CalculateTrigonometrics()">Calcola il numero</button>
+            <div class="card visualization">
+                <h2>Visualizzazione sul cerchio unitario</h2>
+                <div class="unit-circle">
+                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Trigo-vF0D1OW1tNtLxyPL7kunUkVUFfCiQM.gif"
+                        alt="Cerchio unitario trigonometrico" id="circle-img">
+                    <div class="angle-indicator" id="angle-indicator"></div>
+                </div>
+                <div class="circle-legend">
+                    <div class="legend-item">
+                        <span class="color-box sin"></span>
+                        <span>sin α</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="color-box cos"></span>
+                        <span>cos α</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="color-box tan"></span>
+                        <span>tan α</span>
+                    </div>
+                </div>
+            </div>
 
-    <br>
-    <br>
-    <img src="Trigo.gif">
-    <br>
-    <div id="risultato"></div>
+            <div class="card results" id="results-card">
+                <h2>Risultati</h2>
+                <div id="risultato" class="results-container">
+                    <div class="placeholder-text">I risultati appariranno qui dopo il calcolo</div>
+                </div>
+            </div>
+        </main>
 
+        <footer>
+            <div class="footer-content">
+                <p>Creato per l'apprendimento della trigonometria</p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="Trigonometria.js"></script>
 </body>
 
 </html>

@@ -1,28 +1,128 @@
 <!DOCTYPE html>
-<html>
+<html lang="it">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="https://images.redooc.com/images/lessons/9b/e1/d2/a7/numeri-primi_jpg_90q788w.jpg" type="image/jpg">
-    <title>Verifica Numeri Primi Precedenti</title>
+    <title>Esploratore Numeri Primi</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="Numeri_primi.jpg" type="image/jpg">
-    <script src = "script.js" defer>
-    </script>
+    <link rel="icon"
+        href="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Numeri_primi.jpg-5vrNRT3X7xgJdyMiGAzizRcLz4PyJF.jpeg"
+        type="image/jpeg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Roboto:wght@400;500&display=swap"
+        rel="stylesheet">
 </head>
+
 <body>
-    <div class="container">
-        <h1>Verifica Numeri Primi Precedenti</h2>
-        <label for="number">Inserisci un numero  per vedere i suoi numeri primi precedenti:</label>
-        <br>
-        <br>
-        <input type="number" id="number" />
-        <br>
-        <br>
-        <button onclick="checkPrime()">Verifica</button>
-        <br>
-        <br>
-        <div id="result"></div>
+    <div class="app-container">
+        <header>
+            <div class="logo-container">
+                <div class="logo-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="8" x2="12" y2="16"></line>
+                        <line x1="8" y1="12" x2="16" y2="12"></line>
+                    </svg>
+                </div>
+                <h1>Esploratore Numeri Primi</h1>
+            </div>
+            <p class="subtitle">Scopri tutti i numeri primi precedenti a un numero dato</p>
+        </header>
+
+        <main>
+            <div class="card input-card">
+                <div class="input-section">
+                    <label for="number">Inserisci un numero</label>
+                    <div class="input-wrapper">
+                        <input type="number" id="number" min="2" placeholder="Es. 100" aria-describedby="input-hint">
+                        <button class="clear-btn" id="clear-btn" title="Cancella">×</button>
+                    </div>
+                    <p id="input-hint" class="input-hint">Inserisci un numero maggiore di 1</p>
+                </div>
+
+                <div class="button-group">
+                    <button id="check-btn" onclick="checkPrime()" class="primary-btn">
+                        <span class="btn-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <polyline points="9 11 12 14 22 4"></polyline>
+                                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+                            </svg>
+                        </span>
+                        <span>Trova Numeri Primi</span>
+                    </button>
+
+                    <button id="random-btn" onclick="generateRandom()" class="secondary-btn">
+                        <span class="btn-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                            </svg>
+                        </span>
+                        <span>Numero Casuale</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="card result-card" id="result-card">
+                <div class="result-header">
+                    <h2>Risultati</h2>
+                    <div class="result-actions">
+                        <button id="copy-btn" class="icon-btn" title="Copia risultati">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div id="result" class="result-content">
+                    <div class="placeholder-text">I risultati appariranno qui dopo la ricerca</div>
+                </div>
+            </div>
+
+            <div class="card info-card">
+                <h2>Cosa sono i numeri primi?</h2>
+                <p>Un numero primo è un numero naturale maggiore di 1 che non è divisibile per alcun numero naturale
+                    eccetto 1 e se stesso.</p>
+                <p>I primi numeri primi sono: 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, ...</p>
+
+                <div class="prime-examples">
+                    <div class="example">
+                        <div class="example-number prime">7</div>
+                        <div class="example-text">7 è primo perché è divisibile solo per 1 e 7</div>
+                    </div>
+                    <div class="example">
+                        <div class="example-number not-prime">6</div>
+                        <div class="example-text">6 non è primo perché è divisibile per 1, 2, 3 e 6</div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <div class="visualization-container" id="visualization-container">
+            <h2>Visualizzazione</h2>
+            <div class="number-grid" id="number-grid"></div>
+        </div>
+
+        <footer>
+            <p>Creato per l'apprendimento della matematica</p>
+        </footer>
     </div>
+
+    <script src="script.js"></script>
 </body>
+
 </html>

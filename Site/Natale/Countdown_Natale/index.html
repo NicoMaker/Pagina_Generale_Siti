@@ -1,37 +1,210 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="styles.css" />
-    <script src="script.js" defer></script>
-    <title>Il Mio Sito di Natale</title>
-    <link
-      rel="icon"
-      href="https://th.bing.com/th/id/OIP.HfBuXKpL3Dx7co030UYHEQHaI4?rs=1&pid=ImgDetMain"
-      type="image/jpg"
-    />
-  </head>
+<html lang="it">
 
-  <body>
-    <header>
-      <h1>Benvenuto nel Mio Sito di Natale!</h1>
-    </header>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Countdown di Natale</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="https://th.bing.com/th/id/OIP.HfBuXKpL3Dx7co030UYHEQHaI4?rs=1&pid=ImgDetMain" type="image/jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Playfair+Display:wght@700;900&family=Poppins:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <script src="script.js" defer></script>
+</head>
 
-    <main>
-      <section id="countdown">
-        <h2>Countdown to Christmas</h2>
-        <img
-          src="https://th.bing.com/th/id/OIP.HfBuXKpL3Dx7co030UYHEQHaI4?rs=1&pid=ImgDetMain"
-        />
-        <div id="timer"></div>
-      </section>
-    </main>
+<body>
+  <div class="snowfall-container" id="snowfall-container"></div>
 
-    <footer>
-      <p id="anno"></p>
-    </footer>
-  </body>
+  <header>
+    <div class="nav-container">
+      <div class="logo">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="logo-icon">
+          <path d="M12 2L14.5 9H21l-5.5 4 2.5 7-6-4.5-6 4.5 2.5-7L3 9h6.5L12 2z"></path>
+        </svg>
+        <span>Natale <span id="current-year">2025</span></span>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="#countdown-section">Countdown</a></li>
+          <li><a href="#traditions-section">Tradizioni</a></li>
+          <li><a href="#wishes-section">Auguri</a></li>
+        </ul>
+      </nav>
+      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark/light mode">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="moon">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="sun">
+          <circle cx="12" cy="12" r="5"></circle>
+          <line x1="12" y1="1" x2="12" y2="3"></line>
+          <line x1="12" y1="21" x2="12" y2="23"></line>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+          <line x1="1" y1="12" x2="3" y2="12"></line>
+          <line x1="21" y1="12" x2="23" y2="12"></line>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <section id="countdown-section" class="hero">
+      <div class="container">
+        <h1>Countdown per <span class="accent">Natale</span></h1>
+        <p class="subtitle">La magia del Natale sta arrivando</p>
+
+        <div class="countdown-container">
+          <div class="countdown-wrapper">
+            <div class="countdown-box">
+              <div class="countdown-value" id="days">00</div>
+              <div class="countdown-label">Giorni</div>
+            </div>
+            <div class="countdown-box">
+              <div class="countdown-value" id="hours">00</div>
+              <div class="countdown-label">Ore</div>
+            </div>
+            <div class="countdown-box">
+              <div class="countdown-value" id="minutes">00</div>
+              <div class="countdown-label">Minuti</div>
+            </div>
+            <div class="countdown-box">
+              <div class="countdown-value" id="seconds">00</div>
+              <div class="countdown-label">Secondi</div>
+            </div>
+          </div>
+
+          <div class="celebration-message" id="celebration-message">
+            <h2>Buon Natale!</h2>
+            <p>Che questo Natale porti gioia e felicità a te e alla tua famiglia!</p>
+            <button id="celebrate-btn" class="celebrate-btn">Festeggia!</button>
+          </div>
+        </div>
+
+        <div class="decoration">
+          <div class="christmas-tree">
+            <img src="https://th.bing.com/th/id/OIP.HfBuXKpL3Dx7co030UYHEQHaI4?rs=1&pid=ImgDetMain" alt="Christmas Tree"
+              class="christmas-img">
+            <div class="tree-lights" id="tree-lights"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="traditions-section" class="traditions">
+      <div class="container">
+        <h2>Tradizioni Natalizie</h2>
+        <div class="traditions-grid">
+          <div class="tradition-card">
+            <div class="tradition-icon">🎄</div>
+            <h3>L'Albero di Natale</h3>
+            <p>Decorare l'albero di Natale è una tradizione che risale al XVI secolo in Germania. Oggi è un simbolo
+              universale delle festività natalizie.</p>
+          </div>
+          <div class="tradition-card">
+            <div class="tradition-icon">🎅</div>
+            <h3>Babbo Natale</h3>
+            <p>La figura di Babbo Natale, che porta doni ai bambini buoni, è ispirata a San Nicola, un vescovo greco
+              noto per la sua generosità.</p>
+          </div>
+          <div class="tradition-card">
+            <div class="tradition-icon">🍪</div>
+            <h3>Biscotti e Latte</h3>
+            <p>Lasciare biscotti e latte per Babbo Natale è una tradizione americana che si è diffusa in tutto il mondo
+              come segno di gratitudine.</p>
+          </div>
+          <div class="tradition-card">
+            <div class="tradition-icon">🎁</div>
+            <h3>Scambio di Regali</h3>
+            <p>Lo scambio di regali simboleggia i doni portati dai Re Magi a Gesù e rappresenta l'amore e la generosità
+              dello spirito natalizio.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="wishes-section" class="wishes">
+      <div class="container">
+        <h2>Auguri di Natale</h2>
+        <div class="wishes-form">
+          <p>Scrivi il tuo augurio di Natale e condividilo con il mondo!</p>
+          <div class="form-group">
+            <input type="text" id="wish-name" placeholder="Il tuo nome">
+            <textarea id="wish-text" placeholder="Il tuo augurio di Natale..."></textarea>
+            <button id="submit-wish" class="submit-btn">Invia Augurio</button>
+          </div>
+        </div>
+        <div class="wishes-wall" id="wishes-wall">
+          <div class="wish-card">
+            <p class="wish-text">"Che il calore del Natale riempia i vostri cuori di gioia e le vostre case di amore."
+            </p>
+            <p class="wish-author">- Marco</p>
+          </div>
+          <div class="wish-card">
+            <p class="wish-text">"Auguro a tutti un Natale sereno e un nuovo anno pieno di speranza e felicità."</p>
+            <p class="wish-author">- Sofia</p>
+          </div>
+          <div class="wish-card">
+            <p class="wish-text">"Che la magia del Natale porti pace e gioia in ogni casa e in ogni cuore."</p>
+            <p class="wish-author">- Luca</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-logo">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="logo-icon">
+            <path d="M12 2L14.5 9H21l-5.5 4 2.5 7-6-4.5-6 4.5 2.5-7L3 9h6.5L12 2z"></path>
+          </svg>
+          <p>Countdown di Natale</p>
+        </div>
+        <div class="footer-links">
+          <a href="#countdown-section">Countdown</a>
+          <a href="#traditions-section">Tradizioni</a>
+          <a href="#wishes-section">Auguri</a>
+        </div>
+        <div class="footer-social">
+          <a href="#" aria-label="Facebook">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+            </svg>
+          </a>
+          <a href="#" aria-label="Twitter">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path
+                d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z">
+              </path>
+            </svg>
+          </a>
+          <a href="#" aria-label="Instagram">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+            </svg>
+          </a>
+        </div>
+      </div>
+      <div class="copyright">
+        <p id="copyright-year">&copy; 2024 Countdown di Natale. Tutti i diritti riservati.</p>
+      </div>
+    </div>
+  </footer>
+</body>
+
 </html>
