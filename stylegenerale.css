@@ -143,6 +143,8 @@ input {
 .hero {
   padding: 120px 0 60px;
   text-align: center;
+  justify-content: center;
+  justify-items: center;
 }
 
 .hero-content {
@@ -185,6 +187,93 @@ input {
 
 .hero-image:hover {
   transform: scale(1.05);
+}
+
+/* Animated Down Arrow */
+.scroll-arrow-container {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 100;
+}
+
+.scroll-arrow {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow);
+  transition: var(--transition);
+}
+
+.scroll-arrow svg {
+  width: 24px;
+  height: 24px;
+  fill: none;
+  stroke: var(--primary);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Bounce Animation */
+@keyframes bounce {
+  0%,
+  20%,
+  50%,
+  80%,
+  100% {
+    transform: translateY(0) translateX(-50%);
+  }
+  40% {
+    transform: translateY(-10px) translateX(-50%);
+  }
+  60% {
+    transform: translateY(-5px) translateX(-50%);
+  }
+}
+
+.scroll-arrow-container {
+  animation: bounce 2s infinite;
+}
+
+/* Hover Effects */
+.scroll-arrow-container:hover .scroll-arrow {
+  background: linear-gradient(
+    135deg,
+    var(--primary) 0%,
+    var(--primary-light) 100%
+  );
+  transform: scale(1.1);
+}
+
+.scroll-arrow-container:hover svg {
+  stroke: white;
+}
+
+/* Pulse Animation on Hover */
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(67, 97, 238, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(67, 97, 238, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(67, 97, 238, 0);
+  }
+}
+
+.scroll-arrow-container:hover .scroll-arrow {
+  animation: pulse 1.5s infinite;
 }
 
 /* Categories Section */
@@ -546,4 +635,112 @@ input {
 .no-results p {
   color: var(--gray);
   font-size: 1rem;
+}
+
+/* Animated Down Arrow */
+.scroll-arrow-container {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 100;
+}
+
+.scroll-arrow {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow);
+  transition: var(--transition);
+}
+
+.scroll-arrow svg {
+  width: 24px;
+  height: 24px;
+  fill: none;
+  stroke: var(--primary);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Bounce Animation */
+@keyframes bounce {
+  0%,
+  20%,
+  50%,
+  80%,
+  100% {
+    transform: translateY(0) translateX(-50%);
+  }
+  40% {
+    transform: translateY(-10px) translateX(-50%);
+  }
+  60% {
+    transform: translateY(-5px) translateX(-50%);
+  }
+}
+
+.scroll-arrow-container {
+  animation: bounce 2s infinite;
+}
+
+/* Hover Effects */
+.scroll-arrow-container:hover .scroll-arrow {
+  background: linear-gradient(
+    135deg,
+    var(--primary) 0%,
+    var(--primary-light) 100%
+  );
+  transform: scale(1.1);
+}
+
+.scroll-arrow-container:hover svg {
+  stroke: white;
+}
+
+/* Pulse Animation on Hover */
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(67, 97, 238, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(67, 97, 238, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(67, 97, 238, 0);
+  }
+}
+
+.scroll-arrow-container:hover .scroll-arrow {
+  animation: pulse 1.5s infinite;
+}
+
+/* Nascondi la freccia quando si scorre oltre la sezione home */
+@media (min-width: 768px) {
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 767px) {
+  .hero {
+    position: relative;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
 }

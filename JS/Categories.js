@@ -221,3 +221,31 @@ document.addEventListener("DOMContentLoaded", function () {
   // Initialize the app
   init();
 });
+
+// Gestione della freccia di scorrimento
+document.addEventListener("DOMContentLoaded", function () {
+  const scrollArrow = document.querySelector(".scroll-arrow-container");
+
+  if (scrollArrow) {
+    // Gestione del click sulla freccia
+    scrollArrow.addEventListener("click", function (e) {
+      e.preventDefault();
+      const categoriesSection = document.querySelector(".categories");
+      categoriesSection.scrollIntoView({ behavior: "smooth" });
+    });
+
+    // Nascondi la freccia quando si scorre oltre la sezione home
+    window.addEventListener("scroll", function () {
+      const heroSection = document.querySelector(".hero");
+      const heroBottom = heroSection.offsetTop + heroSection.offsetHeight;
+
+      if (window.scrollY > heroBottom - 200) {
+        scrollArrow.style.opacity = "0";
+        scrollArrow.style.pointerEvents = "none";
+      } else {
+        scrollArrow.style.opacity = "1";
+        scrollArrow.style.pointerEvents = "auto";
+      }
+    });
+  }
+});
