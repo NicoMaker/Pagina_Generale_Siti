@@ -14,6 +14,8 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap"
     rel="stylesheet">
+  <meta name="description"
+    content="Esplora e scopri informazioni dettagliate sui paesi di tutto il mondo con Info Stato." />
   <script src="scriptState.js" defer></script>
 </head>
 
@@ -34,9 +36,9 @@
           <div class="input-group">
             <input type="text" id="stateInput" placeholder="Inserisci il nome dello stato"
               aria-label="Nome dello stato" />
-            <button id="searchButton" onclick="getCountryInfo()">
+            <button id="searchButton" aria-label="Cerca informazioni sul paese">
               <span class="button-text">Cerca</span>
-              <span class="loader"></span>
+              <span class="loader" aria-hidden="true"></span>
             </button>
           </div>
           <p class="search-tip">Prova con: Italia, Francia, Germania, Spagna, Giappone</p>
@@ -69,12 +71,13 @@
     </main>
 
     <footer>
-      <p>© 2024 Info Stato | Dati forniti da <a href="https://restcountries.com/" target="_blank">REST Countries API</a>
+      <p>© 2024 Info Stato | Dati forniti da <a href="https://restcountries.com/" target="_blank" rel="noopener">REST
+          Countries API</a>
       </p>
     </footer>
   </div>
 
-  <div id="notification" class="notification">
+  <div id="notification" class="notification" role="alert" aria-live="assertive">
     <p id="notificationText"></p>
   </div>
 </body>

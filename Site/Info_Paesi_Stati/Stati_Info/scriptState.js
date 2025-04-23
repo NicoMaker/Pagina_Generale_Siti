@@ -23,6 +23,17 @@ document.addEventListener("DOMContentLoaded", () => {
       getCountryInfo();
     }
   });
+
+  // Add click event to search button
+  searchButton.addEventListener("click", getCountryInfo);
+
+  // Check for saved country in localStorage
+  const savedCountry = localStorage.getItem("lastSearchedCountry");
+  if (savedCountry) {
+    stateInput.value = savedCountry;
+    // Optional: Auto-search the saved country
+    // getCountryInfo();
+  }
 });
 
 // Show notification
@@ -44,11 +55,42 @@ function toggleLoading(isLoading) {
     buttonText.style.opacity = "0";
     loader.style.display = "block";
     searchButton.disabled = true;
+    stateInput.disabled = true;
   } else {
     buttonText.style.opacity = "1";
     loader.style.display = "none";
     searchButton.disabled = false;
+    stateInput.disabled = false;
+    stateInput.focus();
   }
+}
+
+// Show loading skeletons
+function showLoadingSkeletons() {
+  info.innerHTML = Array(6)
+    .fill()
+    .map(
+      () => `
+      <div class="info-item">
+        <div class="skeleton" style="width: 40%;"></div>
+        <div class="skeleton" style="width: 70%;"></div>
+      </div>
+    `
+    )
+    .join("");
+
+  additionalInfo.innerHTML = Array(4)
+    .fill()
+    .map(
+      () => `
+      <div class="info-card">
+        <div class="skeleton" style="width: 50%;"></div>
+        <div class="skeleton" style="width: 80%;"></div>
+        <div class="skeleton" style="width: 60%;"></div>
+      </div>
+    `
+    )
+    .join("");
 }
 
 // Format population number
@@ -58,7 +100,7 @@ function formatPopulation(population) {
 
 // Format area
 function formatArea(area) {
-  return `${new Intl.NumberFormat().format(area)} km²`;
+  return area ? `${new Intl.NumberFormat().format(area)} km²` : "N/A";
 }
 
 // Get country information
@@ -70,6 +112,9 @@ function getCountryInfo() {
     return;
   }
 
+  // Save to localStorage
+  localStorage.setItem("lastSearchedCountry", stateName);
+
   // Show loading state
   toggleLoading(true);
 
@@ -78,8 +123,19 @@ function getCountryInfo() {
   flag.classList.remove("visible");
   flagPlaceholder.classList.remove("hidden");
 
-  fetch(`https://restcountries.com/v3.1/name/${stateName}`)
+  // Show results section with loading skeletons
+  resultsSection.classList.add("active");
+  showLoadingSkeletons();
+
+  // Fetch with timeout for better error handling
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+
+  fetch(`https://restcountries.com/v3.1/name/${stateName}`, {
+    signal: controller.signal,
+  })
     .then((response) => {
+      clearTimeout(timeoutId);
       if (!response.ok) {
         throw new Error("Stato non trovato");
       }
@@ -97,9 +153,6 @@ function getCountryInfo() {
       // Get the first result
       const country = data[0];
 
-      // Show results section
-      resultsSection.classList.add("active");
-
       // Set country name
       countryName.textContent = country.name.common;
 
@@ -114,12 +167,17 @@ function getCountryInfo() {
       }
 
       // Set basic info
-      const localTime = new Date().toLocaleTimeString("it-IT", {
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
-        timeZone: country.timezones[0],
-      });
+      let localTime;
+      try {
+        localTime = new Date().toLocaleTimeString("it-IT", {
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+          timeZone: country.timezones[0],
+        });
+      } catch (e) {
+        localTime = "Non disponibile";
+      }
 
       info.innerHTML = `
         <div class="info-item">
@@ -130,21 +188,33 @@ function getCountryInfo() {
         </div>
         <div class="info-item">
           <span class="info-label">Regione</span>
-          <span class="info-value">${country.region} (${
-        country.subregion || ""
-      })</span>
+          <span class="info-value">${country.region} ${
+        country.subregion ? `(${country.subregion})` : ""
+      }</span>
         </div>
         <div class="info-item">
           <span class="info-label">Latitudine</span>
-          <span class="info-value">${country.latlng[0].toFixed(2)}°</span>
+          <span class="info-value">${
+            country.latlng && country.latlng[0]
+              ? country.latlng[0].toFixed(2) + "°"
+              : "N/A"
+          }</span>
         </div>
         <div class="info-item">
           <span class="info-label">Longitudine</span>
-          <span class="info-value">${country.latlng[1].toFixed(2)}°</span>
+          <span class="info-value">${
+            country.latlng && country.latlng[1]
+              ? country.latlng[1].toFixed(2) + "°"
+              : "N/A"
+          }</span>
         </div>
         <div class="info-item">
           <span class="info-label">Fuso Orario</span>
-          <span class="info-value">${country.timezones[0]}</span>
+          <span class="info-value">${
+            country.timezones && country.timezones[0]
+              ? country.timezones[0]
+              : "N/A"
+          }</span>
         </div>
         <div class="info-item">
           <span class="info-label">Ora Locale</span>
@@ -160,7 +230,7 @@ function getCountryInfo() {
           .map(
             (currency) => `
           <div class="currency">
-            <span class="currency-symbol">${currency.symbol || ""}</span>
+            <span class="currency-symbol">${currency.symbol || "?"}</span>
             ${currency.name}
           </div>
         `
@@ -203,13 +273,19 @@ function getCountryInfo() {
           <h3>Confini</h3>
           <ul>
             ${
-              country.borders
+              country.borders && country.borders.length > 0
                 ? country.borders.map((border) => `<li>${border}</li>`).join("")
                 : "<li>Nessun confine terrestre</li>"
             }
           </ul>
         </div>
       `;
+
+      // Show success notification
+      showNotification(
+        `Informazioni su ${country.name.common} caricate con successo!`,
+        "success"
+      );
 
       // Scroll to results
       resultsSection.scrollIntoView({ behavior: "smooth" });
@@ -219,6 +295,30 @@ function getCountryInfo() {
       toggleLoading(false);
 
       console.error("Errore:", error);
-      showNotification("Stato non trovato. Controlla il nome e riprova.");
+
+      if (error.name === "AbortError") {
+        showNotification(
+          "La richiesta è scaduta. Verifica la tua connessione e riprova."
+        );
+      } else {
+        showNotification("Stato non trovato. Controlla il nome e riprova.");
+      }
+
+      // Hide results section if it was showing loading skeletons
+      if (!resultsSection.querySelector("#countryName").textContent) {
+        resultsSection.classList.remove("active");
+      }
     });
 }
+
+// Add offline detection
+window.addEventListener("online", () => {
+  showNotification("Connessione ristabilita!", "success");
+});
+
+window.addEventListener("offline", () => {
+  showNotification(
+    "Sei offline. Alcune funzionalità potrebbero non essere disponibili.",
+    "error"
+  );
+});

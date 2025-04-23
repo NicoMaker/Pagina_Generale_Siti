@@ -21,6 +21,10 @@
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   font-family: "Poppins", Arial, sans-serif;
   background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
@@ -42,6 +46,7 @@ body {
 header {
   text-align: center;
   padding: 2rem 0;
+  animation: fadeIn 0.8s ease-out;
 }
 
 .logo {
@@ -57,6 +62,11 @@ header {
   height: 40px;
   border-radius: 50%;
   object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.logo:hover img {
+  transform: rotate(20deg);
 }
 
 h1 {
@@ -85,6 +95,7 @@ main {
 
 .search-section {
   width: 100%;
+  animation: fadeIn 1s ease-out 0.2s both;
 }
 
 .search-container {
@@ -94,12 +105,24 @@ main {
   background-color: var(--card-color);
   border-radius: var(--border-radius);
   box-shadow: var(--box-shadow);
+  transition: transform 0.3s ease;
+}
+
+.search-container:hover {
+  transform: translateY(-5px);
 }
 
 .input-group {
   display: flex;
   gap: 0.5rem;
   margin-bottom: 1rem;
+  flex-direction: column;
+}
+
+@media (min-width: 480px) {
+  .input-group {
+    flex-direction: row;
+  }
 }
 
 #stateInput {
@@ -110,6 +133,7 @@ main {
   border-radius: 8px;
   transition: var(--transition);
   font-family: inherit;
+  width: 100%;
 }
 
 #stateInput:focus {
@@ -133,6 +157,13 @@ button {
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 100%;
+}
+
+@media (min-width: 480px) {
+  button {
+    width: auto;
+  }
 }
 
 button:hover {
@@ -142,6 +173,11 @@ button:hover {
 
 button:active {
   transform: translateY(0);
+}
+
+button:focus-visible {
+  outline: 3px solid rgba(58, 134, 255, 0.5);
+  outline-offset: 2px;
 }
 
 .button-text {
@@ -185,6 +221,7 @@ button:active {
   opacity: 1;
   transform: translateY(0);
   pointer-events: all;
+  animation: fadeIn 0.5s ease-out;
 }
 
 .results-container {
@@ -197,6 +234,12 @@ button:active {
   border-radius: var(--border-radius);
   box-shadow: var(--box-shadow);
   overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.country-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
 }
 
 .card-header {
@@ -229,6 +272,11 @@ button:active {
   border-radius: 4px;
   overflow: hidden;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease;
+}
+
+.flag-container:hover {
+  transform: scale(1.05);
 }
 
 @media (min-width: 768px) {
@@ -246,6 +294,7 @@ button:active {
 
 #flag.visible {
   display: block;
+  animation: fadeIn 0.5s ease;
 }
 
 .flag-placeholder {
@@ -281,16 +330,23 @@ h2 {
 }
 
 .card-body {
-  padding: 2rem;
+  padding: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .card-body {
+    padding: 2rem;
+  }
 }
 
 .country-info {
   display: grid;
   gap: 1rem;
   margin-bottom: 2rem;
+  grid-template-columns: 1fr;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 480px) {
   .country-info {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -303,11 +359,13 @@ h2 {
   padding: 1rem;
   border-radius: 8px;
   transition: var(--transition);
+  border-left: 3px solid transparent;
 }
 
 .info-item:hover {
   transform: translateY(-3px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-left: 3px solid var(--primary-color);
 }
 
 .info-label {
@@ -324,9 +382,10 @@ h2 {
 .additional-info {
   display: grid;
   gap: 1.5rem;
+  grid-template-columns: 1fr;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 640px) {
   .additional-info {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -337,11 +396,13 @@ h2 {
   border-radius: 8px;
   padding: 1.5rem;
   transition: var(--transition);
+  border-top: 3px solid transparent;
 }
 
 .info-card:hover {
   transform: translateY(-3px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-top: 3px solid var(--accent-color);
 }
 
 .info-card h3 {
@@ -363,6 +424,11 @@ h2 {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  transition: transform 0.2s ease;
+}
+
+.info-card li:hover {
+  transform: translateX(5px);
 }
 
 .info-card li:last-child {
@@ -373,6 +439,11 @@ h2 {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  transition: transform 0.2s ease;
+}
+
+.info-card .currency:hover {
+  transform: translateX(5px);
 }
 
 .currency-symbol {
@@ -394,6 +465,7 @@ footer {
   padding: 1.5rem 0;
   color: var(--text-light);
   font-size: 0.9rem;
+  margin-top: auto;
 }
 
 footer a {
@@ -404,6 +476,7 @@ footer a {
 
 footer a:hover {
   text-decoration: underline;
+  color: var(--primary-dark);
 }
 
 /* Notification */
@@ -420,6 +493,8 @@ footer a:hover {
   opacity: 0;
   transition: all 0.3s ease;
   z-index: 1000;
+  max-width: 90%;
+  text-align: center;
 }
 
 .notification.show {
@@ -470,4 +545,59 @@ a:focus {
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border-width: 0;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --text-color: #f0f0f0;
+    --text-light: #b0b0b0;
+    --background-color: #121212;
+    --card-color: #1e1e1e;
+  }
+
+  body {
+    background: linear-gradient(135deg, #121212 0%, #2a2a2a 100%);
+  }
+
+  .info-item,
+  .info-card {
+    background-color: #2a2a2a;
+  }
+
+  #stateInput {
+    background-color: #2a2a2a;
+    color: var(--text-color);
+    border-color: #444;
+  }
+
+  #stateInput::placeholder {
+    color: #888;
+  }
+}
+
+/* Loading skeleton animation */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 4px;
+  height: 1em;
+  margin-bottom: 0.5em;
+}
+
+@media (prefers-color-scheme: dark) {
+  .skeleton {
+    background: linear-gradient(90deg, #2a2a2a 25%, #333 50%, #2a2a2a 75%);
+    background-size: 200% 100%;
+  }
 }
