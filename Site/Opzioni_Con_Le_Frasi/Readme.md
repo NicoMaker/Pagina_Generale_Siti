@@ -3,5 +3,6 @@
 # Opzioni con Le Frasi
 
 - **[Criptazione con alfabeto contrario](Criptazione%20Alfabeto%20Contrario)**
+- **[Criptazione di Cesare](Criptazione_Cesare)**
 - **[Generatore Anagrammi](Generatore_di_Anagrammi)**
 - **[Stampa Frase Invertita](Stampa_Frase_Invertita)**

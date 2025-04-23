@@ -749,49 +749,6 @@ function copiaTestoClassifica() {
   }
 }
 
-function salvaClassificaImmagine() {
-  const leaderboardContainer = document.getElementById("leaderboard-container");
-  if (!leaderboardContainer) return;
-
-  // Aggiungi una classe temporanea per lo screenshot
-  leaderboardContainer.classList.add("screenshot-mode");
-
-  // Usa html2canvas per catturare l'immagine
-  if (typeof html2canvas !== "undefined") {
-    html2canvas(leaderboardContainer)
-      .then((canvas) => {
-        // Rimuovi la classe temporanea
-        leaderboardContainer.classList.remove("screenshot-mode");
-
-        // Converti il canvas in un'immagine
-        const imageData = canvas.toDataURL("image/png");
-
-        // Crea un link per il download
-        const link = document.createElement("a");
-        link.href = imageData;
-        link.download = `classifica_${new Date()
-          .toISOString()
-          .slice(0, 10)}.png`;
-        link.click();
-
-        showToast("Immagine salvata", "success");
-      })
-      .catch((error) => {
-        console.error("Errore durante la creazione dell'immagine:", error);
-        showToast("Errore durante il salvataggio dell'immagine", "error");
-        leaderboardContainer.classList.remove("screenshot-mode");
-      });
-  } else {
-    console.error(
-      "html2canvas is not loaded. Please ensure it's included in your project."
-    );
-    showToast(
-      "html2canvas is not loaded. Please ensure it's included in your project.",
-      "error"
-    );
-    leaderboardContainer.classList.remove("screenshot-mode");
-  }
-}
 
 // Funzione per creare coriandoli
 function createConfetti() {

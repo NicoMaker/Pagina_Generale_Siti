@@ -205,6 +205,10 @@
         "link": "Site/Opzioni_Con_Le_Frasi/Criptazione Alfabeto Contrario/index.html"
       },
       {
+        "name": "Cifrario di Cesare",
+        "link": "Site/Opzioni_Con_Le_Frasi/Criptazione_Cesare/index.html"
+      },
+      {
         "name": "Stampa Frase Invertita",
         "link": "Site/Opzioni_Con_Le_Frasi/Stampa_Frase_Invertita/index.html"
       },

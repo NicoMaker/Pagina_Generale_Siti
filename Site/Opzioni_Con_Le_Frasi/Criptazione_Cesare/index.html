@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IVLIVS CAESAR | Imperator Romae</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap"
+    rel="stylesheet">
+  <script src="script.js" defer></script>
+  <link rel="icon"
+    href="https://upload.wikimedia.org/wikipedia/commons/8/8f/Gaius_Iulius_Caesar_%28Vatican_Museum%29.jpg"
+    type="image/jpg">
+</head>
+
+<body>
+  <!-- Theme Toggle -->
+  <div class="theme-toggle-container">
+    <button id="theme-toggle"aria-label="Toggle light/dark mode">
+    </button>
+  </div>
+
+  <!-- Header with Hero Section -->
+  <header class="hero">
+    <div class="hero-overlay"></div>
+    <div class="container">
+      <nav class="main-nav">
+        <div class="logo">SPQR</div>
+        <ul class="nav-links">
+          <li><a href="#biography">Biografia</a></li>
+          <li><a href="#conquests">Conquiste</a></li>
+          <li><a href="#governance">Governo</a></li>
+          <li><a href="#legacy">Eredità</a></li>
+          <li><a href="#gallery">Galleria</a></li>
+        </ul>
+        <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Open mobile menu">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+      </nav>
+
+      <div class="hero-content">
+        <div class="laurel-left"></div>
+        <h1 class="hero-title">GAIVS IVLIVS CAESAR</h1>
+        <div class="laurel-right"></div>
+        <p class="hero-subtitle">DICTATOR PERPETVO · IMPERATOR · CONSVL</p>
+        <p class="hero-dates">100 a.C. - 44 a.C.</p>
+        <div class="hero-cta">
+          <a href="#biography" class="primary-btn">Scopri la Storia</a>
+          <a href="#interactive" class="secondary-btn">Esplora Roma</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Biography Section -->
+    <section id="biography" class="section biography-section">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Il Grande Cesare</h2>
+          <div class="section-divider"></div>
+        </div>
+
+        <div class="biography-content">
+          <div class="biography-image">
+            <div class="caesar-portrait">
+              <img
+                src="https://upload.wikimedia.org/wikipedia/commons/8/8f/Gaius_Iulius_Caesar_%28Vatican_Museum%29.jpg"
+                alt="Busto di Giulio Cesare" id="caesar-image">
+              <div class="image-caption">Busto di Giulio Cesare, I secolo a.C.</div>
+            </div>
+          </div>
+          <div class="biography-text">
+            <p class="biography-intro">Gaio Giulio Cesare, nato il 13 luglio del 100 a.C. a Roma, è stato un politico,
+              generale e dittatore romano che ha cambiato per sempre il corso della storia.</p>
+
+            <p>Discendente da una delle più antiche famiglie patrizie romane, la gens Iulia, che secondo la leggenda
+              discendeva da Iulo, figlio di Enea e quindi dalla dea Venere. La sua ascesa al potere fu rapida e
+              inarrestabile, culminando con la nomina a dittatore perpetuo di Roma.</p>
+
+            <p>Le sue brillanti campagne militari, in particolare la conquista della Gallia, e le sue riforme politiche
+              e sociali trasformarono profondamente lo Stato romano, ponendo le basi per la futura era imperiale.</p>
+
+            <div class="quote-box">
+              <blockquote>
+                <p>"Veni, vidi, vici."</p>
+                <cite>— Giulio Cesare, dopo la battaglia di Zela (47 a.C.)</cite>
+              </blockquote>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Timeline Section -->
+    <section class="section timeline-section">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Vita e Imprese</h2>
+          <div class="section-divider"></div>
+        </div>
+
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-date">100 a.C.</div>
+            <div class="timeline-content">
+              <h3>Nascita</h3>
+              <p>Gaio Giulio Cesare nasce a Roma in una famiglia patrizia.</p>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-date">60 a.C.</div>
+            <div class="timeline-content">
+              <h3>Primo Triumvirato</h3>
+              <p>Cesare forma un'alleanza politica con Pompeo e Crasso.</p>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-date">58-50 a.C.</div>
+            <div class="timeline-content">
+              <h3>Conquista della Gallia</h3>
+              <p>Cesare conduce una serie di campagne militari che portano alla conquista della Gallia.</p>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-date">49 a.C.</div>
+            <div class="timeline-content">
+              <h3>Attraversamento del Rubicone</h3>
+              <p>Cesare attraversa il fiume Rubicone con il suo esercito, dando inizio alla guerra civile.</p>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-date">48 a.C.</div>
+            <div class="timeline-content">
+              <h3>Battaglia di Farsalo</h3>
+              <p>Cesare sconfigge Pompeo nella decisiva battaglia di Farsalo.</p>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-date">46 a.C.</div>
+            <div class="timeline-content">
+              <h3>Riforma del Calendario</h3>
+              <p>Cesare introduce il calendario giuliano, basato sull'anno solare di 365,25 giorni.</p>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-date">44 a.C.</div>
+            <div class="timeline-content">
+              <h3>Assassinio</h3>
+              <p>Cesare viene assassinato alle Idi di Marzo da un gruppo di senatori guidati da Bruto e Cassio.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Conquests Map Section -->
+    <section id="conquests" class="section conquests-section">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Le Conquiste di Cesare</h2>
+          <div class="section-divider"></div>
+        </div>
+
+        <div class="map-container">
+          <div class="roman-map" id="roman-map">
+            <div class="map-overlay">
+              <div class="map-legend">
+                <h3>Territori</h3>
+                <ul>
+                  <li><span class="legend-color" style="background-color: #8B0000;"></span> Roma e Italia</li>
+                  <li><span class="legend-color" style="background-color: #CD853F;"></span> Conquiste di Cesare</li>
+                  <li><span class="legend-color" style="background-color: #DAA520;"></span> Altre province romane</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="map-markers">
+              <div class="map-marker" style="top: 40%; left: 48%;" data-location="Roma">
+                <div class="marker-dot"></div>
+                <div class="marker-label">Roma</div>
+              </div>
+
+              <div class="map-marker" style="top: 30%; left: 30%;" data-location="Gallia">
+                <div class="marker-dot"></div>
+                <div class="marker-label">Gallia</div>
+              </div>
+
+              <div class="map-marker" style="top: 25%; left: 20%;" data-location="Britannia">
+                <div class="marker-dot"></div>
+                <div class="marker-label">Britannia</div>
+              </div>
+
+              <div class="map-marker" style="top: 45%; left: 65%;" data-location="Egitto">
+                <div class="marker-dot"></div>
+                <div class="marker-label">Egitto</div>
+              </div>
+
+              <div class="map-marker" style="top: 35%; left: 55%;" data-location="Asia">
+                <div class="marker-dot"></div>
+                <div class="marker-label">Asia</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="conquest-info" id="conquest-info">
+            <h3>Seleziona una regione sulla mappa</h3>
+            <p>Clicca su una delle regioni per scoprire le conquiste di Cesare e la loro importanza storica.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Governance Section -->
+    <section id="governance" class="section governance-section">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Riforme e Governo</h2>
+          <div class="section-divider"></div>
+        </div>
+
+        <div class="columns-container">
+          <div class="roman-column left">
+            <div class="column-capital"></div>
+            <div class="column-shaft">
+              <div class="governance-card">
+                <h3>Riforma del Calendario</h3>
+                <p>Nel 46 a.C., Cesare introdusse il calendario giuliano, basato sull'anno solare di 365,25 giorni, che
+                  rimase in uso in Europa fino al 1582.</p>
+              </div>
+
+              <div class="governance-card">
+                <h3>Espansione della Cittadinanza</h3>
+                <p>Cesare estese la cittadinanza romana a molti abitanti delle province, in particolare della Gallia
+                  Cisalpina.</p>
+              </div>
+            </div>
+            <div class="column-base"></div>
+          </div>
+
+          <div class="roman-column center">
+            <div class="column-capital"></div>
+            <div class="column-shaft">
+              <div class="governance-card">
+                <h3>Riforma Agraria</h3>
+                <p>Distribuì terre pubbliche ai veterani e ai cittadini poveri, alleviando la pressione sociale a Roma e
+                  ricompensando i suoi soldati fedeli.</p>
+              </div>
+
+              <div class="governance-card">
+                <h3>Riforma del Senato</h3>
+                <p>Ampliò il Senato da 600 a 900 membri, includendo rappresentanti delle province e della classe
+                  equestre.</p>
+              </div>
+            </div>
+            <div class="column-base"></div>
+          </div>
+
+          <div class="roman-column right">
+            <div class="column-capital"></div>
+            <div class="column-shaft">
+              <div class="governance-card">
+                <h3>Programmi di Costruzione</h3>
+                <p>Avviò numerosi progetti edilizi a Roma, tra cui il Foro di Cesare, migliorando l'infrastruttura
+                  urbana e creando posti di lavoro.</p>
+              </div>
+
+              <div class="governance-card">
+                <h3>Riforma Monetaria</h3>
+                <p>Standardizzò il sistema monetario romano e aumentò la coniazione di monete d'oro, stabilizzando
+                  l'economia.</p>
+              </div>
+            </div>
+            <div class="column-base"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Interactive Section -->
+    <section id="interactive" class="section interactive-section">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Il Cifrario di Cesare</h2>
+          <div class="section-divider"></div>
+          <p class="section-subtitle">Uno dei primi metodi di crittografia della storia, utilizzato da Giulio Cesare per
+            comunicare con i suoi generali</p>
+        </div>
+
+        <div class="cipher-card">
+          <div class="roman-border">
+            <div class="cipher-content">
+              <div class="input-section">
+                <div class="input-container">
+                  <label for="input-text">Testo da cifrare o decifrare</label>
+                  <div class="input-wrapper">
+                    <textarea id="input-text" placeholder="Inserisci il testo da cifrare o decifrare..."></textarea>
+                    <button id="clear-btn" class="icon-btn" aria-label="Cancella testo">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                      </svg>
+                    </button>
+                  </div>
+                  <div class="input-actions">
+                    <button id="random-btn" class="secondary-btn">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="16 3 21 3 21 8"></polyline>
+                        <line x1="4" y1="20" x2="21" y2="3"></line>
+                        <polyline points="21 16 21 21 16 21"></polyline>
+                        <line x1="15" y1="15" x2="21" y2="21"></line>
+                        <line x1="4" y1="4" x2="9" y2="9"></line>
+                      </svg>
+                      <span>Esempio</span>
+                    </button>
+                    <div class="char-count">0 caratteri</div>
+                  </div>
+                </div>
+
+                <div class="button-group">
+                  <button id="encrypt-btn" class="primary-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                      <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                    </svg>
+                    <span>Cripta</span>
+                  </button>
+                  <button id="decrypt-btn" class="primary-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                      <path d="M7 11V7a5 5 0 0 1 9.9-1"></path>
+                    </svg>
+                    <span>Decripta</span>
+                  </button>
+                </div>
+              </div>
+
+              <div class="result-section">
+                <div class="result-header">
+                  <h3>Risultato</h3>
+                  <div class="result-actions">
+                    <button id="copy-btn" class="icon-btn" aria-label="Copia risultato">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+                <div id="result" class="result-content">
+                  <div class="placeholder-text">Il testo cifrato o decifrato apparirà qui</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="cipher-explanation">
+              <h3>Come funziona</h3>
+              <p>Il cifrario di Cesare è un metodo di cifratura a sostituzione in cui ogni lettera del testo in chiaro
+                viene sostituita da una lettera che si trova un certo numero di posizioni dopo nell'alfabeto (in questo
+                caso, 3 posizioni).</p>
+
+              <div class="alphabet-visualization">
+                <div class="alphabet normal">
+                  <div class="alphabet-label">Alfabeto normale</div>
+                  <div class="alphabet-letters">
+                    <span>A</span><span>B</span><span>C</span><span>D</span><span>E</span><span>F</span><span>G</span><span>H</span><span>I</span><span>J</span><span>K</span><span>L</span><span>M</span><span>N</span><span>O</span><span>P</span><span>Q</span><span>R</span><span>S</span><span>T</span><span>U</span><span>V</span><span>W</span><span>X</span><span>Y</span><span>Z</span>
+                  </div>
+                </div>
+                <div class="arrows">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <polyline points="19 12 12 19 5 12"></polyline>
+                  </svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="12" y1="19" x2="12" y2="5"></line>
+                    <polyline points="5 12 12 5 19 12"></polyline>
+                  </svg>
+                </div>
+                <div class="alphabet reversed">
+                  <div class="alphabet-label">Alfabeto spostato (3 posizioni)</div>
+                  <div class="alphabet-letters">
+                    <span>D</span><span>E</span><span>F</span><span>G</span><span>H</span><span>I</span><span>J</span><span>K</span><span>L</span><span>M</span><span>N</span><span>O</span><span>P</span><span>Q</span><span>R</span><span>S</span><span>T</span><span>U</span><span>V</span><span>W</span><span>X</span><span>Y</span><span>Z</span><span>A</span><span>B</span><span>C</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Legacy Section -->
+    <section id="legacy" class="section legacy-section">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">L'Eredità di Cesare</h2>
+          <div class="section-divider"></div>
+        </div>
+
+        <div class="legacy-grid">
+          <div class="legacy-card">
+            <div class="legacy-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+              </svg>
+            </div>
+            <h3>Fondazione dell'Impero</h3>
+            <p>Le azioni di Cesare posero le basi per la trasformazione della Repubblica romana in Impero, un
+              cambiamento che avrebbe plasmato la storia europea per secoli.</p>
+          </div>
+
+          <div class="legacy-card">
+            <div class="legacy-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="2" y1="12" x2="22" y2="12"></line>
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z">
+                </path>
+              </svg>
+            </div>
+            <h3>Influenza Linguistica</h3>
+            <p>Il nome "Cesare" divenne sinonimo di imperatore in molte lingue (Kaiser in tedesco, Czar in russo),
+              testimoniando l'impatto duraturo della sua figura.</p>
+          </div>
+
+          <div class="legacy-card">
+            <div class="legacy-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+              </svg>
+            </div>
+            <h3>Letteratura e Arte</h3>
+            <p>La figura di Cesare ha ispirato innumerevoli opere letterarie, artistiche e teatrali, dalla tragedia di
+              Shakespeare alle rappresentazioni cinematografiche moderne.</p>
+          </div>
+
+          <div class="legacy-card">
+            <div class="legacy-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path>
+              </svg>
+            </div>
+            <h3>Strategia Militare</h3>
+            <p>Le tattiche militari e le strategie di Cesare sono ancora studiate nelle accademie militari di tutto il
+              mondo, riconosciute per la loro brillantezza e innovazione.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery" class="section gallery-section">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Galleria Storica</h2>
+          <div class="section-divider"></div>
+        </div>
+
+        <div class="gallery-container">
+          <div class="gallery-tabs">
+            <button class="gallery-tab active" data-category="all">Tutti</button>
+            <button class="gallery-tab" data-category="busts">Busti</button>
+            <button class="gallery-tab" data-category="paintings">Dipinti</button>
+            <button class="gallery-tab" data-category="coins">Monete</button>
+            <button class="gallery-tab" data-category="locations">Luoghi</button>
+          </div>
+
+          <div class="gallery-grid">
+            <div class="gallery-item" data-category="busts">
+              <img
+                src="https://upload.wikimedia.org/wikipedia/commons/8/8f/Gaius_Iulius_Caesar_%28Vatican_Museum%29.jpg"
+                alt="Busto di Cesare al Museo Vaticano" class="gallery-image">
+              <div class="gallery-overlay">
+                <h3>Busto di class="gallery-image">
+                  <div class="gallery-overlay">
+                    <h3>Busto di Cesare</h3>
+                    <p>Museo Vaticano, I secolo a.C.</p>
+                  </div>
+              </div>
+
+              <div class="gallery-item" data-category="paintings">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/2/26/Death_of_Caesar.jpg"
+                  alt="La morte di Cesare di Vincenzo Camuccini" class="gallery-image">
+                <div class="gallery-overlay">
+                  <h3>La morte di Cesare</h3>
+                  <p>Dipinto di Vincenzo Camuccini, 1798</p>
+                </div>
+              </div>
+
+              <div class="gallery-item" data-category="coins">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/7/7b/Denarius_Julius_Caesar-transparent.png"
+                  alt="Denario di Giulio Cesare" class="gallery-image">
+                <div class="gallery-overlay">
+                  <h3>Denario di Cesare</h3>
+                  <p>Moneta romana, 44 a.C.</p>
+                </div>
+              </div>
+
+              <div class="gallery-item" data-category="locations">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/d/d5/Forum_Romanum_Rom.jpg" alt="Foro Romano"
+                  class="gallery-image">
+                <div class="gallery-overlay">
+                  <h3>Foro Romano</h3>
+                  <p>Centro politico dell'antica Roma</p>
+                </div>
+              </div>
+
+              <div class="gallery-item" data-category="busts">
+                <img
+                  src="https://upload.wikimedia.org/wikipedia/commons/0/0c/Gaius_Julius_Caesar_%28National_Museum_of_Naples%29.jpg"
+                  alt="Busto di Cesare al Museo Archeologico di Napoli" class="gallery-image">
+                <div class="gallery-overlay">
+                  <h3>Busto di Cesare</h3>
+                  <p>Museo Archeologico di Napoli</p>
+                </div>
+              </div>
+
+              <div class="gallery-item" data-category="paintings">
+                <img
+                  src="https://upload.wikimedia.org/wikipedia/commons/e/e1/Jean-L%C3%A9on_G%C3%A9r%C3%B4me_-_The_Death_of_Caesar_-_Walters_37884.jpg"
+                  alt="La morte di Cesare di Jean-Léon Gérôme" class="gallery-image">
+                <div class="gallery-overlay">
+                  <h3>La morte di Cesare</h3>
+                  <p>Dipinto di Jean-Léon Gérôme, 1867</p>
+                </div>
+              </div>
+
+              <div class="gallery-item" data-category="coins">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/5/5a/Aureus_Caesar_Elephant.png"
+                  alt="Aureo di Cesare con elefante" class="gallery-image">
+                <div class="gallery-overlay">
+                  <h3>Aureo con elefante</h3>
+                  <p>Moneta d'oro, 49-48 a.C.</p>
+                </div>
+              </div>
+
+              <div class="gallery-item" data-category="locations">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/6/64/Alesia_battle.jpg"
+                  alt="Battaglia di Alesia" class="gallery-image">
+                <div class="gallery-overlay">
+                  <h3>Alesia</h3>
+                  <p>Sito della decisiva vittoria di Cesare in Gallia, 52 a.C.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </section>
+
+    <!-- Famous Quotes Section -->
+    <section class="section quotes-section">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Parole Immortali</h2>
+          <div class="section-divider"></div>
+        </div>
+
+        <div class="quotes-slider" id="quotes-slider">
+          <div class="quote-slide active">
+            <blockquote>
+              <p>"Veni, vidi, vici."</p>
+              <cite>Venni, vidi, vinsi</cite>
+            </blockquote>
+          </div>
+
+          <div class="quote-slide">
+            <blockquote>
+              <p>"Alea iacta est."</p>
+              <cite>Il dado è tratto</cite>
+            </blockquote>
+          </div>
+
+          <div class="quote-slide">
+            <blockquote>
+              <p>"Gallia est omnis divisa in partes tres."</p>
+              <cite>La Gallia è divisa in tre parti</cite>
+            </blockquote>
+          </div>
+
+          <div class="quote-slide">
+            <blockquote>
+              <p>"Et tu, Brute?"</p>
+              <cite>Anche tu, Bruto?</cite>
+            </blockquote>
+          </div>
+        </div>
+
+        <div class="slider-controls">
+          <button class="slider-btn prev" id="prev-quote" aria-label="Previous quote">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <div class="slider-dots" id="quote-dots">
+            <span class="dot active"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+          </div>
+          <button class="slider-btn next" id="next-quote" aria-label="Next quote">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-logo">
+          <div class="logo">SPQR</div>
+          <p>Senatvs Popvlvsqve Romanvs</p>
+        </div>
+
+        <div class="footer-links">
+          <h3>Sezioni</h3>
+          <ul>
+            <li><a href="#biography">Biografia</a></li>
+            <li><a href="#conquests">Conquiste</a></li>
+            <li><a href="#governance">Governo</a></li>
+            <li><a href="#legacy">Eredità</a></li>
+            <li><a href="#gallery">Galleria</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-resources">
+          <h3>Risorse</h3>
+          <ul>
+            <li><a href="#">Storia Romana</a></li>
+            <li><a href="#">Letteratura Latina</a></li>
+            <li><a href="#">Archeologia</a></li>
+            <li><a href="#">Mappe Storiche</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div class="roman-footer">
+          <p>© <span id="current-year">2024</span> · IVLIVS CAESAR · IMPERATOR ROMAE</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <div class="mobile-menu" id="mobile-menu">
+    <button class="close-menu-btn" id="close-menu-btn" aria-label="Close mobile menu">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+    <ul class="mobile-nav-links">
+      <li><a href="#biography">Biografia</a></li>
+      <li><a href="#conquests">Conquiste</a></li>
+      <li><a href="#governance">Governo</a></li>
+      <li><a href="#legacy">Eredità</a></li>
+      <li><a href="#gallery">Galleria</a></li>
+    </ul>
+  </div>
+</body>
+
+</html>
