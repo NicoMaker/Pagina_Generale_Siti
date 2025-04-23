@@ -8,6 +8,20 @@ const calcolaBtn = document.getElementById("calcola-btn");
 const monthInput = document.getElementById("month");
 const year = new Date().getFullYear();
 
+// Elementi per il popup informativo
+const infoBtn = document.getElementById("info-btn");
+const infoPopup = document.getElementById("info-popup");
+const closePopup = document.querySelector(".close-popup");
+const signsList = document.getElementById("signs-list");
+const searchInput = document.getElementById("search-sign");
+const searchBtn = document.getElementById("search-btn");
+const resetSearchBtn = document.getElementById("reset-search-btn");
+const resetSearchBtnInline = document.getElementById("reset-search-btn-inline");
+const noResults = document.getElementById("no-results");
+
+// Variabili per la ricerca
+let allZodiacSigns = [];
+
 // Mappa dei simboli zodiacali
 const zodiacSymbols = {
   Ariete: "♈",
@@ -91,10 +105,18 @@ function parseDate(str) {
   return monthDayToDate(month - 1, day);
 }
 
+// Formatta data da MM-DD a DD/MM
+function formatDate(dateStr) {
+  const [month, day] = dateStr.split("-").map(Number);
+  return `${day.toString().padStart(2, "0")}/${month
+    .toString()
+    .padStart(2, "0")}`;
+}
+
 // Calcola segno zodiacale
 async function calcolaSegnoZodiacale() {
-  const day = parseInt(document.getElementById("day").value);
-  const month = parseInt(monthInput.value);
+  const day = Number.parseInt(document.getElementById("day").value);
+  const month = Number.parseInt(monthInput.value);
 
   // Nascondi risultati precedenti e mostra immagine predefinita
   showDefaultImage();
@@ -176,10 +198,190 @@ async function calcolaSegnoZodiacale() {
   }
 }
 
+// Funzione per cercare segni zodiacali
+function searchZodiacSigns(query) {
+  if (!query.trim()) {
+    return allZodiacSigns; // Restituisci tutti i segni se la query è vuota
+  }
+
+  query = query.trim().toLowerCase();
+
+  return allZodiacSigns.filter(
+    (sign) =>
+      sign.segno.toLowerCase().includes(query) ||
+      sign.Elemento.toLowerCase().includes(query) ||
+      sign.Caratteristiche.toLowerCase().includes(query)
+  );
+}
+
+// Mostra messaggio quando nessun segno è trovato
+function showNoResults(show) {
+  if (show) {
+    noResults.classList.remove("hidden");
+    signsList.classList.add("hidden");
+  } else {
+    noResults.classList.add("hidden");
+    signsList.classList.remove("hidden");
+  }
+}
+
+// Popola il popup con le informazioni sui segni zodiacali
+async function populateSignsInfo(filteredSigns = null) {
+  try {
+    // Se non ci sono segni filtrati, carica tutti i segni
+    if (!filteredSigns) {
+      const config = await loadZodiacConfig();
+
+      if (!config || config.length === 0) {
+        throw new Error("Configurazione non disponibile");
+      }
+
+      // Raggruppa i segni per nome (per gestire Capricorno che appare due volte)
+      const signsMap = new Map();
+
+      config.forEach((sign) => {
+        if (!signsMap.has(sign.segno)) {
+          signsMap.set(sign.segno, {
+            segno: sign.segno,
+            periodi: [],
+            Elemento: sign.Elemento,
+            Caratteristiche: sign.Caratteristiche,
+          });
+        }
+
+        const signData = signsMap.get(sign.segno);
+        signData.periodi.push({
+          inizio: sign.inizio,
+          fine: sign.fine,
+        });
+      });
+
+      // Converti la mappa in array e salva tutti i segni
+      allZodiacSigns = Array.from(signsMap.values());
+      filteredSigns = allZodiacSigns;
+    }
+
+    // Svuota la lista
+    signsList.innerHTML = "";
+
+    // Controlla se ci sono risultati
+    if (filteredSigns.length === 0) {
+      showNoResults(true);
+      return;
+    }
+
+    showNoResults(false);
+
+    // Popola la lista con i segni
+    filteredSigns.forEach((sign) => {
+      // Formatta i periodi
+      const periodi = sign.periodi
+        .map(
+          (periodo) =>
+            `${formatDate(periodo.inizio)} - ${formatDate(periodo.fine)}`
+        )
+        .join(", ");
+
+      // Formatta le caratteristiche
+      const caratteristiche = sign.Caratteristiche.split(",")
+        .map((c) => c.trim())
+        .map((c) => `<li><span class="bullet">•</span> ${c}</li>`)
+        .join("");
+
+      const signItem = document.createElement("div");
+      signItem.className = "sign-item";
+      signItem.innerHTML = `
+        <div class="sign-header">
+          <div class="sign-icon">${zodiacSymbols[sign.segno] || "?"}</div>
+          <div class="sign-name">${sign.segno}</div>
+        </div>
+        <div class="sign-info">
+          <div class="sign-dates"><strong>Periodo:</strong> ${periodi}</div>
+          <div class="sign-element"><strong>Elemento:</strong> ${
+            sign.Elemento
+          }</div>
+          <div class="sign-characteristics">
+            <strong>Caratteristiche:</strong>
+            <ul class="characteristics-list">
+              ${caratteristiche}
+            </ul>
+          </div>
+        </div>
+      `;
+
+      signsList.appendChild(signItem);
+    });
+  } catch (error) {
+    console.error(
+      "Errore nel caricamento delle informazioni sui segni:",
+      error
+    );
+    signsList.innerHTML =
+      "<p class='error'>Errore nel caricamento dei dati.</p>";
+  }
+}
+
+// Gestione eventi per il popup
+function setupPopup() {
+  // Apri popup quando si clicca sul pulsante info
+  infoBtn.addEventListener("click", () => {
+    infoPopup.style.display = "flex";
+    populateSignsInfo();
+  });
+
+  // Chiudi popup quando si clicca sulla X
+  closePopup.addEventListener("click", () => {
+    infoPopup.style.display = "none";
+  });
+
+  // Chiudi popup quando si clicca fuori dal contenuto
+  infoPopup.addEventListener("click", (e) => {
+    if (e.target === infoPopup) {
+      infoPopup.style.display = "none";
+    }
+  });
+
+  // Chiudi popup con tasto Escape
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && infoPopup.style.display === "flex") {
+      infoPopup.style.display = "none";
+    }
+  });
+
+  // Gestione ricerca
+  searchBtn.addEventListener("click", () => {
+    const query = searchInput.value;
+    const filteredSigns = searchZodiacSigns(query);
+    populateSignsInfo(filteredSigns);
+  });
+
+  // Permetti la ricerca premendo Invio
+  searchInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      const query = searchInput.value;
+      const filteredSigns = searchZodiacSigns(query);
+      populateSignsInfo(filteredSigns);
+    }
+  });
+
+  // Reset della ricerca
+  resetSearchBtn.addEventListener("click", () => {
+    searchInput.value = "";
+    populateSignsInfo();
+  });
+
+  // Reset della ricerca (pulsante inline)
+  resetSearchBtnInline.addEventListener("click", () => {
+    searchInput.value = "";
+    populateSignsInfo();
+  });
+}
+
 // Inizializza
 document.addEventListener("DOMContentLoaded", () => {
   createStars();
   showDefaultImage();
+  setupPopup();
 
   // Gestione selezione mesi
   const monthItems = document.querySelectorAll(".month-item");

@@ -381,6 +381,230 @@ button:active {
   animation: pulse 2s infinite;
 }
 
+/* Stili per il popup informativo */
+.info-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent-color) 0%, #8e44ad 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  z-index: 100;
+  min-width: auto;
+  padding: 0;
+}
+
+.info-button span {
+  font-size: 1.5rem;
+}
+
+.info-popup {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup-content {
+  background: linear-gradient(135deg, #2c3e50 0%, #1a2a3a 100%);
+  width: 90%;
+  max-width: 800px;
+  max-height: 80vh;
+  overflow-y: auto;
+  border-radius: 20px;
+  padding: 30px;
+  position: relative;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  animation: fadeIn 0.3s ease-out;
+}
+
+.close-popup {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  font-size: 28px;
+  font-weight: bold;
+  color: var(--light-color);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.close-popup:hover {
+  color: var(--accent-color);
+}
+
+.popup-content h2 {
+  font-family: "Playfair Display", serif;
+  text-align: center;
+  margin-bottom: 20px;
+  color: var(--light-color);
+  font-size: 1.8rem;
+}
+
+/* Stili per la barra di ricerca */
+.search-container {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.search-input {
+  flex: 1;
+  min-width: 200px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 50px;
+  font-size: 1rem;
+}
+
+.search-input:focus {
+  border-color: var(--accent-color);
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(155, 89, 182, 0.3);
+}
+
+.search-btn,
+.reset-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: auto;
+}
+
+.search-btn:hover,
+.reset-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+.reset-btn-inline {
+  background: none;
+  border: none;
+  color: var(--accent-color);
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0;
+  font-size: inherit;
+  font-weight: bold;
+  min-width: auto;
+  box-shadow: none;
+  display: inline;
+}
+
+.reset-btn-inline:hover {
+  color: white;
+  text-decoration: underline;
+  transform: none;
+  box-shadow: none;
+}
+
+.no-results {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 15px;
+  padding: 20px;
+  text-align: center;
+  margin-bottom: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.hidden {
+  display: none;
+}
+
+.signs-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.sign-item {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 15px;
+  padding: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.sign-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.sign-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 10px;
+}
+
+.sign-icon {
+  font-size: 2.5rem;
+  margin-right: 15px;
+  color: var(--accent-color);
+}
+
+.sign-name {
+  font-family: "Playfair Display", serif;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.sign-info {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sign-dates,
+.sign-element {
+  font-size: 1rem;
+  color: var(--light-color);
+}
+
+.sign-characteristics {
+  margin-top: 5px;
+}
+
+.characteristics-list {
+  list-style: none;
+  padding-left: 10px;
+  margin-top: 5px;
+}
+
+.characteristics-list li {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 5px;
+}
+
+.bullet {
+  color: var(--accent-color);
+  margin-right: 8px;
+}
+
 @media (max-width: 768px) {
   #container {
     padding: 25px;
@@ -414,5 +638,34 @@ button:active {
   #definition {
     font-size: 1rem;
     padding: 20px;
+  }
+
+  .popup-content {
+    padding: 20px;
+    width: 95%;
+  }
+
+  .sign-header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .sign-icon {
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+
+  .search-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .search-input {
+    width: 100%;
+  }
+
+  .search-btn,
+  .reset-btn {
+    width: 100%;
   }
 }

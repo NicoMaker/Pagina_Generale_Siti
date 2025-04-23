@@ -62,6 +62,35 @@
       <div id="definition"></div>
     </div>
   </div>
+
+  <!-- Info Button -->
+  <button id="info-btn" class="info-button" title="Informazioni sui segni zodiacali">
+    <span>ℹ️</span>
+  </button>
+
+  <!-- Popup per le informazioni sui segni zodiacali -->
+  <div id="info-popup" class="info-popup">
+    <div class="popup-content">
+      <span class="close-popup">&times;</span>
+      <h2>Informazioni sui Segni Zodiacali</h2>
+
+      <!-- Barra di ricerca -->
+      <div class="search-container">
+        <input type="text" id="search-sign" placeholder="Cerca un segno zodiacale..." class="search-input">
+        <button id="search-btn" class="search-btn">Cerca</button>
+        <button id="reset-search-btn" class="reset-btn">Mostra tutti</button>
+      </div>
+
+      <div id="no-results" class="no-results hidden">
+        <p>Nessun segno zodiacale trovato. Prova con un altro termine o <button id="reset-search-btn-inline"
+            class="reset-btn-inline">mostra tutti i segni</button>.</p>
+      </div>
+
+      <div class="signs-list" id="signs-list">
+        <!-- I segni zodiacali verranno inseriti qui dinamicamente -->
+      </div>
+    </div>
+  </div>
 </body>
 
 </html>
