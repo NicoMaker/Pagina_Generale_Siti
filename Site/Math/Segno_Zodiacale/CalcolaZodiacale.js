@@ -1,39 +1,82 @@
-const output = document.getElementById("output"),
-  immagine = document.getElementById("immagine"),
-  definition = document.getElementById("definition"),
-  year = new Date().getFullYear(),
-  updateImmagine = (imageSrc) => {
-    immagine.innerHTML = `<img src="${imageSrc}" class="fade-in">`;
-  },
-  updateOutput = (text, isError = false) => {
-    output.innerHTML = `<p class="${
-      isError ? "error" : "colorSegno"
-    } fade-in">${text}</p>`;
-  },
-  monthDayToDate = (month, day) =>
-    day > new Date(year, month + 1, 0).getDate()
-      ? undefined
-      : new Date(year, month, day);
+// Elementi DOM
+const output = document.getElementById("output");
+const immagine = document.getElementById("immagine");
+const signSymbol = document.getElementById("sign-symbol");
+const definition = document.getElementById("definition");
+const resultContainer = document.getElementById("result-container");
+const calcolaBtn = document.getElementById("calcola-btn");
+const monthInput = document.getElementById("month");
+const year = new Date().getFullYear();
 
-// Create starry background
+// Mappa dei simboli zodiacali
+const zodiacSymbols = {
+  Ariete: "♈",
+  Toro: "♉",
+  Gemelli: "♊",
+  Cancro: "♋",
+  Leone: "♌",
+  Vergine: "♍",
+  Bilancia: "♎",
+  Scorpione: "♏",
+  Sagittario: "♐",
+  Capricorno: "♑",
+  Acquario: "♒",
+  Pesci: "♓",
+};
+
+// Funzioni di utilità
+const showDefaultImage = () => {
+  immagine.innerHTML =
+    '<img src="img/segni.jpg" alt="Segni zodiacali" class="default-image">';
+  immagine.style.display = "block";
+  resultContainer.classList.add("hidden");
+};
+
+const updateOutput = (text, isError = false) => {
+  output.innerHTML = `<p class="${
+    isError ? "error" : "colorSegno"
+  } fade-in">${text}</p>`;
+};
+
+const showLoading = () => {
+  calcolaBtn.innerHTML =
+    '<span class="loading"></span><span>Calcolando...</span>';
+  calcolaBtn.disabled = true;
+};
+
+const resetButton = () => {
+  calcolaBtn.innerHTML =
+    '<span class="btn-text">Calcola il mio segno</span><span class="btn-icon">✨</span>';
+  calcolaBtn.disabled = false;
+};
+
+const monthDayToDate = (month, day) =>
+  day > new Date(year, month + 1, 0).getDate()
+    ? undefined
+    : new Date(year, month, day);
+
+// Crea sfondo stellato
 function createStars() {
-  const container = document.getElementById("container");
-  for (let i = 0; i < 50; i++) {
+  const starsContainer = document.getElementById("stars-container");
+  for (let i = 0; i < 100; i++) {
     const star = document.createElement("div");
     star.classList.add("star");
-    star.style.width = `${Math.random() * 2 + 1}px`;
+    star.style.width = `${Math.random() * 3 + 1}px`;
     star.style.height = star.style.width;
     star.style.left = `${Math.random() * 100}%`;
     star.style.top = `${Math.random() * 100}%`;
-    star.style.animationDelay = `${Math.random() * 3}s`;
-    container.appendChild(star);
+    star.style.animationDelay = `${Math.random() * 5}s`;
+    starsContainer.appendChild(star);
   }
 }
 
-// Load zodiac configuration
+// Carica configurazione zodiacale
 async function loadZodiacConfig() {
   try {
     const response = await fetch("configurazioni.json");
+    if (!response.ok) {
+      throw new Error(`Errore HTTP: ${response.status}`);
+    }
     return await response.json();
   } catch (error) {
     console.error("Errore nel caricamento della configurazione:", error);
@@ -42,18 +85,21 @@ async function loadZodiacConfig() {
   }
 }
 
-// Parse date from string
+// Analizza data da stringa
 function parseDate(str) {
   const [month, day] = str.split("-").map(Number);
   return monthDayToDate(month - 1, day);
 }
 
-// Calculate zodiac sign
+// Calcola segno zodiacale
 async function calcolaSegnoZodiacale() {
-  const day = parseInt(document.getElementById("day").value),
-    month = parseInt(document.getElementById("month").value);
+  const day = parseInt(document.getElementById("day").value);
+  const month = parseInt(monthInput.value);
 
-  // Validate inputs
+  // Nascondi risultati precedenti e mostra immagine predefinita
+  showDefaultImage();
+
+  // Valida input
   if (
     isNaN(day) ||
     isNaN(month) ||
@@ -63,8 +109,6 @@ async function calcolaSegnoZodiacale() {
     month > 12
   ) {
     updateOutput("Inserisci un giorno e un mese validi", true);
-    updateImmagine("img/segni.jpg");
-    definition.innerHTML = "";
     return;
   }
 
@@ -72,48 +116,84 @@ async function calcolaSegnoZodiacale() {
 
   if (!selectedDate) {
     updateOutput("Data non valida per il mese selezionato", true);
-    updateImmagine("img/segni.jpg");
-    definition.innerHTML = "";
     return;
   }
 
-  // Show loading state
+  // Mostra stato di caricamento
+  showLoading();
   updateOutput("Calcolando il tuo segno...");
 
-  const config = await loadZodiacConfig(),
-    segno = config.find(({ inizio, fine }) => {
-      const inizioDate = parseDate(inizio)?.valueOf(),
-        fineDate = parseDate(fine)?.valueOf();
+  try {
+    const config = await loadZodiacConfig();
+
+    if (!config || config.length === 0) {
+      throw new Error("Configurazione non disponibile");
+    }
+
+    const segno = config.find(({ inizio, fine }) => {
+      const inizioDate = parseDate(inizio)?.valueOf();
+      const fineDate = parseDate(fine)?.valueOf();
       return selectedDate >= inizioDate && selectedDate <= fineDate;
     });
 
-  if (!segno) {
-    updateOutput("Data non valida", true);
-    updateImmagine("img/segni.jpg");
-    definition.innerHTML = "";
-    return;
+    if (!segno) {
+      updateOutput("Data non valida", true);
+      resetButton();
+      return;
+    }
+
+    // Aggiorna UI con informazioni sul segno zodiacale
+    setTimeout(() => {
+      updateOutput(`Il tuo segno zodiacale è ${segno.segno}`);
+
+      // Nascondi l'immagine predefinita
+      immagine.style.display = "none";
+
+      // Mostra il simbolo del segno
+      signSymbol.textContent = zodiacSymbols[segno.segno] || "?";
+
+      const caratteristicheFormatte = segno.Caratteristiche.split(",")
+        .map((c) => c.trim())
+        .join("<br>");
+
+      definition.innerHTML = `
+        <div class="fade-in">
+          <p><span class="viola">Elemento:</span> ${segno.Elemento}</p>
+          <p><span class="viola">Caratteristiche:</span></p>
+          <p>${caratteristicheFormatte}</p>
+        </div>
+      `;
+
+      // Mostra il contenitore dei risultati
+      resultContainer.classList.remove("hidden");
+
+      resetButton();
+    }, 1500); // Piccolo ritardo per effetto animazione
+  } catch (error) {
+    console.error("Errore:", error);
+    updateOutput("Si è verificato un errore. Riprova più tardi.", true);
+    resetButton();
   }
-
-  // Update UI with zodiac sign information
-  setTimeout(() => {
-    updateOutput(`Il tuo segno zodiacale è ${segno.segno}`);
-    updateImmagine(`img/${segno.segno}.jpg`);
-
-    const caratteristicheFormatte =
-      segno.Caratteristiche.split(",").join(",<br>");
-
-    definition.innerHTML = `
-      <div class="fade-in">
-        <p><span class="viola">Elemento del segno:</span> ${segno.Elemento}</p>
-        <p><span class="viola">Caratteristiche del segno:</span></p>
-        <p>${caratteristicheFormatte}</p>
-      </div>
-    `;
-  }, 500); // Small delay for animation effect
 }
 
-// Initialize
+// Inizializza
 document.addEventListener("DOMContentLoaded", () => {
   createStars();
-  updateImmagine("img/segni.jpg");
+  showDefaultImage();
+
+  // Gestione selezione mesi
+  const monthItems = document.querySelectorAll(".month-item");
+
+  monthItems.forEach((item) => {
+    item.addEventListener("click", () => {
+      // Rimuovi la selezione precedente
+      monthItems.forEach((m) => m.classList.remove("selected"));
+
+      // Seleziona il mese corrente
+      item.classList.add("selected");
+
+      // Aggiorna il valore dell'input nascosto
+      monthInput.value = item.getAttribute("data-month");
+    });
+  });
 });

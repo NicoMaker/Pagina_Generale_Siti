@@ -4,12 +4,14 @@
   --primary-color: #2c3e50;
   --secondary-color: #3498db;
   --accent-color: #9b59b6;
-  --background-color: #f5f7fa;
-  --text-color: #2c3e50;
+  --background-color: #0c1824;
+  --text-color: #333333;
   --light-color: #ecf0f1;
   --dark-color: #34495e;
   --success-color: #27ae60;
   --error-color: #e74c3c;
+  --border-color: rgba(255, 255, 255, 0.1);
+  --card-bg: rgba(255, 255, 255, 0.05);
 }
 
 * {
@@ -29,6 +31,37 @@ body {
   justify-content: center;
   align-items: center;
   padding: 20px;
+  overflow-x: hidden;
+}
+
+#stars-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.star {
+  position: absolute;
+  background-color: white;
+  border-radius: 50%;
+  opacity: 0.3;
+  animation: twinkle 3s infinite;
+}
+
+@keyframes twinkle {
+  0% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 0.3;
+  }
 }
 
 #container {
@@ -42,6 +75,7 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.1);
   position: relative;
   overflow: hidden;
+  z-index: 1;
 }
 
 #container::before {
@@ -88,15 +122,30 @@ p {
   text-align: center;
 }
 
-.input-group {
+.input-section {
   display: flex;
-  gap: 15px;
-  margin-bottom: 25px;
-  justify-content: center;
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 25px;
+  margin-bottom: 30px;
 }
 
-select,
+.input-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: 200px;
+  margin: 0 auto;
+  text-align: center; /* Centra la label */
+}
+
+label {
+  font-size: 0.9rem;
+  color: var(--light-color);
+  text-align: center; /* Centra il testo della label */
+  display: block; /* Assicura che occupi tutta la larghezza */
+  margin-bottom: 5px;
+}
+
 input {
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.2);
@@ -106,23 +155,58 @@ input {
   font-size: 1rem;
   outline: none;
   transition: all 0.3s ease;
-  width: 150px;
+  width: 100%;
   text-align: center;
+  margin: 0 auto; /* Centra l'input */
 }
 
-select:focus,
 input:focus {
   border-color: var(--accent-color);
   box-shadow: 0 0 0 2px rgba(155, 89, 182, 0.3);
 }
 
-select {
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23ecf0f1' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 15px center;
-  background-size: 16px;
-  padding-right: 40px;
+/* Barra dei mesi */
+.months-bar {
+  margin-top: 10px;
+}
+
+.months-label {
+  font-size: 0.9rem;
+  color: var(--light-color);
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.months-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 15px;
+}
+
+.month-item {
+  background: rgba(255, 255, 255, 0.8);
+  color: var(--text-color);
+  border-radius: 50px;
+  padding: 8px 12px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+  min-width: 50px;
+  font-weight: 600;
+}
+
+.month-item:hover {
+  background: rgba(255, 255, 255, 0.9);
+  transform: translateY(-2px);
+}
+
+.month-item.selected {
+  background: var(--accent-color);
+  color: white;
+  box-shadow: 0 4px 10px rgba(155, 89, 182, 0.4);
 }
 
 button {
@@ -136,8 +220,12 @@ button {
   transition: all 0.3s ease;
   font-weight: 600;
   box-shadow: 0 4px 15px rgba(155, 89, 182, 0.4);
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
   margin: 0 auto;
+  min-width: 220px;
 }
 
 button:hover {
@@ -147,6 +235,10 @@ button:hover {
 
 button:active {
   transform: translateY(1px);
+}
+
+.btn-icon {
+  font-size: 1.2rem;
 }
 
 #output {
@@ -169,13 +261,31 @@ button:active {
   font-size: 1.2rem;
 }
 
-#immagine {
+#result-container {
+  opacity: 1;
+  transition: opacity 0.5s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+#result-container.hidden {
+  opacity: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+.sign-image {
   margin: 20px auto;
   position: relative;
   transition: all 0.5s ease;
+  text-align: center;
+  width: 200px;
+  height: 200px;
 }
 
-#immagine img {
+.sign-image img {
   display: block;
   margin: 0 auto;
   border-radius: 50%;
@@ -184,17 +294,38 @@ button:active {
   max-width: 100%;
   height: auto;
   border: 3px solid rgba(255, 255, 255, 0.1);
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
+.sign-symbol {
+  font-size: 5rem;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(155, 89, 182, 0.2);
+  border-radius: 50%;
+  margin: 0 auto;
+  border: 2px solid rgba(155, 89, 182, 0.5);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  color: white;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  animation: pulse 2s infinite;
 }
 
 #definition {
   background: rgba(255, 255, 255, 0.05);
   border-radius: 15px;
   padding: 25px;
-  margin-top: 30px;
+  margin-top: 10px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   font-size: 1.1rem;
   line-height: 1.8;
   transition: all 0.5s ease;
+  width: 100%;
 }
 
 .viola {
@@ -202,49 +333,23 @@ button:active {
   font-weight: 600;
 }
 
-@media (max-width: 768px) {
-  #container {
-    padding: 25px;
-  }
+.loading {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 1s ease-in-out infinite;
+  margin-right: 10px;
+}
 
-  h1 {
-    font-size: 2rem;
-  }
-
-  p {
-    font-size: 1rem;
-  }
-
-  .input-group {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  select,
-  input {
-    width: 100%;
-    max-width: 250px;
-  }
-
-  #immagine img {
-    width: 200px;
-    height: 200px;
-  }
-
-  #definition {
-    font-size: 1rem;
-    padding: 20px;
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
   }
 }
 
-@media (min-width: 769px) {
-  #immagine img {
-    width: 250px;
-    height: 250px;
-  }
-}
-
-/* Animation for zodiac sign reveal */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -260,57 +365,54 @@ button:active {
   animation: fadeIn 0.8s ease forwards;
 }
 
-/* Starry background animation */
-@keyframes twinkle {
+@keyframes pulse {
   0% {
-    opacity: 0.3;
+    transform: scale(1);
   }
   50% {
-    opacity: 0.8;
+    transform: scale(1.05);
   }
   100% {
-    opacity: 0.3;
+    transform: scale(1);
   }
 }
 
-.star {
-  position: absolute;
-  background-color: white;
-  border-radius: 50%;
-  opacity: 0.3;
-  animation: twinkle 3s infinite;
+.pulse {
+  animation: pulse 2s infinite;
 }
 
-h1 {
-  color: #1a237e; /* Dark blue color instead of red */
-  font-size: 50px;
-  font-weight: bold;
-  text-shadow: 1px 1px 3px rgba(255, 255, 255, 0.7); /* Add text shadow for better readability */
-}
+@media (max-width: 768px) {
+  #container {
+    padding: 25px;
+  }
 
-/* Improve the input and select styling for better readability */
-select,
-input,
-button {
-  text-align: center;
-  font-size: 20px;
-  border-radius: 50px;
-  color: #333; /* Dark text color instead of default */
-  background-color: #f5f5f5; /* Light background for inputs */
-  border: 2px solid #7986cb; /* Add a border */
-  padding: 8px 15px;
-  margin: 5px;
-}
+  h1 {
+    font-size: 2rem;
+  }
 
-/* Improve button styling */
-button {
-  background-color: #3f51b5; /* More professional blue instead of aqua */
-  color: white; /* White text on blue button for good contrast */
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
+  p {
+    font-size: 1rem;
+  }
 
-button:hover {
-  background-color: #303f9f; /* Darker blue on hover */
+  .month-item {
+    padding: 6px 8px;
+    font-size: 0.8rem;
+    min-width: 40px;
+  }
+
+  .sign-image {
+    width: 150px;
+    height: 150px;
+  }
+
+  .sign-symbol {
+    font-size: 4rem;
+    width: 100px;
+    height: 100px;
+  }
+
+  #definition {
+    font-size: 1rem;
+    padding: 20px;
+  }
 }

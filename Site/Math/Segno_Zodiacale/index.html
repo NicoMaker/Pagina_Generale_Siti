@@ -5,39 +5,62 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Calcolo Segno Zodiacale</title>
-  <link rel="icon" href="img/segni.jpg" type="image/jpg">
   <link rel="stylesheet" href="StyleZodiacale.css">
   <script src="CalcolaZodiacale.js" defer></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Raleway:wght@300;400;600&display=swap"
+    rel="stylesheet">
 </head>
 
 <body>
+  <div id="stars-container"></div>
   <div id="container">
     <h1>Calcolatore del Segno Zodiacale</h1>
-    <p>Inserisci il tuo giorno e mese di nascita per scoprire il tuo segno zodiacale</p>
+    <p>Inserisci il tuo giorno e mese di nascita per scoprire il tuo segno zodiacale e le sue caratteristiche</p>
 
-    <div class="input-group">
-      <input type="number" id="day" placeholder="Giorno" min="1" max="31">
-      <select id="month">
-        <option value="" disabled selected>Mese</option>
-        <option value="1">Gennaio</option>
-        <option value="2">Febbraio</option>
-        <option value="3">Marzo</option>
-        <option value="4">Aprile</option>
-        <option value="5">Maggio</option>
-        <option value="6">Giugno</option>
-        <option value="7">Luglio</option>
-        <option value="8">Agosto</option>
-        <option value="9">Settembre</option>
-        <option value="10">Ottobre</option>
-        <option value="11">Novembre</option>
-        <option value="12">Dicembre</option>
-      </select>
-      <button onclick="calcolaSegnoZodiacale()">Calcola</button>
+    <div class="input-section">
+      <div class="input-wrapper">
+        <label for="day">Giorno</label>
+        <input type="number" id="day" placeholder="Giorno" min="1" max="31">
+      </div>
+
+      <div class="months-bar">
+        <p class="months-label">Seleziona il mese:</p>
+        <div class="months-container">
+          <div class="month-item" data-month="1">Gen</div>
+          <div class="month-item" data-month="2">Feb</div>
+          <div class="month-item" data-month="3">Mar</div>
+          <div class="month-item" data-month="4">Apr</div>
+          <div class="month-item" data-month="5">Mag</div>
+          <div class="month-item" data-month="6">Giu</div>
+          <div class="month-item" data-month="7">Lug</div>
+          <div class="month-item" data-month="8">Ago</div>
+          <div class="month-item" data-month="9">Set</div>
+          <div class="month-item" data-month="10">Ott</div>
+          <div class="month-item" data-month="11">Nov</div>
+          <div class="month-item" data-month="12">Dic</div>
+        </div>
+        <input type="hidden" id="month" value="">
+      </div>
     </div>
 
+    <button id="calcola-btn" onclick="calcolaSegnoZodiacale()">
+      <span class="btn-text">Calcola il mio segno</span>
+      <span class="btn-icon">✨</span>
+    </button>
+
     <div id="output"></div>
-    <div id="immagine"></div>
-    <div id="definition"></div>
+
+    <div id="immagine" class="sign-image">
+      <img src="img/segni.jpg" alt="Segni zodiacali" class="default-image">
+    </div>
+
+    <div id="result-container" class="hidden">
+      <div id="sign-symbol" class="sign-symbol"></div>
+      <div id="definition"></div>
+    </div>
   </div>
 </body>
 
