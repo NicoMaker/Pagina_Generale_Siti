@@ -180,25 +180,37 @@ button:active {
 /* Responsive grid sizes */
 @media (max-width: 640px) {
   .cell {
-    width: 40px;
-    height: 40px;
+    width: 35px;
+    height: 35px;
   }
 
   .board {
-    grid-template-columns: repeat(7, 45px);
-    grid-template-rows: repeat(6, 45px);
+    grid-template-columns: repeat(7, 40px);
+    grid-template-rows: repeat(6, 40px);
+  }
+
+  .game-info {
+    padding: 0 0.5rem;
+  }
+
+  #currentPlayerContainer {
+    padding: 0.5rem 1rem;
+  }
+
+  button {
+    padding: 0.5rem 1rem;
   }
 }
 
 @media (min-width: 641px) and (max-width: 1023px) {
   .cell {
-    width: 60px;
-    height: 60px;
+    width: 55px;
+    height: 55px;
   }
 
   .board {
-    grid-template-columns: repeat(7, 65px);
-    grid-template-rows: repeat(6, 65px);
+    grid-template-columns: repeat(7, 60px);
+    grid-template-rows: repeat(6, 60px);
   }
 }
 
@@ -455,6 +467,21 @@ summary:focus-visible {
   gap: 1rem;
 }
 
+@media (max-width: 640px) {
+  .score-card {
+    padding: 1rem;
+  }
+
+  .stat-item {
+    padding: 0.4rem;
+  }
+
+  .card-button {
+    width: 35px;
+    height: 35px;
+  }
+}
+
 .rosso-score {
   border-top: 4px solid var(--color-red);
 }
@@ -492,6 +519,9 @@ summary:focus-visible {
 
 .stat-label {
   font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .stat-value {
@@ -591,4 +621,113 @@ summary:focus-visible {
 
 .stat-updated {
   animation: pulse 0.6s ease-out;
+}
+
+/* Stile per il pallino del giocatore nella timeline */
+.player-dot {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-right: 5px;
+}
+
+.player-dot.rosso {
+  background-color: var(--color-red);
+  border: 1px solid var(--color-red-dark);
+}
+
+.player-dot.giallo {
+  background-color: var(--color-yellow);
+  border: 1px solid var(--color-yellow-dark);
+}
+
+/* Stile per il messaggio di squalifica */
+.disqualification-message {
+  background-color: var(--color-red);
+  color: white;
+  font-weight: bold;
+  padding: 0.5rem;
+  border-radius: var(--border-radius);
+  margin-top: 0.5rem;
+  animation: shake 0.5s ease-in-out;
+  font-size: clamp(0.9rem, 3vw, 1.1rem);
+}
+
+@media (max-width: 640px) {
+  .disqualification-message {
+    padding: 0.3rem;
+    margin-top: 0.3rem;
+  }
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    transform: translateX(-5px);
+  }
+  20%,
+  40%,
+  60%,
+  80% {
+    transform: translateX(5px);
+  }
+}
+
+/* Stile per il pulsante nuova partita dopo squalifica */
+.new-game-button {
+  margin-top: 1rem;
+  background-color: #16a34a; /* Verde per miglior contrasto */
+  color: white;
+  font-weight: bold;
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: var(--transition);
+  animation: pulse 1.5s infinite;
+}
+
+.new-game-button:hover {
+  background-color: #15803d; /* Verde scuro */
+  transform: translateY(-2px);
+}
+
+@media (max-width: 640px) {
+  .new-game-button {
+    padding: 0.5rem 1rem;
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* Stile per il pallino nelle statistiche */
+.stat-item .player-dot {
+  width: 10px;
+  height: 10px;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 5px;
+}
+
+/* Stile per i pulsanti disabilitati */
+.card-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.card-button:disabled:hover {
+  background-color: var(--color-yellow);
+  transform: none;
+}
+
+.red-card:disabled:hover {
+  background-color: var(--color-red);
 }

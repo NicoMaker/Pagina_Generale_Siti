@@ -54,20 +54,25 @@
         <div class="scoreboard">
           <div class="score-card rosso-score">
             <div class="player-indicator">
-              <div class="cell rosso"></div>
               <h3>Rosso</h3>
             </div>
             <div class="stats">
               <div class="stat-item">
-                <span class="stat-label">Vittorie:</span>
+                <span class="stat-label">
+                  <span class="player-dot rosso"></span>Vittorie:
+                </span>
                 <span id="rossoWins" class="stat-value">0</span>
               </div>
               <div class="stat-item">
-                <span class="stat-label">Cartellini Gialli:</span>
+                <span class="stat-label">
+                  <span class="player-dot rosso"></span>Cartellini Gialli:
+                </span>
                 <span id="rossoYellowCards" class="stat-value">0</span>
               </div>
               <div class="stat-item">
-                <span class="stat-label">Cartellini Rossi:</span>
+                <span class="stat-label">
+                  <span class="player-dot rosso"></span>Cartellini Rossi:
+                </span>
                 <span id="rossoRedCards" class="stat-value">0</span>
               </div>
             </div>
@@ -83,20 +88,25 @@
 
           <div class="score-card giallo-score">
             <div class="player-indicator">
-              <div class="cell giallo"></div>
               <h3>Giallo</h3>
             </div>
             <div class="stats">
               <div class="stat-item">
-                <span class="stat-label">Vittorie:</span>
+                <span class="stat-label">
+                  <span class="player-dot giallo"></span>Vittorie:
+                </span>
                 <span id="gialloWins" class="stat-value">0</span>
               </div>
               <div class="stat-item">
-                <span class="stat-label">Cartellini Gialli:</span>
+                <span class="stat-label">
+                  <span class="player-dot giallo"></span>Cartellini Gialli:
+                </span>
                 <span id="gialloYellowCards" class="stat-value">0</span>
               </div>
               <div class="stat-item">
-                <span class="stat-label">Cartellini Rossi:</span>
+                <span class="stat-label">
+                  <span class="player-dot giallo"></span>Cartellini Rossi:
+                </span>
                 <span id="gialloRedCards" class="stat-value">0</span>
               </div>
             </div>
@@ -131,8 +141,10 @@
           <div class="instructions-content">
             <p>Inserisci i gettoni a turno cliccando sulla colonna desiderata. Vince chi allinea 4 gettoni dello stesso
               colore in orizzontale, verticale o diagonale.</p>
-            <p>Usa i pulsanti cartellino per assegnare penalità ai giocatori. Il punteggio viene salvato tra le partite.
-            </p>
+            <p>Usa i pulsanti cartellino per assegnare penalità ai giocatori. Un giocatore perde se riceve 3 cartellini
+              gialli o 1 cartellino rosso.</p>
+            <p>I cartellini vengono resettati all'inizio di una nuova partita. Le partite si alternano: la prima inizia
+              il rosso, la seconda il giallo, e così via.</p>
           </div>
         </details>
       </div>

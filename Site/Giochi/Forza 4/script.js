@@ -4,7 +4,8 @@ const rows = 6,
 let currentPlayer = "rosso",
   gameBoard = [],
   winningDirections = [],
-  gameOver = false;
+  gameOver = false,
+  gameCount = 0; // Contatore per tenere traccia del numero di partite giocate
 
 // Variabili per il sistema di punteggio
 let scores = {
@@ -77,6 +78,7 @@ function createBoard() {
   loadScores(); // Carica i punteggi salvati
   updateScoreDisplay(); // Aggiorna la visualizzazione dei punteggi
   initializeTimeline(); // Inizializza la timeline
+  updateCardButtonsState(); // Aggiorna lo stato dei pulsanti dei cartellini
 }
 
 // Funzione per ottenere la riga vuota in cui posizionare la pedina
@@ -224,11 +226,13 @@ function dropPiece(col) {
       `Cella con gettone ${currentPlayer}, riga ${row + 1}, colonna ${col + 1}`
     );
 
-    // Aggiungi evento alla timeline
+    // Aggiungi evento alla timeline con il pallino colorato
     addTimelineEvent(
       `Giocatore ${currentPlayer} ha inserito un gettone nella colonna ${
         col + 1
-      }`
+      }`,
+      false,
+      currentPlayer
     );
 
     // Aggiungi feedback sonoro (opzionale)
@@ -245,18 +249,32 @@ function dropPiece(col) {
       updateScoreDisplay();
 
       // Aggiorna la timeline
-      addTimelineEvent(`Giocatore ${currentPlayer} ha vinto la partita!`, true);
+      addTimelineEvent(
+        `Giocatore ${currentPlayer} ha vinto la partita!`,
+        true,
+        currentPlayer
+      );
 
       updateWinnerMessage(
         `Il ${currentPlayer === "rosso" ? "Rosso" : "Giallo"} ha vinto! 🏆🎉`
       );
+
+      // Disabilita i pulsanti dei cartellini
+      updateCardButtonsState();
     } else if (isBoardFull()) {
       gameOver = true;
 
       // Aggiorna la timeline
-      addTimelineEvent(`Partita terminata in pareggio!`, true);
+      const nextPlayer = gameCount % 2 === 0 ? "giallo" : "rosso";
+      addTimelineEvent(
+        `Partita terminata in pareggio! La prossima partita inizierà il giocatore ${nextPlayer}.`,
+        true
+      );
 
       updateWinnerMessage("Pareggio! 😲 Nessuno ha vinto.");
+
+      // Disabilita i pulsanti dei cartellini
+      updateCardButtonsState();
     } else {
       currentPlayer = currentPlayer === "rosso" ? "giallo" : "rosso";
       updateCurrentPlayerIndicator();
@@ -288,14 +306,36 @@ function playDropSound() {
 const isBoardFull = () =>
   gameBoard.every((row) => row.every((cell) => cell !== null));
 
-// Modifica la funzione resetGame per ripristinare il turno
+// Funzione per aggiornare lo stato dei pulsanti dei cartellini
+function updateCardButtonsState() {
+  const yellowCardButtons = document.querySelectorAll(".yellow-card");
+  const redCardButtons = document.querySelectorAll(".red-card");
+
+  // Disabilita o abilita i pulsanti in base allo stato della partita
+  yellowCardButtons.forEach((button) => {
+    button.disabled = gameOver;
+  });
+
+  redCardButtons.forEach((button) => {
+    button.disabled = gameOver;
+  });
+}
+
+// Modifica la funzione resetGame per alternare i giocatori iniziali
 function resetGame() {
   gameOver = false;
   gameBoard = Array.from({ length: rows }, () => Array(cols).fill(null));
 
+  // Incrementa il contatore delle partite
+  gameCount++;
+
+  // Determina il giocatore iniziale in base al numero della partita
+  // Prima partita (gameCount = 1): rosso, Seconda (gameCount = 2): giallo, ecc.
+  currentPlayer = gameCount % 2 === 1 ? "rosso" : "giallo";
+
   document.getElementById("currentPlayerContainer").innerHTML = `
     <span>Turno:</span>
-    <div id="currentPlayerIndicator" class="cell rosso" aria-label="Giocatore rosso"></div>
+    <div id="currentPlayerIndicator" class="cell ${currentPlayer}" aria-label="Giocatore ${currentPlayer}"></div>
   `;
 
   document.querySelectorAll(".cell").forEach((cell) => {
@@ -318,14 +358,32 @@ function resetGame() {
     );
   });
 
-  currentPlayer = "rosso";
   updateCurrentPlayerIndicator();
 
+  // Resetta i cartellini per entrambi i giocatori
+  scores.rosso.yellowCards = 0;
+  scores.rosso.redCards = 0;
+  scores.giallo.yellowCards = 0;
+  scores.giallo.redCards = 0;
+
+  // Salva e aggiorna il display dei punteggi
+  saveScores();
+  updateScoreDisplay();
+
+  // Abilita i pulsanti dei cartellini
+  updateCardButtonsState();
+
   // Aggiungi evento alla timeline
-  addTimelineEvent("Nuova partita iniziata");
+  addTimelineEvent(
+    `Nuova partita iniziata. Inizia il giocatore ${currentPlayer}.`,
+    false,
+    currentPlayer
+  );
 
   // Annuncia il reset del gioco per screen reader
-  announceForScreenReader("Nuova partita iniziata. Turno del giocatore rosso.");
+  announceForScreenReader(
+    `Nuova partita iniziata. Turno del giocatore ${currentPlayer}.`
+  );
 }
 
 // Funzione per annunciare messaggi per screen reader
@@ -416,14 +474,45 @@ function resetStats() {
   }
 }
 
-// Funzione per aggiungere cartellini
+// Funzione per aggiungere cartellini e verificare la squalifica
 function addCard(player, cardType) {
+  // Verifica se la partita è in corso
+  if (gameOver) {
+    // Mostra un messaggio di errore o feedback
+    announceForScreenReader(
+      "Non puoi assegnare cartellini a partita terminata"
+    );
+    return;
+  }
+
+  const opponent = player === "rosso" ? "giallo" : "rosso";
+
   if (cardType === "yellow") {
     scores[player].yellowCards++;
-    addTimelineEvent(`Cartellino GIALLO assegnato al giocatore ${player}`);
+    addTimelineEvent(
+      `Cartellino GIALLO assegnato al giocatore ${player}`,
+      false,
+      player
+    );
+
+    // Verifica se il giocatore ha raggiunto 3 cartellini gialli
+    if (scores[player].yellowCards >= 3) {
+      // Il giocatore ha perso per accumulo di cartellini gialli
+      handleDisqualification(player, opponent, "3 cartellini gialli");
+    }
   } else if (cardType === "red") {
     scores[player].redCards++;
-    addTimelineEvent(`Cartellino ROSSO assegnato al giocatore ${player}`);
+    addTimelineEvent(
+      `Cartellino ROSSO assegnato al giocatore ${player}`,
+      false,
+      player
+    );
+
+    // Verifica se il giocatore ha ricevuto un cartellino rosso
+    if (scores[player].redCards >= 1) {
+      // Il giocatore ha perso per cartellino rosso
+      handleDisqualification(player, opponent, "cartellino rosso");
+    }
   }
 
   saveScores();
@@ -439,6 +528,48 @@ function addCard(player, cardType) {
   }, 600);
 }
 
+// Funzione per gestire la squalifica di un giocatore
+function handleDisqualification(player, opponent, reason) {
+  gameOver = true;
+
+  // Aggiorna il punteggio del vincitore
+  scores[opponent].wins++;
+  saveScores();
+  updateScoreDisplay();
+
+  // Aggiorna la timeline
+  addTimelineEvent(
+    `Giocatore ${player} squalificato per ${reason}!`,
+    true,
+    player
+  );
+  addTimelineEvent(
+    `Giocatore ${opponent} ha vinto la partita per squalifica!`,
+    true,
+    opponent
+  );
+
+  // Mostra il messaggio di squalifica
+  const container = document.getElementById("currentPlayerContainer");
+  container.innerHTML = `
+    <div class="disqualification-message">
+      ${player === "rosso" ? "ROSSO" : "GIALLO"} squalificato: ${reason}
+    </div>
+    <div>Vittoria a ${opponent === "rosso" ? "ROSSO" : "GIALLO"}</div>
+    <button onclick="resetGame()" class="new-game-button">
+      Gioca di nuovo
+    </button>
+  `;
+
+  // Disabilita i pulsanti dei cartellini
+  updateCardButtonsState();
+
+  // Annuncia la squalifica per screen reader
+  announceForScreenReader(
+    `Giocatore ${player} squalificato per ${reason}. Vittoria assegnata al giocatore ${opponent}.`
+  );
+}
+
 // Funzioni per la timeline
 function initializeTimeline() {
   const timeline = document.getElementById("timeline");
@@ -446,7 +577,8 @@ function initializeTimeline() {
     '<div class="empty-timeline">Nessun evento registrato</div>';
 }
 
-function addTimelineEvent(message, isImportant = false) {
+// Funzione modificata per aggiungere eventi alla timeline con pallino colorato
+function addTimelineEvent(message, isImportant = false, playerColor = null) {
   const timeline = document.getElementById("timeline");
 
   // Rimuovi il messaggio "vuoto" se presente
@@ -462,9 +594,17 @@ function addTimelineEvent(message, isImportant = false) {
   let eventClass = "timeline-event";
   if (isImportant) {
     eventClass += " important-event";
-  } else if (message.includes("Rosso") || message.includes("rosso")) {
+  } else if (
+    message.includes("Rosso") ||
+    message.includes("rosso") ||
+    playerColor === "rosso"
+  ) {
     eventClass += " rosso-event";
-  } else if (message.includes("Giallo") || message.includes("giallo")) {
+  } else if (
+    message.includes("Giallo") ||
+    message.includes("giallo") ||
+    playerColor === "giallo"
+  ) {
     eventClass += " giallo-event";
   }
 
@@ -483,7 +623,7 @@ function addTimelineEvent(message, isImportant = false) {
   if (message.includes("vinto")) {
     icon = "🏆";
   } else if (message.includes("gettone")) {
-    icon = currentPlayer === "rosso" ? "🔴" : "🟡";
+    icon = playerColor === "rosso" ? "🔴" : "🟡";
   } else if (message.includes("GIALLO")) {
     icon = "🟨";
   } else if (message.includes("ROSSO")) {
@@ -492,12 +632,20 @@ function addTimelineEvent(message, isImportant = false) {
     icon = "🤝";
   } else if (message.includes("Statistiche")) {
     icon = "🗑️";
+  } else if (message.includes("squalificato")) {
+    icon = "⛔";
+  }
+
+  // Crea il pallino colorato per il giocatore
+  let playerDot = "";
+  if (playerColor) {
+    playerDot = `<span class="player-dot ${playerColor}"></span>`;
   }
 
   // Imposta il contenuto HTML
   eventElement.innerHTML = `
     <div class="timeline-event-icon">${icon}</div>
-    <div class="timeline-event-text">${message}</div>
+    <div class="timeline-event-text">${playerDot}${message}</div>
     <div class="timeline-event-time">${timeString}</div>
   `;
 
