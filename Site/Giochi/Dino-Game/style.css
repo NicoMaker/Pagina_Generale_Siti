@@ -542,3 +542,17 @@ footer {
 .incorrect {
   color: #e74c3c;
 }
+
+/* Aggiungi questo al tuo file CSS esistente */
+#risultato img {
+  max-width: 200px; /* Riduce la larghezza massima dell'immagine */
+  height: auto; /* Mantiene le proporzioni */
+  border-radius: 10px; /* Aggiunge bordi arrotondati */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Aggiunge una leggera ombra */
+}
+
+/* Modifica lo stile del contenitore del risultato per essere più compatto */
+.risultato-content {
+  padding: 1.5rem;
+  max-width: 400px;
+}
