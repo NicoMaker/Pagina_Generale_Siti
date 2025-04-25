@@ -25,7 +25,7 @@
 
     <header>
       <h1 class="game-title">Tris</h1>
-      <p class="subtitle">Il classico gioco di X e O</p>
+      <p class="subtitle">Partite dispari inizia X, partite pari inizia 0</p>
     </header>
 
     <main>
@@ -44,9 +44,14 @@
           <div class="score-divider">:</div>
 
           <div class="score-box">
-            <div class="score-symbol">O</div>
+            <div class="score-symbol">0</div>
             <div class="score-value" id="scoreO">0</div>
           </div>
+        </div>
+
+        <div class="game-number-container">
+          <div class="game-number-label">Partita</div>
+          <div class="game-number-value" id="gameNumberDisplay">1</div>
         </div>
 
         <button id="resetButton" class="control-button">
@@ -59,7 +64,7 @@
           </svg>
           <span>Nuova Partita</span>
         </button>
-        
+
         <button id="resetAllButton" class="control-button">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
             stroke-linecap="round" stroke-linejoin="round">
@@ -108,6 +113,10 @@
               <span class="game-cell" data-index="8" data-player="none" onclick="play(this)">&nbsp;</span>
             </div>
           </div>
+
+          <!-- Center grid lines -->
+          <div class="center-grid-horizontal"></div>
+          <div class="center-grid-vertical"></div>
         </div>
       </div>
 
@@ -163,7 +172,8 @@
               </div>
               <div class="rule-text">
                 <h3>Come Giocare</h3>
-                <p>I giocatori si alternano posizionando il proprio simbolo (X o O) in una cella vuota.</p>
+                <p>I giocatori si alternano posizionando il proprio simbolo (X o 0) in una cella vuota.</p>
+                <p>Nelle partite dispari inizia X, nelle partite pari inizia 0.</p>
               </div>
             </div>
 

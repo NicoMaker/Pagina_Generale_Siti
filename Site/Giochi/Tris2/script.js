@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const playerTurnDisplay = document.getElementById("playerTurnDisplay");
   const scoreXElement = document.getElementById("scoreX");
   const scoreOElement = document.getElementById("scoreO");
+  const gameNumberDisplay = document.getElementById("gameNumberDisplay");
   const historyContainer = document.getElementById("historyContainer");
   const rulesButton = document.getElementById("rulesButton");
   const rulesModal = document.getElementById("rulesModal");
@@ -15,9 +16,10 @@ document.addEventListener("DOMContentLoaded", () => {
   let playerTurn = "x";
   let moves = 0;
   let isGameOver = false;
+  let gameNumber = 1;
   let scores = {
     x: 0,
-    o: 0,
+    0: 0,
     draws: 0,
   };
   let gameHistory = [];
@@ -33,7 +35,32 @@ document.addEventListener("DOMContentLoaded", () => {
     // Carica la cronologia delle partite
     loadHistory();
 
-    // Imposta il turno iniziale
+    // Carica il numero di partita
+    loadGameNumber();
+
+    // Imposta il turno iniziale in base al numero di partita
+    setInitialTurn();
+  }
+
+  // Carica il numero di partita dal localStorage
+  function loadGameNumber() {
+    const savedGameNumber = localStorage.getItem("trisGameNumber");
+    if (savedGameNumber) {
+      gameNumber = parseInt(savedGameNumber);
+    }
+    gameNumberDisplay.textContent = gameNumber;
+  }
+
+  // Salva il numero di partita nel localStorage
+  function saveGameNumber() {
+    localStorage.setItem("trisGameNumber", gameNumber.toString());
+  }
+
+  // Imposta il turno iniziale in base al numero di partita
+  function setInitialTurn() {
+    // Se il numero di partita è dispari, inizia X
+    // Se il numero di partita è pari, inizia 0
+    playerTurn = gameNumber % 2 === 1 ? "x" : "0";
     updateTurnDisplay();
   }
 
@@ -52,7 +79,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Aggiorna il display dei punteggi
   function updateScoreDisplay() {
     scoreXElement.textContent = scores.x;
-    scoreOElement.textContent = scores.o;
+    scoreOElement.textContent = scores["0"];
   }
 
   // Salva i punteggi nel localStorage
@@ -65,6 +92,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const savedScores = localStorage.getItem("trisScores");
     if (savedScores) {
       scores = JSON.parse(savedScores);
+      // Assicurati che ci sia la chiave "0" invece di "o"
+      if (scores.o !== undefined && scores["0"] === undefined) {
+        scores["0"] = scores.o;
+        delete scores.o;
+      }
     }
   }
 
@@ -79,7 +111,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (playerTurn === "x") {
         element.classList.add("player-x");
       } else {
-        element.classList.add("player-o");
+        element.classList.add("player-0");
       }
 
       // Incrementa le mosse
@@ -90,7 +122,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Cambia il turno se il gioco non è finito
       if (!isGameOver) {
-        playerTurn = playerTurn === "x" ? "o" : "x";
+        playerTurn = playerTurn === "x" ? "0" : "x";
         updateTurnDisplay();
       }
     }
@@ -227,6 +259,7 @@ document.addEventListener("DOMContentLoaded", () => {
     gameHistory.unshift({
       result: result,
       timestamp: Date.now(),
+      gameNumber: gameNumber,
     });
 
     // Salva e aggiorna la cronologia
@@ -264,9 +297,9 @@ document.addEventListener("DOMContentLoaded", () => {
       const historyItem = document.createElement("div");
       historyItem.className = "history-item";
 
-      const gameNumber = document.createElement("div");
-      gameNumber.className = "game-number";
-      gameNumber.textContent = `Partita ${index + 1}`;
+      const gameNumberInfo = document.createElement("div");
+      gameNumberInfo.className = "game-number";
+      gameNumberInfo.textContent = `Partita ${game.gameNumber || index + 1}`;
 
       const historyResult = document.createElement("div");
 
@@ -277,11 +310,11 @@ document.addEventListener("DOMContentLoaded", () => {
         historyResult.className = "history-result win-x";
         historyResult.textContent = "Vittoria X";
       } else {
-        historyResult.className = "history-result win-o";
-        historyResult.textContent = "Vittoria O";
+        historyResult.className = "history-result win-0";
+        historyResult.textContent = "Vittoria 0";
       }
 
-      historyItem.appendChild(gameNumber);
+      historyItem.appendChild(gameNumberInfo);
       historyItem.appendChild(historyResult);
 
       historyContainer.appendChild(historyItem);
@@ -298,19 +331,23 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
+    // Incrementa il numero di partita
+    gameNumber++;
+    gameNumberDisplay.textContent = gameNumber;
+    saveGameNumber();
+
     // Resetta lo stato del gioco
-    playerTurn = "x";
     moves = 0;
     isGameOver = false;
 
-    // Aggiorna il display del turno
-    updateTurnDisplay();
+    // Imposta il turno iniziale in base al numero di partita
+    setInitialTurn();
 
     // Resetta tutte le celle
     cells.forEach((cell) => {
       cell.textContent = "";
       cell.dataset.player = "none";
-      cell.classList.remove("player-x", "player-o");
+      cell.classList.remove("player-x", "player-0");
       cell.parentNode.classList.remove("activeBox");
     });
   }
@@ -342,7 +379,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // Resetta i punteggi
       scores = {
         x: 0,
-        o: 0,
+        0: 0,
         draws: 0,
       };
       updateScoreDisplay();
@@ -352,6 +389,11 @@ document.addEventListener("DOMContentLoaded", () => {
       gameHistory = [];
       saveHistory();
       renderHistory();
+
+      // Resetta il numero di partita
+      gameNumber = 1;
+      gameNumberDisplay.textContent = gameNumber;
+      saveGameNumber();
 
       // Resetta il gioco corrente
       resetGame();
