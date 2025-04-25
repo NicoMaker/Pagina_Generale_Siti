@@ -208,10 +208,7 @@ document.addEventListener("DOMContentLoaded", function () {
     window.location.href = mailtoLink;
   };
 
-  window.contactCell = function () {
-    window.location.href = "tel:+393337024320";
-  };
-
+  window.contactCell = () => (window.location.href = "tel:+393337024320");
   window.openWhatsAppChat = function () {
     const phoneNumber = "+393337024320";
     const message = encodeURIComponent("*Info sul sito Pagina Generale Siti*");
