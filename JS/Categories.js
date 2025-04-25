@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const searchInput = document.getElementById("searchInput");
   const projectSearchInput = document.getElementById("projectSearchInput");
   const noProjectsFound = document.getElementById("noProjectsFound");
-  const noCategoriesFound = document.getElementById("noCategoriesFound"); // Nuovo elemento
+  const noCategoriesFound = document.getElementById("noCategoriesFound");
   const menuToggle = document.querySelector(".menu-toggle");
 
   // Category icons mapping
@@ -54,6 +54,7 @@ document.addEventListener("DOMContentLoaded", function () {
   function renderCategories(categories) {
     categoriesGrid.innerHTML = "";
 
+    // Sort categories alphabetically
     Object.keys(categories)
       .sort((a, b) => a.replace(/_/g, " ").localeCompare(b.replace(/_/g, " ")))
       .forEach((categoryName) => {
@@ -71,7 +72,6 @@ document.addEventListener("DOMContentLoaded", function () {
             <p>${categories[categoryName].length} ${
           categories[categoryName].length === 1 ? "progetto" : "progetti"
         }</p>
-
           </div>
         `;
 
@@ -87,6 +87,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Nascondi il messaggio "nessun progetto trovato" all'inizio
     noProjectsFound.style.display = "none";
 
+    // Sort projects alphabetically by name
     projects
       .slice()
       .sort((a, b) => a.name.localeCompare(b.name))
