@@ -533,3 +533,8 @@ button:active {
 .animate-fade-in {
   animation: fadeIn 0.5s forwards;
 }
+
+.visualization-section
+{
+  display: none;
+}
