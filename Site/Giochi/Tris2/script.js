@@ -46,7 +46,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function loadGameNumber() {
     const savedGameNumber = localStorage.getItem("trisGameNumber");
     if (savedGameNumber) {
-      gameNumber = parseInt(savedGameNumber);
+      gameNumber = Number.parseInt(savedGameNumber);
     }
     gameNumberDisplay.textContent = gameNumber;
   }
@@ -331,10 +331,8 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
-    // Incrementa il numero di partita
-    gameNumber++;
+    // Mantieni lo stesso numero di partita
     gameNumberDisplay.textContent = gameNumber;
-    saveGameNumber();
 
     // Resetta lo stato del gioco
     moves = 0;
