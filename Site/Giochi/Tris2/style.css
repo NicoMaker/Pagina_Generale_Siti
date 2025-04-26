@@ -680,11 +680,6 @@ main {
   transform: translateY(0);
 }
 
-.alert button svg {
-  width: 18px;
-  height: 18px;
-}
-
 /* Confirmation Modal */
 .confirm-modal {
   position: fixed;

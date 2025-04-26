@@ -216,6 +216,10 @@ document.addEventListener("DOMContentLoaded", () => {
     // Aggiungi event listener al pulsante
     document.getElementById("playAgainButton").addEventListener("click", () => {
       document.body.removeChild(gameOverAlert);
+      // Incrementa il numero di partita
+      gameNumber++;
+      gameNumberDisplay.textContent = gameNumber;
+      saveGameNumber();
       resetGame();
     });
   }
@@ -244,6 +248,10 @@ document.addEventListener("DOMContentLoaded", () => {
     // Aggiungi event listener al pulsante
     document.getElementById("playAgainButton").addEventListener("click", () => {
       document.body.removeChild(drawAlert);
+      // Incrementa il numero di partita
+      gameNumber++;
+      gameNumberDisplay.textContent = gameNumber;
+      saveGameNumber();
       resetGame();
     });
   }
@@ -330,9 +338,6 @@ document.addEventListener("DOMContentLoaded", () => {
         document.body.removeChild(alert);
       }
     });
-
-    // Mantieni lo stesso numero di partita
-    gameNumberDisplay.textContent = gameNumber;
 
     // Resetta lo stato del gioco
     moves = 0;
@@ -433,7 +438,14 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Event Listeners
-  resetButton.addEventListener("click", resetGame);
+  resetButton.addEventListener("click", () => {
+    // Incrementa il numero di partita
+    gameNumber++;
+    gameNumberDisplay.textContent = gameNumber;
+    saveGameNumber();
+    resetGame();
+  });
+
   resetAllButton.addEventListener("click", resetAll);
 
   // Pulsante delle regole
