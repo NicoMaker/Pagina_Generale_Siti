@@ -230,6 +230,7 @@ main {
 
 .input-group {
   margin-bottom: 1.5rem;
+  position: relative;
 }
 
 label {
@@ -335,6 +336,15 @@ button:active {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='white'%3E%3Cpath d='M10,0 L20,10 L10,20 L0,10 Z'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: center;
+}
+
+/* Max number display */
+.max-number-display {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--egyptian-teal);
+  margin-top: 0.25rem;
+  text-align: right;
 }
 
 /* Results Scroll Styles */
@@ -699,16 +709,6 @@ button:focus,
 input:focus {
   outline: 3px solid rgba(15, 76, 129, 0.5);
   outline-offset: 2px;
-}
-
-/* Add a note about the maximum number */
-.input-group::after {
-  content: "Massimo: 5000";
-  display: block;
-  font-size: 0.8rem;
-  color: var(--egyptian-teal);
-  margin-top: 0.25rem;
-  text-align: right;
 }
 
 /* Responsive Styles */

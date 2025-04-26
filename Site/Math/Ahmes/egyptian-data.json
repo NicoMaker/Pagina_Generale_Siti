@@ -130,5 +130,6 @@
       "translation": "Conoscenza"
     }
   },
-  "maxNumber": 5000
+  "maxNumber": 10000,
+  "maxNumberSymbols": 25000
 }

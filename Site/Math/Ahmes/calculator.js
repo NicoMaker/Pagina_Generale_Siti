@@ -4,7 +4,11 @@
  */
 
 // Import necessary functions from hieroglyphics.js
-import { convertToEgyptianNumerals, MAX_NUMBER } from "./hieroglyphics.js";
+import {
+  convertToEgyptianNumerals,
+  MAX_NUMBER,
+  MAX_NUMBER_SYMBOLS,
+} from "./hieroglyphics.js";
 
 // DOM Elements
 const numero1Input = document.getElementById("numero1");
@@ -158,10 +162,10 @@ function calcolaAhmes() {
   // Perform calculation
   const risultato = calcolaRisultato(numero1, numero2);
 
-  // Check if result exceeds MAX_NUMBER
-  if (risultato > MAX_NUMBER) {
+  // Check if result exceeds MAX_NUMBER_SYMBOLS
+  if (risultato > MAX_NUMBER_SYMBOLS) {
     showNotification(
-      `Il risultato (${risultato}) supera il massimo consentito di ${MAX_NUMBER}. I geroglifici non possono essere visualizzati correttamente.`
+      `Il risultato (${risultato}) supera il massimo consentito di ${MAX_NUMBER_SYMBOLS} per i geroglifici. I geroglifici non possono essere visualizzati correttamente.`
     );
 
     risultatoDiv.innerHTML = `
@@ -173,7 +177,7 @@ function calcolaAhmes() {
     `;
   } else {
     // Display result with hieroglyphics
-    const hieroglyphicResult = convertToEgyptianNumerals(risultato);
+    const hieroglyphicResult = convertToEgyptianNumerals(risultato, true);
 
     risultatoDiv.innerHTML = `
       <div class="result-content">
@@ -235,11 +239,11 @@ function calcolaRisultato(numero1, numero2) {
       currentNum1 /= 2;
       currentNum2 *= 2;
 
-      // Check if intermediate result exceeds MAX_NUMBER
-      if (currentNum2 > MAX_NUMBER) {
+      // Check if intermediate result exceeds MAX_NUMBER_SYMBOLS
+      if (currentNum2 > MAX_NUMBER_SYMBOLS) {
         stepsHTML += `<div class="step warning">
           <span class="step-number">Nota:</span> 
-          <span class="step-description">Il valore ${currentNum2} supera il massimo consentito per i geroglifici (${MAX_NUMBER}).</span>
+          <span class="step-description">Il valore ${currentNum2} supera il massimo consentito per i geroglifici (${MAX_NUMBER_SYMBOLS}).</span>
         </div>`;
       }
     } else {
@@ -259,11 +263,11 @@ function calcolaRisultato(numero1, numero2) {
       currentNum1--;
       resto += currentNum2;
 
-      // Check if intermediate result exceeds MAX_NUMBER
-      if (resto > MAX_NUMBER) {
+      // Check if intermediate result exceeds MAX_NUMBER_SYMBOLS
+      if (resto > MAX_NUMBER_SYMBOLS) {
         stepsHTML += `<div class="step warning">
           <span class="step-number">Nota:</span> 
-          <span class="step-description">Il risultato parziale ${resto} supera il massimo consentito per i geroglifici (${MAX_NUMBER}).</span>
+          <span class="step-description">Il risultato parziale ${resto} supera il massimo consentito per i geroglifici (${MAX_NUMBER_SYMBOLS}).</span>
         </div>`;
       }
     }
