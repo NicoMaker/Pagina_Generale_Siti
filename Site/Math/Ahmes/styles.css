@@ -1,0 +1,736 @@
+:root {
+  --papyrus: #f4e6c2;
+  --papyrus-dark: #e6d5a5;
+  --egyptian-blue: #0f4c81;
+  --egyptian-gold: #d4af37;
+  --egyptian-red: #c23b22;
+  --egyptian-teal: #0d5c63;
+  --egyptian-black: #1e1e1e;
+  --text-color: #3c2415;
+  --shadow: rgba(0, 0, 0, 0.2);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Noto Serif", serif;
+  background-color: #f0e6d2;
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23d4af37' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  color: var(--text-color);
+  line-height: 1.6;
+}
+
+.papyrus-container {
+  max-width: 1200px;
+  margin: 2rem auto;
+  background-color: var(--papyrus);
+  border: 12px solid var(--egyptian-gold);
+  border-image: linear-gradient(
+      45deg,
+      var(--egyptian-gold),
+      var(--egyptian-red),
+      var(--egyptian-gold)
+    )
+    1;
+  box-shadow: 0 10px 30px var(--shadow);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Header Styles */
+header {
+  text-align: center;
+  padding: 3rem 2rem 2rem;
+  position: relative;
+  background: linear-gradient(to bottom, var(--papyrus-dark), var(--papyrus));
+}
+
+.header-decoration {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 20px;
+  background: linear-gradient(
+    to right,
+    var(--egyptian-gold),
+    var(--egyptian-red),
+    var(--egyptian-blue),
+    var(--egyptian-red),
+    var(--egyptian-gold)
+  );
+}
+
+.scarab-icon {
+  width: 60px;
+  height: 40px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 60' fill='%23d4af37'%3E%3Cpath d='M50,0C30,0,10,15,10,30c0,15,10,30,40,30s40-15,40-30C90,15,70,0,50,0z M20,35c-2.8,0-5-2.2-5-5s2.2-5,5-5s5,2.2,5,5 S22.8,35,20,35z M50,55c-8.3,0-15-6.7-15-15s6.7-15,15-15s15,6.7,15,15S58.3,55,50,55z M80,35c-2.8,0-5-2.2-5-5s2.2-5,5-5s5,2.2,5,5 S82.8,35,80,35z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+h1 {
+  font-family: "Cinzel", serif;
+  font-size: 2.5rem;
+  color: var(--egyptian-black);
+  margin-bottom: 0.5rem;
+  text-shadow: 1px 1px 2px var(--shadow);
+  position: relative;
+}
+
+h1::after {
+  content: "";
+  display: block;
+  width: 100px;
+  height: 3px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--egyptian-gold),
+    transparent
+  );
+  margin: 0.5rem auto;
+}
+
+.subtitle {
+  font-size: 1.1rem;
+  color: var(--egyptian-red);
+  font-style: italic;
+}
+
+/* Main Content Styles */
+main {
+  padding: 0 1rem 2rem;
+}
+
+.temple-columns {
+  display: flex;
+  margin: 2rem 0;
+  position: relative;
+}
+
+.column {
+  width: 50px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 500' fill='%23d4af37'%3E%3Crect x='10' y='0' width='30' height='500' fill='%23d4af37' opacity='0.7'/%3E%3Crect x='15' y='0' width='20' height='500' fill='%23d4af37' opacity='0.5'/%3E%3Crect x='20' y='0' width='10' height='500' fill='%23d4af37' opacity='0.3'/%3E%3C/svg%3E");
+  background-repeat: repeat-y;
+  background-position: center;
+  position: relative;
+}
+
+.column::before,
+.column::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 30px;
+  background-color: var(--egyptian-gold);
+  border-radius: 5px;
+}
+
+.column::before {
+  top: -10px;
+}
+
+.column::after {
+  bottom: -10px;
+}
+
+.calculator-container {
+  flex: 1;
+  background-color: var(--papyrus);
+  border: 2px solid var(--egyptian-gold);
+  border-radius: 5px;
+  margin: 0 1rem;
+  position: relative;
+  box-shadow: 0 5px 15px var(--shadow);
+}
+
+.hieroglyphic-border {
+  height: 20px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 20' fill='%23d4af37'%3E%3Cpath d='M10,10 L15,5 L20,10 L25,5 L30,10 L35,5 L40,10 L45,5 L50,10 L55,5 L60,10 L65,5 L70,10 L75,5 L80,10 L85,5 L90,10'/%3E%3C/svg%3E");
+  background-repeat: repeat-x;
+  background-position: center;
+}
+
+.hieroglyphic-border.top {
+  border-bottom: 1px solid var(--egyptian-gold);
+}
+
+.hieroglyphic-border.bottom {
+  border-top: 1px solid var(--egyptian-gold);
+}
+
+.calculator-content {
+  padding: 2rem;
+}
+
+.ahmes-portrait {
+  width: 150px;
+  height: 150px;
+  margin: 0 auto 1.5rem;
+  position: relative;
+}
+
+.ahmes-portrait img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid var(--egyptian-gold);
+}
+
+.portrait-frame {
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  right: -10px;
+  bottom: -10px;
+  border: 2px solid var(--egyptian-red);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.portrait-frame::before {
+  content: "";
+  position: absolute;
+  top: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 30px;
+  height: 20px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 20' fill='%23d4af37'%3E%3Cpath d='M15,0 L30,10 L15,20 L0,10 Z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+}
+
+.description {
+  text-align: center;
+  margin-bottom: 2rem;
+  font-style: italic;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.8;
+}
+
+.input-section {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.input-group {
+  margin-bottom: 1.5rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+  color: var(--egyptian-black);
+  font-family: "Cinzel", serif;
+}
+
+input[type="number"] {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  font-size: 1rem;
+  border: 2px solid var(--egyptian-gold);
+  border-radius: 5px;
+  background-color: rgba(255, 255, 255, 0.7);
+  color: var(--egyptian-black);
+  font-family: inherit;
+  transition: all 0.3s ease;
+}
+
+input[type="number"]:focus {
+  outline: none;
+  border-color: var(--egyptian-blue);
+  box-shadow: 0 0 0 3px rgba(15, 76, 129, 0.2);
+}
+
+/* Error styling for numbers that are too large */
+.hieroglyphic-numbers.error {
+  color: var(--egyptian-red);
+  border: 2px solid var(--egyptian-red);
+  background-color: rgba(194, 59, 34, 0.1);
+}
+
+.hieroglyphic-numbers {
+  height: 40px;
+  margin-top: 0.5rem;
+  text-align: center;
+  font-size: 1.5rem;
+  padding: 5px;
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 5px;
+  border: 1px dashed var(--egyptian-gold);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ankh-divider {
+  width: 40px;
+  height: 40px;
+  margin: 1rem auto;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40' fill='%23d4af37'%3E%3Cpath d='M20,0 C15,0 10,5 10,10 C10,15 15,15 15,15 L15,30 L25,30 L25,15 C25,15 30,15 30,10 C30,5 25,0 20,0 Z M15,35 L25,35 L25,40 L15,40 Z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+button {
+  display: block;
+  width: 100%;
+  padding: 1rem;
+  margin-top: 2rem;
+  background: linear-gradient(
+    to right,
+    var(--egyptian-gold),
+    var(--egyptian-red)
+  );
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-family: "Cinzel", serif;
+  font-size: 1.1rem;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px var(--shadow);
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px var(--shadow);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+.btn-text {
+  position: relative;
+  z-index: 2;
+}
+
+.btn-icon {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='white'%3E%3Cpath d='M10,0 L20,10 L10,20 L0,10 Z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/* Results Scroll Styles */
+.results-scroll {
+  max-width: 800px;
+  margin: 2rem auto 2rem;
+  background-color: var(--papyrus-dark);
+  border: 2px solid var(--egyptian-gold);
+  border-radius: 5px;
+  position: relative;
+  box-shadow: 0 5px 15px var(--shadow);
+  display: none;
+}
+
+.results-scroll.active {
+  display: block;
+  animation: unroll 0.8s ease-out forwards;
+}
+
+@keyframes unroll {
+  0% {
+    max-height: 0;
+    opacity: 0;
+  }
+  100% {
+    max-height: 1000px;
+    opacity: 1;
+  }
+}
+
+.scroll-handles {
+  display: flex;
+  justify-content: space-between;
+  position: absolute;
+  top: -15px;
+  left: 20px;
+  right: 20px;
+}
+
+.scroll-handle {
+  width: 30px;
+  height: 30px;
+  background-color: var(--egyptian-gold);
+  border-radius: 50%;
+  position: relative;
+}
+
+.scroll-handle::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 15px;
+  height: 15px;
+  background-color: var(--egyptian-red);
+  border-radius: 50%;
+}
+
+.scroll-content {
+  padding: 2rem;
+}
+
+.scroll-content h2 {
+  font-family: "Cinzel", serif;
+  color: var(--egyptian-red);
+  text-align: center;
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+
+.scroll-content h2::after {
+  content: "";
+  display: block;
+  width: 80px;
+  height: 2px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--egyptian-gold),
+    transparent
+  );
+  margin: 0.5rem auto;
+}
+
+/* Make the steps section scrollable */
+.steps {
+  background-color: rgba(255, 255, 255, 0.5);
+  padding: 1.5rem;
+  border-radius: 5px;
+  margin-bottom: 1.5rem;
+  line-height: 1.8;
+  font-size: 1.1rem;
+  max-height: 400px; /* Set maximum height */
+  overflow-y: auto; /* Enable vertical scrolling */
+  position: relative;
+  border: 1px solid var(--egyptian-gold);
+}
+
+/* Custom scrollbar for the steps section */
+.steps::-webkit-scrollbar {
+  width: 10px;
+}
+
+.steps::-webkit-scrollbar-track {
+  background: rgba(230, 213, 165, 0.5);
+  border-radius: 5px;
+}
+
+.steps::-webkit-scrollbar-thumb {
+  background: var(--egyptian-gold);
+  border-radius: 5px;
+  border: 2px solid rgba(230, 213, 165, 0.5);
+}
+
+.steps::-webkit-scrollbar-thumb:hover {
+  background: var(--egyptian-red);
+}
+
+/* Scroll indicator for steps */
+.steps::after {
+  content: "";
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  width: 30px;
+  height: 30px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23d4af37'%3E%3Cpath d='M7.41,8.59L12,13.17l4.59-4.58L18,10l-6,6l-6-6L7.41,8.59z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0.7;
+  pointer-events: none;
+  animation: pulse 2s infinite;
+  z-index: 5;
+  display: none; /* Hidden by default, shown when content overflows */
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+/* Show scroll indicator when content overflows */
+.steps.overflow::after {
+  display: block;
+}
+
+.step {
+  margin-bottom: 1rem;
+  padding: 0.8rem;
+  border-radius: 5px;
+  background-color: rgba(255, 255, 255, 0.5);
+  transition: all 0.3s ease;
+}
+
+.step:hover {
+  background-color: rgba(255, 255, 255, 0.8);
+  transform: translateX(5px);
+}
+
+.step:last-child {
+  margin-bottom: 0;
+}
+
+.step.even {
+  border-left: 3px solid var(--egyptian-gold);
+}
+
+/* Warning styling for steps */
+.step.warning {
+  background-color: rgba(212, 175, 55, 0.2);
+  border-left: 3px solid var(--egyptian-red);
+  color: var(--egyptian-red);
+  font-weight: bold;
+}
+
+.step.odd {
+  border-left: 3px solid var(--egyptian-red);
+}
+
+.step-number {
+  font-weight: bold;
+  color: var(--egyptian-red);
+  margin-right: 0.5rem;
+}
+
+.step-description {
+  font-style: italic;
+}
+
+.step-formula {
+  display: block;
+  margin-top: 0.5rem;
+  font-family: "Cinzel", serif;
+  color: var(--egyptian-blue);
+}
+
+.step-hieroglyphic {
+  margin-top: 0.5rem;
+  padding: 5px;
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 3px;
+  display: inline-block;
+  font-size: 1.2rem;
+}
+
+.intro-text {
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  color: var(--egyptian-black);
+}
+
+.summary {
+  margin-top: 1.5rem;
+  text-align: center;
+  font-weight: bold;
+  color: var(--egyptian-red);
+}
+
+.result {
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--egyptian-red);
+  padding: 1rem;
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 5px;
+  border: 1px dashed var(--egyptian-gold);
+}
+
+.result-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.result-label {
+  font-size: 1.2rem;
+  color: var(--egyptian-black);
+}
+
+.result-value {
+  font-size: 2rem;
+  color: var(--egyptian-red);
+}
+
+/* Footer Styles */
+footer {
+  text-align: center;
+  padding: 1.5rem;
+  background-color: var(--papyrus-dark);
+  border-top: 1px solid var(--egyptian-gold);
+  color: var(--text-color);
+  font-size: 0.9rem;
+}
+
+.ankh-symbol {
+  color: var(--egyptian-red);
+  font-size: 1.2rem;
+}
+
+/* Notification Styles */
+.notification {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background-color: var(--egyptian-red);
+  color: white;
+  padding: 1rem 2rem;
+  border-radius: 5px;
+  box-shadow: 0 4px 12px var(--shadow);
+  opacity: 0;
+  transition: all 0.3s ease;
+  z-index: 1000;
+  border: 2px solid var(--egyptian-gold);
+}
+
+.notification.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+/* Hieroglyphic Decorations */
+.hieroglyphic-decoration {
+  height: 30px;
+  margin: 1rem 0;
+  text-align: center;
+  font-size: 1.5rem;
+  color: var(--egyptian-gold);
+  opacity: 0.8;
+}
+
+/* Header hieroglyphics in blue */
+#header-hieroglyphics {
+  color: var(--egyptian-blue);
+}
+
+/* Footer hieroglyphics in teal */
+#footer-hieroglyphics {
+  color: var(--egyptian-teal);
+}
+
+/* Results hieroglyphics in red */
+#results-hieroglyphics {
+  color: var(--egyptian-red);
+}
+
+/* Animation for hieroglyphic numbers */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hieroglyphic-numbers {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+/* Papyrus texture effect */
+.calculator-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%23000000' fill-opacity='0.05' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1;
+}
+
+.calculator-content {
+  position: relative;
+  z-index: 2;
+}
+
+/* Add input validation styling */
+input[type="number"]:invalid {
+  border-color: var(--egyptian-red);
+  background-color: rgba(194, 59, 34, 0.1);
+}
+
+input[type="number"]:invalid:focus {
+  box-shadow: 0 0 0 3px rgba(194, 59, 34, 0.2);
+}
+
+/* Accessibility focus styles */
+button:focus,
+input:focus {
+  outline: 3px solid rgba(15, 76, 129, 0.5);
+  outline-offset: 2px;
+}
+
+/* Add a note about the maximum number */
+.input-group::after {
+  content: "Massimo: 10.000";
+  display: block;
+  font-size: 0.8rem;
+  color: var(--egyptian-teal);
+  margin-top: 0.25rem;
+  text-align: right;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .papyrus-container {
+    margin: 1rem;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  .column {
+    display: none;
+  }
+
+  .calculator-container {
+    margin: 0;
+  }
+
+  .calculator-content {
+    padding: 1.5rem;
+  }
+
+  .steps {
+    max-height: 300px; /* Smaller max-height on mobile */
+  }
+}

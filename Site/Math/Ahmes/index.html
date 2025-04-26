@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calcolatore di Ahmes | Matematica dell'Antico Egitto</title>
-    <link rel="stylesheet" href="StyleAhmes.css" />
+    <link rel="stylesheet" href="styles.css">
     <link rel="icon"
         href="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Ahmes.jpg-DWt7DuLKrXrDXg9M9gkbjSj7B1nTTR.jpeg"
         type="image/jpeg">
@@ -14,7 +14,13 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;800&family=Noto+Serif:wght@400;600&display=swap"
         rel="stylesheet">
-    <script src="Ahmes.js" defer></script>
+    <!-- Add this script to ensure immediate scroll on page load -->
+    <script>
+        window.onload = function () {
+            // Scroll to calculator section immediately when page loads
+            document.getElementById("calculator-section").scrollIntoView(true);
+        }
+    </script>
 </head>
 
 <body>
@@ -25,12 +31,13 @@
             </div>
             <h1>Calcolatore del Numero di Ahmes</h1>
             <p class="subtitle">Scopri l'antica matematica egizia</p>
+            <div class="hieroglyphic-decoration" id="header-hieroglyphics"></div>
         </header>
 
         <main>
             <div class="temple-columns">
                 <div class="column left"></div>
-                <div class="calculator-container">
+                <div class="calculator-container" id="calculator-section">
                     <div class="hieroglyphic-border top"></div>
 
                     <div class="calculator-content">
@@ -61,9 +68,8 @@
                                 <div class="hieroglyphic-numbers" id="hieroglyphic2"></div>
                             </div>
 
-                            <button id="calculate-btn" onclick="CalcolaAhmes()">
+                            <button id="calculate-btn">
                                 <span class="btn-text">Calcola con il Metodo di Ahmes</span>
-                                <span class="btn-icon"></span>
                             </button>
                         </div>
                     </div>
@@ -80,6 +86,7 @@
                 </div>
                 <div class="scroll-content">
                     <h2>Passaggi del Calcolo</h2>
+                    <div class="hieroglyphic-decoration" id="results-hieroglyphics"></div>
                     <div id="passaggi" class="steps"></div>
                     <div id="risultato" class="result"></div>
                 </div>
@@ -87,6 +94,7 @@
         </main>
 
         <footer>
+            <div class="hieroglyphic-decoration" id="footer-hieroglyphics"></div>
             <p>Creato in onore della matematica dell'antico Egitto • <span class="ankh-symbol">☥</span> • 2024</p>
         </footer>
     </div>
@@ -96,6 +104,10 @@
             <p id="notification-text"></p>
         </div>
     </div>
+
+    <!-- Add type="module" to enable ES6 import/export -->
+    <script src="hieroglyphics.js" type="module"></script>
+    <script src="calculator.js" type="module"></script>
 </body>
 
 </html>
