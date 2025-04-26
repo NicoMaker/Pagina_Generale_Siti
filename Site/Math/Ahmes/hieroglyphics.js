@@ -170,9 +170,6 @@ function initializePage() {
   numberInputs.forEach((input) => {
     input.setAttribute("max", MAX_NUMBER);
   });
-
-  // Immediately scroll to calculator section without animation
-  document.getElementById("calculator-section").scrollIntoView(true);
 }
 
 // Load the Egyptian data when the DOM is loaded

@@ -26,7 +26,7 @@ body {
 
 .papyrus-container {
   max-width: 1200px;
-  margin: 2rem auto;
+  margin: 0 auto;
   background-color: var(--papyrus);
   border: 12px solid var(--egyptian-gold);
   border-image: linear-gradient(
@@ -41,15 +41,15 @@ body {
   overflow: hidden;
 }
 
-/* Header Styles */
-header {
-  text-align: center;
-  padding: 3rem 2rem 2rem;
+/* Calculator Section Wrapper */
+.calculator-section-wrapper {
   position: relative;
   background: linear-gradient(to bottom, var(--papyrus-dark), var(--papyrus));
+  padding-top: 20px;
 }
 
-.header-decoration {
+.calculator-section-wrapper::before {
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
@@ -84,6 +84,7 @@ h1 {
   margin-bottom: 0.5rem;
   text-shadow: 1px 1px 2px var(--shadow);
   position: relative;
+  text-align: center;
 }
 
 h1::after {
@@ -104,6 +105,7 @@ h1::after {
   font-size: 1.1rem;
   color: var(--egyptian-red);
   font-style: italic;
+  text-align: center;
 }
 
 /* Main Content Styles */
@@ -113,7 +115,7 @@ main {
 
 .temple-columns {
   display: flex;
-  margin: 2rem 0;
+  margin: 0;
   position: relative;
 }
 
@@ -176,7 +178,7 @@ main {
 .ahmes-portrait {
   width: 150px;
   height: 150px;
-  margin: 0 auto 1.5rem;
+  margin: 1.5rem auto;
   position: relative;
 }
 
@@ -261,6 +263,7 @@ input[type="number"]:focus {
   color: var(--egyptian-red);
   border: 2px solid var(--egyptian-red);
   background-color: rgba(194, 59, 34, 0.1);
+  font-size: 0.6em;
 }
 
 .hieroglyphic-numbers {
@@ -711,7 +714,8 @@ input:focus {
 /* Responsive Styles */
 @media (max-width: 768px) {
   .papyrus-container {
-    margin: 1rem;
+    margin: 0;
+    border-width: 8px;
   }
 
   h1 {
