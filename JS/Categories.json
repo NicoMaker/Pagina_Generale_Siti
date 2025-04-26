@@ -8,6 +8,20 @@
       {
         "name": "Valore Titoli di Borsa",
         "link": "Site/Borsa/Valore Titoli/index.html"
+      },
+      {
+        "name": "Dashboard Titoli",
+        "link": "Site/Borsa/Dashboard_Titoli/index.html"
+      }
+    ],
+    "Calcio": [
+      {
+        "name": "Tabellone Serie A ",
+        "link": "https://tabelloneseriea.netlify.app/"
+      },
+      {
+        "name": "Rosa Milan",
+        "link": "https://milannico.netlify.app/"
       }
     ],
     "Calendario": [
@@ -27,16 +41,6 @@
       {
         "name": "Differenza Tra due Date",
         "link": "Site/Calendario/Differenza_Tra_Due_Date/index.html"
-      }
-    ],
-    "Calcio": [
-      {
-        "name": "Tabellone Serie A ",
-        "link": "https://tabelloneseriea.netlify.app/"
-      },
-      {
-        "name": "Rosa Milan",
-        "link": "https://milannico.netlify.app/"
       }
     ],
     "Giochi": [

@@ -70,7 +70,7 @@ document.addEventListener("DOMContentLoaded", function () {
             <i class="fas ${iconClass} category-icon"></i>
             <h3>${displayName}</h3>
             <p>${categories[categoryName].length} ${
-          categories[categoryName].length === 1 ? "progetto" : "progetti"
+          categories[categoryName].length === 1 ? "Sito" : "Siti"
         }</p>
           </div>
         `;
@@ -101,7 +101,7 @@ document.addEventListener("DOMContentLoaded", function () {
             <h3>${project.name}</h3>
             <div class="project-card-footer">
               <a href="${project.link}" target="_blank" class="project-link">
-                Visita Progetto
+                Visita Sito
               </a>
             </div>
           </div>
