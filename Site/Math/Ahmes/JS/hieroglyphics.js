@@ -14,7 +14,7 @@ let MAX_NUMBER_SYMBOLS = 0;
 // Fetch the data from the JSON file
 async function loadEgyptianData() {
   try {
-    const response = await fetch("egyptian-data.json");
+    const response = await fetch("JS/egyptian-data.json");
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }

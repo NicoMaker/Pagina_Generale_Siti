@@ -120,9 +120,9 @@ function formatStep(step, isEven, num1, num2) {
 
   let hieroglyphicDisplay = "";
   if (hieroglyphic1) {
-    hieroglyphicDisplay = `<div class="step-hieroglyphic">${hieroglyphic1}</div>`;
+    hieroglyphicDisplay = `<div class="step-hieroglyphic">${hieroglyphic1} (${num1})</div>`;
     if (hieroglyphic2) {
-      hieroglyphicDisplay += ` <span class="operation-symbol">×</span> <div class="step-hieroglyphic">${hieroglyphic2}</div>`;
+      hieroglyphicDisplay += ` <span class="operation-symbol">×</span> <div class="step-hieroglyphic">${hieroglyphic2} (${num2})</div>`;
     }
   }
 
@@ -183,7 +183,7 @@ function calcolaAhmes() {
       <div class="result-content">
         <span class="result-label">Il risultato finale è</span>
         <span class="result-value">${risultato}</span>
-        <div class="hieroglyphic-numbers">${hieroglyphicResult}</div>
+        <div class="hieroglyphic-numbers">${hieroglyphicResult} (${risultato})</div>
       </div>
     `;
   }
@@ -216,7 +216,7 @@ function calcolaRisultato(numero1, numero2) {
 
   stepsHTML += `<div class="intro-text">
     Calcoliamo ${originalNumero1} × ${originalNumero2} usando il metodo di Ahmes:
-    <div class="hieroglyphic-numbers">${hieroglyphic1} × ${hieroglyphic2}</div>
+    <div class="hieroglyphic-numbers">${hieroglyphic1} (${originalNumero1}) × ${hieroglyphic2} (${originalNumero2})</div>
   </div>`;
 
   while (currentNum1 > 0) {
