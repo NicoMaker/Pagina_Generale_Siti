@@ -14,10 +14,10 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;800&family=Noto+Serif:wght@400;600&display=swap"
         rel="stylesheet">
-    <!-- Add this script to ensure immediate scroll on page load -->
+    <!-- Script per assicurare lo scroll immediato al calcolatore -->
     <script>
         window.onload = function () {
-            // Scroll to calculator section immediately when page loads
+            // Assicura che il calcolatore sia visibile immediatamente
             document.getElementById("calculator-section").scrollIntoView(true);
         }
     </script>
@@ -29,7 +29,7 @@
             <div class="header-decoration">
                 <div class="scarab-icon"></div>
             </div>
-            <h1>Calcolatore del Numero di Ahmes</h1>
+            <h1>Calcolatore di Ahmes</h1>
             <p class="subtitle">Scopri l'antica matematica egizia</p>
             <div class="hieroglyphic-decoration" id="header-hieroglyphics"></div>
         </header>
@@ -56,7 +56,7 @@
                         <div class="input-section">
                             <div class="input-group">
                                 <label for="numero1">Primo Numero</label>
-                                <input type="number" id="numero1" placeholder="Inserisci il primo numero">
+                                <input type="number" id="numero1" placeholder="Inserisci il primo numero" max="5000">
                                 <div class="hieroglyphic-numbers" id="hieroglyphic1"></div>
                             </div>
 
@@ -64,7 +64,7 @@
 
                             <div class="input-group">
                                 <label for="numero2">Secondo Numero</label>
-                                <input type="number" id="numero2" placeholder="Inserisci il secondo numero">
+                                <input type="number" id="numero2" placeholder="Inserisci il secondo numero" max="5000">
                                 <div class="hieroglyphic-numbers" id="hieroglyphic2"></div>
                             </div>
 

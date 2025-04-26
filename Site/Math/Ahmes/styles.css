@@ -700,7 +700,7 @@ input:focus {
 
 /* Add a note about the maximum number */
 .input-group::after {
-  content: "Massimo: 10.000";
+  content: "Massimo: 5000";
   display: block;
   font-size: 0.8rem;
   color: var(--egyptian-teal);

@@ -8,7 +8,7 @@ let EGYPTIAN_DATA = null;
 let EGYPTIAN_NUMERALS = {};
 let DECORATIVE_SYMBOLS = [];
 let HIEROGLYPHIC_PHRASES = {};
-let MAX_NUMBER = 10000;
+let MAX_NUMBER = 5000;
 
 // Fetch the data from the JSON file
 async function loadEgyptianData() {
@@ -88,7 +88,7 @@ function initializeWithFallbackData() {
     KNOWLEDGE: "𓂋𓐍𓏏",
   };
 
-  MAX_NUMBER = 10000;
+  MAX_NUMBER = 5000;
 
   initializePage();
 }
