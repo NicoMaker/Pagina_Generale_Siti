@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="it">
 
 <head>
     <meta charset="UTF-8">
@@ -14,9 +14,19 @@
     <h1>Calendario dell' Avvento</h1>
     <table id="calendarTable"></table>
     <div id="dati"></div>
-    <br>
-    <img src="Img/slitta.jpg">
+    <div class="image-container">
+        <img src="Img/slitta.jpg" alt="Slitta di Babbo Natale">
+    </div>
 
+    <footer>
+        <p>Merry Christmas! 🎄</p>
+        <p id="copyright">© <span id="year"></span> Calendario dell'Avvento</p>
+    </footer>
+
+    <script>
+        // Imposta l'anno corrente nel copyright
+        document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
 </body>
 
 </html>
