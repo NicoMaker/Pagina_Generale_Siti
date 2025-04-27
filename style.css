@@ -1532,3 +1532,7 @@ input {
     text-align: center;
   }
 }
+
+.category-nav-item {
+  display: none;
+}

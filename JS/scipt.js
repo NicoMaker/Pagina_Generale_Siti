@@ -1,7 +1,8 @@
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", () => {
   // DOM Elements
   const preloader = document.querySelector(".preloader");
   const categoriesGrid = document.getElementById("categoriesGrid");
+  const categoryNavContainer = document.getElementById("categoryNavContainer");
   const projectsSection = document.getElementById("projectsSection");
   const projectsGrid = document.getElementById("projectsGrid");
   const categoryTitle = document.getElementById("categoryTitle");
@@ -21,6 +22,10 @@ document.addEventListener("DOMContentLoaded", function () {
   const categoriesCount = document.getElementById("categoriesCount");
   const projectsCount = document.getElementById("projectsCount");
   const currentYearElement = document.getElementById("currentYear");
+  const headerLogo = document.querySelector(".header .logo"); // Seleziona il logo nell'header
+
+  // Variabile per memorizzare i dati delle categorie
+  let categoriesData = null;
 
   // Set current year in footer
   currentYearElement.textContent = new Date().getFullYear();
@@ -52,8 +57,43 @@ document.addEventListener("DOMContentLoaded", function () {
     }, 3000);
   }
 
+  // Function to show preloader
+  function showPreloader() {
+    // Reset preloader state
+    preloader.classList.remove("hidden");
+    document.body.style.overflow = "hidden"; // Disable scrolling during preloader
+
+    // Reset animation by removing and re-adding the preloader element
+    const preloaderParent = preloader.parentNode;
+    const preloaderClone = preloader.cloneNode(true);
+    preloaderParent.removeChild(preloader);
+    preloaderParent.appendChild(preloaderClone);
+
+    // Update the preloader reference
+    const newPreloader = document.querySelector(".preloader");
+
+    // Simulate loading again
+    setTimeout(() => {
+      newPreloader.classList.add("hidden");
+      document.body.style.overflow = "auto";
+
+      // Importante: ricaricare i dati dopo che il preloader scompare
+      if (categoriesData) {
+        renderCategories(categoriesData);
+        renderCategoryNavigation(categoriesData);
+        updateCounters(categoriesData);
+      }
+    }, 3000);
+  }
+
+  // Add click event to header logo
+  headerLogo.addEventListener("click", (e) => {
+    e.preventDefault(); // Prevent default anchor behavior
+    showPreloader(); // Show the preloader
+  });
+
   // Hide preloader after page load
-  window.addEventListener("load", function () {
+  window.addEventListener("load", () => {
     document.body.style.overflow = "hidden"; // Disable scrolling during preloader
     simulateLoading();
   });
@@ -63,7 +103,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const cursorOutline = document.querySelector(".cursor-dot-outline");
 
   if (window.innerWidth > 768) {
-    window.addEventListener("mousemove", function (e) {
+    window.addEventListener("mousemove", (e) => {
       const posX = e.clientX;
       const posY = e.clientY;
 
@@ -76,17 +116,17 @@ document.addEventListener("DOMContentLoaded", function () {
       cursorOutline.style.opacity = "1";
     });
 
-    document.addEventListener("mouseout", function () {
+    document.addEventListener("mouseout", () => {
       cursorDot.style.opacity = "0";
       cursorOutline.style.opacity = "0";
     });
 
-    document.addEventListener("mousedown", function () {
+    document.addEventListener("mousedown", () => {
       cursorDot.style.transform = "translate(-50%, -50%) scale(0.7)";
       cursorOutline.style.transform = "translate(-50%, -50%) scale(0.7)";
     });
 
-    document.addEventListener("mouseup", function () {
+    document.addEventListener("mouseup", () => {
       cursorDot.style.transform = "translate(-50%, -50%) scale(1)";
       cursorOutline.style.transform = "translate(-50%, -50%) scale(1)";
     });
@@ -96,7 +136,7 @@ document.addEventListener("DOMContentLoaded", function () {
   let lastScrollTop = 0;
   const header = document.querySelector(".header");
 
-  window.addEventListener("scroll", function () {
+  window.addEventListener("scroll", () => {
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
     // Show/hide back to top button
@@ -110,7 +150,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // Back to top button
-  backToTopButton.addEventListener("click", function () {
+  backToTopButton.addEventListener("click", () => {
     window.scrollTo({
       top: 0,
       behavior: "smooth",
@@ -125,7 +165,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // Mobile menu close button
-  mobileClose.addEventListener("click", function () {
+  mobileClose.addEventListener("click", () => {
     menuToggle.classList.remove("active");
     mobileMenu.classList.remove("active");
     document.body.classList.remove("no-scroll");
@@ -133,7 +173,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Close mobile menu when clicking a link
   mobileNavLinks.forEach((link) => {
-    link.addEventListener("click", function () {
+    link.addEventListener("click", () => {
       menuToggle.classList.remove("active");
       mobileMenu.classList.remove("active");
       document.body.classList.remove("no-scroll");
@@ -217,8 +257,12 @@ document.addEventListener("DOMContentLoaded", function () {
     const data = await loadData();
     if (!data) return;
 
-    renderCategories(data.categories);
-    updateCounters(data.categories);
+    // Salva i dati delle categorie nella variabile globale
+    categoriesData = data.categories;
+
+    renderCategories(categoriesData);
+    renderCategoryNavigation(categoriesData);
+    updateCounters(categoriesData);
     setupEventListeners(data);
   }
 
@@ -251,6 +295,40 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     };
     window.requestAnimationFrame(step);
+  }
+
+  // Render category navigation - New function
+  function renderCategoryNavigation(categories) {
+    categoryNavContainer.innerHTML = "";
+
+    // Sort categories alphabetically
+    Object.keys(categories)
+      .sort((a, b) => a.replace(/_/g, " ").localeCompare(b.replace(/_/g, " ")))
+      .forEach((categoryName) => {
+        const displayName = categoryName.replace(/_/g, " ");
+
+        const categoryNavItem = document.createElement("div");
+        categoryNavItem.className = "category-nav-item";
+        categoryNavItem.dataset.category = categoryName;
+        categoryNavItem.textContent = displayName;
+
+        categoryNavItem.addEventListener("click", function () {
+          const projects = categories[categoryName];
+          if (projects) {
+            renderProjects(categoryName, projects);
+            // Reset project search input
+            projectSearchInput.value = "";
+
+            // Add active class to clicked nav item
+            document.querySelectorAll(".category-nav-item").forEach((item) => {
+              item.classList.remove("active");
+            });
+            this.classList.add("active");
+          }
+        });
+
+        categoryNavContainer.appendChild(categoryNavItem);
+      });
   }
 
   // Render category cards (sorted alphabetically)
@@ -317,8 +395,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Show projects section
     projectsSection.style.display = "block";
-    // Scroll to projects section
-    projectsSection.scrollIntoView({ behavior: "smooth" });
+    // Scroll to projects section with a small delay to ensure smooth transition
+    setTimeout(() => {
+      projectsSection.scrollIntoView({ behavior: "smooth" });
+    }, 100);
   }
 
   // Filter categories based on search input
@@ -336,6 +416,20 @@ document.addEventListener("DOMContentLoaded", function () {
         visibleCount++;
       } else {
         card.style.display = "none";
+      }
+    });
+
+    // Also filter category navigation items
+    const categoryNavItems = document.querySelectorAll(".category-nav-item");
+    categoryNavItems.forEach((item) => {
+      const categoryName = item.dataset.category
+        .toLowerCase()
+        .replace(/_/g, " ");
+
+      if (categoryName.includes(searchTerm.toLowerCase())) {
+        item.style.display = "";
+      } else {
+        item.style.display = "none";
       }
     });
 
@@ -366,7 +460,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // Setup event listeners
   function setupEventListeners(data) {
     // Category click event
-    categoriesGrid.addEventListener("click", function (e) {
+    categoriesGrid.addEventListener("click", (e) => {
       const categoryCard = e.target.closest(".category-card");
       if (!categoryCard) return;
 
@@ -377,11 +471,19 @@ document.addEventListener("DOMContentLoaded", function () {
         renderProjects(categoryName, projects);
         // Reset project search input
         projectSearchInput.value = "";
+
+        // Update active state in category navigation
+        document.querySelectorAll(".category-nav-item").forEach((item) => {
+          item.classList.remove("active");
+          if (item.dataset.category === categoryName) {
+            item.classList.add("active");
+          }
+        });
       }
     });
 
     // Back button click event
-    backButton.addEventListener("click", function () {
+    backButton.addEventListener("click", () => {
       projectsSection.style.display = "none";
       window.scrollTo({
         top: document.querySelector(".categories").offsetTop - 80,
@@ -398,10 +500,30 @@ document.addEventListener("DOMContentLoaded", function () {
     projectSearchInput.addEventListener("input", function () {
       filterProjects(this.value);
     });
+
+    // Scroll down arrow click event
+    const scrollDownArrow = document.querySelector(".scroll-down-arrow a");
+    if (scrollDownArrow) {
+      scrollDownArrow.addEventListener("click", (e) => {
+        e.preventDefault();
+        const categoriesSection = document.getElementById("categories");
+        categoriesSection.scrollIntoView({ behavior: "smooth" });
+      });
+    }
+
+    // Horizontal scroll for category navigation with mouse wheel
+    if (categoryNavContainer) {
+      categoryNavContainer.addEventListener("wheel", function (e) {
+        if (e.deltaY !== 0) {
+          e.preventDefault();
+          this.scrollLeft += e.deltaY;
+        }
+      });
+    }
   }
 
   // Contact functions
-  window.contactEmail = function (email, subject) {
+  window.contactEmail = (email, subject) => {
     const mailtoLink = `mailto:${email}?subject=${encodeURIComponent(
       `Info sul sito ${subject}`
     )}`;
@@ -410,7 +532,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   window.contactCell = () => (window.location.href = "tel:+393337024320");
 
-  window.openWhatsAppChat = function () {
+  window.openWhatsAppChat = () => {
     const phoneNumber = "+393337024320";
     const message = encodeURIComponent("*Info sul Portfolio*");
     window.location.href = `https://wa.me/${phoneNumber}?text=${message}`;
@@ -419,4 +541,3 @@ document.addEventListener("DOMContentLoaded", function () {
   // Initialize the app
   init();
 });
-
