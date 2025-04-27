@@ -55,7 +55,7 @@ h1::after {
 }
 
 table {
-  background-image: url(img/Natale.gif);
+  background-image: url("img/Natale.gif");
   background-size: cover;
   background-position: center;
   width: 100%;
