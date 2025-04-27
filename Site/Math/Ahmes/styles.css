@@ -14,7 +14,7 @@
   --egyptian-black: #1e1e1e;
   --text-color: #3c2415;
   --shadow: rgba(0, 0, 0, 0.2);
-  --hieroglyphic-font: "EgyptianFont", "Cinzel", serif;
+  --hieroglyphic-font: "Cinzel Decorative", "Cinzel", serif;
 }
 
 * {
@@ -78,21 +78,9 @@ body {
   );
 }
 
-.scarab-icon {
-  width: 60px;
-  height: 40px;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 60' fill='%23d4af37'%3E%3Cpath d='M50,0C30,0,10,15,10,30c0,15,10,30,40,30s40-15,40-30C90,15,70,0,50,0z M20,35c-2.8,0-5-2.2-5-5s2.2-5,5-5s5,2.2,5,5 S22.8,35,20,35z M50,55c-8.3,0-15-6.7-15-15s6.7-15,15-15s15,6.7,15,15S58.3,55,50,55z M80,35c-2.8,0-5-2.2-5-5s2.2-5,5-5s5,2.2,5,5 S82.8,35,80,35z'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: center;
-  position: absolute;
-  top: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
 h1 {
   font-family: var(--hieroglyphic-font);
-  font-size: 2.5rem;
+  font-size: clamp(1.8rem, 5vw, 2.5rem);
   color: var(--egyptian-black);
   margin-bottom: 0.5rem;
   text-shadow: 1px 1px 2px var(--shadow);
@@ -100,6 +88,8 @@ h1 {
   text-align: center;
   letter-spacing: 2px;
   text-transform: uppercase;
+  line-height: 1.2;
+  padding: 0 10px;
 }
 
 h1::after {
@@ -123,12 +113,13 @@ h1::before {
 }
 
 .subtitle {
-  font-size: 1.1rem;
+  font-size: clamp(0.9rem, 3vw, 1.1rem);
   color: var(--egyptian-red);
   font-style: italic;
   text-align: center;
   font-family: var(--hieroglyphic-font);
   letter-spacing: 1px;
+  padding: 0 15px;
 }
 
 /* Main Content Styles */
@@ -265,6 +256,8 @@ main {
   margin-left: auto;
   margin-right: auto;
   line-height: 1.8;
+  font-size: clamp(0.9rem, 2vw, 1rem);
+  padding: 0 10px;
 }
 
 .input-section {
@@ -284,6 +277,7 @@ label {
   color: var(--egyptian-black);
   font-family: var(--hieroglyphic-font);
   letter-spacing: 1px;
+  font-size: clamp(0.9rem, 2.5vw, 1rem);
 }
 
 input[type="number"] {
@@ -313,10 +307,10 @@ input[type="number"]:focus {
 }
 
 .hieroglyphic-numbers {
-  height: 40px;
+  min-height: 40px;
   margin-top: 0.5rem;
   text-align: center;
-  font-size: 1.5rem;
+  font-size: clamp(1rem, 3vw, 1.5rem);
   padding: 5px;
   background-color: rgba(255, 255, 255, 0.3);
   border-radius: 5px;
@@ -325,6 +319,8 @@ input[type="number"]:focus {
   justify-content: center;
   align-items: center;
   letter-spacing: 3px;
+  overflow-wrap: break-word;
+  word-break: break-all;
 }
 
 .ankh-divider {
@@ -357,7 +353,7 @@ button {
   border: none;
   border-radius: 5px;
   font-family: var(--hieroglyphic-font);
-  font-size: 1.1rem;
+  font-size: clamp(0.9rem, 2.5vw, 1.1rem);
   cursor: pointer;
   position: relative;
   overflow: hidden;
@@ -365,6 +361,8 @@ button {
   box-shadow: 0 4px 6px var(--shadow);
   letter-spacing: 1px;
   text-transform: uppercase;
+  white-space: normal;
+  line-height: 1.3;
 }
 
 button:hover {
@@ -399,6 +397,8 @@ button::after {
 .btn-text {
   position: relative;
   z-index: 2;
+  padding: 0 30px;
+  display: block;
 }
 
 /* Max number display */
@@ -477,6 +477,8 @@ button::after {
   position: relative;
   letter-spacing: 2px;
   text-transform: uppercase;
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  line-height: 1.2;
 }
 
 .scroll-content h2::after {
@@ -496,7 +498,7 @@ button::after {
   border-radius: 5px;
   margin-bottom: 1.5rem;
   line-height: 1.8;
-  font-size: 1.1rem;
+  font-size: clamp(0.9rem, 2vw, 1.1rem);
   max-height: 400px; /* Set maximum height */
   overflow-y: auto; /* Enable vertical scrolling */
   position: relative;
@@ -561,6 +563,8 @@ button::after {
   border-radius: 5px;
   background-color: rgba(255, 255, 255, 0.5);
   transition: all 0.3s ease;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .step:hover {
@@ -636,6 +640,9 @@ button::after {
   display: inline-block;
   font-size: 1.2rem;
   letter-spacing: 3px;
+  overflow-wrap: break-word;
+  word-break: break-all;
+  max-width: 100%;
 }
 
 .intro-text {
@@ -644,6 +651,7 @@ button::after {
   text-align: center;
   color: var(--egyptian-black);
   font-family: var(--hieroglyphic-font);
+  font-size: clamp(0.9rem, 2vw, 1rem);
 }
 
 .summary {
@@ -653,11 +661,12 @@ button::after {
   color: var(--egyptian-red);
   font-family: var(--hieroglyphic-font);
   letter-spacing: 1px;
+  font-size: clamp(0.9rem, 2vw, 1rem);
 }
 
 .result {
   text-align: center;
-  font-size: 1.5rem;
+  font-size: clamp(1.2rem, 3vw, 1.5rem);
   font-weight: bold;
   color: var(--egyptian-red);
   padding: 1rem;
@@ -683,14 +692,14 @@ button::after {
 }
 
 .result-label {
-  font-size: 1.2rem;
+  font-size: clamp(1rem, 2.5vw, 1.2rem);
   color: var(--egyptian-black);
   font-family: var(--hieroglyphic-font);
   letter-spacing: 1px;
 }
 
 .result-value {
-  font-size: 2rem;
+  font-size: clamp(1.5rem, 4vw, 2rem);
   color: var(--egyptian-red);
   font-family: var(--hieroglyphic-font);
   letter-spacing: 2px;
@@ -703,7 +712,7 @@ footer {
   background-color: var(--papyrus-dark);
   border-top: 1px solid var(--egyptian-gold);
   color: var(--text-color);
-  font-size: 0.9rem;
+  font-size: clamp(0.8rem, 2vw, 0.9rem);
   font-family: var(--hieroglyphic-font);
   letter-spacing: 1px;
 }
@@ -730,6 +739,8 @@ footer {
   border: 2px solid var(--egyptian-gold);
   font-family: var(--hieroglyphic-font);
   letter-spacing: 1px;
+  max-width: 90%;
+  text-align: center;
 }
 
 .notification.show {
@@ -752,6 +763,9 @@ footer {
   color: var(--egyptian-gold);
   opacity: 0.8;
   letter-spacing: 5px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 /* Header hieroglyphics in blue */
@@ -843,10 +857,6 @@ input:focus {
     border-width: 8px;
   }
 
-  h1 {
-    font-size: 2rem;
-  }
-
   .column {
     display: none;
   }
@@ -856,10 +866,115 @@ input:focus {
   }
 
   .calculator-content {
-    padding: 1.5rem;
+    padding: 1rem;
   }
 
   .steps {
     max-height: 300px; /* Smaller max-height on mobile */
+    padding: 1rem;
   }
+
+  .step {
+    padding: 0.6rem;
+  }
+
+  .step-hieroglyphic {
+    font-size: 1rem;
+    letter-spacing: 2px;
+  }
+
+  .btn-text {
+    padding: 0 25px;
+  }
+
+  button::before,
+  button::after {
+    font-size: 1rem;
+  }
+
+  .scroll-content {
+    padding: 1.5rem 1rem;
+  }
+
+  .result {
+    padding: 0.8rem;
+  }
+
+  .ahmes-portrait {
+    width: 120px;
+    height: 120px;
+  }
+}
+
+@media (max-width: 480px) {
+  .calculator-content {
+    padding: 0.8rem;
+  }
+
+  .hieroglyphic-numbers {
+    font-size: 0.9rem;
+    letter-spacing: 2px;
+    padding: 3px;
+  }
+
+  .step-formula {
+    font-size: 0.9rem;
+  }
+
+  .btn-text {
+    padding: 0 20px;
+  }
+
+  .result-content {
+    gap: 5px;
+  }
+
+  .scroll-handles {
+    left: 10px;
+    right: 10px;
+  }
+
+  .scroll-handle {
+    width: 25px;
+    height: 25px;
+  }
+
+  .hieroglyphic-border.top::before,
+  .hieroglyphic-border.bottom::before {
+    font-size: 0.8rem;
+  }
+}
+
+/* Ensure text doesn't overflow containers */
+.step-description,
+.step-formula,
+.intro-text,
+.summary,
+.result-label,
+.result-value {
+  overflow-wrap: break-word;
+  word-break: break-word;
+  max-width: 100%;
+}
+
+/* Ensure hieroglyphic symbols don't cause horizontal overflow */
+.hieroglyphic-decoration,
+.hieroglyphic-numbers,
+.step-hieroglyphic {
+  max-width: 100%;
+  overflow-wrap: break-word;
+  word-break: break-all;
+}
+
+/* Add scroll to very long hieroglyphic sequences */
+.step-hieroglyphic {
+  max-height: 80px;
+  overflow-y: auto;
+}
+
+/* Ensure notification text is readable */
+.notification-content {
+  max-width: 100%;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
