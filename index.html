@@ -4,61 +4,173 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pagina Generale Siti | Nico Maker</title>
+  <title>Nico Maker | Portfolio di Progetti Web</title>
   <meta name="author" content="Nico Maker">
   <meta name="language" content="italian">
-  <meta name="keywords" content="Pagina Generale tutti i siti, WEB SITE, WEB APP, Nico Maker">
-  <meta name="description" content="Nel Seguente sito si vedono tutti i miei siti realizzati">
+  <meta name="keywords" content="Portfolio, Web Developer, Progetti Web, Nico Maker">
+  <meta name="description" content="Portfolio di progetti web sviluppati da Nico Maker, organizzati per categoria">
   <link rel="icon" href="https://th.bing.com/th/id/OIP.-jLu0ZtLGW3rmhl8991jWwHaHa?rs=1&pid=ImgDetMain" type="image/jpg">
-  <link rel="stylesheet" href="stylegenerale.css">
+  <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <script src="JS/Categories.js" defer></script>
 </head>
 
 <body>
+  <!-- Advanced Preloader -->
+  <div class="preloader">
+    <div class="preloader-content">
+      <div class="avatar-container">
+        <img src="Icons/Avatar.jpg" alt="Nico Maker Avatar" class="preloader-avatar">
+      </div>
+      <div class="logo-container">
+        <img
+          src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Logo_chiaro.jpg-d1WCG74xFBZkcoQrlmO4SobXjTaScn.png"
+          alt="Nico Maker Logo" class="preloader-logo">
+      </div>
+      <div class="text-container">
+        <h2 class="preloader-text">Pagina Generale Siti</h2>
+      </div>
+      <div class="loading-bar-container">
+        <div class="loading-bar"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cursor -->
+  <div class="cursor-dot-outline"></div>
+  <div class="cursor-dot"></div>
+
+  <!-- Header -->
   <header class="header">
     <div class="container">
+      <br>
       <div class="header-content">
-        <a href="#home" target="_blank" class="logo">
-          <img src="Icons/Logo Scuro.jpg" alt="Nico Maker Logo">
-          <span>Nico Maker</span>
-        </a>
+        <div class="header-left">
+          <a href="#home" class="logo">
+            <img src="Icons/Avatar.jpg" alt="Nico Maker Avatar" class="avatar-logo">
+            <span>Nico Maker</span>
+          </a>
+        </div>
+        <div class="header-center">
+          <nav class="nav">
+            <ul class="nav-list">
+              <li><a href="#home" class="nav-link active">Home</a></li>
+              <li><a href="#categories" class="nav-link">Categorie</a></li>
+              <li><a href="#contact" class="nav-link">Contatti</a></li>
+            </ul>
+          </nav>
+        </div>
+        <div class="header-right">
+          <button class="theme-toggle" aria-label="Cambia tema">
+            <i class="fas fa-moon"></i>
+          </button>
+          <button class="menu-toggle" aria-label="Menu">
+            <span class="hamburger"></span>
+          </button>
+        </div>
       </div>
     </div>
   </header>
 
+  <!-- Mobile Menu -->
+  <div class="mobile-menu">
+    <div class="mobile-menu-top">
+      <div class="mobile-menu-header">
+        <div class="mobile-logo-container">
+          <img src="Icons/Avatar.jpg" alt="Nico Maker Avatar" class="mobile-avatar">
+          <h2>Nico Maker</h2>
+        </div>
+        <button class="mobile-close" aria-label="Chiudi menu">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="mobile-theme-toggle">
+        <button class="theme-toggle-mobile" aria-label="Cambia tema">
+          <i class="fas fa-moon"></i>
+          <span>Cambia Tema</span>
+        </button>
+      </div>
+      <div class="mobile-site-link">
+        <a href="https://nicomaker.netlify.app/" target="_blank">
+          <img
+            src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Logo_chiaro.jpg-d1WCG74xFBZkcoQrlmO4SobXjTaScn.png"
+            alt="Nico Maker Logo" class="mobile-logo">
+          <span>Visita il mio sito</span>
+        </a>
+      </div>
+    </div>
+    <ul class="mobile-nav-list">
+      <li><a href="#home" class="mobile-nav-link">Home</a></li>
+      <li><a href="#categories" class="mobile-nav-link">Categorie</a></li>
+      <li><a href="#contact" class="mobile-nav-link">Contatti</a></li>
+    </ul>
+  </div>
+
+  <!-- Hero Section -->
   <section class="hero" id="home">
     <div class="container">
       <div class="hero-content">
-        <h1>Pagina Generale Siti</h1>
-        <p>Esplora la mia collezione di progetti web organizzati per categoria</p>
-        <div class="hero-images">
-          <img src="Icons/Avatar.jpg" alt="Avatar" class="hero-image">
+        <div class="hero-text">
+          <h1 class="animate-text">Portfolio di Progetti</h1>
+          <p class="animate-text-delay">Benvenuto nella mia collezione di progetti web, organizzati per categoria</p>
+          <div class="hero-buttons">
+            <a href="#categories" class="btn btn-primary">Esplora Progetti</a>
+            <a href="#contact" class="btn btn-outline">Contattami</a>
+          </div>
+        </div>
+        <div class="hero-image-container">
+          <div class="hero-image-wrapper">
+            <img src="https://th.bing.com/th/id/OIP.-jLu0ZtLGW3rmhl8991jWwHaHa?rs=1&pid=ImgDetMain" alt="Avatar"
+              class="hero-image">
+            <div class="hero-image-bg"></div>
+          </div>
+          <div class="floating-icons">
+            <div class="floating-icon" style="--delay: 0s">
+              <i class="fab fa-html5"></i>
+            </div>
+            <div class="floating-icon" style="--delay: 1s">
+              <i class="fab fa-css3-alt"></i>
+            </div>
+            <div class="floating-icon" style="--delay: 2s">
+              <i class="fab fa-js"></i>
+            </div>
+            <div class="floating-icon" style="--delay: 3s">
+              <i class="fab fa-react"></i>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-    <!-- Animated Down Arrow -->
-    <a href="#projectsSection" class="scroll-arrow-container" aria-label="Scorri alle categorie">
-      <div class="scroll-arrow">
-        <svg viewBox="0 0 24 24">
-          <polyline points="6 9 12 15 18 9"></polyline>
-        </svg>
+      <!-- Added arrow to navigate to categories -->
+      <div class="scroll-down-arrow">
+        <a href="#categories" aria-label="Scorri alle categorie">
+          <i class="fas fa-chevron-down"></i>
+        </a>
       </div>
-    </a>
+    </div>
   </section>
 
-  <section class="categories">
+  <!-- Categories Section -->
+  <section class="categories" id="categories">
     <div class="container">
-      <h2>Categorie</h2>
+      <div class="section-header">
+        <h2 class="section-title">Categorie di Progetti</h2>
+        <p class="section-subtitle">Esplora i miei progetti organizzati per categoria</p>
+      </div>
       <div class="search-container">
-        <input type="text" id="searchInput" placeholder="Cerca categoria..." aria-label="Cerca categoria">
-        <i class="fas fa-search search-icon"></i>
+        <div class="search-input-wrapper">
+          <input type="text" id="searchInput" placeholder="Cerca categoria..." aria-label="Cerca categoria">
+          <i class="fas fa-search search-icon"></i>
+        </div>
+      </div>
+      <!-- Added category navigation bar -->
+      <div class="category-nav-bar">
+        <div class="category-nav-container" id="categoryNavContainer">
+          <!-- Category navigation items will be populated by JavaScript -->
+        </div>
       </div>
       <div class="categories-grid" id="categoriesGrid">
         <!-- Categories will be populated by JavaScript -->
       </div>
-
       <div id="noCategoriesFound" class="no-results">
         <div class="no-results-content">
           <i class="fas fa-folder-open no-results-icon"></i>
@@ -66,9 +178,20 @@
           <p>Prova a modificare i termini di ricerca</p>
         </div>
       </div>
+      <div class="categories-counter">
+        <div class="counter-item">
+          <span class="counter-number" id="categoriesCount">0</span>
+          <span class="counter-label">Categorie</span>
+        </div>
+        <div class="counter-item">
+          <span class="counter-number" id="projectsCount">0</span>
+          <span class="counter-label">Progetti Totali</span>
+        </div>
+      </div>
     </div>
   </section>
 
+  <!-- Projects Section -->
   <section class="projects" id="projectsSection">
     <div class="container">
       <div class="projects-header">
@@ -77,65 +200,125 @@
           <i class="fas fa-arrow-left"></i> Torna alle categorie
         </button>
       </div>
-      <div class="search-container" id="projectSearchContainer">
-        <input type="text" id="projectSearchInput" placeholder="Cerca progetto..." aria-label="Cerca progetto">
-        <i class="fas fa-search search-icon"></i>
+      <div class="search-container">
+        <div class="search-input-wrapper">
+          <input type="text" id="projectSearchInput" placeholder="Cerca progetto..." aria-label="Cerca progetto">
+          <i class="fas fa-search search-icon"></i>
+        </div>
       </div>
       <div class="projects-grid" id="projectsGrid">
         <!-- Projects will be populated by JavaScript -->
       </div>
-
       <div id="noProjectsFound" class="no-results">
         <div class="no-results-content">
           <i class="fas fa-file-alt no-results-icon"></i>
           <h3>Nessun progetto trovato</h3>
           <p>Prova a modificare i termini di ricerca</p>
         </div>
-        <p id="noProjectsFound" class="no-results">Nessun progetto trovato.</p>
       </div>
+      <!-- Added page indicator -->
+      <div class="page-indicator">
+        <p>Pagina generale siti</p>
+      </div>
+    </div>
   </section>
 
+  <!-- Contact Section -->
+  <section class="contact" id="contact">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Contattami</h2>
+        <p class="section-subtitle">Hai domande o vuoi collaborare? Contattami!</p>
+      </div>
+      <div class="contact-content">
+        <div class="contact-info">
+          <div class="contact-card">
+            <div class="contact-card-icon">
+              <i class="fas fa-envelope"></i>
+            </div>
+            <div class="contact-card-content">
+              <h3>Email</h3>
+              <p>Nicola.marano02@gmail.com</p>
+              <button class="btn btn-sm" onclick="contactEmail('Nicola.marano02@gmail.com','Portfolio')">
+                Invia Email
+              </button>
+            </div>
+          </div>
+          <div class="contact-card">
+            <div class="contact-card-icon">
+              <i class="fas fa-phone"></i>
+            </div>
+            <div class="contact-card-content">
+              <h3>Telefono</h3>
+              <p>+39 333 702 4320</p>
+              <button class="btn btn-sm" onclick="contactCell()">
+                Chiama
+              </button>
+            </div>
+          </div>
+          <div class="contact-card">
+            <div class="contact-card-icon">
+              <i class="fab fa-whatsapp"></i>
+            </div>
+            <div class="contact-card-content">
+              <h3>WhatsApp</h3>
+              <p>Contattami su WhatsApp</p>
+              <button class="btn btn-sm" onclick="openWhatsAppChat()">
+                Apri Chat
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="social-links">
+          <a href="https://github.com/NicoMaker" target="_blank" class="social-link" aria-label="GitHub Profile">
+            <i class="fab fa-github"></i>
+          </a>
+          <a href="https://github.com/NicoMaker/Pagina_Generale_Siti" target="_blank" class="social-link"
+            aria-label="GitHub Repository">
+            <i class="fas fa-code-branch"></i>
+          </a>
+          <a href="https://nicomaker.netlify.app/" target="_blank" class="social-link"
+            aria-label="Link Sito Principale">
+            <i class="fas fa-globe"></i>
+          </a>
+          <a href="https://drive.google.com/file/d/1jouYKNyfHzE5lnQHvGRPCnzWrS_c2aas/view?usp=sharing" target="_blank"
+            class="social-link" aria-label="QR Code">
+            <i class="fas fa-qrcode"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
   <footer class="footer">
     <div class="container">
       <div class="footer-content">
-        <div class="footer-info">
-          <h3>Contatti</h3>
-          <div class="contact-buttons">
-            <a href="https://drive.google.com/file/d/1jouYKNyfHzE5lnQHvGRPCnzWrS_c2aas/view?usp=sharing" target="_blank"
-              class="contact-button" aria-label="QR Code">
-              <i class="fas fa-qrcode"></i>
-            </a>
-            <a href="https://github.com/NicoMaker/Pagina_Generale_Siti" target="_blank" class="contact-button"
-              aria-label="GitHub Repository">
-              <i class="fab fa-github"></i>
-            </a>
-            <a href="https://github.com/NicoMaker" target="_blank" class="contact-button" aria-label="GitHub Profile">
-              <i class="fas fa-code-branch"></i>
-            </a>
-            <button class="contact-button" onclick="contactEmail('Nicola.marano02@gmail.com','Pagina Generale Siti')"
-              aria-label="Email">
-              <i class="fas fa-envelope"></i>
-            </button>
-            <button class="contact-button" onclick="contactCell()" aria-label="Telefono">
-              <i class="fas fa-phone"></i>
-            </button>
-            <button class="contact-button" onclick="openWhatsAppChat()" aria-label="WhatsApp">
-              <i class="fab fa-whatsapp"></i>
-            </button>
-
-            <a href="https://nicomaker.netlify.app/" target="_blank" class="contact-button" aria-label="Link Sito Principale">
-              <img src="Icons/Logo_chiaro.jpg" alt="Logo Scuro">
-            </a>
-          </div>
+        <div class="footer-logo">
+          <img src="https://th.bing.com/th/id/OIP.-jLu0ZtLGW3rmhl8991jWwHaHa?rs=1&pid=ImgDetMain" alt="Nico Maker Logo">
+          <span>Nico Maker</span>
         </div>
-        <p class="copyright">
-          <a href="https://drive.google.com/file/d/1jouYKNyfHzE5lnQHvGRPCnzWrS_c2aas/view?usp=sharing" target="_blank">
-            &copy; Nico Maker Pagina Generale Siti
+        <div class="footer-links">
+          <a href="https://nicomaker.netlify.app/" target="_blank" class="footer-link">
+            <img
+              src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Logo_chiaro.jpg-d1WCG74xFBZkcoQrlmO4SobXjTaScn.png"
+              alt="Nico Maker Logo" class="footer-custom-logo">
+            <span>Visita il mio sito principale</span>
           </a>
+        </div>
+        <p class="footer-text">Portfolio di progetti web sviluppati con passione</p>
+        <p class="copyright">
+          &copy; <span id="currentYear">2023</span> Nico Maker - Tutti i diritti riservati
         </p>
       </div>
     </div>
+    <!-- Back to Top Button -->
+    <button id="backToTop" class="back-to-top" aria-label="Torna in cima">
+      <i class="fas fa-arrow-up"></i>
+    </button>
   </footer>
+
+  <script src="JS/scipt.js"></script>
 </body>
 
 </html>
