@@ -1536,3 +1536,7 @@ input {
 .category-nav-item {
   display: none;
 }
+
+html{
+  overflow-y: auto;
+}
