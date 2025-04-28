@@ -456,11 +456,23 @@ document.addEventListener("DOMContentLoaded", () => {
         projectCard.dataset.name = project.name.toLowerCase();
         projectCard.style.animationDelay = `${index * 0.1}s`;
 
+        // Rendi l'intera card cliccabile
+        projectCard.style.cursor = "pointer";
+        projectCard.addEventListener("click", (e) => {
+          // Verifica se il click è avvenuto sul link stesso
+          if (!e.target.closest(".project-link")) {
+            window.open(project.link, "_blank");
+          }
+        });
+
         projectCard.innerHTML = `
           <div class="project-card-content">
             <h3>${project.name}</h3>
             <div class="project-card-footer">
-              <a href="${project.link}" target="_blank" class="project-link">
+              <a href="${project.link}" 
+                 target="_blank" 
+                 class="project-link direct-link"
+                 onclick="event.stopPropagation();">
                 <i class="fas fa-external-link-alt mr-2"></i> Visita Progetto
               </a>
             </div>

@@ -1088,15 +1088,6 @@ input {
   transition: var(--transition);
 }
 
-.project-card:hover {
-  transform: translateY(-10px) translateX(5px);
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
-}
-
-.project-card:hover::before {
-  width: 100%;
-  opacity: 0.1;
-}
 
 .project-card-content {
   padding: 1.5rem;
