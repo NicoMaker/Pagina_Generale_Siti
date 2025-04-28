@@ -49,6 +49,21 @@ document.addEventListener("DOMContentLoaded", () => {
   if (isNewYearsDay) {
     document.querySelector(".countdown-wrapper").style.display = "none";
     document.querySelector(".celebration-message").style.display = "block";
+
+    // Add "Happy New Year" message to the celebration message
+    const celebrationMessage = document.querySelector(
+      ".celebration-message h2"
+    );
+    celebrationMessage.textContent = "Happy New Year!";
+
+    // Add additional styling to make it stand out
+    celebrationMessage.style.fontSize = "3rem";
+    celebrationMessage.style.background =
+      "linear-gradient(135deg, var(--gold), var(--accent))";
+    celebrationMessage.style.webkitBackgroundClip = "text";
+    celebrationMessage.style.backgroundClip = "text";
+    celebrationMessage.style.color = "transparent";
+
     launchFireworks();
   } else {
     // Update countdown every second

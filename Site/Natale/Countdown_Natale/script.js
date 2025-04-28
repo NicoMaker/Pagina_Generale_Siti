@@ -47,8 +47,25 @@ document.addEventListener("DOMContentLoaded", () => {
   if (isChristmasDay) {
     document.querySelector(".countdown-wrapper").style.display = "none";
     document.querySelector(".celebration-message").style.display = "block";
+
+    // Change the message to "Merry Christmas"
+    const celebrationMessage = document.querySelector(
+      ".celebration-message h2"
+    );
+    celebrationMessage.textContent = "Merry Christmas!";
+
+    // Add special styling to make it stand out
+    celebrationMessage.style.fontSize = "3rem";
+    celebrationMessage.style.background =
+      "linear-gradient(135deg, #d4af37, #c9243f)";
+    celebrationMessage.style.webkitBackgroundClip = "text";
+    celebrationMessage.style.backgroundClip = "text";
+    celebrationMessage.style.color = "transparent";
+    celebrationMessage.style.textShadow = "0 2px 10px rgba(212, 175, 55, 0.3)";
+
     createSnowfall();
     addTreeLights();
+    celebrate(); // Trigger celebration effects immediately
   } else {
     // Update countdown every second
     const timerInterval = setInterval(updateCountdown, 1000);
@@ -84,6 +101,23 @@ document.addEventListener("DOMContentLoaded", () => {
       clearInterval(timerInterval);
       document.querySelector(".countdown-wrapper").style.display = "none";
       document.querySelector(".celebration-message").style.display = "block";
+
+      // Change the message to "Merry Christmas"
+      const celebrationMessage = document.querySelector(
+        ".celebration-message h2"
+      );
+      celebrationMessage.textContent = "Merry Christmas!";
+
+      // Add special styling to make it stand out
+      celebrationMessage.style.fontSize = "3rem";
+      celebrationMessage.style.background =
+        "linear-gradient(135deg, #d4af37, #c9243f)";
+      celebrationMessage.style.webkitBackgroundClip = "text";
+      celebrationMessage.style.backgroundClip = "text";
+      celebrationMessage.style.color = "transparent";
+      celebrationMessage.style.textShadow =
+        "0 2px 10px rgba(212, 175, 55, 0.3)";
+
       celebrate();
       return;
     }
