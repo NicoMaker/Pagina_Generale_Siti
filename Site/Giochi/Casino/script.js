@@ -337,7 +337,7 @@ function scheduleAutoStop() {
   });
 }
 
-// Stop a specific reel
+// Modify the stopReel function to ensure it always locks on a complete image
 function stopReel(index) {
   if (!gameState.isSpinning) return;
 
@@ -348,18 +348,30 @@ function stopReel(index) {
   strip.classList.remove("spinning");
   strip.classList.add("stopped");
 
-  // Calculate a random stopping position
+  // Calculate a stopping position that ensures a complete image is shown
   const itemHeight = strip.children[0].offsetHeight;
   const totalItems = strip.children.length;
+  
+  // Always choose a position that aligns perfectly with an item
   const randomPosition = Math.floor(Math.random() * (totalItems - 4)) + 2;
   const stopPosition = -(randomPosition * itemHeight);
 
-  // Set the final position
-  strip.style.transition = "transform 0.5s ease-out";
+  // Set the final position with a smooth transition
+  strip.style.transition = "transform 0.5s cubic-bezier(0.23, 1, 0.32, 1)";
   strip.style.transform = `translateY(${stopPosition}px)`;
 
-  // Hide stop button
+  // Add a visual feedback for the stopped reel
+  const reelWindow = reels[index].closest('.reel-window');
+  reelWindow.classList.add('stopped-reel');
+  setTimeout(() => {
+    reelWindow.classList.remove('stopped-reel');
+  }, 500);
+
+  // Hide stop button with animation
   stopButtons[index].classList.remove("active");
+  
+  // Play a more satisfying stop sound
+  playSound("stop");
 
   // Store the stopped item for result checking
   const stoppedItemIndex = randomPosition;

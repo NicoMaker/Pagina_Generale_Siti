@@ -204,6 +204,12 @@ main {
   display: flex;
   justify-content: center;
   align-items: center;
+  transition: box-shadow 0.3s ease;
+}
+
+.stopped-reel {
+  box-shadow: inset 0 0 15px rgba(255, 193, 7, 0.7),
+    0 0 15px rgba(255, 193, 7, 0.5);
 }
 
 .reel {
@@ -220,6 +226,7 @@ main {
   flex-direction: column;
   align-items: center;
   transition: transform 0.1s linear;
+  will-change: transform;
 }
 
 .reel-item {
@@ -229,12 +236,21 @@ main {
   justify-content: center;
   align-items: center;
   margin: 5px 0;
+  transition: transform 0.2s ease;
 }
 
 .reel-item img {
   max-width: 80%;
   max-height: 80%;
   object-fit: contain;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+  transition: filter 0.3s ease;
+}
+
+/* Add a highlight effect for the centered item in stopped reels */
+.reel-window.stopped-reel .reel-item:nth-child(3) img {
+  filter: drop-shadow(0 0 8px rgba(255, 193, 7, 0.8));
+  transform: scale(1.05);
 }
 
 .stop-button {
@@ -244,22 +260,44 @@ main {
   color: white;
   border: none;
   border-radius: 5px;
-  padding: 5px 10px;
+  padding: 5px 15px;
   font-weight: bold;
   cursor: pointer;
   opacity: 0;
   transform: translateY(20px);
-  transition: var(--transition);
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   z-index: 10;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  letter-spacing: 0.5px;
 }
 
 .stop-button.active {
   opacity: 1;
   transform: translateY(0);
+  animation: pulse-stop 1.5s infinite;
 }
 
 .stop-button:hover {
-  background-color: #d32f2f;
+  background-color: #c41c1c;
+  transform: scale(1.1) translateY(0);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+.stop-button:active {
+  transform: scale(0.95) translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+@keyframes pulse-stop {
+  0% {
+    box-shadow: 0 0 0 0 rgba(244, 67, 54, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(244, 67, 54, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(244, 67, 54, 0);
+  }
 }
 
 .machine-bottom {
@@ -656,78 +694,41 @@ footer {
 
 .spinning {
   animation: spin 0.5s linear infinite;
+  will-change: transform;
 }
 
 .winning-reel {
   box-shadow: 0 0 15px var(--accent), inset 0 0 10px var(--accent);
 }
 
-/* Miglioramenti per i pulsanti STOP */
-.stop-button {
-  position: absolute;
-  bottom: 10px;
-  background-color: var(--danger);
-  color: white;
-  border: none;
-  border-radius: 5px;
-  padding: 5px 10px;
-  font-weight: bold;
-  cursor: pointer;
-  opacity: 0;
-  transform: translateY(20px);
-  transition: var(--transition);
-  z-index: 10;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-}
-
-.stop-button.active {
-  opacity: 1;
-  transform: translateY(0);
-  animation: pulse 1.5s infinite;
-}
-
-.stop-button:hover {
-  background-color: #d32f2f;
-  transform: scale(1.1) translateY(0);
-}
-
-@keyframes pulse {
-  0% {
-    box-shadow: 0 0 0 0 rgba(244, 67, 54, 0.7);
-  }
-  70% {
-    box-shadow: 0 0 0 10px rgba(244, 67, 54, 0);
-  }
-  100% {
-    box-shadow: 0 0 0 0 rgba(244, 67, 54, 0);
-  }
-}
-
 /* Timer Styles */
 .timer-container {
   display: flex;
   justify-content: center;
-  margin-bottom: 10px;
+  margin: 10px 0;
 }
 
 .spin-timer {
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
-  background-color: var(--dark);
-  border: 2px solid var(--accent);
+  background-color: rgba(33, 33, 33, 0.8);
+  border: 3px solid var(--accent);
   color: var(--accent);
   display: flex;
   justify-content: center;
   align-items: center;
   font-weight: bold;
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   opacity: 0;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  transform: scale(0.8);
 }
 
 .spin-timer.active {
   opacity: 1;
+  transform: scale(1);
 }
 
 .spin-timer.warning {
