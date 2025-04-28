@@ -22,17 +22,6 @@
   --header-height: 70px;
 }
 
-.dark-theme {
-  --primary: blue;
-  --primary-light: #4361ee;
-  --secondary: #f72585;
-  --dark: #f9fafb;
-  --light: #1a202c;
-  --gray: #a0aec0;
-  --gray-light: #4a5568;
-  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
-}
-
 * {
   margin: 0;
   padding: 0;
@@ -49,6 +38,7 @@ body {
   font-family: "Poppins", sans-serif;
   line-height: 1.6;
   color: var(--dark);
+  background-color: white;
   background-color: var(--light);
   min-height: 100vh;
   overflow-x: hidden;
