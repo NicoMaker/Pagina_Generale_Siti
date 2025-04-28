@@ -782,3 +782,10 @@ footer a:hover {
     opacity: 1;
   }
 }
+
+label,
+#start-date,
+#end-date,
+#apply-data-range {
+  display: none;
+}
