@@ -662,3 +662,11 @@ footer {
 .copy-success {
   color: var(--secondary);
 }
+
+.result-year {
+  display: none;
+}
+
+.result-info {
+  display: none;
+}
