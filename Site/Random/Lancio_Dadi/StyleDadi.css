@@ -657,3 +657,8 @@ footer {
     padding: 20px;
   }
 }
+
+.dice-face,
+.dice-container {
+  display: none;
+}
