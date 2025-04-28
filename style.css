@@ -1,6 +1,6 @@
 :root {
   --primary: #4361ee;
-  --primary-light: #4cc9f0;
+  --primary-light: blue;
   --secondary: #f72585;
   --dark: #2d3748;
   --light: #f9fafb;
@@ -23,7 +23,7 @@
 }
 
 .dark-theme {
-  --primary: #4cc9f0;
+  --primary: blue;
   --primary-light: #4361ee;
   --secondary: #f72585;
   --dark: #f9fafb;
@@ -1888,4 +1888,12 @@ html {
   button:hover {
   background-color: rgba(255, 255, 255, 0.2);
   box-shadow: 0 4px 10px rgba(255, 255, 255, 0.15);
+}
+
+.theme-toggle {
+  display: none;
+}
+
+.theme-toggle-mobile {
+  display: none;
 }
