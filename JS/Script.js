@@ -29,6 +29,28 @@ document.addEventListener("DOMContentLoaded", () => {
   // Flag per tracciare se il preloader è attivo
   let isPreloaderActive = false;
 
+  // Restore active section from localStorage if available
+  const savedActiveSection = localStorage.getItem("activeSection");
+  if (savedActiveSection) {
+    const sectionElement = document.getElementById(savedActiveSection);
+    if (sectionElement) {
+      // Update navigation links
+      navLinks.forEach((link) => {
+        link.classList.remove("active");
+        if (link.getAttribute("href") === `#${savedActiveSection}`) {
+          link.classList.add("active");
+        }
+      });
+
+      mobileNavLinks.forEach((link) => {
+        link.classList.remove("active");
+        if (link.getAttribute("href") === `#${savedActiveSection}`) {
+          link.classList.add("active");
+        }
+      });
+    }
+  }
+
   // Set current year in footer
   currentYearElement.textContent = new Date().getFullYear();
 
@@ -249,6 +271,23 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+  // Ensure mobile navigation links maintain active state
+  function updateMobileNavActiveState() {
+    const currentHash = window.location.hash || "#home";
+
+    mobileNavLinks.forEach((link) => {
+      if (link.getAttribute("href") === currentHash) {
+        link.classList.add("active");
+      } else {
+        link.classList.remove("active");
+      }
+    });
+  }
+
+  // Call on page load and when hash changes
+  updateMobileNavActiveState();
+  window.addEventListener("hashchange", updateMobileNavActiveState);
+
   // Active nav link on scroll
   const sections = document.querySelectorAll("section[id]");
 
@@ -261,6 +300,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const sectionId = section.getAttribute("id");
 
       if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
+        // Update desktop nav
         navLinks.forEach((link) => {
           link.classList.remove("active");
           if (link.getAttribute("href") === `#${sectionId}`) {
@@ -268,10 +308,13 @@ document.addEventListener("DOMContentLoaded", () => {
           }
         });
 
+        // Update mobile nav - ensure it persists
         mobileNavLinks.forEach((link) => {
           link.classList.remove("active");
           if (link.getAttribute("href") === `#${sectionId}`) {
             link.classList.add("active");
+            // Store the active section in localStorage for persistence
+            localStorage.setItem("activeSection", sectionId);
           }
         });
       }

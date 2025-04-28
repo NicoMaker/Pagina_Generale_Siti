@@ -1,7 +1,7 @@
 :root {
-  --primary: #4361ee;
-  --primary-light: blue;
-  --secondary: #f72585;
+  --primary: #6a3de8;
+  --primary-light: #9d4edd;
+  --secondary: #ff5e78;
   --dark: #2d3748;
   --light: #f9fafb;
   --gray: #6b7280;
@@ -92,6 +92,8 @@ input {
   align-items: center;
   z-index: 9999;
   transition: opacity 0.5s ease, visibility 0.5s ease;
+  opacity: 1;
+  visibility: visible;
 }
 
 .preloader.hidden {
@@ -230,7 +232,7 @@ input {
 .cursor-dot-outline {
   width: 40px;
   height: 40px;
-  background-color: rgba(67, 97, 238, 0.2);
+  background-color: rgba(106, 61, 232, 0.2);
 }
 
 /* Header */
@@ -341,6 +343,7 @@ input {
 }
 
 .theme-toggle {
+  display: none;
   width: 40px;
   height: 40px;
   border-radius: 50%;
@@ -358,7 +361,7 @@ input {
 }
 
 .menu-toggle {
-  display: none;
+  display: flex;
   width: 40px;
   height: 40px;
   border-radius: 50%;
@@ -368,42 +371,16 @@ input {
   z-index: 1001;
 }
 
-.hamburger {
-  position: relative;
-  width: 24px;
-  height: 2px;
-  background-color: var(--dark);
-  transition: var(--transition);
+.menu-icon {
+  color: var(--primary);
+  font-size: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.hamburger::before,
-.hamburger::after {
-  content: "";
-  position: absolute;
-  width: 24px;
-  height: 2px;
-  background-color: var(--dark);
-  transition: var(--transition);
-}
-
-.hamburger::before {
-  transform: translateY(-8px);
-}
-
-.hamburger::after {
-  transform: translateY(8px);
-}
-
-.menu-toggle.active .hamburger {
-  background-color: transparent;
-}
-
-.menu-toggle.active .hamburger::before {
-  transform: rotate(45deg);
-}
-
-.menu-toggle.active .hamburger::after {
-  transform: rotate(-45deg);
+.menu-toggle.active .menu-icon {
+  color: var(--secondary);
 }
 
 /* Mobile Menu */
@@ -420,6 +397,12 @@ input {
   transform: translateX(-100%);
   transition: transform 0.5s ease;
   overflow-y: auto;
+  background: linear-gradient(
+    to bottom,
+    var(--light) 0%,
+    rgba(249, 250, 251, 0.95) 100%
+  );
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
 }
 
 .mobile-menu.active {
@@ -429,6 +412,8 @@ input {
 .mobile-menu-top {
   padding: 1.5rem;
   border-bottom: 1px solid var(--gray-light);
+  border-bottom: 2px solid var(--primary-light);
+  padding: 1.75rem 1.5rem;
 }
 
 .mobile-menu-header {
@@ -442,6 +427,7 @@ input {
   display: flex;
   align-items: center;
   gap: 1rem;
+  gap: 1.25rem;
 }
 
 .mobile-avatar {
@@ -450,6 +436,10 @@ input {
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid var(--primary);
+  width: 55px;
+  height: 55px;
+  border: 3px solid var(--primary);
+  box-shadow: 0 0 15px rgba(106, 61, 232, 0.3);
 }
 
 .mobile-close {
@@ -469,6 +459,7 @@ input {
 }
 
 .theme-toggle-mobile {
+  display: none;
   display: flex;
   align-items: center;
   gap: 0.75rem;
@@ -525,11 +516,17 @@ input {
   display: block;
   padding: 1rem;
   border-radius: var(--border-radius);
+  margin-bottom: 0.5rem;
+  border-left: 4px solid transparent;
+  border-radius: 0 var(--border-radius) var(--border-radius) 0;
+  transition: all 0.3s ease;
 }
 
-.mobile-nav-link:hover {
-  background-color: rgba(67, 97, 238, 0.1);
-  color: var(--primary);
+.mobile-nav-link:hover,
+.mobile-nav-link.active {
+  border-left: 4px solid var(--primary);
+  background-color: rgba(106, 61, 232, 0.1);
+  padding-left: 1.5rem;
 }
 
 .mobile-nav-link.active {
@@ -1087,7 +1084,6 @@ input {
   background: var(--gradient);
   transition: var(--transition);
 }
-
 
 .project-card-content {
   padding: 1.5rem;
@@ -1879,3 +1875,42 @@ html {
   display: none;
 }
 
+/* Ensure mobile nav links always show correct color */
+@media (max-width: 768px) {
+  .mobile-nav-link.active {
+    background-color: var(--primary);
+    color: white;
+  }
+
+  /* Fix for mobile menu active state persistence */
+  .mobile-menu.active .mobile-nav-link[href="#home"],
+  .mobile-menu.active .mobile-nav-link[href="#categories"],
+  .mobile-menu.active .mobile-nav-link[href="#contact"] {
+    position: relative;
+  }
+
+  .mobile-menu.active .mobile-nav-link.active::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 4px;
+    background: var(--gradient);
+  }
+}
+
+.menu-icon {
+  color: var(--primary);
+  font-size: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Nascondi il menu hamburger su tablet grandi e PC */
+@media (min-width: 769px) {
+  .menu-toggle {
+    display: none !important;
+  }
+}
