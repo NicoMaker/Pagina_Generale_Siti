@@ -13,6 +13,34 @@
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Aggiungi questo prima della chiusura del tag </head> -->
+  <meta name="theme-color" content="#6a3de8">
+  <style>
+    /* Stili inline per migliorare il caricamento iniziale su mobile */
+    @media (max-width: 768px) {
+      .header {
+        height: 65px;
+        background-color: rgba(255, 255, 255, 0.98);
+      }
+
+      .dark-theme .header {
+        background-color: rgba(26, 32, 44, 0.98);
+      }
+
+      .menu-toggle {
+        display: flex !important;
+      }
+
+      .mobile-menu {
+        width: 85%;
+        border-radius: 0 20px 20px 0;
+      }
+    }
+  </style>
+
+  <!-- Aggiungi questo prima della chiusura del tag </body> -->
+  <script src="JS/Script3.js"></script>
 </head>
 
 <body>
@@ -89,14 +117,6 @@
           <i class="fas fa-moon"></i>
           <span>Cambia Tema</span>
         </button>
-      </div>
-      <div class="mobile-site-link">
-        <a href="https://nicomaker.netlify.app/" target="_blank">
-          <img
-            src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Logo_chiaro.jpg-d1WCG74xFBZkcoQrlmO4SobXjTaScn.png"
-            alt="Nico Maker Logo" class="mobile-logo">
-          <span>Visita il mio sito</span>
-        </a>
       </div>
     </div>
     <ul class="mobile-nav-list">

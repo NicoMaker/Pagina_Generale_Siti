@@ -1608,3 +1608,284 @@ html {
 .preloader:not(.hidden) .loading-bar {
   animation: loadingProgress 2s ease forwards 0.5s;
 }
+
+/* Miglioramenti per Mobile e Colori */
+
+/* Colori più vivaci per il tema principale */
+:root {
+  --primary: #6a3de8;
+  --primary-light: #9d4edd;
+  --secondary: #ff5e78;
+  --gradient: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+  --gradient-light: linear-gradient(
+    135deg,
+    var(--primary-light) 0%,
+    var(--secondary) 100%
+  );
+}
+
+/* Miglioramento visibilità mobile menu */
+.menu-toggle {
+  background-color: rgba(106, 61, 232, 0.1);
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+}
+
+.hamburger,
+.hamburger::before,
+.hamburger::after {
+  background-color: var(--primary);
+  height: 3px;
+}
+
+/* Miglioramento mobile menu */
+.mobile-menu {
+  background: linear-gradient(
+    to bottom,
+    var(--light) 0%,
+    rgba(249, 250, 251, 0.95) 100%
+  );
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.dark-theme .mobile-menu {
+  background: linear-gradient(
+    to bottom,
+    var(--light) 0%,
+    rgba(26, 32, 44, 0.95) 100%
+  );
+}
+
+.mobile-menu-top {
+  border-bottom: 2px solid var(--primary-light);
+  padding: 1.75rem 1.5rem;
+}
+
+.mobile-logo-container {
+  gap: 1.25rem;
+}
+
+.mobile-avatar {
+  width: 55px;
+  height: 55px;
+  border: 3px solid var(--primary);
+  box-shadow: 0 0 15px rgba(106, 61, 232, 0.3);
+}
+
+.mobile-nav-link {
+  margin-bottom: 0.5rem;
+  border-left: 4px solid transparent;
+  border-radius: 0 var(--border-radius) var(--border-radius) 0;
+  transition: all 0.3s ease;
+}
+
+.mobile-nav-link:hover,
+.mobile-nav-link.active {
+  border-left: 4px solid var(--primary);
+  background-color: rgba(106, 61, 232, 0.1);
+  padding-left: 1.5rem;
+}
+
+.mobile-nav-link.active {
+  background-color: var(--primary);
+}
+
+/* Miglioramento hero section per mobile */
+@media (max-width: 768px) {
+  .hero {
+    padding-top: calc(var(--header-height) + 20px);
+    min-height: 90vh;
+  }
+
+  .hero h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.75rem;
+    background-size: 200% auto;
+    animation: textShine 3s linear infinite;
+  }
+
+  .hero p {
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-image-wrapper {
+    margin-top: -20px;
+    margin-bottom: 20px;
+  }
+
+  .hero-image-bg {
+    animation: pulse 2.5s ease-in-out infinite;
+  }
+
+  .floating-icons {
+    opacity: 0.9;
+  }
+
+  .floating-icon {
+    font-size: 1.75rem;
+  }
+
+  .scroll-down-arrow {
+    bottom: 15px;
+  }
+
+  /* Bottoni più grandi e colorati su mobile */
+  .hero-buttons {
+    gap: 0.75rem;
+  }
+
+  .btn {
+    padding: 0.85rem 1.5rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+
+  .btn-primary {
+    background: var(--gradient);
+    box-shadow: 0 5px 15px rgba(106, 61, 232, 0.5);
+  }
+
+  .btn-outline {
+    border: 2.5px solid var(--primary);
+  }
+}
+
+/* Animazione per il testo del titolo */
+@keyframes textShine {
+  0% {
+    background-position: 0% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+/* Miglioramento visibilità categoria su mobile */
+@media (max-width: 480px) {
+  .category-card {
+    transform: scale(0.98);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .category-card:hover {
+    transform: scale(1.02) translateY(-5px);
+  }
+
+  .category-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .categories-grid {
+    gap: 1rem;
+  }
+}
+
+/* Miglioramento visibilità mobile menu button */
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: flex;
+    position: relative;
+    z-index: 1002;
+  }
+
+  .menu-toggle::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: var(--gradient);
+    opacity: 0;
+    z-index: -1;
+    transition: opacity 0.3s ease;
+  }
+
+  .menu-toggle:hover::after {
+    opacity: 0.2;
+  }
+
+  .menu-toggle.active::after {
+    opacity: 0.2;
+  }
+}
+
+/* Miglioramento preloader per mobile */
+@media (max-width: 480px) {
+  .preloader-content {
+    gap: 1.25rem;
+  }
+
+  .avatar-container {
+    width: 100px;
+    height: 100px;
+    border: 4px solid white;
+    box-shadow: 0 0 25px rgba(255, 255, 255, 0.6);
+  }
+
+  .preloader-text {
+    font-size: 1.75rem;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  }
+
+  .loading-bar-container {
+    width: 180px;
+    height: 5px;
+    border-radius: 3px;
+  }
+}
+
+/* Stile bottoni sezione contatti - tema chiaro blu, tema scuro bianco */
+.contact
+  .contact-content
+  .contact-info
+  .contact-card
+  .contact-card-content
+  button {
+  color: #0066ff; /* Blu più vivace per il tema chiaro */
+  font-weight: 600;
+  padding: 0.6rem 1.2rem;
+  border-radius: var(--border-radius);
+  background-color: rgba(0, 102, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.contact
+  .contact-content
+  .contact-info
+  .contact-card
+  .contact-card-content
+  button:hover {
+  background-color: rgba(0, 102, 255, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 102, 255, 0.2);
+}
+
+/* Tema scuro - bottoni bianchi */
+.dark-theme
+  .contact
+  .contact-content
+  .contact-info
+  .contact-card
+  .contact-card-content
+  button {
+  color: white;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.dark-theme
+  .contact
+  .contact-content
+  .contact-info
+  .contact-card
+  .contact-card-content
+  button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 10px rgba(255, 255, 255, 0.15);
+}
