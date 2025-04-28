@@ -70,7 +70,7 @@
                     <div class="easter-date" id="easter-date">Domenica, 20 Aprile 2025</div>
                 </div>
 
-                <div class="countdown-container">
+                <div class="countdown-container" id="countdown-container">
                     <div class="countdown-box">
                         <div class="countdown-value" id="days">00</div>
                         <div class="countdown-label">Giorni</div>
@@ -90,8 +90,9 @@
                 </div>
 
                 <div class="celebration-message" id="celebration-message">
-                    <h3>Buona Pasqua!</h3>
-                    <p>Che questa giornata porti gioia, pace e serenità a te e alla tua famiglia.</p>
+                    <h3 id="celebration-title">Buona Pasqua!</h3>
+                    <p id="celebration-text">Che questa giornata porti gioia, pace e serenità a te e alla tua famiglia.
+                    </p>
                     <button id="celebrate-btn" class="celebrate-btn">Festeggia!</button>
                 </div>
             </section>
@@ -135,10 +136,37 @@
                     <h2>Buona Pasquetta!</h2>
                     <p>Il lunedì dopo Pasqua, conosciuto come Pasquetta o Lunedì dell'Angelo, è tradizionalmente
                         dedicato alle gite fuori porta e ai picnic con amici e familiari.</p>
-                    <div class="pasquetta-countdown" id="pasquetta-countdown">
-                        <span>Mancano</span>
-                        <span class="pasquetta-days" id="pasquetta-days">1</span>
-                        <span>giorni alla Pasquetta</span>
+
+                    <!-- Pasquetta Countdown Section -->
+                    <div class="countdown-header pasquetta-header">
+                        <h3>Manca alla Pasquetta</h3>
+                        <div class="easter-date" id="pasquetta-date">Lunedì, 21 Aprile 2025</div>
+                    </div>
+
+                    <div class="countdown-container pasquetta-countdown-container" id="pasquetta-countdown-container">
+                        <div class="countdown-box pasquetta-box">
+                            <div class="countdown-value" id="pasquetta-days">00</div>
+                            <div class="countdown-label">Giorni</div>
+                        </div>
+                        <div class="countdown-box pasquetta-box">
+                            <div class="countdown-value" id="pasquetta-hours">00</div>
+                            <div class="countdown-label">Ore</div>
+                        </div>
+                        <div class="countdown-box pasquetta-box">
+                            <div class="countdown-value" id="pasquetta-minutes">00</div>
+                            <div class="countdown-label">Minuti</div>
+                        </div>
+                        <div class="countdown-box pasquetta-box">
+                            <div class="countdown-value" id="pasquetta-seconds">00</div>
+                            <div class="countdown-label">Secondi</div>
+                        </div>
+                    </div>
+
+                    <div class="celebration-message" id="pasquetta-celebration-message">
+                        <h3 id="pasquetta-celebration-title">Buona Pasquetta!</h3>
+                        <p id="pasquetta-celebration-text">È il momento perfetto per un picnic all'aperto con amici e
+                            familiari!</p>
+                        <button id="pasquetta-celebrate-btn" class="celebrate-btn">Festeggia!</button>
                     </div>
                 </div>
             </section>

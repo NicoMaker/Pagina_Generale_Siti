@@ -21,323 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
   clearVisualization();
 });
 
-document.addEventListener("DOMContentLoaded", () => {
-  // DOM Elements
-  const anagramForm = document.getElementById("anagramForm");
-  const wordInput = document.getElementById("wordInput");
-  const clearBtn = document.getElementById("clear-btn");
-  const randomBtn = document.getElementById("random-btn");
-  const generateBtn = document.getElementById("generate-btn");
-  const copyBtn = document.getElementById("copy-btn");
-  const filterInput = document.getElementById("filter-input");
-  const charCount = document.getElementById("char-count");
-  const resultsCard = document.getElementById("results-card");
-  const resultsSummary = document.getElementById("results-summary");
-  const anagramsGrid = document.getElementById("anagrams-grid");
-  const loadingContainer = document.getElementById("loading-container");
-  const themeToggle = document.getElementById("theme-toggle");
-  const currentYearSpan = document.getElementById("current-year");
-
-  // Set current year
-  currentYearSpan.textContent = new Date().getFullYear();
-
-  // Check for saved theme preference
-  if (localStorage.getItem("theme") === "dark") {
-    document.body.classList.add("dark-theme");
-  }
-
-  // Theme toggle functionality
-  themeToggle.addEventListener("click", () => {
-    document.body.classList.toggle("dark-theme");
-
-    // Save theme preference
-    if (document.body.classList.contains("dark-theme")) {
-      localStorage.setItem("theme", "dark");
-    } else {
-      localStorage.setItem("theme", "light");
-    }
-  });
-
-  // Update character count
-  wordInput.addEventListener("input", () => {
-    const count = wordInput.value.length;
-    charCount.textContent = `${count}/8`;
-
-    // Add warning color if approaching limit
-    if (count >= 6) {
-      charCount.style.color = "var(--warning)";
-    } else {
-      charCount.style.color = "var(--text-light)";
-    }
-  });
-
-  // Clear input
-  clearBtn.addEventListener("click", () => {
-    wordInput.value = "";
-    charCount.textContent = "0/8";
-    charCount.style.color = "var(--text-light)";
-    wordInput.focus();
-  });
-
-  // Random word
-  randomBtn.addEventListener("click", () => {
-    const randomWords = [
-      "roma",
-      "amore",
-      "cane",
-      "arte",
-      "sole",
-      "mare",
-      "vita",
-      "casa",
-    ];
-    const randomWord =
-      randomWords[Math.floor(Math.random() * randomWords.length)];
-    wordInput.value = randomWord;
-    charCount.textContent = `${randomWord.length}/8`;
-    charCount.style.color =
-      randomWord.length >= 6 ? "var(--warning)" : "var(--text-light)";
-    wordInput.focus();
-  });
-
-  // Form submission
-  anagramForm.addEventListener("submit", (e) => {
-    e.preventDefault();
-
-    const word = wordInput.value.trim().toLowerCase();
-
-    if (!word) {
-      showError("Inserisci una parola per generare gli anagrammi");
-      return;
-    }
-
-    if (word.length > 8) {
-      showError("Per prestazioni ottimali, usa parole con massimo 8 caratteri");
-      return;
-    }
-
-    // Show loading state
-    loadingContainer.style.display = "flex";
-    anagramsGrid.innerHTML = "";
-    resultsSummary.innerHTML = "";
-
-    // Use setTimeout to allow the loading spinner to render
-    setTimeout(() => {
-      generateAnagrams(word);
-    }, 100);
-  });
-
-  // Filter anagrams
-  filterInput.addEventListener("input", () => {
-    const filterText = filterInput.value.trim().toLowerCase();
-    const anagramItems = document.querySelectorAll(".anagram-item");
-
-    anagramItems.forEach((item) => {
-      const anagramText = item.textContent.toLowerCase();
-      if (anagramText.includes(filterText)) {
-        item.style.display = "block";
-      } else {
-        item.style.display = "none";
-      }
-    });
-
-    // Update visible count
-    const visibleCount = Array.from(anagramItems).filter(
-      (item) => item.style.display !== "none"
-    ).length;
-    updateSummary(visibleCount, anagramItems.length);
-  });
-
-  // Copy all anagrams
-  copyBtn.addEventListener("click", () => {
-    const anagramItems = document.querySelectorAll(".anagram-item");
-    if (anagramItems.length === 0) return;
-
-    const anagramTexts = Array.from(anagramItems).map(
-      (item) => item.textContent
-    );
-    const textToCopy = anagramTexts.join(", ");
-
-    // Create a temporary textarea to copy the text
-    const textarea = document.createElement("textarea");
-    textarea.value = textToCopy;
-    document.body.appendChild(textarea);
-    textarea.select();
-    document.execCommand("copy");
-    document.body.removeChild(textarea);
-
-    // Show success message
-    const originalIcon = copyBtn.innerHTML;
-    copyBtn.innerHTML = `
-      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="20 6 9 17 4 12"></polyline>
-      </svg>
-    `;
-
-    setTimeout(() => {
-      copyBtn.innerHTML = originalIcon;
-    }, 2000);
-  });
-
-  // Generate anagrams function
-  function generateAnagrams(word) {
-    // For longer words, use a more efficient algorithm
-    let anagrams;
-
-    if (word.length <= 8) {
-      anagrams = generateAllAnagrams(word);
-    } else {
-      // For longer words, limit the number of anagrams
-      anagrams = generateLimitedAnagrams(word, 1000);
-    }
-
-    // Remove duplicates
-    anagrams = [...new Set(anagrams)];
-
-    // Hide loading state
-    loadingContainer.style.display = "none";
-
-    // Display results
-    displayResults(word, anagrams);
-  }
-
-  // Generate all possible anagrams (recursive)
-  function generateAllAnagrams(word) {
-    if (word.length <= 1) return [word];
-
-    const anagrams = [];
-
-    for (let i = 0; i < word.length; i++) {
-      const char = word[i];
-      const remainingChars = word.slice(0, i) + word.slice(i + 1);
-
-      for (const subAnagram of generateAllAnagrams(remainingChars)) {
-        anagrams.push(char + subAnagram);
-      }
-    }
-
-    return anagrams;
-  }
-
-  // Generate limited number of anagrams for longer words
-  function generateLimitedAnagrams(word, limit) {
-    const anagrams = new Set();
-    const chars = word.split("");
-
-    for (let i = 0; i < limit; i++) {
-      // Shuffle the characters
-      shuffleArray(chars);
-      anagrams.add(chars.join(""));
-
-      if (anagrams.size >= limit) break;
-    }
-
-    return [...anagrams];
-  }
-
-  // Fisher-Yates shuffle algorithm
-  function shuffleArray(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
-    }
-    return array;
-  }
-
-  // Display results
-  function displayResults(word, anagrams) {
-    // Clear previous results
-    anagramsGrid.innerHTML = "";
-
-    // Update summary
-    updateSummary(anagrams.length, anagrams.length);
-
-    // Create anagram items with staggered animation
-    anagrams.forEach((anagram, index) => {
-      const anagramItem = document.createElement("div");
-      anagramItem.className = "anagram-item";
-      anagramItem.textContent = anagram;
-      anagramItem.style.opacity = "0";
-      anagramItem.style.transform = "translateY(10px)";
-
-      // Add click to copy functionality
-      anagramItem.addEventListener("click", () => {
-        navigator.clipboard.writeText(anagram).then(() => {
-          anagramItem.classList.add("highlight");
-          setTimeout(() => {
-            anagramItem.classList.remove("highlight");
-          }, 1500);
-        });
-      });
-
-      anagramsGrid.appendChild(anagramItem);
-
-      // Staggered animation (limit to improve performance)
-      setTimeout(() => {
-        anagramItem.style.transition = "opacity 0.3s ease, transform 0.3s ease";
-        anagramItem.style.opacity = "1";
-        anagramItem.style.transform = "translateY(0)";
-      }, Math.min(index, 100) * 10);
-    });
-
-    // Reset filter
-    filterInput.value = "";
-  }
-
-  // Update summary text
-  function updateSummary(visibleCount, totalCount) {
-    resultsSummary.innerHTML = `
-      <div class="summary-content">
-        <strong>${visibleCount}</strong> anagrammi ${
-      visibleCount !== totalCount ? `(su ${totalCount} totali)` : ""
-    } 
-        ${visibleCount === 1 ? "trovato" : "trovati"}
-      </div>
-    `;
-  }
-
-  // Show error message
-  function showError(message) {
-    resultsSummary.innerHTML = `
-      <div class="error-message">
-        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="12" r="10"></circle>
-          <line x1="12" y1="8" x2="12" y2="12"></line>
-          <line x1="12" y1="16" x2="12.01" y2="16"></line>
-        </svg>
-        <span>${message}</span>
-      </div>
-    `;
-  }
-
-  // Add keyboard support
-  wordInput.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      generateBtn.click();
-    }
-  });
-
-  // Add CSS for error message
-  const style = document.createElement("style");
-  style.textContent = `
-    .error-message {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      color: var(--error);
-      padding: 10px;
-      background-color: rgba(239, 68, 68, 0.1);
-      border-radius: var(--radius);
-    }
-    
-    .summary-content {
-      text-align: center;
-    }
-  `;
-  document.head.appendChild(style);
-});
-
+// Wait for DOM to be fully loaded
 document.addEventListener("DOMContentLoaded", () => {
   // Set current year
   document.getElementById("current-year").textContent =
@@ -367,14 +51,14 @@ document.addEventListener("DOMContentLoaded", () => {
   createEasterEggs();
 
   // Calculate Easter date
-  const dataCorrente = new Date();
-  let annoCorrente = dataCorrente.getFullYear();
-  let pasquaDate = calculateEasterDate(annoCorrente);
+  const currentDate = new Date();
+  let currentYear = currentDate.getFullYear();
+  let easterDate = calculateEasterDate(currentYear);
 
   // If Easter has already passed this year, calculate for next year
-  if (dataCorrente >= pasquaDate) {
-    annoCorrente++;
-    pasquaDate = calculateEasterDate(annoCorrente);
+  if (currentDate > easterDate) {
+    currentYear++;
+    easterDate = calculateEasterDate(currentYear);
   }
 
   // Format and display Easter date
@@ -385,55 +69,171 @@ document.addEventListener("DOMContentLoaded", () => {
     day: "numeric",
   };
   document.getElementById("easter-date").textContent =
-    pasquaDate.toLocaleDateString("it-IT", options);
+    easterDate.toLocaleDateString("it-IT", options);
 
   // Calculate Pasquetta (Easter Monday)
-  const pasquettaDate = new Date(pasquaDate);
-  pasquettaDate.setDate(pasquaDate.getDate() + 1);
+  const pasquettaDate = new Date(easterDate);
+  pasquettaDate.setDate(pasquettaDate.getDate() + 1);
 
-  // Set countdown target
-  const countDownDate = pasquaDate.getTime();
+  // Format and display Pasquetta date
+  document.getElementById("pasquetta-date").textContent =
+    pasquettaDate.toLocaleDateString("it-IT", options);
+
+  // Set countdown targets
+  const easterCountDownDate = easterDate.getTime();
   const pasquettaCountDownDate = pasquettaDate.getTime();
 
   // Check if it's Easter day
   const isEasterDay =
-    dataCorrente.getDate() === pasquaDate.getDate() &&
-    dataCorrente.getMonth() === pasquaDate.getMonth() &&
-    dataCorrente.getFullYear() === pasquaDate.getFullYear();
+    currentDate.getDate() === easterDate.getDate() &&
+    currentDate.getMonth() === easterDate.getMonth() &&
+    currentDate.getFullYear() === easterDate.getFullYear();
 
-  // If it's Easter day, show celebration message
+  // Check if it's Easter Monday (Pasquetta)
+  const isPasquettaDay =
+    currentDate.getDate() === pasquettaDate.getDate() &&
+    currentDate.getMonth() === pasquettaDate.getMonth() &&
+    currentDate.getFullYear() === pasquettaDate.getFullYear();
+
+  // If it's Easter day, show celebration message with "Happy Easter"
   if (isEasterDay) {
+    const celebrationTitle = document.getElementById("celebration-title");
+    celebrationTitle.textContent = "Happy Easter!";
+    celebrationTitle.classList.add("happy-easter");
+
     document.getElementById("celebration-message").style.display = "block";
+    document.getElementById("countdown-container").style.display = "none";
     document.body.classList.add("celebrating");
+
+    // Update Pasquetta countdown to show "tomorrow"
+    document.getElementById("pasquetta-countdown-container").style.display =
+      "flex";
+    document.getElementById("pasquetta-days").textContent = "01";
+    document.getElementById("pasquetta-hours").textContent = "00";
+    document.getElementById("pasquetta-minutes").textContent = "00";
+    document.getElementById("pasquetta-seconds").textContent = "00";
   }
 
-  // Update countdown every second
-  const timerInterval = setInterval(updateCountdown, 1000);
-  updateCountdown(); // Initial call to avoid delay
+  // If it's Pasquetta day, show celebration message with "Buona Pasquetta"
+  else if (isPasquettaDay) {
+    const celebrationTitle = document.getElementById(
+      "pasquetta-celebration-title"
+    );
+    celebrationTitle.textContent = "Buona Pasquetta!";
+    celebrationTitle.classList.add("buona-pasquetta");
 
-  // Celebration button
+    document.getElementById("pasquetta-celebration-text").textContent =
+      "Oggi è il giorno perfetto per un picnic all'aperto con amici e familiari!";
+    document.getElementById("pasquetta-celebration-message").style.display =
+      "block";
+    document.getElementById("pasquetta-countdown-container").style.display =
+      "none";
+    document.body.classList.add("celebrating");
+
+    // Also update Easter section if Easter has passed
+    if (currentDate > easterDate) {
+      document.getElementById("celebration-message").style.display = "block";
+      document.getElementById("countdown-container").style.display = "none";
+      document.getElementById("celebration-title").textContent =
+        "La Pasqua è passata!";
+    }
+  }
+
+  // Update countdowns every second
+  const timerInterval = setInterval(updateCountdowns, 1000);
+  updateCountdowns(); // Initial call to avoid delay
+
+  // Celebration buttons
   const celebrateBtn = document.getElementById("celebrate-btn");
   if (celebrateBtn) {
     celebrateBtn.addEventListener("click", celebrate);
   }
 
-  // Function to update countdown
-  function updateCountdown() {
+  const pasquettaCelebrateBtn = document.getElementById(
+    "pasquetta-celebrate-btn"
+  );
+  if (pasquettaCelebrateBtn) {
+    pasquettaCelebrateBtn.addEventListener("click", celebrate);
+  }
+
+  // Function to update both countdowns
+  function updateCountdowns() {
     const now = new Date().getTime();
-    const distance = countDownDate - now;
+
+    // Easter countdown
+    const easterDistance = easterCountDownDate - now;
+
+    // Pasquetta countdown
     const pasquettaDistance = pasquettaCountDownDate - now;
 
-    // If countdown is finished
-    if (distance < 0) {
-      clearInterval(timerInterval);
+    // Update Easter countdown
+    if (easterDistance > 0 && !isEasterDay) {
+      updateCountdownDisplay(
+        easterDistance,
+        "days",
+        "hours",
+        "minutes",
+        "seconds"
+      );
+    } else if (!isEasterDay && !isPasquettaDay) {
       document.getElementById("days").textContent = "00";
       document.getElementById("hours").textContent = "00";
       document.getElementById("minutes").textContent = "00";
       document.getElementById("seconds").textContent = "00";
-      document.getElementById("celebration-message").style.display = "block";
-      return;
+
+      if (easterDistance <= 0) {
+        document.getElementById("celebration-message").style.display = "block";
+      }
     }
 
+    // Update Pasquetta countdown
+    if (pasquettaDistance > 0 && !isPasquettaDay) {
+      updateCountdownDisplay(
+        pasquettaDistance,
+        "pasquetta-days",
+        "pasquetta-hours",
+        "pasquetta-minutes",
+        "pasquetta-seconds"
+      );
+    } else if (!isPasquettaDay) {
+      document.getElementById("pasquetta-days").textContent = "00";
+      document.getElementById("pasquetta-hours").textContent = "00";
+      document.getElementById("pasquetta-minutes").textContent = "00";
+      document.getElementById("pasquetta-seconds").textContent = "00";
+
+      if (pasquettaDistance <= 0) {
+        document.getElementById("pasquetta-celebration-message").style.display =
+          "block";
+      }
+    }
+
+    // Add pulse animation to seconds
+    const secondsElement = document.getElementById("seconds");
+    if (secondsElement && secondsElement.parentElement) {
+      secondsElement.parentElement.classList.add("pulse");
+      setTimeout(() => {
+        secondsElement.parentElement.classList.remove("pulse");
+      }, 900);
+    }
+
+    const pasquettaSecondsElement =
+      document.getElementById("pasquetta-seconds");
+    if (pasquettaSecondsElement && pasquettaSecondsElement.parentElement) {
+      pasquettaSecondsElement.parentElement.classList.add("pulse");
+      setTimeout(() => {
+        pasquettaSecondsElement.parentElement.classList.remove("pulse");
+      }, 900);
+    }
+  }
+
+  // Helper function to update countdown display
+  function updateCountdownDisplay(
+    distance,
+    daysId,
+    hoursId,
+    minutesId,
+    secondsId
+  ) {
     // Calculate time units
     const days = Math.floor(distance / (1000 * 60 * 60 * 24));
     const hours = Math.floor(
@@ -443,28 +243,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
     // Update DOM
-    document.getElementById("days").textContent = formatTime(days);
-    document.getElementById("hours").textContent = formatTime(hours);
-    document.getElementById("minutes").textContent = formatTime(minutes);
-    document.getElementById("seconds").textContent = formatTime(seconds);
-
-    // Add pulse animation to seconds
-    const secondsElement = document.getElementById("seconds");
-    secondsElement.parentElement.classList.add("pulse");
-    setTimeout(() => {
-      secondsElement.parentElement.classList.remove("pulse");
-    }, 900);
-
-    // Update Pasquetta countdown
-    if (pasquettaDistance > 0) {
-      const pasquettaDays = Math.floor(
-        pasquettaDistance / (1000 * 60 * 60 * 24)
-      );
-      document.getElementById("pasquetta-days").textContent = pasquettaDays;
-    } else {
-      document.getElementById("pasquetta-countdown").textContent =
-        "Buona Pasquetta!";
-    }
+    document.getElementById(daysId).textContent = formatTime(days);
+    document.getElementById(hoursId).textContent = formatTime(hours);
+    document.getElementById(minutesId).textContent = formatTime(minutes);
+    document.getElementById(secondsId).textContent = formatTime(seconds);
   }
 
   // Format time units to always have two digits
@@ -878,141 +660,3 @@ document.head.insertAdjacentHTML(
   </style>
 `
 );
-
-document.addEventListener("DOMContentLoaded", () => {
-  // DOM Elements
-  const inputField = document.getElementById("input");
-  const clearBtn = document.getElementById("clear-btn");
-  const invertBtn = document.getElementById("invert-btn");
-  const exampleBtn = document.getElementById("example-btn");
-  const copyBtn = document.getElementById("copy-btn");
-  const outputDiv = document.getElementById("output");
-  const charCount = document.getElementById("char-count");
-  const themeToggle = document.getElementById("theme-toggle");
-  const currentYearSpan = document.getElementById("current-year");
-
-  // Set current year
-  currentYearSpan.textContent = new Date().getFullYear();
-
-  // Check for saved theme preference
-  if (localStorage.getItem("theme") === "dark") {
-    document.body.classList.add("dark-theme");
-  }
-
-  // Theme toggle functionality
-  themeToggle.addEventListener("click", () => {
-    document.body.classList.toggle("dark-theme");
-
-    // Save theme preference
-    if (document.body.classList.contains("dark-theme")) {
-      localStorage.setItem("theme", "dark");
-    } else {
-      localStorage.setItem("theme", "light");
-    }
-  });
-
-  // Update character count
-  inputField.addEventListener("input", () => {
-    const count = inputField.value.length;
-    charCount.textContent = count;
-
-    // Add warning color if approaching limit
-    if (count > 100) {
-      charCount.style.color = "var(--warning)";
-    } else {
-      charCount.style.color = "var(--text-light)";
-    }
-  });
-
-  // Clear input
-  clearBtn.addEventListener("click", () => {
-    inputField.value = "";
-    charCount.textContent = "0";
-    charCount.style.color = "var(--text-light)";
-    outputDiv.innerHTML =
-      '<div class="placeholder-text">Il risultato apparirà qui dopo l\'inversione</div>';
-    inputField.focus();
-  });
-
-  // Example button
-  exampleBtn.addEventListener("click", () => {
-    const examples = [
-      "ciao mondo",
-      "buongiorno italia",
-      "la vita è bella",
-      "il tempo vola",
-      "programmare è divertente",
-    ];
-    const randomExample = examples[Math.floor(Math.random() * examples.length)];
-    inputField.value = randomExample;
-    charCount.textContent = randomExample.length;
-    charCount.style.color = "var(--text-light)";
-    invertiFrase();
-    inputField.focus();
-  });
-
-  // Invert button
-  invertBtn.addEventListener("click", invertiFrase);
-
-  // Copy button
-  copyBtn.addEventListener("click", () => {
-    const resultText = outputDiv.textContent;
-    if (resultText === "Il risultato apparirà qui dopo l'inversione") {
-      return;
-    }
-
-    // Create a temporary textarea to copy the text
-    const textarea = document.createElement("textarea");
-    textarea.value = resultText;
-    document.body.appendChild(textarea);
-    textarea.select();
-    document.execCommand("copy");
-    document.body.removeChild(textarea);
-
-    // Show success message
-    const originalIcon = copyBtn.innerHTML;
-    copyBtn.innerHTML = `
-      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="20 6 9 17 4 12"></polyline>
-      </svg>
-    `;
-
-    setTimeout(() => {
-      copyBtn.innerHTML = originalIcon;
-    }, 2000);
-  });
-
-  // Add keyboard support
-  inputField.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") {
-      invertiFrase();
-    }
-  });
-
-  // Main function to invert the phrase
-  function invertiFrase() {
-    const input = inputField.value.trim();
-
-    if (input === "") {
-      outputDiv.innerHTML = `<p class="error-message">Inserisci una frase valida</p>`;
-      return;
-    }
-
-    const output = input
-      .split(" ")
-      .map((word) => word.split("").reverse().join(""))
-      .join(" ");
-
-    // Create a more visually appealing output
-    outputDiv.innerHTML = `
-      <div class="result-original">Frase originale: <strong>"${input}"</strong></div>
-      <div class="result-inverted">Frase invertita: <strong>"${output}"</strong></div>
-    `;
-
-    // Add highlight animation
-    outputDiv.classList.add("highlight");
-    setTimeout(() => {
-      outputDiv.classList.remove("highlight");
-    }, 1500);
-  }
-});

@@ -3,6 +3,8 @@
   --primary-light: #ffd3e1;
   --primary-dark: #e77ea8;
   --secondary: #a5d8ff;
+  --secondary-light: #d1ebff;
+  --secondary-dark: #7ac5ff;
   --accent: #ffda85;
   --background: #f9f7f7;
   --card: #ffffff;
@@ -25,6 +27,8 @@
   --primary-light: #ffa6c7;
   --primary-dark: #e06a96;
   --secondary: #7ac5ff;
+  --secondary-light: #a6d8ff;
+  --secondary-dark: #5ab0ff;
   --accent: #ffc857;
   --background: #1a1a2e;
   --card: #2a2a40;
@@ -198,7 +202,8 @@ main {
   margin-bottom: 30px;
 }
 
-.countdown-header h2 {
+.countdown-header h2,
+.countdown-header h3 {
   font-family: "Playfair Display", serif;
   color: var(--primary-dark);
   font-size: 2rem;
@@ -276,6 +281,30 @@ main {
 .celebrate-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 15px rgba(248, 165, 194, 0.4);
+}
+
+/* Special styling for Happy Easter message */
+.happy-easter {
+  font-size: 3rem !important;
+  background: linear-gradient(135deg, #ffda85, #f8a5c2, #a5d8ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent !important;
+  text-shadow: 0 2px 10px rgba(248, 165, 194, 0.3);
+  margin-bottom: 15px !important;
+  font-weight: 900;
+}
+
+/* Special styling for Buona Pasquetta message */
+.buona-pasquetta {
+  font-size: 3rem !important;
+  background: linear-gradient(135deg, #a5d8ff, #c4f5c4, #ffda85);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent !important;
+  text-shadow: 0 2px 10px rgba(165, 216, 255, 0.3);
+  margin-bottom: 15px !important;
+  font-weight: 900;
 }
 
 /* Easter Image Section */
@@ -373,11 +402,31 @@ main {
   box-shadow: 0 8px 30px var(--shadow);
   padding: 30px;
   text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.pasquetta-section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background: linear-gradient(
+    90deg,
+    var(--secondary),
+    var(--accent),
+    var(--primary),
+    var(--secondary)
+  );
+  background-size: 300% 100%;
+  animation: gradient-shift 15s ease infinite;
 }
 
 .pasquetta-section h2 {
   font-family: "Playfair Display", serif;
-  color: var(--secondary);
+  color: var(--secondary-dark);
   font-size: 2rem;
   margin-bottom: 15px;
 }
@@ -390,18 +439,34 @@ main {
   margin-right: auto;
 }
 
-.pasquetta-countdown {
-  background-color: rgba(165, 216, 255, 0.1);
-  border-radius: var(--radius);
-  padding: 15px;
-  display: inline-block;
+/* Pasquetta Countdown Styling */
+.pasquetta-header h3 {
+  color: var(--secondary-dark);
 }
 
-.pasquetta-days {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--secondary);
-  margin: 0 10px;
+.pasquetta-box {
+  background: linear-gradient(135deg, var(--secondary-light), var(--secondary));
+  box-shadow: 0 4px 15px rgba(165, 216, 255, 0.2);
+}
+
+.pasquetta-box:hover {
+  box-shadow: 0 8px 25px rgba(165, 216, 255, 0.3);
+}
+
+#pasquetta-celebration-message {
+  background-color: rgba(165, 216, 255, 0.1);
+}
+
+#pasquetta-celebration-title {
+  color: var(--secondary-dark);
+}
+
+#pasquetta-celebrate-btn {
+  background: linear-gradient(135deg, var(--secondary), var(--secondary-dark));
+}
+
+#pasquetta-celebrate-btn:hover {
+  box-shadow: 0 6px 15px rgba(165, 216, 255, 0.4);
 }
 
 /* Footer */
@@ -553,6 +618,11 @@ footer {
     flex-direction: column;
     text-align: center;
   }
+
+  .happy-easter,
+  .buona-pasquetta {
+    font-size: 2.5rem !important;
+  }
 }
 
 @media (max-width: 480px) {
@@ -575,5 +645,10 @@ footer {
 
   .tradition-icon {
     font-size: 2.5rem;
+  }
+
+  .happy-easter,
+  .buona-pasquetta {
+    font-size: 2rem !important;
   }
 }
