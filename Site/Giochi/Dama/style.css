@@ -791,6 +791,6 @@ h1 {
   animation-delay: 0.2s;
 }
 
-.alert-content .victory-content .victory-message p {
+.alert-content .victory-content .victory-message h3 {
   color: #333;
 }
