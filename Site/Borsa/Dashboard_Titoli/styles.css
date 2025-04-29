@@ -786,6 +786,6 @@ footer a:hover {
 label,
 #start-date,
 #end-date,
-#apply-data-range {
+#apply-date-range {
   display: none;
 }
