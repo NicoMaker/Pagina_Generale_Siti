@@ -66,6 +66,7 @@ I progetti sono organizzati nelle seguenti categorie principali:
 - **🐉 Pokemon**: Applicazioni sui Pokemon
 - **🎲 Random**: Generatori casuali
 - **❤️ Salute**: Calcolatori per il benessere
+- **📜 Storia: Progetti e applicazioni per esplorare eventi e personaggi storici**
 - **🌡️ Temperatura**: Convertitori di temperatura
 
 **[Visualizza le Categorie dei Siti con i vari codici](Site/Readme.md)**
