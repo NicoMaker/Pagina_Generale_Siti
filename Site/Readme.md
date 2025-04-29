@@ -15,5 +15,5 @@
 - **[Pokemon](https://github.com/NicoMaker/PokeApi)** [1 Sito]
 - **[Random](Random/Readme.md)** [12 Siti]
 - **[Salute](Salute/Readme.md)** [1 Sito]
-- **[Storia](Storia/Readme.md)**
+- **[Storia](Storia/Readme.md)** [1 Sito]
 - **[Temperatura](https://github.com/NicoMaker/Egypt)** [1 Sito]
