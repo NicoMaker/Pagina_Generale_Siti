@@ -293,6 +293,12 @@
         "link": "Site/Salute/Calcolo_peso_altezza_ideale/index.html"
       }
     ],
+    "Storia": [
+      {
+        "name": "Antico Egitto",
+        "link": "Site/Storia/Antico_Egitto/index.html"
+      }
+    ],
     "Temperatura": [
       {
         "name": "Conversioni Temperatura",

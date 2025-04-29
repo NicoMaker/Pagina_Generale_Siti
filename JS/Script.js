@@ -69,6 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
     Pokemon: "fa-dragon",
     Random: "fa-random",
     Salute: "fa-heartbeat",
+    Storia : "fa-history",
     Temperatura: "fa-temperature-high",
   };
 

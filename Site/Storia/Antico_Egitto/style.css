@@ -1,0 +1,1286 @@
+/* Reset e stile base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --color-sand: #e2d2a2;
+  --color-sand-light: #f5ecd6;
+  --color-sand-dark: #c4b080;
+  --color-blue: #1c4b82;
+  --color-blue-dark: #0f2a4a;
+  --color-red: #a52a2a;
+  --color-gold: white;
+  --color-black: #222;
+  --color-white: #fff;
+  --color-papyrus: #f5e7c1;
+  --font-heading: "Cinzel", serif;
+  --font-body: "Raleway", sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--color-black);
+  background-color: var(--color-sand-light);
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: var(--color-blue-dark);
+}
+
+a {
+  text-decoration: none;
+  color: var(--color-blue);
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: var(--color-gold);
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+section {
+  padding: 5rem 2rem;
+  position: relative;
+}
+
+.section-title {
+  text-align: center;
+  margin-bottom: 3rem;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.section-title::after {
+  content: "";
+  display: block;
+  width: 100px;
+  height: 3px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--color-gold),
+    transparent
+  );
+  margin: 1rem auto;
+}
+
+/* Effetto particelle di sabbia */
+.sand-particles {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1000;
+  opacity: 0.3;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><circle cx="10" cy="10" r="1" fill="%23d4af37" opacity="0.3"/><circle cx="30" cy="40" r="0.8" fill="%23d4af37" opacity="0.2"/><circle cx="50" cy="20" r="1.2" fill="%23d4af37" opacity="0.4"/><circle cx="70" cy="70" r="0.6" fill="%23d4af37" opacity="0.3"/><circle cx="90" cy="30" r="1" fill="%23d4af37" opacity="0.2"/><circle cx="20" cy="80" r="0.7" fill="%23d4af37" opacity="0.4"/><circle cx="60" cy="50" r="1.1" fill="%23d4af37" opacity="0.3"/><circle cx="80" cy="10" r="0.9" fill="%23d4af37" opacity="0.2"/></svg>');
+  animation: sandDrift 60s linear infinite;
+}
+
+@keyframes sandDrift {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 1000px 1000px;
+  }
+}
+
+/* Header e navigazione */
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: rgba(245, 236, 214, 0.95);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  transition: all 0.3s ease;
+}
+
+header.scrolled {
+  padding: 0.5rem 2rem;
+  background-color: rgba(245, 236, 214, 0.98);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.ankh-symbol {
+  height: 40px;
+  margin-right: 1rem;
+}
+
+.logo h1 {
+  font-size: 1.5rem;
+  margin: 0;
+  color: var(--color-blue-dark);
+}
+
+.nav-links {
+  display: flex;
+  list-style: none;
+}
+
+.nav-links li {
+  margin-left: 2rem;
+}
+
+.nav-links a {
+  font-family: var(--font-heading);
+  font-weight: 400;
+  color: var(--color-blue-dark);
+  position: relative;
+}
+
+.nav-links a::after {
+  content: "";
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: var(--color-gold);
+  transition: width 0.3s ease;
+}
+
+.nav-links a:hover::after {
+  width: 100%;
+}
+
+.menu-toggle {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+.bar {
+  width: 25px;
+  height: 3px;
+  background-color: var(--color-blue-dark);
+  margin: 3px 0;
+  transition: 0.4s;
+}
+
+/* Hero Section */
+.hero {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 5%;
+  position: relative;
+  overflow: hidden;
+  margin-top: 70px;
+  background-image: url("https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/All_Gizah_Pyramids.jpg/1280px-All_Gizah_Pyramids.jpg");
+  background-size: cover;
+  background-position: center;
+  text-align: center;
+}
+
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.5),
+    rgba(0, 0, 0, 0.7)
+  );
+  z-index: 1;
+}
+
+.hero-content {
+  max-width: 800px;
+  z-index: 2;
+  color: var(--color-white);
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+}
+
+.hero-content h2 {
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+  color: var(--color-gold);
+}
+
+.hero-content h3 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  color: var(--color-white);
+}
+
+.hero-content p {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+  color: var(--color-white);
+}
+
+.cta-button {
+  display: inline-block;
+  padding: 1rem 2rem;
+  background-color: var(--color-gold);
+  color: var(--color-black);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  border-radius: 3px;
+  transition: all 0.3s ease;
+  border: 2px solid var(--color-gold);
+}
+
+.cta-button:hover {
+  background-color: transparent;
+  color: var(--color-gold);
+}
+
+/* Sezione Introduzione */
+.intro {
+  background-color: var(--color-white);
+  padding: 6rem 2rem;
+}
+
+.papyrus-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 3rem;
+  background-color: var(--color-papyrus);
+  border: 1px solid var(--color-sand-dark);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  position: relative;
+  text-align: center;
+}
+
+.papyrus-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path d="M0,0 L100,0 L100,100 L0,100 Z" fill="%23c4b080" fill-opacity="0.03"/><path d="M0,0 L100,0 L100,100 L0,100 Z" stroke="%23c4b080" stroke-width="0.5" stroke-opacity="0.1"/></svg>');
+  opacity: 0.5;
+  z-index: 0;
+}
+
+.separator {
+  width: 100px;
+  height: 2px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--color-gold),
+    transparent
+  );
+  margin: 1.5rem auto;
+}
+
+.papyrus-container p {
+  position: relative;
+  z-index: 1;
+  margin-bottom: 1rem;
+}
+
+/* Timeline */
+.timeline-section {
+  background-color: var(--color-sand-light);
+  position: relative;
+}
+
+.timeline-section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><path d="M0,0 L200,0 L200,200 L0,200 Z" fill="%23d4af37" fill-opacity="0.02"/></svg>');
+  opacity: 0.3;
+  z-index: 0;
+}
+
+.timeline {
+  max-width: 1000px;
+  margin: 0 auto;
+  position: relative;
+  padding: 2rem 0;
+}
+
+.timeline::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    var(--color-gold),
+    var(--color-gold),
+    transparent
+  );
+}
+
+.timeline-item {
+  width: 100%;
+  margin-bottom: 4rem;
+  position: relative;
+}
+
+.timeline-item:nth-child(odd) {
+  padding-right: calc(50% + 30px);
+  text-align: right;
+}
+
+.timeline-item:nth-child(even) {
+  padding-left: calc(50% + 30px);
+  text-align: left;
+}
+
+.timeline-dot {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: var(--color-gold);
+  border: 4px solid var(--color-sand-light);
+  z-index: 1;
+}
+
+.timeline-date {
+  position: absolute;
+  top: 0;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  color: var(--color-blue-dark);
+}
+
+.timeline-item:nth-child(odd) .timeline-date {
+  right: 55%;
+}
+
+.timeline-item:nth-child(even) .timeline-date {
+  left: 55%;
+}
+
+.timeline-content {
+  background-color: var(--color-white);
+  padding: 1.5rem;
+  border-radius: 5px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.timeline-content::before {
+  content: "";
+  position: absolute;
+  top: 10px;
+  width: 0;
+  height: 0;
+  border-style: solid;
+}
+
+.timeline-item:nth-child(odd) .timeline-content::before {
+  right: -15px;
+  border-width: 10px 0 10px 15px;
+  border-color: transparent transparent transparent var(--color-white);
+}
+
+.timeline-item:nth-child(even) .timeline-content::before {
+  left: -15px;
+  border-width: 10px 15px 10px 0;
+  border-color: transparent var(--color-white) transparent transparent;
+}
+
+/* Faraoni Section */
+.faraoni-section {
+  background-color: var(--color-white);
+  position: relative;
+}
+
+.cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.card {
+  width: 280px;
+  background-color: var(--color-sand-light);
+  border-radius: 5px;
+  overflow: hidden;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+.card-image {
+  height: 200px;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.card-image::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, transparent 50%, rgba(0, 0, 0, 0.7));
+}
+
+.card-content {
+  padding: 1.5rem;
+}
+
+.card-content h3 {
+  color: var(--color-blue-dark);
+  margin-bottom: 0.5rem;
+}
+
+/* Divinità Section */
+.divinita-section {
+  background-color: var(--color-sand-light);
+  position: relative;
+}
+
+.gods-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.god-card {
+  width: 180px;
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.god-card:hover {
+  transform: translateY(-10px);
+}
+
+.god-image {
+  width: 120px;
+  height: 120px;
+  margin: 0 auto 1rem;
+  object-fit: contain;
+  filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.2));
+}
+
+.god-card h3 {
+  color: var(--color-blue-dark);
+  margin-bottom: 0.5rem;
+}
+
+/* Monumenti Section */
+.monumenti-section {
+  background-color: var(--color-white);
+  position: relative;
+}
+
+.monuments-slider {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.slider-container {
+  position: relative;
+  overflow: hidden;
+  border-radius: 10px;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+  height: 500px;
+}
+
+.slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+
+.slide.active {
+  opacity: 1;
+}
+
+.slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.slide-info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 2rem;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+  color: var(--color-white);
+}
+
+.slide-info h3 {
+  color: var(--color-gold);
+  margin-bottom: 0.5rem;
+}
+
+.slider-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1.5rem;
+}
+
+.prev-btn,
+.next-btn {
+  background-color: var(--color-blue);
+  color: var(--color-white);
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.3s ease;
+}
+
+.prev-btn:hover,
+.next-btn:hover {
+  background-color: var(--color-blue-dark);
+}
+
+.slider-dots {
+  display: flex;
+  margin: 0 1rem;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: var(--color-sand-dark);
+  margin: 0 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.dot.active {
+  background-color: var(--color-gold);
+}
+
+/* Galleria Section */
+.gallery-section {
+  background-color: var(--color-sand-light);
+  position: relative;
+}
+
+.gallery-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto 2rem;
+}
+
+.gallery-item {
+  position: relative;
+  height: 250px;
+  overflow: hidden;
+  border-radius: 5px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.gallery-item:hover img {
+  transform: scale(1.1);
+}
+
+.gallery-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 1rem;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+  color: var(--color-white);
+  transform: translateY(100%);
+  transition: transform 0.3s ease;
+}
+
+.gallery-item:hover .gallery-overlay {
+  transform: translateY(0);
+}
+
+.gallery-filter {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.filter-btn {
+  padding: 0.5rem 1.5rem;
+  background-color: var(--color-white);
+  border: 2px solid var(--color-blue);
+  color: var(--color-blue);
+  font-family: var(--font-heading);
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.filter-btn:hover,
+.filter-btn.active {
+  background-color: var(--color-blue);
+  color: var(--color-white);
+}
+
+/* Footer */
+footer {
+  background-color: var(--color-blue-dark);
+  color: var(--color-white);
+  padding: 4rem 2rem 1rem;
+}
+
+.footer-content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto 3rem;
+}
+
+.footer-logo {
+  display: flex;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.footer-logo h2 {
+  color: var(--color-gold);
+  margin: 0;
+}
+
+.footer-quote {
+  text-align: center;
+  max-width: 300px;
+}
+
+.arabic-text {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  color: var(--color-gold);
+}
+
+.translation {
+  font-style: italic;
+  color: var(--color-sand-light);
+}
+
+.footer-nav h3 {
+  color: var(--color-gold);
+  margin-bottom: 1rem;
+}
+
+.footer-nav ul {
+  list-style: none;
+}
+
+.footer-nav li {
+  margin-bottom: 0.5rem;
+}
+
+.footer-nav a {
+  color: var(--color-sand-light);
+}
+
+.footer-nav a:hover {
+  color: var(--color-gold);
+}
+
+.footer-bottom {
+  text-align: center;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Stili per testo arabo e traduzioni */
+.arabic-title {
+  font-family: var(--font-heading);
+  color: var(--color-gold);
+  margin-bottom: 0.5rem;
+}
+
+/* Animazioni e effetti */
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.reveal-on-scroll.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Media Queries */
+@media (max-width: 1024px) {
+  .hero-content {
+    max-width: 90%;
+  }
+
+  .timeline-item:nth-child(odd),
+  .timeline-item:nth-child(even) {
+    padding: 0 0 0 70px;
+    text-align: left;
+  }
+
+  .timeline::before {
+    left: 30px;
+  }
+
+  .timeline-dot {
+    left: 30px;
+  }
+
+  .timeline-item:nth-child(odd) .timeline-date,
+  .timeline-item:nth-child(even) .timeline-date {
+    left: 0;
+    top: -30px;
+    right: auto;
+  }
+
+  .timeline-item:nth-child(odd) .timeline-content::before {
+    right: auto;
+    left: -15px;
+    border-width: 10px 15px 10px 0;
+    border-color: transparent var(--color-white) transparent transparent;
+  }
+
+  .footer-content {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .footer-quote,
+  .footer-nav {
+    margin-top: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: flex;
+  }
+
+  .nav-links {
+    position: fixed;
+    top: 70px;
+    left: 0;
+    width: 100%;
+    flex-direction: column;
+    background-color: var(--color-sand-light);
+    padding: 1rem 0;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    transform: translateY(-150%);
+    transition: transform 0.3s ease;
+    z-index: 999;
+  }
+
+  .nav-links.active {
+    transform: translateY(0);
+  }
+
+  .nav-links li {
+    margin: 1rem 0;
+    text-align: center;
+  }
+
+  .hero-content h2 {
+    font-size: 2.5rem;
+  }
+
+  .hero-content h3 {
+    font-size: 1.5rem;
+  }
+
+  .section-title {
+    font-size: 1.8rem;
+  }
+
+  .gallery-container {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  }
+
+  .slider-container {
+    height: 400px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-content h2 {
+    font-size: 2rem;
+  }
+
+  .hero-content h3 {
+    font-size: 1.3rem;
+  }
+
+  .papyrus-container {
+    padding: 1.5rem;
+  }
+
+  .cards-container,
+  .gods-container {
+    gap: 1rem;
+  }
+
+  .card {
+    width: 100%;
+  }
+
+  .slider-container {
+    height: 350px;
+  }
+
+  .gallery-container {
+    grid-template-columns: 1fr;
+  }
+
+  .gallery-filter {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .filter-btn {
+    width: 80%;
+    margin-bottom: 0.5rem;
+  }
+}
+
+/* Modificare lo stile per le scritte arabe e italiane per migliorare la leggibilità */
+.arabic-title {
+  font-family: var(--font-heading);
+  color: var(--color-gold);
+  margin-bottom: 0.5rem;
+  font-size: 2.2rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  display: inline-block;
+}
+
+.translation {
+  font-style: italic;
+  color: var(--color-white);
+  font-size: 1.3rem;
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 0.3rem 0.8rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  display: inline-block;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+/* Aggiungere lo stesso sfondo a tutte le sezioni */
+section {
+  padding: 5rem 2rem;
+  position: relative;
+  background-image: url("https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/All_Gizah_Pyramids.jpg/1280px-All_Gizah_Pyramids.jpg");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 0;
+}
+
+/* Modificare i contenitori delle sezioni per garantire la leggibilità */
+.timeline-section,
+.faraoni-section,
+.divinita-section,
+.monumenti-section,
+.gallery-section,
+.intro {
+  color: var(--color-white);
+}
+
+.section-title {
+  position: relative;
+  z-index: 1;
+  color: var(--color-gold);
+}
+
+.timeline,
+.cards-container,
+.gods-container,
+.monuments-slider,
+.gallery-container,
+.papyrus-container {
+  position: relative;
+  z-index: 1;
+}
+
+/* Modificare lo stile della timeline per adattarsi al nuovo sfondo */
+.timeline::before {
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    var(--color-gold),
+    var(--color-gold),
+    transparent
+  );
+  z-index: 1;
+}
+
+.timeline-dot {
+  z-index: 2;
+  background-color: var(--color-gold);
+  border: 4px solid rgba(0, 0, 0, 0.5);
+}
+
+.timeline-date {
+  color: var(--color-gold);
+  background-color: rgba(0, 0, 0, 0.7);
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  z-index: 2;
+}
+
+.timeline-content {
+  background-color: rgba(0, 0, 0, 0.7);
+  color: var(--color-white);
+  border: 1px solid var(--color-gold);
+  z-index: 2;
+}
+
+.timeline-content h3 {
+  color: var(--color-gold);
+}
+
+.timeline-item:nth-child(odd) .timeline-content::before {
+  border-color: transparent transparent transparent rgba(0, 0, 0, 0.7);
+}
+
+.timeline-item:nth-child(even) .timeline-content::before {
+  border-color: transparent rgba(0, 0, 0, 0.7) transparent transparent;
+}
+
+/* Modificare lo stile delle card per adattarsi al nuovo sfondo */
+.card {
+  background-color: rgba(0, 0, 0, 0.7);
+  border: 1px solid var(--color-gold);
+}
+
+.card-content h3 {
+  color: var(--color-gold);
+}
+
+.card-content p {
+  color: var(--color-white);
+}
+
+/* Modificare lo stile delle divinità per adattarsi al nuovo sfondo */
+.god-card h3 {
+  color: var(--color-gold);
+}
+
+.god-card p {
+  color: var(--color-white);
+  background-color: rgba(0, 0, 0, 0.7);
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+}
+
+/* Modificare lo stile della galleria per adattarsi al nuovo sfondo */
+.filter-btn {
+  background-color: rgba(0, 0, 0, 0.7);
+  border: 2px solid var(--color-gold);
+  color: var(--color-gold);
+}
+
+.filter-btn:hover,
+.filter-btn.active {
+  background-color: var(--color-gold);
+  color: var(--color-black);
+}
+
+/* Modificare lo stile del papiro per adattarsi al nuovo sfondo */
+.papyrus-container {
+  background-color: rgba(0, 0, 0, 0.7);
+  border: 1px solid var(--color-gold);
+  color: var(--color-white);
+}
+
+.papyrus-container h2 {
+  color: var(--color-gold);
+}
+
+/* Modificare lo stile per le scritte arabe e italiane per migliorare la leggibilità */
+.arabic-title {
+  font-family: var(--font-heading);
+  color: var(--color-gold);
+  margin-bottom: 0.5rem;
+  font-size: 2.2rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  display: inline-block;
+}
+
+.translation {
+  font-style: italic;
+  color: var(--color-white);
+  font-size: 1.3rem;
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 0.3rem 0.8rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  display: inline-block;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+/* Aggiungere lo stesso sfondo a tutte le sezioni */
+section {
+  padding: 5rem 2rem;
+  position: relative;
+  background-image: url("https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/All_Gizah_Pyramids.jpg/1280px-All_Gizah_Pyramids.jpg");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 0;
+}
+
+/* Modificare i contenitori delle sezioni per garantire la leggibilità */
+.timeline-section,
+.faraoni-section,
+.divinita-section,
+.monumenti-section,
+.gallery-section,
+.intro {
+  color: var(--color-white);
+}
+
+.section-title {
+  position: relative;
+  z-index: 1;
+  color: var(--color-gold);
+}
+
+.timeline,
+.cards-container,
+.gods-container,
+.monuments-slider,
+.gallery-container,
+.papyrus-container {
+  position: relative;
+  z-index: 1;
+}
+
+/* Modificare lo stile della timeline per adattarsi al nuovo sfondo */
+.timeline::before {
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    var(--color-gold),
+    var(--color-gold),
+    transparent
+  );
+  z-index: 1;
+}
+
+.timeline-dot {
+  z-index: 2;
+  background-color: var(--color-gold);
+  border: 4px solid rgba(0, 0, 0, 0.5);
+}
+
+.timeline-date {
+  color: var(--color-gold);
+  background-color: rgba(0, 0, 0, 0.7);
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  z-index: 2;
+}
+
+.timeline-content {
+  background-color: rgba(0, 0, 0, 0.7);
+  color: var(--color-white);
+  border: 1px solid var(--color-gold);
+  z-index: 2;
+}
+
+.timeline-content h3 {
+  color: var(--color-gold);
+}
+
+.timeline-item:nth-child(odd) .timeline-content::before {
+  border-color: transparent transparent transparent rgba(0, 0, 0, 0.7);
+}
+
+.timeline-item:nth-child(even) .timeline-content::before {
+  border-color: transparent rgba(0, 0, 0, 0.7) transparent transparent;
+}
+
+/* Modificare lo stile delle card per adattarsi al nuovo sfondo */
+.card {
+  background-color: rgba(0, 0, 0, 0.7);
+  border: 1px solid var(--color-gold);
+}
+
+.card-content h3 {
+  color: var(--color-gold);
+}
+
+.card-content p {
+  color: var(--color-white);
+}
+
+/* Modificare lo stile delle divinità per adattarsi al nuovo sfondo */
+.god-card h3 {
+  color: var(--color-gold);
+}
+
+.god-card p {
+  color: var(--color-white);
+  background-color: rgba(0, 0, 0, 0.7);
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+}
+
+/* Modificare lo stile della galleria per adattarsi al nuovo sfondo */
+.filter-btn {
+  background-color: rgba(0, 0, 0, 0.7);
+  border: 2px solid var(--color-gold);
+  color: var(--color-gold);
+}
+
+.filter-btn:hover,
+.filter-btn.active {
+  background-color: var(--color-gold);
+  color: var(--color-black);
+}
+
+/* Modificare lo stile del papiro per adattarsi al nuovo sfondo */
+.papyrus-container {
+  background-color: rgba(0, 0, 0, 0.7);
+  border: 1px solid var(--color-gold);
+  color: var(--color-white);
+}
+
+.papyrus-container h2 {
+  color: var(--color-gold);
+}
+
+/* Modificare lo stile della galleria per garantire che il testo sia sempre bianco */
+.gallery-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 1rem;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+  color: var(--color-white);
+  transform: translateY(100%);
+  transition: transform 0.3s ease;
+}
+
+.gallery-overlay h3 {
+  color: var(--color-white);
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.9);
+  font-size: 1.3rem;
+  margin-bottom: 0.3rem;
+}
+
+.gallery-item:hover .gallery-overlay {
+  transform: translateY(0);
+}
+
+.timeline-date{
+  color: gold;
+}
