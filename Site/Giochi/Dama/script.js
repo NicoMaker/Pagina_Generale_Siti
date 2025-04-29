@@ -583,6 +583,9 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       updateStats();
+
+      // Mostra un messaggio di vittoria personalizzato
+      showVictoryMessage(winner);
       return;
     }
 
@@ -653,6 +656,9 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       updateStats();
+
+      // Mostra un messaggio di vittoria personalizzato
+      showVictoryMessage(winner);
     }
   }
 
@@ -794,5 +800,77 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 300);
       }
     }, 3000);
+  }
+
+  function showVictoryMessage(winner) {
+    // Rimuovi eventuali messaggi precedenti
+    const existingMessage = document.querySelector(".custom-alert");
+    if (existingMessage) {
+      existingMessage.remove();
+    }
+
+    // Crea l'elemento alert
+    const alertElement = document.createElement("div");
+    alertElement.className = "custom-alert victory-alert";
+
+    // Crea il contenuto dell'alert
+    const alertContent = document.createElement("div");
+    alertContent.className = "alert-content victory-content";
+
+    // Aggiungi il titolo
+    const titleElement = document.createElement("h3");
+    titleElement.textContent = "🏆 VITTORIA! 🏆";
+    titleElement.className = "victory-title";
+
+    // Aggiungi il messaggio
+    const messageElement = document.createElement("p");
+    messageElement.textContent = `Il giocatore ${winner} ha vinto la partita!`;
+    messageElement.className = "victory-message";
+
+    // Aggiungi statistiche
+    const statsElement = document.createElement("div");
+    statsElement.className = "victory-stats";
+    statsElement.innerHTML = `
+      <p>Partita #${gameCount}</p>
+      <p>Vittorie Bianco: ${whiteWins} | Vittorie Nero: ${blackWins}</p>
+    `;
+
+    // Aggiungi il pulsante di chiusura
+    const closeButton = document.createElement("button");
+    closeButton.className = "alert-close-btn victory-btn";
+    closeButton.textContent = "Continua";
+    closeButton.addEventListener("click", () => {
+      alertElement.classList.add("fade-out");
+      setTimeout(() => {
+        alertElement.remove();
+      }, 300);
+    });
+
+    // Aggiungi confetti (elementi decorativi)
+    for (let i = 0; i < 30; i++) {
+      const confetti = document.createElement("div");
+      confetti.className = "confetti";
+      confetti.style.left = `${Math.random() * 100}%`;
+      confetti.style.animationDelay = `${Math.random() * 3}s`;
+      confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 80%, 60%)`;
+      alertElement.appendChild(confetti);
+    }
+
+    // Assembla l'alert
+    alertContent.appendChild(titleElement);
+    alertContent.appendChild(messageElement);
+    alertContent.appendChild(statsElement);
+    alertContent.appendChild(closeButton);
+    alertElement.appendChild(alertContent);
+
+    // Aggiungi l'alert al documento
+    document.body.appendChild(alertElement);
+
+    // Aggiungi la classe per l'animazione di entrata
+    setTimeout(() => {
+      alertElement.classList.add("show");
+    }, 10);
+
+    // Non chiudere automaticamente l'alert di vittoria, lascia che l'utente lo chiuda
   }
 });
