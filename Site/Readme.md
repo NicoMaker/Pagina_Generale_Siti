@@ -6,7 +6,7 @@
 - **[Borsa](Borsa/Readme.md)** [3 Siti]
 - **[Calcio](Calcio/Readme.md)** [2 Siti]
 - **[Calendario](Calendario/Readme.md)** [5 Siti]
-- **[Giochi](Giochi/Readme.md)** [13 Siti]
+- **[Giochi](Giochi/Readme.md)** [14 Siti]
 - **[Info Paesi / Stati](Info_Paesi_Stati/Readme.md)** [4 Siti]
 - **[Matematica](Math/Readme.md)** [24 Siti]
 - **[Natale](Natale/Readme.md)** [3 Siti]

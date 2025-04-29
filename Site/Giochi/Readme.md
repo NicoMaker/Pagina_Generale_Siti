@@ -3,6 +3,7 @@
 # Giochi
 
 - **[Casinò](Casino)**
+- **[Dama](Dama)**
 - **[Dino Game](Dino-Game)**
 - **[Forza 4](Forza%204)**
 - **[Genera 4 Lettere](Generated_4_Letters)**

@@ -86,6 +86,10 @@
       {
         "name": "Casinò",
         "link": "Site/Giochi/Casino/index.html"
+      },
+      {
+        "name":"Dama",
+        "link":"Site/Giochi/Dama/index.html"
       }
     ],
     "Info_Paesi_Stati": [
