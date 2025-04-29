@@ -116,7 +116,6 @@ function checkWin(row, col) {
       if (
         newRow >= 0 &&
         newRow < rows &&
-        newCol >= 0 &&
         newCol < cols &&
         gameBoard[newRow][newCol] === currentPlayer
       ) {
@@ -383,6 +382,61 @@ function resetGame() {
   // Annuncia il reset del gioco per screen reader
   announceForScreenReader(
     `Nuova partita iniziata. Turno del giocatore ${currentPlayer}.`
+  );
+}
+
+// Aggiungi questa nuova funzione dopo la funzione resetGame()
+function resetCurrentGame() {
+  gameOver = false;
+  gameBoard = Array.from({ length: rows }, () => Array(cols).fill(null));
+
+  // Mantieni il contatore delle partite invariato
+  // Mantieni lo stesso giocatore che ha iniziato questa partita
+  // (non incrementare gameCount per mantenere lo stesso giocatore iniziale)
+
+  document.getElementById("currentPlayerContainer").innerHTML = `
+    <span>Turno:</span>
+    <div id="currentPlayerIndicator" class="cell ${currentPlayer}" aria-label="Giocatore ${currentPlayer}"></div>
+  `;
+
+  document.querySelectorAll(".cell").forEach((cell) => {
+    cell.classList.remove(
+      "rosso",
+      "giallo",
+      "winning",
+      "rossoWin",
+      "gialloWin"
+    );
+
+    // Reimposta gli attributi ARIA
+    const row = cell.dataset.row;
+    const col = cell.dataset.col;
+    cell.setAttribute(
+      "aria-label",
+      `Cella vuota, riga ${Number.parseInt(row) + 1}, colonna ${
+        Number.parseInt(col) + 1
+      }`
+    );
+  });
+
+  updateCurrentPlayerIndicator();
+
+  // NON resettare i cartellini per mantenere le penalità della partita
+  // NON resettare i punteggi
+
+  // Abilita i pulsanti dei cartellini
+  updateCardButtonsState();
+
+  // Aggiungi evento alla timeline
+  addTimelineEvent(
+    `Partita corrente resettata. Continua il giocatore ${currentPlayer}.`,
+    false,
+    currentPlayer
+  );
+
+  // Annuncia il reset della partita corrente per screen reader
+  announceForScreenReader(
+    `Partita corrente resettata. Turno del giocatore ${currentPlayer}.`
   );
 }
 

@@ -73,29 +73,37 @@ h3 {
   font-weight: 600;
 }
 
-.game-info {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
-  width: 100%;
-}
-
-@media (min-width: 640px) {
-  .game-info {
-    flex-direction: row;
-    justify-content: center;
-  }
-}
-
+/* Modifica lo stile del contenitore del turno per centrarlo meglio */
 #currentPlayerContainer {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 0.75rem;
   padding: 0.75rem 1.5rem;
   background-color: white;
   border-radius: var(--border-radius);
   box-shadow: var(--shadow-md);
+  margin: 0 auto;
+}
+
+/* Assicurati che il contenitore del giocatore corrente sia centrato */
+.game-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  width: 100%;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+@media (min-width: 640px) {
+  .game-info {
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
 }
 
 #currentPlayerContainer span {
@@ -730,4 +738,29 @@ summary:focus-visible {
 
 .red-card:disabled:hover {
   background-color: var(--color-red);
+}
+
+/* Stile per i pulsanti di reset */
+.reset-buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  justify-content: center;
+  margin-bottom: 1rem;
+  width: 100%;
+}
+
+@media (max-width: 640px) {
+  .reset-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+#resetCurrentGameButton {
+  background-color: #6b7280; /* Grigio per distinguerlo dal pulsante principale */
+}
+
+#resetCurrentGameButton:hover {
+  background-color: #4b5563;
 }
