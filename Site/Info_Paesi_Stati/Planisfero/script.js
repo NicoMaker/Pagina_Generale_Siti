@@ -10,11 +10,11 @@ const mapView = document.getElementById("map-view"),
   zoomOut = document.getElementById("zoom-out"),
   zoomReset = document.getElementById("zoom-reset"),
   countrySearch = document.getElementById("country-search"),
+  currencySearch = document.getElementById("currency-search"),
   noResultsMessage = document.getElementById("no-results"),
-  continentFiltersContainer = document.getElementById(
-    "continent-filters-container"
-  ),
-  countriesByContinent = document.getElementById("countries-by-continent");
+  continentFiltersContainer = document.getElementById("continent-filters-container"),
+  currencyFiltersContainer = document.getElementById("currency-filters-container"),
+  countriesByContinent = document.getElementById("countries-by-continent")
 
 // Elementi del popup
 const countryFlag = document.getElementById("country-flag"),
@@ -28,7 +28,8 @@ const countryFlag = document.getElementById("country-flag"),
   countryCurrencies = document.getElementById("country-currencies"),
   countryLanguages = document.getElementById("country-languages"),
   countryTimezones = document.getElementById("country-timezones"),
-  borderCountries = document.getElementById("border-countries");
+  borderCountries = document.getElementById("border-countries"),
+  currencyDetailsContent = document.getElementById("currency-details-content")
 
 // Stato dell'applicazione
 let countriesData = {},
@@ -38,452 +39,631 @@ let countriesData = {},
   continents = {},
   continentsList = [],
   activeContinents = new Set(["all"]),
-  continentVisibility = {};
+  continentVisibility = {},
+  currencies = {},
+  currenciesList = [],
+  activeCurrencies = new Set()
 
 // Stato della mappa
 let scale = 1,
   translateX = 0,
-  translateY = 0;
+  translateY = 0
 
 // Alterna tra vista mappa ed elenco
 toggleViewBtn.addEventListener("click", () => {
   if (viewMode === "map") {
-    mapView.style.display = "none";
-    listView.style.display = "block";
-    toggleViewBtn.innerHTML =
-      '<span class="btn-icon">🗺️</span><span class="btn-text">Passa alla vista mappa</span>';
-    viewMode = "list";
+    mapView.style.display = "none"
+    listView.style.display = "block"
+    toggleViewBtn.innerHTML = '<span class="btn-icon">🗺️</span><span class="btn-text">Passa alla vista mappa</span>'
+    viewMode = "list"
 
     // Aggiorna la visualizzazione per evidenziare il continente selezionato
-    if (selectedCountryRegion) highlightContinent(selectedCountryRegion);
-    updateCountriesDisplay();
+    if (selectedCountryRegion) highlightContinent(selectedCountryRegion)
+    updateCountriesDisplay()
   } else {
-    mapView.style.display = "block";
-    listView.style.display = "none";
-    toggleViewBtn.innerHTML =
-      '<span class="btn-icon">📋</span><span class="btn-text">Passa alla vista elenco</span>';
-    viewMode = "map";
+    mapView.style.display = "block"
+    listView.style.display = "none"
+    toggleViewBtn.innerHTML = '<span class="btn-icon">📋</span><span class="btn-text">Passa alla vista elenco</span>'
+    viewMode = "map"
   }
-});
+})
 
 // Controlli di zoom
 zoomIn.addEventListener("click", () => {
-  scale *= 1.2;
-  updateMapTransform();
-});
+  scale *= 1.2
+  updateMapTransform()
+})
 
 zoomOut.addEventListener("click", () => {
-  scale /= 1.2;
-  if (scale < 1) scale = 1;
-  updateMapTransform();
-});
+  scale /= 1.2
+  if (scale < 1) scale = 1
+  updateMapTransform()
+})
 
 zoomReset.addEventListener("click", () => {
-  scale = 1;
-  translateX = 0;
-  translateY = 0;
-  updateMapTransform();
-});
+  scale = 1
+  translateX = 0
+  translateY = 0
+  updateMapTransform()
+})
 
 function updateMapTransform() {
-  const worldMap = document.getElementById("world-map");
+  const worldMap = document.getElementById("world-map")
   if (worldMap) {
-    worldMap.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
-    worldMap.style.transformOrigin = "center";
+    worldMap.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`
+    worldMap.style.transformOrigin = "center"
   }
 }
 
 // Carica i dati delle nazioni dall'API
 async function loadCountriesData() {
-  loadingIndicator.style.display = "flex";
+  loadingIndicator.style.display = "flex"
   try {
-    const response = await fetch("https://restcountries.com/v3.1/all");
-    if (!response.ok)
-      throw new Error("Impossibile caricare i dati delle nazioni");
+    const response = await fetch("https://restcountries.com/v3.1/all")
+    if (!response.ok) throw new Error("Impossibile caricare i dati delle nazioni")
 
-    const data = await response.json();
+    const data = await response.json()
 
     // Organizza i dati per codice ISO alpha-2 e alpha-3
     data.forEach((country) => {
-      if (country.cca2) countriesData[country.cca2.toLowerCase()] = country;
-      if (country.cca3) countriesData[country.cca3.toLowerCase()] = country;
-    });
+      if (country.cca2) countriesData[country.cca2.toLowerCase()] = country
+      if (country.cca3) countriesData[country.cca3.toLowerCase()] = country
+    })
 
     // Organizza i paesi per continente
-    organizeCountriesByContinent(data);
+    organizeCountriesByContinent(data)
+
+    // Organizza le valute
+    organizeCurrencies(data)
 
     // Carica il planisfero dettagliato
-    await loadDetailedWorldMap();
+    await loadDetailedWorldMap()
 
     // Crea l'elenco dei paesi
-    createCountriesList(data);
+    createCountriesList(data)
 
     // Crea i filtri per continente
-    createContinentFilters();
+    createContinentFilters()
 
-    loadingIndicator.style.display = "none";
-    return true;
+    // Crea i filtri per valuta
+    createCurrencyFilters()
+
+    loadingIndicator.style.display = "none"
+    return true
   } catch (error) {
-    console.error("Errore nel caricamento dei dati delle nazioni:", error);
-    loadingIndicator.style.display = "none";
-    worldMapContainer.innerHTML = `<div class="error-message">Errore nel caricamento dei dati: ${error.message}</div>`;
-    return false;
+    console.error("Errore nel caricamento dei dati delle nazioni:", error)
+    loadingIndicator.style.display = "none"
+    worldMapContainer.innerHTML = `<div class="error-message">Errore nel caricamento dei dati: ${error.message}</div>`
+    return false
   }
 }
 
 // Organizza i paesi per continente
 function organizeCountriesByContinent(countries) {
-  continents = {};
+  continents = {}
 
   // Raggruppa i paesi per continente
   countries.forEach((country) => {
-    const region = country.region || "Altro";
+    const region = country.region || "Altro"
 
     if (!continents[region]) {
-      continents[region] = [];
+      continents[region] = []
       // Inizializza la visibilità del continente (true = visibile)
-      continentVisibility[region] = true;
+      continentVisibility[region] = true
     }
 
-    continents[region].push(country);
-  });
+    continents[region].push(country)
+  })
 
   // Ordina i paesi all'interno di ogni continente
   for (const region in continents) {
-    continents[region].sort((a, b) =>
-      a.name.common.localeCompare(b.name.common)
-    );
+    continents[region].sort((a, b) => a.name.common.localeCompare(b.name.common))
   }
 
   // Crea una lista ordinata dei continenti
-  continentsList = Object.keys(continents).sort();
+  continentsList = Object.keys(continents).sort()
+}
+
+// Organizza le valute
+function organizeCurrencies(countries) {
+  currencies = {}
+
+  // Raggruppa i paesi per valuta
+  countries.forEach((country) => {
+    if (!country.currencies) return
+
+    Object.entries(country.currencies).forEach(([code, currencyInfo]) => {
+      if (!currencies[code]) {
+        currencies[code] = {
+          code: code,
+          name: currencyInfo.name,
+          symbol: currencyInfo.symbol || code,
+          countries: [],
+        }
+      }
+
+      currencies[code].countries.push({
+        name: country.name.common,
+        code: country.cca3,
+      })
+    })
+  })
+
+  // Crea una lista ordinata delle valute
+  currenciesList = Object.keys(currencies).sort()
 }
 
 // Crea i filtri per continente
 function createContinentFilters() {
-  continentFiltersContainer.innerHTML = "";
+  continentFiltersContainer.innerHTML = ""
 
   // Aggiungi il filtro "Tutti"
-  const allFilter = document.createElement("div");
-  allFilter.className = "continent-filter active";
-  allFilter.textContent = "Tutti";
-  allFilter.setAttribute("data-continent", "all");
+  const allFilter = document.createElement("div")
+  allFilter.className = "continent-filter active"
+  allFilter.textContent = "Tutti"
+  allFilter.setAttribute("data-continent", "all")
   allFilter.addEventListener("click", () => {
-    toggleContinentFilter("all");
-  });
+    toggleContinentFilter("all")
+  })
 
-  continentFiltersContainer.appendChild(allFilter);
+  continentFiltersContainer.appendChild(allFilter)
 
   // Aggiungi un filtro per ogni continente in ordine alfabetico
   continentsList.forEach((region) => {
-    const continentFilter = document.createElement("div");
-    continentFilter.className = "continent-filter";
-    continentFilter.setAttribute("data-continent", region);
+    const continentFilter = document.createElement("div")
+    continentFilter.className = "continent-filter"
+    continentFilter.setAttribute("data-continent", region)
 
     // Aggiungi il nome del continente
-    const continentName = document.createElement("span");
-    continentName.textContent = region;
-    continentFilter.appendChild(continentName);
+    const continentName = document.createElement("span")
+    continentName.textContent = region
+    continentFilter.appendChild(continentName)
 
     // Aggiungi il toggle per mostrare/nascondere i paesi del continente
-    const continentToggle = document.createElement("span");
-    continentToggle.className = "continent-toggle active";
-    continentToggle.textContent = "v";
-    continentToggle.setAttribute("data-continent", region);
+    const continentToggle = document.createElement("span")
+    continentToggle.className = "continent-toggle active"
+    continentToggle.textContent = "v"
+    continentToggle.setAttribute("data-continent", region)
     continentToggle.addEventListener("click", (e) => {
-      e.stopPropagation(); // Evita che il click si propaghi al filtro del continente
-      toggleContinentVisibility(region);
-    });
+      e.stopPropagation() // Evita che il click si propaghi al filtro del continente
+      toggleContinentVisibility(region)
+    })
 
-    continentFilter.appendChild(continentToggle);
+    continentFilter.appendChild(continentToggle)
 
     // Aggiungi l'event listener per il filtro del continente
     continentFilter.addEventListener("click", () => {
-      toggleContinentFilter(region);
-    });
+      toggleContinentFilter(region)
+    })
 
-    continentFiltersContainer.appendChild(continentFilter);
-  });
+    continentFiltersContainer.appendChild(continentFilter)
+  })
+}
+
+// Crea i filtri per valuta
+function createCurrencyFilters() {
+  currencyFiltersContainer.innerHTML = ""
+
+  // Aggiungi un filtro per ogni valuta in ordine alfabetico
+  // Mostra solo le prime 20 valute più comuni, le altre saranno filtrabili tramite ricerca
+  const topCurrencies = Object.values(currencies)
+    .sort((a, b) => b.countries.length - a.countries.length)
+    .slice(0, 20)
+
+  topCurrencies.forEach((currency) => {
+    const currencyFilter = createCurrencyFilterElement(currency)
+    currencyFiltersContainer.appendChild(currencyFilter)
+  })
+
+  // Aggiungi l'event listener per la ricerca delle valute
+  currencySearch.addEventListener("input", () => {
+    const searchTerm = currencySearch.value.toLowerCase().trim()
+
+    if (!searchTerm) {
+      // Se la ricerca è vuota, mostra le valute più comuni
+      currencyFiltersContainer.innerHTML = ""
+      topCurrencies.forEach((currency) => {
+        const currencyFilter = createCurrencyFilterElement(currency)
+        currencyFiltersContainer.appendChild(currencyFilter)
+      })
+      return
+    }
+
+    // Filtra le valute in base al termine di ricerca
+    const filteredCurrencies = currenciesList
+      .filter((code) => {
+        const currency = currencies[code]
+        return (
+          currency.code.toLowerCase().includes(searchTerm) ||
+          currency.name.toLowerCase().includes(searchTerm) ||
+          (currency.symbol && currency.symbol.toLowerCase().includes(searchTerm))
+        )
+      })
+      .map((code) => currencies[code])
+      .slice(0, 20) // Limita i risultati a 20
+
+    // Aggiorna i filtri
+    currencyFiltersContainer.innerHTML = ""
+
+    if (filteredCurrencies.length === 0) {
+      const noResults = document.createElement("div")
+      noResults.className = "no-results-message"
+      noResults.style.display = "block"
+      noResults.textContent = "Nessuna valuta trovata"
+      currencyFiltersContainer.appendChild(noResults)
+      return
+    }
+
+    filteredCurrencies.forEach((currency) => {
+      const currencyFilter = createCurrencyFilterElement(currency)
+      currencyFiltersContainer.appendChild(currencyFilter)
+    })
+  })
+}
+
+// Crea un elemento filtro per una valuta
+function createCurrencyFilterElement(currency) {
+  const currencyFilter = document.createElement("div")
+  currencyFilter.className = "currency-filter"
+  currencyFilter.setAttribute("data-currency", currency.code)
+
+  if (activeCurrencies.has(currency.code)) {
+    currencyFilter.classList.add("active")
+  }
+
+  // Aggiungi il codice della valuta
+  const currencyCode = document.createElement("span")
+  currencyCode.className = "currency-code"
+  currencyCode.textContent = currency.code
+  currencyFilter.appendChild(currencyCode)
+
+  // Aggiungi il nome della valuta
+  const currencyName = document.createElement("span")
+  currencyName.className = "currency-name"
+  currencyName.textContent = ` (${currency.name})`
+  currencyFilter.appendChild(currencyName)
+
+  // Aggiungi l'event listener per il filtro della valuta
+  currencyFilter.addEventListener("click", () => {
+    toggleCurrencyFilter(currency.code)
+  })
+
+  return currencyFilter
+}
+
+// Alterna l'attivazione di una valuta
+function toggleCurrencyFilter(currencyCode) {
+  if (activeCurrencies.has(currencyCode)) {
+    // Se la valuta è già attiva, rimuovila
+    activeCurrencies.delete(currencyCode)
+  } else {
+    // Altrimenti, aggiungila
+    activeCurrencies.add(currencyCode)
+  }
+
+  // Aggiorna la classe active sui filtri
+  updateCurrencyFiltersUI()
+
+  // Aggiorna la visualizzazione dei paesi
+  updateCountriesDisplay()
+}
+
+// Aggiorna l'interfaccia utente dei filtri per valuta
+function updateCurrencyFiltersUI() {
+  const filters = document.querySelectorAll(".currency-filter")
+  filters.forEach((filter) => {
+    const currency = filter.getAttribute("data-currency")
+    if (activeCurrencies.has(currency)) {
+      filter.classList.add("active")
+    } else {
+      filter.classList.remove("active")
+    }
+  })
 }
 
 // Alterna l'attivazione di un continente
 function toggleContinentFilter(continent) {
   if (continent === "all") {
     // Se si clicca su "Tutti", disattiva tutti gli altri filtri
-    activeContinents.clear();
-    activeContinents.add("all");
+    activeContinents.clear()
+    activeContinents.add("all")
   } else {
     // Se si clicca su un continente specifico
     if (activeContinents.has("all")) {
       // Se "Tutti" è attivo, rimuovilo e aggiungi solo il continente selezionato
-      activeContinents.clear();
-      activeContinents.add(continent);
+      activeContinents.clear()
+      activeContinents.add(continent)
     } else if (activeContinents.has(continent)) {
       // Se il continente è già attivo, rimuovilo
-      activeContinents.delete(continent);
+      activeContinents.delete(continent)
       // Se non ci sono più continenti attivi, attiva "Tutti"
-      if (activeContinents.size === 0) activeContinents.add("all");
+      if (activeContinents.size === 0) activeContinents.add("all")
     } else {
       // Altrimenti, aggiungi il continente ai filtri attivi
-      activeContinents.add(continent);
+      activeContinents.add(continent)
 
       // Controlla se tutti i continenti sono selezionati
-      checkAllContinentsSelected();
+      checkAllContinentsSelected()
     }
   }
 
   // Aggiorna la classe active sui filtri
-  updateContinentFiltersUI();
+  updateContinentFiltersUI()
 
   // Aggiorna la visualizzazione dei paesi
-  updateCountriesDisplay();
+  updateCountriesDisplay()
 }
 
 // Controlla se tutti i continenti sono selezionati e attiva "Tutti" in quel caso
 function checkAllContinentsSelected() {
   // Se "Tutti" è già attivo, non fare nulla
-  if (activeContinents.has("all")) return;
+  if (activeContinents.has("all")) return
 
   // Controlla se tutti i continenti sono selezionati
-  const allSelected = continentsList.every((continent) =>
-    activeContinents.has(continent)
-  );
+  const allSelected = continentsList.every((continent) => activeContinents.has(continent))
 
   if (allSelected) {
     // Se tutti i continenti sono selezionati, attiva "Tutti" e rimuovi gli altri
-    activeContinents.clear();
-    activeContinents.add("all");
+    activeContinents.clear()
+    activeContinents.add("all")
   }
 }
 
 // Aggiorna l'interfaccia utente dei filtri per continente
 function updateContinentFiltersUI() {
-  const filters = document.querySelectorAll(".continent-filter");
+  const filters = document.querySelectorAll(".continent-filter")
   filters.forEach((filter) => {
-    const continent = filter.getAttribute("data-continent");
+    const continent = filter.getAttribute("data-continent")
     if (activeContinents.has(continent)) {
-      filter.classList.add("active");
-    } else filter.classList.remove("active");
-  });
+      filter.classList.add("active")
+    } else filter.classList.remove("active")
+  })
 }
 
 // Alterna la visibilità dei paesi di un continente
 function toggleContinentVisibility(continent) {
-  continentVisibility[continent] = !continentVisibility[continent];
+  continentVisibility[continent] = !continentVisibility[continent]
 
   // Aggiorna la classe active sul toggle
-  const toggles = document.querySelectorAll(".continent-toggle");
+  const toggles = document.querySelectorAll(".continent-toggle")
   toggles.forEach((toggle) => {
     if (toggle.getAttribute("data-continent") === continent) {
       if (continentVisibility[continent]) {
-        toggle.classList.add("active");
-        toggle.classList.remove("inactive");
+        toggle.classList.add("active")
+        toggle.classList.remove("inactive")
       } else {
-        toggle.classList.remove("active");
-        toggle.classList.add("inactive");
+        toggle.classList.remove("active")
+        toggle.classList.add("inactive")
       }
     }
-  });
+  })
 
   // Aggiorna la visualizzazione dei paesi
-  updateCountriesDisplay();
+  updateCountriesDisplay()
 }
 
 // Evidenzia il continente di una nazione selezionata
 function highlightContinent(region) {
   // Prima rimuovi tutte le evidenziazioni
-  clearContinentHighlights();
+  clearContinentHighlights()
 
-  if (!region) return;
+  if (!region) return
 
   // Evidenzia il filtro del continente
-  const continentFilters = document.querySelectorAll(".continent-filter");
+  const continentFilters = document.querySelectorAll(".continent-filter")
   continentFilters.forEach((filter) => {
     if (filter.getAttribute("data-continent") === region) {
-      filter.classList.add("highlighted");
+      filter.classList.add("highlighted")
 
       // Evidenzia anche il toggle
-      const toggle = filter.querySelector(".continent-toggle");
-      if (toggle) toggle.classList.add("highlighted");
+      const toggle = filter.querySelector(".continent-toggle")
+      if (toggle) toggle.classList.add("highlighted")
     }
-  });
+  })
 
   // Evidenzia l'intestazione del continente nella lista
-  const continentHeaders = document.querySelectorAll(".continent-header");
+  const continentHeaders = document.querySelectorAll(".continent-header")
   continentHeaders.forEach((header) => {
     if (header.getAttribute("data-continent") === region) {
-      header.classList.add("highlighted");
+      header.classList.add("highlighted")
 
       // Evidenzia anche il toggle
-      const toggle = header.querySelector(".continent-toggle");
-      if (toggle) toggle.classList.add("highlighted");
+      const toggle = header.querySelector(".continent-toggle")
+      if (toggle) toggle.classList.add("highlighted")
     }
-  });
+  })
 }
 
 // Rimuovi tutte le evidenziazioni dei continenti
 function clearContinentHighlights() {
   // Rimuovi l'evidenziazione dai filtri
-  const continentFilters = document.querySelectorAll(".continent-filter");
+  const continentFilters = document.querySelectorAll(".continent-filter")
   continentFilters.forEach((filter) => {
-    filter.classList.remove("highlighted");
+    filter.classList.remove("highlighted")
 
     // Rimuovi anche dal toggle
-    const toggle = filter.querySelector(".continent-toggle");
-    if (toggle) toggle.classList.remove("highlighted");
-  });
+    const toggle = filter.querySelector(".continent-toggle")
+    if (toggle) toggle.classList.remove("highlighted")
+  })
 
   // Rimuovi l'evidenziazione dalle intestazioni
-  const continentHeaders = document.querySelectorAll(".continent-header");
+  const continentHeaders = document.querySelectorAll(".continent-header")
   continentHeaders.forEach((header) => {
-    header.classList.remove("highlighted");
+    header.classList.remove("highlighted")
 
     // Rimuovi anche dal toggle
-    const toggle = header.querySelector(".continent-toggle");
-    if (toggle) toggle.classList.remove("highlighted");
-  });
+    const toggle = header.querySelector(".continent-toggle")
+    if (toggle) toggle.classList.remove("highlighted")
+  })
 
   // Rimuovi l'evidenziazione dagli elementi paese
-  const countryItems = document.querySelectorAll(".country-item");
+  const countryItems = document.querySelectorAll(".country-item")
   countryItems.forEach((item) => {
-    item.classList.remove("selected");
-  });
+    item.classList.remove("selected")
+  })
 }
 
 // Aggiorna la visualizzazione dei paesi in base al filtro e alla visibilità dei continenti
 function updateCountriesDisplay() {
-  const searchTerm = countrySearch.value.toLowerCase().trim();
+  const searchTerm = countrySearch.value.toLowerCase().trim()
 
   // Pulisci la visualizzazione attuale
-  countriesByContinent.innerHTML = "";
+  countriesByContinent.innerHTML = ""
 
   // Determina quali continenti mostrare
-  let continentsToShow = [];
+  let continentsToShow = []
 
   if (activeContinents.has("all"))
     // Usa la lista ordinata dei continenti
-    continentsToShow = [...continentsList];
+    continentsToShow = [...continentsList]
   // Ordina i continenti attivi alfabeticamente
-  else continentsToShow = Array.from(activeContinents).sort();
+  else continentsToShow = Array.from(activeContinents).sort()
 
   // Crea una sezione per ogni continente da mostrare
   continentsToShow.forEach((region) => {
     // Salta il continente se è nascosto
-    if (!continentVisibility[region]) return;
+    if (!continentVisibility[region]) return
 
-    const continentSection = document.createElement("div");
-    continentSection.className = "continent-section";
-    continentSection.setAttribute("data-continent", region);
+    const continentSection = document.createElement("div")
+    continentSection.className = "continent-section"
+    continentSection.setAttribute("data-continent", region)
 
     // Crea l'intestazione del continente
-    const continentHeader = document.createElement("div");
-    continentHeader.className = "continent-header";
-    continentHeader.setAttribute("data-continent", region);
+    const continentHeader = document.createElement("div")
+    continentHeader.className = "continent-header"
+    continentHeader.setAttribute("data-continent", region)
 
     // Evidenzia l'intestazione se corrisponde al continente della nazione selezionata
-    if (region === selectedCountryRegion)
-      continentHeader.classList.add("highlighted");
+    if (region === selectedCountryRegion) continentHeader.classList.add("highlighted")
 
-    const continentName = document.createElement("div");
-    continentName.className = "continent-name";
-    (continentName.textContent = region),
-      (continentToggle = document.createElement("span"));
-    continentToggle.className = "continent-toggle active";
-    continentToggle.textContent = "v";
-    continentToggle.setAttribute("data-continent", region);
+    const continentName = document.createElement("div")
+    continentName.className = "continent-name"
+    continentName.textContent = region
+
+    const continentToggle = document.createElement("span")
+    continentToggle.className = "continent-toggle active"
+    continentToggle.textContent = "v"
+    continentToggle.setAttribute("data-continent", region)
 
     // Evidenzia il toggle se corrisponde al continente della nazione selezionata
-    if (region === selectedCountryRegion)
-      continentToggle.classList.add("highlighted");
+    if (region === selectedCountryRegion) continentToggle.classList.add("highlighted")
 
-    continentToggle.addEventListener("click", function () {
-      const countriesContainer = continentSection.querySelector(
-        ".continent-countries"
-      );
-      countriesContainer.classList.toggle("hidden");
-      this.classList.toggle("active");
+    continentToggle.addEventListener("click", function (e) {
+      e.stopPropagation()
+      const countriesContainer = continentSection.querySelector(".continent-countries")
+      countriesContainer.classList.toggle("hidden")
+      this.classList.toggle("active")
 
       // Mantieni l'evidenziazione anche quando si espande/comprime
       if (region === selectedCountryRegion) {
-        this.classList.add("highlighted");
+        this.classList.add("highlighted")
       }
-    });
+    })
 
-    continentHeader.appendChild(continentName);
-    continentHeader.appendChild(continentToggle);
-    continentSection.appendChild(continentHeader);
+    continentHeader.appendChild(continentName)
+    continentHeader.appendChild(continentToggle)
+    continentSection.appendChild(continentHeader)
 
     // Crea il contenitore per i paesi di questo continente
-    const countriesContainer = document.createElement("div");
-    countriesContainer.className = "continent-countries";
+    const countriesContainer = document.createElement("div")
+    countriesContainer.className = "continent-countries"
 
-    // Filtra i paesi in base al termine di ricerca
-    const filteredCountries = continents[region].filter((country) =>
-      country.name.common.toLowerCase().includes(searchTerm)
-    );
+    // Filtra i paesi in base al termine di ricerca e alle valute selezionate
+    let filteredCountries = continents[region].filter((country) =>
+      country.name.common.toLowerCase().includes(searchTerm),
+    )
+
+    // Filtra per valuta se ci sono valute attive
+    if (activeCurrencies.size > 0) {
+      filteredCountries = filteredCountries.filter((country) => {
+        if (!country.currencies) return false
+
+        // Controlla se il paese ha almeno una delle valute attive
+        return Object.keys(country.currencies).some((code) => activeCurrencies.has(code))
+      })
+    }
 
     // Se non ci sono paesi che corrispondono alla ricerca, salta questo continente
-    if (filteredCountries.length === 0) return;
+    if (filteredCountries.length === 0) return
 
     // Aggiungi i paesi filtrati
     filteredCountries.forEach((country) => {
-      const countryItem = document.createElement("div");
-      countryItem.className = "country-item";
-      const countryId = country.cca3.toLowerCase();
+      const countryItem = document.createElement("div")
+      countryItem.className = "country-item"
+      const countryId = country.cca3.toLowerCase()
 
       // Evidenzia il paese se è quello selezionato
-      if (countryId === selectedCountry) countryItem.classList.add("selected");
+      if (countryId === selectedCountry) countryItem.classList.add("selected")
 
-      countryItem.textContent = country.name.common;
-      countryItem.setAttribute("data-id", countryId);
+      countryItem.textContent = country.name.common
+      countryItem.setAttribute("data-id", countryId)
+
+      // Aggiungi badge delle valute se il paese ne ha
+      if (country.currencies) {
+        const currenciesContainer = document.createElement("div")
+        currenciesContainer.style.marginTop = "4px"
+
+        Object.entries(country.currencies).forEach(([code, currencyInfo]) => {
+          const badge = document.createElement("span")
+          badge.className = "currency-badge"
+
+          const symbol = document.createElement("span")
+          symbol.className = "currency-badge-symbol"
+          symbol.textContent = currencyInfo.symbol || code
+
+          badge.appendChild(symbol)
+          badge.appendChild(document.createTextNode(code))
+
+          currenciesContainer.appendChild(badge)
+        })
+
+        countryItem.appendChild(currenciesContainer)
+      }
 
       countryItem.addEventListener("click", function () {
         // Rimuovi la selezione da tutti i paesi
-        const allCountryItems = document.querySelectorAll(".country-item");
-        allCountryItems.forEach((item) => item.classList.remove("selected"));
+        const allCountryItems = document.querySelectorAll(".country-item")
+        allCountryItems.forEach((item) => item.classList.remove("selected"))
 
         // Evidenzia questo paese
-        this.classList.add("selected");
+        this.classList.add("selected")
 
-        const countryId = this.getAttribute("data-id");
-        showCountryInfo(countryId);
-      });
+        const countryId = this.getAttribute("data-id")
+        showCountryInfo(countryId)
+      })
 
-      countriesContainer.appendChild(countryItem);
-    });
+      countriesContainer.appendChild(countryItem)
+    })
 
-    continentSection.appendChild(countriesContainer);
-    countriesByContinent.appendChild(continentSection);
-  });
+    continentSection.appendChild(countriesContainer)
+    countriesByContinent.appendChild(continentSection)
+  })
 
   // Mostra o nascondi il messaggio "nessuna nazione trovata"
-  const hasResults = countriesByContinent.children.length > 0;
-  noResultsMessage.style.display = searchTerm && !hasResults ? "block" : "none";
+  const hasResults = countriesByContinent.children.length > 0
+  noResultsMessage.style.display = searchTerm && !hasResults ? "block" : "none"
 }
 
 // Carica il planisfero dettagliato
 async function loadDetailedWorldMap() {
   try {
     // Utilizziamo un servizio che fornisce SVG di mappe del mondo
-    const response = await fetch(
-      "https://unpkg.com/world-atlas@2.0.2/countries-110m.json"
-    );
-    if (!response.ok)
-      throw new Error("Impossibile caricare la mappa dettagliata");
+    const response = await fetch("https://unpkg.com/world-atlas@2.0.2/countries-110m.json")
+    if (!response.ok) throw new Error("Impossibile caricare la mappa dettagliata")
 
-    const worldData = await response.json();
+    const worldData = await response.json()
 
     // Crea la mappa SVG utilizzando i dati GeoJSON
-    createWorldMapFromGeoJSON(worldData);
+    createWorldMapFromGeoJSON(worldData)
   } catch (error) {
-    console.error("Errore nel caricamento della mappa dettagliata:", error);
+    console.error("Errore nel caricamento della mappa dettagliata:", error)
     // Fallback alla mappa semplificata
-    createSimplifiedWorldMap();
+    createSimplifiedWorldMap()
   }
 }
 
 // Crea la mappa mondiale da dati GeoJSON
-const createWorldMapFromGeoJSON = () => createSimplifiedWorldMap();
+const createWorldMapFromGeoJSON = () => createSimplifiedWorldMap()
 
 // Crea una mappa mondiale semplificata
 function createSimplifiedWorldMap() {
@@ -546,367 +726,420 @@ function createSimplifiedWorldMap() {
         <text x="725" y="320" font-size="10" text-anchor="middle">Australia</text>
         <text x="770" y="350" font-size="10" text-anchor="middle">N. Zelanda</text>
       </svg>
-    `;
+    `
 
-  worldMapContainer.innerHTML = worldMapSvg;
+  worldMapContainer.innerHTML = worldMapSvg
 
   // Aggiungi gli event listener ai paesi
-  setupEventListeners();
+  setupEventListeners()
 
   // Aggiungi la funzionalità di trascinamento
-  setupDragFunctionality();
+  setupDragFunctionality()
 }
 
 // Configura la funzionalità di trascinamento della mappa
 function setupDragFunctionality() {
-  const worldMap = document.getElementById("world-map");
+  const worldMap = document.getElementById("world-map")
   let isDragging = false,
     startX,
     startY,
     startTranslateX = translateX,
-    startTranslateY = translateY;
+    startTranslateY = translateY
 
   worldMap.addEventListener("mousedown", (e) => {
-    if (e.target.classList.contains("country")) return; // Non trascinare quando si clicca su un paese
+    if (e.target.classList.contains("country")) return // Non trascinare quando si clicca su un paese
 
-    isDragging = true;
-    startX = e.clientX;
-    startY = e.clientY;
-    startTranslateX = translateX;
-    startTranslateY = translateY;
-    worldMap.style.cursor = "grabbing";
-  });
+    isDragging = true
+    startX = e.clientX
+    startY = e.clientY
+    startTranslateX = translateX
+    startTranslateY = translateY
+    worldMap.style.cursor = "grabbing"
+  })
 
   document.addEventListener("mousemove", (e) => {
-    if (!isDragging) return;
+    if (!isDragging) return
 
     const dx = e.clientX - startX,
-      dy = e.clientY - startY;
+      dy = e.clientY - startY
 
-    translateX = startTranslateX + dx;
-    translateY = startTranslateY + dy;
+    translateX = startTranslateX + dx
+    translateY = startTranslateY + dy
 
-    updateMapTransform();
-  });
+    updateMapTransform()
+  })
 
   document.addEventListener("mouseup", () => {
-    isDragging = false;
-    worldMap.style.cursor = "grab";
-  });
+    isDragging = false
+    worldMap.style.cursor = "grab"
+  })
 
   // Versione touch per dispositivi mobili
   worldMap.addEventListener("touchstart", (e) => {
-    if (e.target.classList.contains("country")) return;
+    if (e.target.classList.contains("country")) return
 
-    isDragging = true;
-    startX = e.touches[0].clientX;
-    startY = e.touches[0].clientY;
-    startTranslateX = translateX;
-    startTranslateY = translateY;
-  });
+    isDragging = true
+    startX = e.touches[0].clientX
+    startY = e.touches[0].clientY
+    startTranslateX = translateX
+    startTranslateY = translateY
+  })
 
   document.addEventListener("touchmove", (e) => {
-    if (!isDragging) return;
+    if (!isDragging) return
 
     const dx = e.touches[0].clientX - startX,
-      dy = e.touches[0].clientY - startY;
+      dy = e.touches[0].clientY - startY
 
-    translateX = startTranslateX + dx;
-    translateY = startTranslateY + dy;
+    translateX = startTranslateX + dx
+    translateY = startTranslateY + dy
 
-    updateMapTransform();
-  });
+    updateMapTransform()
+  })
 
   document.addEventListener("touchend", () => {
-    isDragging = false;
-  });
+    isDragging = false
+  })
 }
 
 // Configura gli event listener
 function setupEventListeners() {
-  const countries = document.querySelectorAll(".country");
+  const countries = document.querySelectorAll(".country")
 
   countries.forEach((country) => {
     country.addEventListener("click", function () {
-      const countryId = this.id.toLowerCase();
+      const countryId = this.id.toLowerCase()
 
       // Resetta tutti i paesi
-      countries.forEach((c) => c.classList.remove("selected"));
+      countries.forEach((c) => c.classList.remove("selected"))
 
       // Evidenzia il paese selezionato
-      this.classList.add("selected");
-      selectedCountry = countryId;
+      this.classList.add("selected")
+      selectedCountry = countryId
 
       // Mostra le informazioni del paese
-      showCountryInfo(countryId);
-    });
-  });
+      showCountryInfo(countryId)
+    })
+  })
 
   // Chiudi il popup quando si clicca sul pulsante di chiusura
   closePopup.addEventListener("click", () => {
-    popup.style.display = "none";
+    popup.style.display = "none"
     // Rimuovi l'evidenziazione da tutti i paesi
-    const countries = document.querySelectorAll(".country");
-    countries.forEach((country) => country.classList.remove("selected"));
-    selectedCountry = null;
-    selectedCountryRegion = null;
+    const countries = document.querySelectorAll(".country")
+    countries.forEach((country) => country.classList.remove("selected"))
+    selectedCountry = null
+    selectedCountryRegion = null
 
     // Rimuovi l'evidenziazione dai continenti
-    clearContinentHighlights();
-  });
+    clearContinentHighlights()
+  })
 
   // Chiudi il popup quando si clicca fuori dal contenuto del popup
   popup.addEventListener("click", (event) => {
     if (event.target === popup) {
-      popup.style.display = "none";
+      popup.style.display = "none"
       // Rimuovi l'evidenziazione da tutti i paesi
-      const countries = document.querySelectorAll(".country");
-      countries.forEach((country) => country.classList.remove("selected"));
-      selectedCountry = null;
-      selectedCountryRegion = null;
+      const countries = document.querySelectorAll(".country")
+      countries.forEach((country) => country.classList.remove("selected"))
+      selectedCountry = null
+      selectedCountryRegion = null
 
       // Rimuovi l'evidenziazione dai continenti
-      clearContinentHighlights();
+      clearContinentHighlights()
     }
-  });
+  })
 }
 
 // Crea l'elenco dei paesi
 function createCountriesList(countries) {
   // Aggiungi l'event listener per la ricerca
   countrySearch.addEventListener("input", () => {
-    updateCountriesDisplay();
-  });
+    updateCountriesDisplay()
+  })
 
   // Aggiungi l'event listener per resettare la ricerca quando si passa dalla vista mappa alla vista elenco
   toggleViewBtn.addEventListener("click", () => {
     if (viewMode === "list") {
-      countrySearch.value = "";
-      updateCountriesDisplay();
+      countrySearch.value = ""
+      updateCountriesDisplay()
     }
-  });
+  })
 }
 
 // Funzione per creare elementi di lista numerata
 function createListItems(container, items) {
-  container.innerHTML = "";
+  container.innerHTML = ""
 
   if (!items || items.length === 0) {
-    container.textContent = "N/A";
-    return;
+    container.textContent = "N/A"
+    return
   }
 
   // Se c'è un solo elemento, mostralo come testo normale
   if (items.length === 1) {
-    container.textContent = items[0];
-    return;
+    container.textContent = items[0]
+    return
   }
 
   // Creo un elenco numerato per più elementi
-  const orderedList = document.createElement("ol");
+  const orderedList = document.createElement("ol")
 
   items.forEach((item) => {
-    const listItem = document.createElement("li");
-    listItem.textContent = item;
-    orderedList.appendChild(listItem);
-  });
+    const listItem = document.createElement("li")
+    listItem.textContent = item
+    orderedList.appendChild(listItem)
+  })
 
-  container.appendChild(orderedList);
+  container.appendChild(orderedList)
 }
 
 // Calcola la densità di popolazione (abitanti per km²)
 function calculatePopulationDensity(population, area) {
-  if (!population || !area || area === 0) return "N/A";
+  if (!population || !area || area === 0) return "N/A"
 
-  const densityValue = population / area;
-  if (densityValue <= 0) return "N/A"; // Controlla anche casi negativi
+  const densityValue = population / area
+  if (densityValue <= 0) return "N/A" // Controlla anche casi negativi
 
-  const formattedDensity =
-    densityValue % 1 === 0 ? densityValue.toFixed(0) : densityValue.toFixed(2);
+  const formattedDensity = densityValue % 1 === 0 ? densityValue.toFixed(0) : densityValue.toFixed(2)
 
-  return formattedDensity === "0.00" ? "N/A" : `${formattedDensity} ab/km²`;
+  return formattedDensity === "0.00" ? "N/A" : `${formattedDensity} ab/km²`
 }
 
 // Mostra le informazioni del paese
 function showCountryInfo(countryId) {
-  const country = countriesData[countryId];
+  const country = countriesData[countryId]
 
   if (country) {
     // Salva il continente della nazione selezionata
-    selectedCountryRegion = country.region || null;
+    selectedCountryRegion = country.region || null
 
     // Evidenzia il continente nella vista elenco
-    if (viewMode === "list" && selectedCountryRegion)
-      highlightContinent(selectedCountryRegion);
+    if (viewMode === "list" && selectedCountryRegion) highlightContinent(selectedCountryRegion)
 
     // Imposta le informazioni del paese
-    countryFlag.src = country.flags.png;
-    countryFlag.alt = `Bandiera di ${country.name.common}`;
-    countryName.textContent = country.name.common;
+    countryFlag.src = country.flags.png
+    countryFlag.alt = `Bandiera di ${country.name.common}`
+    countryName.textContent = country.name.common
 
     // Nome nativo (prendi il primo disponibile)
     if (country.name.nativeName) {
-      const nativeNameKey = Object.keys(country.name.nativeName)[0];
-      if (nativeNameKey)
-        nativeName.textContent =
-          country.name.nativeName[nativeNameKey].common || "";
-      else nativeName.textContent = "";
-    } else nativeName.textContent = "";
+      const nativeNameKey = Object.keys(country.name.nativeName)[0]
+      if (nativeNameKey) nativeName.textContent = country.name.nativeName[nativeNameKey].common || ""
+      else nativeName.textContent = ""
+    } else nativeName.textContent = ""
 
     // Capitale
-    countryCapital.textContent = country.capital
-      ? country.capital.join(", ")
-      : "N/A";
+    countryCapital.textContent = country.capital ? country.capital.join(", ") : "N/A"
 
     // Popolazione
-    countryPopulation.textContent = country.population
-      ? country.population.toLocaleString()
-      : "N/A";
+    countryPopulation.textContent = country.population ? country.population.toLocaleString() : "N/A"
 
     // Area
-    countryArea.textContent = country.area
-      ? `${country.area.toLocaleString()} km²`
-      : "N/A";
+    countryArea.textContent = country.area ? `${country.area.toLocaleString()} km²` : "N/A"
 
     // Aggiungi la densità di popolazione
     // Crea un nuovo elemento per la densità di popolazione
-    const infoGrid = document.querySelector(".info-grid");
+    const infoGrid = document.querySelector(".info-grid")
 
     // Verifica se l'elemento per la densità esiste già
-    let densityItem = document.getElementById("density-item");
+    let densityItem = document.getElementById("density-item")
     if (!densityItem) {
       // Se non esiste, crealo
-      densityItem = document.createElement("div");
-      densityItem.className = "info-item";
-      densityItem.id = "density-item";
+      densityItem = document.createElement("div")
+      densityItem.className = "info-item"
+      densityItem.id = "density-item"
 
-      const densityLabel = document.createElement("div");
-      densityLabel.className = "info-label";
-      (densityLabel.textContent = "Densità"),
-        (densityValue = document.createElement("div"));
-      densityValue.className = "info-value";
-      densityValue.id = "country-density";
+      const densityLabel = document.createElement("div")
+      densityLabel.className = "info-label"
+      densityLabel.textContent = "Densità"
 
-      densityItem.appendChild(densityLabel);
-      densityItem.appendChild(densityValue);
+      const densityValue = document.createElement("div")
+      densityValue.className = "info-value"
+      densityValue.id = "country-density"
+
+      densityItem.appendChild(densityLabel)
+      densityItem.appendChild(densityValue)
 
       // Inserisci dopo l'area
-      const areaItem = document.querySelector(".info-item:nth-child(3)");
+      const areaItem = document.querySelector(".info-item:nth-child(3)")
       if (areaItem && areaItem.nextSibling) {
-        infoGrid.insertBefore(densityItem, areaItem.nextSibling);
-      } else infoGrid.appendChild(densityItem);
+        infoGrid.insertBefore(densityItem, areaItem.nextSibling)
+      } else infoGrid.appendChild(densityItem)
     }
 
     // Aggiorna il valore della densità
-    const countryDensity = document.getElementById("country-density");
-    countryDensity.textContent = calculatePopulationDensity(
-      country.population,
-      country.area
-    );
+    const countryDensity = document.getElementById("country-density")
+    countryDensity.textContent = calculatePopulationDensity(country.population, country.area)
 
     // Regione e sottoregione
-    countryRegion.textContent = country.region || "N/A";
-    countrySubregion.textContent = country.subregion || "N/A";
+    countryRegion.textContent = country.region || "N/A"
+    countrySubregion.textContent = country.subregion || "N/A"
 
     // Valute - Usa la nuova funzione per creare elementi di lista
     if (country.currencies) {
-      const currencyItems = Object.values(country.currencies).map(
-        (currency) => `${currency.name} (${currency.symbol || ""})`
-      );
-      createListItems(countryCurrencies, currencyItems);
+      // Mostra le valute in modo più dettagliato
+      countryCurrencies.innerHTML = ""
+
+      Object.entries(country.currencies).forEach(([code, currencyInfo]) => {
+        const currencyBadge = document.createElement("div")
+        currencyBadge.className = "currency-badge"
+        currencyBadge.style.marginBottom = "8px"
+
+        const currencySymbol = document.createElement("span")
+        currencySymbol.className = "currency-badge-symbol"
+        currencySymbol.textContent = currencyInfo.symbol || code
+
+        currencyBadge.appendChild(currencySymbol)
+        currencyBadge.appendChild(document.createTextNode(` ${code} - ${currencyInfo.name}`))
+
+        countryCurrencies.appendChild(currencyBadge)
+      })
+
+      // Aggiorna i dettagli della valuta
+      updateCurrencyDetails(country)
     } else {
-      countryCurrencies.textContent = "N/A";
+      countryCurrencies.textContent = "N/A"
+      document.getElementById("currency-details").style.display = "none"
     }
 
     // Lingue - Usa la nuova funzione per creare elementi di lista
     if (country.languages) {
-      const languageItems = Object.values(country.languages);
-      createListItems(countryLanguages, languageItems);
+      const languageItems = Object.values(country.languages)
+      createListItems(countryLanguages, languageItems)
     } else {
-      countryLanguages.textContent = "N/A";
+      countryLanguages.textContent = "N/A"
     }
 
     // Fusi orari - Usa la nuova funzione per creare elementi di lista
-    if (country.timezones && country.timezones.length > 0)
-      createListItems(countryTimezones, country.timezones);
-    else countryTimezones.textContent = "N/A";
+    if (country.timezones && country.timezones.length > 0) createListItems(countryTimezones, country.timezones)
+    else countryTimezones.textContent = "N/A"
 
     // Paesi confinanti
-    borderCountries.innerHTML = "";
+    borderCountries.innerHTML = ""
     if (country.borders && country.borders.length > 0) {
       // Se c'è un solo paese confinante, mostralo come elemento singolo
       if (country.borders.length === 1) {
         const borderCode = country.borders[0],
-          borderCountry = countriesData[borderCode.toLowerCase()];
+          borderCountry = countriesData[borderCode.toLowerCase()]
         if (borderCountry) {
-          const borderElement = document.createElement("div");
-          borderElement.className = "border-country";
-          borderElement.textContent = borderCountry.name.common;
+          const borderElement = document.createElement("div")
+          borderElement.className = "border-country"
+          borderElement.textContent = borderCountry.name.common
           borderElement.addEventListener("click", () => {
-            showCountryInfo(borderCode.toLowerCase());
+            showCountryInfo(borderCode.toLowerCase())
 
             // Se siamo in modalità mappa, evidenzia il paese sulla mappa
             if (viewMode === "map") {
-              const countries = document.querySelectorAll(".country");
-              countries.forEach((c) => c.classList.remove("selected"));
+              const countries = document.querySelectorAll(".country")
+              countries.forEach((c) => c.classList.remove("selected"))
 
-              const borderCountryElement = document.getElementById(
-                borderCode.toLowerCase()
-              );
-              if (borderCountryElement)
-                borderCountryElement.classList.add("selected");
+              const borderCountryElement = document.getElementById(borderCode.toLowerCase())
+              if (borderCountryElement) borderCountryElement.classList.add("selected")
             }
-          });
-          borderCountries.appendChild(borderElement);
+          })
+          borderCountries.appendChild(borderElement)
         }
       } else {
         // Se ci sono più paesi confinanti, crea un elenco numerato
-        const orderedList = document.createElement("ol");
-        orderedList.className = "borders-list-numbered";
+        const orderedList = document.createElement("ol")
+        orderedList.className = "borders-list-numbered"
 
         country.borders.forEach((borderCode) => {
-          const borderCountry = countriesData[borderCode.toLowerCase()];
+          const borderCountry = countriesData[borderCode.toLowerCase()]
           if (borderCountry) {
-            const listItem = document.createElement("li");
-            listItem.className = "border-country-item";
+            const listItem = document.createElement("li")
+            listItem.className = "border-country-item"
 
-            const borderLink = document.createElement("span");
-            borderLink.className = "border-country";
-            borderLink.textContent = borderCountry.name.common;
+            const borderLink = document.createElement("span")
+            borderLink.className = "border-country"
+            borderLink.textContent = borderCountry.name.common
             borderLink.addEventListener("click", () => {
-              showCountryInfo(borderCode.toLowerCase());
+              showCountryInfo(borderCode.toLowerCase())
 
               // Se siamo in modalità mappa, evidenzia il paese sulla mappa
               if (viewMode === "map") {
-                const countries = document.querySelectorAll(".country");
-                countries.forEach((c) => c.classList.remove("selected"));
+                const countries = document.querySelectorAll(".country")
+                countries.forEach((c) => c.classList.remove("selected"))
 
-                const borderCountryElement = document.getElementById(
-                  borderCode.toLowerCase()
-                );
-                if (borderCountryElement)
-                  borderCountryElement.classList.add("selected");
+                const borderCountryElement = document.getElementById(borderCode.toLowerCase())
+                if (borderCountryElement) borderCountryElement.classList.add("selected")
               }
-            });
+            })
 
-            listItem.appendChild(borderLink);
-            orderedList.appendChild(listItem);
+            listItem.appendChild(borderLink)
+            orderedList.appendChild(listItem)
           }
-        });
+        })
 
-        borderCountries.appendChild(orderedList);
+        borderCountries.appendChild(orderedList)
       }
-    } else borderCountries.textContent = "Nessun paese confinante";
+    } else borderCountries.textContent = "Nessun paese confinante"
 
     // Mostra il popup
-    popup.style.display = "flex";
-  } else console.error("Paese non trovato:", countryId);
+    popup.style.display = "flex"
+  } else console.error("Paese non trovato:", countryId)
+}
+
+// Aggiorna i dettagli della valuta
+function updateCurrencyDetails(country) {
+  const currencyDetails = document.getElementById("currency-details")
+  const currencyDetailsContent = document.getElementById("currency-details-content")
+
+  if (!country.currencies) {
+    currencyDetails.style.display = "none"
+    return
+  }
+
+  currencyDetails.style.display = "block"
+  currencyDetailsContent.innerHTML = ""
+
+  Object.entries(country.currencies).forEach(([code, currencyInfo]) => {
+    const currencyData = currencies[code]
+    if (!currencyData) return
+
+    const currencyCard = document.createElement("div")
+    currencyCard.className = "currency-card"
+
+    // Header con codice e simbolo
+    const cardHeader = document.createElement("div")
+    cardHeader.className = "currency-card-header"
+
+    const currencyCode = document.createElement("div")
+    currencyCode.className = "currency-code"
+    currencyCode.textContent = code
+
+    const currencySymbol = document.createElement("div")
+    currencySymbol.className = "currency-symbol"
+    currencySymbol.textContent = currencyInfo.symbol || code
+
+    cardHeader.appendChild(currencyCode)
+    cardHeader.appendChild(currencySymbol)
+    currencyCard.appendChild(cardHeader)
+
+    // Nome della valuta
+    const currencyName = document.createElement("div")
+    currencyName.className = "currency-name"
+    currencyName.textContent = currencyInfo.name
+    currencyCard.appendChild(currencyName)
+
+    // Numero di paesi che usano questa valuta
+    const currencyCountries = document.createElement("div")
+    currencyCountries.className = "currency-countries"
+
+    const countriesCount = currencyData.countries.length
+    currencyCountries.textContent = `Utilizzata in ${countriesCount} ${countriesCount === 1 ? "paese" : "paesi"}`
+
+    currencyCard.appendChild(currencyCountries)
+
+    currencyDetailsContent.appendChild(currencyCard)
+  })
 }
 
 // Carica i dati all'avvio
 window.addEventListener("DOMContentLoaded", () => {
-  loadCountriesData();
-});
+  loadCountriesData()
+})
 
 document.getElementById("footer").innerHTML = ` <footer class="app-footer">
     <div class="container">
@@ -920,4 +1153,4 @@ document.getElementById("footer").innerHTML = ` <footer class="app-footer">
         >
       </p>
   </div>
-</footer>`;
+</footer>`

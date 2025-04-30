@@ -13,6 +13,8 @@
   --color-active: #e0e0e0;
   --color-success: #27ae60;
   --color-error: #e74c3c;
+  --color-currency: #f39c12;
+  --color-currency-light: #fdebd0;
 
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
   --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -322,6 +324,7 @@ svg {
   position: relative;
   display: flex;
   align-items: center;
+  margin-bottom: var(--spacing-md);
 }
 
 .search-icon {
@@ -358,12 +361,21 @@ svg {
   margin-top: var(--spacing-md);
 }
 
-/* Continent Filters */
-.continent-filters {
+/* Filter Section */
+.filter-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-lg);
   margin-bottom: var(--spacing-lg);
 }
 
-.continent-filter-title {
+/* Continent Filters */
+.continent-filters,
+.currency-filters {
+  margin-bottom: var(--spacing-lg);
+}
+
+.filter-title {
   font-weight: 600;
   margin-bottom: var(--spacing-md);
   color: var(--color-text);
@@ -375,7 +387,8 @@ svg {
   gap: var(--spacing-sm);
 }
 
-.continent-filter {
+.continent-filter,
+.currency-filter {
   display: flex;
   align-items: center;
   background-color: var(--color-card);
@@ -386,12 +399,39 @@ svg {
   border: 1px solid var(--color-border);
 }
 
-.continent-filter:hover {
+.continent-filter:hover,
+.currency-filter:hover {
   background-color: var(--color-hover);
 }
 
-.continent-filter.active {
+.continent-filter.active,
+.currency-filter.active {
   font-weight: 600;
+}
+
+/* Currency filter specific */
+.currency-filter {
+  border-left: 4px solid var(--color-currency);
+}
+
+.currency-filter.active {
+  background-color: var(--color-currency);
+  color: white;
+  border-color: var(--color-currency);
+}
+
+.currency-filter .currency-code {
+  font-weight: 600;
+  margin-right: var(--spacing-xs);
+}
+
+.currency-filter .currency-name {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-light);
+}
+
+.currency-filter.active .currency-name {
+  color: rgba(255, 255, 255, 0.8);
 }
 
 /* Continent-specific colors */
@@ -760,6 +800,77 @@ svg {
   border-radius: var(--radius-md);
 }
 
+/* Currency specific styles */
+.currencies-item {
+  grid-column: span 2;
+}
+
+.currency-details {
+  margin-bottom: var(--spacing-xl);
+}
+
+.currency-details-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: var(--spacing-md);
+}
+
+.currency-card {
+  background-color: var(--color-currency-light);
+  border: 1px solid var(--color-currency);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.currency-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--spacing-xs);
+}
+
+.currency-code {
+  font-weight: 700;
+  font-size: var(--font-size-lg);
+  color: var(--color-currency);
+}
+
+.currency-symbol {
+  font-size: var(--font-size-xl);
+  color: var(--color-currency);
+}
+
+.currency-name {
+  font-size: var(--font-size-sm);
+  color: var(--color-text);
+}
+
+.currency-countries {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-light);
+  margin-top: var(--spacing-xs);
+}
+
+.currency-badge {
+  display: inline-flex;
+  align-items: center;
+  background-color: var(--color-currency-light);
+  border: 1px solid var(--color-currency);
+  border-radius: var(--radius-full);
+  padding: 2px 8px;
+  margin-right: 4px;
+  margin-bottom: 4px;
+  font-size: var(--font-size-xs);
+}
+
+.currency-badge-symbol {
+  font-weight: bold;
+  margin-right: 4px;
+}
+
 /* Responsive styles */
 @media (max-width: 768px) {
   .container {
@@ -786,6 +897,14 @@ svg {
 
   .continent-countries {
     grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  }
+
+  .filter-section {
+    grid-template-columns: 1fr;
+  }
+
+  .currency-details-content {
+    grid-template-columns: 1fr;
   }
 }
 
