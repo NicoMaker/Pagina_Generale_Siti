@@ -8,7 +8,9 @@
   --text: #212529;
   --text-light: #6c757d;
   --border: #dee2e6;
-  --success: #4cc9f0;
+  --success: blue;
+  --success-light: rgba(76, 201, 240, 0.1);
+  --success-dark: #0ca3a3;
   --gradient: linear-gradient(135deg, #4361ee, #3a0ca3);
   --shadow: 0 10px 30px rgba(67, 97, 238, 0.1);
   --transition: all 0.3s ease;
@@ -135,6 +137,27 @@ h1 {
   gap: 0.5rem;
 }
 
+.input-group {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.date-status {
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+  height: 1.2rem;
+  display: block;
+}
+
+.date-status.confirmed {
+  color: var(--success);
+}
+
+.date-status.error {
+  color: var(--secondary);
+}
+
 label {
   font-weight: 600;
   color: var(--text);
@@ -154,6 +177,11 @@ input[type="datetime-local"] {
 input[type="datetime-local"]:focus {
   border-color: var(--primary);
   box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+}
+
+input[type="datetime-local"].confirmed {
+  border-color: var(--success);
+  background-color: var(--success-light);
 }
 
 button {
@@ -183,10 +211,28 @@ button:active {
   transform: translateY(0);
 }
 
+button:disabled {
+  background: var(--text-light);
+  cursor: not-allowed;
+  transform: none;
+  opacity: 0.7;
+}
+
 .btn-icon {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.confirm-btn {
+  padding: 0.8rem;
+  font-size: 0.9rem;
+  min-width: 60px;
+  background: var(--success);
+}
+
+.confirm-btn:hover {
+  background: var(--success-dark);
 }
 
 .secondary-btn {
@@ -356,5 +402,14 @@ footer {
 
   h1 {
     font-size: 1.8rem;
+  }
+
+  .input-group {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .confirm-btn {
+    margin-top: 0.5rem;
   }
 }

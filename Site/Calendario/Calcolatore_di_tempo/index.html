@@ -1,4 +1,3 @@
-+
 <!DOCTYPE html>
 <html lang="it">
 
@@ -7,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Calcolatore di Tempo</title>
   <link rel="icon"
-    href="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/orario.jpg-GXomZ13exJqDKRhiqkx3DX6bSROoPG.png"
+    href="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/orario.jpg-uYZggwhA6fZ8lrHCszDwPYUE1JsCCR.png"
     type="image/png" />
   <link rel="stylesheet" href="style.css" />
   <script src="script.js" defer></script>
@@ -17,7 +16,7 @@
   <div class="app-container">
     <header>
       <div class="logo">
-        <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/orario.jpg-GXomZ13exJqDKRhiqkx3DX6bSROoPG.png"
+        <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/orario.jpg-uYZggwhA6fZ8lrHCszDwPYUE1JsCCR.png"
           alt="Orologio" />
         <h1>Calcolatore di Tempo</h1>
       </div>
@@ -29,16 +28,40 @@
         <div class="date-inputs">
           <div class="date-input">
             <label for="inputDate1">Prima data e ora:</label>
-            <input type="datetime-local" id="inputDate1" />
+            <div class="input-group">
+              <input type="datetime-local" id="inputDate1" />
+              <button class="confirm-btn" id="confirmDate1" onclick="confermaData(1)">
+                <span class="btn-text">OK</span>
+                <span class="btn-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                </span>
+              </button>
+            </div>
+            <span id="date1Status" class="date-status"></span>
           </div>
 
           <div class="date-input">
             <label for="inputDate2">Seconda data e ora:</label>
-            <input type="datetime-local" id="inputDate2" />
+            <div class="input-group">
+              <input type="datetime-local" id="inputDate2" />
+              <button class="confirm-btn" id="confirmDate2" onclick="confermaData(2)">
+                <span class="btn-text">OK</span>
+                <span class="btn-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                </span>
+              </button>
+            </div>
+            <span id="date2Status" class="date-status"></span>
           </div>
         </div>
 
-        <button id="calculate-btn" onclick="avviaConteggio()">
+        <button id="calculate-btn" onclick="avviaConteggio()" disabled>
           <span class="btn-text">Avvia Conteggio in Tempo Reale</span>
           <span class="btn-icon">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"

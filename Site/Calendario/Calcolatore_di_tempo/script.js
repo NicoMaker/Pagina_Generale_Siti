@@ -5,6 +5,9 @@ let data1 = null;
 let data2 = null;
 // Flag per indicare se il conteggio è attivo
 let conteggioAttivo = false;
+// Flag per tenere traccia delle date confermate
+let data1Confermata = false;
+let data2Confermata = false;
 
 // Funzione per impostare le date di default
 function impostaDateDefault() {
@@ -25,6 +28,61 @@ function formatDateForInput(date) {
   const minutes = String(date.getMinutes()).padStart(2, "0");
 
   return `${year}-${month}-${day}T${hours}:${minutes}`;
+}
+
+// Funzione per confermare una data
+function confermaData(numeroData) {
+  const inputElement = document.getElementById(`inputDate${numeroData}`);
+  const statusElement = document.getElementById(`date${numeroData}Status`);
+  const dataSelezionata = new Date(inputElement.value);
+
+  // Verifica se la data è valida
+  if (isNaN(dataSelezionata.getTime())) {
+    statusElement.textContent = "Data non valida";
+    statusElement.className = "date-status error";
+    inputElement.classList.remove("confirmed");
+
+    if (numeroData === 1) {
+      data1Confermata = false;
+    } else {
+      data2Confermata = false;
+    }
+  } else {
+    // Salva la data confermata
+    if (numeroData === 1) {
+      data1 = dataSelezionata;
+      data1Confermata = true;
+    } else {
+      data2 = dataSelezionata;
+      data2Confermata = true;
+    }
+
+    // Aggiorna lo stato visivo
+    statusElement.textContent = "Data confermata";
+    statusElement.className = "date-status confirmed";
+    inputElement.classList.add("confirmed");
+
+    // Aggiungi animazione al pulsante di conferma
+    const confirmBtn = document.getElementById(`confirmDate${numeroData}`);
+    confirmBtn.classList.add("pulse");
+    setTimeout(() => {
+      confirmBtn.classList.remove("pulse");
+    }, 1500);
+  }
+
+  // Abilita/disabilita il pulsante di avvio conteggio
+  aggiornaStatoPulsanteAvvio();
+}
+
+// Funzione per aggiornare lo stato del pulsante di avvio
+function aggiornaStatoPulsanteAvvio() {
+  const avvioBtn = document.getElementById("calculate-btn");
+
+  if (data1Confermata && data2Confermata) {
+    avvioBtn.disabled = false;
+  } else {
+    avvioBtn.disabled = true;
+  }
 }
 
 // Funzione per aggiornare l'interfaccia con i valori calcolati
@@ -133,20 +191,14 @@ function formatTimeText(years, months, days, hours, minutes, seconds) {
 
 // Funzione per avviare il conteggio in tempo reale
 function avviaConteggio() {
-  // Ferma qualsiasi conteggio precedente
-  fermaConteggio();
-
-  // Ottieni le date inserite
-  data1 = new Date(document.getElementById("inputDate1").value);
-  data2 = new Date(document.getElementById("inputDate2").value);
-
-  // Verifica se le date sono valide
-  if (isNaN(data1.getTime()) || isNaN(data2.getTime())) {
-    document.getElementById("risultato").textContent = "Inserisci date valide";
-    document.getElementById("result-container").classList.remove("hidden");
-    resetTimeValues();
+  // Verifica se entrambe le date sono state confermate
+  if (!data1Confermata || !data2Confermata) {
+    alert("Conferma entrambe le date prima di avviare il conteggio");
     return;
   }
+
+  // Ferma qualsiasi conteggio precedente
+  fermaConteggio();
 
   // Imposta il flag di conteggio attivo
   conteggioAttivo = true;
@@ -238,10 +290,40 @@ function resetTimeValues() {
   document.getElementById("seconds").textContent = "0";
 }
 
+// Funzione per gestire il cambio di una data
+function gestisciCambioData(numeroData) {
+  const inputElement = document.getElementById(`inputDate${numeroData}`);
+  const statusElement = document.getElementById(`date${numeroData}Status`);
+
+  // Resetta lo stato di conferma
+  if (numeroData === 1) {
+    data1Confermata = false;
+  } else {
+    data2Confermata = false;
+  }
+
+  // Aggiorna l'interfaccia
+  statusElement.textContent = "Data modificata, conferma per procedere";
+  statusElement.className = "date-status";
+  inputElement.classList.remove("confirmed");
+
+  // Aggiorna lo stato del pulsante di avvio
+  aggiornaStatoPulsanteAvvio();
+}
+
 // Inizializza l'applicazione quando il DOM è caricato
 document.addEventListener("DOMContentLoaded", () => {
   // Imposta le date di default
   impostaDateDefault();
+
+  // Aggiungi event listener per i campi data
+  document.getElementById("inputDate1").addEventListener("change", () => {
+    gestisciCambioData(1);
+  });
+
+  document.getElementById("inputDate2").addEventListener("change", () => {
+    gestisciCambioData(2);
+  });
 
   // Aggiungi event listener per calcolare quando si preme Invio
   document
@@ -249,6 +331,7 @@ document.addEventListener("DOMContentLoaded", () => {
     .addEventListener("keypress", (event) => {
       if (event.key === "Enter") {
         event.preventDefault();
+        confermaData(1);
         document.getElementById("inputDate2").focus();
       }
     });
@@ -258,7 +341,10 @@ document.addEventListener("DOMContentLoaded", () => {
     .addEventListener("keypress", (event) => {
       if (event.key === "Enter") {
         event.preventDefault();
-        avviaConteggio();
+        confermaData(2);
+        if (data1Confermata && data2Confermata) {
+          avviaConteggio();
+        }
       }
     });
 });
