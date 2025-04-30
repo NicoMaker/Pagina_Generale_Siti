@@ -475,7 +475,7 @@ h1 {
 .alert-content p {
   margin: 0 0 25px 0;
   font-size: 1.2rem;
-  color: white;
+  color: #333;
   font-weight: 500;
 }
 
@@ -789,8 +789,4 @@ h1 {
 
 .stat-box:nth-child(2) {
   animation-delay: 0.2s;
-}
-
-.alert-content .victory-content .victory-message h3 {
-  color: #333;
 }
