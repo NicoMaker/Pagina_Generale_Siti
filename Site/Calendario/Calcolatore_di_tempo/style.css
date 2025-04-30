@@ -112,6 +112,23 @@ h1 {
   margin-bottom: 2rem;
 }
 
+.date-inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .date-inputs {
+    flex-direction: row;
+    gap: 2rem;
+  }
+
+  .date-input {
+    flex: 1;
+  }
+}
+
 .date-input {
   display: flex;
   flex-direction: column;
@@ -172,6 +189,15 @@ button:active {
   justify-content: center;
 }
 
+.secondary-btn {
+  background: var(--secondary);
+  margin-top: 1.5rem;
+}
+
+.secondary-btn:hover {
+  background: #d31b6f;
+}
+
 /* Result Container */
 .result-container {
   opacity: 1;
@@ -185,6 +211,27 @@ button:active {
   display: none;
   opacity: 0;
   transform: translateY(10px);
+}
+
+.direction-indicator {
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius);
+  background-color: rgba(67, 97, 238, 0.1);
+  color: var(--primary);
+}
+
+.direction-indicator.future {
+  background-color: rgba(76, 201, 240, 0.1);
+  color: var(--success);
+}
+
+.direction-indicator.past {
+  background-color: rgba(247, 37, 133, 0.1);
+  color: var(--secondary);
 }
 
 .time-units {
@@ -256,6 +303,22 @@ footer {
 
 .pulse {
   animation: pulse 1.5s infinite;
+}
+
+.update-flash {
+  animation: flash 0.5s;
+}
+
+@keyframes flash {
+  0% {
+    color: var(--primary);
+  }
+  50% {
+    color: var(--secondary);
+  }
+  100% {
+    color: var(--primary);
+  }
 }
 
 /* Responsive Styles */
