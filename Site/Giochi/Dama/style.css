@@ -65,6 +65,83 @@ h1 {
   text-align: center;
 }
 
+/* Opzioni di gioco */
+.game-options {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.option-box {
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  padding: 10px 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.option-label {
+  margin-left: 10px;
+  font-weight: 500;
+}
+
+/* Switch per le opzioni */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 24px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  background-color: #4a6ea9;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #4a6ea9;
+}
+
+input:checked + .slider:before {
+  transform: translateX(26px);
+}
+
+.slider.round {
+  border-radius: 24px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
 .board {
   width: 100%;
   max-width: 640px;
@@ -267,6 +344,21 @@ h1 {
 .game-btn:active {
   transform: translateY(-1px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Stile per il pulsante disabilitato */
+.game-btn:disabled,
+.disabled-btn {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.game-btn:disabled:hover,
+.disabled-btn:hover {
+  transform: none !important;
+  box-shadow: none !important;
 }
 
 .restart-btn {
@@ -648,6 +740,14 @@ h1 {
   text-align: center;
 }
 
+.draw-header {
+  background-color: #5bc0de;
+}
+
+.settings-header {
+  background-color: #5a7eb9;
+}
+
 .modal-header h3 {
   margin: 0;
   font-weight: 600;
@@ -667,6 +767,74 @@ h1 {
   color: #d9534f;
   font-weight: 500;
   margin-top: 15px;
+}
+
+.draw-options {
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px solid #eee;
+}
+
+.draw-options h4 {
+  margin-bottom: 15px;
+  color: #555;
+}
+
+.option-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.continue-btn {
+  background-image: linear-gradient(to bottom, #5bc0de, #46b8da);
+  color: white;
+}
+
+.continue-btn:hover {
+  background-image: linear-gradient(to bottom, #46b8da, #31b0d5);
+}
+
+.new-game-draw-btn {
+  background-image: linear-gradient(to bottom, #5a7eb9, #4a6ea9);
+  color: white;
+}
+
+.new-game-draw-btn:hover {
+  background-image: linear-gradient(to bottom, #4a6ea9, #3a5a8f);
+}
+
+.settings-option {
+  margin-bottom: 20px;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.settings-select {
+  padding: 8px 15px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  background-color: #f9f9f9;
+  font-size: 1rem;
+  width: 150px;
+}
+
+.settings-note {
+  font-size: 0.9rem;
+  color: #777;
+  font-style: italic;
+  margin-top: 20px;
+}
+
+.save-btn {
+  background-image: linear-gradient(to bottom, #5cb85c, #4cae4c);
+  color: white;
+}
+
+.save-btn:hover {
+  background-image: linear-gradient(to bottom, #4cae4c, #449d44);
 }
 
 .modal-footer {
@@ -748,6 +916,20 @@ h1 {
   }
 
   .modal-btn {
+    width: 100%;
+  }
+
+  .option-buttons {
+    flex-direction: column;
+  }
+
+  .settings-option {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .settings-select {
     width: 100%;
   }
 }

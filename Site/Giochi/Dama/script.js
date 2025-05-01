@@ -11,26 +11,35 @@ document.addEventListener("DOMContentLoaded", () => {
   let validMoves = [];
   let mandatoryCaptures = [];
   let gameOver = false;
+  let isDraw = false;
+  let gameInProgress = false; // Nuova variabile per tracciare se la partita è in corso
 
   // Aggiungi queste nuove variabili per le statistiche
   let gameCount = 1;
   let whiteWins = 0;
   let blackWins = 0;
+  let draws = 0;
   let whiteCaptured = 0;
   let blackCaptured = 0;
+
+  // Impostazioni di gioco
+  let mandatoryCapture = true;
 
   // DOM elements
   const boardElement = document.getElementById("board");
   const statusElement = document.getElementById("status");
   const resetButton = document.getElementById("reset");
+  const restartButton = document.getElementById("restart");
   const toggleRulesButton = document.getElementById("toggle-rules");
   const rulesElement = document.getElementById("rules");
+  const mandatoryCaptureToggle = document.getElementById("mandatory-capture");
 
   // Aggiungi questi nuovi riferimenti
   const resetAllButton = document.getElementById("reset-all");
   const gameCounterElement = document.getElementById("game-counter");
   const whiteWinsElement = document.getElementById("white-wins");
   const blackWinsElement = document.getElementById("black-wins");
+  const drawsElement = document.getElementById("draws");
   const whiteCapturedElement = document.getElementById("white-captured");
   const blackCapturedElement = document.getElementById("black-captured");
 
@@ -39,14 +48,42 @@ document.addEventListener("DOMContentLoaded", () => {
   const cancelResetButton = document.getElementById("cancel-reset");
   const confirmResetButton = document.getElementById("confirm-reset");
 
+  // Draw modal elements
+  const drawModal = document.getElementById("draw-modal");
+  const continueGameButton = document.getElementById("continue-game");
+  const newGameDrawButton = document.getElementById("new-game-draw");
+
+  // Settings modal elements
+  const settingsModal = document.getElementById("settings-modal");
+  const captureSetting = document.getElementById("capture-setting");
+  const saveSettingsButton = document.getElementById("save-settings");
+  const cancelSettingsButton = document.getElementById("cancel-settings");
+
   // Initialize the game
   initGame();
 
   // Event listeners
-  resetButton.addEventListener("click", resetGame);
+  resetButton.addEventListener("click", () => {
+    // Se la partita è finita in pareggio, mostra il modal di pareggio invece di resettare direttamente
+    if (isDraw) {
+      showDrawModal();
+    } else {
+      resetGame();
+    }
+  });
+
+  restartButton.addEventListener("click", () => {
+    // Controlla se la partita è in corso prima di permettere il riavvio
+    if (gameInProgress) {
+      restartGame();
+    } else {
+      showMessage("Non puoi ricominciare una partita già conclusa. Inizia una nuova partita.");
+    }
+  });
+
   toggleRulesButton.addEventListener("click", toggleRules);
   resetAllButton.addEventListener("click", showResetConfirmation);
-  document.getElementById("restart").addEventListener("click", restartGame);
+  mandatoryCaptureToggle.addEventListener("change", toggleMandatoryCapture);
 
   // Modal event listeners
   cancelResetButton.addEventListener("click", hideResetConfirmation);
@@ -54,6 +91,24 @@ document.addEventListener("DOMContentLoaded", () => {
     hideResetConfirmation();
     resetAllStats();
   });
+
+  // Draw modal event listeners
+  continueGameButton.addEventListener("click", () => {
+    hideDrawModal();
+  });
+
+  newGameDrawButton.addEventListener("click", () => {
+    hideDrawModal();
+    resetGame();
+  });
+
+  // Settings modal event listeners
+  saveSettingsButton.addEventListener("click", () => {
+    saveSettings();
+    hideSettingsModal();
+  });
+
+  cancelSettingsButton.addEventListener("click", hideSettingsModal);
 
   // Funzione per mostrare il modal di conferma
   function showResetConfirmation() {
@@ -65,6 +120,51 @@ document.addEventListener("DOMContentLoaded", () => {
     confirmModal.classList.remove("show");
   }
 
+  // Funzione per mostrare il modal di pareggio
+  function showDrawModal() {
+    drawModal.classList.add("show");
+  }
+
+  // Funzione per nascondere il modal di pareggio
+  function hideDrawModal() {
+    drawModal.classList.remove("show");
+  }
+
+  // Funzione per mostrare il modal delle impostazioni
+  function showSettingsModal() {
+    // Imposta il valore corrente dell'opzione di cattura
+    captureSetting.value = mandatoryCapture ? "mandatory" : "optional";
+    settingsModal.classList.add("show");
+  }
+
+  // Funzione per nascondere il modal delle impostazioni
+  function hideSettingsModal() {
+    settingsModal.classList.remove("show");
+  }
+
+  // Funzione per salvare le impostazioni
+  function saveSettings() {
+    mandatoryCapture = captureSetting.value === "mandatory";
+    mandatoryCaptureToggle.checked = mandatoryCapture;
+    showMessage(`Impostazioni salvate! La cattura è ora ${mandatoryCapture ? "obbligatoria" : "facoltativa"}.`);
+  }
+
+  // Funzione per attivare/disattivare la cattura obbligatoria
+  function toggleMandatoryCapture() {
+    mandatoryCapture = mandatoryCaptureToggle.checked;
+    showMessage(`La cattura è ora ${mandatoryCapture ? "obbligatoria" : "facoltativa"}.`);
+
+    // Se la partita è in corso, aggiorna le mosse valide
+    if (gameInProgress) {
+      findMandatoryCaptures();
+      if (selectedPiece) {
+        findValidMoves(selectedPiece);
+        clearSelection();
+        selectPiece(selectedPiece.row, selectedPiece.col);
+      }
+    }
+  }
+
   // Modifica la funzione initGame per impostare il giocatore iniziale in base al numero della partita
   function initGame() {
     createBoard();
@@ -72,6 +172,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Imposta il giocatore iniziale in base al numero della partita
     currentPlayer = gameCount % 2 === 0 ? PLAYER_BLACK : PLAYER_WHITE;
+
+    // Resetta lo stato di pareggio
+    isDraw = false;
+
+    // Imposta la partita come in corso
+    gameInProgress = true;
+
+    // Abilita il pulsante "Ricomincia Partita"
+    restartButton.disabled = false;
+    restartButton.classList.remove("disabled-btn");
 
     updateStatus();
     updateStats();
@@ -82,6 +192,7 @@ document.addEventListener("DOMContentLoaded", () => {
     gameCounterElement.textContent = `Partita: ${gameCount}`;
     whiteWinsElement.textContent = whiteWins;
     blackWinsElement.textContent = blackWins;
+    drawsElement.textContent = draws;
     whiteCapturedElement.textContent = whiteCaptured;
     blackCapturedElement.textContent = blackCaptured;
   }
@@ -158,9 +269,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Create new piece element
     const pieceElement = document.createElement("div");
-    pieceElement.className = `piece ${piece.player}${
-      piece.isKing ? " king" : ""
-    }`;
+    pieceElement.className = `piece ${piece.player}${piece.isKing ? " king" : ""
+      }`;
 
     square.appendChild(pieceElement);
   }
@@ -180,8 +290,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // If there's a piece at the clicked position and it belongs to the current player
     if (board[row][col] && board[row][col].player === currentPlayer) {
-      // If there are mandatory captures, only allow selecting pieces that can capture
-      if (mandatoryCaptures.length > 0) {
+      // Se la cattura è obbligatoria e ci sono catture disponibili, controlla se il pezzo può catturare
+      if (mandatoryCapture && mandatoryCaptures.length > 0) {
         const canCapture = mandatoryCaptures.some(
           (capture) => capture.piece.row === row && capture.piece.col === col
         );
@@ -245,8 +355,8 @@ document.addEventListener("DOMContentLoaded", () => {
   function findValidMoves(piece) {
     validMoves = [];
 
-    // If there are mandatory captures, only consider those
-    if (mandatoryCaptures.length > 0) {
+    // Se la cattura è obbligatoria e ci sono catture disponibili, considera solo quelle per questo pezzo
+    if (mandatoryCapture && mandatoryCaptures.length > 0) {
       const pieceMandatoryCaptures = mandatoryCaptures.filter(
         (capture) =>
           capture.piece.row === piece.row && capture.piece.col === piece.col
@@ -259,17 +369,17 @@ document.addEventListener("DOMContentLoaded", () => {
     // Regular moves (no captures)
     const directions = piece.isKing
       ? [
-          [-1, -1],
-          [-1, 1],
-          [1, -1],
-          [1, 1],
-        ]
+        [-1, -1],
+        [-1, 1],
+        [1, -1],
+        [1, 1],
+      ]
       : piece.player === PLAYER_WHITE
-      ? [
+        ? [
           [-1, -1],
           [-1, 1],
         ]
-      : [
+        : [
           [1, -1],
           [1, 1],
         ];
@@ -289,24 +399,28 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Check for captures
-    findCaptures(piece, [], validMoves);
+    const capturesMoves = [];
+    findCaptures(piece, [], capturesMoves);
+
+    // Aggiungi le mosse di cattura alle mosse valide
+    validMoves = [...validMoves, ...capturesMoves];
   }
 
   // Modifica la funzione findCaptures per implementare la regola che le pedine non possono mangiare le dame
   function findCaptures(piece, capturedPieces = [], moves = []) {
     const directions = piece.isKing
       ? [
-          [-1, -1],
-          [-1, 1],
-          [1, -1],
-          [1, 1],
-        ]
+        [-1, -1],
+        [-1, 1],
+        [1, -1],
+        [1, 1],
+      ]
       : piece.player === PLAYER_WHITE
-      ? [
+        ? [
           [-1, -1],
           [-1, 1],
         ]
-      : [
+        : [
           [1, -1],
           [1, 1],
         ];
@@ -372,6 +486,12 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function findMandatoryCaptures() {
+    // Se la cattura non è obbligatoria, non cercare catture obbligatorie
+    if (!mandatoryCapture) {
+      mandatoryCaptures = [];
+      return;
+    }
+
     mandatoryCaptures = [];
     let maxCaptureCount = 0;
     let hasDamaCapture = false;
@@ -506,7 +626,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const furtherCaptures = [];
     findCaptures(piece, [], furtherCaptures);
 
-    if (captures.length > 0 && furtherCaptures.length > 0) {
+    if (mandatoryCapture && captures.length > 0 && furtherCaptures.length > 0) {
       // The player must continue capturing with the same piece
       selectedPiece = piece;
       validMoves = furtherCaptures;
@@ -542,9 +662,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function updateStatus() {
-    statusElement.textContent = `Turno: ${
-      currentPlayer === PLAYER_WHITE ? "Bianco" : "Nero"
-    }`;
+    statusElement.textContent = `Turno: ${currentPlayer === PLAYER_WHITE ? "Bianco" : "Nero"
+      }`;
     statusElement.style.backgroundColor =
       currentPlayer === PLAYER_WHITE ? "#f0f0f0" : "#333";
     statusElement.style.color =
@@ -572,6 +691,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Check if a player has no pieces left
     if (whitePieces === 0 || blackPieces === 0) {
       gameOver = true;
+      gameInProgress = false; // La partita non è più in corso
       const winner = whitePieces === 0 ? "Nero" : "Bianco";
       statusElement.textContent = `Partita finita! Vince: ${winner}`;
 
@@ -583,6 +703,10 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       updateStats();
+
+      // Disabilita il pulsante "Ricomincia Partita" quando un giocatore vince
+      restartButton.disabled = true;
+      restartButton.classList.add("disabled-btn");
 
       // Mostra un messaggio di vittoria personalizzato
       showVictoryMessage(winner);
@@ -609,17 +733,17 @@ document.addEventListener("DOMContentLoaded", () => {
             // Check regular moves
             const directions = piece.isKing
               ? [
-                  [-1, -1],
-                  [-1, 1],
-                  [1, -1],
-                  [1, 1],
-                ]
+                [-1, -1],
+                [-1, 1],
+                [1, -1],
+                [1, 1],
+              ]
               : piece.player === PLAYER_WHITE
-              ? [
+                ? [
                   [-1, -1],
                   [-1, 1],
                 ]
-              : [
+                : [
                   [1, -1],
                   [1, 1],
                 ];
@@ -645,20 +769,45 @@ document.addEventListener("DOMContentLoaded", () => {
     // If the current player has no valid moves, the game is over
     if (!hasValidMoves) {
       gameOver = true;
-      const winner = currentPlayer === PLAYER_WHITE ? "Nero" : "Bianco";
-      statusElement.textContent = `Partita finita! Vince: ${winner}`;
+      gameInProgress = false; // La partita non è più in corso
 
-      // Aggiorna i contatori delle vittorie
-      if (winner === "Bianco") {
-        whiteWins++;
+      // Se non ci sono mosse valide, è un pareggio
+      if (whitePieces > 0 && blackPieces > 0) {
+        isDraw = true;
+        draws++;
+        statusElement.textContent = `Partita finita in pareggio!`;
+        showMessage("Partita finita in pareggio!");
+        updateStats();
+
+        // Disabilita il pulsante "Ricomincia Partita" quando la partita finisce in pareggio
+        restartButton.disabled = true;
+        restartButton.classList.add("disabled-btn");
+
+        // Mostra il modal di pareggio
+        setTimeout(() => {
+          showDrawModal();
+        }, 1000);
       } else {
-        blackWins++;
+        // Se un giocatore non ha pezzi, l'altro ha vinto
+        const winner = currentPlayer === PLAYER_WHITE ? "Nero" : "Bianco";
+        statusElement.textContent = `Partita finita! Vince: ${winner}`;
+
+        // Aggiorna i contatori delle vittorie
+        if (winner === "Bianco") {
+          whiteWins++;
+        } else {
+          blackWins++;
+        }
+
+        updateStats();
+
+        // Disabilita il pulsante "Ricomincia Partita" quando un giocatore vince
+        restartButton.disabled = true;
+        restartButton.classList.add("disabled-btn");
+
+        // Mostra un messaggio di vittoria personalizzato
+        showVictoryMessage(winner);
       }
-
-      updateStats();
-
-      // Mostra un messaggio di vittoria personalizzato
-      showVictoryMessage(winner);
     }
   }
 
@@ -668,6 +817,8 @@ document.addEventListener("DOMContentLoaded", () => {
     gameCount++;
     whiteCaptured = 0;
     blackCaptured = 0;
+    isDraw = false;
+    gameInProgress = true; // La partita è ora in corso
 
     // Imposta il giocatore iniziale in base al numero della partita
     currentPlayer = gameCount % 2 === 0 ? PLAYER_BLACK : PLAYER_WHITE;
@@ -675,6 +826,10 @@ document.addEventListener("DOMContentLoaded", () => {
     selectedPiece = null;
     validMoves = [];
     mandatoryCaptures = [];
+
+    // Riabilita il pulsante "Ricomincia Partita"
+    restartButton.disabled = false;
+    restartButton.classList.remove("disabled-btn");
 
     createBoard();
     setupPieces();
@@ -687,9 +842,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Aggiungi questa nuova funzione per ricominciare la partita corrente
   function restartGame() {
+    // Controlla se la partita è in corso
+    if (!gameInProgress) {
+      showMessage("Non puoi ricominciare una partita già conclusa. Inizia una nuova partita.");
+      return;
+    }
+
     gameOver = false;
     whiteCaptured = 0;
     blackCaptured = 0;
+    isDraw = false;
+    gameInProgress = true; // La partita è ora in corso
 
     // Mantieni lo stesso giocatore iniziale in base al numero della partita
     currentPlayer = gameCount % 2 === 0 ? PLAYER_BLACK : PLAYER_WHITE;
@@ -712,13 +875,20 @@ document.addEventListener("DOMContentLoaded", () => {
     gameCount = 1;
     whiteWins = 0;
     blackWins = 0;
+    draws = 0;
     whiteCaptured = 0;
     blackCaptured = 0;
 
     gameOver = false;
+    isDraw = false;
+    gameInProgress = true; // La partita è ora in corso
     selectedPiece = null;
     validMoves = [];
     mandatoryCaptures = [];
+
+    // Riabilita il pulsante "Ricomincia Partita"
+    restartButton.disabled = false;
+    restartButton.classList.remove("disabled-btn");
 
     // Imposta il giocatore iniziale (partita 1 = bianco)
     currentPlayer = PLAYER_WHITE;
@@ -832,7 +1002,7 @@ document.addEventListener("DOMContentLoaded", () => {
     statsElement.className = "victory-stats";
     statsElement.innerHTML = `
       <p>Partita #${gameCount}</p>
-      <p>Vittorie Bianco: ${whiteWins} | Vittorie Nero: ${blackWins}</p>
+      <p>Vittorie Bianco: ${whiteWins} | Vittorie Nero: ${blackWins} | Pareggi: ${draws}</p>
     `;
 
     // Aggiungi il pulsante di chiusura

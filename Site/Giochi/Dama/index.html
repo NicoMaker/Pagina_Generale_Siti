@@ -10,8 +10,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="icon"
-    href="https://img.freepik.com/vettori-premium/icona-del-gioco-di-dama-icona-di-dama_645658-3172.jpg"
-    type="image/jpg" />
+        href="https://img.freepik.com/vettori-premium/icona-del-gioco-di-dama-icona-di-dama_645658-3172.jpg"
+        type="image/jpg" />
 </head>
 
 <body>
@@ -24,11 +24,22 @@
             </div>
         </div>
 
+        <!-- Opzioni di gioco -->
+        <div class="game-options">
+            <div class="option-box">
+                <label class="switch">
+                    <input type="checkbox" id="mandatory-capture" checked>
+                    <span class="slider round"></span>
+                </label>
+                <span class="option-label">Cattura Obbligatoria</span>
+            </div>
+        </div>
+
         <div id="board" class="board"></div>
 
         <div class="controls-container">
             <div class="buttons-container">
-                <button id="restart" class="game-btn restart-btn">
+                <button id="restart" class="game-btn restart-btn" disabled>
                     <span class="btn-icon">↺</span>
                     <span class="btn-text">Ricomincia Partita</span>
                 </button>
@@ -56,6 +67,10 @@
                         <span>Nero:</span>
                         <span id="black-wins">0</span>
                     </div>
+                    <div class="stat-row">
+                        <span>Pareggi:</span>
+                        <span id="draws">0</span>
+                    </div>
                 </div>
                 <div class="stat-box">
                     <h3>Pezzi Catturati</h3>
@@ -76,7 +91,7 @@
         </div>
 
         <div id="rules" class="rules hidden">
-            <h2>Le 10 Regole della Dama Italiana</h2>
+            <h2>Le Regole della Dama</h2>
             <ol>
                 <li>Per giocare ci vogliono una damiera e 24 pedine (12 bianche e 12 nere).</li>
                 <li>Ad ogni turno si invertono i colori ovvero prima parte il bianco e poi il nero e cosi via</li>
@@ -86,7 +101,7 @@
                     obbligata a mangiarla! <strong>La pedina non può mangiare le dame.</strong></li>
                 <li>Quando una dama incontra un pezzo (dama o pedina) di colore diverso con una casella libera dietro di
                     sé è obbligata a mangiarlo.</li>
-                <li>È obbligatorio mangiare tutti i pezzi avversari.</li>
+                <li>È obbligatorio mangiare tutti i pezzi avversari (se l'opzione "Cattura Obbligatoria" è attiva).</li>
                 <li>È obbligatorio mangiare con il pezzo più forte (cioè con la dama).</li>
                 <li>È obbligatorio mangiare il pezzo più forte (cioè la dama).</li>
                 <li>È obbligatorio mangiare dalla parte dove si incontrano prima i pezzi più forti.</li>
@@ -110,6 +125,49 @@
             <div class="modal-footer">
                 <button id="cancel-reset" class="modal-btn cancel-btn">Annulla</button>
                 <button id="confirm-reset" class="modal-btn confirm-btn">Conferma Reset</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal per il pareggio -->
+    <div id="draw-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header draw-header">
+                <h3>Partita Patta</h3>
+            </div>
+            <div class="modal-body">
+                <p>La partita è finita in pareggio!</p>
+                <p>Nessun giocatore è riuscito a vincere.</p>
+                <div class="draw-options">
+                    <h4>Cosa vuoi fare?</h4>
+                    <div class="option-buttons">
+                        <button id="continue-game" class="modal-btn continue-btn">Continua a Giocare</button>
+                        <button id="new-game-draw" class="modal-btn new-game-draw-btn">Nuova Partita</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal per le impostazioni di gioco -->
+    <div id="settings-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header settings-header">
+                <h3>Impostazioni di Gioco</h3>
+            </div>
+            <div class="modal-body">
+                <div class="settings-option">
+                    <label for="capture-setting">Cattura Obbligatoria:</label>
+                    <select id="capture-setting" class="settings-select">
+                        <option value="mandatory">Obbligatoria</option>
+                        <option value="optional">Facoltativa</option>
+                    </select>
+                </div>
+                <p class="settings-note">Nota: Le modifiche avranno effetto dalla prossima partita.</p>
+            </div>
+            <div class="modal-footer">
+                <button id="save-settings" class="modal-btn save-btn">Salva Impostazioni</button>
+                <button id="cancel-settings" class="modal-btn cancel-btn">Annulla</button>
             </div>
         </div>
     </div>
