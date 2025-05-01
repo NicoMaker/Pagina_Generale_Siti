@@ -24,14 +24,6 @@
           <span>Turno:</span>
           <div id="currentPlayerIndicator" class="cell rosso" aria-label="Giocatore rosso"></div>
         </div>
-        <button id="soundToggle" onclick="toggleSound()" class="sound-button" aria-label="Disattiva suoni">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-            <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
-            <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
-          </svg>
-        </button>
       </div>
       <div class="reset-buttons">
         <button id="resetButton" onclick="resetGame()" aria-label="Resetta il gioco">
@@ -161,26 +153,12 @@
               colore in orizzontale, verticale o diagonale.</p>
             <p>Usa i pulsanti cartellino per assegnare penalità ai giocatori. Un giocatore perde se riceve 3 cartellini
               gialli o 1 cartellino rosso.</p>
-            <p>I cartellini vengono resettati all'inizio di una nuova partita. Le partite iniziano sempre con il
-              giocatore rosso.</p>
-            <p>Dopo che un giocatore ha vinto, non sarà possibile resettare la partita corrente, ma potrai iniziare una
-              nuova partita.</p>
+            <p>I cartellini vengono resettati all'inizio di una nuova partita. Le partite si alternano: la prima inizia
+              il rosso, la seconda il giallo, e così via.</p>
           </div>
         </details>
       </div>
     </footer>
-  </div>
-
-  <!-- Modal di conferma -->
-  <div id="confirmModal" class="modal hidden">
-    <div class="modal-content">
-      <h3>Conferma</h3>
-      <p id="confirmModalMessage">Sei sicuro?</p>
-      <div class="modal-buttons">
-        <button id="confirmModalYes" class="modal-button confirm-button">Sì</button>
-        <button id="confirmModalNo" class="modal-button cancel-button">No</button>
-      </div>
-    </div>
   </div>
 </body>
 
