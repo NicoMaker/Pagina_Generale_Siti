@@ -1,11 +1,12 @@
 // Variabili globali
 const rows = 6,
-  cols = 7;
+  cols = 7
 let currentPlayer = "rosso",
   gameBoard = [],
   winningDirections = [],
   gameOver = false,
-  gameCount = 0; // Contatore per tenere traccia del numero di partite giocate
+  gameCount = 0, // Contatore per tenere traccia del numero di partite giocate
+  soundEnabled = true // Variabile per abilitare/disabilitare i suoni
 
 // Variabili per il sistema di punteggio
 let scores = {
@@ -19,491 +20,521 @@ let scores = {
     yellowCards: 0,
     redCards: 0,
   },
-};
+}
+
+// Precarica i suoni
+const sounds = {
+  drop: new Audio("public/sounds/drop.mp3"),
+  win: new Audio("public/sounds/win.mp3"),
+  click: new Audio("public/sounds/click.mp3")
+}
+
+// Funzione per riprodurre un suono
+function playSound(sound) {
+  if (soundEnabled) {
+    // Clona il suono per permettere sovrapposizioni
+    const soundClone = sounds[sound].cloneNode(true)
+    soundClone.volume = 0.5 // Imposta il volume al 50%
+    soundClone.play()
+  }
+}
+
+// Funzione per attivare/disattivare i suoni
+function toggleSound() {
+  soundEnabled = !soundEnabled
+  const soundButton = document.getElementById("soundToggle")
+  if (soundEnabled) {
+    soundButton.innerHTML = `
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+        <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+        <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+      </svg>
+    `
+    soundButton.setAttribute("aria-label", "Disattiva suoni")
+    soundButton.classList.remove("sound-off")
+  } else {
+    soundButton.innerHTML = `
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+        <line x1="23" y1="9" x2="17" y2="15"></line>
+        <line x1="17" y1="9" x2="23" y2="15"></line>
+      </svg>
+    `
+    soundButton.setAttribute("aria-label", "Attiva suoni")
+    soundButton.classList.add("sound-off")
+  }
+
+  // Riproduci un suono di click per feedback
+  if (soundEnabled) {
+    playSound("click")
+  }
+}
 
 // Funzione per caricare le direzioni di vittoria dal file JSON
 async function loadWinningDirections() {
   try {
-    const response = await fetch("directions.json");
-    const data = await response.json();
-    winningDirections = data.directions;
+    const response = await fetch("directions.json")
+    const data = await response.json()
+    winningDirections = data.directions
   } catch (error) {
-    console.error("Errore nel caricamento delle direzioni:", error);
+    console.error("Errore nel caricamento delle direzioni:", error)
     // Direzioni di default in caso di errore
     winningDirections = [
       [0, 1],
       [1, 0],
       [1, 1],
       [1, -1],
-    ];
+    ]
   }
 }
 
 // Funzione per generare la griglia di gioco
 function createBoard() {
-  const boardDiv = document.getElementById("board");
-  boardDiv.innerHTML = ""; // Resetta la griglia esistente
+  const boardDiv = document.getElementById("board")
+  boardDiv.innerHTML = "" // Resetta la griglia esistente
 
   // Aggiungi attributi ARIA per accessibilità
-  boardDiv.setAttribute("role", "grid");
-  boardDiv.setAttribute("aria-label", "Griglia di gioco Forza 4");
+  boardDiv.setAttribute("role", "grid")
+  boardDiv.setAttribute("aria-label", "Griglia di gioco Forza 4")
 
   for (let i = 0; i < rows; i++) {
     for (let j = 0; j < cols; j++) {
-      const cell = document.createElement("div");
-      cell.className = "cell";
-      cell.dataset.row = i;
-      cell.dataset.col = j;
-      cell.onclick = () => dropPiece(j);
+      const cell = document.createElement("div")
+      cell.className = "cell"
+      cell.dataset.row = i
+      cell.dataset.col = j
+      cell.onclick = () => dropPiece(j)
 
       // Aggiungi attributi per accessibilità
-      cell.setAttribute("role", "gridcell");
-      cell.setAttribute("tabindex", "0");
-      cell.setAttribute(
-        "aria-label",
-        `Cella vuota, riga ${i + 1}, colonna ${j + 1}`
-      );
+      cell.setAttribute("role", "gridcell")
+      cell.setAttribute("tabindex", "0")
+      cell.setAttribute("aria-label", `Cella vuota, riga ${i + 1}, colonna ${j + 1}`)
 
       // Aggiungi gestione tastiera per accessibilità
       cell.addEventListener("keydown", (e) => {
         if (e.key === "Enter" || e.key === " ") {
-          dropPiece(j);
+          dropPiece(j)
         }
-      });
+      })
 
-      boardDiv.appendChild(cell);
+      boardDiv.appendChild(cell)
     }
   }
-  resetGame();
-  loadScores(); // Carica i punteggi salvati
-  updateScoreDisplay(); // Aggiorna la visualizzazione dei punteggi
-  initializeTimeline(); // Inizializza la timeline
-  updateCardButtonsState(); // Aggiorna lo stato dei pulsanti dei cartellini
+  resetGame()
+  loadScores() // Carica i punteggi salvati
+  updateScoreDisplay() // Aggiorna la visualizzazione dei punteggi
+  initializeTimeline() // Inizializza la timeline
+  updateCardButtonsState() // Aggiorna lo stato dei pulsanti dei cartellini
 }
 
 // Funzione per ottenere la riga vuota in cui posizionare la pedina
 function getEmptyRow(col) {
-  for (let i = rows - 1; i >= 0; i--) if (!gameBoard[i][col]) return i;
-  return -1; // Colonna piena
+  for (let i = rows - 1; i >= 0; i--) if (!gameBoard[i][col]) return i
+  return -1 // Colonna piena
 }
 
 // Funzione per verificare le combinazioni vincenti
 function checkWin(row, col) {
   for (const [dx, dy] of winningDirections) {
-    let count = 1;
-    const winningCells = [[row, col]];
+    let count = 1
+    const winningCells = [[row, col]]
 
     // Controlla nella direzione positiva
     for (let i = 1; i < 4; i++) {
       const newRow = row + i * dx,
-        newCol = col + i * dy;
-      if (
-        newRow >= 0 &&
-        newRow < rows &&
-        newCol >= 0 &&
-        newCol < cols &&
-        gameBoard[newRow][newCol] === currentPlayer
-      ) {
-        count++;
-        winningCells.push([newRow, newCol]);
-      } else break;
+        newCol = col + i * dy
+      if (newRow >= 0 && newRow < rows && newCol >= 0 && newCol < cols && gameBoard[newRow][newCol] === currentPlayer) {
+        count++
+        winningCells.push([newRow, newCol])
+      } else break
     }
 
     // Controlla nella direzione negativa
     for (let i = -1; i > -4; i--) {
       const newRow = row + i * dx,
-        newCol = col + i * dy;
-      if (
-        newRow >= 0 &&
-        newRow < rows &&
-        newCol < cols &&
-        gameBoard[newRow][newCol] === currentPlayer
-      ) {
-        count++;
-        winningCells.push([newRow, newCol]);
-      } else break;
+        newCol = col + i * dy
+      if (newRow >= 0 && newRow < rows && newCol < cols && gameBoard[newRow][newCol] === currentPlayer) {
+        count++
+        winningCells.push([newRow, newCol])
+      } else break
     }
 
     if (count >= 4) {
-      highlightWinningCells(winningCells); // Evidenzia le celle vincenti
-      return true;
+      highlightWinningCells(winningCells) // Evidenzia le celle vincenti
+      return true
     }
   }
 
-  return false;
+  return false
 }
 
 // Funzione per evidenziare le celle vincenti
 function highlightWinningCells(cells) {
   cells.forEach(([row, col]) => {
-    const cell = document.querySelector(
-      `[data-row="${row}"][data-col="${col}"]`
-    );
-    cell.classList.add("winning");
-  });
+    const cell = document.querySelector(`[data-row="${row}"][data-col="${col}"]`)
+    cell.classList.add("winning")
+  })
 }
 
 // Funzione per attivare l'animazione delle celle vincenti
 function highlightWinningCellsAnimation() {
   const winningCells = document.querySelectorAll(".winning"),
-    winClass = currentPlayer === "rosso" ? "rossoWin" : "gialloWin";
+    winClass = currentPlayer === "rosso" ? "rossoWin" : "gialloWin"
   winningCells.forEach((cell) => {
-    cell.classList.add(winClass);
-  });
+    cell.classList.add(winClass)
+  })
 }
 
 // Funzione per aggiornare l'indicatore del giocatore corrente
 function updateCurrentPlayerIndicator() {
-  const indicator = document.getElementById("currentPlayerIndicator");
+  const indicator = document.getElementById("currentPlayerIndicator")
 
   // Rimuovi tutte le classi di colore
-  indicator.classList.remove("rosso", "giallo");
+  indicator.classList.remove("rosso", "giallo")
 
   // Aggiungi la classe del giocatore corrente
-  indicator.classList.add(currentPlayer);
+  indicator.classList.add(currentPlayer)
 
   // Aggiorna l'attributo aria-label per l'accessibilità
-  indicator.setAttribute("aria-label", `Giocatore ${currentPlayer}`);
+  indicator.setAttribute("aria-label", `Giocatore ${currentPlayer}`)
 
   // Aggiungi l'animazione
-  indicator.classList.add("animatedIndicator");
+  indicator.classList.add("animatedIndicator")
 
   // Rimuovi l'animazione dopo che è stata eseguita una volta
   setTimeout(() => {
-    indicator.classList.remove("animatedIndicator");
-  }, 1500);
+    indicator.classList.remove("animatedIndicator")
+  }, 1500)
 }
 
 // Funzione per aggiornare la UI della griglia
 function updateBoardUI() {
   for (let i = 0; i < rows; i++) {
     for (let j = 0; j < cols; j++) {
-      const cell = document.querySelector(`[data-row="${i}"][data-col="${j}"]`);
+      const cell = document.querySelector(`[data-row="${i}"][data-col="${j}"]`)
 
       // Rimuovi tutte le classi di colore e vincita
-      cell.classList.remove(
-        "rosso",
-        "giallo",
-        "winning",
-        "rossoWin",
-        "gialloWin"
-      );
+      cell.classList.remove("rosso", "giallo", "winning", "rossoWin", "gialloWin")
 
       // Aggiungi la classe appropriata in base allo stato della cella
       if (gameBoard[i][j]) {
-        cell.classList.add(gameBoard[i][j]);
-        cell.setAttribute(
-          "aria-label",
-          `Cella con gettone ${gameBoard[i][j]}, riga ${i + 1}, colonna ${
-            j + 1
-          }`
-        );
+        cell.classList.add(gameBoard[i][j])
+        cell.setAttribute("aria-label", `Cella con gettone ${gameBoard[i][j]}, riga ${i + 1}, colonna ${j + 1}`)
       } else {
-        cell.setAttribute(
-          "aria-label",
-          `Cella vuota, riga ${i + 1}, colonna ${j + 1}`
-        );
+        cell.setAttribute("aria-label", `Cella vuota, riga ${i + 1}, colonna ${j + 1}`)
       }
     }
   }
 }
 
 function dropPiece(col) {
-  if (gameOver) return; // Impedisce di giocare dopo la vittoria
+  if (gameOver) return // Impedisce di giocare dopo la vittoria
 
-  const row = getEmptyRow(col);
+  const row = getEmptyRow(col)
   if (row !== -1) {
-    gameBoard[row][col] = currentPlayer;
-    const cell = document.querySelector(
-      `[data-row="${row}"][data-col="${col}"]`
-    );
-    cell.classList.add(currentPlayer);
+    gameBoard[row][col] = currentPlayer
+    const cell = document.querySelector(`[data-row="${row}"][data-col="${col}"]`)
+    cell.classList.add(currentPlayer)
+
+    // Riproduci il suono di inserimento del gettone
+    playSound("drop")
 
     // Aggiorna l'attributo aria-label per l'accessibilità
-    cell.setAttribute(
-      "aria-label",
-      `Cella con gettone ${currentPlayer}, riga ${row + 1}, colonna ${col + 1}`
-    );
+    cell.setAttribute("aria-label", `Cella con gettone ${currentPlayer}, riga ${row + 1}, colonna ${col + 1}`)
 
     // Aggiungi evento alla timeline con il pallino colorato
-    addTimelineEvent(
-      `Giocatore ${currentPlayer} ha inserito un gettone nella colonna ${
-        col + 1
-      }`,
-      false,
-      currentPlayer
-    );
-
-    // Aggiungi feedback sonoro (opzionale)
-    playDropSound();
+    addTimelineEvent(`Giocatore ${currentPlayer} ha inserito un gettone nella colonna ${col + 1}`, false, currentPlayer)
 
     // Verifica la vittoria
     if (checkWin(row, col)) {
-      gameOver = true; // Impedisce di continuare a giocare
-      highlightWinningCellsAnimation();
+      gameOver = true // Impedisce di continuare a giocare
+      highlightWinningCellsAnimation()
+
+      // Riproduci il suono di vittoria
+      playSound("win")
 
       // Aggiorna il punteggio
-      scores[currentPlayer].wins++;
-      saveScores();
-      updateScoreDisplay();
+      scores[currentPlayer].wins++
+      saveScores()
+      updateScoreDisplay()
 
       // Aggiorna la timeline
-      addTimelineEvent(
-        `Giocatore ${currentPlayer} ha vinto la partita!`,
-        true,
-        currentPlayer
-      );
+      addTimelineEvent(`Giocatore ${currentPlayer} ha vinto la partita!`, true, currentPlayer)
 
-      updateWinnerMessage(
-        `Il ${currentPlayer === "rosso" ? "Rosso" : "Giallo"} ha vinto! 🏆🎉`
-      );
+      updateWinnerMessage(`Il ${currentPlayer === "rosso" ? "Rosso" : "Giallo"} ha vinto! 🏆🎉`)
+
+      // Disabilita solo il pulsante di reset partita corrente
+      document.getElementById("resetCurrentGameButton").disabled = true
 
       // Disabilita i pulsanti dei cartellini
-      updateCardButtonsState();
+      updateCardButtonsState()
     } else if (isBoardFull()) {
-      gameOver = true;
+      gameOver = true
 
       // Aggiorna la timeline
-      const nextPlayer = gameCount % 2 === 0 ? "giallo" : "rosso";
-      addTimelineEvent(
-        `Partita terminata in pareggio! La prossima partita inizierà il giocatore ${nextPlayer}.`,
-        true
-      );
+      const nextPlayer = "rosso" // Sempre rosso dopo un reset
+      addTimelineEvent(`Partita terminata in pareggio! La prossima partita inizierà il giocatore ${nextPlayer}.`, true)
 
-      updateWinnerMessage("Pareggio! 😲 Nessuno ha vinto.");
+      updateWinnerMessage("Pareggio! 😲 Nessuno ha vinto.")
 
       // Disabilita i pulsanti dei cartellini
-      updateCardButtonsState();
+      updateCardButtonsState()
     } else {
-      currentPlayer = currentPlayer === "rosso" ? "giallo" : "rosso";
-      updateCurrentPlayerIndicator();
+      currentPlayer = currentPlayer === "rosso" ? "giallo" : "rosso"
+      updateCurrentPlayerIndicator()
     }
   } else {
     // Feedback per colonna piena
-    showColumnFullFeedback(col);
+    showColumnFullFeedback(col)
   }
 }
 
 // Funzione per mostrare feedback quando una colonna è piena
 function showColumnFullFeedback(col) {
-  const columnCells = document.querySelectorAll(`[data-col="${col}"]`);
+  const columnCells = document.querySelectorAll(`[data-col="${col}"]`)
   columnCells.forEach((cell) => {
-    cell.classList.add("column-full-feedback");
+    cell.classList.add("column-full-feedback")
     setTimeout(() => {
-      cell.classList.remove("column-full-feedback");
-    }, 500);
-  });
+      cell.classList.remove("column-full-feedback")
+    }, 500)
+  })
 }
 
-// Funzione per riprodurre un suono quando viene inserito un gettone (opzionale)
-function playDropSound() {
-  // Implementazione opzionale del suono
-  // const sound = new Audio('drop-sound.mp3');
-  // sound.play();
-}
-
-const isBoardFull = () =>
-  gameBoard.every((row) => row.every((cell) => cell !== null));
+const isBoardFull = () => gameBoard.every((row) => row.every((cell) => cell !== null))
 
 // Funzione per aggiornare lo stato dei pulsanti dei cartellini
 function updateCardButtonsState() {
-  const yellowCardButtons = document.querySelectorAll(".yellow-card");
-  const redCardButtons = document.querySelectorAll(".red-card");
+  const yellowCardButtons = document.querySelectorAll(".yellow-card")
+  const redCardButtons = document.querySelectorAll(".red-card")
 
   // Disabilita o abilita i pulsanti in base allo stato della partita
   yellowCardButtons.forEach((button) => {
-    button.disabled = gameOver;
-  });
+    button.disabled = gameOver
+  })
 
   redCardButtons.forEach((button) => {
-    button.disabled = gameOver;
-  });
+    button.disabled = gameOver
+  })
 }
 
-// Modifica la funzione resetGame per alternare i giocatori iniziali
+// Funzione per mostrare la modale di conferma
+function showConfirmModal(message, confirmCallback) {
+  const modal = document.getElementById("confirmModal")
+  const modalMessage = document.getElementById("confirmModalMessage")
+  const confirmBtn = document.getElementById("confirmModalYes")
+  const cancelBtn = document.getElementById("confirmModalNo")
+
+  // Imposta il messaggio
+  modalMessage.textContent = message
+
+  // Mostra la modale
+  modal.classList.remove("hidden")
+  modal.classList.add("modal-active")
+
+  // Gestisci il click su conferma
+  confirmBtn.onclick = () => {
+    modal.classList.add("hidden")
+    modal.classList.remove("modal-active")
+    confirmCallback()
+    playSound("click")
+  }
+
+  // Gestisci il click su annulla
+  cancelBtn.onclick = () => {
+    modal.classList.add("hidden")
+    modal.classList.remove("modal-active")
+    playSound("click")
+  }
+
+  // Chiudi la modale se si clicca fuori
+  modal.onclick = (e) => {
+    if (e.target === modal) {
+      modal.classList.add("hidden")
+      modal.classList.remove("modal-active")
+    }
+  }
+
+  // Riproduci suono di click
+  playSound("click")
+}
+
+// Modifica la funzione resetGame per iniziare sempre con il rosso
 function resetGame() {
-  gameOver = false;
-  gameBoard = Array.from({ length: rows }, () => Array(cols).fill(null));
+  // Mostra la modale di conferma
+  showConfirmModal("Sei sicuro di voler iniziare una nuova partita?", () => {
+    // Riproduci suono di click
+    playSound("click")
 
-  // Incrementa il contatore delle partite
-  gameCount++;
+    gameOver = false
+    gameBoard = Array.from({ length: rows }, () => Array(cols).fill(null))
 
-  // Determina il giocatore iniziale in base al numero della partita
-  // Prima partita (gameCount = 1): rosso, Seconda (gameCount = 2): giallo, ecc.
-  currentPlayer = gameCount % 2 === 1 ? "rosso" : "giallo";
+    // Incrementa il contatore delle partite
+    gameCount++
 
-  document.getElementById("currentPlayerContainer").innerHTML = `
-    <span>Turno:</span>
-    <div id="currentPlayerIndicator" class="cell ${currentPlayer}" aria-label="Giocatore ${currentPlayer}"></div>
-  `;
+    // Imposta sempre il giocatore rosso come iniziale
+    currentPlayer = "rosso"
 
-  document.querySelectorAll(".cell").forEach((cell) => {
-    cell.classList.remove(
-      "rosso",
-      "giallo",
-      "winning",
-      "rossoWin",
-      "gialloWin"
-    );
+    document.getElementById("currentPlayerContainer").innerHTML = `
+      <span>Turno:</span>
+      <div id="currentPlayerIndicator" class="cell ${currentPlayer}" aria-label="Giocatore ${currentPlayer}"></div>
+    `
 
-    // Reimposta gli attributi ARIA
-    const row = cell.dataset.row;
-    const col = cell.dataset.col;
-    cell.setAttribute(
-      "aria-label",
-      `Cella vuota, riga ${Number.parseInt(row) + 1}, colonna ${
-        Number.parseInt(col) + 1
-      }`
-    );
-  });
+    document.querySelectorAll(".cell").forEach((cell) => {
+      cell.classList.remove("rosso", "giallo", "winning", "rossoWin", "gialloWin")
 
-  updateCurrentPlayerIndicator();
+      // Reimposta gli attributi ARIA
+      const row = cell.dataset.row
+      const col = cell.dataset.col
+      cell.setAttribute(
+        "aria-label",
+        `Cella vuota, riga ${Number.parseInt(row) + 1}, colonna ${Number.parseInt(col) + 1}`,
+      )
+    })
 
-  // Resetta i cartellini per entrambi i giocatori
-  scores.rosso.yellowCards = 0;
-  scores.rosso.redCards = 0;
-  scores.giallo.yellowCards = 0;
-  scores.giallo.redCards = 0;
+    updateCurrentPlayerIndicator()
 
-  // Salva e aggiorna il display dei punteggi
-  saveScores();
-  updateScoreDisplay();
+    // Resetta i cartellini per entrambi i giocatori
+    scores.rosso.yellowCards = 0
+    scores.rosso.redCards = 0
+    scores.giallo.yellowCards = 0
+    scores.giallo.redCards = 0
 
-  // Abilita i pulsanti dei cartellini
-  updateCardButtonsState();
+    // Salva e aggiorna il display dei punteggi
+    saveScores()
+    updateScoreDisplay()
 
-  // Aggiungi evento alla timeline
-  addTimelineEvent(
-    `Nuova partita iniziata. Inizia il giocatore ${currentPlayer}.`,
-    false,
-    currentPlayer
-  );
+    // Abilita i pulsanti dei cartellini
+    updateCardButtonsState()
 
-  // Annuncia il reset del gioco per screen reader
-  announceForScreenReader(
-    `Nuova partita iniziata. Turno del giocatore ${currentPlayer}.`
-  );
+    // Riabilita il pulsante di reset partita corrente
+    document.getElementById("resetCurrentGameButton").disabled = false
+
+    // Aggiungi evento alla timeline
+    addTimelineEvent(`Nuova partita iniziata. Inizia il giocatore ${currentPlayer}.`, false, currentPlayer)
+
+    // Annuncia il reset del gioco per screen reader
+    announceForScreenReader(`Nuova partita iniziata. Turno del giocatore ${currentPlayer}.`)
+  })
 }
 
-// Aggiungi questa nuova funzione dopo la funzione resetGame()
+// Funzione resetCurrentGame con conferma
 function resetCurrentGame() {
-  gameOver = false;
-  gameBoard = Array.from({ length: rows }, () => Array(cols).fill(null));
+  // Se la partita è terminata con una vittoria, non permettere il reset
+  if (gameOver && !isBoardFull()) {
+    announceForScreenReader("Non puoi resettare la partita corrente dopo una vittoria")
+    return
+  }
 
-  // Mantieni il contatore delle partite invariato
-  // Mantieni lo stesso giocatore che ha iniziato questa partita
-  // (non incrementare gameCount per mantenere lo stesso giocatore iniziale)
+  // Mostra la modale di conferma
+  showConfirmModal("Sei sicuro di voler resettare la partita corrente?", () => {
+    // Riproduci suono di click
+    playSound("click")
 
-  document.getElementById("currentPlayerContainer").innerHTML = `
-    <span>Turno:</span>
-    <div id="currentPlayerIndicator" class="cell ${currentPlayer}" aria-label="Giocatore ${currentPlayer}"></div>
-  `;
+    gameOver = false
+    gameBoard = Array.from({ length: rows }, () => Array(cols).fill(null))
 
-  document.querySelectorAll(".cell").forEach((cell) => {
-    cell.classList.remove(
-      "rosso",
-      "giallo",
-      "winning",
-      "rossoWin",
-      "gialloWin"
-    );
+    // Mantieni il contatore delle partite invariato
+    // Mantieni lo stesso giocatore che ha iniziato questa partita
+    // (non incrementare gameCount per mantenere lo stesso giocatore iniziale)
 
-    // Reimposta gli attributi ARIA
-    const row = cell.dataset.row;
-    const col = cell.dataset.col;
-    cell.setAttribute(
-      "aria-label",
-      `Cella vuota, riga ${Number.parseInt(row) + 1}, colonna ${
-        Number.parseInt(col) + 1
-      }`
-    );
-  });
+    document.getElementById("currentPlayerContainer").innerHTML = `
+      <span>Turno:</span>
+      <div id="currentPlayerIndicator" class="cell ${currentPlayer}" aria-label="Giocatore ${currentPlayer}"></div>
+    `
 
-  updateCurrentPlayerIndicator();
+    document.querySelectorAll(".cell").forEach((cell) => {
+      cell.classList.remove("rosso", "giallo", "winning", "rossoWin", "gialloWin")
 
-  // NON resettare i cartellini per mantenere le penalità della partita
-  // NON resettare i punteggi
+      // Reimposta gli attributi ARIA
+      const row = cell.dataset.row
+      const col = cell.dataset.col
+      cell.setAttribute(
+        "aria-label",
+        `Cella vuota, riga ${Number.parseInt(row) + 1}, colonna ${Number.parseInt(col) + 1}`,
+      )
+    })
 
-  // Abilita i pulsanti dei cartellini
-  updateCardButtonsState();
+    updateCurrentPlayerIndicator()
 
-  // Aggiungi evento alla timeline
-  addTimelineEvent(
-    `Partita corrente resettata. Continua il giocatore ${currentPlayer}.`,
-    false,
-    currentPlayer
-  );
+    // NON resettare i cartellini per mantenere le penalità della partita
+    // NON resettare i punteggi
 
-  // Annuncia il reset della partita corrente per screen reader
-  announceForScreenReader(
-    `Partita corrente resettata. Turno del giocatore ${currentPlayer}.`
-  );
+    // Abilita i pulsanti dei cartellini
+    updateCardButtonsState()
+
+    // Aggiungi evento alla timeline
+    addTimelineEvent(`Partita corrente resettata. Continua il giocatore ${currentPlayer}.`, false, currentPlayer)
+
+    // Annuncia il reset della partita corrente per screen reader
+    announceForScreenReader(`Partita corrente resettata. Turno del giocatore ${currentPlayer}.`)
+  })
 }
 
 // Funzione per annunciare messaggi per screen reader
 function announceForScreenReader(message) {
-  const announcer = document.createElement("div");
-  announcer.setAttribute("aria-live", "assertive");
-  announcer.setAttribute("class", "sr-only");
-  announcer.textContent = message;
-  document.body.appendChild(announcer);
+  const announcer = document.createElement("div")
+  announcer.setAttribute("aria-live", "assertive")
+  announcer.setAttribute("class", "sr-only")
+  announcer.textContent = message
+  document.body.appendChild(announcer)
 
   setTimeout(() => {
-    document.body.removeChild(announcer);
-  }, 1000);
+    document.body.removeChild(announcer)
+  }, 1000)
 }
 
 // Funzione per aggiornare il messaggio di stato (turno o vincitore)
 function updateWinnerMessage(message) {
-  const container = document.getElementById("currentPlayerContainer");
+  const container = document.getElementById("currentPlayerContainer")
 
   // Determina la classe CSS appropriata
-  let messageClass = "";
+  let messageClass = ""
   if (gameOver) {
     if (isBoardFull()) {
-      messageClass = "draw";
+      messageClass = "draw"
     } else if (currentPlayer === "rosso") {
-      messageClass = "rossoWin";
+      messageClass = "rossoWin"
     } else {
-      messageClass = "gialloWin";
+      messageClass = "gialloWin"
     }
   }
 
-  container.innerHTML = `<span class="victoryMessage ${messageClass}">${message}</span>`;
+  container.innerHTML = `<span class="victoryMessage ${messageClass}">${message}</span>`
 
   // Annuncia il messaggio per screen reader
-  announceForScreenReader(message);
+  announceForScreenReader(message)
 }
 
 // Funzioni per il sistema di punteggio
 function updateScoreDisplay() {
   // Aggiorna i valori visualizzati
-  document.getElementById("rossoWins").textContent = scores.rosso.wins;
-  document.getElementById("rossoYellowCards").textContent =
-    scores.rosso.yellowCards;
-  document.getElementById("rossoRedCards").textContent = scores.rosso.redCards;
+  document.getElementById("rossoWins").textContent = scores.rosso.wins
+  document.getElementById("rossoYellowCards").textContent = scores.rosso.yellowCards
+  document.getElementById("rossoRedCards").textContent = scores.rosso.redCards
 
-  document.getElementById("gialloWins").textContent = scores.giallo.wins;
-  document.getElementById("gialloYellowCards").textContent =
-    scores.giallo.yellowCards;
-  document.getElementById("gialloRedCards").textContent =
-    scores.giallo.redCards;
+  document.getElementById("gialloWins").textContent = scores.giallo.wins
+  document.getElementById("gialloYellowCards").textContent = scores.giallo.yellowCards
+  document.getElementById("gialloRedCards").textContent = scores.giallo.redCards
 }
 
 function saveScores() {
-  localStorage.setItem("forza4Scores", JSON.stringify(scores));
+  localStorage.setItem("forza4Scores", JSON.stringify(scores))
 }
 
 function loadScores() {
-  const savedScores = localStorage.getItem("forza4Scores");
+  const savedScores = localStorage.getItem("forza4Scores")
   if (savedScores) {
-    scores = JSON.parse(savedScores);
+    scores = JSON.parse(savedScores)
   }
 }
 
 function resetStats() {
-  // Conferma prima di resettare
-  if (confirm("Sei sicuro di voler azzerare tutte le statistiche?")) {
+  // Mostra la modale di conferma
+  showConfirmModal("Sei sicuro di voler azzerare tutte le statistiche?", () => {
+    // Riproduci suono di click
+    playSound("click")
+
     scores = {
       rosso: {
         wins: 0,
@@ -515,17 +546,17 @@ function resetStats() {
         yellowCards: 0,
         redCards: 0,
       },
-    };
+    }
 
-    saveScores();
-    updateScoreDisplay();
+    saveScores()
+    updateScoreDisplay()
 
     // Aggiorna la timeline
-    addTimelineEvent("Statistiche azzerate");
+    addTimelineEvent("Statistiche azzerate")
 
     // Feedback per l'utente
-    announceForScreenReader("Statistiche azzerate con successo");
-  }
+    announceForScreenReader("Statistiche azzerate con successo")
+  })
 }
 
 // Funzione per aggiungere cartellini e verificare la squalifica
@@ -533,167 +564,146 @@ function addCard(player, cardType) {
   // Verifica se la partita è in corso
   if (gameOver) {
     // Mostra un messaggio di errore o feedback
-    announceForScreenReader(
-      "Non puoi assegnare cartellini a partita terminata"
-    );
-    return;
+    announceForScreenReader("Non puoi assegnare cartellini a partita terminata")
+    return
   }
 
-  const opponent = player === "rosso" ? "giallo" : "rosso";
+  // Riproduci suono di click
+  playSound("click")
+
+  const opponent = player === "rosso" ? "giallo" : "rosso"
 
   if (cardType === "yellow") {
-    scores[player].yellowCards++;
-    addTimelineEvent(
-      `Cartellino GIALLO assegnato al giocatore ${player}`,
-      false,
-      player
-    );
+    scores[player].yellowCards++
+    addTimelineEvent(`Cartellino GIALLO assegnato al giocatore ${player}`, false, player)
 
     // Verifica se il giocatore ha raggiunto 3 cartellini gialli
     if (scores[player].yellowCards >= 3) {
       // Il giocatore ha perso per accumulo di cartellini gialli
-      handleDisqualification(player, opponent, "3 cartellini gialli");
+      handleDisqualification(player, opponent, "3 cartellini gialli")
     }
   } else if (cardType === "red") {
-    scores[player].redCards++;
-    addTimelineEvent(
-      `Cartellino ROSSO assegnato al giocatore ${player}`,
-      false,
-      player
-    );
+    scores[player].redCards++
+    addTimelineEvent(`Cartellino ROSSO assegnato al giocatore ${player}`, false, player)
 
     // Verifica se il giocatore ha ricevuto un cartellino rosso
     if (scores[player].redCards >= 1) {
       // Il giocatore ha perso per cartellino rosso
-      handleDisqualification(player, opponent, "cartellino rosso");
+      handleDisqualification(player, opponent, "cartellino rosso")
     }
   }
 
-  saveScores();
-  updateScoreDisplay();
+  saveScores()
+  updateScoreDisplay()
 
   // Animazione per evidenziare l'aggiornamento
-  const elementId = `${player}${cardType === "yellow" ? "Yellow" : "Red"}Cards`;
-  const element = document.getElementById(elementId);
-  element.classList.add("stat-updated");
+  const elementId = `${player}${cardType === "yellow" ? "Yellow" : "Red"}Cards`
+  const element = document.getElementById(elementId)
+  element.classList.add("stat-updated")
 
   setTimeout(() => {
-    element.classList.remove("stat-updated");
-  }, 600);
+    element.classList.remove("stat-updated")
+  }, 600)
 }
 
 // Funzione per gestire la squalifica di un giocatore
 function handleDisqualification(player, opponent, reason) {
-  gameOver = true;
+  gameOver = true
+
+  // Riproduci il suono di vittoria
+  playSound("win")
 
   // Aggiorna il punteggio del vincitore
-  scores[opponent].wins++;
-  saveScores();
-  updateScoreDisplay();
+  scores[opponent].wins++
+  saveScores()
+  updateScoreDisplay()
 
   // Aggiorna la timeline
-  addTimelineEvent(
-    `Giocatore ${player} squalificato per ${reason}!`,
-    true,
-    player
-  );
-  addTimelineEvent(
-    `Giocatore ${opponent} ha vinto la partita per squalifica!`,
-    true,
-    opponent
-  );
+  addTimelineEvent(`Giocatore ${player} squalificato per ${reason}!`, true, player)
+  addTimelineEvent(`Giocatore ${opponent} ha vinto la partita per squalifica!`, true, opponent)
 
   // Mostra il messaggio di squalifica
-  const container = document.getElementById("currentPlayerContainer");
+  const container = document.getElementById("currentPlayerContainer")
   container.innerHTML = `
     <div class="disqualification-message">
       ${player === "rosso" ? "ROSSO" : "GIALLO"} squalificato: ${reason}
     </div>
     <div>Vittoria a ${opponent === "rosso" ? "ROSSO" : "GIALLO"}</div>
-    <button onclick="resetGame()" class="new-game-button">
-      Gioca di nuovo
-    </button>
-  `;
+  `
 
   // Disabilita i pulsanti dei cartellini
-  updateCardButtonsState();
+  updateCardButtonsState()
+
+  // Disabilita solo il pulsante di reset partita corrente
+  document.getElementById("resetCurrentGameButton").disabled = true
 
   // Annuncia la squalifica per screen reader
   announceForScreenReader(
-    `Giocatore ${player} squalificato per ${reason}. Vittoria assegnata al giocatore ${opponent}.`
-  );
+    `Giocatore ${player} squalificato per ${reason}. Vittoria assegnata al giocatore ${opponent}.`,
+  )
 }
 
 // Funzioni per la timeline
 function initializeTimeline() {
-  const timeline = document.getElementById("timeline");
-  timeline.innerHTML =
-    '<div class="empty-timeline">Nessun evento registrato</div>';
+  const timeline = document.getElementById("timeline")
+  timeline.innerHTML = '<div class="empty-timeline">Nessun evento registrato</div>'
 }
 
 // Funzione modificata per aggiungere eventi alla timeline con pallino colorato
 function addTimelineEvent(message, isImportant = false, playerColor = null) {
-  const timeline = document.getElementById("timeline");
+  const timeline = document.getElementById("timeline")
 
   // Rimuovi il messaggio "vuoto" se presente
-  const emptyMessage = timeline.querySelector(".empty-timeline");
+  const emptyMessage = timeline.querySelector(".empty-timeline")
   if (emptyMessage) {
-    timeline.removeChild(emptyMessage);
+    timeline.removeChild(emptyMessage)
   }
 
   // Crea l'elemento dell'evento
-  const eventElement = document.createElement("div");
+  const eventElement = document.createElement("div")
 
   // Determina la classe in base al giocatore corrente
-  let eventClass = "timeline-event";
+  let eventClass = "timeline-event"
   if (isImportant) {
-    eventClass += " important-event";
-  } else if (
-    message.includes("Rosso") ||
-    message.includes("rosso") ||
-    playerColor === "rosso"
-  ) {
-    eventClass += " rosso-event";
-  } else if (
-    message.includes("Giallo") ||
-    message.includes("giallo") ||
-    playerColor === "giallo"
-  ) {
-    eventClass += " giallo-event";
+    eventClass += " important-event"
+  } else if (message.includes("Rosso") || message.includes("rosso") || playerColor === "rosso") {
+    eventClass += " rosso-event"
+  } else if (message.includes("Giallo") || message.includes("giallo") || playerColor === "giallo") {
+    eventClass += " giallo-event"
   }
 
-  eventElement.className = eventClass;
+  eventElement.className = eventClass
 
   // Ottieni l'ora corrente
-  const now = new Date();
+  const now = new Date()
   const timeString = now.toLocaleTimeString([], {
     hour: "2-digit",
     minute: "2-digit",
     second: "2-digit",
-  });
+  })
 
   // Determina l'icona appropriata
-  let icon = "🔄";
+  let icon = "🔄"
   if (message.includes("vinto")) {
-    icon = "🏆";
+    icon = "🏆"
   } else if (message.includes("gettone")) {
-    icon = playerColor === "rosso" ? "🔴" : "🟡";
+    icon = playerColor === "rosso" ? "🔴" : "🟡"
   } else if (message.includes("GIALLO")) {
-    icon = "🟨";
+    icon = "🟨"
   } else if (message.includes("ROSSO")) {
-    icon = "🟥";
+    icon = "🟥"
   } else if (message.includes("pareggio")) {
-    icon = "🤝";
+    icon = "🤝"
   } else if (message.includes("Statistiche")) {
-    icon = "🗑️";
+    icon = "🗑️"
   } else if (message.includes("squalificato")) {
-    icon = "⛔";
+    icon = "⛔"
   }
 
   // Crea il pallino colorato per il giocatore
-  let playerDot = "";
+  let playerDot = ""
   if (playerColor) {
-    playerDot = `<span class="player-dot ${playerColor}"></span>`;
+    playerDot = `<span class="player-dot ${playerColor}"></span>`
   }
 
   // Imposta il contenuto HTML
@@ -701,24 +711,24 @@ function addTimelineEvent(message, isImportant = false, playerColor = null) {
     <div class="timeline-event-icon">${icon}</div>
     <div class="timeline-event-text">${playerDot}${message}</div>
     <div class="timeline-event-time">${timeString}</div>
-  `;
+  `
 
   // Aggiungi l'evento all'inizio della timeline
-  timeline.insertBefore(eventElement, timeline.firstChild);
+  timeline.insertBefore(eventElement, timeline.firstChild)
 
   // Limita il numero di eventi nella timeline (opzionale)
-  const maxEvents = 20;
-  const events = timeline.querySelectorAll(".timeline-event");
+  const maxEvents = 20
+  const events = timeline.querySelectorAll(".timeline-event")
   if (events.length > maxEvents) {
-    timeline.removeChild(events[events.length - 1]);
+    timeline.removeChild(events[events.length - 1])
   }
 }
 
 // Inizializza la griglia di gioco all'avvio della pagina
 async function initializeGame() {
-  await loadWinningDirections(); // Carica le direzioni di vittoria
-  createBoard();
+  await loadWinningDirections() // Carica le direzioni di vittoria
+  createBoard()
 }
 
 // Avvia il gioco
-document.addEventListener("DOMContentLoaded", initializeGame);
+document.addEventListener("DOMContentLoaded", initializeGame)
