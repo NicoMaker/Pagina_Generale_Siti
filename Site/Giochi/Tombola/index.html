@@ -1,65 +1,62 @@
 <!DOCTYPE html>
 <html lang="it">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Tombola</title>
-    <link rel="stylesheet" href="css/main.css" />
-    <link rel="icon" href="assets/images/logo.png" type="image/png" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    />
-    <link
-      rel="icon"
-      href="https://t4.ftcdn.net/jpg/00/58/07/35/360_F_58073555_yh2WGekTyxyQwd1ch5dp7hR99PNx0vap.jpg"
-      type="image/jpg"
-    />
-  </head>
-  <body>
-    <div class="container">
-      <header>
-        <h1 class="title">Tombola</h1>
-        <p class="subtitle">Scegli il tema e inizia a giocare!</p>
-      </header>
 
-      <main>
-        <div class="theme-cards">
-          <div class="theme-card" id="inverno">
-            <div class="card-inner">
-              <div class="card-front">
-                <i class="fas fa-snowflake theme-icon"></i>
-                <h2>Natale</h2>
-              </div>
-              <div class="card-back">
-                <p>Gioca della tombola con tema natalizio!</p>
-                <a href="themes/inverno.html" class="btn">Gioca Ora</a>
-              </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tombola</title>
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="icon" href="assets/images/logo.png" type="image/png" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="icon" href="https://t4.ftcdn.net/jpg/00/58/07/35/360_F_58073555_yh2WGekTyxyQwd1ch5dp7hR99PNx0vap.jpg"
+    type="image/jpg" />
+</head>
+
+<body>
+  <div class="container">
+    <header>
+      <h1 class="title">Tombola</h1>
+      <p class="subtitle">Scegli il tema e inizia a giocare!</p>
+    </header>
+
+    <main>
+      <div class="theme-cards">
+        <div class="theme-card" id="inverno">
+          <div class="card-inner">
+            <div class="card-front">
+              <i class="fas fa-snowflake theme-icon"></i>
+              <h2>Natale</h2>
             </div>
-          </div>
-
-          <div class="theme-card" id="primavera">
-            <div class="card-inner">
-              <div class="card-front">
-                <i class="fas fa-egg theme-icon"></i>
-                <h2>Pasqua</h2>
-              </div>
-              <div class="card-back">
-                <p>Gioca alla tombola con tema pasquale!</p>
-                <a href="themes/primavera.html" class="btn">Gioca Ora</a>
-              </div>
+            <div class="card-back">
+              <p>Gioca della tombola con tema natalizio!</p>
+              <a href="themes/inverno.html" class="btn">Gioca Ora</a>
             </div>
           </div>
         </div>
-      </main>
 
-      <div id="footer"></div>
+        <div class="theme-card" id="primavera">
+          <div class="card-inner">
+            <div class="card-front">
+              <i class="fas fa-egg theme-icon"></i>
+              <h2>Pasqua</h2>
+            </div>
+            <div class="card-back">
+              <p>Gioca alla tombola con tema pasquale!</p>
+              <a href="themes/primavera.html" class="btn">Gioca Ora</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
 
-      <script>
-        document.getElementById("footer").innerHTML = `
+    <div id="footer"></div>
+
+    <script>
+      document.getElementById("footer").innerHTML = `
           <footer>&copy; ${new Date().getFullYear()} Tombola. Tutti i diritti riservati.</footer>
         `;
-      </script>
-    </div>
-  </body>
+    </script>
+  </div>
+</body>
+
 </html>

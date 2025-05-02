@@ -20,16 +20,19 @@
         </header>
 
         <div class="game-controls">
-            <button id="extractBtn" class="game-btn primary"><i class="fas fa-random"></i> Estrai Numero</button>
-            <button id="resetBtn" class="game-btn secondary"><i class="fas fa-redo"></i> Resetta Tabellone</button>
+            <button id="extractBtn" class="game-btn primary"><i class="fas fa-random"></i> <span>Estrai
+                    Numero</span></button>
+            <button id="resetBtn" class="game-btn secondary"><i class="fas fa-redo"></i> <span>Resetta
+                    Tabellone</span></button>
         </div>
 
         <div class="auto-controls">
             <div class="interval-control">
                 <label for="intervalInput">Intervallo (secondi):</label>
-                <input type="number" id="intervalInput" min="1" max="60" value="3">
+                <input type="number" id="intervalInput" min="1" max="60" value="3" aria-label="Intervallo in secondi">
             </div>
-            <button id="autoBtn" class="game-btn success"><i class="fas fa-play"></i> Avvia Automatico</button>
+            <button id="autoBtn" class="game-btn success"><i class="fas fa-play"></i> <span>Avvia
+                    Automatico</span></button>
         </div>
 
         <div class="current-number-display">
@@ -39,6 +42,10 @@
             <p>Ultimo numero estratto</p>
         </div>
 
+        <div class="extracted-numbers">
+            <h3>Numeri Estratti (0/90)</h3>
+            <div id="extractedNumbersList" class="numbers-list"></div>
+        </div>
 
         <div id="tombola-container" class="tombola-board">
             <!-- La tombola verrà generata qui -->

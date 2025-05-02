@@ -36,11 +36,23 @@ body {
 .container {
   width: 100%;
   max-width: 1200px;
-  background-color: rgba(255, 255, 255, 0.9);
+  background-color: rgba(255, 255, 255, 0.95);
   border-radius: 20px;
   box-shadow: var(--card-shadow);
   overflow: hidden;
   padding: 40px;
+  animation: fadeIn 0.8s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 header {
@@ -50,14 +62,24 @@ header {
 
 .title {
   font-family: "Dancing Script", cursive;
-  font-size: 4rem;
+  font-size: 4.5rem;
   color: var(--accent-color);
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
   margin-bottom: 10px;
+  animation: titlePulse 2s infinite alternate;
+}
+
+@keyframes titlePulse {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.05);
+  }
 }
 
 .subtitle {
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   color: var(--text-color);
   opacity: 0.8;
 }
@@ -74,6 +96,11 @@ header {
   height: 400px;
   perspective: 1000px;
   cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.theme-card:hover {
+  transform: translateY(-10px);
 }
 
 .card-inner {
@@ -126,6 +153,19 @@ header {
   font-size: 5rem;
   margin-bottom: 20px;
   color: var(--accent-color);
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
 }
 
 #inverno .theme-icon {
@@ -137,18 +177,20 @@ header {
 }
 
 .theme-card h2 {
-  font-size: 2rem;
+  font-size: 2.2rem;
   margin-bottom: 10px;
+  font-weight: 600;
 }
 
 .theme-card p {
   margin-bottom: 30px;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
+  line-height: 1.5;
 }
 
 .btn {
   display: inline-block;
-  padding: 12px 30px;
+  padding: 14px 32px;
   background-color: var(--accent-color);
   color: white;
   text-decoration: none;
@@ -156,11 +198,30 @@ header {
   font-weight: 600;
   transition: all var(--transition-speed) ease;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+  z-index: -1;
 }
 
 .btn:hover {
   transform: translateY(-5px);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.btn:hover::before {
+  width: 100%;
 }
 
 footer {
@@ -173,7 +234,11 @@ footer {
 
 @media (max-width: 768px) {
   .title {
-    font-size: 3rem;
+    font-size: 3.2rem;
+  }
+
+  .subtitle {
+    font-size: 1.1rem;
   }
 
   .theme-card {
@@ -183,6 +248,41 @@ footer {
   }
 
   .container {
+    padding: 25px;
+    border-radius: 15px;
+  }
+
+  .theme-card h2 {
+    font-size: 1.8rem;
+  }
+
+  .theme-card p {
+    font-size: 1.1rem;
+  }
+
+  .btn {
+    padding: 12px 28px;
+  }
+}
+
+@media (max-width: 480px) {
+  .title {
+    font-size: 2.8rem;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+  }
+
+  .container {
     padding: 20px;
+  }
+
+  .theme-card {
+    height: 320px;
+  }
+
+  .theme-icon {
+    font-size: 4rem;
   }
 }
