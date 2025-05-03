@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let blackCaptured = 0;
 
   // Impostazioni di gioco
-  let mandatoryCapture = true;
+  let mandatoryCapture = false; // Modificato da true a false per rendere la cattura facoltativa di default
 
   // DOM elements
   const boardElement = document.getElementById("board");
@@ -77,7 +77,9 @@ document.addEventListener("DOMContentLoaded", () => {
     if (gameInProgress) {
       restartGame();
     } else {
-      showMessage("Non puoi ricominciare una partita già conclusa. Inizia una nuova partita.");
+      showMessage(
+        "Non puoi ricominciare una partita già conclusa. Inizia una nuova partita."
+      );
     }
   });
 
@@ -146,13 +148,19 @@ document.addEventListener("DOMContentLoaded", () => {
   function saveSettings() {
     mandatoryCapture = captureSetting.value === "mandatory";
     mandatoryCaptureToggle.checked = mandatoryCapture;
-    showMessage(`Impostazioni salvate! La cattura è ora ${mandatoryCapture ? "obbligatoria" : "facoltativa"}.`);
+    showMessage(
+      `Impostazioni salvate! La cattura è ora ${
+        mandatoryCapture ? "obbligatoria" : "facoltativa"
+      }.`
+    );
   }
 
   // Funzione per attivare/disattivare la cattura obbligatoria
   function toggleMandatoryCapture() {
     mandatoryCapture = mandatoryCaptureToggle.checked;
-    showMessage(`La cattura è ora ${mandatoryCapture ? "obbligatoria" : "facoltativa"}.`);
+    showMessage(
+      `La cattura è ora ${mandatoryCapture ? "obbligatoria" : "facoltativa"}.`
+    );
 
     // Se la partita è in corso, aggiorna le mosse valide
     if (gameInProgress) {
@@ -185,6 +193,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     updateStatus();
     updateStats();
+
+    // Assicurati che lo switch della cattura obbligatoria sia impostato correttamente
+    mandatoryCaptureToggle.checked = mandatoryCapture;
   }
 
   // Aggiungi questa funzione per aggiornare le statistiche visualizzate
@@ -269,8 +280,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Create new piece element
     const pieceElement = document.createElement("div");
-    pieceElement.className = `piece ${piece.player}${piece.isKing ? " king" : ""
-      }`;
+    pieceElement.className = `piece ${piece.player}${
+      piece.isKing ? " king" : ""
+    }`;
 
     square.appendChild(pieceElement);
   }
@@ -369,17 +381,17 @@ document.addEventListener("DOMContentLoaded", () => {
     // Regular moves (no captures)
     const directions = piece.isKing
       ? [
-        [-1, -1],
-        [-1, 1],
-        [1, -1],
-        [1, 1],
-      ]
+          [-1, -1],
+          [-1, 1],
+          [1, -1],
+          [1, 1],
+        ]
       : piece.player === PLAYER_WHITE
-        ? [
+      ? [
           [-1, -1],
           [-1, 1],
         ]
-        : [
+      : [
           [1, -1],
           [1, 1],
         ];
@@ -410,17 +422,17 @@ document.addEventListener("DOMContentLoaded", () => {
   function findCaptures(piece, capturedPieces = [], moves = []) {
     const directions = piece.isKing
       ? [
-        [-1, -1],
-        [-1, 1],
-        [1, -1],
-        [1, 1],
-      ]
+          [-1, -1],
+          [-1, 1],
+          [1, -1],
+          [1, 1],
+        ]
       : piece.player === PLAYER_WHITE
-        ? [
+      ? [
           [-1, -1],
           [-1, 1],
         ]
-        : [
+      : [
           [1, -1],
           [1, 1],
         ];
@@ -662,8 +674,9 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function updateStatus() {
-    statusElement.textContent = `Turno: ${currentPlayer === PLAYER_WHITE ? "Bianco" : "Nero"
-      }`;
+    statusElement.textContent = `Turno: ${
+      currentPlayer === PLAYER_WHITE ? "Bianco" : "Nero"
+    }`;
     statusElement.style.backgroundColor =
       currentPlayer === PLAYER_WHITE ? "#f0f0f0" : "#333";
     statusElement.style.color =
@@ -733,17 +746,17 @@ document.addEventListener("DOMContentLoaded", () => {
             // Check regular moves
             const directions = piece.isKing
               ? [
-                [-1, -1],
-                [-1, 1],
-                [1, -1],
-                [1, 1],
-              ]
+                  [-1, -1],
+                  [-1, 1],
+                  [1, -1],
+                  [1, 1],
+                ]
               : piece.player === PLAYER_WHITE
-                ? [
+              ? [
                   [-1, -1],
                   [-1, 1],
                 ]
-                : [
+              : [
                   [1, -1],
                   [1, 1],
                 ];
@@ -844,7 +857,9 @@ document.addEventListener("DOMContentLoaded", () => {
   function restartGame() {
     // Controlla se la partita è in corso
     if (!gameInProgress) {
-      showMessage("Non puoi ricominciare una partita già conclusa. Inizia una nuova partita.");
+      showMessage(
+        "Non puoi ricominciare una partita già conclusa. Inizia una nuova partita."
+      );
       return;
     }
 
