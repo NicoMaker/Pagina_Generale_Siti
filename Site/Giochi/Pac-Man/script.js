@@ -47,11 +47,29 @@ const completedLevelElement = document.getElementById("completed-level")
 const nextLevelElement = document.getElementById("next-level")
 const continueButton = document.getElementById("continue-button")
 
+// Info modal elements
+const infoButton = document.getElementById("info-button")
+const infoModal = document.getElementById("info-modal")
+const closeButton = document.querySelector(".close-button")
+
 // Touch controls
 const upBtn = document.getElementById("up-btn")
 const downBtn = document.getElementById("down-btn")
 const leftBtn = document.getElementById("left-btn")
 const rightBtn = document.getElementById("right-btn")
+
+// Detect device type
+function detectDeviceType() {
+    const userAgent = navigator.userAgent.toLowerCase();
+    const isTablet = /(ipad|tablet|(android(?!.*mobile))|(windows(?!.*phone)(.*touch))|kindle|playbook|silk|(puffin(?!.*(IP|AP|WP))))/.test(userAgent);
+    const isMobile = /Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+    if (isTablet) {
+        document.body.classList.add('tablet');
+    } else if (isMobile) {
+        document.body.classList.add('mobile');
+    }
+}
 
 // Load configuration
 async function loadConfig() {
@@ -125,12 +143,15 @@ async function loadConfig() {
 
 // Initialize the game
 async function initGame() {
+    // Detect device type
+    detectDeviceType();
+
     await loadConfig()
 
     // Set default difficulty to "easy"
     difficultySelector.value = "easy"
     currentDifficulty = "easy"
-    currentDifficultyElement.textContent = "Easy"
+    currentDifficultyElement.textContent = "Facile"
 
     // Set initial lives to 5 (easy difficulty)
     lives = 5
@@ -140,10 +161,28 @@ async function initGame() {
     setupControls()
     setupDifficultySelector()
     setupVictoryModal()
+    setupInfoModal()
 
     // Show initial board without starting the game
     createGameBoard()
     renderBoard()
+}
+
+// Set up info modal
+function setupInfoModal() {
+    infoButton.addEventListener("click", () => {
+        infoModal.style.display = "block";
+    });
+
+    closeButton.addEventListener("click", () => {
+        infoModal.style.display = "none";
+    });
+
+    window.addEventListener("click", (event) => {
+        if (event.target === infoModal) {
+            infoModal.style.display = "none";
+        }
+    });
 }
 
 // Set up difficulty selector
@@ -161,7 +200,25 @@ function setupDifficultySelector() {
         updateLives()
 
         // Update displayed difficulty
-        currentDifficultyElement.textContent = currentDifficulty.charAt(0).toUpperCase() + currentDifficulty.slice(1)
+        let difficultyText = "";
+        switch (currentDifficulty) {
+            case "easy":
+                difficultyText = "Facile";
+                break;
+            case "medium":
+                difficultyText = "Medio";
+                break;
+            case "hard":
+                difficultyText = "Difficile";
+                break;
+            case "expert":
+                difficultyText = "Esperto";
+                break;
+            default:
+                difficultyText = "Facile";
+        }
+
+        currentDifficultyElement.textContent = difficultyText;
 
         // Start the game
         startGame()
@@ -568,7 +625,7 @@ function gameOver() {
     clearInterval(ghostsInterval)
     isGameStarted = false
 
-    alert("Game Over! Your score: " + score)
+    alert("Game Over! Il tuo punteggio: " + score)
 }
 
 // Modify the winGame function to show a nice victory modal
@@ -596,9 +653,42 @@ function winGame() {
             nextDifficulty = "easy"
     }
 
-    // Get level names
-    const currentLevelName = currentDifficulty.charAt(0).toUpperCase() + currentDifficulty.slice(1)
-    const nextLevelName = nextDifficulty.charAt(0).toUpperCase() + nextDifficulty.slice(1)
+    // Get level names in Italian
+    let currentLevelName, nextLevelName;
+
+    switch (currentDifficulty) {
+        case "easy":
+            currentLevelName = "Facile";
+            break;
+        case "medium":
+            currentLevelName = "Medio";
+            break;
+        case "hard":
+            currentLevelName = "Difficile";
+            break;
+        case "expert":
+            currentLevelName = "Esperto";
+            break;
+        default:
+            currentLevelName = "Facile";
+    }
+
+    switch (nextDifficulty) {
+        case "easy":
+            nextLevelName = "Facile";
+            break;
+        case "medium":
+            nextLevelName = "Medio";
+            break;
+        case "hard":
+            nextLevelName = "Difficile";
+            break;
+        case "expert":
+            nextLevelName = "Esperto";
+            break;
+        default:
+            nextLevelName = "Facile";
+    }
 
     // Update victory modal content
     victoryScoreElement.textContent = score
@@ -607,25 +697,25 @@ function winGame() {
     // Check if player completed the expert level
     if (currentDifficulty === "expert") {
         // Show special game completion message
-        document.querySelector(".victory-title").textContent = "GAME COMPLETED!"
+        document.querySelector(".victory-title").textContent = "GIOCO COMPLETATO!"
         document.querySelector(".victory-message").innerHTML =
-            '<span class="pacman-icon">V</span> Congratulations! You\'ve completed the entire game! <span class="pacman-icon">V</span>'
+            '<span class="pacman-icon">V</span> Congratulazioni! Hai completato l\'intero gioco! <span class="pacman-icon">V</span>'
         document.querySelector(".next-level-info").innerHTML =
-            "<p>You've mastered all difficulty levels!</p><p>Final Score: " + score + "</p>"
-        continueButton.textContent = "Play Again"
+            "<p>Hai superato tutti i livelli di difficoltà!</p><p>Punteggio Finale: " + score + "</p>"
+        continueButton.textContent = "Gioca Ancora"
     } else {
         // Show regular level progression message
-        document.querySelector(".victory-title").textContent = "VICTORY!"
+        document.querySelector(".victory-title").textContent = "VITTORIA!"
         document.querySelector(".victory-message").innerHTML =
-            '<span class="pacman-icon">V</span> Congratulations! <span class="pacman-icon">V</span>'
+            '<span class="pacman-icon">V</span> Congratulazioni! <span class="pacman-icon">V</span>'
         document.querySelector(".next-level-info").innerHTML =
-            '<p>Level completed: <span id="completed-level">' +
+            '<p>Livello completato: <span id="completed-level">' +
             currentLevelName +
             "</span></p>" +
-            '<p>Next level: <span id="next-level">' +
+            '<p>Prossimo livello: <span id="next-level">' +
             nextLevelName +
             "</span></p>"
-        continueButton.textContent = "Continue to Next Level"
+        continueButton.textContent = "Continua al Prossimo Livello"
         nextLevelElement.textContent = nextLevelName
     }
 
@@ -658,8 +748,25 @@ function startNextLevel() {
     difficultySelector.value = nextDifficulty
     currentDifficulty = nextDifficulty
 
-    // Update displayed difficulty
-    const nextLevelName = nextDifficulty.charAt(0).toUpperCase() + nextDifficulty.slice(1)
+    // Update displayed difficulty in Italian
+    let nextLevelName;
+    switch (nextDifficulty) {
+        case "easy":
+            nextLevelName = "Facile";
+            break;
+        case "medium":
+            nextLevelName = "Medio";
+            break;
+        case "hard":
+            nextLevelName = "Difficile";
+            break;
+        case "expert":
+            nextLevelName = "Esperto";
+            break;
+        default:
+            nextLevelName = "Facile";
+    }
+
     currentDifficultyElement.textContent = nextLevelName
 
     // Get difficulty settings

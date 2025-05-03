@@ -13,6 +13,7 @@ body {
   align-items: center;
   min-height: 100vh;
   overflow: hidden;
+  touch-action: manipulation;
 }
 
 .game-container {
@@ -20,38 +21,50 @@ body {
   flex-direction: column;
   align-items: center;
   max-width: 100%;
-  padding: 20px;
+  width: 100%;
+  padding: 10px;
   position: relative;
 }
 
 .game-title {
-  font-size: 3rem;
+  font-size: 2.5rem;
   color: #ffff00;
   text-shadow: 2px 2px 8px rgba(255, 255, 0, 0.6);
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   letter-spacing: 4px;
   text-align: center;
+}
+
+.game-controls-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 400px;
+  margin-bottom: 15px;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
 .difficulty-selector {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 20px;
-  font-size: 1.1rem;
+  gap: 8px;
+  font-size: 1rem;
+  flex-wrap: wrap;
 }
 
 .difficulty-selector select {
-  padding: 8px 12px;
+  padding: 6px 10px;
   background-color: #333;
   color: white;
   border: 2px solid #ffff00;
   border-radius: 4px;
-  font-size: 1rem;
+  font-size: 0.9rem;
 }
 
 .difficulty-selector button {
-  padding: 8px 16px;
+  padding: 6px 12px;
   background-color: #ffff00;
   color: #000;
   border: none;
@@ -66,13 +79,31 @@ body {
   transform: scale(1.05);
 }
 
+.info-button {
+  padding: 6px 12px;
+  background-color: #2121de;
+  color: white;
+  border: 2px solid #ffff00;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.info-button:hover {
+  background-color: #3939ff;
+  transform: scale(1.05);
+}
+
 .game-header {
   display: flex;
   justify-content: space-between;
   width: 100%;
-  max-width: 500px;
-  margin-bottom: 20px;
-  font-size: 1.2rem;
+  max-width: 400px;
+  margin-bottom: 15px;
+  font-size: 1rem;
+  flex-wrap: wrap;
+  gap: 5px;
 }
 
 #game-board {
@@ -80,11 +111,12 @@ body {
   background-color: #000;
   border: 2px solid #2121de;
   max-width: 100%;
+  margin-bottom: 15px;
 }
 
 .cell {
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -95,23 +127,23 @@ body {
 }
 
 .dot {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
   background-color: #ffb8ae;
   border-radius: 50%;
 }
 
 .power-pellet {
-  width: 12px;
-  height: 12px;
+  width: 10px;
+  height: 10px;
   background-color: #ffb8ae;
   border-radius: 50%;
   animation: pulse 0.7s infinite alternate;
 }
 
 .pacman {
-  width: 16px;
-  height: 16px;
+  width: 14px;
+  height: 14px;
   background-color: #ffff00;
   border-radius: 50%;
   clip-path: polygon(0 0, 100% 50%, 0 100%);
@@ -119,9 +151,9 @@ body {
 }
 
 .ghost {
-  width: 16px;
-  height: 16px;
-  border-radius: 8px 8px 0 0;
+  width: 14px;
+  height: 14px;
+  border-radius: 7px 7px 0 0;
   position: relative;
 }
 
@@ -154,38 +186,40 @@ body {
   animation: flash 0.5s linear infinite alternate;
 }
 
+/* Controlli touch - SEMPRE VISIBILI su mobile e tablet */
 .controls-container {
-  margin-top: 20px;
+  margin-top: 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
-}
-
-.controls-info {
-  margin-bottom: 15px;
-  text-align: center;
+  position: relative;
+  z-index: 10;
 }
 
 .touch-controls {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
+  width: 100%;
+  max-width: 220px;
 }
 
 .horizontal-controls {
   display: flex;
+  justify-content: center;
   gap: 20px;
+  width: 100%;
 }
 
 .touch-controls button {
   width: 60px;
   height: 60px;
-  font-size: 24px;
-  background-color: #333;
+  font-size: 28px;
+  background-color: rgba(51, 51, 51, 0.8);
   color: white;
-  border: none;
+  border: 3px solid #ffff00;
   border-radius: 50%;
   cursor: pointer;
   display: flex;
@@ -193,10 +227,91 @@ body {
   align-items: center;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
+  box-shadow: 0 0 10px rgba(255, 255, 0, 0.5);
 }
 
 .touch-controls button:active {
   background-color: #555;
+  transform: scale(0.95);
+}
+
+/* Modal Styles */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.modal-content {
+  background-color: #000;
+  margin: 5% auto;
+  padding: 15px;
+  border: 2px solid #ffff00;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+}
+
+.close-button {
+  color: #ffff00;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close-button:hover {
+  color: #ffcc00;
+}
+
+.rules-content {
+  margin-top: 15px;
+  font-size: 0.9rem;
+}
+
+.rule-section {
+  margin-bottom: 15px;
+}
+
+.rule-section h3 {
+  color: #ffff00;
+  margin-bottom: 8px;
+}
+
+.rule-section ul {
+  padding-left: 20px;
+}
+
+.rule-section li {
+  margin-bottom: 5px;
+}
+
+.rules-button {
+  background-color: #2121de;
+  color: white;
+  border: 2px solid #ffff00;
+  padding: 8px 20px;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: block;
+  margin: 10px auto 0;
+}
+
+.rules-button:hover {
+  background-color: #3939ff;
+  transform: scale(1.05);
 }
 
 /* Victory modal */
@@ -225,10 +340,10 @@ body {
   background-color: #000;
   border: 4px solid #ffff00;
   border-radius: 20px;
-  padding: 30px;
+  padding: 20px;
   text-align: center;
   max-width: 90%;
-  width: 400px;
+  width: 350px;
   transform: scale(0.7);
   transition: transform 0.5s;
   box-shadow: 0 0 30px rgba(255, 255, 0, 0.5);
@@ -240,8 +355,8 @@ body {
 
 .victory-title {
   color: #ffff00;
-  font-size: 2.5rem;
-  margin-bottom: 20px;
+  font-size: 2rem;
+  margin-bottom: 15px;
   text-shadow: 0 0 10px rgba(255, 255, 0, 0.7);
   animation: pulse-text 1.5s infinite alternate;
 }
@@ -249,20 +364,20 @@ body {
 /* Add special styling for game completion message */
 .victory-title.completed {
   color: #ffcc00;
-  font-size: 2.8rem;
+  font-size: 2.2rem;
   text-shadow: 0 0 15px rgba(255, 204, 0, 0.8);
   animation: pulse-gold 1.5s infinite alternate;
 }
 
 .victory-score {
-  font-size: 1.5rem;
-  margin-bottom: 15px;
+  font-size: 1.2rem;
+  margin-bottom: 10px;
   color: #fff;
 }
 
 .victory-message {
-  font-size: 1.2rem;
-  margin-bottom: 25px;
+  font-size: 1rem;
+  margin-bottom: 15px;
   color: #ffb8ae;
 }
 
@@ -270,17 +385,18 @@ body {
   background-color: #2121de;
   padding: 10px;
   border-radius: 10px;
-  margin-bottom: 25px;
+  margin-bottom: 15px;
+  font-size: 0.9rem;
 }
 
 .victory-button {
   background-color: #ffff00;
   color: #000;
   border: none;
-  padding: 12px 25px;
-  font-size: 1.2rem;
+  padding: 10px 20px;
+  font-size: 1rem;
   font-weight: bold;
-  border-radius: 30px;
+  border-radius: 20px;
   cursor: pointer;
   transition: all 0.2s;
 }
@@ -292,46 +408,108 @@ body {
 }
 
 .pacman-icon {
-  font-size: 2rem;
-  margin: 0 10px;
+  font-size: 1.5rem;
+  margin: 0 8px;
   display: inline-block;
   animation: chomp-icon 0.3s linear infinite;
 }
 
-/* Desktop devices */
-@media (min-width: 768px) {
-  .mobile-controls {
-    display: none;
-  }
-
+/* Responsive styles */
+/* Assicurati che i controlli siano sempre visibili su tutti i dispositivi tranne PC desktop */
+@media (min-width: 1025px) {
+  /* Solo per PC desktop */
   .touch-controls {
     display: none;
   }
 
   #game-board {
-    width: 500px;
-    height: 500px;
+    width: 475px;
+    height: 475px;
   }
 
   .cell {
-    width: 25px;
-    height: 25px;
+    width: 22px;
+    height: 22px;
+  }
+
+  .dot {
+    width: 6px;
+    height: 6px;
+  }
+
+  .power-pellet {
+    width: 12px;
+    height: 12px;
+  }
+
+  .pacman,
+  .ghost {
+    width: 16px;
+    height: 16px;
+  }
+
+  .ghost {
+    border-radius: 8px 8px 0 0;
   }
 }
 
-/* Mobile devices */
-@media (max-width: 767px) {
-  .desktop-controls {
-    display: none;
+/* Tablet e dispositivi di medie dimensioni */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .game-title {
+    font-size: 2.8rem;
   }
 
+  #game-board {
+    width: 400px;
+    height: 400px;
+  }
+
+  .cell {
+    width: 19px;
+    height: 19px;
+  }
+
+  /* Controlli più grandi per tablet */
+  .touch-controls button {
+    width: 70px;
+    height: 70px;
+    font-size: 30px;
+    border-width: 4px;
+  }
+
+  .touch-controls {
+    max-width: 280px;
+  }
+
+  .horizontal-controls {
+    gap: 40px;
+  }
+}
+
+/* Dispositivi mobili */
+@media (max-width: 767px) {
   .game-title {
     font-size: 2rem;
+    margin-bottom: 10px;
+  }
+
+  .game-controls-row {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
   }
 
   .difficulty-selector {
     flex-direction: column;
+    align-items: center;
     gap: 8px;
+    margin-bottom: 10px;
+  }
+
+  .game-header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
   }
 
   #game-board {
@@ -340,8 +518,8 @@ body {
   }
 
   .cell {
-    width: 15px;
-    height: 15px;
+    width: 14px;
+    height: 14px;
   }
 
   .dot {
@@ -360,12 +538,80 @@ body {
     height: 12px;
   }
 
-  .victory-title {
-    font-size: 2rem;
+  .ghost {
+    border-radius: 6px 6px 0 0;
   }
 
-  .victory-content {
-    padding: 20px;
+  .modal-content {
+    margin: 10% auto;
+    padding: 15px;
+    max-height: 80vh;
+  }
+}
+
+/* Dispositivi molto piccoli */
+@media (max-width: 350px) {
+  .game-title {
+    font-size: 1.8rem;
+  }
+
+  #game-board {
+    width: 260px;
+    height: 260px;
+  }
+
+  .cell {
+    width: 12px;
+    height: 12px;
+  }
+
+  /* Controlli più piccoli ma ancora ben visibili */
+  .touch-controls button {
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+  }
+
+  .touch-controls {
+    max-width: 200px;
+  }
+
+  .horizontal-controls {
+    gap: 20px;
+  }
+}
+
+/* Assicurati che i controlli siano sempre visibili su tutti i dispositivi */
+@media (orientation: landscape) and (max-height: 500px) {
+  .game-container {
+    padding: 5px;
+  }
+
+  .game-title {
+    font-size: 1.5rem;
+    margin-bottom: 5px;
+  }
+
+  #game-board {
+    width: 280px;
+    height: 280px;
+  }
+
+  .touch-controls {
+    flex-direction: row;
+    max-width: 100%;
+    gap: 20px;
+  }
+
+  .horizontal-controls {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .touch-controls button {
+    width: 45px;
+    height: 45px;
+    font-size: 20px;
   }
 }
 
@@ -411,7 +657,6 @@ body {
   }
 }
 
-/* Add special styling for game completion message */
 @keyframes pulse-gold {
   0% {
     text-shadow: 0 0 10px rgba(255, 204, 0, 0.7);
@@ -427,5 +672,243 @@ body {
   }
   100% {
     opacity: 1;
+  }
+}
+
+/* Modificare la sezione per dispositivi mobili per mantenere gli elementi sulla stessa riga */
+@media (max-width: 767px) {
+  .game-title {
+    font-size: 2rem;
+    margin-bottom: 10px;
+  }
+
+  .game-controls-row {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .difficulty-selector {
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+
+  /* Mantieni gli elementi del game-header sulla stessa riga */
+  .game-header {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+    font-size: 0.9rem;
+    flex-wrap: nowrap;
+    padding: 0 5px;
+  }
+
+  #game-board {
+    width: 300px;
+    height: 300px;
+  }
+
+  .cell {
+    width: 14px;
+    height: 14px;
+  }
+
+  .dot {
+    width: 4px;
+    height: 4px;
+  }
+
+  .power-pellet {
+    width: 8px;
+    height: 8px;
+  }
+
+  .pacman,
+  .ghost {
+    width: 12px;
+    height: 12px;
+  }
+
+  .ghost {
+    border-radius: 6px 6px 0 0;
+  }
+
+  .modal-content {
+    margin: 10% auto;
+    padding: 15px;
+    max-height: 80vh;
+  }
+}
+
+/* Dispositivi molto piccoli - mantieni comunque gli elementi sulla stessa riga */
+@media (max-width: 350px) {
+  .game-title {
+    font-size: 1.8rem;
+  }
+
+  #game-board {
+    width: 260px;
+    height: 260px;
+  }
+
+  .cell {
+    width: 12px;
+    height: 12px;
+  }
+
+  /* Controlli più piccoli ma ancora ben visibili */
+  .touch-controls button {
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+  }
+
+  .touch-controls {
+    max-width: 200px;
+  }
+
+  .horizontal-controls {
+    gap: 20px;
+  }
+
+  /* Riduci ulteriormente il testo per schermi molto piccoli */
+  .game-header {
+    font-size: 0.8rem;
+  }
+}
+
+/* Modificare la sezione per dispositivi mobili per mantenere i pulsanti sulla stessa riga */
+@media (max-width: 767px) {
+  .game-title {
+    font-size: 2rem;
+    margin-bottom: 10px;
+  }
+
+  /* Mantieni i controlli sulla stessa riga */
+  .game-controls-row {
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  /* Modifica il selettore di difficoltà per adattarsi meglio */
+  .difficulty-selector {
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 0;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  /* Riduci le dimensioni dei pulsanti per adattarli meglio */
+  .difficulty-selector button,
+  .info-button {
+    padding: 5px 10px;
+    font-size: 0.9rem;
+  }
+
+  /* Mantieni gli elementi del game-header sulla stessa riga */
+  .game-header {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+    font-size: 0.9rem;
+    flex-wrap: nowrap;
+    padding: 0 5px;
+  }
+
+  #game-board {
+    width: 300px;
+    height: 300px;
+  }
+
+  .cell {
+    width: 14px;
+    height: 14px;
+  }
+
+  .dot {
+    width: 4px;
+    height: 4px;
+  }
+
+  .power-pellet {
+    width: 8px;
+    height: 8px;
+  }
+
+  .pacman,
+  .ghost {
+    width: 12px;
+    height: 12px;
+  }
+
+  .ghost {
+    border-radius: 6px 6px 0 0;
+  }
+
+  .modal-content {
+    margin: 10% auto;
+    padding: 15px;
+    max-height: 80vh;
+  }
+}
+
+/* Dispositivi molto piccoli - mantieni comunque gli elementi sulla stessa riga */
+@media (max-width: 350px) {
+  .game-title {
+    font-size: 1.8rem;
+  }
+
+  #game-board {
+    width: 260px;
+    height: 260px;
+  }
+
+  .cell {
+    width: 12px;
+    height: 12px;
+  }
+
+  /* Controlli più piccoli ma ancora ben visibili */
+  .touch-controls button {
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+  }
+
+  .touch-controls {
+    max-width: 200px;
+  }
+
+  .horizontal-controls {
+    gap: 20px;
+  }
+
+  /* Riduci ulteriormente il testo per schermi molto piccoli */
+  .game-header {
+    font-size: 0.8rem;
+  }
+
+  /* Riduci ulteriormente i pulsanti per schermi molto piccoli */
+  .difficulty-selector button,
+  .info-button {
+    padding: 4px 8px;
+    font-size: 0.8rem;
+  }
+
+  /* Riduci la dimensione del selettore */
+  .difficulty-selector select {
+    padding: 4px 6px;
+    font-size: 0.8rem;
   }
 }
