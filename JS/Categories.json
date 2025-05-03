@@ -195,6 +195,10 @@
       {
         "name": "Calcolo Trigonometrico",
         "link": "Site/Math/Trigonometria/index.html"
+      },
+      {
+        "name":"Gestione Turni",
+        "link": "Site/Math/Gestione_Turni/index.html"
       }
     ],
     "Natale": [

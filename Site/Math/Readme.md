@@ -14,11 +14,12 @@
 - **[Euclide](Euclide)**
 - **[Fattoriale](Fattoriale)**
 - **[Fibonacci](Fibonacci)**
+- **[Gestione Turni](Gestione_Turni)**
 - **[Logaritmi](Logaritmi)**
 - **[Numero Primo](Numero%20Primo)**
 - **[Pitagora](Pitagora)**
-- **[Gestione Punteggi](Punteggi)**
-- **[Gestione Punteggi UX Design](Punteggi_UX_Design)**
+- **[Punteggi](Punteggi)**
+- **[Punteggi UX Design](Punteggi_UX_Design)**
 - **[Calcolo Segno Zodiacale](Segno_Zodiacale)**
 - **[Stampa numeri pari o dispari o tutti](StampaNumeri)**
 - **[Tabelline](Tabelline)**
