@@ -653,32 +653,146 @@ body {
 }
 
 /* Ottimizzazione specifica per iPhone */
+/* Aggiungi queste regole CSS per migliorare il supporto per iPhone */
+
+/* Stile specifico per dispositivi iOS */
+.ios-device .touch-controls {
+  max-width: 280px;
+  margin-bottom: 20px;
+}
+
+.ios-device .touch-controls button {
+  width: 60px;
+  height: 60px;
+  font-size: 28px;
+  background-color: rgba(51, 51, 51, 0.95);
+  border: 4px solid #ffff00;
+  box-shadow: 0 0 20px rgba(255, 255, 0, 0.8);
+}
+
+.ios-device .horizontal-controls {
+  gap: 40px;
+}
+
+/* Stile specifico per iPhone */
+.iphone .game-container {
+  padding: 5px;
+  height: 100vh;
+  justify-content: space-between;
+}
+
+.iphone .game-title {
+  font-size: 1.8rem;
+  margin-bottom: 5px;
+}
+
+.iphone .controls-container {
+  margin-top: 5px;
+  margin-bottom: 15px;
+  position: sticky;
+  bottom: 10px;
+  z-index: 100;
+}
+
+.iphone .touch-controls {
+  max-width: 280px;
+}
+
+.iphone .touch-controls button {
+  width: 65px;
+  height: 65px;
+  font-size: 30px;
+  background-color: rgba(51, 51, 51, 0.95);
+  border: 4px solid #ffff00;
+  box-shadow: 0 0 20px rgba(255, 255, 0, 0.8);
+}
+
+.iphone .horizontal-controls {
+  gap: 50px;
+}
+
+.iphone #game-board {
+  width: 280px;
+  height: 280px;
+  margin-bottom: 10px;
+}
+
+/* Ottimizzazione per iPhone in modalità landscape */
+@media screen and (orientation: landscape) {
+  .iphone .game-container {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 5px;
+    height: 100vh;
+  }
+
+  .iphone .game-title {
+    font-size: 1.5rem;
+    width: 100%;
+    margin-bottom: 5px;
+  }
+
+  .iphone .game-controls-row,
+  .iphone .game-header {
+    width: 100%;
+    margin-bottom: 5px;
+  }
+
+  .iphone #game-board {
+    width: 220px;
+    height: 220px;
+    margin: 0 10px;
+  }
+
+  .iphone .controls-container {
+    margin: 0;
+    position: relative;
+  }
+
+  .iphone .touch-controls {
+    flex-direction: row;
+    max-width: 100%;
+    gap: 15px;
+  }
+
+  .iphone .horizontal-controls {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .iphone .touch-controls button {
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+  }
+}
+
 @media screen and (max-width: 428px) and (-webkit-min-device-pixel-ratio: 2) {
-  /* Stile specifico per iPhone */
-  .game-container {
+  /* Queste regole si applicano solo se non è già stata applicata la classe .iphone */
+  body:not(.iphone) .game-container {
     padding: 5px;
     height: 100vh;
     justify-content: space-between;
   }
 
-  .game-title {
+  body:not(.iphone) .game-title {
     font-size: 1.8rem;
     margin-bottom: 5px;
   }
 
-  /* Assicurati che i controlli siano ben visibili */
-  .controls-container {
+  body:not(.iphone) .controls-container {
     margin-top: 5px;
     margin-bottom: 10px;
     position: sticky;
     bottom: 5px;
   }
 
-  .touch-controls {
+  body:not(.iphone) .touch-controls {
     max-width: 240px;
   }
 
-  .touch-controls button {
+  body:not(.iphone) .touch-controls button {
     width: 55px;
     height: 55px;
     font-size: 26px;
@@ -687,53 +801,14 @@ body {
     box-shadow: 0 0 15px rgba(255, 255, 0, 0.7);
   }
 
-  /* Aumenta la distanza tra i pulsanti orizzontali */
-  .horizontal-controls {
+  body:not(.iphone) .horizontal-controls {
     gap: 30px;
   }
 
-  /* Riduci la dimensione del tabellone di gioco */
-  #game-board {
+  body:not(.iphone) #game-board {
     width: 280px;
     height: 280px;
     margin-bottom: 10px;
-  }
-
-  /* Assicurati che i controlli di gioco siano sulla stessa riga */
-  .game-controls-row {
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 10px;
-  }
-
-  .difficulty-selector {
-    flex-direction: row;
-    align-items: center;
-    gap: 5px;
-    margin-bottom: 0;
-  }
-
-  .difficulty-selector select {
-    padding: 4px 8px;
-    font-size: 0.8rem;
-  }
-
-  .difficulty-selector button,
-  .info-button {
-    padding: 4px 8px;
-    font-size: 0.8rem;
-  }
-
-  /* Assicurati che punteggio, vite e livello siano sulla stessa riga */
-  .game-header {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 0.8rem;
-    margin-bottom: 10px;
-    flex-wrap: nowrap;
   }
 }
 
@@ -814,12 +889,45 @@ body {
 
 /* Fix per Safari su iOS per evitare problemi di overflow */
 @supports (-webkit-touch-callout: none) {
+  html,
   body {
     height: -webkit-fill-available;
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
   }
 
   .game-container {
     min-height: -webkit-fill-available;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Previeni lo zoom su iOS quando si tocca un pulsante */
+  .touch-controls button {
+    touch-action: manipulation;
+  }
+}
+
+/* Fix aggiuntivi per iOS */
+@supports (-webkit-touch-callout: none) {
+  html,
+  body {
+    height: -webkit-fill-available;
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
+  }
+
+  .game-container {
+    min-height: -webkit-fill-available;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Previeni lo zoom su iOS quando si tocca un pulsante */
+  .touch-controls button {
+    touch-action: manipulation;
   }
 }
 
