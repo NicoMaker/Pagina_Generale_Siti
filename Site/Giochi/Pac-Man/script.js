@@ -24,7 +24,7 @@ let gameBoard = []
 let pacman = { x: 0, y: 0, direction: DIRECTIONS.RIGHT }
 let ghosts = []
 let score = 0
-let lives = 3
+let lives = 5
 let gameInterval
 let ghostsInterval
 let isPaused = false
@@ -39,6 +39,13 @@ const livesElement = document.getElementById("lives")
 const difficultySelector = document.getElementById("difficulty")
 const startGameButton = document.getElementById("start-game")
 const currentDifficultyElement = document.getElementById("current-difficulty")
+
+// Victory modal elements
+const victoryModal = document.getElementById("victory-modal")
+const victoryScoreElement = document.getElementById("victory-score")
+const completedLevelElement = document.getElementById("completed-level")
+const nextLevelElement = document.getElementById("next-level")
+const continueButton = document.getElementById("continue-button")
 
 // Touch controls
 const upBtn = document.getElementById("up-btn")
@@ -125,9 +132,14 @@ async function initGame() {
     currentDifficulty = "easy"
     currentDifficultyElement.textContent = "Easy"
 
+    // Set initial lives to 5 (easy difficulty)
+    lives = 5
+    updateLives()
+
     // Set up event listeners
     setupControls()
     setupDifficultySelector()
+    setupVictoryModal()
 
     // Show initial board without starting the game
     createGameBoard()
@@ -153,6 +165,17 @@ function setupDifficultySelector() {
 
         // Start the game
         startGame()
+    })
+}
+
+// Set up victory modal
+function setupVictoryModal() {
+    continueButton.addEventListener("click", () => {
+        // Hide the modal
+        victoryModal.classList.remove("show")
+
+        // Start the next level
+        startNextLevel()
     })
 }
 
@@ -548,7 +571,7 @@ function gameOver() {
     alert("Game Over! Your score: " + score)
 }
 
-// Modify the winGame function to progress to the next difficulty level
+// Modify the winGame function to show a nice victory modal
 function winGame() {
     clearInterval(gameInterval)
     clearInterval(ghostsInterval)
@@ -573,32 +596,81 @@ function winGame() {
             nextDifficulty = "easy"
     }
 
-    // Show win message with current level and next level
+    // Get level names
     const currentLevelName = currentDifficulty.charAt(0).toUpperCase() + currentDifficulty.slice(1)
     const nextLevelName = nextDifficulty.charAt(0).toUpperCase() + nextDifficulty.slice(1)
 
-    alert(
-        `Congratulations! You've completed the ${currentLevelName} level! Your score: ${score}\n\nAdvancing to ${nextLevelName} level...`,
-    )
+    // Update victory modal content
+    victoryScoreElement.textContent = score
+    completedLevelElement.textContent = currentLevelName
+
+    // Check if player completed the expert level
+    if (currentDifficulty === "expert") {
+        // Show special game completion message
+        document.querySelector(".victory-title").textContent = "GAME COMPLETED!"
+        document.querySelector(".victory-message").innerHTML =
+            '<span class="pacman-icon">V</span> Congratulations! You\'ve completed the entire game! <span class="pacman-icon">V</span>'
+        document.querySelector(".next-level-info").innerHTML =
+            "<p>You've mastered all difficulty levels!</p><p>Final Score: " + score + "</p>"
+        continueButton.textContent = "Play Again"
+    } else {
+        // Show regular level progression message
+        document.querySelector(".victory-title").textContent = "VICTORY!"
+        document.querySelector(".victory-message").innerHTML =
+            '<span class="pacman-icon">V</span> Congratulations! <span class="pacman-icon">V</span>'
+        document.querySelector(".next-level-info").innerHTML =
+            '<p>Level completed: <span id="completed-level">' +
+            currentLevelName +
+            "</span></p>" +
+            '<p>Next level: <span id="next-level">' +
+            nextLevelName +
+            "</span></p>"
+        continueButton.textContent = "Continue to Next Level"
+        nextLevelElement.textContent = nextLevelName
+    }
+
+    // Show the victory modal
+    victoryModal.classList.add("show")
+}
+
+// Start the next level
+function startNextLevel() {
+    // Get the next difficulty level
+    let nextDifficulty
+    switch (currentDifficulty) {
+        case "easy":
+            nextDifficulty = "medium"
+            break
+        case "medium":
+            nextDifficulty = "hard"
+            break
+        case "hard":
+            nextDifficulty = "expert"
+            break
+        case "expert":
+            nextDifficulty = "easy" // Loop back to easy after completing expert
+            break
+        default:
+            nextDifficulty = "easy"
+    }
 
     // Set the next difficulty level in the selector
     difficultySelector.value = nextDifficulty
+    currentDifficulty = nextDifficulty
 
-    // Start the next level after a short delay
-    setTimeout(() => {
-        currentDifficulty = nextDifficulty
-        const difficultySettings = gameConfig.difficulties[currentDifficulty]
+    // Update displayed difficulty
+    const nextLevelName = nextDifficulty.charAt(0).toUpperCase() + nextDifficulty.slice(1)
+    currentDifficultyElement.textContent = nextLevelName
 
-        // Update game settings based on new difficulty
-        lives = difficultySettings.lives
-        updateLives()
+    // Get difficulty settings
+    const difficultySettings = gameConfig.difficulties[currentDifficulty]
 
-        // Update displayed difficulty
-        currentDifficultyElement.textContent = currentLevelName
+    // Update game settings based on new difficulty
+    lives = difficultySettings.lives
+    updateLives()
 
-        // Start the game with the new difficulty
-        startGame()
-    }, 1500)
+    // Start the game with the new difficulty
+    startGame()
 }
 
 // Reset the game
