@@ -1,5 +1,5 @@
 :root {
-  /* Colori principali */
+  /* Colori principali - Solo tema chiaro */
   --primary: #6366f1;
   --primary-hover: #4f46e5;
   --primary-light: #e0e7ff;
@@ -18,7 +18,7 @@
   --info-light: #e0f2fe;
   --info-dark: #0284c7;
 
-  /* Colori di sfondo e testo */
+  /* Colori di sfondo e testo - Solo tema chiaro */
   --bg-body: #f3f4f6;
   --bg-card: #ffffff;
   --bg-input: #ffffff;
@@ -58,21 +58,6 @@
   --transition-slow: 0.5s ease;
 }
 
-/* Tema scuro */
-[data-theme="dark"] {
-  --bg-body: #1f2937;
-  --bg-card: #111827;
-  --bg-input: #374151;
-  --text-primary: #f9fafb;
-  --text-secondary: #e5e7eb;
-  --text-muted: #9ca3af;
-  --border-color: #374151;
-  --primary-light: #4338ca;
-  --success-light: #065f46;
-  --danger-light: #b91c1c;
-  --warning-light: #92400e;
-}
-
 /* Reset e stili di base */
 * {
   margin: 0;
@@ -88,7 +73,6 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  transition: background-color var(--transition), color var(--transition);
 }
 
 .app-container {
@@ -133,17 +117,6 @@ body {
   margin: 0;
   flex-grow: 1;
   text-align: center;
-}
-
-.theme-toggle {
-  cursor: pointer;
-  font-size: 1.5rem;
-  color: var(--text-secondary);
-  transition: color var(--transition-fast);
-}
-
-.theme-toggle:hover {
-  color: var(--primary);
 }
 
 /* Main content */
