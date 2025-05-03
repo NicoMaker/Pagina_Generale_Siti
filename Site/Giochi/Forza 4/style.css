@@ -956,3 +956,7 @@ summary:focus-visible {
   transform: translateX(5px);
   transition: transform 0.3s ease;
 }
+
+#resetCurrentGameButton{
+  display: none;
+}

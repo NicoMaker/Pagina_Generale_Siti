@@ -486,302 +486,7 @@ body {
   }
 }
 
-/* Dispositivi mobili */
-@media (max-width: 767px) {
-  .game-title {
-    font-size: 2rem;
-    margin-bottom: 10px;
-  }
-
-  .game-controls-row {
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .difficulty-selector {
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 10px;
-  }
-
-  .game-header {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
-
-  #game-board {
-    width: 300px;
-    height: 300px;
-  }
-
-  .cell {
-    width: 14px;
-    height: 14px;
-  }
-
-  .dot {
-    width: 4px;
-    height: 4px;
-  }
-
-  .power-pellet {
-    width: 8px;
-    height: 8px;
-  }
-
-  .pacman,
-  .ghost {
-    width: 12px;
-    height: 12px;
-  }
-
-  .ghost {
-    border-radius: 6px 6px 0 0;
-  }
-
-  .modal-content {
-    margin: 10% auto;
-    padding: 15px;
-    max-height: 80vh;
-  }
-}
-
-/* Dispositivi molto piccoli */
-@media (max-width: 350px) {
-  .game-title {
-    font-size: 1.8rem;
-  }
-
-  #game-board {
-    width: 260px;
-    height: 260px;
-  }
-
-  .cell {
-    width: 12px;
-    height: 12px;
-  }
-
-  /* Controlli più piccoli ma ancora ben visibili */
-  .touch-controls button {
-    width: 50px;
-    height: 50px;
-    font-size: 24px;
-  }
-
-  .touch-controls {
-    max-width: 200px;
-  }
-
-  .horizontal-controls {
-    gap: 20px;
-  }
-}
-
-/* Assicurati che i controlli siano sempre visibili su tutti i dispositivi */
-@media (orientation: landscape) and (max-height: 500px) {
-  .game-container {
-    padding: 5px;
-  }
-
-  .game-title {
-    font-size: 1.5rem;
-    margin-bottom: 5px;
-  }
-
-  #game-board {
-    width: 280px;
-    height: 280px;
-  }
-
-  .touch-controls {
-    flex-direction: row;
-    max-width: 100%;
-    gap: 20px;
-  }
-
-  .horizontal-controls {
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .touch-controls button {
-    width: 45px;
-    height: 45px;
-    font-size: 20px;
-  }
-}
-
-@keyframes chomp {
-  0% {
-    clip-path: polygon(0 0, 100% 50%, 0 100%);
-  }
-  50% {
-    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
-  }
-  100% {
-    clip-path: polygon(0 0, 100% 50%, 0 100%);
-  }
-}
-
-@keyframes chomp-icon {
-  0% {
-    clip-path: polygon(0 0, 100% 50%, 0 100%);
-  }
-  50% {
-    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
-  }
-  100% {
-    clip-path: polygon(0 0, 100% 50%, 0 100%);
-  }
-}
-
-@keyframes pulse {
-  0% {
-    transform: scale(0.8);
-  }
-  100% {
-    transform: scale(1.2);
-  }
-}
-
-@keyframes pulse-text {
-  0% {
-    text-shadow: 0 0 10px rgba(255, 255, 0, 0.7);
-  }
-  100% {
-    text-shadow: 0 0 20px rgba(255, 255, 0, 1);
-  }
-}
-
-@keyframes pulse-gold {
-  0% {
-    text-shadow: 0 0 10px rgba(255, 204, 0, 0.7);
-  }
-  100% {
-    text-shadow: 0 0 25px rgba(255, 204, 0, 1);
-  }
-}
-
-@keyframes flash {
-  0% {
-    opacity: 0.7;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-
-/* Modificare la sezione per dispositivi mobili per mantenere gli elementi sulla stessa riga */
-@media (max-width: 767px) {
-  .game-title {
-    font-size: 2rem;
-    margin-bottom: 10px;
-  }
-
-  .game-controls-row {
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .difficulty-selector {
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 10px;
-  }
-
-  /* Mantieni gli elementi del game-header sulla stessa riga */
-  .game-header {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    text-align: center;
-    width: 100%;
-    font-size: 0.9rem;
-    flex-wrap: nowrap;
-    padding: 0 5px;
-  }
-
-  #game-board {
-    width: 300px;
-    height: 300px;
-  }
-
-  .cell {
-    width: 14px;
-    height: 14px;
-  }
-
-  .dot {
-    width: 4px;
-    height: 4px;
-  }
-
-  .power-pellet {
-    width: 8px;
-    height: 8px;
-  }
-
-  .pacman,
-  .ghost {
-    width: 12px;
-    height: 12px;
-  }
-
-  .ghost {
-    border-radius: 6px 6px 0 0;
-  }
-
-  .modal-content {
-    margin: 10% auto;
-    padding: 15px;
-    max-height: 80vh;
-  }
-}
-
-/* Dispositivi molto piccoli - mantieni comunque gli elementi sulla stessa riga */
-@media (max-width: 350px) {
-  .game-title {
-    font-size: 1.8rem;
-  }
-
-  #game-board {
-    width: 260px;
-    height: 260px;
-  }
-
-  .cell {
-    width: 12px;
-    height: 12px;
-  }
-
-  /* Controlli più piccoli ma ancora ben visibili */
-  .touch-controls button {
-    width: 50px;
-    height: 50px;
-    font-size: 24px;
-  }
-
-  .touch-controls {
-    max-width: 200px;
-  }
-
-  .horizontal-controls {
-    gap: 20px;
-  }
-
-  /* Riduci ulteriormente il testo per schermi molto piccoli */
-  .game-header {
-    font-size: 0.8rem;
-  }
-}
-
-/* Modificare la sezione per dispositivi mobili per mantenere i pulsanti sulla stessa riga */
+/* Dispositivi mobili - mantieni la stessa riga */
 @media (max-width: 767px) {
   .game-title {
     font-size: 2rem;
@@ -910,5 +615,270 @@ body {
   .difficulty-selector select {
     padding: 4px 6px;
     font-size: 0.8rem;
+  }
+}
+
+/* Assicurati che i controlli siano sempre visibili su tutti i dispositivi */
+@media (orientation: landscape) and (max-height: 500px) {
+  .game-container {
+    padding: 5px;
+  }
+
+  .game-title {
+    font-size: 1.5rem;
+    margin-bottom: 5px;
+  }
+
+  #game-board {
+    width: 280px;
+    height: 280px;
+  }
+
+  .touch-controls {
+    flex-direction: row;
+    max-width: 100%;
+    gap: 20px;
+  }
+
+  .horizontal-controls {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .touch-controls button {
+    width: 45px;
+    height: 45px;
+    font-size: 20px;
+  }
+}
+
+/* Ottimizzazione specifica per iPhone */
+@media screen and (max-width: 428px) and (-webkit-min-device-pixel-ratio: 2) {
+  /* Stile specifico per iPhone */
+  .game-container {
+    padding: 5px;
+    height: 100vh;
+    justify-content: space-between;
+  }
+
+  .game-title {
+    font-size: 1.8rem;
+    margin-bottom: 5px;
+  }
+
+  /* Assicurati che i controlli siano ben visibili */
+  .controls-container {
+    margin-top: 5px;
+    margin-bottom: 10px;
+    position: sticky;
+    bottom: 5px;
+  }
+
+  .touch-controls {
+    max-width: 240px;
+  }
+
+  .touch-controls button {
+    width: 55px;
+    height: 55px;
+    font-size: 26px;
+    background-color: rgba(51, 51, 51, 0.9);
+    border: 3px solid #ffff00;
+    box-shadow: 0 0 15px rgba(255, 255, 0, 0.7);
+  }
+
+  /* Aumenta la distanza tra i pulsanti orizzontali */
+  .horizontal-controls {
+    gap: 30px;
+  }
+
+  /* Riduci la dimensione del tabellone di gioco */
+  #game-board {
+    width: 280px;
+    height: 280px;
+    margin-bottom: 10px;
+  }
+
+  /* Assicurati che i controlli di gioco siano sulla stessa riga */
+  .game-controls-row {
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  .difficulty-selector {
+    flex-direction: row;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 0;
+  }
+
+  .difficulty-selector select {
+    padding: 4px 8px;
+    font-size: 0.8rem;
+  }
+
+  .difficulty-selector button,
+  .info-button {
+    padding: 4px 8px;
+    font-size: 0.8rem;
+  }
+
+  /* Assicurati che punteggio, vite e livello siano sulla stessa riga */
+  .game-header {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.8rem;
+    margin-bottom: 10px;
+    flex-wrap: nowrap;
+  }
+}
+
+/* Ottimizzazione specifica per iPhone SE e modelli più piccoli */
+@media screen and (max-width: 375px) and (-webkit-min-device-pixel-ratio: 2) {
+  .game-title {
+    font-size: 1.6rem;
+  }
+
+  #game-board {
+    width: 260px;
+    height: 260px;
+  }
+
+  .touch-controls button {
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+  }
+
+  .horizontal-controls {
+    gap: 25px;
+  }
+
+  .game-header {
+    font-size: 0.75rem;
+  }
+}
+
+/* Ottimizzazione per iPhone in modalità landscape */
+@media screen and (max-height: 428px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+  .game-container {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 5px;
+  }
+
+  .game-title {
+    font-size: 1.5rem;
+    width: 100%;
+    margin-bottom: 5px;
+  }
+
+  .game-controls-row,
+  .game-header {
+    width: 100%;
+    margin-bottom: 5px;
+  }
+
+  #game-board {
+    width: 240px;
+    height: 240px;
+    margin: 0 10px;
+  }
+
+  .controls-container {
+    margin: 0;
+  }
+
+  .touch-controls {
+    flex-direction: row;
+    max-width: 100%;
+    gap: 15px;
+  }
+
+  .horizontal-controls {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .touch-controls button {
+    width: 45px;
+    height: 45px;
+    font-size: 20px;
+  }
+}
+
+/* Fix per Safari su iOS per evitare problemi di overflow */
+@supports (-webkit-touch-callout: none) {
+  body {
+    height: -webkit-fill-available;
+  }
+
+  .game-container {
+    min-height: -webkit-fill-available;
+  }
+}
+
+@keyframes chomp {
+  0% {
+    clip-path: polygon(0 0, 100% 50%, 0 100%);
+  }
+  50% {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+  }
+  100% {
+    clip-path: polygon(0 0, 100% 50%, 0 100%);
+  }
+}
+
+@keyframes chomp-icon {
+  0% {
+    clip-path: polygon(0 0, 100% 50%, 0 100%);
+  }
+  50% {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+  }
+  100% {
+    clip-path: polygon(0 0, 100% 50%, 0 100%);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.8);
+  }
+  100% {
+    transform: scale(1.2);
+  }
+}
+
+@keyframes pulse-text {
+  0% {
+    text-shadow: 0 0 10px rgba(255, 255, 0, 0.7);
+  }
+  100% {
+    text-shadow: 0 0 20px rgba(255, 255, 0, 1);
+  }
+}
+
+@keyframes pulse-gold {
+  0% {
+    text-shadow: 0 0 10px rgba(255, 204, 0, 0.7);
+  }
+  100% {
+    text-shadow: 0 0 25px rgba(255, 204, 0, 1);
+  }
+}
+
+@keyframes flash {
+  0% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 1;
   }
 }
