@@ -90,6 +90,10 @@
       {
         "name":"Dama",
         "link":"Site/Giochi/Dama/index.html"
+      },
+      {
+        "name":"Pac-Man",
+        "link":"Site/Giochi/Pac-Man/index.html"
       }
     ],
     "Info_Paesi_Stati": [
