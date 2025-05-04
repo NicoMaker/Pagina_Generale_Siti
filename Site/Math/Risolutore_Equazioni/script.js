@@ -1,4 +1,6 @@
-import { Chart } from "@/components/ui/chart"
+
+// We'll use the global math object loaded from the CDN instead
+// No need for an import since it's loaded globally
 // Global variables
 let regionsData = []
 const extractedRegions = []
@@ -335,7 +337,7 @@ function showErrorMessage(message) {
 }
 
 // Import math.js library
-const math = require("mathjs")
+// const math = require("mathjs")
 
 // Attendere che il DOM sia completamente caricato
 document.addEventListener("DOMContentLoaded", () => {
