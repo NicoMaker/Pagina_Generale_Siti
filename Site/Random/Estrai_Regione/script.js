@@ -137,10 +137,23 @@ function generateRegioneHTML(
   const { nome, immagine, capoluogo, estensione_km2, popolazione, province } = regione
   const numeroProvince = province.length
 
-  // Generate provinces list
+  // Generate provinces list with numbers and icons
   const provinceHTML = province
     .sort()
-    .map((provincia) => `<li class="province-item">${provincia}</li>`)
+    .map(
+      (provincia, index) => `
+      <div class="province-item">
+        <div class="province-number">${index + 1}</div>
+        <div class="province-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="province-svg">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+          </svg>
+        </div>
+        <div class="province-name">${provincia}</div>
+      </div>
+    `,
+    )
     .join("")
 
   // Apply animation class based on whether we're shuffling or showing the final result
@@ -149,15 +162,31 @@ function generateRegioneHTML(
   return `
     <div class="region-content ${animationClass}">
       <div class="region-header">
-        <h2 class="region-name">${nome}</h2>
-        <div class="region-capital">Capoluogo: ${capoluogo}</div>
+        <div class="region-title">
+          <h2 class="region-name">${nome}</h2>
+          <div class="region-capital">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="capital-icon">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+              <polyline points="9 22 9 12 15 12 15 22"></polyline>
+            </svg>
+            Capoluogo: ${capoluogo}
+          </div>
+        </div>
       </div>
       
-      <img src="Img/${immagine}" alt="${nome}" class="region-image" onerror="this.src='https://via.placeholder.com/300x200.png?text=${encodeURIComponent(nome)}'">
+      <div class="region-image-container">
+        <img src="Img/${immagine}" alt="${nome}" class="region-image" onerror="this.src='https://via.placeholder.com/300x200.png?text=${encodeURIComponent(nome)}'">
+      </div>
       
       <div class="region-stats">
         <div class="stat-item">
-          <div class="stat-label">Superficie</div>
+          <div class="stat-label">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="stat-icon">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+              <circle cx="12" cy="10" r="3"></circle>
+            </svg>
+            Superficie
+          </div>
           <div class="stat-value">${formatNumber(estensione_km2)} km²</div>
           <div class="stat-detail">
             <span>${percentualeEstensione}% dell'Italia</span>
@@ -168,7 +197,15 @@ function generateRegioneHTML(
         </div>
         
         <div class="stat-item">
-          <div class="stat-label">Popolazione</div>
+          <div class="stat-label">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="stat-icon">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+              <circle cx="9" cy="7" r="4"></circle>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
+            Popolazione
+          </div>
           <div class="stat-value">${formatNumber(popolazione)}</div>
           <div class="stat-detail">
             <span>${percentualePopolazione}% dell'Italia</span>
@@ -179,22 +216,36 @@ function generateRegioneHTML(
         </div>
         
         <div class="stat-item">
-          <div class="stat-label">Densità</div>
+          <div class="stat-label">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="stat-icon">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            Densità
+          </div>
           <div class="stat-value">${densitaRegione} ab/km²</div>
         </div>
       </div>
       
       <div class="region-provinces">
-        <h3 class="provinces-title">Province (${numeroProvince})</h3>
+        <div class="provinces-header">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="provinces-icon">
+            <path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"></path>
+            <circle cx="12" cy="10" r="3"></circle>
+          </svg>
+          <h3 class="provinces-title">Province (${numeroProvince})</h3>
+        </div>
+        
         <div class="province-percentage">
           <span>${percentualeProvince}% del totale nazionale</span>
           <div class="percentage-bar">
             <div class="percentage-fill" style="width: ${percentualeProvince}%"></div>
           </div>
         </div>
-        <ul class="provinces-list">
+        
+        <div class="provinces-grid">
           ${provinceHTML}
-        </ul>
+        </div>
       </div>
     </div>
   `
