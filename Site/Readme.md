@@ -16,4 +16,4 @@
 - **[Random](Random/Readme.md)** [12 Progetti]
 - **[Salute](Salute/Readme.md)** [1 Progetto]
 - **[Storia](Storia/Readme.md)** [1 Progetto]
-- **[Temperatura](https://github.com/NicoMaker/Egypt)** [1 Progetto]
+- **[Temperatura](Temperatura/Readme.md)** [1 Progetto]
