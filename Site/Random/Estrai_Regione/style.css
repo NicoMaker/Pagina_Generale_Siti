@@ -61,15 +61,18 @@ h1 {
   display: inline-block;
 }
 
-h1::after {
-  content: "";
-  position: absolute;
-  bottom: -10px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100px;
-  height: 3px;
-  background: linear-gradient(to right, var(--primary), var(--secondary));
+/* Gradiente bandiera italiana sotto il titolo */
+.italian-flag-gradient {
+  height: 5px;
+  width: 200px;
+  margin: 10px auto;
+  background: linear-gradient(
+    to right,
+    var(--primary) 33%,
+    white 33%,
+    white 66%,
+    var(--secondary) 66%
+  );
   border-radius: 3px;
 }
 
@@ -527,4 +530,8 @@ footer {
   .history-grid {
     grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
   }
+}
+
+body{
+  background-color: yellow;
 }

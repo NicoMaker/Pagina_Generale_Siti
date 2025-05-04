@@ -25,70 +25,69 @@
           alt="Logo Italia">
       </div>
       <h1>Esploratore Regioni Italiane</h1>
+      <div class="italian-flag-gradient"></div>
       <p class="subtitle">Scopri le meraviglie delle regioni d'Italia</p>
     </header>
 
-  </div>
+    <div class="controls">
+      <button id="generateButton" class="generate-btn">
+        <span class="btn-text">Estrai Regione</span>
+        <span class="btn-icon">🇮🇹</span>
+      </button>
+    </div>
 
-  <div class="controls">
-    <button id="generateButton" class="generate-btn">
-      <span class="btn-text">Estrai Regione</span>
-      <span class="btn-icon">🇮🇹</span>
-    </button>
-  </div>
+    <main>
+      <div id="output" class="region-card">
+        <div class="placeholder-content">
+          <div class="placeholder-icon">🇮🇹</div>
+          <p>Clicca il pulsante per estrarre una regione italiana</p>
+        </div>
+      </div>
+    </main>
 
-  <main>
-    <div id="output" class="region-card">
-      <div class="placeholder-content">
-        <div class="placeholder-icon">🇮🇹</div>
-        <p>Clicca il pulsante per estrarre una regione italiana</p>
+    <div class="stats-container">
+      <h2>Statistiche Nazionali</h2>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon">👥</div>
+          <div class="stat-content">
+            <h3>Popolazione</h3>
+            <p id="total-population">Caricamento...</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">📏</div>
+          <div class="stat-content">
+            <h3>Superficie</h3>
+            <p id="total-area">Caricamento...</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">🏙️</div>
+          <div class="stat-content">
+            <h3>Regioni</h3>
+            <p id="total-regions">Caricamento...</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">🏛️</div>
+          <div class="stat-content">
+            <h3>Province</h3>
+            <p id="total-provinces">Caricamento...</p>
+          </div>
+        </div>
       </div>
     </div>
-  </main>
 
-  <div class="stats-container">
-    <h2>Statistiche Nazionali</h2>
-    <div class="stats-grid">
-      <div class="stat-card">
-        <div class="stat-icon">👥</div>
-        <div class="stat-content">
-          <h3>Popolazione</h3>
-          <p id="total-population">59.236.213</p>
-        </div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-icon">📏</div>
-        <div class="stat-content">
-          <h3>Superficie</h3>
-          <p id="total-area">301.340 km²</p>
-        </div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-icon">🏙️</div>
-        <div class="stat-content">
-          <h3>Regioni</h3>
-          <p>20</p>
-        </div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-icon">🏛️</div>
-        <div class="stat-content">
-          <h3>Province</h3>
-          <p>107</p>
-        </div>
-      </div>
+    <div class="history-container">
+      <h2>Regioni Estratte</h2>
+      <div id="history" class="history-grid"></div>
     </div>
-  </div>
 
-  <div class="history-container">
-    <h2>Regioni Estratte</h2>
-    <div id="history" class="history-grid"></div>
-  </div>
-
-  <footer>
-    <p>Esploratore Regioni Italiane &copy; 2023</p>
-    <p class="credits">Dati aggiornati al 2023</p>
-  </footer>
+    <footer>
+      <p>Esploratore Regioni Italiane &copy; 2023</p>
+      <p class="credits">Dati aggiornati al 2023</p>
+    </footer>
   </div>
 
   <script src="script.js"></script>

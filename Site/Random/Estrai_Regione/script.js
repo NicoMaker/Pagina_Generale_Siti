@@ -17,10 +17,14 @@ async function initialize() {
     // Calculate totals for display
     const totalEstensione = calculateTotalValues(regionsData, "estensione_km2")
     const totalPopolazione = calculateTotalValues(regionsData, "popolazione")
+    const totalRegioni = regionsData.length
+    const totalProvince = calculateTotalProvinces(regionsData)
 
     // Update total stats display
     document.getElementById("total-population").textContent = formatNumber(totalPopolazione) + " abitanti"
     document.getElementById("total-area").textContent = formatNumber(totalEstensione) + " km²"
+    document.getElementById("total-regions").textContent = totalRegioni
+    document.getElementById("total-provinces").textContent = totalProvince
   } catch (error) {
     console.error("Error initializing the application:", error)
     showErrorMessage("Si è verificato un errore durante l'inizializzazione dell'applicazione.")
@@ -47,6 +51,11 @@ function calculateTotalValues(regioni, key) {
   return regioni.reduce((total, regione) => total + regione[key], 0)
 }
 
+// Calculate total number of provinces
+function calculateTotalProvinces(regioni) {
+  return regioni.reduce((total, regione) => total + regione.province.length, 0)
+}
+
 // Calculate percentage of a value relative to a total
 function calculatePercent(value, total) {
   return ((value / total) * 100).toFixed(2)
@@ -71,6 +80,7 @@ function formatNumber(number) {
 function handleGenerateButtonClick() {
   const totalEstensione = calculateTotalValues(regionsData, "estensione_km2")
   const totalPopolazione = calculateTotalValues(regionsData, "popolazione")
+  const totalProvince = calculateTotalProvinces(regionsData)
 
   // Add pulse animation to the button
   const button = document.getElementById("generateButton")
@@ -83,29 +93,31 @@ function handleGenerateButtonClick() {
   let counter = 0
   const maxIterations = 10
   const intervalId = setInterval(() => {
-    displayRandomRegione(regionsData, totalEstensione, totalPopolazione, true)
+    displayRandomRegione(regionsData, totalEstensione, totalPopolazione, totalProvince, true)
     counter++
 
     if (counter >= maxIterations) {
       clearInterval(intervalId)
-      const finalRegion = displayRandomRegione(regionsData, totalEstensione, totalPopolazione, false)
+      const finalRegion = displayRandomRegione(regionsData, totalEstensione, totalPopolazione, totalProvince, false)
       addToHistory(finalRegion)
     }
   }, 100)
 }
 
 // Display a random region
-function displayRandomRegione(regioni, totalEstensione, totalPopolazione, isShuffling) {
+function displayRandomRegione(regioni, totalEstensione, totalPopolazione, totalProvince, isShuffling) {
   const regioneCasuale = selectRandomRegione(regioni)
   const percentualeEstensione = calculatePercent(regioneCasuale.estensione_km2, totalEstensione)
   const percentualePopolazione = calculatePercent(regioneCasuale.popolazione, totalPopolazione)
   const densitaRegione = calculateDensity(regioneCasuale.popolazione, regioneCasuale.estensione_km2)
+  const percentualeProvince = calculatePercent(regioneCasuale.province.length, totalProvince)
 
   const regioneHTML = generateRegioneHTML(
     regioneCasuale,
     percentualeEstensione,
     percentualePopolazione,
     densitaRegione,
+    percentualeProvince,
     isShuffling,
   )
 
@@ -114,12 +126,16 @@ function displayRandomRegione(regioni, totalEstensione, totalPopolazione, isShuf
 }
 
 // Generate HTML for a region
-function generateRegioneHTML(regione, percentualeEstensione, percentualePopolazione, densitaRegione, isShuffling) {
+function generateRegioneHTML(
+  regione,
+  percentualeEstensione,
+  percentualePopolazione,
+  densitaRegione,
+  percentualeProvince,
+  isShuffling,
+) {
   const { nome, immagine, capoluogo, estensione_km2, popolazione, province } = regione
   const numeroProvince = province.length
-
-  // Calcola la percentuale delle province rispetto al totale nazionale (107)
-  const percentualeProvince = ((numeroProvince / 107) * 100).toFixed(2)
 
   // Generate provinces list
   const provinceHTML = province
@@ -137,7 +153,7 @@ function generateRegioneHTML(regione, percentualeEstensione, percentualePopolazi
         <div class="region-capital">Capoluogo: ${capoluogo}</div>
       </div>
       
-      <img src="Img/${immagine}" alt="${nome}" class="region-image">
+      <img src="Img/${immagine}" alt="${nome}" class="region-image" onerror="this.src='https://via.placeholder.com/300x200.png?text=${encodeURIComponent(nome)}'">
       
       <div class="region-stats">
         <div class="stat-item">
@@ -224,7 +240,7 @@ function updateHistoryDisplay() {
     historyItem.className = "history-item"
 
     historyItem.innerHTML = `
-      <img src="img/${region.immagine}" alt="${region.nome}" class="history-image">
+      <img src="Img/${region.immagine}" alt="${region.nome}" class="history-image" onerror="this.src='https://via.placeholder.com/150x100.png?text=${encodeURIComponent(region.nome)}'">
       <div class="history-name">${region.nome}</div>
     `
 
@@ -232,16 +248,19 @@ function updateHistoryDisplay() {
     historyItem.addEventListener("click", () => {
       const totalEstensione = calculateTotalValues(regionsData, "estensione_km2")
       const totalPopolazione = calculateTotalValues(regionsData, "popolazione")
+      const totalProvince = calculateTotalProvinces(regionsData)
 
       const percentualeEstensione = calculatePercent(region.estensione_km2, totalEstensione)
       const percentualePopolazione = calculatePercent(region.popolazione, totalPopolazione)
       const densitaRegione = calculateDensity(region.popolazione, region.estensione_km2)
+      const percentualeProvince = calculatePercent(region.province.length, totalProvince)
 
       const regioneHTML = generateRegioneHTML(
         region,
         percentualeEstensione,
         percentualePopolazione,
         densitaRegione,
+        percentualeProvince,
         false,
       )
 
