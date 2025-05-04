@@ -94,6 +94,18 @@
       {
         "name":"Pac-Man",
         "link":"Site/Giochi/Pac-Man/index.html"
+      },
+      {
+        "name": "Gestione Punteggi",
+        "link": "Site/Giochi/Punteggi/index.html"
+      },
+      {
+        "name": "Gestione Punteggi UX Design",
+        "link": "Site/Giochi/Punteggi_UX_Design/index.html"
+      },
+      {
+        "name":"Gestione Turni",
+        "link": "Site/Giochi/Gestione_Turni/index.html"
       }
     ],
     "Info_Paesi_Stati": [
@@ -170,14 +182,6 @@
         "link": "Site/Math/Pitagora/index.html"
       },
       {
-        "name": "Gestione Punteggi",
-        "link": "Site/Math/Punteggi/index.html"
-      },
-      {
-        "name": "Gestione Punteggi UX Design",
-        "link": "Site/Math/Punteggi_UX_Design/index.html"
-      },
-      {
         "name": "Calcolo Segno Zodiacale",
         "link": "Site/Math/Segno_Zodiacale/index.html"
       },
@@ -195,10 +199,6 @@
       {
         "name": "Calcolo Trigonometrico",
         "link": "Site/Math/Trigonometria/index.html"
-      },
-      {
-        "name":"Gestione Turni",
-        "link": "Site/Math/Gestione_Turni/index.html"
       }
     ],
     "Natale": [

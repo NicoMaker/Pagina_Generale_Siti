@@ -306,3 +306,7 @@ select:focus {
 .history-container {
   display: none;
 }
+
+.theme-toggle{
+  display: none;
+}
