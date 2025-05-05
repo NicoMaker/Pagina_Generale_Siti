@@ -183,6 +183,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
             // Controlla se la mossa è valida
             if (isValidMove(selectedRow, selectedCol, row, col)) {
+                // Verifica se questa mossa darà scacco
+                const willGiveCheck = willMoveGiveCheck(selectedRow, selectedCol, row, col)
+
+                // Verifica se questa mossa catturerà un pezzo
+                const willCapture = board[row][col].piece !== null
+
                 movePiece(selectedRow, selectedCol, row, col)
                 clearSelection()
 
@@ -193,7 +199,18 @@ document.addEventListener("DOMContentLoaded", () => {
                     updateTurnIndicator()
 
                     // Controlla se il re è sotto scacco
-                    highlightCheck()
+                    const isCheck = highlightCheck()
+
+                    // Mostra messaggio di scacco se la mossa ha dato scacco
+                    if (willGiveCheck && isCheck) {
+                        gameStatus.textContent = `${getOpponentColor(currentPlayer) === "white" ? "Bianco" : "Nero"} ha dato scacco!`
+                        gameStatus.classList.add("check-message")
+
+                        // Rimuovi la classe dopo un po'
+                        setTimeout(() => {
+                            gameStatus.classList.remove("check-message")
+                        }, 2000)
+                    }
 
                     // Controlla se c'è stallo
                     if (isStalemate(currentPlayer)) {
@@ -213,6 +230,40 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+    // Verifica se una mossa darà scacco
+    function willMoveGiveCheck(fromRow, fromCol, toRow, toCol) {
+        // Crea una copia temporanea della scacchiera
+        const tempBoard = JSON.parse(JSON.stringify(board))
+
+        // Esegui la mossa sulla copia
+        tempBoard[toRow][toCol] = tempBoard[fromRow][fromCol]
+        tempBoard[fromRow][fromCol] = { piece: null, color: null }
+
+        // Trova la posizione del re avversario
+        const opponentColor = getOpponentColor(tempBoard[toRow][toCol].color)
+        let kingRow, kingCol
+
+        for (let r = 0; r < 8; r++) {
+            for (let c = 0; c < 8; c++) {
+                if (tempBoard[r][c].piece === "king" && tempBoard[r][c].color === opponentColor) {
+                    kingRow = r
+                    kingCol = c
+                    break
+                }
+            }
+        }
+
+        if (!kingRow && !kingCol) return false
+
+        // Verifica se il re avversario sarà sotto scacco dopo la mossa
+        const originalBoard = board
+        board = tempBoard
+        const willBeInCheck = isSquareAttacked(kingRow, kingCol, opponentColor)
+        board = originalBoard
+
+        return willBeInCheck
+    }
+
     // Seleziona un pezzo
     function selectPiece(row, col) {
         clearSelection()
@@ -223,7 +274,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Calcola e mostra le mosse valide
         validMoves = calculateValidMoves(row, col)
-        highlightValidMoves()
+        highlightValidMoves(row, col)
     }
 
     // Pulisce la selezione corrente
@@ -236,7 +287,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Rimuovi l'evidenziazione delle mosse valide
         document.querySelectorAll(".valid-move").forEach((square) => {
-            square.classList.remove("valid-move")
+            square.classList.remove("valid-move", "can-capture-king", "can-give-check")
         })
 
         selectedPiece = null
@@ -244,10 +295,20 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Evidenzia le mosse valide
-    function highlightValidMoves() {
-        validMoves.forEach(([row, col]) => {
-            const square = getSquareElement(row, col)
+    function highlightValidMoves(fromRow, fromCol) {
+        validMoves.forEach(([toRow, toCol]) => {
+            const square = getSquareElement(toRow, toCol)
             square.classList.add("valid-move")
+
+            // Verifica se questa mossa può catturare un re
+            if (board[toRow][toCol].piece === "king") {
+                square.classList.add("can-capture-king")
+            }
+
+            // Verifica se questa mossa darà scacco
+            if (willMoveGiveCheck(fromRow, fromCol, toRow, toCol)) {
+                square.classList.add("can-give-check")
+            }
         })
     }
 
@@ -266,8 +327,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
             // Aggiorna il messaggio di gioco
             gameStatus.textContent = `${currentPlayer === "white" ? "Bianco" : "Nero"} è sotto scacco!`
+            return true
         } else {
             gameStatus.textContent = ""
+            return false
         }
     }
 
@@ -292,9 +355,16 @@ document.addEventListener("DOMContentLoaded", () => {
     function movePiece(fromRow, fromCol, toRow, toCol) {
         const movingPiece = board[fromRow][fromCol]
         const targetSquare = board[toRow][toCol]
+        const targetElement = getSquareElement(toRow, toCol)
 
         // Se c'è un pezzo nella casella di destinazione, lo cattura
         if (targetSquare.piece) {
+            // Aggiungi effetto di cattura
+            targetElement.classList.add("piece-captured-effect")
+            setTimeout(() => {
+                targetElement.classList.remove("piece-captured-effect")
+            }, 500)
+
             // Controlla se il pezzo catturato è un re
             if (targetSquare.piece === "king") {
                 // Dichiara immediatamente la vittoria
@@ -349,10 +419,10 @@ document.addEventListener("DOMContentLoaded", () => {
         updateSquare(toRow, toCol)
 
         // Aggiungi un effetto di movimento
-        const targetElement = getSquareElement(toRow, toCol).querySelector(".chess-piece")
-        targetElement.style.animation = "none"
+        const pieceElement = getSquareElement(toRow, toCol).querySelector(".chess-piece")
+        pieceElement.style.animation = "none"
         setTimeout(() => {
-            targetElement.style.animation = ""
+            pieceElement.style.animation = ""
         }, 10)
     }
 
@@ -1075,7 +1145,20 @@ document.addEventListener("DOMContentLoaded", () => {
         stats.white = 0
         stats.black = 0
         gameNumber = 1
-        updateStats()
+        whiteCaptures = []
+        blackCaptures = []
+        selectedPiece = null
+        validMoves = []
+        gameStatus.textContent = ""
+
+        // Aggiorna l'interfaccia
+        whiteWins.textContent = "0"
+        blackWins.textContent = "0"
+        gameCount.textContent = "1"
+        updateCapturedPieces()
+
+        // Reinizializza la scacchiera
+        initBoard()
     }
 
     // Event listeners

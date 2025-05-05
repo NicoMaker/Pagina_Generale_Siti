@@ -33,7 +33,7 @@ header::after {
   transform: translateX(-50%);
   width: 100px;
   height: 3px;
-  background: linear-gradient(to right, #3498db, #2ecc71);
+  background: linear-gradient(to right, #3498db, #2980b9);
   border-radius: 3px;
 }
 
@@ -184,6 +184,21 @@ h3 {
   min-height: 1.6rem;
   text-shadow: 0 0 1px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
+}
+
+.game-status.check-message {
+  color: #e74c3c;
+  font-size: 1.3rem;
+  animation: pulse-check-message 1s infinite alternate;
+}
+
+@keyframes pulse-check-message {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.05);
+  }
 }
 
 .chessboard {
@@ -405,7 +420,7 @@ h3 {
 }
 
 .chess-square.selected {
-  background-color: rgba(170, 208, 255, 0.8);
+  background-color: rgba(52, 152, 219, 0.5);
   box-shadow: inset 0 0 10px rgba(52, 152, 219, 0.5);
 }
 
@@ -419,7 +434,7 @@ h3 {
   position: absolute;
   width: 30%;
   height: 30%;
-  background-color: rgba(46, 204, 113, 0.4);
+  background-color: rgba(52, 152, 219, 0.4);
   border-radius: 50%;
   animation: pulse-valid 1.5s infinite;
 }
@@ -467,6 +482,40 @@ h3 {
   100% {
     transform: scale(0.8);
     opacity: 0.7;
+  }
+}
+
+/* Stile per evidenziare quando una mossa darà scacco */
+.chess-square.valid-move.can-give-check {
+  position: relative;
+  cursor: pointer;
+}
+
+.chess-square.valid-move.can-give-check::after {
+  content: "";
+  position: absolute;
+  width: 35%;
+  height: 35%;
+  background-color: rgba(231, 76, 60, 0.7);
+  border-radius: 50%;
+  animation: pulse-give-check 1.5s infinite;
+}
+
+@keyframes pulse-give-check {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.7;
+    box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.4);
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.9;
+    box-shadow: 0 0 10px 5px rgba(231, 76, 60, 0.4);
+  }
+  100% {
+    transform: scale(0.8);
+    opacity: 0.7;
+    box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.4);
   }
 }
 
@@ -570,7 +619,7 @@ h3 {
   opacity: 0;
   transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55),
     opacity 0.6s ease;
-  border: 2px solid gold;
+  border: 2px solid #3498db;
   position: relative;
   overflow: hidden;
 }
@@ -584,7 +633,7 @@ h3 {
   height: 200%;
   background: radial-gradient(
     circle,
-    rgba(255, 215, 0, 0.1) 0%,
+    rgba(52, 152, 219, 0.1) 0%,
     transparent 70%
   );
   animation: rotate-gradient 10s linear infinite;
@@ -615,8 +664,9 @@ h3 {
 #victory-title {
   font-size: 3rem;
   margin-bottom: 15px;
-  color: gold;
-  text-shadow: 0 0 10px rgba(255, 215, 0, 0.5), 0 0 20px rgba(255, 215, 0, 0.3);
+  color: #ecf0f1;
+  text-shadow: 0 0 10px rgba(52, 152, 219, 0.5),
+    0 0 20px rgba(52, 152, 219, 0.3);
   font-weight: 700;
   letter-spacing: 2px;
   animation: title-glow 2s ease-in-out infinite alternate;
@@ -624,12 +674,12 @@ h3 {
 
 @keyframes title-glow {
   0% {
-    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5),
-      0 0 20px rgba(255, 215, 0, 0.3);
+    text-shadow: 0 0 10px rgba(52, 152, 219, 0.5),
+      0 0 20px rgba(52, 152, 219, 0.3);
   }
   100% {
-    text-shadow: 0 0 15px rgba(255, 215, 0, 0.7),
-      0 0 30px rgba(255, 215, 0, 0.5);
+    text-shadow: 0 0 15px rgba(52, 152, 219, 0.7),
+      0 0 30px rgba(52, 152, 219, 0.5);
   }
 }
 
@@ -668,12 +718,12 @@ h3 {
 
 #victory-piece.white-piece {
   color: #ffffff;
-  text-shadow: 0 0 15px gold, 0 0 30px gold, 0 0 45px gold;
+  text-shadow: 0 0 15px #3498db, 0 0 30px #3498db, 0 0 45px #3498db;
 }
 
 #victory-piece.black-piece {
   color: #000000;
-  text-shadow: 0 0 15px gold, 0 0 30px gold, 0 0 45px gold;
+  text-shadow: 0 0 15px #3498db, 0 0 30px #3498db, 0 0 45px #3498db;
 }
 
 @keyframes victory-bounce {
@@ -688,7 +738,7 @@ h3 {
 }
 
 #continue-btn {
-  background: linear-gradient(to right, #f39c12, #e74c3c);
+  background: linear-gradient(to right, #3498db, #2980b9);
   color: white;
   padding: 15px 40px;
   font-size: 1.2rem;
@@ -759,13 +809,13 @@ h3 {
 /* Animazione per lo scacco matto */
 @keyframes checkmate-flash {
   0% {
-    box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.7);
+    box-shadow: 0 0 0 0 rgba(52, 152, 219, 0.7);
   }
   70% {
-    box-shadow: 0 0 0 20px rgba(231, 76, 60, 0);
+    box-shadow: 0 0 0 20px rgba(52, 152, 219, 0);
   }
   100% {
-    box-shadow: 0 0 0 0 rgba(231, 76, 60, 0);
+    box-shadow: 0 0 0 0 rgba(52, 152, 219, 0);
   }
 }
 
@@ -875,7 +925,7 @@ h3 {
   position: absolute;
   width: 10px;
   height: 10px;
-  background-color: #f39c12;
+  background-color: #3498db;
   opacity: 0;
   z-index: 1001;
   filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.3));
@@ -902,13 +952,13 @@ h3 {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  box-shadow: 0 0 10px 2px gold;
+  box-shadow: 0 0 10px 2px #3498db;
 }
 
 /* Effetto di vittoria sulla scacchiera */
 .chessboard.victory-effect {
   animation: board-victory 2s ease;
-  box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+  box-shadow: 0 0 30px rgba(52, 152, 219, 0.5);
 }
 
 @keyframes board-victory {
@@ -917,11 +967,11 @@ h3 {
     transform: perspective(1000px) rotateX(5deg);
   }
   50% {
-    box-shadow: 0 0 50px rgba(255, 215, 0, 0.7);
+    box-shadow: 0 0 50px rgba(52, 152, 219, 0.7);
     transform: perspective(1000px) rotateX(0deg) scale(1.03);
   }
   100% {
-    box-shadow: 0 10px 30px rgba(255, 215, 0, 0.5);
+    box-shadow: 0 10px 30px rgba(52, 152, 219, 0.5);
     transform: perspective(1000px) rotateX(5deg);
   }
 }
@@ -933,9 +983,29 @@ h3 {
 
 @keyframes victory-glow {
   0% {
-    box-shadow: 0 0 10px 5px rgba(255, 215, 0, 0.5);
+    box-shadow: 0 0 10px 5px rgba(52, 152, 219, 0.5);
   }
   100% {
-    box-shadow: 0 0 20px 10px rgba(255, 215, 0, 0.8);
+    box-shadow: 0 0 20px 10px rgba(52, 152, 219, 0.8);
+  }
+}
+
+/* Effetto per la cattura di pezzi */
+.piece-captured-effect {
+  animation: capture-flash 0.5s ease-out;
+}
+
+@keyframes capture-flash {
+  0% {
+    box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.7);
+    background-color: rgba(231, 76, 60, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 20px 10px rgba(231, 76, 60, 0.5);
+    background-color: rgba(231, 76, 60, 0.5);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(231, 76, 60, 0);
+    background-color: transparent;
   }
 }
