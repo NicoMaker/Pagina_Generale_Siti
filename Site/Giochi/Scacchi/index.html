@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gioco degli Scacchi</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>Gioco degli Scacchi</h1>
+        </header>
+
+        <div class="game-container">
+            <div class="board-section">
+                <div class="turn-indicator-container">
+                    <div id="turn-indicator" class="turn-indicator white-turn">
+                        <div class="turn-piece white">♔</div>
+                        <div class="turn-piece black">♚</div>
+                        <div class="turn-text">Turno: <span id="current-player">Bianco</span></div>
+                    </div>
+                    <div id="game-status" class="game-status"></div>
+                </div>
+
+                <div id="chessboard" class="chessboard"></div>
+
+                <div class="controls">
+                    <button id="new-game-btn" class="btn primary-btn">Nuova Partita</button>
+                    <button id="reset-btn" class="btn neutral-btn">Reset</button>
+                    <button id="reset-stats-btn" class="btn secondary-btn">Reset Statistiche</button>
+                </div>
+            </div>
+
+            <div class="stats-section">
+                <h2>Statistiche</h2>
+                <div class="captured-container">
+                    <div class="captured-box">
+                        <h3>Bianco ha catturato</h3>
+                        <div id="white-captured" class="captured-pieces"></div>
+                    </div>
+                    <div class="captured-box">
+                        <h3>Nero ha catturato</h3>
+                        <div id="black-captured" class="captured-pieces"></div>
+                    </div>
+                </div>
+
+                <div class="game-stats">
+                    <h3>Partite</h3>
+                    <div class="stats-box">
+                        <p>Bianco: <span id="white-wins">0</span> vittorie</p>
+                        <p>Nero: <span id="black-wins">0</span> vittorie</p>
+                        <p>Partita #<span id="game-count">1</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

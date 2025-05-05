@@ -14,6 +14,7 @@
 - **[Punteggi UX Design](Punteggi_UX_Design)**
 - **[Rotella Movimentata](Rotella%20Movimentata)**
 - **[Sasso Carta Forbice](Sasso_Carta_Forbice)**
+- **[Scacchi](Scacchi)**
 - **[Slot Machine](Slot_Machine)**
 - **[Slot Machine UX](Slot_Macchine_UX)**
 - **[Snake Game](Snakegame)**

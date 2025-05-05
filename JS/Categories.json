@@ -106,6 +106,10 @@
       {
         "name":"Gestione Turni",
         "link": "Site/Giochi/Gestione_Turni/index.html"
+      },
+      {
+        "name":"Scacchi",
+        "link":"Site/Giochi/Scacchi/index.html"
       }
     ],
     "Info_Paesi_Stati": [
