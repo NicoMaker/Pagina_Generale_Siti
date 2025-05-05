@@ -20,6 +20,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const victoryPiece = document.getElementById("victory-piece")
     const continueBtn = document.getElementById("continue-btn")
 
+    // Elementi per le regole e il tema
+    const infoBtn = document.getElementById("info-btn")
+    const themeToggleBtn = document.getElementById("theme-toggle-btn")
+    const rulesOverlay = document.getElementById("rules-overlay")
+    const closeRulesBtn = document.getElementById("close-rules-btn")
+
     // Stato del gioco
     let board = []
     let selectedPiece = null
@@ -34,11 +40,49 @@ document.addEventListener("DOMContentLoaded", () => {
         black: 0,
     }
 
-    // Assicurati che l'overlay di vittoria sia nascosto all'inizio
+    // Assicurati che gli overlay siano nascosti all'inizio
     victoryOverlay.classList.remove("active")
+    rulesOverlay.classList.remove("active")
 
     // Rimuovi eventuali classi di stile dal pezzo di vittoria
     victoryPiece.classList.remove("white-piece", "black-piece")
+
+    // Gestione del tema
+    function toggleTheme() {
+        document.body.classList.toggle("dark-theme")
+
+        // Aggiorna l'icona del pulsante
+        if (document.body.classList.contains("dark-theme")) {
+            themeToggleBtn.innerHTML = '<i class="fas fa-sun"></i>'
+            themeToggleBtn.title = "Passa al tema chiaro"
+        } else {
+            themeToggleBtn.innerHTML = '<i class="fas fa-moon"></i>'
+            themeToggleBtn.title = "Passa al tema scuro"
+        }
+
+        // Salva la preferenza dell'utente
+        localStorage.setItem("chessTheme", document.body.classList.contains("dark-theme") ? "dark" : "light")
+    }
+
+    // Carica il tema preferito dell'utente
+    function loadThemePreference() {
+        const savedTheme = localStorage.getItem("chessTheme")
+        if (savedTheme === "dark") {
+            document.body.classList.add("dark-theme")
+            themeToggleBtn.innerHTML = '<i class="fas fa-sun"></i>'
+            themeToggleBtn.title = "Passa al tema chiaro"
+        }
+    }
+
+    // Mostra le regole
+    function showRules() {
+        rulesOverlay.classList.add("active")
+    }
+
+    // Nascondi le regole
+    function hideRules() {
+        rulesOverlay.classList.remove("active")
+    }
 
     // Inizializzazione della scacchiera
     function initBoard() {
@@ -217,7 +261,8 @@ document.addEventListener("DOMContentLoaded", () => {
                         }, 2000)
 
                         // Controlla se c'è scacco matto
-                        if (isCheckmate(currentPlayer)) {
+                        const isCheckmateVar = isCheckmate(currentPlayer);
+                        if (isCheckmateVar) {
                             // Dichiara la vittoria per scacco matto
                             gameOver = true
 
@@ -341,10 +386,7 @@ document.addEventListener("DOMContentLoaded", () => {
         })
     }
 
-    // Modifica la funzione highlightCheck per assicurarsi che il re sotto scacco sia sempre evidenziato in rosso
-    // e che il messaggio di scacco venga mostrato indipendentemente dal pezzo che dà scacco
-
-    // Trova la funzione highlightCheck e sostituiscila con questa versione migliorata
+    // Evidenzia il re sotto scacco e il pezzo che dà scacco
     function highlightCheck() {
         // Rimuovi l'evidenziazione precedente
         document.querySelectorAll(".check").forEach((square) => {
@@ -372,7 +414,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // Aggiungi questa nuova funzione per evidenziare il pezzo che dà scacco
+    // Evidenzia il pezzo che dà scacco
     function highlightCheckingPiece(kingRow, kingCol, defendingColor) {
         const attackingColor = getOpponentColor(defendingColor)
 
@@ -792,7 +834,7 @@ document.addEventListener("DOMContentLoaded", () => {
         })
 
         // Arrocco
-        if (!isInCheck(color, row, col)) {
+        if (!isInCheckFunc(color, row, col)) {
             // Arrocco corto
             if (canCastle(row, col, row, 7, color)) {
                 moves.push([row, col + 2])
@@ -838,7 +880,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function isValidMove(fromRow, fromCol, toRow, toCol) {
         // Se il re è sotto scacco, verifica che la mossa risolva lo scacco
         const kingPosition = findKing(currentPlayer)
-        if (kingPosition && isInCheck(currentPlayer, kingPosition[0], kingPosition[1])) {
+        if (kingPosition && isInCheckFunc(currentPlayer, kingPosition[0], kingPosition[1])) {
             // Crea una copia temporanea della scacchiera
             const tempBoard = JSON.parse(JSON.stringify(board))
 
@@ -1030,309 +1072,185 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Controlla se un re è sotto scacco
-    function isInCheck(color, row, col) {
-        return isSquareAttacked(row, col, color)
+    function isInCheckFunc(color, row, col) {
+        return isSquareAttacked(row, col, color);
     }
 
     // Controlla se una mossa metterebbe il re sotto scacco
     function wouldBeInCheck(color, fromRow, fromCol, toRow, toCol) {
         // Crea una copia temporanea della scacchiera
-        const tempBoard = JSON.parse(JSON.stringify(board))
+        const tempBoard = JSON.parse(JSON.stringify(board));
 
         // Esegui la mossa sulla copia
-        tempBoard[toRow][toCol] = tempBoard[fromRow][fromCol]
-        tempBoard[fromRow][fromCol] = { piece: null, color: null }
+        tempBoard[toRow][toCol] = tempBoard[fromRow][fromCol];
+        tempBoard[fromRow][fromCol] = { piece: null, color: null };
 
         // Trova la posizione del re dopo la mossa
-        let kingRow, kingCol
+        let kingRow, kingCol;
         if (tempBoard[toRow][toCol].piece === "king") {
-            kingRow = toRow
-            kingCol = toCol
+            kingRow = toRow;
+            kingCol = toCol;
         } else {
             for (let r = 0; r < 8; r++) {
                 for (let c = 0; c < 8; c++) {
                     if (tempBoard[r][c].piece === "king" && tempBoard[r][c].color === color) {
-                        kingRow = r
-                        kingCol = c
-                        break
+                        kingRow = r;
+                        kingCol = c;
+                        break;
                     }
                 }
             }
         }
 
-        // Controlla se il re è sotto scacco nella nuova posizione
-        const originalBoard = board
-        board = tempBoard
-        const inCheck = isSquareAttacked(kingRow, kingCol, color)
-        board = originalBoard
+        // Controlla se il re sarebbe sotto scacco
+        const originalBoard = board;
+        board = tempBoard;
+        const inCheck = isSquareAttacked(kingRow, kingCol, color);
+        board = originalBoard;
 
-        return inCheck
+        return inCheck;
     }
 
     // Controlla se c'è scacco matto
     function isCheckmate(color) {
-        const kingPosition = findKing(color)
-        if (!kingPosition) return false
+        // Trova la posizione del re
+        const kingPosition = findKing(color);
+        if (!kingPosition) return false;
 
-        const [kingRow, kingCol] = kingPosition
+        const [kingRow, kingCol] = kingPosition;
 
-        // Controlla se il re è sotto scacco
-        if (!isInCheck(color, kingRow, kingCol)) {
-            return false
-        }
+        // Se il re non è sotto scacco, non c'è scacco matto
+        if (!isInCheckFunc(color, kingRow, kingCol)) return false;
 
-        // Controlla se ci sono mosse valide per qualsiasi pezzo
+        // Controlla se c'è qualche mossa valida che possa togliere il re dallo scacco
         for (let row = 0; row < 8; row++) {
             for (let col = 0; col < 8; col++) {
-                if (board[row][col].piece && board[row][col].color === color) {
-                    const moves = calculateValidMoves(row, col)
-                    if (moves.length > 0) {
-                        return false
+                if (board[row][col].color === color) {
+                    const validMoves = calculateValidMoves(row, col);
+                    for (const move of validMoves) {
+                        const [toRow, toCol] = move;
+                        if (!wouldBeInCheck(color, row, col, toRow, toCol)) {
+                            return false;
+                        }
                     }
                 }
             }
         }
 
-        return true
+        // Se non c'è nessuna mossa valida, c'è scacco matto
+        return true;
     }
 
     // Controlla se c'è stallo
     function isStalemate(color) {
-        const kingPosition = findKing(color)
-        if (!kingPosition) return false
+        // Trova la posizione del re
+        const kingPosition = findKing(color);
+        if (!kingPosition) return false;
 
-        const [kingRow, kingCol] = kingPosition
+        const [kingRow, kingCol] = kingPosition;
 
-        // Controlla se il re NON è sotto scacco
-        if (isInCheck(color, kingRow, kingCol)) {
-            return false
-        }
+        // Se il re è sotto scacco, non c'è stallo
+        if (isInCheckFunc(color, kingRow, kingCol)) return false;
 
-        // Controlla se ci sono mosse valide per qualsiasi pezzo
+        // Controlla se c'è qualche mossa valida per qualsiasi pezzo
         for (let row = 0; row < 8; row++) {
             for (let col = 0; col < 8; col++) {
-                if (board[row][col].piece && board[row][col].color === color) {
-                    const moves = calculateValidMoves(row, col)
-                    if (moves.length > 0) {
-                        return false
+                if (board[row][col].color === color) {
+                    const validMoves = calculateValidMoves(row, col);
+                    if (validMoves.length > 0) {
+                        return false;
                     }
                 }
             }
         }
 
-        return true
+        // Se non c'è nessuna mossa valida, c'è stallo
+        return true;
     }
 
     // Termina il gioco
     function endGame(message) {
-        gameStatus.textContent = message
         gameOver = true
-    }
+        gameStatus.textContent = message
+        gameStatus.classList.add("end-message")
 
-    // Aggiorna le statistiche
-    function updateStats(winnerColor) {
-        // Aggiorna il contatore delle vittorie con animazione
-        if (winnerColor) {
-            const statElement = winnerColor === "white" ? whiteWins : blackWins
-            statElement.textContent = stats[winnerColor]
-            statElement.classList.add("stat-updated")
-
-            // Rimuovi la classe di animazione dopo che è terminata
-            setTimeout(() => {
-                statElement.classList.remove("stat-updated")
-            }, 1000)
-        }
-
-        // Aggiorna il numero di partita
-        gameCount.textContent = gameNumber
-    }
-
-    // Animazione di scacco matto
-    function animateCheckmate() {
-        // Trova la posizione del re sconfitto
-        const loserColor = currentPlayer
-        const kingPosition = findKing(loserColor)
-
-        if (kingPosition) {
-            const [kingRow, kingCol] = kingPosition
-            const kingSquare = getSquareElement(kingRow, kingCol)
-
-            // Aggiungi la classe per l'animazione di scacco matto
-            kingSquare.classList.add("checkmate")
-
-            // Aggiorna il messaggio di gioco
-            const winnerName = getOpponentColor(currentPlayer) === "white" ? "Bianco" : "Nero"
-            gameStatus.textContent = `${winnerName} ha vinto per scacco matto!`
-            gameStatus.classList.add("check-message")
-
-            // Aggiungi effetto di flash alla scacchiera
-            chessboard.classList.add("checkmate")
-            chessboard.classList.add("victory-effect")
-
-            // Rimuovi le classi di animazione dopo che sono terminate
-            setTimeout(() => {
-                kingSquare.classList.remove("checkmate")
-                chessboard.classList.remove("checkmate")
-                gameStatus.classList.remove("check-message")
-            }, 3000)
-        }
+        // Disabilita il pulsante di reset
+        resetBtn.disabled = true
     }
 
     // Mostra l'overlay di vittoria
-    function showVictoryOverlay(winnerColor, isCheckmate = false) {
-        // Rimuovi eventuali classi precedenti
-        victoryPiece.classList.remove("white-piece", "black-piece")
-
-        // Imposta il contenuto dell'overlay
-        const winnerName = winnerColor === "white" ? "Bianco" : "Nero"
-        victoryTitle.textContent = `${winnerName} ha vinto!`
-
-        // Messaggio diverso in base al tipo di vittoria
-        if (isCheckmate) {
-            victoryMessage.textContent = `Scacco matto! Il Re avversario è stato sconfitto!`
-        } else {
-            victoryMessage.textContent = `Il Re avversario è stato catturato!`
-        }
-
-        // Imposta il pezzo vincitore
-        const kingSymbol = getPieceSymbol("king", winnerColor)
-        victoryPiece.textContent = kingSymbol
-
-        // Applica stile pieno per il re bianco nella schermata di vittoria
-        if (winnerColor === "white") {
-            victoryPiece.classList.add("white-piece")
-        } else {
-            victoryPiece.classList.add("black-piece")
-        }
-
-        // Mostra l'overlay con animazione
+    function showVictoryOverlay(winner, checkmate = false) {
         victoryOverlay.classList.add("active")
 
-        // Crea effetto confetti migliorato
-        createEnhancedConfetti(winnerColor)
+        // Aggiorna il titolo e il messaggio
+        victoryTitle.textContent = checkmate ? "Scacco Matto!" : "Vittoria!"
+        victoryMessage.textContent = `${winner === "white" ? "Bianco" : "Nero"} ha vinto la partita!`
+
+        // Aggiorna il pezzo di vittoria
+        victoryPiece.className = "victory-piece"
+        victoryPiece.classList.add(`${winner}-piece`)
+        victoryPiece.textContent = getPieceSymbol("king", winner)
     }
 
-    // Nuova funzione per confetti migliorati
-    function createEnhancedConfetti(winnerColor) {
-        // Rimuovi confetti esistenti
-        document.querySelectorAll(".confetti").forEach((el) => el.remove())
-
-        const colors =
-            winnerColor === "white"
-                ? ["#f0d9b5", "#ffffff", "#3498db", "#2ecc71", "#9b59b6"]
-                : ["#b58863", "#2c3e50", "#e74c3c", "#f39c12", "#8e44ad"]
-
-        const confettiCount = 200
-        const shapes = ["circle", "square", "triangle", "sparkle"]
-
-        for (let i = 0; i < confettiCount; i++) {
-            const confetti = document.createElement("div")
-            confetti.className = "confetti"
-
-            // Posizione casuale
-            confetti.style.left = `${Math.random() * 100}%`
-
-            // Forma casuale
-            const shape = shapes[Math.floor(Math.random() * shapes.length)]
-
-            if (shape === "sparkle") {
-                confetti.classList.add("sparkle")
-            } else {
-                // Colore casuale dall'array dei colori
-                const color = colors[Math.floor(Math.random() * colors.length)]
-                confetti.style.backgroundColor = color
-
-                // Dimensione casuale
-                const size = Math.random() * 10 + 5
-                confetti.style.width = `${size}px`
-                confetti.style.height = `${size}px`
-
-                if (shape === "circle") {
-                    confetti.style.borderRadius = "50%"
-                } else if (shape === "triangle") {
-                    confetti.style.width = "0"
-                    confetti.style.height = "0"
-                    confetti.style.backgroundColor = "transparent"
-                    confetti.style.borderLeft = `${size / 2}px solid transparent`
-                    confetti.style.borderRight = `${size / 2}px solid transparent`
-                    confetti.style.borderBottom = `${size}px solid ${color}`
-                }
-            }
-
-            // Animazione
-            confetti.style.opacity = "0"
-            const duration = Math.random() * 3 + 2
-            const delay = Math.random() * 3
-            confetti.style.animation = `confetti-fall ${duration}s cubic-bezier(0.36, 0.45, 0.63, 0.53) forwards`
-            confetti.style.animationDelay = `${delay}s`
-
-            // Rotazione casuale
-            confetti.style.transform = `rotate(${Math.random() * 360}deg)`
-
-            victoryOverlay.appendChild(confetti)
-
-            // Rimuovi i confetti dopo l'animazione
-            setTimeout(
-                () => {
-                    confetti.remove()
-                },
-                (duration + delay) * 1000 + 1000,
-            )
-        }
+    // Nascondi l'overlay di vittoria
+    function hideVictoryOverlay() {
+        victoryOverlay.classList.remove("active")
     }
 
-    // Modifica la funzione continueBtn.addEventListener per aggiungere un effetto di transizione
-    continueBtn.addEventListener("click", () => {
-        victoryOverlay.style.opacity = "0"
-        setTimeout(() => {
-            victoryOverlay.classList.remove("active")
-            victoryOverlay.style.opacity = ""
+    // Aggiorna le statistiche
+    function updateStats(winner) {
+        whiteWins.textContent = `${stats.white}`
+        blackWins.textContent = `${stats.black}`
+        gameCount.textContent = `${gameNumber}`
+    }
 
-            // Rimuovi tutti i confetti
-            document.querySelectorAll(".confetti").forEach((el) => el.remove())
+    // Anima lo scacco matto
+    function animateCheckmate() {
+        chessboard.classList.add("checkmate")
+    }
 
-            // Rimuovi le classi dal pezzo di vittoria
-            victoryPiece.classList.remove("white-piece", "black-piece")
-        }, 500)
-    })
+    // Resetta il gioco
+    function resetGame() {
+        // Resetta lo stato del gioco
+        board = []
+        selectedPiece = null
+        validMoves = []
+        currentPlayer = "white"
+        gameOver = false
+        whiteCaptures = []
+        blackCaptures = []
+
+        // Nascondi l'overlay di vittoria
+        hideVictoryOverlay()
+
+        // Inizializza la scacchiera
+        initBoard()
+
+        // Aggiorna l'interfaccia
+        updateTurnIndicator()
+        updateCapturedPieces()
+
+        // Aggiorna il messaggio di gioco
+        gameStatus.textContent = ""
+        gameStatus.classList.remove("check-message", "end-message")
+
+        // Rimuovi eventuali classi di animazione dalla scacchiera
+        chessboard.classList.remove("victory-effect", "checkmate")
+    }
 
     // Inizia una nuova partita
-    function startNewGame() {
+    function newGame() {
+        // Incrementa il numero della partita
         gameNumber++
-        gameOver = false
-        whiteCaptures = []
-        blackCaptures = []
-        selectedPiece = null
-        validMoves = []
-        gameStatus.textContent = ""
 
-        // Nascondi l'overlay di vittoria se visibile
-        victoryOverlay.classList.remove("active")
+        // Resetta il gioco
+        resetGame()
 
-        // Rimuovi tutti i confetti
-        document.querySelectorAll(".confetti").forEach((el) => el.remove())
-
-        // Rimuovi le classi dal pezzo di vittoria
-        victoryPiece.classList.remove("white-piece", "black-piece")
-
+        // Inizializza la scacchiera
         initBoard()
+
+        // Aggiorna le statistiche
         updateStats()
-    }
-
-    // Resetta la partita corrente
-    function resetGame() {
-        // Se il gioco è terminato, non permettere il reset
-        if (gameOver) return
-
-        gameOver = false
-        whiteCaptures = []
-        blackCaptures = []
-        selectedPiece = null
-        validMoves = []
-        gameStatus.textContent = ""
-
-        // Mantiene lo stesso numero di partita
-        initBoard()
     }
 
     // Resetta le statistiche
@@ -1340,27 +1258,28 @@ document.addEventListener("DOMContentLoaded", () => {
         stats.white = 0
         stats.black = 0
         gameNumber = 1
-        whiteCaptures = []
-        blackCaptures = []
-        selectedPiece = null
-        validMoves = []
-        gameStatus.textContent = ""
 
-        // Aggiorna l'interfaccia
-        whiteWins.textContent = "0"
-        blackWins.textContent = "0"
-        gameCount.textContent = "1"
-        updateCapturedPieces()
-
-        // Reinizializza la scacchiera
-        initBoard()
+        // Aggiorna le statistiche
+        updateStats()
     }
 
-    // Event listeners
-    newGameBtn.addEventListener("click", startNewGame)
+    // Carica il tema preferito dell'utente all'avvio
+    loadThemePreference()
+
+    // Inizializza la scacchiera all'avvio
+    initBoard()
+
+    // Gestione degli eventi
+    newGameBtn.addEventListener("click", newGame)
     resetBtn.addEventListener("click", resetGame)
     resetStatsBtn.addEventListener("click", resetStats)
+    continueBtn.addEventListener("click", hideVictoryOverlay)
+    infoBtn.addEventListener("click", showRules)
+    themeToggleBtn.addEventListener("click", toggleTheme)
+    closeRulesBtn.addEventListener("click", hideRules)
 
-    // Inizializza il gioco
-    initBoard()
+    // Declare isInCheck here
+    function isInCheck(color, row, col) {
+        return isSquareAttacked(row, col, color);
+    }
 })
