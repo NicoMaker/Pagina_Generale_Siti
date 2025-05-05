@@ -7,9 +7,10 @@
 
 body {
   font-family: "Poppins", sans-serif;
-  background-color: #f5f7fa;
+  background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
   color: #333;
   line-height: 1.6;
+  min-height: 100vh;
 }
 
 .container {
@@ -21,18 +22,44 @@ body {
 header {
   text-align: center;
   margin-bottom: 30px;
+  position: relative;
+}
+
+header::after {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 3px;
+  background: linear-gradient(to right, #3498db, #2ecc71);
+  border-radius: 3px;
 }
 
 h1 {
   font-size: 2.5rem;
   color: #2c3e50;
   margin-bottom: 10px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 h2 {
   font-size: 1.8rem;
   color: #2c3e50;
   margin-bottom: 20px;
+  position: relative;
+}
+
+h2::after {
+  content: "";
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 50px;
+  height: 2px;
+  background: #3498db;
+  border-radius: 2px;
 }
 
 h3 {
@@ -81,12 +108,13 @@ h3 {
   display: flex;
   align-items: center;
   padding: 12px 20px;
-  background-color: #fff;
+  background: linear-gradient(145deg, #ffffff, #f0f0f0);
   border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   position: relative;
   overflow: hidden;
   transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.8);
 }
 
 .turn-indicator::before {
@@ -96,9 +124,14 @@ h3 {
   left: 0;
   height: 100%;
   width: 50%;
-  background-color: rgba(52, 152, 219, 0.1);
-  transition: transform 0.5s ease;
+  background: linear-gradient(
+    to right,
+    rgba(52, 152, 219, 0.1),
+    rgba(52, 152, 219, 0.05)
+  );
+  transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
   z-index: 0;
+  border-radius: 8px;
 }
 
 .turn-indicator.white-turn::before {
@@ -115,21 +148,23 @@ h3 {
   position: relative;
   z-index: 1;
   opacity: 0.3;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
 }
 
 .turn-piece.white {
   color: #000;
+  text-shadow: 0 0 2px rgba(255, 255, 255, 0.5);
 }
 
 .turn-piece.black {
   color: #000;
+  text-shadow: 0 0 2px rgba(255, 255, 255, 0.5);
 }
 
 .turn-indicator.white-turn .turn-piece.white,
 .turn-indicator.black-turn .turn-piece.black {
   opacity: 1;
-  transform: scale(1.2);
+  transform: scale(1.3);
 }
 
 .turn-text {
@@ -137,6 +172,7 @@ h3 {
   font-weight: 600;
   position: relative;
   z-index: 1;
+  color: #2c3e50;
 }
 
 .game-status {
@@ -146,26 +182,35 @@ h3 {
   color: #e74c3c;
   text-align: center;
   min-height: 1.6rem;
+  text-shadow: 0 0 1px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
 }
 
 .chessboard {
   width: 100%;
   max-width: 500px;
-  aspect-ratio: 1/1;
+  aspect-ratio: 1 / 1;
   display: grid;
   grid-template-columns: repeat(8, 1fr);
   grid-template-rows: repeat(8, 1fr);
   border: 3px solid #2c3e50;
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(0, 0, 0, 0.05);
   margin-bottom: 20px;
+  transition: all 0.3s ease;
+  transform: perspective(1000px) rotateX(5deg);
+}
+
+.chessboard:hover {
+  transform: perspective(1000px) rotateX(0deg);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(0, 0, 0, 0.05);
 }
 
 .controls {
   display: flex;
   gap: 15px;
-  margin-top: 10px;
+  margin-top: 20px;
   width: 100%;
   max-width: 500px;
   justify-content: center;
@@ -173,81 +218,173 @@ h3 {
 
 /* Stili dei pulsanti */
 .btn {
-  padding: 10px 20px;
+  padding: 12px 24px;
   border: none;
-  border-radius: 8px;
+  border-radius: 50px;
   font-family: "Poppins", sans-serif;
   font-weight: 600;
   font-size: 1rem;
   cursor: pointer;
   transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5px;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.5);
+  opacity: 0;
+  border-radius: 100%;
+  transform: scale(1, 1) translate(-50%);
+  transform-origin: 50% 50%;
+}
+
+.btn:hover::after {
+  animation: ripple 1s ease-out;
+}
+
+@keyframes ripple {
+  0% {
+    transform: scale(0, 0);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(20, 20);
+    opacity: 0;
+  }
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .primary-btn {
-  background-color: #3498db;
+  background: linear-gradient(to right, #3498db, #2980b9);
   color: white;
 }
 
-.primary-btn:hover {
-  background-color: #2980b9;
+.primary-btn:hover:not(:disabled) {
+  background: linear-gradient(to right, #2980b9, #2573a7);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+.primary-btn:active:not(:disabled) {
+  transform: translateY(1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .secondary-btn {
-  background-color: #e74c3c;
+  background: linear-gradient(to right, #e74c3c, #c0392b);
   color: white;
 }
 
-.secondary-btn:hover {
-  background-color: #c0392b;
+.secondary-btn:hover:not(:disabled) {
+  background: linear-gradient(to right, #c0392b, #a93226);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+.secondary-btn:active:not(:disabled) {
+  transform: translateY(1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .neutral-btn {
-  background-color: #f39c12;
+  background: linear-gradient(to right, #f39c12, #d35400);
   color: white;
 }
 
-.neutral-btn:hover {
-  background-color: #d35400;
+.neutral-btn:hover:not(:disabled) {
+  background: linear-gradient(to right, #d35400, #a04000);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+.neutral-btn:active:not(:disabled) {
+  transform: translateY(1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 /* Sezione statistiche */
 .stats-section {
-  background-color: white;
-  border-radius: 12px;
-  padding: 20px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(145deg, #ffffff, #f0f0f0);
+  border-radius: 16px;
+  padding: 25px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  transition: all 0.3s ease;
+}
+
+.stats-section:hover {
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+  transform: translateY(-5px);
 }
 
 .captured-container {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 15px;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
 }
 
 .captured-box {
-  background-color: #f5f7fa;
-  border-radius: 8px;
+  background: rgba(245, 247, 250, 0.7);
+  border-radius: 12px;
   padding: 15px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  transition: all 0.3s ease;
+}
+
+.captured-box:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
 }
 
 .captured-pieces {
   min-height: 80px;
   display: flex;
   flex-wrap: wrap;
-  gap: 5px;
+  gap: 8px;
   align-items: center;
+  padding: 5px;
 }
 
 .captured-piece {
   font-size: 1.5rem;
   margin-right: 5px;
+  transition: all 0.3s ease;
+}
+
+.captured-piece:hover {
+  transform: scale(1.2);
 }
 
 .stats-box {
-  background-color: #f5f7fa;
-  border-radius: 8px;
-  padding: 15px;
+  background: rgba(245, 247, 250, 0.7);
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  transition: all 0.3s ease;
+}
+
+.stats-box:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+}
+
+.stats-box p {
+  margin-bottom: 8px;
+  font-weight: 500;
 }
 
 /* Stili della scacchiera */
@@ -256,7 +393,7 @@ h3 {
   justify-content: center;
   align-items: center;
   position: relative;
-  transition: background-color 0.2s ease;
+  transition: all 0.2s ease;
 }
 
 .chess-square.white {
@@ -268,24 +405,55 @@ h3 {
 }
 
 .chess-square.selected {
-  background-color: #aad0ff;
+  background-color: rgba(170, 208, 255, 0.8);
+  box-shadow: inset 0 0 10px rgba(52, 152, 219, 0.5);
 }
 
 .chess-square.valid-move {
   position: relative;
+  cursor: pointer;
 }
 
 .chess-square.valid-move::after {
   content: "";
   position: absolute;
-  width: 25%;
-  height: 25%;
-  background-color: rgba(0, 0, 0, 0.2);
+  width: 30%;
+  height: 30%;
+  background-color: rgba(46, 204, 113, 0.4);
   border-radius: 50%;
+  animation: pulse-valid 1.5s infinite;
+}
+
+@keyframes pulse-valid {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(0.8);
+    opacity: 0.7;
+  }
 }
 
 .chess-square.check {
-  background-color: #ff6b6b;
+  background-color: rgba(231, 76, 60, 0.7);
+  animation: check-pulse 1.5s infinite;
+}
+
+@keyframes check-pulse {
+  0% {
+    background-color: rgba(231, 76, 60, 0.5);
+  }
+  50% {
+    background-color: rgba(231, 76, 60, 0.8);
+  }
+  100% {
+    background-color: rgba(231, 76, 60, 0.5);
+  }
 }
 
 .chess-piece {
@@ -297,11 +465,26 @@ h3 {
   align-items: center;
   height: 100%;
   width: 100%;
-  transition: transform 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  position: relative;
+  z-index: 2;
 }
 
 .chess-piece:hover {
-  transform: scale(1.1);
+  transform: scale(1.15);
+}
+
+/* Stili per i pezzi bianchi e neri */
+.chess-piece.white-piece {
+  color: #ffffff;
+  text-shadow: 0 0 3px #000, 0 0 5px #000, 0 0 7px #000;
+  font-weight: bold;
+}
+
+.chess-piece.black-piece {
+  color: #000000;
+  text-shadow: 0 0 2px rgba(255, 255, 255, 0.7);
+  font-weight: bold;
 }
 
 /* Animazione per il cambio di turno */
@@ -318,7 +501,245 @@ h3 {
 }
 
 .turn-active {
-  animation: pulse 0.5s ease;
+  animation: pulse 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+
+/* Overlay di vittoria - completamente nascosto all'inizio */
+.victory-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+  backdrop-filter: blur(5px);
+}
+
+.victory-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.victory-modal {
+  background: linear-gradient(135deg, #1a2a3a, #2c3e50);
+  border-radius: 20px;
+  padding: 40px;
+  width: 90%;
+  max-width: 500px;
+  text-align: center;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  transform: translateY(50px) scale(0.9);
+  opacity: 0;
+  transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55),
+    opacity 0.6s ease;
+  border: 2px solid gold;
+  position: relative;
+  overflow: hidden;
+}
+
+.victory-modal::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 215, 0, 0.1) 0%,
+    transparent 70%
+  );
+  animation: rotate-gradient 10s linear infinite;
+}
+
+@keyframes rotate-gradient {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.victory-overlay.active .victory-modal {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+}
+
+.victory-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+}
+
+#victory-title {
+  font-size: 3rem;
+  margin-bottom: 15px;
+  color: gold;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.5), 0 0 20px rgba(255, 215, 0, 0.3);
+  font-weight: 700;
+  letter-spacing: 2px;
+  animation: title-glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes title-glow {
+  0% {
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5),
+      0 0 20px rgba(255, 215, 0, 0.3);
+  }
+  100% {
+    text-shadow: 0 0 15px rgba(255, 215, 0, 0.7),
+      0 0 30px rgba(255, 215, 0, 0.5);
+  }
+}
+
+#victory-message {
+  font-size: 1.5rem;
+  margin-bottom: 30px;
+  color: #ffffff;
+  line-height: 1.4;
+  max-width: 80%;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fade-in-up 0.8s forwards;
+  animation-delay: 0.3s;
+}
+
+@keyframes fade-in-up {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+#victory-piece {
+  font-size: 7rem;
+  margin: 20px 0 30px;
+  animation: victory-bounce 1.5s infinite alternate;
+  opacity: 0;
+  transform: scale(0.5);
+  animation-delay: 0.6s;
+  animation-fill-mode: forwards;
+}
+
+#victory-piece.white-piece {
+  color: #ffffff;
+  text-shadow: 0 0 15px gold, 0 0 30px gold, 0 0 45px gold;
+}
+
+#victory-piece.black-piece {
+  color: #000000;
+  text-shadow: 0 0 15px gold, 0 0 30px gold, 0 0 45px gold;
+}
+
+@keyframes victory-bounce {
+  0% {
+    transform: scale(1) rotate(-5deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.2) rotate(5deg);
+    opacity: 1;
+  }
+}
+
+#continue-btn {
+  background: linear-gradient(to right, #f39c12, #e74c3c);
+  color: white;
+  padding: 15px 40px;
+  font-size: 1.2rem;
+  border-radius: 50px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fade-in-up 0.8s forwards;
+  animation-delay: 0.9s;
+  position: relative;
+  overflow: hidden;
+}
+
+#continue-btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: 0.5s;
+}
+
+#continue-btn:hover::before {
+  left: 100%;
+}
+
+#continue-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 25px rgba(0, 0, 0, 0.4);
+}
+
+#continue-btn:active {
+  transform: translateY(1px);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Animazione per l'aggiornamento delle statistiche */
+@keyframes stat-update {
+  0% {
+    transform: scale(1);
+    color: inherit;
+  }
+  50% {
+    transform: scale(1.8);
+    color: #e74c3c;
+  }
+  100% {
+    transform: scale(1);
+    color: inherit;
+  }
+}
+
+.stat-updated {
+  animation: stat-update 1s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  font-weight: bold;
+}
+
+/* Animazione per lo scacco matto */
+@keyframes checkmate-flash {
+  0% {
+    box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 20px rgba(231, 76, 60, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(231, 76, 60, 0);
+  }
+}
+
+.checkmate {
+  animation: checkmate-flash 1s ease-out 3;
 }
 
 /* Responsive per schermi piccoli */
@@ -337,6 +758,18 @@ h3 {
 
   .controls {
     flex-wrap: wrap;
+  }
+
+  #victory-piece {
+    font-size: 5rem;
+  }
+
+  #victory-title {
+    font-size: 2.5rem;
+  }
+
+  #victory-message {
+    font-size: 1.3rem;
   }
 }
 
@@ -365,5 +798,95 @@ h3 {
 
   .turn-text {
     font-size: 1rem;
+  }
+
+  #victory-piece {
+    font-size: 4rem;
+  }
+
+  #victory-title {
+    font-size: 2rem;
+  }
+
+  #victory-message {
+    font-size: 1.1rem;
+  }
+
+  #continue-btn {
+    padding: 12px 30px;
+    font-size: 1.1rem;
+  }
+}
+
+/* Animazione per i pezzi catturati */
+.captured-piece {
+  opacity: 0;
+  transform: scale(0.5);
+  animation: piece-captured 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+}
+
+@keyframes piece-captured {
+  0% {
+    opacity: 0;
+    transform: scale(0.5) translateY(10px);
+  }
+  70% {
+    transform: scale(1.2) translateY(-5px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Miglioramento dell'animazione dei confetti */
+.confetti {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: #f39c12;
+  opacity: 0;
+  z-index: 1001;
+  filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.3));
+}
+
+@keyframes confetti-fall {
+  0% {
+    transform: translateY(-100vh) rotate(0deg);
+    opacity: 1;
+  }
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(100vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+/* Effetto scintillante per i confetti */
+.confetti.sparkle {
+  background: transparent;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  box-shadow: 0 0 10px 2px gold;
+}
+
+/* Effetto di vittoria sulla scacchiera */
+.chessboard.victory-effect {
+  animation: board-victory 1s ease;
+}
+
+@keyframes board-victory {
+  0% {
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  }
+  50% {
+    box-shadow: 0 10px 30px rgba(255, 215, 0, 0.5);
+  }
+  100% {
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
   }
 }

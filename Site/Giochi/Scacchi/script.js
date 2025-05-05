@@ -13,6 +13,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const blackWins = document.getElementById("black-wins")
     const gameCount = document.getElementById("game-count")
 
+    // Elementi per l'overlay di vittoria
+    const victoryOverlay = document.getElementById("victory-overlay")
+    const victoryTitle = document.getElementById("victory-title")
+    const victoryMessage = document.getElementById("victory-message")
+    const victoryPiece = document.getElementById("victory-piece")
+    const continueBtn = document.getElementById("continue-btn")
+
     // Stato del gioco
     let board = []
     let selectedPiece = null
@@ -26,6 +33,12 @@ document.addEventListener("DOMContentLoaded", () => {
         white: 0,
         black: 0,
     }
+
+    // Assicurati che l'overlay di vittoria sia nascosto all'inizio
+    victoryOverlay.classList.remove("active")
+
+    // Rimuovi eventuali classi di stile dal pezzo di vittoria
+    victoryPiece.classList.remove("white-piece", "black-piece")
 
     // Inizializzazione della scacchiera
     function initBoard() {
@@ -54,6 +67,12 @@ document.addEventListener("DOMContentLoaded", () => {
         // Aggiorna l'interfaccia
         updateTurnIndicator()
         updateCapturedPieces()
+
+        // Abilita il pulsante di reset
+        resetBtn.disabled = false
+
+        // Rimuovi eventuali classi di animazione dalla scacchiera
+        chessboard.classList.remove("victory-effect", "checkmate")
     }
 
     // Posiziona i pezzi sulla scacchiera
@@ -111,7 +130,14 @@ document.addEventListener("DOMContentLoaded", () => {
             const pieceElement = document.createElement("div")
             pieceElement.className = "chess-piece"
             pieceElement.textContent = getPieceSymbol(pieceData.piece, pieceData.color)
-            pieceElement.style.color = pieceData.color === "white" ? "#fff" : "#000"
+
+            // Modifica: Applica stile pieno per i pezzi bianchi
+            if (pieceData.color === "white") {
+                pieceElement.classList.add("white-piece")
+            } else {
+                pieceElement.classList.add("black-piece")
+            }
+
             square.appendChild(pieceElement)
         }
     }
@@ -162,9 +188,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 // Controlla se il gioco è finito
                 if (isCheckmate(getOpponentColor(currentPlayer))) {
-                    endGame(`${currentPlayer === "white" ? "Bianco" : "Nero"} ha vinto per scacco matto!`)
+                    // Animazione di scacco matto sulla scacchiera
+                    animateCheckmate()
+
+                    // Aggiorna le statistiche
                     stats[currentPlayer]++
-                    updateStats()
+                    updateStats(currentPlayer)
+
+                    // Mostra l'overlay di vittoria dopo un breve ritardo
+                    setTimeout(() => {
+                        showVictoryOverlay(currentPlayer)
+                    }, 1500)
+
+                    // Disabilita il pulsante di reset
+                    resetBtn.disabled = true
+
+                    // Imposta il gioco come terminato
+                    gameOver = true
                 } else if (isStalemate(getOpponentColor(currentPlayer))) {
                     endGame("Patta per stallo!")
                 } else {
@@ -301,6 +341,13 @@ document.addEventListener("DOMContentLoaded", () => {
         // Aggiorna la visualizzazione
         updateSquare(fromRow, fromCol)
         updateSquare(toRow, toCol)
+
+        // Aggiungi un effetto di movimento
+        const targetElement = getSquareElement(toRow, toCol).querySelector(".chess-piece")
+        targetElement.style.animation = "none"
+        setTimeout(() => {
+            targetElement.style.animation = ""
+        }, 10)
     }
 
     // Cattura un pezzo
@@ -820,11 +867,163 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Aggiorna le statistiche
-    function updateStats() {
-        whiteWins.textContent = stats.white
-        blackWins.textContent = stats.black
+    function updateStats(winnerColor) {
+        // Aggiorna il contatore delle vittorie con animazione
+        if (winnerColor) {
+            const statElement = winnerColor === "white" ? whiteWins : blackWins
+            statElement.textContent = stats[winnerColor]
+            statElement.classList.add("stat-updated")
+
+            // Rimuovi la classe di animazione dopo che è terminata
+            setTimeout(() => {
+                statElement.classList.remove("stat-updated")
+            }, 1000)
+        }
+
+        // Aggiorna il numero di partita
         gameCount.textContent = gameNumber
     }
+
+    // Animazione di scacco matto
+    function animateCheckmate() {
+        // Trova la posizione del re sconfitto
+        const loserColor = getOpponentColor(currentPlayer)
+        const kingPosition = findKing(loserColor)
+
+        if (kingPosition) {
+            const [kingRow, kingCol] = kingPosition
+            const kingSquare = getSquareElement(kingRow, kingCol)
+
+            // Aggiungi la classe per l'animazione di scacco matto
+            kingSquare.classList.add("checkmate")
+
+            // Aggiorna il messaggio di gioco
+            const winnerName = currentPlayer === "white" ? "Bianco" : "Nero"
+            gameStatus.textContent = `${winnerName} ha vinto per scacco matto!`
+
+            // Aggiungi effetto di flash alla scacchiera
+            chessboard.classList.add("checkmate")
+            chessboard.classList.add("victory-effect")
+
+            // Rimuovi le classi di animazione dopo che sono terminate
+            setTimeout(() => {
+                kingSquare.classList.remove("checkmate")
+                chessboard.classList.remove("checkmate")
+            }, 3000)
+        }
+    }
+
+    // Mostra l'overlay di vittoria
+    function showVictoryOverlay(winnerColor) {
+        // Rimuovi eventuali classi precedenti
+        victoryPiece.classList.remove("white-piece", "black-piece")
+
+        // Imposta il contenuto dell'overlay
+        const winnerName = winnerColor === "white" ? "Bianco" : "Nero"
+        victoryTitle.textContent = `${winnerName} ha vinto!`
+        victoryMessage.textContent = `Scacco matto! Il Re avversario è stato catturato.`
+
+        // Imposta il pezzo vincitore
+        const kingSymbol = getPieceSymbol("king", winnerColor)
+        victoryPiece.textContent = kingSymbol
+
+        // Applica stile pieno per il re bianco nella schermata di vittoria
+        if (winnerColor === "white") {
+            victoryPiece.classList.add("white-piece")
+        } else {
+            victoryPiece.classList.add("black-piece")
+        }
+
+        // Mostra l'overlay con animazione
+        victoryOverlay.classList.add("active")
+
+        // Crea effetto confetti migliorato
+        createEnhancedConfetti(winnerColor)
+    }
+
+    // Nuova funzione per confetti migliorati
+    function createEnhancedConfetti(winnerColor) {
+        // Rimuovi confetti esistenti
+        document.querySelectorAll(".confetti").forEach((el) => el.remove())
+
+        const colors =
+            winnerColor === "white"
+                ? ["#f0d9b5", "#ffffff", "#3498db", "#2ecc71", "#9b59b6"]
+                : ["#b58863", "#2c3e50", "#e74c3c", "#f39c12", "#8e44ad"]
+
+        const confettiCount = 200
+        const shapes = ["circle", "square", "triangle", "sparkle"]
+
+        for (let i = 0; i < confettiCount; i++) {
+            const confetti = document.createElement("div")
+            confetti.className = "confetti"
+
+            // Posizione casuale
+            confetti.style.left = `${Math.random() * 100}%`
+
+            // Forma casuale
+            const shape = shapes[Math.floor(Math.random() * shapes.length)]
+
+            if (shape === "sparkle") {
+                confetti.classList.add("sparkle")
+            } else {
+                // Colore casuale dall'array dei colori
+                const color = colors[Math.floor(Math.random() * colors.length)]
+                confetti.style.backgroundColor = color
+
+                // Dimensione casuale
+                const size = Math.random() * 10 + 5
+                confetti.style.width = `${size}px`
+                confetti.style.height = `${size}px`
+
+                if (shape === "circle") {
+                    confetti.style.borderRadius = "50%"
+                } else if (shape === "triangle") {
+                    confetti.style.width = "0"
+                    confetti.style.height = "0"
+                    confetti.style.backgroundColor = "transparent"
+                    confetti.style.borderLeft = `${size / 2}px solid transparent`
+                    confetti.style.borderRight = `${size / 2}px solid transparent`
+                    confetti.style.borderBottom = `${size}px solid ${color}`
+                }
+            }
+
+            // Animazione
+            confetti.style.opacity = "0"
+            const duration = Math.random() * 3 + 2
+            const delay = Math.random() * 3
+            confetti.style.animation = `confetti-fall ${duration}s cubic-bezier(0.36, 0.45, 0.63, 0.53) forwards`
+            confetti.style.animationDelay = `${delay}s`
+
+            // Rotazione casuale
+            confetti.style.transform = `rotate(${Math.random() * 360}deg)`
+
+            victoryOverlay.appendChild(confetti)
+
+            // Rimuovi i confetti dopo l'animazione
+            setTimeout(
+                () => {
+                    confetti.remove()
+                },
+                (duration + delay) * 1000 + 1000,
+            )
+        }
+    }
+
+    // Modifica la funzione continueBtn.addEventListener per aggiungere un effetto di transizione
+    continueBtn.addEventListener("click", () => {
+        victoryOverlay.style.opacity = "0"
+        setTimeout(() => {
+            victoryOverlay.classList.remove("active")
+            victoryOverlay.style.opacity = ""
+
+            // Rimuovi tutti i confetti
+            document.querySelectorAll(".confetti").forEach((el) => el.remove())
+
+            // Rimuovi le classi dal pezzo di vittoria
+            victoryPiece.classList.remove("white-piece", "black-piece")
+        }, 500)
+    })
 
     // Inizia una nuova partita
     function startNewGame() {
@@ -836,12 +1035,24 @@ document.addEventListener("DOMContentLoaded", () => {
         validMoves = []
         gameStatus.textContent = ""
 
+        // Nascondi l'overlay di vittoria se visibile
+        victoryOverlay.classList.remove("active")
+
+        // Rimuovi tutti i confetti
+        document.querySelectorAll(".confetti").forEach((el) => el.remove())
+
+        // Rimuovi le classi dal pezzo di vittoria
+        victoryPiece.classList.remove("white-piece", "black-piece")
+
         initBoard()
         updateStats()
     }
 
     // Resetta la partita corrente
     function resetGame() {
+        // Se il gioco è terminato, non permettere il reset
+        if (gameOver) return
+
         gameOver = false
         whiteCaptures = []
         blackCaptures = []
