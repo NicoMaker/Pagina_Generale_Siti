@@ -2,5 +2,5 @@
 
 # Calcio
 
-- [Tabellone Serie A](https://github.com/NicoMaker/Tabellone_Serie_A)
+- [Albo Classifica Serie A](https://github.com/NicoMaker/Tabellone_Serie_A)
 - [Rosa Milan](https://github.com/NicoMaker/Milan)
