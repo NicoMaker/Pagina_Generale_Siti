@@ -189,6 +189,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 // Verifica se questa mossa catturerà un pezzo
                 const willCapture = board[row][col].piece !== null
 
+                // Rimuovi l'evidenziazione del pezzo che dà scacco
+                document.querySelectorAll(".checking-piece").forEach((square) => {
+                    square.classList.remove("checking-piece")
+                })
+
                 movePiece(selectedRow, selectedCol, row, col)
                 clearSelection()
 
@@ -336,7 +341,10 @@ document.addEventListener("DOMContentLoaded", () => {
         })
     }
 
-    // Evidenzia il re sotto scacco
+    // Modifica la funzione highlightCheck per assicurarsi che il re sotto scacco sia sempre evidenziato in rosso
+    // e che il messaggio di scacco venga mostrato indipendentemente dal pezzo che dà scacco
+
+    // Trova la funzione highlightCheck e sostituiscila con questa versione migliorata
     function highlightCheck() {
         // Rimuovi l'evidenziazione precedente
         document.querySelectorAll(".check").forEach((square) => {
@@ -351,10 +359,132 @@ document.addEventListener("DOMContentLoaded", () => {
 
             // Aggiorna il messaggio di gioco
             gameStatus.textContent = `${currentPlayer === "white" ? "Bianco" : "Nero"} è sotto scacco!`
+            gameStatus.classList.add("check-message")
+
+            // Trova il pezzo che dà scacco per evidenziarlo
+            highlightCheckingPiece(kingPosition[0], kingPosition[1], currentPlayer)
+
             return true
         } else {
             gameStatus.textContent = ""
+            gameStatus.classList.remove("check-message")
             return false
+        }
+    }
+
+    // Aggiungi questa nuova funzione per evidenziare il pezzo che dà scacco
+    function highlightCheckingPiece(kingRow, kingCol, defendingColor) {
+        const attackingColor = getOpponentColor(defendingColor)
+
+        // Controlla attacchi da pedoni
+        const pawnDirections =
+            defendingColor === "white"
+                ? [
+                    [1, -1],
+                    [1, 1],
+                ]
+                : [
+                    [-1, -1],
+                    [-1, 1],
+                ]
+        for (const [dr, dc] of pawnDirections) {
+            const newRow = kingRow + dr
+            const newCol = kingCol + dc
+
+            if (
+                isInBounds(newRow, newCol) &&
+                board[newRow][newCol].piece === "pawn" &&
+                board[newRow][newCol].color === attackingColor
+            ) {
+                const square = getSquareElement(newRow, newCol)
+                square.classList.add("checking-piece")
+                return
+            }
+        }
+
+        // Controlla attacchi da cavalli
+        const knightMoves = [
+            [-2, -1],
+            [-2, 1],
+            [-1, -2],
+            [-1, 2],
+            [1, -2],
+            [1, 2],
+            [2, -1],
+            [2, 1],
+        ]
+
+        for (const [dr, dc] of knightMoves) {
+            const newRow = kingRow + dr
+            const newCol = kingCol + dc
+
+            if (
+                isInBounds(newRow, newCol) &&
+                board[newRow][newCol].piece === "knight" &&
+                board[newRow][newCol].color === attackingColor
+            ) {
+                const square = getSquareElement(newRow, newCol)
+                square.classList.add("checking-piece")
+                return
+            }
+        }
+
+        // Controlla attacchi da torri e regine (movimenti orizzontali e verticali)
+        const rookDirections = [
+            [-1, 0],
+            [1, 0],
+            [0, -1],
+            [0, 1],
+        ]
+        for (const [dr, dc] of rookDirections) {
+            let newRow = kingRow + dr
+            let newCol = kingCol + dc
+
+            while (isInBounds(newRow, newCol)) {
+                if (board[newRow][newCol].piece) {
+                    if (
+                        (board[newRow][newCol].piece === "rook" || board[newRow][newCol].piece === "queen") &&
+                        board[newRow][newCol].color === attackingColor
+                    ) {
+                        const square = getSquareElement(newRow, newCol)
+                        square.classList.add("checking-piece")
+                        return
+                    }
+                    break
+                }
+
+                newRow += dr
+                newCol += dc
+            }
+        }
+
+        // Controlla attacchi da alfieri e regine (movimenti diagonali)
+        const bishopDirections = [
+            [-1, -1],
+            [-1, 1],
+            [1, -1],
+            [1, 1],
+        ]
+        for (const [dr, dc] of bishopDirections) {
+            let newRow = kingRow + dr
+            let newCol = kingCol + dc
+
+            while (isInBounds(newRow, newCol)) {
+                if (board[newRow][newCol].piece) {
+                    if (
+                        (board[newRow][newCol].piece === "bishop" || board[newRow][newCol].piece === "queen") &&
+                        board[newRow][newCol].color === attackingColor
+                    ) {
+                        const square = getSquareElement(newRow, newCol)
+                        square.classList.add("checking-piece")
+                        return
+                    }
+                    break
+                }
+
+                newRow += dr
+                newCol += dc
+            }
         }
     }
 
