@@ -210,6 +210,30 @@ document.addEventListener("DOMContentLoaded", () => {
                         setTimeout(() => {
                             gameStatus.classList.remove("check-message")
                         }, 2000)
+
+                        // Controlla se c'è scacco matto
+                        if (isCheckmate(currentPlayer)) {
+                            // Dichiara la vittoria per scacco matto
+                            gameOver = true
+
+                            // Aggiorna le statistiche
+                            stats[getOpponentColor(currentPlayer)]++
+                            updateStats(getOpponentColor(currentPlayer))
+
+                            // Aggiungi effetto di vittoria alla scacchiera
+                            chessboard.classList.add("victory-effect")
+
+                            // Mostra l'animazione di scacco matto
+                            animateCheckmate()
+
+                            // Mostra l'overlay di vittoria dopo un breve ritardo
+                            setTimeout(() => {
+                                showVictoryOverlay(getOpponentColor(currentPlayer), true)
+                            }, 1500)
+
+                            // Disabilita il pulsante di reset
+                            resetBtn.disabled = true
+                        }
                     }
 
                     // Controlla se c'è stallo
@@ -682,6 +706,39 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Controlla se una mossa è valida
     function isValidMove(fromRow, fromCol, toRow, toCol) {
+        // Se il re è sotto scacco, verifica che la mossa risolva lo scacco
+        const kingPosition = findKing(currentPlayer)
+        if (kingPosition && isInCheck(currentPlayer, kingPosition[0], kingPosition[1])) {
+            // Crea una copia temporanea della scacchiera
+            const tempBoard = JSON.parse(JSON.stringify(board))
+
+            // Esegui la mossa sulla copia
+            tempBoard[toRow][toCol] = tempBoard[fromRow][fromCol]
+            tempBoard[fromRow][fromCol] = { piece: null, color: null }
+
+            // Trova la posizione del re dopo la mossa
+            let kingRow, kingCol
+            if (tempBoard[toRow][toCol].piece === "king" && tempBoard[toRow][toCol].color === currentPlayer) {
+                kingRow = toRow
+                kingCol = toCol
+            } else {
+                kingRow = kingPosition[0]
+                kingCol = kingPosition[1]
+            }
+
+            // Controlla se il re è ancora sotto scacco dopo la mossa
+            const originalBoard = board
+            board = tempBoard
+            const stillInCheck = isSquareAttacked(kingRow, kingCol, currentPlayer)
+            board = originalBoard
+
+            // Se il re è ancora sotto scacco, la mossa non è valida
+            if (stillInCheck) {
+                return false
+            }
+        }
+
+        // Verifica se la mossa è tra quelle valide calcolate
         return validMoves.some(([row, col]) => row === toRow && col === toCol)
     }
 
@@ -963,7 +1020,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Animazione di scacco matto
     function animateCheckmate() {
         // Trova la posizione del re sconfitto
-        const loserColor = getOpponentColor(currentPlayer)
+        const loserColor = currentPlayer
         const kingPosition = findKing(loserColor)
 
         if (kingPosition) {
@@ -974,8 +1031,9 @@ document.addEventListener("DOMContentLoaded", () => {
             kingSquare.classList.add("checkmate")
 
             // Aggiorna il messaggio di gioco
-            const winnerName = currentPlayer === "white" ? "Bianco" : "Nero"
+            const winnerName = getOpponentColor(currentPlayer) === "white" ? "Bianco" : "Nero"
             gameStatus.textContent = `${winnerName} ha vinto per scacco matto!`
+            gameStatus.classList.add("check-message")
 
             // Aggiungi effetto di flash alla scacchiera
             chessboard.classList.add("checkmate")
@@ -985,19 +1043,26 @@ document.addEventListener("DOMContentLoaded", () => {
             setTimeout(() => {
                 kingSquare.classList.remove("checkmate")
                 chessboard.classList.remove("checkmate")
+                gameStatus.classList.remove("check-message")
             }, 3000)
         }
     }
 
     // Mostra l'overlay di vittoria
-    function showVictoryOverlay(winnerColor) {
+    function showVictoryOverlay(winnerColor, isCheckmate = false) {
         // Rimuovi eventuali classi precedenti
         victoryPiece.classList.remove("white-piece", "black-piece")
 
         // Imposta il contenuto dell'overlay
         const winnerName = winnerColor === "white" ? "Bianco" : "Nero"
         victoryTitle.textContent = `${winnerName} ha vinto!`
-        victoryMessage.textContent = `Il Re avversario è stato catturato!`
+
+        // Messaggio diverso in base al tipo di vittoria
+        if (isCheckmate) {
+            victoryMessage.textContent = `Scacco matto! Il Re avversario è stato sconfitto!`
+        } else {
+            victoryMessage.textContent = `Il Re avversario è stato catturato!`
+        }
 
         // Imposta il pezzo vincitore
         const kingSymbol = getPieceSymbol("king", winnerColor)

@@ -519,20 +519,45 @@ h3 {
   }
 }
 
+/* Migliora l'animazione per lo scacco matto */
+@keyframes checkmate-flash {
+  0% {
+    box-shadow: 0 0 0 0 rgba(52, 152, 219, 0.7);
+    background-color: rgba(52, 152, 219, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 20px 10px rgba(52, 152, 219, 0.7);
+    background-color: rgba(52, 152, 219, 0.7);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(52, 152, 219, 0.7);
+    background-color: rgba(52, 152, 219, 0.3);
+  }
+}
+
+.checkmate {
+  animation: checkmate-flash 0.8s ease-out 3;
+}
+
+/* Aggiungi un effetto visivo per indicare che il re è sotto scacco e deve essere mosso */
 .chess-square.check {
   background-color: rgba(231, 76, 60, 0.7);
   animation: check-pulse 1.5s infinite;
+  box-shadow: inset 0 0 15px rgba(231, 76, 60, 0.9);
 }
 
 @keyframes check-pulse {
   0% {
     background-color: rgba(231, 76, 60, 0.5);
+    box-shadow: inset 0 0 10px rgba(231, 76, 60, 0.7);
   }
   50% {
     background-color: rgba(231, 76, 60, 0.8);
+    box-shadow: inset 0 0 20px rgba(231, 76, 60, 0.9);
   }
   100% {
     background-color: rgba(231, 76, 60, 0.5);
+    box-shadow: inset 0 0 10px rgba(231, 76, 60, 0.7);
   }
 }
 
@@ -807,21 +832,6 @@ h3 {
 }
 
 /* Animazione per lo scacco matto */
-@keyframes checkmate-flash {
-  0% {
-    box-shadow: 0 0 0 0 rgba(52, 152, 219, 0.7);
-  }
-  70% {
-    box-shadow: 0 0 0 20px rgba(52, 152, 219, 0);
-  }
-  100% {
-    box-shadow: 0 0 0 0 rgba(52, 152, 219, 0);
-  }
-}
-
-.checkmate {
-  animation: checkmate-flash 1s ease-out 3;
-}
 
 /* Responsive per schermi piccoli */
 @media (max-width: 768px) {
