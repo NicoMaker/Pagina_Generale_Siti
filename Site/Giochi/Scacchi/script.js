@@ -186,34 +186,19 @@ document.addEventListener("DOMContentLoaded", () => {
                 movePiece(selectedRow, selectedCol, row, col)
                 clearSelection()
 
-                // Controlla se il gioco è finito
-                if (isCheckmate(getOpponentColor(currentPlayer))) {
-                    // Animazione di scacco matto sulla scacchiera
-                    animateCheckmate()
-
-                    // Aggiorna le statistiche
-                    stats[currentPlayer]++
-                    updateStats(currentPlayer)
-
-                    // Mostra l'overlay di vittoria dopo un breve ritardo
-                    setTimeout(() => {
-                        showVictoryOverlay(currentPlayer)
-                    }, 1500)
-
-                    // Disabilita il pulsante di reset
-                    resetBtn.disabled = true
-
-                    // Imposta il gioco come terminato
-                    gameOver = true
-                } else if (isStalemate(getOpponentColor(currentPlayer))) {
-                    endGame("Patta per stallo!")
-                } else {
+                // Se il gioco non è terminato (non è stato catturato un re)
+                if (!gameOver) {
                     // Passa il turno all'altro giocatore
                     currentPlayer = getOpponentColor(currentPlayer)
                     updateTurnIndicator()
 
                     // Controlla se il re è sotto scacco
                     highlightCheck()
+
+                    // Controlla se c'è stallo
+                    if (isStalemate(currentPlayer)) {
+                        endGame("Patta per stallo!")
+                    }
                 }
             } else if (clickedSquare.piece && clickedSquare.color === currentPlayer) {
                 // Se clicca su un altro suo pezzo, seleziona quello
@@ -310,6 +295,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Se c'è un pezzo nella casella di destinazione, lo cattura
         if (targetSquare.piece) {
+            // Controlla se il pezzo catturato è un re
+            if (targetSquare.piece === "king") {
+                // Dichiara immediatamente la vittoria
+                gameOver = true
+
+                // Aggiorna le statistiche
+                stats[currentPlayer]++
+                updateStats(currentPlayer)
+
+                // Aggiungi effetto di vittoria alla scacchiera
+                chessboard.classList.add("victory-effect")
+
+                // Mostra l'overlay di vittoria dopo un breve ritardo
+                setTimeout(() => {
+                    showVictoryOverlay(currentPlayer)
+                }, 800)
+
+                // Disabilita il pulsante di reset
+                resetBtn.disabled = true
+            }
+
             capturePiece(targetSquare.piece, targetSquare.color)
         }
 
@@ -921,7 +927,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // Imposta il contenuto dell'overlay
         const winnerName = winnerColor === "white" ? "Bianco" : "Nero"
         victoryTitle.textContent = `${winnerName} ha vinto!`
-        victoryMessage.textContent = `Scacco matto! Il Re avversario è stato catturato.`
+        victoryMessage.textContent = `Il Re avversario è stato catturato!`
 
         // Imposta il pezzo vincitore
         const kingSymbol = getPieceSymbol("king", winnerColor)
