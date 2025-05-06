@@ -110,6 +110,10 @@
       {
         "name":"Scacchi",
         "link":"Site/Giochi/Scacchi/index.html"
+      },
+      {
+        "name":"Solitario",
+        "link":"Site/Giochi/Solitario/index.html"
       }
     ],
     "Info_Paesi_Stati": [

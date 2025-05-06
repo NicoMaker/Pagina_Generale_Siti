@@ -18,6 +18,7 @@
 - **[Slot Machine](Slot_Machine)**
 - **[Slot Machine UX](Slot_Macchine_UX)**
 - **[Snake Game](Snakegame)**
+- **[Solitario](Solitario)**
 - **[Tombola](Tombola)**
 - **[Tris](Tris)**
 - **[Tris versione 2](Tris2)**
