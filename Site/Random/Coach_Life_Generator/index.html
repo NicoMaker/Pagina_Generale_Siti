@@ -4,37 +4,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Coach Life Generator</title>
+    <title>Frasi Ispiratrici</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" href="https://cdn0.lefrasi.it/it/posts/4/4/1/frasi_motivazionali_144_orig.jpg" type="image/jpg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap"
         rel="stylesheet">
 </head>
 
 <body>
     <div class="container">
         <header>
-            <h1>Coach Life Generator</h1>
-            <p class="subtitle">Frasi che ispirano, motivano e trasformano</p>
+            <h1>Frasi che Ispirano</h1>
+            <p class="subtitle">Saggezza, poesia e motivazione per illuminare la tua giornata</p>
         </header>
 
         <main>
             <div class="quote-container">
                 <div class="quote-card">
                     <div class="quote-icon">"</div>
-                    <div id="frase" class="quote-text"></div>
-                    <div id="phrase" class="quote-text"></div>
+                    <div id="quote-content">
+                        <p id="quote-text" class="quote-text">Le Frasi hanno un Potere particolare di guarire le persone
+                            nei propri sentimenti oppure distruggerli, fanne buon uso</p>
+                        <p id="quote-author" class="quote-author"></p>
+                    </div>
                     <div class="quote-icon closing">"</div>
                 </div>
             </div>
 
-            <button id="generateButton" class="generate-btn">
-                <span class="btn-text">Genera Frase</span>
-                <span class="btn-icon">✨</span>
-            </button>
+            <div class="controls">
+                <button id="generate-btn" class="btn primary-btn">
+                    <span class="btn-text">Nuova Frase</span>
+                    <span class="btn-icon">✨</span>
+                </button>
+
+                <button id="copy-btn" class="btn secondary-btn">
+                    <span class="btn-text">Copia</span>
+                    <span class="btn-icon">📋</span>
+                </button>
+
+                <button id="share-btn" class="btn secondary-btn">
+                    <span class="btn-text">Condividi</span>
+                    <span class="btn-icon">🔗</span>
+                </button>
+            </div>
+
+            <div class="categories">
+                <button class="category-btn active" data-category="all">Tutte</button>
+                <button class="category-btn" data-category="motivational">Motivazionali</button>
+                <button class="category-btn" data-category="poetry">Poesia</button>
+                <button class="category-btn" data-category="philosophy">Filosofia</button>
+            </div>
         </main>
 
         <div class="decoration">
@@ -45,7 +67,12 @@
 
         <footer>
             <p>Trova la tua ispirazione quotidiana</p>
+            <p class="copyright">© 2024 Frasi che Ispirano</p>
         </footer>
+    </div>
+
+    <div id="notification" class="notification">
+        <p>Frase copiata negli appunti!</p>
     </div>
 
     <script src="script.js"></script>
