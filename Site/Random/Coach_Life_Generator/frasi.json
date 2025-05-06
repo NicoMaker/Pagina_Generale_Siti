@@ -567,10 +567,6 @@
       "categoria": "saggezza"
     },
     {
-      "testo": "La tua autenticità è la tua più",
-      "categoria": "saggezza"
-    },
-    {
       "testo": "La tua autenticità è la tua più grande virtù. Sii vero con te stesso e ispira gli altri con la tua genuinità.",
       "autore": "",
       "categoria": "autenticità"
@@ -1214,6 +1210,821 @@
       "testo": "La felicità non è qualcosa di pronto all'uso. Viene dalle tue azioni.",
       "autore": "Dalai Lama",
       "categoria": "felicità"
+    },
+    {
+      "testo": "Il viaggio di mille miglia inizia con un singolo passo.",
+      "autore": "Lao Tzu",
+      "categoria": "inizio"
+    },
+    {
+      "testo": "La mente è tutto. Ciò che pensi, diventi.",
+      "autore": "Buddha",
+      "categoria": "mentalità"
+    },
+    {
+      "testo": "La vita è 10% ciò che ti accade e 90% come reagisci ad esso.",
+      "autore": "Charles R. Swindoll",
+      "categoria": "atteggiamento"
+    },
+    {
+      "testo": "Il successo è la capacità di passare da un fallimento all'altro senza perdere l'entusiasmo.",
+      "autore": "Winston Churchill",
+      "categoria": "perseveranza"
+    },
+    {
+      "testo": "La qualità dei tuoi pensieri determina la qualità della tua vita.",
+      "autore": "",
+      "categoria": "pensiero-positivo"
+    },
+    {
+      "testo": "Ogni giorno è una nuova opportunità per cambiare la tua vita.",
+      "autore": "",
+      "categoria": "opportunità"
+    },
+    {
+      "testo": "Non puoi attraversare il mare semplicemente stando a guardare l'acqua.",
+      "autore": "Rabindranath Tagore",
+      "categoria": "azione"
+    },
+    {
+      "testo": "La vita è come andare in bicicletta. Per mantenere l'equilibrio devi muoverti.",
+      "autore": "Albert Einstein",
+      "categoria": "movimento"
+    },
+    {
+      "testo": "Il modo migliore per predire il futuro è crearlo.",
+      "autore": "Abraham Lincoln",
+      "categoria": "futuro"
+    },
+    {
+      "testo": "La felicità non è qualcosa di già fatto. Viene dalle tue azioni.",
+      "autore": "Dalai Lama",
+      "categoria": "felicità"
+    },
+    {
+      "testo": "Sii il cambiamento che vuoi vedere nel mondo.",
+      "autore": "Mahatma Gandhi",
+      "categoria": "cambiamento"
+    },
+    {
+      "testo": "La vita è ciò che ne facciamo, sempre lo è stato, sempre lo sarà.",
+      "autore": "Grandma Moses",
+      "categoria": "vita"
+    },
+    {
+      "testo": "Il successo non è la chiave della felicità. La felicità è la chiave del successo.",
+      "autore": "Albert Schweitzer",
+      "categoria": "felicità"
+    },
+    {
+      "testo": "La pazienza è amara, ma il suo frutto è dolce.",
+      "autore": "Aristotele",
+      "categoria": "pazienza"
+    },
+    {
+      "testo": "La vita è troppo breve per essere piccola.",
+      "autore": "Benjamin Disraeli",
+      "categoria": "vita"
+    },
+    {
+      "testo": "Il coraggio non è l'assenza di paura, ma il trionfo su di essa.",
+      "autore": "Nelson Mandela",
+      "categoria": "coraggio"
+    },
+    {
+      "testo": "La bellezza comincia nel momento in cui decidi di essere te stesso.",
+      "autore": "Coco Chanel",
+      "categoria": "bellezza"
+    },
+    {
+      "testo": "La vita è un'avventura audace o niente.",
+      "autore": "Helen Keller",
+      "categoria": "avventura"
+    },
+    {
+      "testo": "Il futuro appartiene a coloro che credono nella bellezza dei propri sogni.",
+      "autore": "Eleanor Roosevelt",
+      "categoria": "sogni"
+    },
+    {
+      "testo": "Non è mai troppo tardi per essere ciò che avresti potuto essere.",
+      "autore": "George Eliot",
+      "categoria": "potenziale"
+    },
+    {
+      "testo": "La felicità è una scelta, non una condizione.",
+      "autore": "",
+      "categoria": "felicità"
+    },
+    {
+      "testo": "Ogni giorno è un nuovo inizio, un nuovo capitolo nella nostra storia.",
+      "autore": "",
+      "categoria": "inizio"
+    },
+    {
+      "testo": "La gratitudine trasforma ciò che abbiamo in abbastanza.",
+      "autore": "",
+      "categoria": "gratitudine"
+    },
+    {
+      "testo": "Sii te stesso; tutti gli altri sono già stati presi.",
+      "autore": "Oscar Wilde",
+      "categoria": "autenticità"
+    },
+    {
+      "testo": "La vita è ciò che succede mentre sei occupato a fare altri progetti.",
+      "autore": "John Lennon",
+      "categoria": "vita"
+    },
+    {
+      "testo": "Ogni momento è un nuovo inizio.",
+      "autore": "",
+      "categoria": "inizio"
+    },
+    {
+      "testo": "La gentilezza è un linguaggio che i sordi possono sentire e i ciechi possono vedere.",
+      "autore": "Mark Twain",
+      "categoria": "gentilezza"
+    },
+    {
+      "testo": "Fai oggi quello che gli altri non faranno, così domani potrai fare quello che gli altri non potranno.",
+      "autore": "Jerry Rice",
+      "categoria": "determinazione"
+    },
+    {
+      "testo": "La vita è come uno specchio: ti sorride se la guardi sorridendo.",
+      "autore": "",
+      "categoria": "atteggiamento"
+    },
+    {
+      "testo": "Non smettere mai di sognare solo perché hai avuto un incubo.",
+      "autore": "",
+      "categoria": "perseveranza"
+    },
+    {
+      "testo": "Il successo è cadere nove volte e rialzarsi dieci.",
+      "autore": "Jon Bon Jovi",
+      "categoria": "resilienza"
+    },
+    {
+      "testo": "La vita è un'eco: ciò che invii, ritorna; ciò che semini, raccogli; ciò che dai, ricevi.",
+      "autore": "Zig Ziglar",
+      "categoria": "karma"
+    },
+    {
+      "testo": "La felicità non è avere quello che si desidera, ma desiderare quello che si ha.",
+      "autore": "Oscar Wilde",
+      "categoria": "felicità"
+    },
+    {
+      "testo": "Non si vede bene che col cuore. L'essenziale è invisibile agli occhi.",
+      "autore": "Antoine de Saint-Exupéry",
+      "categoria": "essenziale"
+    },
+    {
+      "testo": "Ogni giorno è una nuova opportunità per cambiare la tua vita.",
+      "autore": "",
+      "categoria": "opportunità"
+    },
+    {
+      "testo": "La vita è un viaggio, non una destinazione.",
+      "autore": "Ralph Waldo Emerson",
+      "categoria": "viaggio"
+    },
+    {
+      "testo": "Il modo migliore per predire il futuro è crearlo.",
+      "autore": "Peter Drucker",
+      "categoria": "futuro"
+    },
+    {
+      "testo": "La vita è 10% ciò che ti accade e 90% come reagisci.",
+      "autore": "Charles R. Swindoll",
+      "categoria": "atteggiamento"
+    },
+    {
+      "testo": "Il più grande rischio è non correre alcun rischio.",
+      "autore": "Mark Zuckerberg",
+      "categoria": "rischio"
+    },
+    {
+      "testo": "La felicità è quando ciò che pensi, ciò che dici e ciò che fai sono in armonia.",
+      "autore": "Mahatma Gandhi",
+      "categoria": "armonia"
+    },
+    {
+      "testo": "Ciò che non mi uccide, mi fortifica.",
+      "autore": "Friedrich Nietzsche",
+      "categoria": "resilienza"
+    },
+    {
+      "testo": "La vita è un mistero da vivere, non un problema da risolvere.",
+      "autore": "Søren Kierkegaard",
+      "categoria": "mistero"
+    },
+    {
+      "testo": "La bellezza salverà il mondo.",
+      "autore": "Fëdor Dostoevskij",
+      "categoria": "bellezza"
+    },
+    {
+      "testo": "Nessun uomo è un'isola, completo in se stesso.",
+      "autore": "John Donne",
+      "categoria": "connessione"
+    },
+    {
+      "testo": "Ama e fa' ciò che vuoi.",
+      "autore": "Sant'Agostino",
+      "categoria": "amore"
+    },
+    {
+      "testo": "La vera saggezza sta nel riconoscere la propria ignoranza.",
+      "autore": "Socrate",
+      "categoria": "saggezza"
+    },
+    {
+      "testo": "Diventa ciò che sei.",
+      "autore": "Friedrich Nietzsche",
+      "categoria": "autenticità"
+    },
+    {
+      "testo": "La vita è fatta di scelte. Alcune le rimpiangiamo, altre le gustiamo, ma ogni scelta ci rende ciò che siamo oggi.",
+      "autore": "",
+      "categoria": "scelte"
+    },
+    {
+      "testo": "La vita è come una fotografia: sviluppiamo dai negativi.",
+      "autore": "",
+      "categoria": "prospettiva"
+    },
+    {
+      "testo": "Il successo è la somma di piccoli sforzi ripetuti giorno dopo giorno.",
+      "autore": "Robert Collier",
+      "categoria": "successo"
+    },
+    {
+      "testo": "La felicità è un profumo che non puoi versare sugli altri senza riceverne qualche goccia su te stesso.",
+      "autore": "Ralph Waldo Emerson",
+      "categoria": "felicità"
+    },
+    {
+      "testo": "La salute è il primo dovere della vita.",
+      "autore": "Oscar Wilde",
+      "categoria": "salute"
+    },
+    {
+      "testo": "Il corpo è il tempio dell'anima, mantienilo forte e in salute.",
+      "autore": "",
+      "categoria": "salute"
+    },
+    {
+      "testo": "Prendi cura del tuo corpo. È l'unico posto in cui devi vivere.",
+      "autore": "Jim Rohn",
+      "categoria": "salute"
+    },
+    {
+      "testo": "La meditazione è il viaggio da qui a qui.",
+      "autore": "",
+      "categoria": "mindfulness"
+    },
+    {
+      "testo": "Respira profondamente e ricorda chi sei.",
+      "autore": "",
+      "categoria": "mindfulness"
+    },
+    {
+      "testo": "Il denaro è un buon servitore ma un cattivo padrone.",
+      "autore": "Francis Bacon",
+      "categoria": "finanza"
+    },
+    {
+      "testo": "Investi in te stesso. È il miglior investimento che farai mai.",
+      "autore": "",
+      "categoria": "crescita-personale"
+    },
+    {
+      "testo": "La ricchezza non è avere molti beni, ma avere pochi bisogni.",
+      "autore": "",
+      "categoria": "abbondanza"
+    },
+    {
+      "testo": "Il tempo è la valuta della tua vita. È l'unica valuta che hai, e solo tu puoi determinare come spenderla.",
+      "autore": "Carl Sandburg",
+      "categoria": "tempo"
+    },
+    {
+      "testo": "Il networking non è raccogliere contatti, ma coltivare relazioni.",
+      "autore": "",
+      "categoria": "networking"
+    },
+    {
+      "testo": "Il successo negli affari richiede formazione, disciplina e duro lavoro.",
+      "autore": "David Sarnoff",
+      "categoria": "business"
+    },
+    {
+      "testo": "La leadership è la capacità di trasformare la visione in realtà.",
+      "autore": "Warren Bennis",
+      "categoria": "leadership"
+    },
+    {
+      "testo": "Un leader è uno che conosce la strada, va per la strada e mostra la strada.",
+      "autore": "John C. Maxwell",
+      "categoria": "leadership"
+    },
+    {
+      "testo": "La comunicazione efficace è il 20% di ciò che sai e l'80% di come ti senti riguardo a ciò che sai.",
+      "autore": "Jim Rohn",
+      "categoria": "comunicazione"
+    },
+    {
+      "testo": "La creatività è l'intelligenza che si diverte.",
+      "autore": "Albert Einstein",
+      "categoria": "creatività"
+    },
+    {
+      "testo": "L'innovazione distingue tra un leader e un seguace.",
+      "autore": "Steve Jobs",
+      "categoria": "innovazione"
+    },
+    {
+      "testo": "Il fallimento è semplicemente l'opportunità di iniziare di nuovo, questa volta in modo più intelligente.",
+      "autore": "Henry Ford",
+      "categoria": "fallimento"
+    },
+    {
+      "testo": "La disciplina è il ponte tra obiettivi e risultati.",
+      "autore": "Jim Rohn",
+      "categoria": "disciplina"
+    },
+    {
+      "testo": "La motivazione ti fa iniziare. L'abitudine ti fa continuare.",
+      "autore": "Jim Ryun",
+      "categoria": "abitudini"
+    },
+    {
+      "testo": "Le abitudini formano il carattere, e il carattere determina il destino.",
+      "autore": "",
+      "categoria": "abitudini"
+    },
+    {
+      "testo": "Il cambiamento è difficile all'inizio, disordinato nel mezzo e glorioso alla fine.",
+      "autore": "Robin Sharma",
+      "categoria": "cambiamento"
+    },
+    {
+      "testo": "La zona di comfort è un bel posto, ma nulla cresce lì.",
+      "autore": "",
+      "categoria": "crescita"
+    },
+    {
+      "testo": "La vita inizia alla fine della tua zona di comfort.",
+      "autore": "Neale Donald Walsch",
+      "categoria": "comfort-zone"
+    },
+    {
+      "testo": "Il miglior momento per piantare un albero era 20 anni fa. Il secondo miglior momento è ora.",
+      "autore": "Proverbio cinese",
+      "categoria": "azione"
+    },
+    {
+      "testo": "Non aspettare. Il tempo non sarà mai giusto.",
+      "autore": "Napoleon Hill",
+      "categoria": "azione"
+    },
+    {
+      "testo": "La vita è un dono, e ci offre il privilegio, l'opportunità e la responsabilità di dare qualcosa in cambio diventando più grandi.",
+      "autore": "Tony Robbins",
+      "categoria": "crescita"
+    },
+    {
+      "testo": "Il tuo tempo è limitato, quindi non sprecarlo vivendo la vita di qualcun altro.",
+      "autore": "Steve Jobs",
+      "categoria": "autenticità"
+    },
+    {
+      "testo": "La felicità è quando ciò che pensi, ciò che dici e ciò che fai sono in armonia.",
+      "autore": "Mahatma Gandhi",
+      "categoria": "felicità"
+    },
+    {
+      "testo": "La vita è davvero semplice, ma noi insistiamo nel renderla complicata.",
+      "autore": "Confucio",
+      "categoria": "semplicità"
+    },
+    {
+      "testo": "Non giudicare ogni giorno dal raccolto che hai ottenuto, ma dai semi che hai piantato.",
+      "autore": "Robert Louis Stevenson",
+      "categoria": "crescita"
+    },
+    {
+      "testo": "La vita è come andare in bicicletta. Per mantenere l'equilibrio devi muoverti.",
+      "autore": "Albert Einstein",
+      "categoria": "movimento"
+    },
+    {
+      "testo": "Il successo non è definitivo, il fallimento non è fatale: è il coraggio di continuare che conta.",
+      "autore": "Winston Churchill",
+      "categoria": "perseveranza"
+    },
+    {
+      "testo": "La vita è ciò che ne facciamo, sempre lo è stato, sempre lo sarà.",
+      "autore": "Grandma Moses",
+      "categoria": "vita"
+    },
+    {
+      "testo": "La felicità non è qualcosa di già fatto. Viene dalle tue azioni.",
+      "autore": "Dalai Lama",
+      "categoria": "felicità"
+    },
+    {
+      "testo": "Sii il cambiamento che vuoi vedere nel mondo.",
+      "autore": "Mahatma Gandhi",
+      "categoria": "cambiamento"
+    },
+    {
+      "testo": "La vita è troppo breve per essere piccola.",
+      "autore": "Benjamin Disraeli",
+      "categoria": "vita"
+    },
+    {
+      "testo": "Il coraggio non è l'assenza di paura, ma il trionfo su di essa.",
+      "autore": "Nelson Mandela",
+      "categoria": "coraggio"
+    },
+    {
+      "testo": "La bellezza comincia nel momento in cui decidi di essere te stesso.",
+      "autore": "Coco Chanel",
+      "categoria": "bellezza"
+    },
+    {
+      "testo": "La vita è un'avventura audace o niente.",
+      "autore": "Helen Keller",
+      "categoria": "avventura"
+    },
+    {
+      "testo": "Il futuro appartiene a coloro che credono nella bellezza dei propri sogni.",
+      "autore": "Eleanor Roosevelt",
+      "categoria": "sogni"
+    },
+    {
+      "testo": "Non è mai troppo tardi per essere ciò che avresti potuto essere.",
+      "autore": "George Eliot",
+      "categoria": "potenziale"
+    },
+    {
+      "testo": "La felicità è una scelta, non una condizione.",
+      "autore": "",
+      "categoria": "felicità"
+    },
+    {
+      "testo": "Ogni giorno è un nuovo inizio, un nuovo capitolo nella nostra storia.",
+      "autore": "",
+      "categoria": "inizio"
+    },
+    {
+      "testo": "La gratitudine trasforma ciò che abbiamo in abbastanza.",
+      "autore": "",
+      "categoria": "gratitudine"
+    },
+    {
+      "testo": "Sii te stesso; tutti gli altri sono già stati presi.",
+      "autore": "Oscar Wilde",
+      "categoria": "autenticità"
+    },
+    {
+      "testo": "La vita è ciò che succede mentre sei occupato a fare altri progetti.",
+      "autore": "John Lennon",
+      "categoria": "vita"
+    },
+    {
+      "testo": "Ogni momento è un nuovo inizio.",
+      "autore": "",
+      "categoria": "inizio"
+    },
+    {
+      "testo": "La gentilezza è un linguaggio che i sordi possono sentire e i ciechi possono vedere.",
+      "autore": "Mark Twain",
+      "categoria": "gentilezza"
+    },
+    {
+      "testo": "Fai oggi quello che gli altri non faranno, così domani potrai fare quello che gli altri non potranno.",
+      "autore": "Jerry Rice",
+      "categoria": "determinazione"
+    },
+    {
+      "testo": "La vita è come uno specchio: ti sorride se la guardi sorridendo.",
+      "autore": "",
+      "categoria": "atteggiamento"
+    },
+    {
+      "testo": "Non smettere mai di sognare solo perché hai avuto un incubo.",
+      "autore": "",
+      "categoria": "perseveranza"
+    },
+    {
+      "testo": "Il successo è cadere nove volte e rialzarsi dieci.",
+      "autore": "Jon Bon Jovi",
+      "categoria": "resilienza"
+    },
+    {
+      "testo": "La vita è un'eco: ciò che invii, ritorna; ciò che semini, raccogli; ciò che dai, ricevi.",
+      "autore": "Zig Ziglar",
+      "categoria": "karma"
+    },
+    {
+      "testo": "La felicità non è avere quello che si desidera, ma desiderare quello che si ha.",
+      "autore": "Oscar Wilde",
+      "categoria": "felicità"
+    },
+    {
+      "testo": "Non si vede bene che col cuore. L'essenziale è invisibile agli occhi.",
+      "autore": "Antoine de Saint-Exupéry",
+      "categoria": "essenziale"
+    },
+    {
+      "testo": "Ogni giorno è una nuova opportunità per cambiare la tua vita.",
+      "autore": "",
+      "categoria": "opportunità"
+    },
+    {
+      "testo": "La vita è un viaggio, non una destinazione.",
+      "autore": "Ralph Waldo Emerson",
+      "categoria": "viaggio"
+    },
+    {
+      "testo": "Il modo migliore per predire il futuro è crearlo.",
+      "autore": "Peter Drucker",
+      "categoria": "futuro"
+    },
+    {
+      "testo": "La vita è 10% ciò che ti accade e 90% come reagisci.",
+      "autore": "Charles R. Swindoll",
+      "categoria": "atteggiamento"
+    },
+    {
+      "testo": "Il più grande rischio è non correre alcun rischio.",
+      "autore": "Mark Zuckerberg",
+      "categoria": "rischio"
+    },
+    {
+      "testo": "La felicità è quando ciò che pensi, ciò che dici e ciò che fai sono in armonia.",
+      "autore": "Mahatma Gandhi",
+      "categoria": "armonia"
+    },
+    {
+      "testo": "Ciò che non mi uccide, mi fortifica.",
+      "autore": "Friedrich Nietzsche",
+      "categoria": "resilienza"
+    },
+    {
+      "testo": "La vita è un mistero da vivere, non un problema da risolvere.",
+      "autore": "Søren Kierkegaard",
+      "categoria": "mistero"
+    },
+    {
+      "testo": "La bellezza salverà il mondo.",
+      "autore": "Fëdor Dostoevskij",
+      "categoria": "bellezza"
+    },
+    {
+      "testo": "Nessun uomo è un'isola, completo in se stesso.",
+      "autore": "John Donne",
+      "categoria": "connessione"
+    },
+    {
+      "testo": "Ama e fa' ciò che vuoi.",
+      "autore": "Sant'Agostino",
+      "categoria": "amore"
+    },
+    {
+      "testo": "La vera saggezza sta nel riconoscere la propria ignoranza.",
+      "autore": "Socrate",
+      "categoria": "saggezza"
+    },
+    {
+      "testo": "Diventa ciò che sei.",
+      "autore": "Friedrich Nietzsche",
+      "categoria": "autenticità"
+    },
+    {
+      "testo": "La vita è fatta di scelte. Alcune le rimpiangiamo, altre le gustiamo, ma ogni scelta ci rende ciò che siamo oggi.",
+      "autore": "",
+      "categoria": "scelte"
+    },
+    {
+      "testo": "La vita è come una fotografia: sviluppiamo dai negativi.",
+      "autore": "",
+      "categoria": "prospettiva"
+    },
+    {
+      "testo": "Il successo è la somma di piccoli sforzi ripetuti giorno dopo giorno.",
+      "autore": "Robert Collier",
+      "categoria": "successo"
+    },
+    {
+      "testo": "La felicità è un profumo che non puoi versare sugli altri senza riceverne qualche goccia su te stesso.",
+      "autore": "Ralph Waldo Emerson",
+      "categoria": "felicità"
+    },
+    {
+      "testo": "La salute è il primo dovere della vita.",
+      "autore": "Oscar Wilde",
+      "categoria": "salute"
+    },
+    {
+      "testo": "Il corpo è il tempio dell'anima, mantienilo forte e in salute.",
+      "autore": "",
+      "categoria": "salute"
+    },
+    {
+      "testo": "Prendi cura del tuo corpo. È l'unico posto in cui devi vivere.",
+      "autore": "Jim Rohn",
+      "categoria": "salute"
+    },
+    {
+      "testo": "La meditazione è il viaggio da qui a qui.",
+      "autore": "",
+      "categoria": "mindfulness"
+    },
+    {
+      "testo": "Respira profondamente e ricorda chi sei.",
+      "autore": "",
+      "categoria": "mindfulness"
+    },
+    {
+      "testo": "Il denaro è un buon servitore ma un cattivo padrone.",
+      "autore": "Francis Bacon",
+      "categoria": "finanza"
+    },
+    {
+      "testo": "Investi in te stesso. È il miglior investimento che farai mai.",
+      "autore": "",
+      "categoria": "crescita-personale"
+    },
+    {
+      "testo": "La ricchezza non è avere molti beni, ma avere pochi bisogni.",
+      "autore": "",
+      "categoria": "abbondanza"
+    },
+    {
+      "testo": "Il tempo è la valuta della tua vita. È l'unica valuta che hai, e solo tu puoi determinare come spenderla.",
+      "autore": "Carl Sandburg",
+      "categoria": "tempo"
+    },
+    {
+      "testo": "Il networking non è raccogliere contatti, ma coltivare relazioni.",
+      "autore": "",
+      "categoria": "networking"
+    },
+    {
+      "testo": "Il successo negli affari richiede formazione, disciplina e duro lavoro.",
+      "autore": "David Sarnoff",
+      "categoria": "business"
+    },
+    {
+      "testo": "La leadership è la capacità di trasformare la visione in realtà.",
+      "autore": "Warren Bennis",
+      "categoria": "leadership"
+    },
+    {
+      "testo": "Un leader è uno che conosce la strada, va per la strada e mostra la strada.",
+      "autore": "John C. Maxwell",
+      "categoria": "leadership"
+    },
+    {
+      "testo": "La comunicazione efficace è il 20% di ciò che sai e l'80% di come ti senti riguardo a ciò che sai.",
+      "autore": "Jim Rohn",
+      "categoria": "comunicazione"
+    },
+    {
+      "testo": "La creatività è l'intelligenza che si diverte.",
+      "autore": "Albert Einstein",
+      "categoria": "creatività"
+    },
+    {
+      "testo": "L'innovazione distingue tra un leader e un seguace.",
+      "autore": "Steve Jobs",
+      "categoria": "innovazione"
+    },
+    {
+      "testo": "Il fallimento è semplicemente l'opportunità di iniziare di nuovo, questa volta in modo più intelligente.",
+      "autore": "Henry Ford",
+      "categoria": "fallimento"
+    },
+    {
+      "testo": "La disciplina è il ponte tra obiettivi e risultati.",
+      "autore": "Jim Rohn",
+      "categoria": "disciplina"
+    },
+    {
+      "testo": "La motivazione ti fa iniziare. L'abitudine ti fa continuare.",
+      "autore": "Jim Ryun",
+      "categoria": "abitudini"
+    },
+    {
+      "testo": "Le abitudini formano il carattere, e il carattere determina il destino.",
+      "autore": "",
+      "categoria": "abitudini"
+    },
+    {
+      "testo": "Il cambiamento è difficile all'inizio, disordinato nel mezzo e glorioso alla fine.",
+      "autore": "Robin Sharma",
+      "categoria": "cambiamento"
+    },
+    {
+      "testo": "La zona di comfort è un bel posto, ma nulla cresce lì.",
+      "autore": "",
+      "categoria": "crescita"
+    },
+    {
+      "testo": "La vita inizia alla fine della tua zona di comfort.",
+      "autore": "Neale Donald Walsch",
+      "categoria": "comfort-zone"
+    },
+    {
+      "testo": "Il miglior momento per piantare un albero era 20 anni fa. Il secondo miglior momento è ora.",
+      "autore": "Proverbio cinese",
+      "categoria": "azione"
+    },
+    {
+      "testo": "Non aspettare. Il tempo non sarà mai giusto.",
+      "autore": "Napoleon Hill",
+      "categoria": "azione"
+    },
+    {
+      "testo": "La vita è un dono, e ci offre il privilegio, l'opportunità e la responsabilità di dare qualcosa in cambio diventando più grandi.",
+      "autore": "Tony Robbins",
+      "categoria": "crescita"
+    },
+    {
+      "testo": "Il tuo tempo è limitato, quindi non sprecarlo vivendo la vita di qualcun altro.",
+      "autore": "Steve Jobs",
+      "categoria": "autenticità"
+    },
+    {
+      "testo": "La felicità è quando ciò che pensi, ciò che dici e ciò che fai sono in armonia.",
+      "autore": "Mahatma Gandhi",
+      "categoria": "felicità"
+    },
+    {
+      "testo": "La vita è davvero semplice, ma noi insistiamo nel renderla complicata.",
+      "autore": "Confucio",
+      "categoria": "semplicità"
+    },
+    {
+      "testo": "Non giudicare ogni giorno dal raccolto che hai ottenuto, ma dai semi che hai piantato.",
+      "autore": "Robert Louis Stevenson",
+      "categoria": "crescita"
+    },
+    {
+      "testo": "La vita è come andare in bicicletta. Per mantenere l'equilibrio devi muoverti.",
+      "autore": "Albert Einstein",
+      "categoria": "movimento"
+    },
+    {
+      "testo": "Il successo non è definitivo, il fallimento non è fatale: è il coraggio di continuare che conta.",
+      "autore": "Winston Churchill",
+      "categoria": "perseveranza"
+    },
+    {
+      "testo": "La vita è ciò che ne facciamo, sempre lo è stato, sempre lo sarà.",
+      "autore": "Grandma Moses",
+      "categoria": "vita"
+    },
+    {
+      "testo": "La felicità non è qualcosa di già fatto. Viene dalle tue azioni.",
+      "autore": "Dalai Lama",
+      "categoria": "felicità"
+    },
+    {
+      "testo": "Sii il cambiamento che vuoi vedere nel mondo.",
+      "autore": "Mahatma Gandhi",
+      "categoria": "cambiamento"
+    },
+    {
+      "testo": "La vita è troppo breve per essere piccola.",
+      "autore": "Benjamin Disraeli",
+      "categoria": "vita"
+    },
+    {
+      "testo": "Il coraggio non è l'assenza di paura, ma il trionfo su di essa.",
+      "autore": "Nelson Mandela",
+      "categoria": "coraggio"
+    },
+    {
+      "testo": "La bellezza comincia nel momento in cui decidi di essere te stesso.",
+      "autore": "Coco Chanel",
+      "categoria": "bellezza"
+    },
+    {
+      "testo": "La vita è un'avventura audace o niente.",
+      "autore": "Helen Keller",
+      "categoria": "avventura"
+    },
+    {
+      "testo": "Il futuro appartiene a coloro che credono nella bellezza dei propri sogni.",
+      "autore": "Eleanor Roosevelt",
+      "categoria": "sogni"
     }
   ]
 }
