@@ -4,39 +4,28 @@
 
 1. [Introduzione](#introduzione)
 2. [Navigazione del Sito](#navigazione-del-sito)
-
 3. [Header e Menu](#header-e-menu)
-4. [Tema Chiaro/Scuro](#tema-chiaroscuro)
-5. [Menu Mobile](#menu-mobile)
-
-6. [Sezione Home](#sezione-home)
-7. [Esplorazione delle Categorie](#esplorazione-delle-categorie)
-
-8. [Ricerca Categorie](#ricerca-categorie)
-9. [Barra di Navigazione Categorie](#barra-di-navigazione-categorie)
-10. [Griglia Categorie](#griglia-categorie)
-
-11. [Visualizzazione Progetti](#visualizzazione-progetti)
-
-12. [Ricerca Progetti](#ricerca-progetti)
-13. [Accesso ai Progetti](#accesso-ai-progetti)
-
-14. [Sezione Contatti](#sezione-contatti)
-
-15. [Metodi di Contatto](#metodi-di-contatto)
-16. [Link Social](#link-social)
-
-17. [Funzionalità Speciali](#funzionalità-speciali)
-
-18. [Preloader Animato](#preloader-animato)
-19. [Cursore Personalizzato](#cursore-personalizzato)
-20. [Pulsante "Torna in Cima"](#pulsante-torna-in-cima)
-
-21. [Categorie di Progetti](#categorie-di-progetti)
-22. [Elenco Completo dei Siti](#elenco-completo-dei-siti)
-23. [Compatibilità e Responsive Design](#compatibilità-e-responsive-design)
-24. [Risoluzione Problemi](#risoluzione-problemi)
-25. [Link Utili](#link-utili)
+4. [Menu Mobile](#menu-mobile)
+5. [Sezione Home](#sezione-home)
+6. [Esplorazione delle Categorie](#esplorazione-delle-categorie)
+7. [Ricerca Categorie](#ricerca-categorie)
+8. [Barra di Navigazione Categorie](#barra-di-navigazione-categorie)
+9. [Griglia Categorie](#griglia-categorie)
+10. [Visualizzazione Progetti](#visualizzazione-progetti)
+11. [Ricerca Progetti](#ricerca-progetti)
+12. [Accesso ai Progetti](#accesso-ai-progetti)
+13. [Sezione Contatti](#sezione-contatti)
+14. [Metodi di Contatto](#metodi-di-contatto)
+15. [Link Social](#link-social)
+16. [Funzionalità Speciali](#funzionalità-speciali)
+17. [Preloader Animato](#preloader-animato)
+18. [Cursore Personalizzato](#cursore-personalizzato)
+19. [Pulsante "Torna in Cima"](#pulsante-torna-in-cima)
+20. [Categorie di Progetti](#categorie-di-progetti)
+21. [Elenco Completo dei Siti](#elenco-completo-dei-siti)
+22. [Compatibilità e Responsive Design](#compatibilità-e-responsive-design)
+23. [Risoluzione Problemi](#risoluzione-problemi)
+24. [Link Utili](#link-utili)
 
 ---
 
@@ -65,15 +54,6 @@ La barra di navigazione principale è sempre visibile nella parte superiore dell
 - **Home**: La pagina principale con l'introduzione
 - **Categorie**: La sezione con tutte le categorie di progetti
 - **Contatti**: Informazioni per contattare lo sviluppatore
-
-### Tema Chiaro/Scuro
-
-Il sito supporta sia il tema chiaro (predefinito) che quello scuro. Per cambiare tema:
-
-1. Clicca sull'icona della luna 🌙 nell'header (su desktop)
-2. Oppure utilizza il pulsante "Cambia Tema" nel menu mobile
-
-Il tema selezionato viene salvato e mantenuto tra le sessioni di navigazione.
 
 ### Menu Mobile
 
