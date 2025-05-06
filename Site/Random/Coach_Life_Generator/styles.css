@@ -430,3 +430,80 @@ footer {
     padding: 6px 12px;
   }
 }
+
+/* Aggiungi stili per la visualizzazione dell'elenco completo delle frasi */
+.quotes-list {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto 30px;
+  background: var(--card-bg);
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: var(--shadow);
+}
+
+.quotes-list-title {
+  font-family: "Playfair Display", serif;
+  font-size: 2rem;
+  color: var(--primary);
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.quote-item {
+  padding: 15px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.quote-item:last-child {
+  border-bottom: none;
+}
+
+.quote-item-text {
+  font-family: "Playfair Display", serif;
+  font-style: italic;
+  font-size: 1.2rem;
+  line-height: 1.5;
+  color: var(--text);
+  margin-bottom: 5px;
+}
+
+.quote-item-author {
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.9rem;
+  color: var(--primary);
+  text-align: right;
+  font-weight: 600;
+}
+
+.view-all-btn {
+  background: linear-gradient(
+    135deg,
+    var(--primary-light) 0%,
+    var(--primary) 100%
+  );
+  color: white !important;
+  font-weight: 600;
+  padding: 8px 16px;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 5px rgba(99, 102, 241, 0.3);
+}
+
+.view-all-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(99, 102, 241, 0.4);
+}
+
+@media (max-width: 768px) {
+  .quotes-list {
+    padding: 20px;
+  }
+
+  .quotes-list-title {
+    font-size: 1.5rem;
+  }
+
+  .quote-item-text {
+    font-size: 1rem;
+  }
+}
