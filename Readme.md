@@ -1,98 +1,353 @@
-### Guida Generale al Sito
+### Guida Utente - Pagina Generale Siti di Nico Maker
 
-Benvenuto nella **Pagina Generale Siti** di Nico Maker! Questa guida ti aiuterà a navigare facilmente tra tutti i progetti disponibili.
+## Indice dei Contenuti
 
-## 🚀 Come Iniziare
+1. [Introduzione](#introduzione)
+2. [Navigazione del Sito](#navigazione-del-sito)
 
-1. **Pagina Principale**: All'apertura del sito, visualizzerai immediatamente il logo, un'intestazione e le immagini rappresentative
-2. **Categorie**: Tutte le categorie sono visualizzate direttamente nella pagina principale
-3. **Ricerca**: Utilizza la barra di ricerca per trovare rapidamente la categoria desiderata
+3. [Header e Menu](#header-e-menu)
+4. [Tema Chiaro/Scuro](#tema-chiaroscuro)
+5. [Menu Mobile](#menu-mobile)
 
-## 🔍 Navigazione Semplificata
+6. [Sezione Home](#sezione-home)
+7. [Esplorazione delle Categorie](#esplorazione-delle-categorie)
 
-### Esplorazione delle Categorie
+8. [Ricerca Categorie](#ricerca-categorie)
+9. [Barra di Navigazione Categorie](#barra-di-navigazione-categorie)
+10. [Griglia Categorie](#griglia-categorie)
 
-- Scorri la griglia delle categorie per visualizzare tutti i tipi di progetti disponibili
-- Ogni categoria è rappresentata da un'icona e un titolo descrittivo
-- Utilizza la barra di ricerca in alto per filtrare le categorie
+11. [Visualizzazione Progetti](#visualizzazione-progetti)
 
-### Visualizzazione dei Progetti
+12. [Ricerca Progetti](#ricerca-progetti)
+13. [Accesso ai Progetti](#accesso-ai-progetti)
 
-- Clicca su una categoria per visualizzare tutti i progetti correlati
-- Nella pagina dei progetti, puoi utilizzare la barra di ricerca dedicata per filtrare i risultati
-- Per tornare all'elenco delle categorie, clicca sul pulsante "Torna alle categorie"
+14. [Sezione Contatti](#sezione-contatti)
 
-## 📱 Esperienza Responsive
+15. [Metodi di Contatto](#metodi-di-contatto)
+16. [Link Social](#link-social)
 
-Il sito è completamente ottimizzato per:
+17. [Funzionalità Speciali](#funzionalità-speciali)
 
-- **Desktop**: Visualizzazione completa con griglia a più colonne
-- **Tablet**: Layout adattivo con elementi ridimensionati
-- **Smartphone**: Interfaccia compatta con elementi impilati per una navigazione fluida
+18. [Preloader Animato](#preloader-animato)
+19. [Cursore Personalizzato](#cursore-personalizzato)
+20. [Pulsante "Torna in Cima"](#pulsante-torna-in-cima)
 
-## 🎨 Elementi Visivi
+21. [Categorie di Progetti](#categorie-di-progetti)
+22. [Elenco Completo dei Siti](#elenco-completo-dei-siti)
+23. [Compatibilità e Responsive Design](#compatibilità-e-responsive-design)
+24. [Risoluzione Problemi](#risoluzione-problemi)
+25. [Link Utili](#link-utili)
 
-- **Carte Categoria**: Ogni categoria è rappresentata da una carta con effetto di elevazione al passaggio del mouse
-- **Animazioni**: Transizioni fluide tra le pagine e gli elementi
-- **Icone Intuitive**: Ogni categoria ha un'icona rappresentativa per un riconoscimento immediato
+---
 
-## 📞 Contatti e Collegamenti
+## Introduzione
 
-Nella sezione footer troverai:
+Benvenuto nella **Pagina Generale Siti** di Nico Maker, un portfolio interattivo che raccoglie e organizza numerosi progetti web sviluppati nel corso del tempo. Questa guida ti aiuterà a navigare facilmente tra tutte le funzionalità del sito e a scoprire i vari progetti disponibili.
 
-| Icona             | Funzione                                 |
-| ----------------- | ---------------------------------------- |
-| 📱 QR Code        | Accesso rapido al sito tramite codice QR |
-| 🐙 GitHub         | Repository del codice sorgente           |
-| 🔄 Profilo GitHub | Profilo personale dello sviluppatore     |
-| ✉️ Email          | Contatto diretto via email               |
-| 📞 Telefono       | Contatto telefonico                      |
-| 💬 WhatsApp       | Messaggistica istantanea                 |
+Il sito è stato progettato con un'interfaccia moderna e intuitiva, che permette di:
 
-## 🗂️ Organizzazione dei Contenuti
+- Esplorare progetti organizzati per categorie tematiche
+- Cercare rapidamente categorie o progetti specifici
+- Visualizzare dettagli e accedere direttamente ai progetti
+- Contattare lo sviluppatore attraverso vari canali
 
-I progetti sono organizzati nelle seguenti categorie principali:
+---
 
-- **🚲 Bici**: Progetti relativi al ciclismo
-- **📈 Borsa**: Strumenti finanziari
-- **📅 Calendario**: Applicazioni per la gestione del tempo
-- **⚽ Calcio**: Progetti sportivi
-- **🎮 Giochi**: Applicazioni ludiche interattive
-- **🌍 Info Paesi/Stati**: Informazioni geografiche
-- **🧮 Matematica**: Strumenti di calcolo
-- **🎄 Natale**: Progetti a tema natalizio
-- **💬 Opzioni con le Frasi**: Strumenti per la manipolazione del testo
-- **🐰 Pasqua**: Progetti a tema pasquale
-- **🐉 Pokemon**: Applicazioni sui Pokemon
-- **🎲 Random**: Generatori casuali
-- **❤️ Salute**: Calcolatori per il benessere
-- **📜 Storia**: Progetti e applicazioni per esplorare eventi e personaggi storici
-- **🌡️ Temperatura**: Convertitori di temperatura
+## Navigazione del Sito
+
+### Header e Menu
+
+La barra di navigazione principale è sempre visibile nella parte superiore dello schermo e contiene:
+
+- **Logo e Nome**: Cliccando sul logo o sul nome "Nico Maker" si attiva un preloader animato che riporta alla home page
+- **Menu di Navigazione**: Contiene i link alle principali sezioni del sito:
+
+- **Home**: La pagina principale con l'introduzione
+- **Categorie**: La sezione con tutte le categorie di progetti
+- **Contatti**: Informazioni per contattare lo sviluppatore
+
+### Tema Chiaro/Scuro
+
+Il sito supporta sia il tema chiaro (predefinito) che quello scuro. Per cambiare tema:
+
+1. Clicca sull'icona della luna 🌙 nell'header (su desktop)
+2. Oppure utilizza il pulsante "Cambia Tema" nel menu mobile
+
+Il tema selezionato viene salvato e mantenuto tra le sessioni di navigazione.
+
+### Menu Mobile
+
+Su dispositivi mobili o schermi di dimensioni ridotte, il menu principale viene sostituito da un menu hamburger:
+
+1. Clicca sull'icona del menu ☰ nell'angolo in alto a destra
+2. Si aprirà un pannello laterale con:
+
+3. Avatar e nome dello sviluppatore
+4. Pulsante per cambiare tema
+5. Link alle sezioni principali del sito
+
+Per chiudere il menu mobile, clicca sull'icona X o in qualsiasi punto al di fuori del menu.
+
+---
+
+## Sezione Home
+
+La sezione Home è la prima che visualizzerai all'apertura del sito:
+
+Questa sezione contiene:
+
+- **Titolo e Sottotitolo**: Presentazione del portfolio
+- **Pulsanti di Azione**:
+
+- "Esplora Progetti": Ti porta direttamente alla sezione Categorie
+- "Contattami": Ti porta alla sezione Contatti
+
+- **Immagine Profilo**: Avatar dello sviluppatore con effetti animati
+- **Icone Fluttuanti**: Rappresentano le tecnologie utilizzate (HTML, CSS, JavaScript, React)
+- **Freccia di Scorrimento**: Cliccando sulla freccia in basso, verrai portato alla sezione Categorie
+
+---
+
+## Esplorazione delle Categorie
+
+La sezione Categorie è il cuore del sito, dove puoi esplorare tutti i progetti organizzati per tema.
+
+### Ricerca Categorie
+
+Nella parte superiore della sezione trovi una barra di ricerca:
+
+- Digita qualsiasi termine per filtrare le categorie in tempo reale
+- La ricerca è case-insensitive (non distingue tra maiuscole e minuscole)
+- Se nessuna categoria corrisponde alla ricerca, verrà mostrato un messaggio "Nessuna categoria trovata"
+
+### Barra di Navigazione Categorie
+
+Sotto la barra di ricerca si trova una barra di navigazione orizzontale con tutte le categorie:
+
+- Clicca su una categoria per visualizzare immediatamente i progetti correlati
+- Puoi scorrere orizzontalmente la barra se ci sono troppe categorie per essere visualizzate contemporaneamente
+- La categoria attiva viene evidenziata con un colore di sfondo diverso
+
+### Griglia Categorie
+
+La parte principale della sezione mostra una griglia di card, una per ogni categoria:
+
+Ogni card categoria contiene:
+
+- **Icona**: Rappresentativa della categoria (es. 🎮 per Giochi, 🧮 per Matematica)
+- **Nome**: Il nome della categoria
+- **Contatore**: Il numero di progetti presenti nella categoria
+
+Cliccando su una card categoria, verrai portato alla visualizzazione dei progetti relativi.
+
+Nella parte inferiore della sezione trovi anche dei contatori che mostrano:
+
+- Il numero totale di categorie
+- Il numero totale di progetti nel sito
+
+---
+
+## Visualizzazione Progetti
+
+Quando selezioni una categoria, il sito passa alla visualizzazione dei progetti:
+
+Questa sezione include:
+
+- **Titolo della Categoria**: Mostra la categoria attualmente selezionata
+- **Pulsante "Torna alle categorie"**: Ti permette di tornare alla visualizzazione delle categorie
+- **Barra di Ricerca Progetti**: Filtra i progetti all'interno della categoria selezionata
+- **Griglia Progetti**: Mostra tutti i progetti della categoria
+
+### Ricerca Progetti
+
+La barra di ricerca progetti funziona in modo simile a quella delle categorie:
+
+- Filtra in tempo reale mentre digiti
+- Mostra solo i progetti che corrispondono al termine di ricerca
+- Se nessun progetto corrisponde, viene mostrato un messaggio "Nessun progetto trovato"
+
+### Accesso ai Progetti
+
+Ogni card progetto contiene:
+
+- **Nome del Progetto**: Il titolo del progetto
+- **Pulsante "Visita Progetto"**: Apre il progetto in una nuova scheda del browser
+
+L'intera card è cliccabile e ti porterà direttamente al progetto.
+
+---
+
+## Sezione Contatti
+
+La sezione Contatti ti permette di metterti in comunicazione con lo sviluppatore:
+
+### Metodi di Contatto
+
+Sono disponibili tre metodi principali di contatto, ciascuno con un pulsante di azione rapida:
+
+1. **Email**:
+
+1. Indirizzo: [Nicola.marano02@gmail.com](mailto:Nicola.marano02@gmail.com)
+1. Pulsante "Invia Email": Apre il client di posta predefinito con l'indirizzo già compilato
+
+1. **Telefono**:
+
+1. Numero: +39 333 702 4320
+1. Pulsante "Chiama": Avvia una chiamata (su dispositivi mobili) o mostra il numero
+
+1. **WhatsApp**:
+
+1. Pulsante "Apri Chat": Apre una chat WhatsApp con un messaggio predefinito
+
+### Link Social
+
+Nella parte inferiore della sezione contatti trovi i link ai profili social e risorse esterne:
+
+- **GitHub Profile**: Profilo GitHub dello sviluppatore
+- **GitHub Repository**: Repository del codice sorgente di questo sito
+- **Sito Principale**: Link al sito principale dello sviluppatore
+- **QR Code**: Codice QR per accedere rapidamente al sito
+
+---
+
+## Funzionalità Speciali
+
+### Preloader Animato
+
+All'apertura del sito e quando clicchi sul logo nell'header, viene mostrato un preloader animato:
+
+Il preloader include:
+
+- Avatar dello sviluppatore con animazione di ingresso
+- Logo con rotazione
+- Titolo del sito con effetto di scorrimento
+- Barra di caricamento animata
+
+### Cursore Personalizzato
+
+Su dispositivi desktop, il sito utilizza un cursore personalizzato composto da:
+
+- Un punto centrale colorato
+- Un cerchio più grande che segue il movimento del mouse
+
+Questo cursore si adatta quando passi sopra elementi cliccabili o durante il clic.
+
+### Pulsante "Torna in Cima"
+
+Quando scorri verso il basso nella pagina, appare un pulsante nell'angolo in basso a destra:
+
+Cliccando su questo pulsante, verrai riportato all'inizio della pagina con un'animazione fluida.
+
+---
+
+## Categorie di Progetti
+
+Il portfolio include numerose categorie di progetti, ciascuna con la propria icona distintiva:
+
+| Categoria            | Icona | Descrizione                                            |
+| -------------------- | ----- | ------------------------------------------------------ |
+| Bici                 | 🚲    | Progetti relativi al ciclismo                          |
+| Borsa                | 📈    | Strumenti finanziari e di borsa                        |
+| Calendario           | 📅    | Applicazioni per la gestione del tempo                 |
+| Calcio               | ⚽    | Progetti sportivi legati al calcio                     |
+| Giochi               | 🎮    | Applicazioni ludiche interattive                       |
+| Info Paesi/Stati     | 🌍    | Informazioni geografiche su paesi e stati              |
+| Matematica           | 🧮    | Strumenti di calcolo e applicazioni matematiche        |
+| Natale               | 🎄    | Progetti a tema natalizio                              |
+| Opzioni con le Frasi | 💬    | Strumenti per la manipolazione del testo               |
+| Pasqua               | 🐰    | Progetti a tema pasquale                               |
+| Pokemon              | 🐉    | Applicazioni sui Pokemon                               |
+| Random               | 🎲    | Generatori casuali di vario tipo                       |
+| Salute               | ❤️    | Calcolatori per il benessere e la salute               |
+| Storia               | 📜    | Progetti e applicazioni su eventi e personaggi storici |
+| Temperatura          | 🌡️    | Convertitori e strumenti legati alla temperatura       |
+
+## Elenco Completo dei Siti
+
+Per visualizzare l'elenco completo e dettagliato di tutti i siti disponibili, con i relativi codici e link diretti, consulta il file:
 
 **[Visualizza le Categorie dei Siti con i vari codici](Site/Readme.md)**
 
-## 💡 Consigli Utili
+Questo documento contiene tutti i progetti organizzati per categoria, con link diretti a ciascun progetto e al relativo codice sorgente.
 
-- **Ricerca Efficiente**: Digita anche solo parte del nome della categoria per trovarla rapidamente
-- **Navigazione Rapida**: Usa il pulsante "Torna alle categorie" per tornare indietro dopo aver esplorato i progetti
-- **Progetti Esterni**: Alcuni progetti si aprono in nuove schede quando selezionati
-- **Visualizzazione Ottimale**: Il sito si adatta automaticamente alle dimensioni del tuo dispositivo
+---
 
-## 🛠️ Risoluzione Problemi
+## Compatibilità e Responsive Design
 
-- **Progetti non visualizzati**: Verifica la tua connessione internet
-- **Ricerca non funzionante**: Prova termini più generici
-- **Immagini non caricate**: Ricarica la pagina
-- **Visualizzazione non corretta**: Prova un browser diverso
+Il sito è completamente responsive e si adatta automaticamente a diverse dimensioni di schermo:
 
-## Apertura del Sito 🌐 Principale
+### Desktop (>992px)
 
-Puoi visitare il sito principale tramite uno dei seguenti link:
+- Visualizzazione completa con sidebar espansa
+- Cursore personalizzato
+- Griglia categorie a 4 colonne
+- Menu di navigazione orizzontale
 
-1. **[Apertura Sito Principale (Link 1)](https://paginageneralesiti.netlify.app/)**
-2. **[Apertura Sito Principale (Link 2)](https://nicomaker.github.io/Pagina_Generale_Siti/)**
+### Tablet (768px-992px)
 
-## Linguaggi 💻 Utilizzati
+- Layout adattivo con elementi ridimensionati
+- Griglia categorie a 3 colonne
+- Menu di navigazione orizzontale o menu hamburger
+
+### Smartphone (<768px)
+
+- Menu hamburger per la navigazione
+- Griglia categorie a 1-2 colonne
+- Elementi impilati verticalmente
+- Interfaccia ottimizzata per il touch
+
+Il sito funziona correttamente sui principali browser:
+
+- Chrome
+- Firefox
+- Safari
+- Edge
+
+---
+
+## Risoluzione Problemi
+
+### Problemi Comuni e Soluzioni
+
+| Problema                        | Possibile Causa                     | Soluzione                                        |
+| ------------------------------- | ----------------------------------- | ------------------------------------------------ |
+| Il preloader rimane visibile    | Errore di caricamento JavaScript    | Ricarica la pagina (F5 o Ctrl+R)                 |
+| I progetti non si aprono        | Connessione internet instabile      | Verifica la tua connessione e riprova            |
+| La ricerca non mostra risultati | Termine di ricerca troppo specifico | Prova con termini più generici                   |
+| Menu mobile non si chiude       | Conflitto JavaScript                | Ricarica la pagina e riprova                     |
+| Immagini non caricate           | Problemi di cache o connessione     | Svuota la cache del browser o ricarica la pagina |
+
+### Ottimizzazione dell'Esperienza
+
+Per un'esperienza ottimale:
+
+- Utilizza un browser aggiornato
+- Abilita JavaScript
+- Mantieni una connessione internet stabile
+- Su dispositivi mobili, ruota lo schermo in orizzontale per una migliore visualizzazione della griglia progetti
+
+---
+
+## Link Utili
+
+### Accesso al Sito
+
+Puoi accedere al sito attraverso uno dei seguenti link:
+
+- [Pagina Generale Siti (Link Principale)](https://paginageneralesiti.netlify.app/)
+- [Pagina Generale Siti (Link Alternativo)](https://nicomaker.github.io/Pagina_Generale_Siti/)
+
+### Altri Link
+
+- [Sito Principale di Nico Maker](https://nicomaker.netlify.app/)
+- [Profilo GitHub](https://github.com/NicoMaker)
+- [Repository GitHub del Progetto](https://github.com/NicoMaker/Pagina_Generale_Siti)
+
+---
+
+## Tecnologie Utilizzate
+
+Il sito è stato sviluppato utilizzando le seguenti tecnologie:
 
 <p align="left">
   <a href="https://developer.mozilla.org/en-US/docs/Glossary/HTML5" target="_blank" rel="noreferrer">
