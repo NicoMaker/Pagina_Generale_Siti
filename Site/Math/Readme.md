@@ -20,6 +20,7 @@
 - **[Calcolo Segno Zodiacale](Segno_Zodiacale)**
 - **[Stampa numeri pari o dispari o tutti](StampaNumeri)**
 - **[Tabelline](Tabelline)**
+- **[Tabbelline UX Desgign](Tabelline_UX_Design)**
 - **[Teoremi di Euclide](Teorema_Euclide)**
 - **[Triangolo di Tartaglia](Triangolo%20di%20Tartaglia)**
 - **[Trigonometria](Trigonometria)**

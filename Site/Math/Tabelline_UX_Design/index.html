@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generatore di Tabelline UX Design</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+        <link rel="icon"
+        href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdXXR-6h4YERf5Cjpg7nzA3TxBTJPUmjt5EQ&usqp=CAU"
+        type="image/jpg">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <div class="logo-circle">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="2" y="2" width="20" height="20" rx="5"></rect>
+                        <path d="M16 8.5v7"></path>
+                        <path d="M12 16.5v-7"></path>
+                        <path d="M8 13.5v-4"></path>
+                    </svg>
+                </div>
+            </div>
+            <h1>Generatore di Tabelline</h1>
+            <p class="subtitle">Impara le tabelline in modo divertente!</p>
+        </header>
+
+        <div class="card">
+            <div class="form-container">
+                <div class="form-group">
+                    <label for="number">Numero della tabellina</label>
+                    <input type="number" id="number" placeholder="Es. 7" min="1">
+                    <p class="input-hint">Inserisci il numero da moltiplicare</p>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="min">Numero minimo</label>
+                        <input type="number" id="min" placeholder="Es. 1" min="0" value="1">
+                        <p class="input-hint">Inizio intervallo</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="max">Numero massimo</label>
+                        <input type="number" id="max" placeholder="Es. 10" min="1" value="10">
+                        <p class="input-hint">Fine intervallo</p>
+                    </div>
+                </div>
+
+                <button id="generate-btn" class="btn-primary">
+                    <span id="btn-text">Genera Tabellina</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon
+                            points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
+                        </polygon>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <div id="error-message" class="error-message hidden"></div>
+
+        <div id="result-container" class="result-container hidden">
+            <div class="result-header">
+                <h2 id="result-title">La tua tabellina</h2>
+                <button id="print-btn" class="btn-icon" title="Stampa tabellina">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 6 2 18 2 18 9"></polyline>
+                        <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+                        <rect x="6" y="14" width="12" height="8"></rect>
+                    </svg>
+                </button>
+            </div>
+
+            <div id="table-container" class="table-wrapper"></div>
+
+            <div id="summary" class="summary"></div>
+        </div>
+
+        <footer>
+            <p>Creato con ❤️ per l'apprendimento della matematica</p>
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>

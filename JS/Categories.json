@@ -88,12 +88,12 @@
         "link": "Site/Giochi/Casino/index.html"
       },
       {
-        "name":"Dama",
-        "link":"Site/Giochi/Dama/index.html"
+        "name": "Dama",
+        "link": "Site/Giochi/Dama/index.html"
       },
       {
-        "name":"Pac-Man",
-        "link":"Site/Giochi/Pac-Man/index.html"
+        "name": "Pac-Man",
+        "link": "Site/Giochi/Pac-Man/index.html"
       },
       {
         "name": "Gestione Punteggi",
@@ -104,16 +104,16 @@
         "link": "Site/Giochi/Punteggi_UX_Design/index.html"
       },
       {
-        "name":"Gestione Turni",
+        "name": "Gestione Turni",
         "link": "Site/Giochi/Gestione_Turni/index.html"
       },
       {
-        "name":"Scacchi",
-        "link":"Site/Giochi/Scacchi/index.html"
+        "name": "Scacchi",
+        "link": "Site/Giochi/Scacchi/index.html"
       },
       {
-        "name":"Solitario",
-        "link":"Site/Giochi/Solitario/index.html"
+        "name": "Solitario",
+        "link": "Site/Giochi/Solitario/index.html"
       }
     ],
     "Info_Paesi_Stati": [
@@ -169,6 +169,10 @@
       },
       { "name": "Tabelline", "link": "Site/Math/Tabelline/index.html" },
       {
+        "name": "Tabelline UX Design",
+        "link": "Site/Math/Tabelline_UX_Design/index.html"
+      },
+      {
         "name": "Triangolo di Tartaglia",
         "link": "Site/Math/Triangolo di Tartaglia/index.html"
       },
@@ -207,9 +211,10 @@
       {
         "name": "Calcolo Trigonometrico",
         "link": "Site/Math/Trigonometria/index.html"
-      },{
-        "name":"Teoremi di Euclide",
-        "link":"Site/Math/Teorema_Euclide/index.html"
+      },
+      {
+        "name": "Teoremi di Euclide",
+        "link": "Site/Math/Teorema_Euclide/index.html"
       }
     ],
     "Natale": [
