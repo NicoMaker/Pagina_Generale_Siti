@@ -207,6 +207,9 @@
       {
         "name": "Calcolo Trigonometrico",
         "link": "Site/Math/Trigonometria/index.html"
+      },{
+        "name":"Teoremi di Euclide",
+        "link":"Site/Math/Teorema_Euclide/index.html"
       }
     ],
     "Natale": [

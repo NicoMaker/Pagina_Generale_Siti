@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>I Teoremi di Euclide - Matematica Greca</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="Euclide.png">
+    <meta name="theme-color" content="#0D5EAF">
+    <meta name="description" content="Applicazione educativa sui teoremi di Euclide con dimostrazioni interattive">
+</head>
+
+<body>
+    <header class="main-header">
+        <div class="header-content">
+            <div class="greek-pattern top-pattern"></div>
+            <div class="logo-container">
+                <img src="Euclide.png" alt="Logo Euclide" class="logo">
+                <div class="title-container">
+                    <h1>I TEOREMI DI EUCLIDE</h1>
+                    <div class="subtitle">Τα θεωρήματα του Ευκλείδη</div>
+                </div>
+            </div>
+            <div class="greek-pattern bottom-pattern"></div>
+        </div>
+    </header>
+
+    <nav class="main-nav">
+        <div class="container nav-container">
+            <button id="menu-toggle" aria-label="Menu di navigazione">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
+            <ul id="nav-menu">
+                <li><a href="#intro" class="active">Introduzione</a></li>
+                <li><a href="#primo-teorema">Primo Teorema</a></li>
+                <li><a href="#secondo-teorema">Secondo Teorema</a></li>
+                <li><a href="#esercizi">Esercizi</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container main-container">
+        <main>
+            <section id="intro" class="active-section">
+                <div class="column-container">
+                    <div class="greek-column left"></div>
+                    <div class="content">
+                        <h2>Introduzione ai Teoremi di Euclide</h2>
+                        <div class="euclid-portrait">
+                            <img src="Euclide.png" alt="Euclide di Alessandria">
+                            <p class="caption">Euclide di Alessandria (300 a.C. circa)</p>
+                        </div>
+                        <p>Euclide di Alessandria è stato un matematico greco antico, spesso definito il "padre della
+                            geometria". La sua opera principale, gli "Elementi", è uno dei testi più influenti nella
+                            storia della matematica.</p>
+                        <p>Tra i numerosi teoremi presenti negli Elementi, due sono particolarmente importanti per lo
+                            studio dei triangoli rettangoli:</p>
+                        <ul>
+                            <li>Il <strong>Primo Teorema di Euclide</strong> (o teorema della proiezione del cateto)
+                            </li>
+                            <li>Il <strong>Secondo Teorema di Euclide</strong> (o teorema dell'altezza)</li>
+                        </ul>
+                        <p>Questi teoremi stabiliscono relazioni fondamentali tra i lati di un triangolo rettangolo e
+                            sono alla base di molti problemi di geometria.</p>
+
+                        <div class="triangle-intro">
+                            <h3>Elementi di un triangolo rettangolo</h3>
+                            <div class="triangle-diagram">
+                                <div class="canvas-container">
+                                    <canvas id="intro-triangle" width="400" height="300"></canvas>
+                                </div>
+                                <div class="triangle-legend">
+                                    <p><strong>a, b</strong>: cateti</p>
+                                    <p><strong>c</strong>: ipotenusa</p>
+                                    <p><strong>h</strong>: altezza relativa all'ipotenusa</p>
+                                    <p><strong>p, q</strong>: proiezioni dei cateti sull'ipotenusa</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="greek-column right"></div>
+                </div>
+            </section>
+
+            <section id="primo-teorema">
+                <div class="column-container">
+                    <div class="greek-column left"></div>
+                    <div class="content">
+                        <h2>Primo Teorema di Euclide</h2>
+                        <div class="theorem-box">
+                            <h3>Enunciato</h3>
+                            <p>In un triangolo rettangolo, il quadrato costruito su un cateto è equivalente al
+                                rettangolo che ha per lati l'ipotenusa e la proiezione di quel cateto sull'ipotenusa.
+                            </p>
+                            <div class="formula">
+                                <div class="formula-content">
+                                    a² = c·p<br>
+                                    b² = c·q
+                                </div>
+                            </div>
+                            <p>Dove <strong>a</strong> e <strong>b</strong> sono i cateti, <strong>c</strong> è
+                                l'ipotenusa, e <strong>p</strong> e <strong>q</strong> sono le proiezioni dei cateti
+                                sull'ipotenusa.</p>
+                        </div>
+
+                        <div class="theorem-explanation">
+                            <h3>Spiegazione</h3>
+                            <p>Il primo teorema di Euclide stabilisce che:</p>
+                            <ul>
+                                <li>Il quadrato del primo cateto (a²) è uguale al prodotto dell'ipotenusa per la
+                                    proiezione del primo cateto sull'ipotenusa (c·p)</li>
+                                <li>Il quadrato del secondo cateto (b²) è uguale al prodotto dell'ipotenusa per la
+                                    proiezione del secondo cateto sull'ipotenusa (c·q)</li>
+                            </ul>
+                            <p>Questo teorema deriva dalla similitudine tra i triangoli che si formano quando si traccia
+                                l'altezza relativa all'ipotenusa.</p>
+                        </div>
+
+                        <div class="mobile-friendly-proof">
+                            <h3>Dimostrazione intuitiva</h3>
+                            <p>La dimostrazione si basa sulla similitudine dei triangoli:</p>
+                            <div class="proof-steps">
+                                <div class="proof-step">
+                                    <div class="step-number">1</div>
+                                    <div class="step-content">
+                                        <p>Consideriamo un triangolo rettangolo ABC con l'angolo retto in C.</p>
+                                    </div>
+                                </div>
+                                <div class="proof-step">
+                                    <div class="step-number">2</div>
+                                    <div class="step-content">
+                                        <p>Tracciamo l'altezza CH relativa all'ipotenusa AB.</p>
+                                    </div>
+                                </div>
+                                <div class="proof-step">
+                                    <div class="step-number">3</div>
+                                    <div class="step-content">
+                                        <p>Si formano tre triangoli rettangoli: ABC, AHC e BHC.</p>
+                                    </div>
+                                </div>
+                                <div class="proof-step">
+                                    <div class="step-number">4</div>
+                                    <div class="step-content">
+                                        <p>Questi triangoli sono simili tra loro per il criterio di similitudine AA (due
+                                            angoli uguali).</p>
+                                    </div>
+                                </div>
+                                <div class="proof-step">
+                                    <div class="step-number">5</div>
+                                    <div class="step-content">
+                                        <p>Dalla similitudine dei triangoli ABC e AHC, otteniamo:</p>
+                                        <div class="formula-inline">AC/AH = AB/AC</div>
+                                        <div class="formula-inline">AC² = AB · AH</div>
+                                        <div class="formula-inline">a² = c · p</div>
+                                    </div>
+                                </div>
+                                <div class="proof-step">
+                                    <div class="step-number">6</div>
+                                    <div class="step-content">
+                                        <p>Analogamente, dalla similitudine dei triangoli ABC e BHC, otteniamo:</p>
+                                        <div class="formula-inline">BC/BH = AB/BC</div>
+                                        <div class="formula-inline">BC² = AB · BH</div>
+                                        <div class="formula-inline">b² = c · q</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="interactive-demo">
+                            <h3>Dimostrazione interattiva</h3>
+                            <div class="demo-container">
+                                <div class="canvas-container">
+                                    <canvas id="first-theorem-canvas" width="500" height="400"></canvas>
+                                </div>
+                                <div class="controls">
+                                    <label for="cateto-a">Cateto a:</label>
+                                    <input type="range" id="cateto-a" min="50" max="200" value="120">
+                                    <label for="cateto-b">Cateto b:</label>
+                                    <input type="range" id="cateto-b" min="50" max="200" value="160">
+                                    <div class="values-display" id="first-theorem-values"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="applications">
+                            <h3>Applicazioni</h3>
+                            <p>Il primo teorema di Euclide è utile per:</p>
+                            <ul>
+                                <li>Calcolare le proiezioni dei cateti sull'ipotenusa</li>
+                                <li>Risolvere problemi di geometria che coinvolgono triangoli rettangoli</li>
+                                <li>Dimostrare altre proprietà dei triangoli rettangoli</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="greek-column right"></div>
+                </div>
+            </section>
+
+            <section id="secondo-teorema">
+                <div class="column-container">
+                    <div class="greek-column left"></div>
+                    <div class="content">
+                        <h2>Secondo Teorema di Euclide</h2>
+                        <div class="theorem-box">
+                            <h3>Enunciato</h3>
+                            <p>In un triangolo rettangolo, il quadrato costruito sull'altezza relativa all'ipotenusa è
+                                equivalente al rettangolo che ha per lati le proiezioni dei cateti sull'ipotenusa.</p>
+                            <div class="formula">
+                                <div class="formula-content">
+                                    h² = p·q
+                                </div>
+                            </div>
+                            <p>Dove <strong>h</strong> è l'altezza relativa all'ipotenusa, e <strong>p</strong> e
+                                <strong>q</strong> sono le proiezioni dei cateti sull'ipotenusa.
+                            </p>
+                        </div>
+
+                        <div class="theorem-explanation">
+                            <h3>Spiegazione</h3>
+                            <p>Il secondo teorema di Euclide stabilisce che il quadrato dell'altezza relativa
+                                all'ipotenusa è uguale al prodotto delle proiezioni dei cateti sull'ipotenusa.</p>
+                            <p>Questo teorema è una conseguenza diretta della similitudine tra i triangoli che si
+                                formano quando si traccia l'altezza relativa all'ipotenusa.</p>
+                        </div>
+
+                        <div class="mobile-friendly-proof">
+                            <h3>Dimostrazione intuitiva</h3>
+                            <p>La dimostrazione si basa sulla similitudine dei triangoli:</p>
+                            <div class="proof-steps">
+                                <div class="proof-step">
+                                    <div class="step-number">1</div>
+                                    <div class="step-content">
+                                        <p>Consideriamo un triangolo rettangolo ABC con l'angolo retto in C.</p>
+                                    </div>
+                                </div>
+                                <div class="proof-step">
+                                    <div class="step-number">2</div>
+                                    <div class="step-content">
+                                        <p>Tracciamo l'altezza CH relativa all'ipotenusa AB.</p>
+                                    </div>
+                                </div>
+                                <div class="proof-step">
+                                    <div class="step-number">3</div>
+                                    <div class="step-content">
+                                        <p>I triangoli AHC e BHC sono simili tra loro.</p>
+                                    </div>
+                                </div>
+                                <div class="proof-step">
+                                    <div class="step-number">4</div>
+                                    <div class="step-content">
+                                        <p>Dalla similitudine dei triangoli AHC e BHC, otteniamo:</p>
+                                        <div class="formula-inline">AH/CH = CH/BH</div>
+                                    </div>
+                                </div>
+                                <div class="proof-step">
+                                    <div class="step-number">5</div>
+                                    <div class="step-content">
+                                        <p>Moltiplicando entrambi i membri per CH:</p>
+                                        <div class="formula-inline">AH = CH²/BH</div>
+                                    </div>
+                                </div>
+                                <div class="proof-step">
+                                    <div class="step-number">6</div>
+                                    <div class="step-content">
+                                        <p>Moltiplicando entrambi i membri per BH:</p>
+                                        <div class="formula-inline">AH·BH = CH²</div>
+                                        <div class="formula-inline">p·q = h²</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="interactive-demo">
+                            <h3>Dimostrazione interattiva</h3>
+                            <div class="demo-container">
+                                <div class="canvas-container">
+                                    <canvas id="second-theorem-canvas" width="500" height="400"></canvas>
+                                </div>
+                                <div class="controls">
+                                    <label for="cateto-a2">Cateto a:</label>
+                                    <input type="range" id="cateto-a2" min="50" max="200" value="120">
+                                    <label for="cateto-b2">Cateto b:</label>
+                                    <input type="range" id="cateto-b2" min="50" max="200" value="160">
+                                    <div class="values-display" id="second-theorem-values"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="applications">
+                            <h3>Applicazioni</h3>
+                            <p>Il secondo teorema di Euclide è utile per:</p>
+                            <ul>
+                                <li>Calcolare l'altezza di un triangolo rettangolo conoscendo le proiezioni dei cateti
+                                </li>
+                                <li>Risolvere problemi di geometria che coinvolgono l'altezza di un triangolo rettangolo
+                                </li>
+                                <li>Semplificare calcoli in problemi di trigonometria</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="greek-column right"></div>
+                </div>
+            </section>
+
+            <section id="esercizi">
+                <div class="column-container">
+                    <div class="greek-column left"></div>
+                    <div class="content">
+                        <h2>Esercizi sui Teoremi di Euclide</h2>
+                        <p>Metti alla prova la tua comprensione dei teoremi di Euclide con questi esercizi:</p>
+
+                        <div class="exercise-container">
+                            <div class="exercise" id="exercise-1">
+                                <h3>Esercizio 1: Primo Teorema</h3>
+                                <p>In un triangolo rettangolo, il cateto <strong>a</strong> misura <span
+                                        class="ex-a">12</span> cm e la sua proiezione sull'ipotenusa <strong>p</strong>
+                                    misura <span class="ex-p">9</span> cm. Calcola la lunghezza dell'ipotenusa
+                                    <strong>c</strong>.
+                                </p>
+                                <div class="exercise-input">
+                                    <input type="number" step="0.01" placeholder="Risposta in cm">
+                                    <button class="check-answer" data-exercise="1" data-type="primo">Verifica</button>
+                                </div>
+                                <div class="feedback"></div>
+                                <button class="show-solution" data-exercise="1" data-type="primo">Mostra
+                                    Soluzione</button>
+                                <div class="solution"></div>
+                            </div>
+
+                            <div class="exercise" id="exercise-2">
+                                <h3>Esercizio 2: Primo Teorema</h3>
+                                <p>In un triangolo rettangolo, l'ipotenusa <strong>c</strong> misura <span
+                                        class="ex-c">25</span> cm e un cateto <strong>a</strong> misura <span
+                                        class="ex-a">20</span> cm. Calcola la proiezione <strong>p</strong> di questo
+                                    cateto sull'ipotenusa.</p>
+                                <div class="exercise-input">
+                                    <input type="number" step="0.01" placeholder="Risposta in cm">
+                                    <button class="check-answer" data-exercise="2" data-type="primo">Verifica</button>
+                                </div>
+                                <div class="feedback"></div>
+                                <button class="show-solution" data-exercise="2" data-type="primo">Mostra
+                                    Soluzione</button>
+                                <div class="solution"></div>
+                            </div>
+
+                            <div class="exercise" id="exercise-3">
+                                <h3>Esercizio 3: Secondo Teorema</h3>
+                                <p>In un triangolo rettangolo, le proiezioni dei cateti sull'ipotenusa misurano <span
+                                        class="ex-p">4</span> cm e <span class="ex-q">9</span> cm. Calcola l'altezza
+                                    <strong>h</strong> relativa all'ipotenusa.
+                                </p>
+                                <div class="exercise-input">
+                                    <input type="number" step="0.01" placeholder="Risposta in cm">
+                                    <button class="check-answer" data-exercise="3" data-type="secondo">Verifica</button>
+                                </div>
+                                <div class="feedback"></div>
+                                <button class="show-solution" data-exercise="3" data-type="secondo">Mostra
+                                    Soluzione</button>
+                                <div class="solution"></div>
+                            </div>
+
+                            <div class="exercise" id="exercise-4">
+                                <h3>Esercizio 4: Applicazione di entrambi i teoremi</h3>
+                                <p>In un triangolo rettangolo, i cateti misurano <span class="ex-a">6</span> cm e <span
+                                        class="ex-b">8</span> cm. Calcola l'altezza <strong>h</strong> relativa
+                                    all'ipotenusa.</p>
+                                <div class="exercise-input">
+                                    <input type="number" step="0.01" placeholder="Risposta in cm">
+                                    <button class="check-answer" data-exercise="4"
+                                        data-type="entrambi">Verifica</button>
+                                </div>
+                                <div class="feedback"></div>
+                                <button class="show-solution" data-exercise="4" data-type="entrambi">Mostra
+                                    Soluzione</button>
+                                <div class="solution"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="greek-column right"></div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <div class="greek-pattern top-pattern"></div>
+            <p>I Teoremi di Euclide - Matematica Greca</p>
+            <div class="greek-pattern bottom-pattern"></div>
+        </footer>
+
+        <br>
+        <br>
+        <br>
+        <br>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
