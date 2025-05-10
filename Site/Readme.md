@@ -3,7 +3,7 @@
 # Categorie dei Progetti
 
 - **[Bici](https://github.com/NicoMaker/Giri-in-bici)** [1 Progetto]
-- **[Borsa](Borsa/Readme.md)** [3 Progetti]
+- **[Borsa](Borsa/Readme.md)** [4 Progetti]
 - **[Calcio](Calcio/Readme.md)** [2 Progetti]
 - **[Calendario](Calendario/Readme.md)** [5 Progetti]
 - **[Giochi](Giochi/Readme.md)** [20 Progetti]

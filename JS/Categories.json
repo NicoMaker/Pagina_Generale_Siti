@@ -12,6 +12,10 @@
       {
         "name": "Dashboard Titoli",
         "link": "Site/Borsa/Dashboard_Titoli/index.html"
+      },
+      {
+        "name": "Algorirmo di Taylor",
+        "link": "Site/Borsa/Algoritmo_Taylor/index.html"
       }
     ],
     "Calcio": [
