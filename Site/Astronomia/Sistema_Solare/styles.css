@@ -11,12 +11,16 @@
   --text-color: #f8f9fa;
   --background-dark: #0a0a23;
   --card-bg: rgba(22, 28, 45, 0.8);
-  --orbit-color: rgba(255, 255, 255, 0.8);
-  --orbit-highlight: rgba(255, 255, 255, 1);
+  --orbit-color: rgba(255, 255, 255, 0.3);
+  --inner-orbit-color: rgba(0, 255, 255, 0.5);
+  --outer-orbit-color: rgba(255, 165, 0, 0.7);
   --sun-color-1: #ff9d00;
   --sun-color-2: #ff4e00;
   --sun-glow: rgba(255, 157, 0, 0.4);
   --tab-active: rgba(108, 99, 255, 0.2);
+  --inner-planet-color: rgba(0, 255, 255, 0.6);
+  --outer-planet-color: rgba(255, 165, 0, 0.6);
+  --asteroid-color: rgba(150, 150, 150, 0.4);
 }
 
 body {
@@ -193,7 +197,6 @@ main {
   height: 70vh;
   position: relative;
   overflow: hidden;
-  perspective: 1000px;
 }
 
 /* Solar System */
@@ -204,7 +207,6 @@ main {
   transform: translate(-50%, -50%);
   width: 100%;
   height: 100%;
-  transform-style: preserve-3d;
   transition: transform 0.5s ease;
 }
 
@@ -261,17 +263,41 @@ main {
   position: absolute;
   top: 50%;
   left: 50%;
-  border: 1px solid var(--orbit-color);
   border-radius: 50%;
   transform: translate(-50%, -50%);
-  transition: all 0.3s ease;
-  box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
   pointer-events: none;
 }
 
-.orbit:hover {
-  border-color: var(--orbit-highlight);
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+.orbit.inner-planet {
+  border: 2px solid var(--inner-orbit-color);
+  box-shadow: 0 0 10px var(--inner-orbit-color);
+}
+
+.orbit.outer-planet {
+  border: 2px solid var(--outer-orbit-color);
+  box-shadow: 0 0 15px var(--outer-orbit-color);
+}
+
+/* Asteroid belt */
+.asteroid-belt {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border-radius: 50%;
+  border: 8px dotted var(--asteroid-color);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  box-shadow: 0 0 10px var(--asteroid-color);
+  animation: rotateAsteroidBelt 100s linear infinite;
+}
+
+@keyframes rotateAsteroidBelt {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
 }
 
 /* Planets */
@@ -280,9 +306,16 @@ main {
   background-size: cover;
   background-position: center;
   border-radius: 50%;
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
   transition: all 0.3s ease;
   z-index: 5;
+}
+
+.planet.inner-planet {
+  box-shadow: 0 0 10px var(--inner-planet-color);
+}
+
+.planet.outer-planet {
+  box-shadow: 0 0 15px var(--outer-planet-color);
 }
 
 .planet:hover {
@@ -311,6 +344,48 @@ main {
   font-size: 1.2rem;
   opacity: 0;
   transition: opacity 0.3s ease;
+}
+
+/* Planet category badge */
+.planet-category {
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 3px 8px;
+  border-radius: 10px;
+  font-size: 0.7rem;
+  font-weight: bold;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.planet-category.inner {
+  background-color: var(--inner-planet-color);
+  color: #000;
+}
+
+.planet-category.outer {
+  background-color: var(--outer-planet-color);
+  color: #000;
+}
+
+.planet:hover .planet-category {
+  opacity: 1;
+}
+
+/* Planet label */
+.planet-label {
+  position: absolute;
+  font-size: 0.7rem;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 2px 5px;
+  border-radius: 3px;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 4;
 }
 
 /* Modal */
@@ -413,6 +488,14 @@ main {
   box-shadow: 0 0 10px rgba(108, 99, 255, 0.3);
 }
 
+.tab-button.inner-planet {
+  border-left: 3px solid var(--inner-planet-color);
+}
+
+.tab-button.outer-planet {
+  border-left: 3px solid var(--outer-planet-color);
+}
+
 .tab-icon {
   width: 20px;
   height: 20px;
@@ -461,6 +544,25 @@ main {
 .planet-title p {
   color: #aaa;
   font-size: 1.2rem;
+}
+
+.planet-category-badge {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 10px;
+  font-size: 0.8rem;
+  margin-left: 10px;
+  font-weight: bold;
+}
+
+.planet-category-badge.inner {
+  background-color: var(--inner-planet-color);
+  color: #000;
+}
+
+.planet-category-badge.outer {
+  background-color: var(--outer-planet-color);
+  color: #000;
 }
 
 .planet-facts {
@@ -613,15 +715,5 @@ footer {
 
   .gallery-image {
     height: 150px;
-  }
-}
-
-/* Planet animations */
-@keyframes orbit {
-  from {
-    transform: rotate(0deg) translateX(var(--orbit-radius)) rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg) translateX(var(--orbit-radius)) rotate(-360deg);
   }
 }
