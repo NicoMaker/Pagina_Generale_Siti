@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Immunizzazione Finanziaria</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <link rel="icon" href="https://th.bing.com/th/id/OIP.asvrs4pYhCCWr2Rz3cIPNQHaEo?cb=iwc2&rs=1&pid=ImgDetMain"
+        type="image/png" />
+</head>
+
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <div class="logo">Immunizzazione Finanziaria</div>
+                <div class="menu-toggle" id="mobile-menu">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+                <ul class="nav-menu" id="nav-menu">
+                    <li><a href="#introduzione" class="nav-link active" data-section="introduzione">Introduzione</a>
+                    </li>
+                    <li><a href="#concetti" class="nav-link" data-section="concetti">Concetti Chiave</a></li>
+                    <li><a href="#visualizzazione" class="nav-link" data-section="visualizzazione">Simulazione</a></li>
+                    <li><a href="#applicazioni" class="nav-link" data-section="applicazioni">Strategie</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <h1>Immunizzazione Finanziaria</h1>
+                <p>Strategie avanzate per proteggere il tuo portafoglio dalle fluttuazioni dei tassi d'interesse</p>
+                <button class="btn-primary" id="learn-more">Scopri di più</button>
+            </div>
+        </section>
+
+        <section id="introduzione" class="section active-section">
+            <div class="container">
+                <h2>Introduzione</h2>
+                <div class="content-wrapper">
+                    <div class="text-content">
+                        <p>L'immunizzazione finanziaria è una strategia di gestione del rischio che protegge un
+                            portafoglio obbligazionario dalle variazioni dei tassi d'interesse. Sviluppata negli anni
+                            '50 da F.M. Redington, questa tecnica è fondamentale per investitori istituzionali e gestori
+                            di patrimoni.</p>
+                        <p>Il principio fondamentale afferma che: <em>"Un portafoglio è immunizzato quando il valore
+                                attuale delle attività rimane uguale o superiore al valore attuale delle passività,
+                                indipendentemente dalle variazioni dei tassi d'interesse."</em></p>
+                    </div>
+                    <div class="image-content">
+                        <div class="theorem-card">
+                            <div class="theorem-formula">D<sub>A</sub> = D<sub>L</sub></div>
+                            <p class="theorem-explanation">Dove D<sub>A</sub> rappresenta la duration delle attività,
+                                D<sub>L</sub> è la duration delle passività. Quando sono uguali, il portafoglio è
+                                immunizzato contro piccole variazioni parallele della curva dei tassi.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="concetti" class="section bg-light">
+            <div class="container">
+                <h2>Concetti Chiave</h2>
+                <div class="cards-container">
+                    <div class="concept-card">
+                        <div class="card-icon" id="complexity-icon"></div>
+                        <h3>Duration</h3>
+                        <p>Misura la sensibilità del prezzo di un'obbligazione alle variazioni dei tassi d'interesse,
+                            calcolata come media ponderata delle scadenze dei flussi di cassa.</p>
+                    </div>
+                    <div class="concept-card">
+                        <div class="card-icon" id="recursion-icon"></div>
+                        <h3>Convessità</h3>
+                        <p>Misura la curvatura della relazione tra prezzo dell'obbligazione e rendimento, offrendo una
+                            protezione aggiuntiva rispetto alla sola duration.</p>
+                    </div>
+                    <div class="concept-card">
+                        <div class="card-icon" id="prediction-icon"></div>
+                        <h3>Matching Cash Flow</h3>
+                        <p>Strategia che allinea i flussi di cassa delle attività con quelli delle passività per ridurre
+                            l'esposizione alle variazioni dei tassi.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="visualizzazione" class="section">
+            <div class="container">
+                <h2>Simulazione Interattiva</h2>
+                <p class="section-intro">Esplora come la duration, la convessità e la variazione dei tassi influenzano
+                    l'efficacia dell'immunizzazione del portafoglio.</p>
+                <div class="visualization-container">
+                    <div class="controls">
+                        <div class="control-group">
+                            <label for="elements-slider">Duration del Portafoglio (anni): <span
+                                    id="elements-value">5</span></label>
+                            <input type="range" id="elements-slider" min="1" max="20" value="5">
+                        </div>
+                        <div class="control-group">
+                            <label for="complexity-slider">Variazione Tassi (%): <span
+                                    id="complexity-value">0.5</span></label>
+                            <input type="range" id="complexity-slider" min="0.1" max="2.0" step="0.1" value="0.5">
+                        </div>
+                        <div class="control-group">
+                            <label for="recursion-slider">Convessità: <span id="recursion-value">0.5</span></label>
+                            <input type="range" id="recursion-slider" min="0" max="1" step="0.01" value="0.5">
+                        </div>
+                    </div>
+                    <div class="visualization">
+                        <canvas id="visualization-canvas"></canvas>
+                        <div class="result-display">
+                            <p>Efficacia Immunizzazione: <span id="predictability-value">0.92</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="applicazioni" class="section bg-light">
+            <div class="container">
+                <h2>Strategie di Applicazione</h2>
+                <div class="applications-grid">
+                    <div class="application-item">
+                        <h3>Fondi Pensione</h3>
+                        <p>Protezione del capitale destinato alle prestazioni pensionistiche future attraverso
+                            l'allineamento delle duration.</p>
+                    </div>
+                    <div class="application-item">
+                        <h3>Compagnie Assicurative</h3>
+                        <p>Gestione del rischio di tasso d'interesse per garantire la solvibilità e rispettare gli
+                            impegni verso gli assicurati.</p>
+                    </div>
+                    <div class="application-item">
+                        <h3>Gestione Patrimoniale</h3>
+                        <p>Preservazione del capitale e generazione di rendimenti stabili per investitori con obiettivi
+                            di lungo termine.</p>
+                    </div>
+                    <div class="application-item">
+                        <h3>Tesoreria Aziendale</h3>
+                        <p>Protezione delle riserve di liquidità aziendali dalle fluttuazioni dei tassi per garantire
+                            stabilità finanziaria.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Immunizzazione Finanziaria. Tutti i diritti riservati.</p>
+        </div>
+    </footer>
+
+    <div class="progress-bar" id="progress-bar"></div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

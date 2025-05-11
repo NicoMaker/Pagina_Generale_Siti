@@ -10,6 +10,10 @@
         "link": "Site/Borsa/Valore Titoli/index.html"
       },
       {
+        "name":"Immunizzazione Finanziaria",
+        "link":"Site/Borsa/Immunizzazione_Finanziaria/index.html"
+      },
+      {
         "name": "Dashboard Titoli",
         "link": "Site/Borsa/Dashboard_Titoli/index.html"
       },
