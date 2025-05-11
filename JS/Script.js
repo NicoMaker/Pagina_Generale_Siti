@@ -54,24 +54,26 @@ document.addEventListener("DOMContentLoaded", () => {
   // Set current year in footer
   currentYearElement.textContent = new Date().getFullYear();
 
-  // Category icons mapping
-  const categoryIcons = {
-    Bici: "fa-bicycle",
-    Borsa: "fa-chart-line",
-    Calendario: "fa-calendar-alt",
-    Calcio: "fa-futbol",
-    Giochi: "fa-gamepad",
-    Info_Paesi_Stati: "fa-globe",
-    Matematica: "fa-calculator",
-    Natale: "fa-gifts",
-    Opzioni_Con_Le_Frasi: "fa-font",
-    Pasqua: "fa-egg",
-    Pokemon: "fa-dragon",
-    Random: "fa-random",
-    Salute: "fa-heartbeat",
-    Storia : "fa-landmark",
-    Temperatura: "fa-temperature-high",
-  };
+
+const categoryIcons = {
+  Astronomia: "fa-meteor", 
+  Bici: "fa-bicycle",
+  Borsa: "fa-chart-line",
+  Calendario: "fa-calendar-alt",
+  Calcio: "fa-futbol",
+  Giochi: "fa-gamepad",
+  Info_Paesi_Stati: "fa-globe",
+  Matematica: "fa-calculator",
+  Natale: "fa-gifts",
+  Opzioni_Con_Le_Frasi: "fa-font",
+  Pasqua: "fa-egg",
+  Pokemon: "fa-dragon",
+  Random: "fa-random",
+  Salute: "fa-heartbeat",
+  Storia: "fa-landmark",
+  Temperatura: "fa-temperature-high",
+};
+
 
   // Advanced preloader with loading bar
   function simulateLoading() {
@@ -472,9 +474,8 @@ document.addEventListener("DOMContentLoaded", () => {
           <div class="category-card-content">
             <i class="fas ${iconClass} category-icon"></i>
             <h3>${displayName}</h3>
-            <p>${categories[categoryName].length} ${
-          categories[categoryName].length === 1 ? "Progetto" : "Progetti"
-        }</p>
+            <p>${categories[categoryName].length} ${categories[categoryName].length === 1 ? "Progetto" : "Progetti"
+          }</p>
           </div>
         `;
 

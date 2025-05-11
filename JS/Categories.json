@@ -336,6 +336,12 @@
         "name": "Conversioni Temperatura",
         "link": "Site/Temperatura/Conversioni_Temp/index.html"
       }
+    ],
+    "Astronomia": [
+      {
+        "name": "Fasi Lunari",
+        "link": "Site/Astronomia/Fasi_Lunari/index.html"
+      }
     ]
   }
 }

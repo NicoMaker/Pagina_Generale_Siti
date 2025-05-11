@@ -1,0 +1,712 @@
+:root {
+  --bg-dark: #121620;
+  --bg-card: #1e2433;
+  --text-light: #f0f0f0;
+  --text-dim: #a0a0a0;
+  --accent-blue: #3a4a6d;
+  --accent-gold: #d4af37;
+  --moon-color: #e6e6e6;
+  --shadow-color: rgba(0, 0, 0, 0.3);
+  --today-bg: rgba(212, 175, 55, 0.15);
+  --today-border: var(--accent-gold);
+  --header-height: 140px;
+  --header-height-mobile: 110px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Montserrat", sans-serif;
+  background-color: var(--bg-dark);
+  color: var(--text-light);
+  line-height: 1.6;
+  padding: 0;
+  margin: 0;
+}
+
+/* Header fisso */
+.fixed-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: linear-gradient(to bottom, #1a2030, var(--bg-dark));
+  box-shadow: 0 4px 12px var(--shadow-color);
+  z-index: 1000;
+  transition: all 0.3s ease;
+}
+
+.header-content {
+  padding: 1rem;
+  text-align: center;
+  position: relative;
+}
+
+.header-spacer {
+  height: var(--header-height);
+}
+
+h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  color: var(--accent-gold);
+}
+
+.current-date {
+  font-size: 1.2rem;
+  color: var(--text-dim);
+  margin-bottom: 1rem;
+}
+
+/* Hamburger Menu */
+.hamburger-menu {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 30px;
+  height: 22px;
+  cursor: pointer;
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  z-index: 1001;
+}
+
+.hamburger-menu span {
+  display: block;
+  height: 3px;
+  width: 100%;
+  background-color: var(--accent-gold);
+  border-radius: 3px;
+  transition: all 0.3s ease;
+}
+
+.hamburger-menu.active span:nth-child(1) {
+  transform: translateY(9px) rotate(45deg);
+}
+
+.hamburger-menu.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger-menu.active span:nth-child(3) {
+  transform: translateY(-9px) rotate(-45deg);
+}
+
+/* Navigazione principale */
+.main-nav {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.nav-btn {
+  background-color: var(--bg-card);
+  color: var(--text-light);
+  border: none;
+  border-radius: 4px;
+  padding: 0.6rem 1rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.nav-btn:hover {
+  background-color: var(--accent-blue);
+}
+
+.nav-btn.active {
+  background-color: var(--accent-gold);
+  color: var(--bg-dark);
+  font-weight: 600;
+}
+
+main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+section {
+  margin-bottom: 3rem;
+  background-color: var(--bg-card);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 8px var(--shadow-color);
+}
+
+/* Gestione delle viste */
+.view-section {
+  display: none;
+}
+
+.view-section.active {
+  display: block;
+}
+
+h2 {
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  color: var(--accent-gold);
+  text-align: center;
+}
+
+h3 {
+  font-size: 1.3rem;
+  margin-bottom: 0.8rem;
+  color: var(--text-light);
+}
+
+/* Current Phase Section */
+.current-phase {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .current-phase {
+    flex-direction: row;
+    justify-content: center;
+  }
+}
+
+.moon-image {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background-color: var(--moon-color);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+  position: relative;
+  overflow: hidden;
+}
+
+.phase-info {
+  max-width: 500px;
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .phase-info {
+    text-align: left;
+  }
+}
+
+#current-phase-name {
+  font-size: 1.6rem;
+  color: var(--accent-gold);
+  margin-bottom: 0.5rem;
+}
+
+#current-phase-description {
+  margin-bottom: 1rem;
+}
+
+#current-illumination {
+  font-weight: bold;
+  color: var(--text-dim);
+}
+
+/* Year Selector */
+.year-selector {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 2rem;
+  gap: 1rem;
+}
+
+#current-year {
+  font-size: 1.5rem;
+  font-weight: bold;
+  min-width: 80px;
+  text-align: center;
+}
+
+.year-selector button {
+  background-color: var(--accent-blue);
+  color: var(--text-light);
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.year-selector button:hover {
+  background-color: var(--accent-gold);
+}
+
+/* Phases Grid */
+.phases-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 640px) {
+  .phases-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .phases-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.phase-card {
+  background-color: rgba(30, 36, 51, 0.7);
+  border-radius: 8px;
+  padding: 1.2rem;
+  text-align: center;
+  transition: transform 0.3s, box-shadow 0.3s;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: 350px;
+}
+
+.phase-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px var(--shadow-color);
+}
+
+.moon-icon {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin: 0 auto 1rem;
+  position: relative;
+}
+
+.new-moon {
+  background-color: #121620;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.waxing-crescent {
+  background: linear-gradient(90deg, #121620 50%, var(--moon-color) 50%);
+  clip-path: polygon(
+    50% 0%,
+    100% 0%,
+    100% 100%,
+    50% 100%,
+    50% 0%,
+    85% 50%,
+    50% 100%
+  );
+}
+
+.first-quarter {
+  background: linear-gradient(90deg, #121620 50%, var(--moon-color) 50%);
+}
+
+.waxing-gibbous {
+  background: linear-gradient(90deg, #121620 25%, var(--moon-color) 25%);
+}
+
+.full-moon {
+  background-color: var(--moon-color);
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+}
+
+.waning-gibbous {
+  background: linear-gradient(270deg, #121620 25%, var(--moon-color) 25%);
+}
+
+.last-quarter {
+  background: linear-gradient(270deg, #121620 50%, var(--moon-color) 50%);
+}
+
+.waning-crescent {
+  background: linear-gradient(270deg, #121620 50%, var(--moon-color) 50%);
+  clip-path: polygon(
+    50% 0%,
+    0% 0%,
+    0% 100%,
+    50% 100%,
+    50% 0%,
+    15% 50%,
+    50% 100%
+  );
+}
+
+.dates-list {
+  margin-top: 1rem;
+  flex-grow: 1;
+  overflow-y: auto;
+  max-height: 200px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent-blue) var(--bg-dark);
+}
+
+.dates-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.dates-list::-webkit-scrollbar-track {
+  background: var(--bg-dark);
+  border-radius: 4px;
+}
+
+.dates-list::-webkit-scrollbar-thumb {
+  background-color: var(--accent-blue);
+  border-radius: 4px;
+}
+
+.date-item {
+  padding: 0.7rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.date-item strong {
+  color: var(--accent-gold);
+}
+
+.date-item.today {
+  background-color: rgba(212, 175, 55, 0.2);
+  border-left: 3px solid var(--accent-gold);
+  font-weight: bold;
+}
+
+.dates-list::before {
+  content: "Date nel " attr(data-year);
+  display: block;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  color: var(--text-dim);
+  border-bottom: 1px solid var(--accent-blue);
+  padding-bottom: 0.3rem;
+}
+
+.loading {
+  color: var(--text-dim);
+  font-style: italic;
+}
+
+/* Moon Info Section */
+.info-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 640px) {
+  .info-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .info-container {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.info-card {
+  background-color: rgba(30, 36, 51, 0.7);
+  border-radius: 8px;
+  padding: 1.2rem;
+  height: 100%;
+}
+
+.info-card h3 {
+  color: var(--accent-gold);
+  margin-bottom: 0.8rem;
+  font-size: 1.2rem;
+}
+
+/* Calendario Mensile */
+.month-selector {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 2rem;
+  gap: 1rem;
+}
+
+.current-month-year {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 150px;
+}
+
+#current-month {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--accent-gold);
+}
+
+#current-month-year {
+  font-size: 1.2rem;
+  color: var(--text-dim);
+}
+
+.month-selector button {
+  background-color: var(--accent-blue);
+  color: var(--text-light);
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.month-selector button:hover {
+  background-color: var(--accent-gold);
+}
+
+.calendar-container {
+  background-color: rgba(30, 36, 51, 0.7);
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  overflow-x: auto;
+}
+
+.weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  font-weight: bold;
+  color: var(--accent-gold);
+  border-bottom: 1px solid var(--accent-blue);
+  padding-bottom: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.calendar-day {
+  aspect-ratio: 1;
+  padding: 0.3rem;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: rgba(30, 36, 51, 0.5);
+  position: relative;
+  min-height: 60px;
+}
+
+.calendar-day.other-month {
+  opacity: 0.5;
+}
+
+.calendar-day.today {
+  background-color: var(--today-bg);
+  border: 2px solid var(--today-border);
+}
+
+.day-number {
+  font-weight: bold;
+  margin-bottom: 0.2rem;
+}
+
+.moon-phase-indicator {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  margin-top: 0.2rem;
+}
+
+.moon-phase-name {
+  font-size: 0.6rem;
+  text-align: center;
+  margin-top: 0.2rem;
+  color: var(--accent-gold);
+}
+
+/* Legenda del calendario */
+.calendar-legend {
+  background-color: rgba(30, 36, 51, 0.7);
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.calendar-legend h3 {
+  text-align: center;
+  margin-bottom: 1rem;
+  color: var(--accent-gold);
+}
+
+.legend-items {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.legend-icon {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+}
+
+.new-moon-icon {
+  background-color: #121620;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.first-quarter-icon {
+  background: linear-gradient(90deg, #121620 50%, var(--moon-color) 50%);
+}
+
+.full-moon-icon {
+  background-color: var(--moon-color);
+  box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+}
+
+.last-quarter-icon {
+  background: linear-gradient(270deg, #121620 50%, var(--moon-color) 50%);
+}
+
+footer {
+  text-align: center;
+  padding: 2rem;
+  background-color: rgba(18, 22, 32, 0.8);
+  color: var(--text-dim);
+  margin-top: 2rem;
+}
+
+/* Adattamento per dispositivi mobili */
+@media (max-width: 768px) {
+  .fixed-header {
+    padding: 0;
+  }
+
+  .header-content {
+    padding: 0.8rem;
+  }
+
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .current-date {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .hamburger-menu {
+    display: flex;
+  }
+
+  .main-nav {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    flex-direction: column;
+    background-color: var(--bg-card);
+    padding: 0;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    visibility: hidden;
+    box-shadow: 0 4px 8px var(--shadow-color);
+  }
+
+  .main-nav.active {
+    max-height: 300px;
+    opacity: 1;
+    visibility: visible;
+    padding: 0.5rem 0;
+  }
+
+  .nav-btn {
+    width: 100%;
+    border-radius: 0;
+    padding: 0.8rem;
+    margin: 0;
+  }
+
+  .header-spacer {
+    height: var(--header-height-mobile);
+  }
+
+  /* Ottimizzazione del calendario per mobile */
+  .calendar-container {
+    padding: 0.5rem;
+  }
+
+  .weekdays {
+    font-size: 0.8rem;
+  }
+
+  .calendar-day {
+    min-height: 40px;
+    padding: 0.2rem;
+  }
+
+  .day-number {
+    font-size: 0.8rem;
+  }
+
+  .moon-phase-indicator {
+    width: 15px;
+    height: 15px;
+  }
+
+  .moon-phase-name {
+    font-size: 0.5rem;
+  }
+
+  /* Riduzione dell'altezza delle celle del calendario per evitare scrolling */
+  .calendar-grid {
+    grid-template-rows: repeat(6, minmax(40px, auto));
+  }
+
+  .calendar-day {
+    aspect-ratio: auto;
+    height: 100%;
+  }
+}
+
+/* Stile per schermi molto piccoli */
+@media (max-width: 380px) {
+  .calendar-day {
+    min-height: 35px;
+  }
+
+  .day-number {
+    font-size: 0.7rem;
+  }
+
+  .moon-phase-indicator {
+    width: 12px;
+    height: 12px;
+  }
+
+  .moon-phase-name {
+    display: none; /* Nascondi il nome della fase su schermi molto piccoli */
+  }
+}

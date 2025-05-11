@@ -2,6 +2,7 @@
 
 # Categorie dei Progetti
 
+- **[Astronomia](Astronomia/Readme.md)** [1 Progetto]
 - **[Bici](https://github.com/NicoMaker/Giri-in-bici)** [1 Progetto]
 - **[Borsa](Borsa/Readme.md)** [4 Progetti]
 - **[Calcio](Calcio/Readme.md)** [2 Progetti]

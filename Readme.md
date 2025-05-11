@@ -224,23 +224,24 @@ Cliccando su questo pulsante, verrai riportato all'inizio della pagina con un'an
 
 Il portfolio include numerose categorie di progetti, ciascuna con la propria icona distintiva:
 
-| Categoria            | Icona | Descrizione                                            |
-| -------------------- | ----- | ------------------------------------------------------ |
-| Bici                 | 🚲    | Progetti relativi al ciclismo                          |
-| Borsa                | 📈    | Strumenti finanziari e di borsa                        |
-| Calendario           | 📅    | Applicazioni per la gestione del tempo                 |
-| Calcio               | ⚽    | Progetti sportivi legati al calcio                     |
-| Giochi               | 🎮    | Applicazioni ludiche interattive                       |
-| Info Paesi/Stati     | 🌍    | Informazioni geografiche su paesi e stati              |
-| Matematica           | 🧮    | Strumenti di calcolo e applicazioni matematiche        |
-| Natale               | 🎄    | Progetti a tema natalizio                              |
-| Opzioni con le Frasi | 💬    | Strumenti per la manipolazione del testo               |
-| Pasqua               | 🐰    | Progetti a tema pasquale                               |
-| Pokemon              | 🐉    | Applicazioni sui Pokemon                               |
-| Random               | 🎲    | Generatori casuali di vario tipo                       |
-| Salute               | ❤️    | Calcolatori per il benessere e la salute               |
-| Storia               | 📜    | Progetti e applicazioni su eventi e personaggi storici |
-| Temperatura          | 🌡️    | Convertitori e strumenti legati alla temperatura       |
+| Categoria            | Icona | Descrizione                                              |
+| -------------------- | ----- | -------------------------------------------------------- |
+| Astronomia           | 🌌    | Progetti dedicati allo spazio e all'osservazione celeste |
+| Bici                 | 🚲    | Progetti relativi al ciclismo                            |
+| Borsa                | 📈    | Strumenti finanziari e di borsa                          |
+| Calendario           | 📅    | Applicazioni per la gestione del tempo                   |
+| Calcio               | ⚽    | Progetti sportivi legati al calcio                       |
+| Giochi               | 🎮    | Applicazioni ludiche interattive                         |
+| Info Paesi/Stati     | 🌍    | Informazioni geografiche su paesi e stati                |
+| Matematica           | 🧮    | Strumenti di calcolo e applicazioni matematiche          |
+| Natale               | 🎄    | Progetti a tema natalizio                                |
+| Opzioni con le Frasi | 💬    | Strumenti per la manipolazione del testo                 |
+| Pasqua               | 🐰    | Progetti a tema pasquale                                 |
+| Pokemon              | 🐉    | Applicazioni sui Pokemon                                 |
+| Random               | 🎲    | Generatori casuali di vario tipo                         |
+| Salute               | ❤️    | Calcolatori per il benessere e la salute                 |
+| Storia               | 📜    | Progetti e applicazioni su eventi e personaggi storici   |
+| Temperatura          | 🌡️    | Convertitori e strumenti legati alla temperatura         |
 
 ## Elenco Completo dei Siti
 

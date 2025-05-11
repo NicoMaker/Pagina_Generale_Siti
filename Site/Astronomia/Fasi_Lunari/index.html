@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fasi Lunari</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <!-- Favicon -->
+    <link rel="icon" href="https://th.bing.com/th/id/OIP.Yk708RMO5DveFrKeEApBUAHaEL?cb=iwc2&rs=1&pid=ImgDetMain"
+        type="image/x-icon">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+</head>
+
+<body>
+    <header class="fixed-header">
+        <div class="header-content">
+            <h1>Fasi Lunari</h1>
+            <div class="current-date" id="current-date"></div>
+
+            <!-- Menu Hamburger per Mobile -->
+            <div class="hamburger-menu" id="hamburger-menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+            <nav class="main-nav" id="main-nav">
+                <button class="nav-btn active" data-view="current">Fase Attuale</button>
+                <button class="nav-btn" data-view="monthly">Calendario Mensile</button>
+                <button class="nav-btn" data-view="phases">Tutte le Fasi</button>
+                <button class="nav-btn" data-view="info">Informazioni</button>
+            </nav>
+        </div>
+    </header>
+
+    <div class="header-spacer"></div>
+
+    <main>
+        <!-- Sezione Fase Lunare Attuale -->
+        <section class="current-phase-container view-section active" id="current-view">
+            <h2>Fase Lunare Attuale</h2>
+            <div class="current-phase">
+                <div class="moon-image" id="current-moon-image"></div>
+                <div class="phase-info">
+                    <h3 id="current-phase-name">Caricamento...</h3>
+                    <p id="current-phase-description">Informazioni sulla fase lunare attuale...</p>
+                    <p id="current-illumination">Illuminazione: ---%</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sezione Calendario Mensile -->
+        <section class="monthly-calendar view-section" id="monthly-view">
+            <h2>Calendario Mensile delle Fasi Lunari</h2>
+
+            <div class="month-selector">
+                <button id="prev-month">◀</button>
+                <div class="current-month-year">
+                    <span id="current-month">Maggio</span>
+                    <span id="current-month-year">2025</span>
+                </div>
+                <button id="next-month">▶</button>
+            </div>
+
+            <div class="calendar-container">
+                <div class="weekdays">
+                    <div>L</div>
+                    <div>M</div>
+                    <div>M</div>
+                    <div>G</div>
+                    <div>V</div>
+                    <div>S</div>
+                    <div>D</div>
+                </div>
+                <div class="calendar-grid" id="calendar-grid">
+                    <!-- Le celle del calendario verranno generate dinamicamente -->
+                </div>
+            </div>
+
+            <div class="calendar-legend">
+                <h3>Legenda</h3>
+                <div class="legend-items">
+                    <div class="legend-item">
+                        <div class="legend-icon new-moon-icon"></div>
+                        <span>Luna Nuova</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-icon first-quarter-icon"></div>
+                        <span>Primo Quarto</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-icon full-moon-icon"></div>
+                        <span>Luna Piena</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-icon last-quarter-icon"></div>
+                        <span>Ultimo Quarto</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sezione Calendario delle Fasi Lunari (rinominata) -->
+        <section class="phase-calendar view-section" id="phases-view">
+            <h2>Tutte le Fasi Lunari dell'Anno</h2>
+
+            <div class="year-selector">
+                <button id="prev-year">◀</button>
+                <span id="current-year">2025</span>
+                <button id="next-year">▶</button>
+            </div>
+
+            <div class="phases-grid">
+                <div class="phase-card" data-phase="new">
+                    <h3>Luna Nuova</h3>
+                    <div class="moon-icon new-moon"></div>
+                    <div class="dates-list" id="new-moon-dates" data-year="2025">
+                        <div class="loading">Caricamento date...</div>
+                    </div>
+                </div>
+
+                <div class="phase-card" data-phase="waxing-crescent">
+                    <h3>Luna Crescente</h3>
+                    <div class="moon-icon waxing-crescent"></div>
+                    <div class="dates-list" id="waxing-crescent-dates" data-year="2025">
+                        <div class="loading">Caricamento date...</div>
+                    </div>
+                </div>
+
+                <div class="phase-card" data-phase="first-quarter">
+                    <h3>Primo Quarto</h3>
+                    <div class="moon-icon first-quarter"></div>
+                    <div class="dates-list" id="first-quarter-dates" data-year="2025">
+                        <div class="loading">Caricamento date...</div>
+                    </div>
+                </div>
+
+                <div class="phase-card" data-phase="waxing-gibbous">
+                    <h3>Gibbosa Crescente</h3>
+                    <div class="moon-icon waxing-gibbous"></div>
+                    <div class="dates-list" id="waxing-gibbous-dates" data-year="2025">
+                        <div class="loading">Caricamento date...</div>
+                    </div>
+                </div>
+
+                <div class="phase-card" data-phase="full">
+                    <h3>Luna Piena</h3>
+                    <div class="moon-icon full-moon"></div>
+                    <div class="dates-list" id="full-moon-dates" data-year="2025">
+                        <div class="loading">Caricamento date...</div>
+                    </div>
+                </div>
+
+                <div class="phase-card" data-phase="waning-gibbous">
+                    <h3>Gibbosa Calante</h3>
+                    <div class="moon-icon waning-gibbous"></div>
+                    <div class="dates-list" id="waning-gibbous-dates" data-year="2025">
+                        <div class="loading">Caricamento date...</div>
+                    </div>
+                </div>
+
+                <div class="phase-card" data-phase="last-quarter">
+                    <h3>Ultimo Quarto</h3>
+                    <div class="moon-icon last-quarter"></div>
+                    <div class="dates-list" id="last-quarter-dates" data-year="2025">
+                        <div class="loading">Caricamento date...</div>
+                    </div>
+                </div>
+
+                <div class="phase-card" data-phase="waning-crescent">
+                    <h3>Luna Calante</h3>
+                    <div class="moon-icon waning-crescent"></div>
+                    <div class="dates-list" id="waning-crescent-dates" data-year="2025">
+                        <div class="loading">Caricamento date...</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sezione Informazioni sulle Fasi Lunari -->
+        <section class="moon-info view-section" id="info-view">
+            <h2>Informazioni sulle Fasi Lunari</h2>
+            <div class="info-container">
+                <div class="info-card">
+                    <h3>Luna Nuova</h3>
+                    <p>La Luna si trova tra la Terra e il Sole, con il lato non illuminato rivolto verso la Terra. La
+                        Luna non è visibile dal nostro pianeta.</p>
+                </div>
+                <div class="info-card">
+                    <h3>Luna Crescente</h3>
+                    <p>Una piccola parte della Luna diventa visibile. La Luna appare come una sottile falce crescente
+                        all'inizio di questa fase.</p>
+                </div>
+                <div class="info-card">
+                    <h3>Primo Quarto</h3>
+                    <p>Metà della Luna è visibile dalla Terra. Il lato destro della Luna è illuminato nell'emisfero
+                        nord.</p>
+                </div>
+                <div class="info-card">
+                    <h3>Gibbosa Crescente</h3>
+                    <p>Più della metà della Luna è visibile e continua a crescere verso la Luna piena.</p>
+                </div>
+                <div class="info-card">
+                    <h3>Luna Piena</h3>
+                    <p>La Luna è completamente illuminata vista dalla Terra, poiché si trova sul lato opposto della
+                        Terra rispetto al Sole.</p>
+                </div>
+                <div class="info-card">
+                    <h3>Gibbosa Calante</h3>
+                    <p>La Luna inizia a diminuire la sua illuminazione, ma più della metà è ancora visibile.</p>
+                </div>
+                <div class="info-card">
+                    <h3>Ultimo Quarto</h3>
+                    <p>Metà della Luna è visibile dalla Terra. Il lato sinistro della Luna è illuminato nell'emisfero
+                        nord.</p>
+                </div>
+                <div class="info-card">
+                    <h3>Luna Calante</h3>
+                    <p>Solo una piccola parte della Luna è visibile, che diminuisce fino a diventare nuovamente Luna
+                        nuova.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2025 App Fasi Lunari | Creato con HTML, CSS e JavaScript</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
