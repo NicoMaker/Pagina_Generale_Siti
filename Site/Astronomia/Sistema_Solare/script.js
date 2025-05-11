@@ -4,8 +4,11 @@ document.addEventListener("DOMContentLoaded", () => {
     let planetData = {}
     const solarSystem = document.getElementById("solarSystem")
     const planetNameDisplay = document.getElementById("planetNameDisplay")
-    const modal = document.getElementById("planetModal")
+    const infoModal = document.getElementById("infoModal")
     const closeModal = document.querySelector(".close-modal")
+    const showInfoBtn = document.getElementById("showInfoBtn")
+    const tabsHeader = document.getElementById("tabsHeader")
+    const tabsContent = document.getElementById("tabsContent")
 
     // Controlli di zoom
     const zoomIn = document.getElementById("zoomIn")
@@ -18,6 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
         .then((data) => {
             planetData = data
             initializeSolarSystem()
+            initializeInfoModal()
         })
         .catch((error) => {
             console.error("Errore nel caricamento dei dati dei pianeti:", error)
@@ -31,11 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
         sun.setAttribute("data-name", "sole")
         solarSystem.appendChild(sun)
 
-        // Aggiungi evento click al sole
-        sun.addEventListener("click", () => {
-            showPlanetDetails("sole")
-        })
-
+        // Aggiungi evento mouseenter/mouseleave al sole
         sun.addEventListener("mouseenter", () => {
             showPlanetName("Sole")
         })
@@ -95,18 +95,152 @@ document.addEventListener("DOMContentLoaded", () => {
 
             solarSystem.appendChild(planetElement)
 
-            // Aggiungi eventi
-            planetElement.addEventListener("click", (e) => {
-                e.stopPropagation()
-                showPlanetDetails(planetKey)
-            })
-
+            // Aggiungi eventi mouseenter/mouseleave
             planetElement.addEventListener("mouseenter", () => {
                 showPlanetName(planet.name)
             })
 
             planetElement.addEventListener("mouseleave", () => {
                 hidePlanetName()
+            })
+        })
+    }
+
+    // Inizializza il modal con le informazioni di tutti i pianeti
+    function initializeInfoModal() {
+        // Crea le tab per ogni pianeta (incluso il sole)
+        Object.keys(planetData).forEach((planetKey, index) => {
+            const planet = planetData[planetKey]
+
+            // Crea il pulsante della tab
+            const tabButton = document.createElement("button")
+            tabButton.className = `tab-button ${index === 0 ? "active" : ""}`
+            tabButton.setAttribute("data-tab", planetKey)
+
+            // Aggiungi icona e nome
+            const tabIcon = document.createElement("div")
+            tabIcon.className = "tab-icon"
+            tabIcon.style.backgroundImage = `url(${planet.icon})`
+
+            tabButton.appendChild(tabIcon)
+            tabButton.appendChild(document.createTextNode(planet.name))
+
+            tabsHeader.appendChild(tabButton)
+
+            // Crea il contenuto della tab
+            const tabContent = document.createElement("div")
+            tabContent.className = `tab-content ${index === 0 ? "active" : ""}`
+            tabContent.setAttribute("id", `tab-${planetKey}`)
+
+            // Popola il contenuto della tab
+            tabContent.innerHTML = `
+        <div class="planet-info">
+          <div class="planet-header">
+            <div class="planet-image" style="background-image: url(${planet.icon})"></div>
+            <div class="planet-title">
+              <h2>${planet.name}</h2>
+              <p>${planet.type}</p>
+            </div>
+          </div>
+          
+          <div class="planet-facts">
+            <div class="fact">
+              <div class="fact-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="2" y1="12" x2="22" y2="12"></line>
+                  <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                </svg>
+              </div>
+              <div class="fact-content">
+                <h3>Distanza dal Sole</h3>
+                <p>${planet.distance}</p>
+              </div>
+            </div>
+            
+            <div class="fact">
+              <div class="fact-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <path d="M16.2 7.8l-2 6.3-6.4 2.1 2-6.3z"></path>
+                </svg>
+              </div>
+              <div class="fact-content">
+                <h3>Diametro</h3>
+                <p>${planet.diameter}</p>
+              </div>
+            </div>
+            
+            <div class="fact">
+              <div class="fact-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <path d="M12 6v6l4 2"></path>
+                </svg>
+              </div>
+              <div class="fact-content">
+                <h3>Periodo Orbitale</h3>
+                <p>${planet.orbital || "N/A"}</p>
+              </div>
+            </div>
+            
+            <div class="fact">
+              <div class="fact-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+                </svg>
+              </div>
+              <div class="fact-content">
+                <h3>Lune</h3>
+                <p>${planet.moons}</p>
+              </div>
+            </div>
+            
+            <div class="fact">
+              <div class="fact-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"></path>
+                </svg>
+              </div>
+              <div class="fact-content">
+                <h3>Temperatura</h3>
+                <p>${planet.temperature}</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="planet-description">
+            <h3>Descrizione</h3>
+            <p>${planet.description}</p>
+          </div>
+          
+          <div class="planet-gallery">
+            <div class="gallery-image" style="background-image: url(${planet.gallery})"></div>
+          </div>
+        </div>
+      `
+
+            tabsContent.appendChild(tabContent)
+        })
+
+        // Aggiungi event listener alle tab
+        const tabButtons = document.querySelectorAll(".tab-button")
+        tabButtons.forEach((button) => {
+            button.addEventListener("click", () => {
+                const tabId = button.getAttribute("data-tab")
+
+                // Rimuovi la classe active da tutte le tab
+                tabButtons.forEach((btn) => btn.classList.remove("active"))
+                document.querySelectorAll(".tab-content").forEach((content) => content.classList.remove("active"))
+
+                // Aggiungi la classe active alla tab selezionata
+                button.classList.add("active")
+                document.getElementById(`tab-${tabId}`).classList.add("active")
             })
         })
     }
@@ -122,39 +256,22 @@ document.addEventListener("DOMContentLoaded", () => {
         planetNameDisplay.style.opacity = "0"
     }
 
-    // Mostra i dettagli del pianeta nel modal
-    function showPlanetDetails(planetKey) {
-        const planet = planetData[planetKey]
-
-        // Popola il modal con i dati del pianeta
-        document.getElementById("modalPlanetName").textContent = planet.name
-        document.getElementById("modalPlanetType").textContent = planet.type
-        document.getElementById("modalPlanetIcon").style.backgroundImage = `url(${planet.icon})`
-        document.getElementById("modalDistance").textContent = planet.distance
-        document.getElementById("modalDiameter").textContent = planet.diameter
-        document.getElementById("modalOrbital").textContent = planet.orbital || "N/A"
-        document.getElementById("modalMoons").textContent = planet.moons
-        document.getElementById("modalTemperature").textContent = planet.temperature
-        document.getElementById("modalDescription").textContent = planet.description
-        document.getElementById("modalGalleryImage").style.backgroundImage = `url(${planet.gallery})`
-
-        // Mostra il modal
-        modal.style.display = "block"
-
-        // Disabilita lo scroll della pagina
+    // Mostra il modal con le informazioni
+    showInfoBtn.addEventListener("click", () => {
+        infoModal.style.display = "block"
         document.body.style.overflow = "hidden"
-    }
+    })
 
     // Chiudi il modal
     closeModal.addEventListener("click", () => {
-        modal.style.display = "none"
+        infoModal.style.display = "none"
         document.body.style.overflow = "auto"
     })
 
     // Chiudi il modal cliccando fuori dal contenuto
     window.addEventListener("click", (event) => {
-        if (event.target === modal) {
-            modal.style.display = "none"
+        if (event.target === infoModal) {
+            infoModal.style.display = "none"
             document.body.style.overflow = "auto"
         }
     })

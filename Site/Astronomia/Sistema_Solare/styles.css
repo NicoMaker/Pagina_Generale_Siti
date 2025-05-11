@@ -16,6 +16,7 @@
   --sun-color-1: #ff9d00;
   --sun-color-2: #ff4e00;
   --sun-glow: rgba(255, 157, 0, 0.4);
+  --tab-active: rgba(108, 99, 255, 0.2);
 }
 
 body {
@@ -178,6 +179,14 @@ main {
   transform: scale(1.1);
 }
 
+.info-btn {
+  background: rgba(108, 99, 255, 0.3);
+}
+
+.info-btn:hover {
+  background: rgba(108, 99, 255, 0.5);
+}
+
 /* Solar System Container */
 .solar-system-container {
   width: 100%;
@@ -213,7 +222,6 @@ main {
   transform: translate(-50%, -50%);
   box-shadow: 0 0 60px var(--sun-glow);
   z-index: 10;
-  cursor: pointer;
   transition: all 0.3s ease;
 }
 
@@ -274,7 +282,6 @@ main {
   border-radius: 50%;
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
   transition: all 0.3s ease;
-  cursor: pointer;
   z-index: 5;
 }
 
@@ -325,12 +332,14 @@ main {
   background: var(--card-bg);
   margin: 50px auto;
   width: 90%;
-  max-width: 800px;
+  max-width: 1000px;
   border-radius: 15px;
   padding: 30px;
   box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
   border: 1px solid rgba(255, 255, 255, 0.1);
   animation: modalFadeIn 0.5s ease;
+  max-height: 80vh;
+  overflow-y: auto;
 }
 
 @keyframes modalFadeIn {
@@ -358,26 +367,94 @@ main {
   color: var(--secondary-color);
 }
 
-.modal-header {
-  display: flex;
-  align-items: center;
+.modal-title {
+  text-align: center;
   margin-bottom: 30px;
+  font-size: 2rem;
+  color: var(--text-color);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  padding-bottom: 20px;
+  padding-bottom: 15px;
 }
 
-.planet-icon {
-  width: 80px;
-  height: 80px;
+/* Tabs per i pianeti */
+.planets-tabs {
+  width: 100%;
+}
+
+.tabs-header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 10px;
+}
+
+.tab-button {
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tab-button:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.tab-button.active {
+  background: var(--tab-active);
+  box-shadow: 0 0 10px rgba(108, 99, 255, 0.3);
+}
+
+.tab-icon {
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
-  margin-right: 20px;
+  background-size: cover;
+  background-position: center;
+}
+
+.tab-content {
+  display: none;
+  animation: fadeIn 0.5s ease;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+/* Planet info in tab */
+.planet-info {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.planet-header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.planet-image {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
   background-size: cover;
   background-position: center;
   box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
 }
 
 .planet-title h2 {
-  font-size: 2.5rem;
+  font-size: 2rem;
   margin-bottom: 5px;
 }
 
@@ -390,7 +467,7 @@ main {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 20px;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 }
 
 .fact {
@@ -424,7 +501,7 @@ main {
 }
 
 .planet-description {
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 }
 
 .planet-description h3 {
@@ -441,7 +518,7 @@ main {
 .planet-gallery {
   display: flex;
   justify-content: center;
-  margin-top: 30px;
+  margin-top: 20px;
 }
 
 .gallery-image {
@@ -496,17 +573,21 @@ footer {
     padding: 20px;
   }
 
-  .planet-icon {
+  .planet-image {
     width: 60px;
     height: 60px;
   }
 
   .planet-title h2 {
-    font-size: 2rem;
+    font-size: 1.8rem;
   }
 
   .gallery-image {
     height: 200px;
+  }
+
+  .tabs-header {
+    justify-content: center;
   }
 }
 
@@ -515,14 +596,9 @@ footer {
     font-size: 2rem;
   }
 
-  .modal-header {
+  .planet-header {
     flex-direction: column;
     text-align: center;
-  }
-
-  .planet-icon {
-    margin-right: 0;
-    margin-bottom: 15px;
   }
 
   .controls {

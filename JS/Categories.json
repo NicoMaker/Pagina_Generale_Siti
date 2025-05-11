@@ -10,8 +10,8 @@
         "link": "Site/Borsa/Valore Titoli/index.html"
       },
       {
-        "name":"Immunizzazione Finanziaria",
-        "link":"Site/Borsa/Immunizzazione_Finanziaria/index.html"
+        "name": "Immunizzazione Finanziaria",
+        "link": "Site/Borsa/Immunizzazione_Finanziaria/index.html"
       },
       {
         "name": "Dashboard Titoli",
@@ -342,9 +342,13 @@
         "name": "Fasi Lunari",
         "link": "Site/Astronomia/Fasi_Lunari/index.html"
       },
-            {
+      {
         "name": "Calcolo Segno Zodiacale",
         "link": "Site/Astronomia/Segno_Zodiacale/index.html"
+      },
+      {
+        "name": "Sistema Solare",
+        "link": "Site/Astronomia/Sistema_Solare/index.html"
       }
     ]
   }
