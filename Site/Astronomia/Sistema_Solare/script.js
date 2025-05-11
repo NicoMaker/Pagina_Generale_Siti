@@ -52,25 +52,29 @@ document.addEventListener("DOMContentLoaded", () => {
     const gioveIndex = planetKeys.findIndex((key) => key === "giove")
 
     if (marteIndex !== -1 && gioveIndex !== -1) {
-      const marteOrbitRadius = planetData["marte"].orbitRadius
-      const gioveOrbitRadius = planetData["giove"].orbitRadius
-      const asteroidBeltRadius = (marteOrbitRadius + gioveOrbitRadius) / 2
+      const marteOrbitRadius = planetData["marte"].orbitRadius;
+      const gioveOrbitRadius = planetData["giove"].orbitRadius;
+      const asteroidBeltRadius = (marteOrbitRadius + gioveOrbitRadius) / 2;
+
+      // Calcola parametri per orbita ellittica della fascia di asteroidi
+      const a = asteroidBeltRadius; // semiasse maggiore
+      const b = a * 0.8; // semiasse minore (stessa ellitticità dei pianeti)
 
       // Aggiungi fascia di asteroidi tra Marte e Giove
-      const asteroidBelt = document.createElement("div")
-      asteroidBelt.className = "asteroid-belt"
-      asteroidBelt.style.width = `${asteroidBeltRadius * 2}px`
-      asteroidBelt.style.height = `${asteroidBeltRadius * 2}px`
-      solarSystem.appendChild(asteroidBelt)
+      const asteroidBelt = document.createElement("div");
+      asteroidBelt.className = "asteroid-belt elliptical";
+      asteroidBelt.style.width = `${a * 2}px`;
+      asteroidBelt.style.height = `${b * 2}px`;
+      solarSystem.appendChild(asteroidBelt);
 
       // Aggiungi evento mouseenter/mouseleave alla fascia di asteroidi
       asteroidBelt.addEventListener("mouseenter", () => {
-        showPlanetName("Fascia di Asteroidi")
-      })
+        showPlanetName("Fascia di Asteroidi");
+      });
 
       asteroidBelt.addEventListener("mouseleave", () => {
-        hidePlanetName()
-      })
+        hidePlanetName();
+      });
     }
 
     planetKeys.forEach((planetKey, index) => {
