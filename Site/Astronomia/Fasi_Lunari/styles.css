@@ -213,6 +213,18 @@ h3 {
 #current-illumination {
   font-weight: bold;
   color: var(--text-dim);
+  margin-bottom: 0.5rem;
+}
+
+#current-age {
+  font-weight: bold;
+  color: var(--text-dim);
+  margin-bottom: 0.5rem;
+}
+
+#next-phase {
+  font-weight: bold;
+  color: var(--accent-gold);
 }
 
 /* Year Selector */
@@ -575,8 +587,16 @@ h3 {
   border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
+.waxing-crescent-icon {
+  background: linear-gradient(90deg, #121620 70%, var(--moon-color) 70%);
+}
+
 .first-quarter-icon {
   background: linear-gradient(90deg, #121620 50%, var(--moon-color) 50%);
+}
+
+.waxing-gibbous-icon {
+  background: linear-gradient(90deg, #121620 30%, var(--moon-color) 30%);
 }
 
 .full-moon-icon {
@@ -584,8 +604,16 @@ h3 {
   box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
 }
 
+.waning-gibbous-icon {
+  background: linear-gradient(270deg, #121620 30%, var(--moon-color) 30%);
+}
+
 .last-quarter-icon {
   background: linear-gradient(270deg, #121620 50%, var(--moon-color) 50%);
+}
+
+.waning-crescent-icon {
+  background: linear-gradient(270deg, #121620 70%, var(--moon-color) 70%);
 }
 
 footer {
@@ -594,6 +622,26 @@ footer {
   background-color: rgba(18, 22, 32, 0.8);
   color: var(--text-dim);
   margin-top: 2rem;
+}
+
+/* Tooltip per le fasi lunari */
+.tooltip {
+  position: absolute;
+  background-color: var(--bg-dark);
+  color: var(--text-light);
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  z-index: 100;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s;
+  white-space: nowrap;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+.tooltip.visible {
+  opacity: 1;
 }
 
 /* Adattamento per dispositivi mobili */

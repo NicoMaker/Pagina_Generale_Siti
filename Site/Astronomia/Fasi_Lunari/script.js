@@ -8,6 +8,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const currentPhaseName = document.getElementById("current-phase-name")
     const currentPhaseDescription = document.getElementById("current-phase-description")
     const currentIllumination = document.getElementById("current-illumination")
+    const currentAge = document.getElementById("current-age")
+    const nextPhase = document.getElementById("next-phase")
 
     // Elementi per il calendario mensile
     const currentMonthEl = document.getElementById("current-month")
@@ -134,60 +136,118 @@ document.addEventListener("DOMContentLoaded", () => {
         })
     })
 
-    // Calcola la fase lunare per una data specifica
-    function getMoonPhaseForDate(date) {
-        // Algoritmo semplificato per calcolare la fase lunare
-        // Basato sul ciclo lunare di 29.53 giorni
-        const lunarCycle = 29.53 // Durata media del ciclo lunare in giorni
+    // Algoritmo astronomico preciso per calcolare le fasi lunari
+    function getMoonPhase(date) {
+        // Algoritmo basato sulle formule astronomiche per calcolare la fase lunare
+        // Riferimento: "Astronomical Algorithms" di Jean Meeus
 
-        // Data di riferimento di una Luna Nuova conosciuta (1 gennaio 2000)
-        const refDate = new Date(2000, 0, 6, 18, 14)
+        // Converti la data in Julian Day
+        const year = date.getFullYear();
+        const month = date.getMonth() + 1;
+        const day = date.getDate();
+        const hour = date.getHours() + date.getMinutes() / 60.0 + date.getSeconds() / 3600.0;
 
-        // Calcola il numero di giorni trascorsi dalla data di riferimento
-        const daysSinceRef = (date - refDate) / (24 * 60 * 60 * 1000)
+        let jd = 367 * year - Math.floor(7 * (year + Math.floor((month + 9) / 12)) / 4) +
+            Math.floor(275 * month / 9) + day + 1721013.5 + hour / 24.0;
 
-        // Calcola la posizione nel ciclo lunare (da 0 a 1)
-        const position = (daysSinceRef % lunarCycle) / lunarCycle
+        // Calcola il numero di giorni dal 1 gennaio 2000
+        const daysSince2000 = jd - 2451545.0;
 
-        // Calcola l'illuminazione (0 = nuova, 0.5 = piena/nuova, 1 = nuova)
-        let illumination
-        if (position <= 0.5) {
-            illumination = position * 2 // Da 0 a 1 durante la prima metà
-        } else {
-            illumination = (1 - position) * 2 // Da 1 a 0 durante la seconda metà
-        }
+        // Calcola la posizione media del Sole e della Luna
+        const meanSun = (280.46646 + 0.9856474 * daysSince2000) % 360;
+        const meanMoon = (218.3164591 + 13.0649924465 * daysSince2000) % 360;
+
+        // Calcola l'elongazione della Luna dal Sole
+        const elongation = (meanMoon - meanSun + 360) % 360;
+
+        // Calcola la fase lunare (0 = Luna Nuova, 0.5 = Luna Piena)
+        const phase = elongation / 360;
+
+        // Calcola l'illuminazione (0 = nuova, 1 = piena)
+        const illumination = (1 - Math.cos(phase * 2 * Math.PI)) / 2;
+
+        // Calcola l'età della Luna nel ciclo lunare (0-29.53 giorni)
+        const lunarAge = phase * 29.53;
 
         // Determina la fase in base alla posizione
-        let phase
-        if (position < 0.03 || position >= 0.97) {
-            phase = "new"
-        } else if (position < 0.22) {
-            phase = "waxing-crescent"
-        } else if (position < 0.28) {
-            phase = "first-quarter"
-        } else if (position < 0.47) {
-            phase = "waxing-gibbous"
-        } else if (position < 0.53) {
-            phase = "full"
-        } else if (position < 0.72) {
-            phase = "waning-gibbous"
-        } else if (position < 0.78) {
-            phase = "last-quarter"
+        let phaseName;
+        if (phase < 0.025 || phase >= 0.975) {
+            phaseName = "new";
+        } else if (phase < 0.235) {
+            phaseName = "waxing-crescent";
+        } else if (phase < 0.265) {
+            phaseName = "first-quarter";
+        } else if (phase < 0.475) {
+            phaseName = "waxing-gibbous";
+        } else if (phase < 0.525) {
+            phaseName = "full";
+        } else if (phase < 0.735) {
+            phaseName = "waning-gibbous";
+        } else if (phase < 0.765) {
+            phaseName = "last-quarter";
         } else {
-            phase = "waning-crescent"
+            phaseName = "waning-crescent";
         }
 
         return {
-            phase: phase,
-            illumination: Math.round(Math.abs(0.5 - position) * 200), // Percentuale di illuminazione
-            position: position,
-            phaseName: phaseNames[phase],
-        }
+            phase: phaseName,
+            illumination: Math.round(illumination * 100),
+            age: lunarAge.toFixed(1),
+            position: phase,
+            phaseName: phaseNames[phaseName],
+        };
+    }
+
+    // Calcola la fase lunare per una data specifica
+    function getMoonPhaseForDate(date) {
+        return getMoonPhase(date);
     }
 
     // Calcola la fase lunare attuale
     function getCurrentMoonPhase() {
         return getMoonPhaseForDate(today)
+    }
+
+    // Calcola la prossima fase principale della luna
+    function getNextMainPhase(date) {
+        const currentPhase = getMoonPhaseForDate(date);
+        const currentPosition = currentPhase.position;
+
+        // Determina la prossima fase principale
+        let nextPhasePosition;
+        let nextPhaseName;
+
+        if (currentPosition < 0.025) {
+            nextPhasePosition = 0.25; // Primo quarto
+            nextPhaseName = "first-quarter";
+        } else if (currentPosition < 0.25) {
+            nextPhasePosition = 0.25; // Primo quarto
+            nextPhaseName = "first-quarter";
+        } else if (currentPosition < 0.5) {
+            nextPhasePosition = 0.5; // Luna piena
+            nextPhaseName = "full";
+        } else if (currentPosition < 0.75) {
+            nextPhasePosition = 0.75; // Ultimo quarto
+            nextPhaseName = "last-quarter";
+        } else {
+            nextPhasePosition = 1.0; // Luna nuova (prossimo ciclo)
+            nextPhaseName = "new";
+        }
+
+        // Calcola quanti giorni mancano alla prossima fase
+        const daysToNextPhase = (nextPhasePosition - currentPosition) * 29.53;
+        const daysToNextPhaseRounded = Math.round(daysToNextPhase);
+
+        // Calcola la data della prossima fase
+        const nextPhaseDate = new Date(date);
+        nextPhaseDate.setDate(date.getDate() + daysToNextPhaseRounded);
+
+        return {
+            phase: nextPhaseName,
+            phaseName: phaseNames[nextPhaseName],
+            date: nextPhaseDate,
+            daysUntil: daysToNextPhaseRounded
+        };
     }
 
     // Visualizza la fase lunare attuale
@@ -203,6 +263,17 @@ document.addEventListener("DOMContentLoaded", () => {
         // Aggiorna l'illuminazione
         currentIllumination.textContent = `Illuminazione: ${moonData.illumination}%`
 
+        // Aggiorna l'età della luna
+        currentAge.textContent = `Età della Luna: ${moonData.age} giorni`
+
+        // Calcola e mostra la prossima fase principale
+        const nextPhaseData = getNextMainPhase(today);
+        const nextPhaseDate = nextPhaseData.date.toLocaleDateString("it-IT", {
+            day: "numeric",
+            month: "long"
+        });
+        nextPhase.textContent = `Prossima fase principale: ${nextPhaseData.phaseName} (${nextPhaseDate}, tra ${nextPhaseData.daysUntil} giorni)`;
+
         // Aggiorna l'immagine della luna
         updateMoonImage(moonData.phase, moonData.position)
     }
@@ -212,6 +283,14 @@ document.addEventListener("DOMContentLoaded", () => {
         // Rimuovi classi precedenti
         currentMoonImage.className = "moon-image"
 
+        // Calcola l'angolo di illuminazione basato sulla posizione nel ciclo lunare
+        const illuminationPercentage = position <= 0.5
+            ? position * 2 * 100  // Da 0% a 100% durante la prima metà
+            : (1 - position) * 2 * 100;  // Da 100% a 0% durante la seconda metà
+
+        // Determina se la luna è crescente o calante
+        const isWaxing = position <= 0.5;
+
         // Aggiungi la classe CSS per la fase corrente
         switch (phase) {
             case "new":
@@ -219,7 +298,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 currentMoonImage.style.boxShadow = "0 0 10px rgba(255, 255, 255, 0.1)"
                 break
             case "waxing-crescent":
-                currentMoonImage.style.background = "linear-gradient(90deg, #121620 70%, var(--moon-color) 70%)"
+                const waxingCrescentPercent = Math.round(illuminationPercentage);
+                currentMoonImage.style.background = `linear-gradient(90deg, #121620 ${100 - waxingCrescentPercent}%, var(--moon-color) ${100 - waxingCrescentPercent}%)`
                 currentMoonImage.style.boxShadow = "0 0 15px rgba(255, 255, 255, 0.3)"
                 break
             case "first-quarter":
@@ -227,7 +307,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 currentMoonImage.style.boxShadow = "0 0 15px rgba(255, 255, 255, 0.4)"
                 break
             case "waxing-gibbous":
-                currentMoonImage.style.background = "linear-gradient(90deg, #121620 30%, var(--moon-color) 30%)"
+                const waxingGibbousPercent = Math.round(illuminationPercentage);
+                currentMoonImage.style.background = `linear-gradient(90deg, #121620 ${100 - waxingGibbousPercent}%, var(--moon-color) ${100 - waxingGibbousPercent}%)`
                 currentMoonImage.style.boxShadow = "0 0 15px rgba(255, 255, 255, 0.5)"
                 break
             case "full":
@@ -235,7 +316,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 currentMoonImage.style.boxShadow = "0 0 20px rgba(255, 255, 255, 0.7)"
                 break
             case "waning-gibbous":
-                currentMoonImage.style.background = "linear-gradient(270deg, #121620 30%, var(--moon-color) 30%)"
+                const waningGibbousPercent = Math.round(illuminationPercentage);
+                currentMoonImage.style.background = `linear-gradient(270deg, #121620 ${100 - waningGibbousPercent}%, var(--moon-color) ${100 - waningGibbousPercent}%)`
                 currentMoonImage.style.boxShadow = "0 0 15px rgba(255, 255, 255, 0.5)"
                 break
             case "last-quarter":
@@ -243,16 +325,25 @@ document.addEventListener("DOMContentLoaded", () => {
                 currentMoonImage.style.boxShadow = "0 0 15px rgba(255, 255, 255, 0.4)"
                 break
             case "waning-crescent":
-                currentMoonImage.style.background = "linear-gradient(270deg, #121620 70%, var(--moon-color) 70%)"
+                const waningCrescentPercent = Math.round(illuminationPercentage);
+                currentMoonImage.style.background = `linear-gradient(270deg, #121620 ${100 - waningCrescentPercent}%, var(--moon-color) ${100 - waningCrescentPercent}%)`
                 currentMoonImage.style.boxShadow = "0 0 15px rgba(255, 255, 255, 0.3)"
                 break
         }
     }
 
     // Crea un indicatore di fase lunare per il calendario mensile
-    function createMoonPhaseIndicator(phase) {
+    function createMoonPhaseIndicator(phase, position) {
         const indicator = document.createElement("div")
         indicator.className = "moon-phase-indicator"
+
+        // Calcola l'illuminazione basata sulla posizione
+        const illuminationPercentage = position <= 0.5
+            ? position * 2 * 100  // Da 0% a 100% durante la prima metà
+            : (1 - position) * 2 * 100;  // Da 100% a 0% durante la seconda metà
+
+        // Determina se la luna è crescente o calante
+        const isWaxing = position <= 0.5;
 
         switch (phase) {
             case "new":
@@ -260,87 +351,175 @@ document.addEventListener("DOMContentLoaded", () => {
                 indicator.style.border = "1px solid rgba(255, 255, 255, 0.3)"
                 break
             case "waxing-crescent":
-                indicator.style.background = "linear-gradient(90deg, #121620 70%, var(--moon-color) 70%)"
+                const waxingCrescentPercent = Math.round(illuminationPercentage);
+                indicator.style.background = `linear-gradient(90deg, #121620 ${100 - waxingCrescentPercent}%, var(--moon-color) ${100 - waxingCrescentPercent}%)`
                 break
             case "first-quarter":
                 indicator.style.background = "linear-gradient(90deg, #121620 50%, var(--moon-color) 50%)"
                 break
             case "waxing-gibbous":
-                indicator.style.background = "linear-gradient(90deg, #121620 30%, var(--moon-color) 30%)"
+                const waxingGibbousPercent = Math.round(illuminationPercentage);
+                indicator.style.background = `linear-gradient(90deg, #121620 ${100 - waxingGibbousPercent}%, var(--moon-color) ${100 - waxingGibbousPercent}%)`
                 break
             case "full":
                 indicator.style.backgroundColor = "var(--moon-color)"
                 indicator.style.boxShadow = "0 0 10px rgba(255, 255, 255, 0.5)"
                 break
             case "waning-gibbous":
-                indicator.style.background = "linear-gradient(270deg, #121620 30%, var(--moon-color) 30%)"
+                const waningGibbousPercent = Math.round(illuminationPercentage);
+                indicator.style.background = `linear-gradient(270deg, #121620 ${100 - waningGibbousPercent}%, var(--moon-color) ${100 - waningGibbousPercent}%)`
                 break
             case "last-quarter":
                 indicator.style.background = "linear-gradient(270deg, #121620 50%, var(--moon-color) 50%)"
                 break
             case "waning-crescent":
-                indicator.style.background = "linear-gradient(270deg, #121620 70%, var(--moon-color) 70%)"
+                const waningCrescentPercent = Math.round(illuminationPercentage);
+                indicator.style.background = `linear-gradient(270deg, #121620 ${100 - waningCrescentPercent}%, var(--moon-color) ${100 - waningCrescentPercent}%)`
                 break
         }
 
         return indicator
     }
 
-    // Calcola le date delle fasi lunari per un anno specifico
-    function calculateMoonPhasesForYear(year) {
+    // Calcola le date esatte delle fasi lunari principali per un anno specifico
+    function calculateExactMoonPhasesForYear(year) {
         const phases = {
             new: [],
-            "waxing-crescent": [],
             "first-quarter": [],
-            "waxing-gibbous": [],
             full: [],
-            "waning-gibbous": [],
-            "last-quarter": [],
-            "waning-crescent": [],
-        }
+            "last-quarter": []
+        };
 
-        // Data di riferimento di una Luna Nuova conosciuta
-        const refDate = new Date(2000, 0, 6, 18, 14)
-        const lunarCycle = 29.53 // Durata media del ciclo lunare in giorni
+        // Inizia dal 1° gennaio dell'anno
+        let currentDate = new Date(year, 0, 1);
+        const endDate = new Date(year + 1, 0, 1);
 
-        // Calcola il numero di cicli lunari dal riferimento all'inizio dell'anno
-        const startOfYear = new Date(year, 0, 1)
-        const daysSinceRef = (startOfYear - refDate) / (24 * 60 * 60 * 1000)
-        const cyclesSinceRef = daysSinceRef / lunarCycle
+        // Controlla ogni giorno dell'anno
+        while (currentDate < endDate) {
+            const moonData = getMoonPhaseForDate(currentDate);
+            const phase = moonData.phase;
 
-        // Trova la prima luna nuova dell'anno
-        const cyclesAtStartOfYear = Math.floor(cyclesSinceRef)
-        const firstNewMoonOfYear = new Date(refDate.getTime() + cyclesAtStartOfYear * lunarCycle * 24 * 60 * 60 * 1000)
+            // Verifica se è una fase principale
+            if (phase === "new" || phase === "first-quarter" || phase === "full" || phase === "last-quarter") {
+                // Per maggiore precisione, cerca l'ora esatta della fase
+                let bestTime = new Date(currentDate);
+                let bestPhaseMatch = moonData.position;
 
-        // Genera le date per ogni fase lunare durante l'anno
-        let currentDate = new Date(firstNewMoonOfYear)
+                // Controlla ogni ora del giorno per trovare il momento più preciso
+                for (let hour = 0; hour < 24; hour++) {
+                    const hourDate = new Date(currentDate);
+                    hourDate.setHours(hour);
 
-        while (currentDate.getFullYear() <= year) {
-            if (currentDate.getFullYear() === year) {
-                // Luna Nuova
-                phases["new"].push(new Date(currentDate))
+                    const hourMoonData = getMoonPhaseForDate(hourDate);
 
-                // Altre fasi
-                phases["waxing-crescent"].push(new Date(currentDate.getTime() + lunarCycle * 0.125 * 24 * 60 * 60 * 1000))
-                phases["first-quarter"].push(new Date(currentDate.getTime() + lunarCycle * 0.25 * 24 * 60 * 60 * 1000))
-                phases["waxing-gibbous"].push(new Date(currentDate.getTime() + lunarCycle * 0.375 * 24 * 60 * 60 * 1000))
-                phases["full"].push(new Date(currentDate.getTime() + lunarCycle * 0.5 * 24 * 60 * 60 * 1000))
-                phases["waning-gibbous"].push(new Date(currentDate.getTime() + lunarCycle * 0.625 * 24 * 60 * 60 * 1000))
-                phases["last-quarter"].push(new Date(currentDate.getTime() + lunarCycle * 0.75 * 24 * 60 * 60 * 1000))
-                phases["waning-crescent"].push(new Date(currentDate.getTime() + lunarCycle * 0.875 * 24 * 60 * 60 * 1000))
+                    // Calcola quanto è vicino al punto esatto della fase
+                    let phaseMatch;
+                    if (phase === "new") phaseMatch = Math.abs(hourMoonData.position - 0);
+                    else if (phase === "first-quarter") phaseMatch = Math.abs(hourMoonData.position - 0.25);
+                    else if (phase === "full") phaseMatch = Math.abs(hourMoonData.position - 0.5);
+                    else if (phase === "last-quarter") phaseMatch = Math.abs(hourMoonData.position - 0.75);
+
+                    if (phaseMatch < bestPhaseMatch) {
+                        bestPhaseMatch = phaseMatch;
+                        bestTime = new Date(hourDate);
+                    }
+                }
+
+                phases[phase].push(bestTime);
+
+                // Salta alcuni giorni per evitare di rilevare la stessa fase più volte
+                currentDate = new Date(currentDate);
+                currentDate.setDate(currentDate.getDate() + 5);
+            } else {
+                // Passa al giorno successivo
+                currentDate = new Date(currentDate);
+                currentDate.setDate(currentDate.getDate() + 1);
             }
-
-            // Passa al ciclo lunare successivo
-            currentDate = new Date(currentDate.getTime() + lunarCycle * 24 * 60 * 60 * 1000)
         }
 
-        return phases
+        return phases;
     }
 
-    // Calcola le date delle fasi lunari per un mese specifico
+    // Calcola tutte le fasi lunari per un anno specifico
+    function calculateAllMoonPhasesForYear(year) {
+        // Ottieni le fasi principali esatte
+        const mainPhases = calculateExactMoonPhasesForYear(year);
+
+        // Aggiungi le fasi intermedie
+        const allPhases = {
+            new: mainPhases.new,
+            "waxing-crescent": [],
+            "first-quarter": mainPhases["first-quarter"],
+            "waxing-gibbous": [],
+            full: mainPhases.full,
+            "waning-gibbous": [],
+            "last-quarter": mainPhases["last-quarter"],
+            "waning-crescent": []
+        };
+
+        // Ordina tutte le date delle fasi principali
+        const allMainPhaseDates = [
+            ...mainPhases.new.map(date => ({ date, phase: "new" })),
+            ...mainPhases["first-quarter"].map(date => ({ date, phase: "first-quarter" })),
+            ...mainPhases.full.map(date => ({ date, phase: "full" })),
+            ...mainPhases["last-quarter"].map(date => ({ date, phase: "last-quarter" }))
+        ].sort((a, b) => a.date - b.date);
+
+        // Per ogni coppia di fasi principali consecutive, calcola la fase intermedia
+        for (let i = 0; i < allMainPhaseDates.length - 1; i++) {
+            const currentPhase = allMainPhaseDates[i];
+            const nextPhase = allMainPhaseDates[i + 1];
+
+            // Determina quale fase intermedia calcolare
+            let intermediatePhase;
+            if (currentPhase.phase === "new" && nextPhase.phase === "first-quarter") {
+                intermediatePhase = "waxing-crescent";
+            } else if (currentPhase.phase === "first-quarter" && nextPhase.phase === "full") {
+                intermediatePhase = "waxing-gibbous";
+            } else if (currentPhase.phase === "full" && nextPhase.phase === "last-quarter") {
+                intermediatePhase = "waning-gibbous";
+            } else if (currentPhase.phase === "last-quarter" && nextPhase.phase === "new") {
+                intermediatePhase = "waning-crescent";
+            } else {
+                // Salta combinazioni non valide
+                continue;
+            }
+
+            // Calcola la data intermedia
+            const midDate = new Date((currentPhase.date.getTime() + nextPhase.date.getTime()) / 2);
+            allPhases[intermediatePhase].push(midDate);
+        }
+
+        // Gestisci il caso speciale per l'inizio e la fine dell'anno
+        if (allMainPhaseDates.length > 0) {
+            // Se l'ultima fase dell'anno è "last-quarter", aggiungi una fase "waning-crescent"
+            if (allMainPhaseDates[allMainPhaseDates.length - 1].phase === "last-quarter") {
+                const lastDate = allMainPhaseDates[allMainPhaseDates.length - 1].date;
+                const midDate = new Date(lastDate);
+                midDate.setDate(midDate.getDate() + 3); // Circa a metà strada verso la prossima luna nuova
+                if (midDate.getFullYear() === year) {
+                    allPhases["waning-crescent"].push(midDate);
+                }
+            }
+
+            // Se la prima fase dell'anno è "new", aggiungi una fase "waning-crescent" all'inizio
+            if (allMainPhaseDates[0].phase === "new") {
+                const firstDate = allMainPhaseDates[0].date;
+                const midDate = new Date(firstDate);
+                midDate.setDate(midDate.getDate() - 3); // Circa a metà strada dalla luna calante precedente
+                if (midDate.getFullYear() === year) {
+                    allPhases["waning-crescent"].unshift(midDate);
+                }
+            }
+        }
+
+        return allPhases;
+    }
+
+    // Calcola le fasi lunari per un mese specifico
     function calculateMoonPhasesForMonth(year, month) {
         // Ottieni tutte le fasi lunari per l'anno
-        const yearPhases = calculateMoonPhasesForYear(year)
+        const yearPhases = calculateAllMoonPhasesForYear(year);
 
         // Filtra le fasi per il mese specifico
         const monthPhases = {}
@@ -354,7 +533,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Visualizza le date delle fasi lunari nel calendario annuale
     function displayMoonPhasesForYear(year) {
-        const phases = calculateMoonPhasesForYear(year)
+        const phases = calculateAllMoonPhasesForYear(year);
 
         // Aggiorna ogni sezione di fase
         for (const phase in phases) {
@@ -367,6 +546,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             datesContainer.innerHTML = ""
+            datesContainer.setAttribute("data-year", year)
 
             if (phases[phase].length === 0) {
                 datesContainer.innerHTML = '<div class="loading">Nessuna data disponibile</div>'
@@ -382,189 +562,23 @@ document.addEventListener("DOMContentLoaded", () => {
                     const formattedDate = date.toLocaleDateString("it-IT", {
                         day: "numeric",
                         month: "long",
+                        year: "numeric",
                     })
 
-                    const formattedTime = date.toLocaleTimeString("it-IT", {
-                        hour: "2-digit",
-                        minute: "2-digit",
-                    })
-
-                    dateItem.innerHTML = `<strong>${formattedDate}</strong> - ${formattedTime}`
-
-                    // Evidenzia la data se è oggi
-                    const isToday =
-                        date.getDate() === today.getDate() &&
-                        date.getMonth() === today.getMonth() &&
-                        date.getFullYear() === today.getFullYear()
-
-                    if (isToday) {
-                        dateItem.classList.add("today")
-                    }
-
+                    dateItem.textContent = formattedDate
                     datesContainer.appendChild(dateItem)
                 }
             })
         }
     }
 
-    // Genera il calendario mensile
-    function generateMonthlyCalendar(year, month) {
-        // Svuota il contenitore del calendario
-        calendarGrid.innerHTML = ""
-
-        // Ottieni il primo giorno del mese
-        const firstDayOfMonth = new Date(year, month, 1)
-
-        // Ottieni l'ultimo giorno del mese
-        const lastDayOfMonth = new Date(year, month + 1, 0)
-
-        // Ottieni il giorno della settimana del primo giorno (0 = Domenica, 1 = Lunedì, ecc.)
-        let firstDayWeekday = firstDayOfMonth.getDay()
-        // Converti da 0-6 (Dom-Sab) a 1-7 (Lun-Dom)
-        firstDayWeekday = firstDayWeekday === 0 ? 7 : firstDayWeekday
-
-        // Calcola quanti giorni del mese precedente mostrare
-        const daysFromPrevMonth = firstDayWeekday - 1
-
-        // Ottieni l'ultimo giorno del mese precedente
-        const lastDayOfPrevMonth = new Date(year, month, 0)
-
-        // Calcola le fasi lunari per questo mese
-        const monthPhases = calculateMoonPhasesForMonth(year, month)
-
-        // Crea un oggetto per mappare le date alle fasi lunari
-        const datesToPhases = {}
-
-        // Aggiungi le fasi principali (Luna Nuova, Primo Quarto, Luna Piena, Ultimo Quarto)
-        for (const phase of ["new", "first-quarter", "full", "last-quarter"]) {
-            monthPhases[phase].forEach((date) => {
-                const dateKey = date.getDate()
-                if (!datesToPhases[dateKey]) {
-                    datesToPhases[dateKey] = []
-                }
-                datesToPhases[dateKey].push({
-                    phase: phase,
-                    date: date,
-                    phaseName: phaseNames[phase],
-                })
-            })
-        }
-
-        // Aggiungi i giorni del mese precedente
-        for (let i = 0; i < daysFromPrevMonth; i++) {
-            const dayNumber = lastDayOfPrevMonth.getDate() - daysFromPrevMonth + i + 1
-            const dayDate = new Date(year, month - 1, dayNumber)
-
-            const dayCell = document.createElement("div")
-            dayCell.className = "calendar-day other-month"
-
-            const dayNumberEl = document.createElement("div")
-            dayNumberEl.className = "day-number"
-            dayNumberEl.textContent = dayNumber
-
-            dayCell.appendChild(dayNumberEl)
-
-            // Controlla se questo giorno ha una fase lunare principale
-            const moonPhase = getMoonPhaseForDate(dayDate)
-            if (["new", "first-quarter", "full", "last-quarter"].includes(moonPhase.phase)) {
-                const indicator = createMoonPhaseIndicator(moonPhase.phase)
-                dayCell.appendChild(indicator)
-
-                const phaseName = document.createElement("div")
-                phaseName.className = "moon-phase-name"
-                phaseName.textContent = moonPhase.phaseName
-                dayCell.appendChild(phaseName)
-            }
-
-            calendarGrid.appendChild(dayCell)
-        }
-
-        // Aggiungi i giorni del mese corrente
-        for (let i = 1; i <= lastDayOfMonth.getDate(); i++) {
-            const dayDate = new Date(year, month, i)
-
-            const dayCell = document.createElement("div")
-            dayCell.className = "calendar-day"
-
-            // Controlla se è oggi
-            if (i === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
-                dayCell.classList.add("today")
-            }
-
-            const dayNumberEl = document.createElement("div")
-            dayNumberEl.className = "day-number"
-            dayNumberEl.textContent = i
-
-            dayCell.appendChild(dayNumberEl)
-
-            // Controlla se questo giorno ha una fase lunare principale
-            if (datesToPhases[i]) {
-                datesToPhases[i].forEach((phaseInfo) => {
-                    const indicator = createMoonPhaseIndicator(phaseInfo.phase)
-                    dayCell.appendChild(indicator)
-
-                    const phaseName = document.createElement("div")
-                    phaseName.className = "moon-phase-name"
-                    phaseName.textContent = phaseInfo.phaseName
-                    dayCell.appendChild(phaseName)
-                })
-            } else {
-                // Se non è una fase principale, controlla comunque la fase
-                const moonPhase = getMoonPhaseForDate(dayDate)
-                if (["new", "first-quarter", "full", "last-quarter"].includes(moonPhase.phase)) {
-                    const indicator = createMoonPhaseIndicator(moonPhase.phase)
-                    dayCell.appendChild(indicator)
-
-                    const phaseName = document.createElement("div")
-                    phaseName.className = "moon-phase-name"
-                    phaseName.textContent = moonPhase.phaseName
-                    dayCell.appendChild(phaseName)
-                }
-            }
-
-            calendarGrid.appendChild(dayCell)
-        }
-
-        // Calcola quante celle aggiungere per completare la griglia (fino a 42 celle totali = 6 righe)
-        const totalCells = daysFromPrevMonth + lastDayOfMonth.getDate()
-        const remainingCells = 42 - totalCells
-
-        // Aggiungi i giorni del mese successivo
-        for (let i = 1; i <= remainingCells; i++) {
-            const dayDate = new Date(year, month + 1, i)
-
-            const dayCell = document.createElement("div")
-            dayCell.className = "calendar-day other-month"
-
-            const dayNumberEl = document.createElement("div")
-            dayNumberEl.className = "day-number"
-            dayNumberEl.textContent = i
-
-            dayCell.appendChild(dayNumberEl)
-
-            // Controlla se questo giorno ha una fase lunare principale
-            const moonPhase = getMoonPhaseForDate(dayDate)
-            if (["new", "first-quarter", "full", "last-quarter"].includes(moonPhase.phase)) {
-                const indicator = createMoonPhaseIndicator(moonPhase.phase)
-                dayCell.appendChild(indicator)
-
-                const phaseName = document.createElement("div")
-                phaseName.className = "moon-phase-name"
-                phaseName.textContent = moonPhase.phaseName
-                dayCell.appendChild(phaseName)
-            }
-
-            calendarGrid.appendChild(dayCell)
-        }
+    // Inizializza lo stato dell'applicazione
+    function initializeApp() {
+        displayCurrentMoonPhase()
+        displayMoonPhasesForYear(selectedYear)
     }
 
-    // Aggiorna la visualizzazione del mese
-    function updateMonthDisplay() {
-        currentMonthEl.textContent = monthNames[selectedMonth]
-        currentMonthYearEl.textContent = selectedYear
-    }
-
-    // Gestione dei pulsanti per cambiare anno
+    // Gestione degli eventi per la navigazione annuale
     prevYearBtn.addEventListener("click", () => {
         selectedYear--
         currentYearEl.textContent = selectedYear
@@ -577,12 +591,55 @@ document.addEventListener("DOMContentLoaded", () => {
         displayMoonPhasesForYear(selectedYear)
     })
 
-    // Gestione dei pulsanti per cambiare mese
+    // Funzioni per la gestione del calendario mensile
+    function updateMonthDisplay() {
+        currentMonthEl.textContent = monthNames[selectedMonth]
+        currentMonthYearEl.textContent = `${monthNames[selectedMonth]} ${selectedYear}`
+    }
+
+    function generateMonthlyCalendar(year, month) {
+        calendarGrid.innerHTML = "" // Pulisci il calendario esistente
+
+        const firstDayOfMonth = new Date(year, month, 1)
+        const lastDayOfMonth = new Date(year, month + 1, 0)
+        const daysInMonth = lastDayOfMonth.getDate()
+        const startingDay = firstDayOfMonth.getDay() // 0 (Domenica) - 6 (Sabato)
+
+        // Calcola le fasi lunari per il mese
+        const moonPhases = calculateMoonPhasesForMonth(year, month)
+
+        // Aggiungi celle vuote all'inizio per allineare il primo giorno
+        for (let i = 0; i < startingDay; i++) {
+            const emptyCell = document.createElement("div")
+            emptyCell.classList.add("calendar-day", "empty")
+            calendarGrid.appendChild(emptyCell)
+        }
+
+        // Popola il calendario con i giorni del mese
+        for (let day = 1; day <= daysInMonth; day++) {
+            const calendarDay = document.createElement("div")
+            calendarDay.classList.add("calendar-day")
+            calendarDay.textContent = day
+
+            const currentDate = new Date(year, month, day)
+            const moonPhaseToday = getMoonPhaseForDate(currentDate)
+
+            // Aggiungi l'indicatore di fase lunare
+            const moonIndicator = createMoonPhaseIndicator(moonPhaseToday.phase, moonPhaseToday.position)
+            calendarDay.appendChild(moonIndicator)
+
+            calendarGrid.appendChild(calendarDay)
+        }
+    }
+
+    // Gestione degli eventi per la navigazione mensile
     prevMonthBtn.addEventListener("click", () => {
         selectedMonth--
         if (selectedMonth < 0) {
             selectedMonth = 11
             selectedYear--
+            currentYearEl.textContent = selectedYear
+            displayMoonPhasesForYear(selectedYear)
         }
         updateMonthDisplay()
         generateMonthlyCalendar(selectedYear, selectedMonth)
@@ -593,13 +650,13 @@ document.addEventListener("DOMContentLoaded", () => {
         if (selectedMonth > 11) {
             selectedMonth = 0
             selectedYear++
+            currentYearEl.textContent = selectedYear
+            displayMoonPhasesForYear(selectedYear)
         }
         updateMonthDisplay()
         generateMonthlyCalendar(selectedYear, selectedMonth)
     })
 
-    // Inizializza l'app
-    displayCurrentMoonPhase()
-    displayMoonPhasesForYear(selectedYear)
-    generateMonthlyCalendar(selectedYear, selectedMonth)
+    // Inizializza l'applicazione
+    initializeApp()
 })
