@@ -17,7 +17,6 @@
 - **[Logaritmi](Logaritmi)**
 - **[Numero Primo](Numero%20Primo)**
 - **[Pitagora](Pitagora)**
-- **[Calcolo Segno Zodiacale](Segno_Zodiacale)**
 - **[Stampa numeri pari o dispari o tutti](StampaNumeri)**
 - **[Tabelline](Tabelline)**
 - **[Tabbelline UX Desgign](Tabelline_UX_Design)**

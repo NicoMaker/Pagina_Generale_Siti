@@ -2,14 +2,14 @@
 
 # Categorie dei Progetti
 
-- **[Astronomia](Astronomia/Readme.md)** [1 Progetto]
+- **[Astronomia](Astronomia/Readme.md)** [2 Progetti]
 - **[Bici](https://github.com/NicoMaker/Giri-in-bici)** [1 Progetto]
 - **[Borsa](Borsa/Readme.md)** [4 Progetti]
 - **[Calcio](Calcio/Readme.md)** [2 Progetti]
 - **[Calendario](Calendario/Readme.md)** [5 Progetti]
 - **[Giochi](Giochi/Readme.md)** [20 Progetti]
 - **[Info Paesi / Stati](Info_Paesi_Stati/Readme.md)** [4 Progetti]
-- **[Matematica](Math/Readme.md)** [24 Progetti]
+- **[Matematica](Math/Readme.md)** [23 Progetti]
 - **[Natale](Natale/Readme.md)** [3 Progetti]
 - **[Opzioni con le Frasi](Opzioni_Con_Le_Frasi/Readme.md)** [4 Progetti]
 - **[Pasqua](Pasqua/Readme.md)** [2 Progetti]

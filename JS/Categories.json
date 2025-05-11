@@ -198,10 +198,6 @@
         "link": "Site/Math/Pitagora/index.html"
       },
       {
-        "name": "Calcolo Segno Zodiacale",
-        "link": "Site/Math/Segno_Zodiacale/index.html"
-      },
-      {
         "name": "Stampa Numeri Pari / Dispari o Tutti",
         "link": "Site/Math/StampaNumeri/index.html"
       },
@@ -341,6 +337,10 @@
       {
         "name": "Fasi Lunari",
         "link": "Site/Astronomia/Fasi_Lunari/index.html"
+      },
+            {
+        "name": "Calcolo Segno Zodiacale",
+        "link": "Site/Astronomia/Segno_Zodiacale/index.html"
       }
     ]
   }
