@@ -278,6 +278,11 @@ main {
   box-shadow: 0 0 15px var(--outer-orbit-color);
 }
 
+/* Elliptical orbits */
+.orbit.elliptical {
+  transform: translate(-50%, -50%) rotate(15deg);
+}
+
 /* Asteroid belt */
 .asteroid-belt {
   position: absolute;
