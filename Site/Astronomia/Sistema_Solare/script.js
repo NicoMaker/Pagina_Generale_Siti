@@ -46,8 +46,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Add click event for the sun
     sun.addEventListener("click", () => {
-      showPlanetInfoPopup("sole");
-    });
+      showPlanetInfoPopup("sole")
+    })
 
     // Crea orbite e pianeti
     const planetKeys = Object.keys(planetData).filter((key) => key !== "sole")
@@ -142,8 +142,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Aggiungi evento click
       planetElement.addEventListener("click", () => {
-        showPlanetInfoPopup(planetKey);
-      });
+        showPlanetInfoPopup(planetKey)
+      })
     })
 
     // Avvia l'animazione dei pianeti
@@ -208,8 +208,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const isInnerPlanet = index <= 4 // Il sole è index 0, quindi i pianeti interni sono 1-4
         categoryClass = isInnerPlanet ? "inner-planet" : "outer-planet"
         categoryBadge = `<span class="planet-category-badge ${isInnerPlanet ? "inner" : "outer"}">
-                    ${isInnerPlanet ? "Pianeta Interno" : "Pianeta Esterno"}
-                </span>`
+                  ${isInnerPlanet ? "Pianeta Interno" : "Pianeta Esterno"}
+              </span>`
       }
 
       // Crea il pulsante della tab
@@ -238,158 +238,165 @@ document.addEventListener("DOMContentLoaded", () => {
       // Distanza dal Sole
       if (planet.distance) {
         factsHTML += `
-          <div class="fact">
-            <div class="fact-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="10"></circle>
-                <line x1="2" y1="12" x2="22" y2="12"></line>
-                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
-              </svg>
-            </div>
-            <div class="fact-content">
-              <h3>Distanza dal Sole</h3>
-              <p>${planet.distance}</p>
-            </div>
+        <div class="fact">
+          <div class="fact-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="2" y1="12" x2="22" y2="12"></line>
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+            </svg>
           </div>
-        `
+          <div class="fact-content">
+            <h3>Distanza dal Sole</h3>
+            <p>${planet.distance}</p>
+          </div>
+        </div>
+      `
       }
 
       // Diametro
       if (planet.diameter) {
         factsHTML += `
-          <div class="fact">
-            <div class="fact-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="10"></circle>
-                <path d="M16.2 7.8l-2 6.3-6.4 2.1 2-6.3z"></path>
-              </svg>
-            </div>
-            <div class="fact-content">
-              <h3>Diametro</h3>
-              <p>${planet.diameter}</p>
-            </div>
+        <div class="fact">
+          <div class="fact-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <path d="M16.2 7.8l-2 6.3-6.4 2.1 2-6.3z"></path>
+            </svg>
           </div>
-        `
+          <div class="fact-content">
+            <h3>Diametro</h3>
+            <p>${planet.diameter}</p>
+          </div>
+        </div>
+      `
       }
 
       // Periodo Orbitale
       if (planet.orbital) {
         factsHTML += `
-          <div class="fact">
-            <div class="fact-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="10"></circle>
-                <path d="M12 6v6l4 2"></path>
-              </svg>
-            </div>
-            <div class="fact-content">
-              <h3>Periodo Orbitale</h3>
-              <p>${planet.orbital}</p>
-            </div>
+        <div class="fact">
+          <div class="fact-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <path d="M12 6v6l4 2"></path>
+            </svg>
           </div>
-        `
+          <div class="fact-content">
+            <h3>Periodo Orbitale</h3>
+            <p>${planet.orbital}</p>
+          </div>
+        </div>
+      `
       }
 
-      // Lune
-      if (planet.moons) {
+      // Lune (solo per i pianeti, non per il sole)
+      if (planetKey !== "sole" && typeof planet.moons === "object" && planet.moons.count > 0) {
         factsHTML += `
-          <div class="fact">
-            <div class="fact-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
-              </svg>
-            </div>
-            <div class="fact-content">
-              <h3>Lune</h3>
-              <p>${planet.moons.count}</p>
-            </div>
+        <div class="fact">
+          <div class="fact-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+            </svg>
           </div>
-        `
+          <div class="fact-content">
+            <h3>Lune</h3>
+            <p>${planet.moons.count}</p>
+          </div>
+        </div>
+      `
       }
 
       // Temperatura
       if (planet.temperature) {
         factsHTML += `
-          <div class="fact">
-            <div class="fact-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"></path>
-              </svg>
-            </div>
-            <div class="fact-content">
-              <h3>Temperatura</h3>
-              <p>${planet.temperature}</p>
-            </div>
+        <div class="fact">
+          <div class="fact-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"></path>
+            </svg>
           </div>
-        `
+          <div class="fact-content">
+            <h3>Temperatura</h3>
+            <p>${planet.temperature}</p>
+          </div>
+        </div>
+      `
       }
 
       // Aggiungi fatto sull'eccentricità per i pianeti
       if (planetKey !== "sole") {
         factsHTML += `
-          <div class="fact">
-            <div class="fact-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <ellipse cx="12" cy="12" rx="10" ry="6"></ellipse>
-                <path d="M12 2v20"></path>
-              </svg>
-            </div>
-            <div class="fact-content">
-              <h3>Eccentricità</h3>
-              <p>${(index < 4 ? 0.05 : 0.2).toFixed(2)}</p>
-            </div>
+        <div class="fact">
+          <div class="fact-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <ellipse cx="12" cy="12" rx="10" ry="6"></ellipse>
+              <path d="M12 2v20"></path>
+            </svg>
           </div>
-        `
+          <div class="fact-content">
+            <h3>Eccentricità</h3>
+            <p>${(index < 4 ? 0.05 : 0.2).toFixed(2)}</p>
+          </div>
+        </div>
+      `
       }
 
       // Popola il contenuto della tab
       tabContent.innerHTML = `
-        <div class="planet-info">
-          <div class="planet-header">
-            <div class="planet-image" style="background-image: url(${planet.icon})"></div>
-            <div class="planet-title">
-              <h2>${planet.name} ${categoryBadge}</h2>
-              <p>${planet.type}</p>
-            </div>
+      <div class="planet-info">
+        <div class="planet-header">
+          <div class="planet-image" style="background-image: url(${planet.icon})"></div>
+          <div class="planet-title">
+            <h2>${planet.name} ${categoryBadge}</h2>
+            <p>${planet.type}</p>
           </div>
-          
-          <div class="planet-facts">
-            ${factsHTML}
-          </div>
-          
-          <div class="planet-description">
-            <h3>Descrizione</h3>
-            <p>${planet.description}</p>
-          </div>
-          
-          <div class="planet-gallery">
-            <div class="gallery-image" style="background-image: url(${planet.gallery})"></div>
-          </div>
-          ${planet.moons && planet.moons.count > 0 ? `
-            <div class="planet-satellites">
-              <h3>Satelliti</h3>
-              <div class="satellites-list">
-                ${planet.moons.list.map(moon => `
-                  <div class="satellite-item">
-                    <h4>${moon.name}</h4>
-                    <div class="satellite-details">
-                      <p><strong>Diametro:</strong> ${moon.diameter}</p>
-                      <p><strong>Distanza dal pianeta:</strong> ${moon.distance}</p>
-                      <p><strong>Scoperto:</strong> ${moon.discovered}</p>
-                    </div>
-                  </div>
-                `).join('')}
-              </div>
-            </div>
-          ` : ''}
         </div>
-      `
+        
+        <div class="planet-facts">
+          ${factsHTML}
+        </div>
+        
+        <div class="planet-description">
+          <h3>Descrizione</h3>
+          <p>${planet.description}</p>
+        </div>
+        
+        <div class="planet-gallery">
+          <div class="gallery-image" style="background-image: url(${planet.gallery})"></div>
+        </div>
+        ${planetKey !== "sole" && typeof planet.moons === "object" && planet.moons.count > 0
+          ? `
+          <div class="planet-satellites">
+            <h3>Satelliti</h3>
+            <div class="satellites-list">
+              ${planet.moons.list
+            .map(
+              (moon) => `
+                <div class="satellite-item">
+                  <h4>${moon.name}</h4>
+                  <div class="satellite-details">
+                    <p><strong>Diametro:</strong> ${moon.diameter}</p>
+                    <p><strong>Distanza dal pianeta:</strong> ${moon.distance}</p>
+                    <p><strong>Scoperto:</strong> ${moon.discovered}</p>
+                  </div>
+                </div>
+              `,
+            )
+            .join("")}
+            </div>
+          </div>
+        `
+          : ""
+        }
+      </div>
+    `
 
       tabsContent.appendChild(tabContent)
     })
@@ -490,200 +497,238 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Function to show planet info popup when clicking on a planet
   function showPlanetInfoPopup(planetKey) {
-    const planet = planetData[planetKey];
+    const planet = planetData[planetKey]
 
     // Create popup element if it doesn't exist
-    let popup = document.getElementById("planetInfoPopup");
+    let popup = document.getElementById("planetInfoPopup")
     if (!popup) {
-      popup = document.createElement("div");
-      popup.id = "planetInfoPopup";
-      popup.className = "planet-info-popup";
-      document.body.appendChild(popup);
+      popup = document.createElement("div")
+      popup.id = "planetInfoPopup"
+      popup.className = "planet-info-popup"
+      document.body.appendChild(popup)
     }
 
     // Determine if it's a planet or the sun
-    const isPlanet = planetKey !== "sole";
-    const isInnerPlanet = isPlanet && Object.keys(planetData).indexOf(planetKey) <= 4;
-    const categoryClass = isInnerPlanet ? "inner-planet" : "outer-planet";
-    const categoryBadge = isPlanet ?
-      `<span class="planet-category-badge ${isInnerPlanet ? "inner" : "outer"}">
-        ${isInnerPlanet ? "Pianeta Interno" : "Pianeta Esterno"}
-      </span>` : '';
+    const isPlanet = planetKey !== "sole"
+    const isInnerPlanet = isPlanet && Object.keys(planetData).indexOf(planetKey) <= 4
+    const categoryClass = isInnerPlanet ? "inner-planet" : "outer-planet"
+    const categoryBadge = isPlanet
+      ? `<span class="planet-category-badge ${isInnerPlanet ? "inner" : "outer"}">
+      ${isInnerPlanet ? "Pianeta Interno" : "Pianeta Esterno"}
+    </span>`
+      : ""
 
     // Prepare facts HTML
-    let factsHTML = "";
+    let factsHTML = ""
 
     // Distance from Sun
     if (planet.distance) {
       factsHTML += `
-        <div class="fact">
-          <div class="fact-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="10"></circle>
-              <line x1="2" y1="12" x2="22" y2="12"></line>
-              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
-            </svg>
-          </div>
-          <div class="fact-content">
-            <h3>Distanza dal Sole</h3>
-            <p>${planet.distance}</p>
-          </div>
+      <div class="fact">
+        <div class="fact-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="2" y1="12" x2="22" y2="12"></line>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+          </svg>
         </div>
-      `;
+        <div class="fact-content">
+          <h3>Distanza dal Sole</h3>
+          <p>${planet.distance}</p>
+        </div>
+      </div>
+    `
     }
 
     // Diameter
     if (planet.diameter) {
       factsHTML += `
-        <div class="fact">
-          <div class="fact-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="10"></circle>
-              <path d="M16.2 7.8l-2 6.3-6.4 2.1 2-6.3z"></path>
-            </svg>
-          </div>
-          <div class="fact-content">
-            <h3>Diametro</h3>
-            <p>${planet.diameter}</p>
-          </div>
+      <div class="fact">
+        <div class="fact-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M16.2 7.8l-2 6.3-6.4 2.1 2-6.3z"></path>
+          </svg>
         </div>
-      `;
+        <div class="fact-content">
+          <h3>Diametro</h3>
+          <p>${planet.diameter}</p>
+        </div>
+      </div>
+    `
     }
 
     // Orbital Period
     if (planet.orbital) {
       factsHTML += `
-        <div class="fact">
-          <div class="fact-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="10"></circle>
-              <path d="M12 6v6l4 2"></path>
-            </svg>
-          </div>
-          <div class="fact-content">
-            <h3>Periodo Orbitale</h3>
-            <p>${planet.orbital}</p>
-          </div>
+      <div class="fact">
+        <div class="fact-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M12 6v6l4 2"></path>
+          </svg>
         </div>
-      `;
+        <div class="fact-content">
+          <h3>Periodo Orbitale</h3>
+          <p>${planet.orbital}</p>
+        </div>
+      </div>
+    `
     }
 
     // Temperature
     if (planet.temperature) {
       factsHTML += `
-        <div class="fact">
-          <div class="fact-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"></path>
-            </svg>
-          </div>
-          <div class="fact-content">
-            <h3>Temperatura</h3>
-            <p>${planet.temperature}</p>
-          </div>
+      <div class="fact">
+        <div class="fact-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"></path>
+          </svg>
         </div>
-      `;
+        <div class="fact-content">
+          <h3>Temperatura</h3>
+          <p>${planet.temperature}</p>
+        </div>
+      </div>
+    `
+    }
+
+    // Moons (only for planets, not for the sun)
+    if (isPlanet && typeof planet.moons === "object" && planet.moons.count > 0) {
+      factsHTML += `
+      <div class="fact">
+        <div class="fact-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+          </svg>
+        </div>
+        <div class="fact-content">
+          <h3>Lune</h3>
+          <p>${planet.moons.count}</p>
+        </div>
+      </div>
+    `
     }
 
     // Populate the popup content
     popup.innerHTML = `
-      <div class="popup-content ${isPlanet ? categoryClass : ''}">
-        <span class="close-popup">&times;</span>
-        <div class="planet-header">
-          <div class="planet-image" style="background-image: url(${planet.icon})"></div>
-          <div class="planet-title">
-            <h2>${planet.name} ${categoryBadge}</h2>
-            <p>${planet.type}</p>
-          </div>
+    <div class="popup-content ${isPlanet ? categoryClass : ""}">
+      <span class="close-popup">&times;</span>
+      <div class="planet-header">
+        <div class="planet-image" style="background-image: url(${planet.icon})"></div>
+        <div class="planet-title">
+          <h2>${planet.name} ${categoryBadge}</h2>
+          <p>${planet.type}</p>
         </div>
-        
-        <div class="planet-facts">
-          ${factsHTML}
-        </div>
-        
-        <div class="planet-description">
-          <p>${planet.description}</p>
-        </div>
-        
-        <div class="planet-popup-gallery">
-          <div class="popup-gallery-image" style="background-image: url(${planet.gallery})">
-            <div class="zoom-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="11" cy="11" r="8"></circle>
-                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                <line x1="11" y1="8" x2="11" y2="14"></line>
-                <line x1="8" y1="11" x2="14" y2="11"></line>
-              </svg>
-            </div>
-          </div>
-        </div>
-        
-        ${planet.moons && planet.moons.count > 0 ? `
-          <div class="planet-satellites">
-            <h3>Satelliti (${planet.moons.count})</h3>
-            <div class="satellites-list">
-              ${planet.moons.list.slice(0, 4).map(moon => `
-                <div class="satellite-item">
-                  <h4>${moon.name}</h4>
-                  <div class="satellite-details">
-                    <p><strong>Diametro:</strong> ${moon.diameter}</p>
-                    <p><strong>Distanza:</strong> ${moon.distance}</p>
-                  </div>
-                </div>
-              `).join('')}
-              ${planet.moons.count > 4 ? `<div class="satellite-item more-satellites">
-                <p>+ altri ${planet.moons.count - 4} satelliti
-                  <br>
-                  <br>
-                </p>
-              </div>` : ''}
-            </div>
-          </div>
-        ` : ''}
       </div>
-    `;
+      
+      <div class="planet-facts">
+        ${factsHTML}
+      </div>
+      
+      <div class="planet-description">
+        <p>${planet.description}</p>
+      </div>
+      
+      <div class="planet-popup-gallery">
+        <div class="popup-gallery-image" style="background-image: url(${planet.gallery})">
+          <div class="zoom-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              <line x1="11" y1="8" x2="11" y2="14"></line>
+              <line x1="8" y1="11" x2="14" y2="11"></line>
+            </svg>
+          </div>
+        </div>
+      </div>
+      
+      ${isPlanet && typeof planet.moons === "object" && planet.moons.count > 0
+        ? `
+        <div class="planet-satellites">
+          <h3>Satelliti (${planet.moons.count})</h3>
+          <div class="satellites-list">
+            ${planet.moons.list
+          .slice(0, 4)
+          .map(
+            (moon) => `
+              <div class="satellite-item">
+                <h4>${moon.name}</h4>
+                <div class="satellite-details">
+                  <p><strong>Diametro:</strong> ${moon.diameter}</p>
+                  <p><strong>Distanza:</strong> ${moon.distance}</p>
+                  <p><strong>Scoperto:</strong> ${moon.discovered}</p>
+                </div>
+              </div>
+            `,
+          )
+          .join("")}
+            ${planet.moons.count > 4
+          ? `<div class="satellite-item more-satellites">
+              <p>+ altri ${planet.moons.count - 4} satelliti
+                <br>
+                <br>
+              </p>
+            </div>`
+          : ""
+        }
+          </div>
+        </div>
+      `
+        : ""
+      }
+    </div>
+  `
 
     // Show the popup
-    popup.style.display = "block";
+    popup.style.display = "block"
 
     // Add event listener to close button
-    const closePopup = popup.querySelector(".close-popup");
+    const closePopup = popup.querySelector(".close-popup")
     closePopup.addEventListener("click", () => {
-      popup.style.display = "none";
-    });
+      popup.style.display = "none"
+    })
 
     // Close popup when clicking outside
-    document.addEventListener("click", (event) => {
-      if (event.target !== popup && !popup.contains(event.target) &&
-        !event.target.classList.contains("planet") &&
-        !event.target.classList.contains("sun")) {
-        popup.style.display = "none";
-      }
-    }, { once: true });
+    document.addEventListener(
+      "click",
+      (event) => {
+        if (
+          event.target !== popup &&
+          !popup.contains(event.target) &&
+          !event.target.classList.contains("planet") &&
+          !event.target.classList.contains("sun")
+        ) {
+          popup.style.display = "none"
+        }
+      },
+      { once: true },
+    )
 
     // Add event listener for image zoom
-    const galleryImage = popup.querySelector(".popup-gallery-image");
+    const galleryImage = popup.querySelector(".popup-gallery-image")
     if (galleryImage) {
       galleryImage.addEventListener("click", () => {
-        showFullscreenImage(planet.gallery, planet.name);
-      });
+        showFullscreenImage(planet.gallery, planet.name)
+      })
     }
   }
 
   // Function to show fullscreen image
   function showFullscreenImage(imageUrl, planetName) {
     // Create fullscreen container if it doesn't exist
-    let fullscreenContainer = document.getElementById("fullscreenImageContainer");
+    let fullscreenContainer = document.getElementById("fullscreenImageContainer")
     if (!fullscreenContainer) {
-      fullscreenContainer = document.createElement("div");
-      fullscreenContainer.id = "fullscreenImageContainer";
-      fullscreenContainer.className = "fullscreen-image-container";
-      document.body.appendChild(fullscreenContainer);
+      fullscreenContainer = document.createElement("div")
+      fullscreenContainer.id = "fullscreenImageContainer"
+      fullscreenContainer.className = "fullscreen-image-container"
+      document.body.appendChild(fullscreenContainer)
     }
 
     // Set the content
@@ -693,25 +738,25 @@ document.addEventListener("DOMContentLoaded", () => {
         <h2>${planetName}</h2>
         <div class="fullscreen-image" style="background-image: url(${imageUrl})"></div>
       </div>
-    `;
+    `
 
     // Show the fullscreen container
-    fullscreenContainer.style.display = "flex";
-    document.body.style.overflow = "hidden";
+    fullscreenContainer.style.display = "flex"
+    document.body.style.overflow = "hidden"
 
     // Add event listener to close button
-    const closeFullscreen = fullscreenContainer.querySelector(".close-fullscreen");
+    const closeFullscreen = fullscreenContainer.querySelector(".close-fullscreen")
     closeFullscreen.addEventListener("click", () => {
-      fullscreenContainer.style.display = "none";
-      document.body.style.overflow = "auto";
-    });
+      fullscreenContainer.style.display = "none"
+      document.body.style.overflow = "auto"
+    })
 
     // Close fullscreen when clicking outside the image
     fullscreenContainer.addEventListener("click", (event) => {
       if (event.target === fullscreenContainer) {
-        fullscreenContainer.style.display = "none";
-        document.body.style.overflow = "auto";
+        fullscreenContainer.style.display = "none"
+        document.body.style.overflow = "auto"
       }
-    });
+    })
   }
 })
