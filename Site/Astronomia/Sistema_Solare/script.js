@@ -597,6 +597,28 @@ document.addEventListener("DOMContentLoaded", () => {
     `
     }
 
+    // Eccentricità (solo per i pianeti, non per il sole)
+    if (isPlanet) {
+      const index = Object.keys(planetData).indexOf(planetKey)
+      const eccentricity = (index <= 4 ? 0.05 : 0.2).toFixed(2) // Pianeti interni: 0.05, esterni: 0.2
+
+      factsHTML += `
+      <div class="fact">
+        <div class="fact-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <ellipse cx="12" cy="12" rx="10" ry="6"></ellipse>
+            <path d="M12 2v20"></path>
+          </svg>
+        </div>
+        <div class="fact-content">
+          <h3>Eccentricità</h3>
+          <p>${eccentricity}</p>
+        </div>
+      </div>
+    `
+    }
+
     // Moons (only for planets, not for the sun)
     if (isPlanet && typeof planet.moons === "object" && planet.moons.count > 0) {
       factsHTML += `
