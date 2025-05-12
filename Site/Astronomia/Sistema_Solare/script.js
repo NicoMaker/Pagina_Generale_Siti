@@ -47,36 +47,6 @@ document.addEventListener("DOMContentLoaded", () => {
     // Crea orbite e pianeti
     const planetKeys = Object.keys(planetData).filter((key) => key !== "sole")
 
-    // Determina la posizione della fascia di asteroidi (tra Marte e Giove)
-    const marteIndex = planetKeys.findIndex((key) => key === "marte")
-    const gioveIndex = planetKeys.findIndex((key) => key === "giove")
-
-    if (marteIndex !== -1 && gioveIndex !== -1) {
-      const marteOrbitRadius = planetData["marte"].orbitRadius;
-      const gioveOrbitRadius = planetData["giove"].orbitRadius;
-      const asteroidBeltRadius = (marteOrbitRadius + gioveOrbitRadius) / 2;
-
-      // Calcola parametri per orbita ellittica della fascia di asteroidi
-      const a = asteroidBeltRadius; // semiasse maggiore
-      const b = a * 0.8; // semiasse minore (stessa ellitticità dei pianeti)
-
-      // Aggiungi fascia di asteroidi tra Marte e Giove
-      const asteroidBelt = document.createElement("div");
-      asteroidBelt.className = "asteroid-belt elliptical";
-      asteroidBelt.style.width = `${a * 2}px`;
-      asteroidBelt.style.height = `${b * 2}px`;
-      solarSystem.appendChild(asteroidBelt);
-
-      // Aggiungi evento mouseenter/mouseleave alla fascia di asteroidi
-      asteroidBelt.addEventListener("mouseenter", () => {
-        showPlanetName("Fascia di Asteroidi");
-      });
-
-      asteroidBelt.addEventListener("mouseleave", () => {
-        hidePlanetName();
-      });
-    }
-
     planetKeys.forEach((planetKey, index) => {
       const planet = planetData[planetKey]
 
@@ -319,13 +289,13 @@ document.addEventListener("DOMContentLoaded", () => {
           <div class="fact">
             <div class="fact-icon">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
               </svg>
             </div>
             <div class="fact-content">
               <h3>Lune</h3>
-              <p>${planet.moons}</p>
+              <p>${planet.moons.count}</p>
             </div>
           </div>
         `
@@ -391,120 +361,28 @@ document.addEventListener("DOMContentLoaded", () => {
           <div class="planet-gallery">
             <div class="gallery-image" style="background-image: url(${planet.gallery})"></div>
           </div>
+          ${planet.moons && planet.moons.count > 0 ? `
+            <div class="planet-satellites">
+              <h3>Satelliti</h3>
+              <div class="satellites-list">
+                ${planet.moons.list.map(moon => `
+                  <div class="satellite-item">
+                    <h4>${moon.name}</h4>
+                    <div class="satellite-details">
+                      <p><strong>Diametro:</strong> ${moon.diameter}</p>
+                      <p><strong>Distanza dal pianeta:</strong> ${moon.distance}</p>
+                      <p><strong>Scoperto:</strong> ${moon.discovered}</p>
+                    </div>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          ` : ''}
         </div>
       `
 
       tabsContent.appendChild(tabContent)
     })
-
-    // Aggiungi tab per la fascia di asteroidi
-    const asteroidTabButton = document.createElement("button")
-    asteroidTabButton.className = "tab-button"
-    asteroidTabButton.setAttribute("data-tab", "asteroid-belt")
-
-    // Icona per la fascia di asteroidi
-    const asteroidIcon = document.createElement("div")
-    asteroidIcon.className = "tab-icon"
-    asteroidIcon.style.backgroundImage =
-      "url('https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Asteroid_Belt.jpg/440px-Asteroid_Belt.jpg')"
-
-    asteroidTabButton.appendChild(asteroidIcon)
-    asteroidTabButton.appendChild(document.createTextNode("Fascia di Asteroidi"))
-
-    // Inserisci la tab della fascia di asteroidi tra Marte e Giove
-    const marsIndex = Array.from(tabsHeader.children).findIndex((tab) => tab.getAttribute("data-tab") === "marte")
-    if (marsIndex !== -1) {
-      tabsHeader.insertBefore(asteroidTabButton, tabsHeader.children[marsIndex + 2])
-    } else {
-      tabsHeader.appendChild(asteroidTabButton)
-    }
-
-    // Crea il contenuto della tab per la fascia di asteroidi
-    const asteroidTabContent = document.createElement("div")
-    asteroidTabContent.className = "tab-content"
-    asteroidTabContent.setAttribute("id", "tab-asteroid-belt")
-
-    // Popola il contenuto della tab
-    asteroidTabContent.innerHTML = `
-        <div class="planet-info">
-          <div class="planet-header">
-            <div class="planet-image" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Asteroid_Belt.jpg/440px-Asteroid_Belt.jpg')"></div>
-            <div class="planet-title">
-              <h2>Fascia di Asteroidi</h2>
-              <p>Regione del Sistema Solare</p>
-            </div>
-          </div>
-          
-          <div class="planet-facts">
-            <div class="fact">
-              <div class="fact-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <circle cx="12" cy="12" r="10"></circle>
-                  <line x1="2" y1="12" x2="22" y2="12"></line>
-                  <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
-                </svg>
-              </div>
-              <div class="fact-content">
-                <h3>Posizione</h3>
-                <p>Tra Marte e Giove</p>
-              </div>
-            </div>
-            
-            <div class="fact">
-              <div class="fact-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <circle cx="12" cy="12" r="10"></circle>
-                  <path d="M16.2 7.8l-2 6.3-6.4 2.1 2-6.3z"></path>
-                </svg>
-              </div>
-              <div class="fact-content">
-                <h3>Distanza dal Sole</h3>
-                <p>2,2 - 3,2 UA</p>
-              </div>
-            </div>
-            
-            <div class="fact">
-              <div class="fact-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <circle cx="12" cy="12" r="10"></circle>
-                  <path d="M12 6v6l4 2"></path>
-                </svg>
-              </div>
-              <div class="fact-content">
-                <h3>Numero di Asteroidi</h3>
-                <p>Oltre 1 milione</p>
-              </div>
-            </div>
-            
-            <div class="fact">
-              <div class="fact-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
-                </svg>
-              </div>
-              <div class="fact-content">
-                <h3>Asteroide più grande</h3>
-                <p>Cerere (940 km)</p>
-              </div>
-            </div>
-          </div>
-          
-          <div class="planet-description">
-            <h3>Descrizione</h3>
-            <p>La Fascia di Asteroidi è una regione del Sistema Solare situata tra le orbite di Marte e Giove. È popolata da numerosi oggetti irregolari chiamati asteroidi o pianetini. Nonostante l'impressione comune, la fascia di asteroidi non è densamente popolata e le sonde spaziali possono attraversarla senza problemi. Si ritiene che la fascia di asteroidi sia composta da materiale che non è riuscito a formare un pianeta a causa dell'influenza gravitazionale di Giove. Cerere, il più grande oggetto nella fascia, è classificato come un pianeta nano.</p>
-          </div>
-          
-          <div class="planet-gallery">
-            <div class="gallery-image" style="background-image: url('https://solarsystem.nasa.gov/system/resources/detail_files/2318_ast_belt_art_full.jpg')"></div>
-          </div>
-        </div>
-      `
-
-    tabsContent.appendChild(asteroidTabContent)
 
     // Aggiungi event listener alle tab
     const tabButtons = document.querySelectorAll(".tab-button")

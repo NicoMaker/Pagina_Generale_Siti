@@ -21,7 +21,10 @@
     "diameter": "4.879 km",
     "orbital": "88 giorni",
     "temperature": "-173°C a 427°C",
-    "moons": "0",
+    "moons": {
+      "count": 0,
+      "list": []
+    },
     "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Mercury_in_color_-_Prockter07-edit1.jpg/440px-Mercury_in_color_-_Prockter07-edit1.jpg",
     "gallery": "https://solarsystem.nasa.gov/system/resources/detail_files/771_PIA16853.jpg",
     "size": 10,
@@ -36,7 +39,10 @@
     "diameter": "12.104 km",
     "orbital": "225 giorni",
     "temperature": "462°C (media)",
-    "moons": "0",
+    "moons": {
+      "count": 0,
+      "list": []
+    },
     "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Venus-real_color.jpg/440px-Venus-real_color.jpg",
     "gallery": "https://solarsystem.nasa.gov/system/resources/detail_files/775_PIA00271.jpg",
     "size": 15,
@@ -51,7 +57,17 @@
     "diameter": "12.742 km",
     "orbital": "365,25 giorni",
     "temperature": "-88°C a 58°C",
-    "moons": "1",
+    "moons": {
+      "count": 1,
+      "list": [
+        {
+          "name": "Luna",
+          "diameter": "3.474 km",
+          "distance": "384.400 km",
+          "discovered": "Preistorico"
+        }
+      ]
+    },
     "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/The_Blue_Marble_%28remastered%29.jpg/440px-The_Blue_Marble_%28remastered%29.jpg",
     "gallery": "https://epic.gsfc.nasa.gov/archive/natural/2019/05/15/png/epic_1b_20190515003634.png",
     "size": 16,
@@ -66,7 +82,23 @@
     "diameter": "6.779 km",
     "orbital": "687 giorni",
     "temperature": "-153°C a 20°C",
-    "moons": "2",
+    "moons": {
+      "count": 2,
+      "list": [
+        {
+          "name": "Phobos",
+          "diameter": "22,2 km",
+          "distance": "9.377 km",
+          "discovered": "1877, Asaph Hall"
+        },
+        {
+          "name": "Deimos",
+          "diameter": "12,6 km",
+          "distance": "23.460 km",
+          "discovered": "1877, Asaph Hall"
+        }
+      ]
+    },
     "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/OSIRIS_Mars_true_color.jpg/440px-OSIRIS_Mars_true_color.jpg",
     "gallery": "https://mars.nasa.gov/system/resources/detail_files/7808_global-color-views-mars-PIA00407-full2.jpg",
     "size": 14,
@@ -81,7 +113,41 @@
     "diameter": "139.820 km",
     "orbital": "11,86 anni",
     "temperature": "-145°C (nuvole superiori)",
-    "moons": "79",
+    "moons": {
+      "count": 79,
+      "list": [
+        {
+          "name": "Io",
+          "diameter": "3.643 km",
+          "distance": "421.700 km",
+          "discovered": "1610, Galileo Galilei"
+        },
+        {
+          "name": "Europa",
+          "diameter": "3.122 km",
+          "distance": "670.900 km",
+          "discovered": "1610, Galileo Galilei"
+        },
+        {
+          "name": "Ganimede",
+          "diameter": "5.262 km",
+          "distance": "1.070.400 km",
+          "discovered": "1610, Galileo Galilei"
+        },
+        {
+          "name": "Callisto",
+          "diameter": "4.821 km",
+          "distance": "1.882.700 km",
+          "discovered": "1610, Galileo Galilei"
+        },
+        {
+          "name": "Altri 75 satelliti",
+          "diameter": "Vari",
+          "distance": "Varie",
+          "discovered": "Vari"
+        }
+      ]
+    },
     "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Jupiter_and_its_shrunken_Great_Red_Spot.jpg/440px-Jupiter_and_its_shrunken_Great_Red_Spot.jpg",
     "gallery": "https://solarsystem.nasa.gov/system/resources/detail_files/2486_stsci-h-p1936a_1800.jpg",
     "size": 30,
@@ -96,7 +162,41 @@
     "diameter": "116.460 km",
     "orbital": "29,46 anni",
     "temperature": "-178°C (media)",
-    "moons": "82",
+    "moons": {
+      "count": 82,
+      "list": [
+        {
+          "name": "Titano",
+          "diameter": "5.150 km",
+          "distance": "1.221.870 km",
+          "discovered": "1655, Christiaan Huygens"
+        },
+        {
+          "name": "Encelado",
+          "diameter": "504 km",
+          "distance": "238.020 km",
+          "discovered": "1789, William Herschel"
+        },
+        {
+          "name": "Mimas",
+          "diameter": "396 km",
+          "distance": "185.520 km",
+          "discovered": "1789, William Herschel"
+        },
+        {
+          "name": "Teti",
+          "diameter": "1.062 km",
+          "distance": "294.660 km",
+          "discovered": "1684, Giovanni Cassini"
+        },
+        {
+          "name": "Altri 78 satelliti",
+          "diameter": "Vari",
+          "distance": "Varie",
+          "discovered": "Vari"
+        }
+      ]
+    },
     "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Saturn_during_Equinox.jpg/440px-Saturn_during_Equinox.jpg",
     "gallery": "https://solarsystem.nasa.gov/system/resources/detail_files/2490_stsci-h-p1943a-f_1200.jpg",
     "size": 28,
@@ -111,7 +211,47 @@
     "diameter": "50.724 km",
     "orbital": "84,01 anni",
     "temperature": "-224°C (media)",
-    "moons": "27",
+    "moons": {
+      "count": 27,
+      "list": [
+        {
+          "name": "Titania",
+          "diameter": "1.578 km",
+          "distance": "435.910 km",
+          "discovered": "1787, William Herschel"
+        },
+        {
+          "name": "Oberon",
+          "diameter": "1.522 km",
+          "distance": "583.520 km",
+          "discovered": "1787, William Herschel"
+        },
+        {
+          "name": "Ariel",
+          "diameter": "1.158 km",
+          "distance": "191.020 km",
+          "discovered": "1851, William Lassell"
+        },
+        {
+          "name": "Umbriel",
+          "diameter": "1.169 km",
+          "distance": "266.300 km",
+          "discovered": "1851, William Lassell"
+        },
+        {
+          "name": "Miranda",
+          "diameter": "471 km",
+          "distance": "129.390 km",
+          "discovered": "1948, Gerard Kuiper"
+        },
+        {
+          "name": "Altri 22 satelliti",
+          "diameter": "Vari",
+          "distance": "Varie",
+          "discovered": "Vari"
+        }
+      ]
+    },
     "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Uranus2.jpg/440px-Uranus2.jpg",
     "gallery": "https://solarsystem.nasa.gov/system/resources/detail_files/599_PIA18182.jpg",
     "size": 20,
@@ -126,7 +266,41 @@
     "diameter": "49.244 km",
     "orbital": "164,8 anni",
     "temperature": "-218°C (media)",
-    "moons": "14",
+    "moons": {
+      "count": 14,
+      "list": [
+        {
+          "name": "Tritone",
+          "diameter": "2.707 km",
+          "distance": "354.760 km",
+          "discovered": "1846, William Lassell"
+        },
+        {
+          "name": "Nereide",
+          "diameter": "340 km",
+          "distance": "5.513.400 km",
+          "discovered": "1949, Gerard Kuiper"
+        },
+        {
+          "name": "Proteo",
+          "diameter": "420 km",
+          "distance": "117.647 km",
+          "discovered": "1989, Voyager 2"
+        },
+        {
+          "name": "Larissa",
+          "diameter": "194 km",
+          "distance": "73.548 km",
+          "discovered": "1989, Voyager 2"
+        },
+        {
+          "name": "Altri 10 satelliti",
+          "diameter": "Vari",
+          "distance": "Varie",
+          "discovered": "Vari"
+        }
+      ]
+    },
     "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Neptune_-_Voyager_2_%2829347980845%29_flatten_crop.jpg/440px-Neptune_-_Voyager_2_%2829347980845%29_flatten_crop.jpg",
     "gallery": "https://solarsystem.nasa.gov/system/resources/detail_files/611_PIA01492.jpg",
     "size": 19,
