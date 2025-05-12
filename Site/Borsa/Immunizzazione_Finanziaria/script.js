@@ -49,8 +49,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Set canvas dimensions
     function setCanvasDimensions() {
-        canvas.width = canvas.offsetWidth;
-        canvas.height = canvas.offsetHeight;
+        canvas.width = canvas.offsetWidth * window.devicePixelRatio;
+        canvas.height = canvas.offsetHeight * window.devicePixelRatio;
+        ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+        canvas.style.width = canvas.offsetWidth + 'px';
+        canvas.style.height = canvas.offsetHeight + 'px';
     }
 
     setCanvasDimensions();
@@ -74,6 +77,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Nodes and connections for visualization
     let nodes = [];
     let connections = [];
+    let animationSpeed = 0.8; // Velocità di animazione aumentata (era 0.3)
 
     // Initialize visualization
     function initializeVisualization() {
@@ -84,13 +88,16 @@ document.addEventListener('DOMContentLoaded', function () {
         for (let i = 0; i < 20; i++) {
             const maturity = 1 + Math.floor(Math.random() * duration * 2);
             nodes.push({
-                x: Math.random() * canvas.width,
-                y: Math.random() * canvas.height,
-                radius: 5 + Math.random() * 5,
+                x: Math.random() * canvas.offsetWidth,
+                y: Math.random() * canvas.offsetHeight,
+                radius: 6 + Math.random() * 6,
                 color: getColorForMaturity(maturity, duration),
-                vx: (Math.random() - 0.5) * 1,
-                vy: (Math.random() - 0.5) * 1,
-                maturity: maturity
+                vx: (Math.random() - 0.5) * animationSpeed,
+                vy: (Math.random() - 0.5) * animationSpeed,
+                maturity: maturity,
+                initialX: Math.random() * canvas.offsetWidth,
+                initialY: Math.random() * canvas.offsetHeight,
+                phase: Math.random() * Math.PI * 2
             });
         }
 
@@ -105,7 +112,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     connections.push({
                         from: i,
                         to: j,
-                        strength: Math.random()
+                        strength: Math.random(),
+                        opacity: 0.1 + Math.random() * 0.3
                     });
                 }
             }
@@ -121,10 +129,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (maturity < targetDuration) {
             // Green to blue
-            return `hsl(${120 - ratio * 60}, 70%, 50%)`;
+            return `hsla(${120 - ratio * 60}, 80%, 50%, 0.8)`;
         } else {
             // Blue to red
-            return `hsl(${240 - ratio * 60}, 70%, 50%)`;
+            return `hsla(${240 - ratio * 60}, 80%, 50%, 0.8)`;
         }
     }
 
@@ -149,7 +157,9 @@ document.addEventListener('DOMContentLoaded', function () {
         const rateImpact = 1 - (rateChange * 0.2) + (convexity * rateChange * 0.2);
 
         const effectiveness = Math.min(0.99, Math.max(0.01, (durationMatch + convexityProtection) * rateImpact));
-        predictabilityValue.textContent = effectiveness.toFixed(2);
+
+        // Animazione più veloce del valore di efficacia
+        animateValue(predictabilityValue, parseFloat(predictabilityValue.textContent), effectiveness, 500); // Ridotto da 1000ms a 500ms
 
         // Update node colors based on new duration target
         nodes.forEach(node => {
@@ -160,32 +170,79 @@ document.addEventListener('DOMContentLoaded', function () {
         drawVisualization();
     }
 
+    // Animazione fluida per il valore di efficacia
+    function animateValue(element, start, end, duration) {
+        let startTimestamp = null;
+        const step = (timestamp) => {
+            if (!startTimestamp) startTimestamp = timestamp;
+            const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+            const value = start + progress * (end - start);
+            element.textContent = value.toFixed(2);
+            if (progress < 1) {
+                window.requestAnimationFrame(step);
+            }
+        };
+        window.requestAnimationFrame(step);
+    }
+
     // Draw the visualization
     function drawVisualization() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.clearRect(0, 0, canvas.offsetWidth, canvas.offsetHeight);
 
-        // Draw yield curve
+        // Draw yield curve with gradient
         drawYieldCurve();
 
-        // Draw connections
-        ctx.strokeStyle = 'rgba(59, 130, 246, 0.2)';
-        ctx.lineWidth = 1;
-
+        // Draw connections with gradient
         connections.forEach(connection => {
             const fromNode = nodes[connection.from];
             const toNode = nodes[connection.to];
+
+            const gradient = ctx.createLinearGradient(
+                fromNode.x, fromNode.y,
+                toNode.x, toNode.y
+            );
+
+            gradient.addColorStop(0, fromNode.color);
+            gradient.addColorStop(1, toNode.color);
+
+            ctx.strokeStyle = gradient;
+            ctx.globalAlpha = connection.opacity;
+            ctx.lineWidth = 1 + connection.strength * 2;
 
             ctx.beginPath();
             ctx.moveTo(fromNode.x, fromNode.y);
             ctx.lineTo(toNode.x, toNode.y);
             ctx.stroke();
+            ctx.globalAlpha = 1;
         });
 
-        // Draw nodes
+        // Draw nodes with glow effect
         nodes.forEach(node => {
+            // Glow effect
+            const gradient = ctx.createRadialGradient(
+                node.x, node.y, 0,
+                node.x, node.y, node.radius * 2
+            );
+
+            const color = node.color.replace('rgba', 'rgba').replace('0.8)', '0.1)');
+            gradient.addColorStop(0, node.color);
+            gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+
+            ctx.fillStyle = gradient;
+            ctx.beginPath();
+            ctx.arc(node.x, node.y, node.radius * 2, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Node
             ctx.fillStyle = node.color;
             ctx.beginPath();
             ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Highlight
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+            ctx.beginPath();
+            ctx.arc(node.x - node.radius * 0.3, node.y - node.radius * 0.3, node.radius * 0.4, 0, Math.PI * 2);
             ctx.fill();
         });
 
@@ -198,8 +255,16 @@ document.addEventListener('DOMContentLoaded', function () {
         const rateChange = parseFloat(complexitySlider.value);
         const convexity = parseFloat(recursionSlider.value);
 
-        ctx.strokeStyle = 'rgba(16, 185, 129, 0.8)';
-        ctx.lineWidth = 3;
+        // Create gradient for the curve
+        const gradient = ctx.createLinearGradient(0, 0, canvas.offsetWidth, 0);
+        gradient.addColorStop(0, 'rgba(16, 185, 129, 0.8)');
+        gradient.addColorStop(0.5, 'rgba(59, 130, 246, 0.8)');
+        gradient.addColorStop(1, 'rgba(30, 58, 138, 0.8)');
+
+        ctx.strokeStyle = gradient;
+        ctx.lineWidth = 4;
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
         ctx.beginPath();
 
         // Draw a yield curve that changes shape based on rate change and convexity
@@ -207,10 +272,11 @@ document.addEventListener('DOMContentLoaded', function () {
         const steepness = 0.5 + rateChange * 0.5;
         const curvature = 0.1 + convexity * 0.2;
 
-        for (let x = 0; x < canvas.width; x += 5) {
-            const maturity = (x / canvas.width) * 20;
+        // Smooth curve with more points
+        for (let x = 0; x < canvas.offsetWidth; x += 2) {
+            const maturity = (x / canvas.offsetWidth) * 20;
             const rate = baseRate + steepness * Math.log(1 + maturity) - curvature * Math.pow(maturity - 10, 2) / 100;
-            const y = canvas.height - (rate / 10) * canvas.height * 0.8;
+            const y = canvas.offsetHeight - (rate / 10) * canvas.offsetHeight * 0.8;
 
             if (x === 0) {
                 ctx.moveTo(x, y);
@@ -220,23 +286,33 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         ctx.stroke();
+
+        // Add glow effect to the curve
+        ctx.save();
+        ctx.strokeStyle = gradient;
+        ctx.lineWidth = 12;
+        ctx.globalAlpha = 0.1;
+        ctx.stroke();
+        ctx.lineWidth = 8;
+        ctx.globalAlpha = 0.1;
+        ctx.stroke();
+        ctx.restore();
     }
 
-    // Animate nodes
+    // Animate nodes with smoother, more organic movement - velocità aumentata
     function animateNodes() {
+        const time = Date.now() * 0.002; // Velocità aumentata (era 0.001)
+
         nodes.forEach(node => {
-            // Update position
-            node.x += node.vx;
-            node.y += node.vy;
+            // Organic movement using sine waves with amplitude maggiore
+            node.x = node.initialX + Math.sin(time * 0.8 + node.phase) * 30; // Velocità e ampiezza aumentate
+            node.y = node.initialY + Math.cos(time * 0.6 + node.phase * 2) * 25; // Velocità e ampiezza aumentate
 
-            // Bounce off walls
-            if (node.x < node.radius || node.x > canvas.width - node.radius) {
-                node.vx *= -1;
-            }
-
-            if (node.y < node.radius || node.y > canvas.height - node.radius) {
-                node.vy *= -1;
-            }
+            // Ensure nodes stay within canvas
+            if (node.x < node.radius) node.x = node.radius;
+            if (node.x > canvas.offsetWidth - node.radius) node.x = canvas.offsetWidth - node.radius;
+            if (node.y < node.radius) node.y = node.radius;
+            if (node.y > canvas.offsetHeight - node.radius) node.y = canvas.offsetHeight - node.radius;
         });
 
         // Request next frame
@@ -278,7 +354,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function isElementInViewport(el) {
         const rect = el.getBoundingClientRect();
         return (
-            rect.top <= (window.innerHeight * 0.75) &&
+            rect.top <= (window.innerHeight * 0.8) &&
             rect.bottom >= 0
         );
     }
@@ -316,16 +392,22 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function handleScrollAnimations() {
         // Animazione per le concept cards
-        conceptCards.forEach(card => {
+        conceptCards.forEach((card, index) => {
             if (isElementInViewport(card)) {
-                card.classList.add('visible');
+                // Aggiungi un ritardo progressivo per ogni card
+                setTimeout(() => {
+                    card.classList.add('visible');
+                }, 100 * index); // Ridotto da 150ms a 100ms
             }
         });
 
         // Animazione per gli application items
-        applicationItems.forEach(item => {
+        applicationItems.forEach((item, index) => {
             if (isElementInViewport(item)) {
-                item.classList.add('visible');
+                // Aggiungi un ritardo progressivo per ogni item
+                setTimeout(() => {
+                    item.classList.add('visible');
+                }, 100 * index); // Ridotto da 150ms a 100ms
             }
         });
 
@@ -347,6 +429,8 @@ document.addEventListener('DOMContentLoaded', function () {
     drawVisualization();
 
     // Trigger scroll animations on page load
-    handleScrollAnimations();
-    updateActiveSection();
+    setTimeout(() => {
+        handleScrollAnimations();
+        updateActiveSection();
+    }, 100);
 });
