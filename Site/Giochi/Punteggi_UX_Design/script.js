@@ -1,7 +1,7 @@
 // At the top of the file, add a new variable to track the next available ID
 const partecipanti = [];
 let modalitàVittoria = "max";
-let nextParticipantId = 1; // Add this line to track the next available ID
+let nextParticipantId = 1; // Start from 1
 
 // Elementi DOM
 const participantList = document.getElementById("participant-list");
@@ -337,11 +337,9 @@ function showTieModal(vincitori, punti) {
   let detailsHTML = `<div class="tie-participants">Con un punteggio di <strong>${punti}</strong> punti:</div><ul class="tie-list">`;
 
   vincitori.forEach((vincitore, index) => {
-    detailsHTML += `<li><span class="medal medal-${
-      index < 3 ? ["gold", "silver", "bronze"][index] : "default"
-    }">${index + 1}</span> ${vincitore.nome} <span class="winner-id">#${
-      vincitore.id
-    }</span></li>`;
+    detailsHTML += `<li><span class="medal medal-${index < 3 ? ["gold", "silver", "bronze"][index] : "default"
+      }">${index + 1}</span> ${vincitore.nome} <span class="winner-id">#${vincitore.id
+      }</span></li>`;
   });
 
   detailsHTML += `</ul>`;
@@ -425,9 +423,8 @@ function mostraClassifica() {
     minute: "2-digit",
   };
   leaderboardDate.textContent = oggi.toLocaleDateString("it-IT", opzioniData);
-  leaderboardMode.textContent = `Modalità: ${
-    modalitàVittoria === "max" ? "Più punti" : "Meno punti"
-  }`;
+  leaderboardMode.textContent = `Modalità: ${modalitàVittoria === "max" ? "Più punti" : "Meno punti"
+    }`;
 
   // Ordina i partecipanti
   const partecipantiOrdinati = [...partecipanti].sort((a, b) =>
@@ -490,9 +487,8 @@ function creaPodio(partecipantiOrdinati) {
 
       // Blocco del podio
       const podiumBlock = document.createElement("div");
-      podiumBlock.className = `podium-block podium-${
-        posizione === 1 ? "first" : posizione === 2 ? "second" : "third"
-      }`;
+      podiumBlock.className = `podium-block podium-${posizione === 1 ? "first" : posizione === 2 ? "second" : "third"
+        }`;
       podiumBlock.textContent = posizione;
 
       // Informazioni sul partecipante
@@ -559,9 +555,8 @@ function creaTabellaCassifica(partecipantiOrdinati) {
     // Aggiungi medaglia per i primi 3
     if (index < 3) {
       const medalSpan = document.createElement("span");
-      medalSpan.className = `medal medal-${
-        ["gold", "silver", "bronze"][index]
-      }`;
+      medalSpan.className = `medal medal-${["gold", "silver", "bronze"][index]
+        }`;
       medalSpan.textContent = index + 1;
       positionCell.appendChild(medalSpan);
     } else {
@@ -613,10 +608,10 @@ function condividiClassifica() {
       index === 0
         ? "🥇"
         : index === 1
-        ? "🥈"
-        : index === 2
-        ? "🥉"
-        : `${index + 1}.`;
+          ? "🥈"
+          : index === 2
+            ? "🥉"
+            : `${index + 1}.`;
     testoCondivisione += `${medaglia} ${partecipante.nome} #${partecipante.id}: ${partecipante.punti} punti\n`;
   });
 
@@ -858,14 +853,35 @@ function aggiungiPartecipante() {
   showToast(`${nome} (ID: ${id}) aggiunto con successo`, "success");
 }
 
-// Update the eliminaPartecipante function to use the ID
+// Update the eliminaPartecipante function to use the ID and reorganize IDs
 function eliminaPartecipante(index) {
   const partecipante = partecipanti[index];
   partecipanti.splice(index, 1);
+
+  // Riorganizza gli ID per mantenere la sequenza 1, 2, 3, ...
+  riorganizzaIds();
+
   aggiornaListaPartecipanti();
   aggiornaSelezionePartecipante();
 
-  showToast(`${partecipante.nome} (ID: ${partecipante.id}) rimosso`, "info");
+  showToast(`${partecipante.nome} rimosso`, "info");
+}
+
+// Add a new function to reorganize IDs
+function riorganizzaIds() {
+  // Se non ci sono partecipanti, resetta nextParticipantId a 1
+  if (partecipanti.length === 0) {
+    nextParticipantId = 1;
+    return;
+  }
+
+  // Riorganizza gli ID in sequenza 1, 2, 3, ...
+  partecipanti.forEach((partecipante, index) => {
+    partecipante.id = index + 1;
+  });
+
+  // Imposta nextParticipantId al prossimo ID disponibile
+  nextParticipantId = partecipanti.length + 1;
 }
 
 // Update the aggiornaListaPartecipanti function to display the ID
@@ -897,9 +913,8 @@ function aggiornaListaPartecipanti() {
     // Aggiungi medaglia per i primi 3
     if (index < 3) {
       const medalSpan = document.createElement("span");
-      medalSpan.className = `medal medal-${
-        ["gold", "silver", "bronze"][index]
-      }`;
+      medalSpan.className = `medal medal-${["gold", "silver", "bronze"][index]
+        }`;
       medalSpan.textContent = index + 1;
       infoContainer.appendChild(medalSpan);
     }
@@ -937,7 +952,13 @@ function aggiornaListaPartecipanti() {
     deleteIcon.textContent = "delete";
 
     deleteButton.appendChild(deleteIcon);
-    deleteButton.addEventListener("click", () => eliminaPartecipante(index));
+    deleteButton.addEventListener("click", () => {
+      // Trova l'indice del partecipante nell'array originale
+      const originalIndex = partecipanti.findIndex(p => p.id === partecipante.id);
+      if (originalIndex !== -1) {
+        eliminaPartecipante(originalIndex);
+      }
+    });
 
     listItem.appendChild(infoContainer);
     listItem.appendChild(deleteButton);
@@ -1200,6 +1221,8 @@ function eseguiReset() {
       } else if (resetType === "all") {
         // Reset everything
         partecipanti.length = 0;
+        // Reset nextParticipantId to 1
+        nextParticipantId = 1;
         aggiornaListaPartecipanti();
         aggiornaSelezionePartecipante();
         showToast("Tutti i partecipanti sono stati eliminati", "success");
@@ -1373,29 +1396,23 @@ function caricaDaFile() {
 
               const nome = item.nome.trim();
               const punti = Number.parseFloat(item.punti) || 0;
-              const id = Number.parseInt(item.id) || nextParticipantId++;
 
-              // Check for duplicates
-              const existingIndex = partecipanti.findIndex((p) => p.id === id);
+              // Check for duplicates by name
+              const existingIndex = partecipanti.findIndex((p) => p.nome === nome);
 
               if (existingIndex >= 0) {
                 // Update existing participant
-                partecipanti[existingIndex].nome = nome;
                 partecipanti[existingIndex].punti = punti;
 
                 results.warnings.push({
                   nome,
-                  id,
+                  id: partecipanti[existingIndex].id,
                   punti,
                 });
               } else {
-                // Add new participant
+                // Add new participant with next available ID
+                const id = nextParticipantId++;
                 partecipanti.push({ id, nome, punti });
-
-                // Update nextParticipantId if needed
-                if (id >= nextParticipantId) {
-                  nextParticipantId = id + 1;
-                }
 
                 results.success.push({
                   nome,
@@ -1409,6 +1426,9 @@ function caricaDaFile() {
               });
             }
           });
+
+          // Riorganizza gli ID dopo il caricamento
+          riorganizzaIds();
         } else {
           // Process text file (default)
           const righe = fileContent
@@ -1418,11 +1438,10 @@ function caricaDaFile() {
 
           righe.forEach((riga) => {
             try {
-              // Format: nome:punti:id
+              // Format: nome:punti
               const parti = riga.split(":");
               const nome = parti[0].trim();
               const punti = Number.parseFloat(parti[1]) || 0;
-              const id = Number.parseInt(parti[2]) || nextParticipantId++;
 
               if (!nome) {
                 results.errors.push({
@@ -1431,27 +1450,22 @@ function caricaDaFile() {
                 return;
               }
 
-              // Check for duplicates
-              const existingIndex = partecipanti.findIndex((p) => p.id === id);
+              // Check for duplicates by name
+              const existingIndex = partecipanti.findIndex((p) => p.nome === nome);
 
               if (existingIndex >= 0) {
                 // Update existing participant
-                partecipanti[existingIndex].nome = nome;
                 partecipanti[existingIndex].punti = punti;
 
                 results.warnings.push({
                   nome,
-                  id,
+                  id: partecipanti[existingIndex].id,
                   punti,
                 });
               } else {
-                // Add new participant
+                // Add new participant with next available ID
+                const id = nextParticipantId++;
                 partecipanti.push({ id, nome, punti });
-
-                // Update nextParticipantId if needed
-                if (id >= nextParticipantId) {
-                  nextParticipantId = id + 1;
-                }
 
                 results.success.push({
                   nome,
@@ -1465,6 +1479,9 @@ function caricaDaFile() {
               });
             }
           });
+
+          // Riorganizza gli ID dopo il caricamento
+          riorganizzaIds();
         }
 
         // Update UI
@@ -1487,12 +1504,7 @@ function caricaDaFile() {
     };
 
     // Read the file based on its type
-    const fileExtension = file.name.split(".").pop().toLowerCase();
-    if (fileExtension === "json") {
-      reader.readAsText(file);
-    } else {
-      reader.readAsText(file);
-    }
+    reader.readAsText(file);
   });
 
   // Simula il clic per aprire il dialogo file
@@ -1566,7 +1578,7 @@ function salvaSuFile() {
     const contenuto = partecipanti
       .map(
         (partecipante) =>
-          `${partecipante.nome}:${partecipante.punti}:${partecipante.id}`
+          `${partecipante.nome}:${partecipante.punti}`
       )
       .join("\n");
 
