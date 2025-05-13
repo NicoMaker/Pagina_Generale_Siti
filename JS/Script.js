@@ -668,7 +668,7 @@ const categoryIcons = {
 
   window.openWhatsAppChat = () => {
     const phoneNumber = "+393337024320";
-    const message = encodeURIComponent("*Info sul Portfolio*");
+    const message = encodeURIComponent("*Info su Pagina Generale Siti*");
     window.location.href = `https://wa.me/${phoneNumber}?text=${message}`;
   };
 
