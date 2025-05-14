@@ -62,6 +62,21 @@ img {
 section {
   padding: 5rem 2rem;
   position: relative;
+  background-image: url("https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/All_Gizah_Pyramids.jpg/1280px-All_Gizah_Pyramids.jpg");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 0;
 }
 
 .section-title {
@@ -277,8 +292,9 @@ header.scrolled {
   max-width: 800px;
   margin: 0 auto;
   padding: 3rem;
-  background-color: var(--color-papyrus);
-  border: 1px solid var(--color-sand-dark);
+  background-color: rgba(0, 0, 0, 0.7);
+  border: 1px solid var(--color-gold);
+  color: var(--color-white);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   position: relative;
   text-align: center;
@@ -354,6 +370,7 @@ header.scrolled {
     var(--color-gold),
     transparent
   );
+  z-index: 1;
 }
 
 .timeline-item {
@@ -381,16 +398,29 @@ header.scrolled {
   height: 20px;
   border-radius: 50%;
   background-color: var(--color-gold);
-  border: 4px solid var(--color-sand-light);
-  z-index: 1;
+  border: 4px solid rgba(0, 0, 0, 0.5);
+  z-index: 2;
 }
 
 .timeline-date {
+  color: #ffd700; /* Oro più brillante */
+  background-color: rgba(
+    0,
+    0,
+    0,
+    0.85
+  ); /* Sfondo più scuro per aumentare il contrasto */
+  padding: 0.5rem 1rem; /* Padding aumentato */
+  border-radius: 6px; /* Bordo più arrotondato */
+  z-index: 2;
+  font-size: 1.2rem; /* Testo più grande */
+  font-weight: bold;
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.5); /* Bagliore dorato */
+  border: 2px solid #ffd700; /* Bordo dorato */
+  text-shadow: 0 0 5px rgba(0, 0, 0, 0.8); /* Ombra testo per leggibilità */
   position: absolute;
   top: 0;
   font-family: var(--font-heading);
-  font-weight: 700;
-  color: var(--color-blue-dark);
 }
 
 .timeline-item:nth-child(odd) .timeline-date {
@@ -401,33 +431,29 @@ header.scrolled {
   left: 55%;
 }
 
-.timeline-content {
-  background-color: var(--color-white);
-  padding: 1.5rem;
-  border-radius: 5px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-  position: relative;
+.timeline-date:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.7);
+  transition: all 0.3s ease;
 }
 
-.timeline-content::before {
-  content: "";
-  position: absolute;
-  top: 10px;
-  width: 0;
-  height: 0;
-  border-style: solid;
+.timeline-content {
+  background-color: rgba(0, 0, 0, 0.7);
+  color: var(--color-white);
+  border: 1px solid var(--color-gold);
+  z-index: 2;
+}
+
+.timeline-content h3 {
+  color: var(--color-gold);
 }
 
 .timeline-item:nth-child(odd) .timeline-content::before {
-  right: -15px;
-  border-width: 10px 0 10px 15px;
-  border-color: transparent transparent transparent var(--color-white);
+  border-color: transparent transparent transparent rgba(0, 0, 0, 0.7);
 }
 
 .timeline-item:nth-child(even) .timeline-content::before {
-  left: -15px;
-  border-width: 10px 15px 10px 0;
-  border-color: transparent var(--color-white) transparent transparent;
+  border-color: transparent rgba(0, 0, 0, 0.7) transparent transparent;
 }
 
 /* Faraoni Section */
@@ -447,7 +473,8 @@ header.scrolled {
 
 .card {
   width: 280px;
-  background-color: var(--color-sand-light);
+  background-color: rgba(0, 0, 0, 0.7);
+  border: 1px solid var(--color-gold);
   border-radius: 5px;
   overflow: hidden;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
@@ -481,7 +508,7 @@ header.scrolled {
 }
 
 .card-content h3 {
-  color: var(--color-blue-dark);
+  color: var(--color-gold);
   margin-bottom: 0.5rem;
 }
 
@@ -519,8 +546,15 @@ header.scrolled {
 }
 
 .god-card h3 {
-  color: var(--color-blue-dark);
+  color: var(--color-gold);
   margin-bottom: 0.5rem;
+}
+
+.god-card p {
+  color: var(--color-white);
+  background-color: rgba(0, 0, 0, 0.7);
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
 }
 
 /* Monumenti Section */
@@ -683,10 +717,9 @@ header.scrolled {
 }
 
 .filter-btn {
-  padding: 0.5rem 1.5rem;
-  background-color: var(--color-white);
-  border: 2px solid var(--color-blue);
-  color: var(--color-blue);
+  background-color: rgba(0, 0, 0, 0.7);
+  border: 2px solid var(--color-gold);
+  color: var(--color-gold);
   font-family: var(--font-heading);
   border-radius: 30px;
   cursor: pointer;
@@ -695,8 +728,8 @@ header.scrolled {
 
 .filter-btn:hover,
 .filter-btn.active {
-  background-color: var(--color-blue);
-  color: var(--color-white);
+  background-color: var(--color-gold);
+  color: var(--color-black);
 }
 
 /* Footer */
@@ -773,6 +806,24 @@ footer {
   font-family: var(--font-heading);
   color: var(--color-gold);
   margin-bottom: 0.5rem;
+  font-size: 2.2rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  display: inline-block;
+}
+
+.translation {
+  font-style: italic;
+  color: var(--color-white);
+  font-size: 1.3rem;
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 0.3rem 0.8rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  display: inline-block;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
 }
 
 /* Animazioni e effetti */
@@ -810,8 +861,10 @@ footer {
   .timeline-item:nth-child(odd) .timeline-date,
   .timeline-item:nth-child(even) .timeline-date {
     left: 0;
-    top: -30px;
+    top: -40px; /* Aumentato per evitare sovrapposizioni */
     right: auto;
+    font-size: 1.1rem; /* Leggermente più piccolo su mobile */
+    padding: 0.4rem 0.8rem; /* Padding leggermente ridotto */
   }
 
   .timeline-item:nth-child(odd) .timeline-content::before {
@@ -948,27 +1001,6 @@ footer {
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
 }
 
-/* Aggiungere lo stesso sfondo a tutte le sezioni */
-section {
-  padding: 5rem 2rem;
-  position: relative;
-  background-image: url("https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/All_Gizah_Pyramids.jpg/1280px-All_Gizah_Pyramids.jpg");
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-}
-
-section::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.7);
-  z-index: 0;
-}
-
 /* Modificare i contenitori delle sezioni per garantire la leggibilità */
 .timeline-section,
 .faraoni-section,
@@ -1011,14 +1043,6 @@ section::before {
   z-index: 2;
   background-color: var(--color-gold);
   border: 4px solid rgba(0, 0, 0, 0.5);
-}
-
-.timeline-date {
-  color: var(--color-gold);
-  background-color: rgba(0, 0, 0, 0.7);
-  padding: 0.3rem 0.6rem;
-  border-radius: 4px;
-  z-index: 2;
 }
 
 .timeline-content {
@@ -1114,10 +1138,6 @@ section::before {
   transform: translateY(0);
 }
 
-.timeline-date {
-  color: gold;
-}
-
 /* Sostituire la sezione "Stili per la sezione attiva" con questo codice più moderno */
 
 /* Stili per la sezione attiva */
@@ -1180,4 +1200,16 @@ section.active-section {
 section.active-section .section-title {
   transform: scale(1.05);
   text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+}
+
+/* Assicurarsi che le date siano visibili in modalità mobile */
+@media (max-width: 1024px) {
+  .timeline-item:nth-child(odd) .timeline-date,
+  .timeline-item:nth-child(even) .timeline-date {
+    left: 0;
+    top: -40px; /* Aumentato per evitare sovrapposizioni */
+    right: auto;
+    font-size: 1.1rem; /* Leggermente più piccolo su mobile */
+    padding: 0.4rem 0.8rem; /* Padding leggermente ridotto */
+  }
 }
