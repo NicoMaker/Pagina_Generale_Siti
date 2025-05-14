@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AcquaTrack | Il tuo tracciatore di idratazione</title>
+    <meta name="description"
+        content="Monitora la tua assunzione giornaliera di acqua e resta idratato con il nostro tracciatore facile da usare.">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="https://th.bing.com/th/id/OIP.Rt1Om0cseZeo_dhWR17QqgHaEK?cb=iwc2&rs=1&pid=ImgDetMain"
+        type="image/x-icon">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="manifest" href="site.webmanifest">
+</head>
+
+<body>
+    <div class="app-container">
+        <header>
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path
+                                d="M12 2v6M12 22v-6M4.93 10.93l4.24 4.24M14.83 8.83l4.24 4.24M2 12h6M16 12h6M10.93 19.07l4.24-4.24M8.83 9.17l4.24-4.24">
+                            </path>
+                        </svg>
+                    </div>
+                    <h1>AcquaTrack</h1>
+                </div>
+                <p class="tagline">Monitora la tua idratazione per una vita più sana</p>
+            </div>
+            <div class="wave-container">
+                <div class="wave"></div>
+                <div class="wave"></div>
+                <div class="wave"></div>
+            </div>
+        </header>
+
+        <main>
+            <!-- Confetti container per l'animazione del 100% -->
+            <div class="confetti-container" id="confetti-container"></div>
+
+            <div class="dashboard">
+                <section class="card progress-card">
+                    <div class="card-content">
+                        <div class="water-visualization">
+                            <div class="water-glass">
+                                <div class="water-waves">
+                                    <div class="wave wave1"></div>
+                                    <div class="wave wave2"></div>
+                                </div>
+                                <div id="water-level"></div>
+                                <div class="glass-shine"></div>
+                            </div>
+                            <div class="water-droplets">
+                                <span class="droplet"></span>
+                                <span class="droplet"></span>
+                                <span class="droplet"></span>
+                            </div>
+                            <!-- Badge di completamento -->
+                            <div class="completion-badge" id="completion-badge">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                </svg>
+                                <span>Obiettivo raggiunto!</span>
+                            </div>
+                        </div>
+                        <div class="progress-info">
+                            <div class="water-info">
+                                <span id="current-value">0</span> / <span id="goal-display">2000</span> ml
+                            </div>
+                            <div class="percentage-container">
+                                <div class="percentage-ring">
+                                    <svg viewBox="0 0 36 36" class="circular-chart">
+                                        <path class="circle-bg" d="M18 2.0845
+                                            a 15.9155 15.9155 0 0 1 0 31.831
+                                            a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                        <path id="percentage-circle" class="circle" stroke-dasharray="0, 100" d="M18 2.0845
+                                            a 15.9155 15.9155 0 0 1 0 31.831
+                                            a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                        <text x="18" y="20.35" class="percentage" id="percentage">0%</text>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="card controls-card">
+                    <div class="card-header">
+                        <h2>Obiettivo Giornaliero</h2>
+                        <div class="goal-controls">
+                            <button id="decrease-goal" class="btn-circle" aria-label="Diminuisci obiettivo">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                                </svg>
+                            </button>
+                            <div class="goal-value">
+                                <span id="goal-value">2000</span>
+                                <span class="unit">ml</span>
+                            </div>
+                            <button id="increase-goal" class="btn-circle" aria-label="Aumenta obiettivo">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="card-content">
+                        <h2>Aggiungi Acqua</h2>
+                        <div class="water-buttons">
+                            <button class="water-btn" data-ml="200">
+                                <div class="btn-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <path d="M12 2v6M5.5 12H2a10 10 0 0 0 10 10c4.5 0 8.5-3 9.5-7L5.5 12zm0 0L14 5">
+                                        </path>
+                                    </svg>
+                                </div>
+                                <span>200ml</span>
+                            </button>
+                            <button class="water-btn" data-ml="300">
+                                <div class="btn-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <path d="M12 2v6M5.5 12H2a10 10 0 0 0 10 10c4.5 0 8.5-3 9.5-7L5.5 12zm0 0L14 5">
+                                        </path>
+                                    </svg>
+                                </div>
+                                <span>300ml</span>
+                            </button>
+                            <button class="water-btn" data-ml="500">
+                                <div class="btn-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <path d="M12 2v6M5.5 12H2a10 10 0 0 0 10 10c4.5 0 8.5-3 9.5-7L5.5 12zm0 0L14 5">
+                                        </path>
+                                    </svg>
+                                </div>
+                                <span>500ml</span>
+                            </button>
+                        </div>
+                        <div class="custom-input">
+                            <input type="number" id="custom-amount" placeholder="Quantità personalizzata (ml)" min="1">
+                            <button id="add-custom">Aggiungi</button>
+                        </div>
+                        <button id="reset-btn" class="reset-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+                                <path d="M3 3v5h5"></path>
+                            </svg>
+                            Azzera Contatore
+                        </button>
+                    </div>
+                </section>
+            </div>
+
+            <section class="card tips-container">
+                <div class="section-header">
+                    <h2>Consiglio del Giorno</h2>
+                    <button id="new-tip" class="btn-icon" aria-label="Ottieni nuovo consiglio">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 12a9 9 0 0 0-9-9 9 9 0 0 0-9 9 9 9 0 0 0 9 9 9 9 0 0 0 9-9z"></path>
+                            <path d="M9 12h6"></path>
+                            <path d="M12 9v6"></path>
+                        </svg>
+                    </button>
+                </div>
+                <div class="tip-box">
+                    <div class="tip-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="16" x2="12" y2="12"></line>
+                            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                        </svg>
+                    </div>
+                    <p id="daily-tip">Bevi un bicchiere d'acqua appena sveglio per riattivare il metabolismo.</p>
+                </div>
+            </section>
+
+            <section class="card benefits-container">
+                <h2>Benefici di una Buona Idratazione</h2>
+                <div class="benefits-grid">
+                    <div class="benefit-item">
+                        <div class="benefit-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                            </svg>
+                        </div>
+                        <div class="benefit-text">
+                            <h3>Migliore Funzione Cerebrale</h3>
+                            <p>Una corretta idratazione migliora la concentrazione e le prestazioni cognitive.</p>
+                        </div>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path
+                                    d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
+                                </path>
+                            </svg>
+                        </div>
+                        <div class="benefit-text">
+                            <h3>Pelle Più Sana</h3>
+                            <p>L'acqua aiuta a mantenere l'elasticità della pelle e un aspetto luminoso.</p>
+                        </div>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path>
+                                <line x1="12" y1="2" x2="12" y2="12"></line>
+                            </svg>
+                        </div>
+                        <div class="benefit-text">
+                            <h3>Migliori Prestazioni Fisiche</h3>
+                            <p>Restare idratati previene i crampi muscolari e migliora la resistenza.</p>
+                        </div>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+                                <line x1="9" y1="9" x2="9.01" y2="9"></line>
+                                <line x1="15" y1="9" x2="15.01" y2="9"></line>
+                            </svg>
+                        </div>
+                        <div class="benefit-text">
+                            <h3>Digestione Migliorata</h3>
+                            <p>L'acqua favorisce la digestione e aiuta a prevenire la stitichezza.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <div class="wave-container footer-waves">
+                <div class="wave"></div>
+                <div class="wave"></div>
+                <div class="wave"></div>
+            </div>
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <div class="logo-icon small">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path
+                                d="M12 2v6M12 22v-6M4.93 10.93l4.24 4.24M14.83 8.83l4.24 4.24M2 12h6M16 12h6M10.93 19.07l4.24-4.24M8.83 9.17l4.24-4.24">
+                            </path>
+                        </svg>
+                    </div>
+                    <span>AcquaTrack</span>
+                </div>
+                <p class="footer-tagline">Resta idratato, resta in salute</p>
+                <p class="copyright">&copy; 2025 AcquaTrack. Tutti i diritti riservati.</p>
+                <p class="disclaimer">Questo sito web è solo a scopo informativo e non sostituisce il parere medico
+                    professionale.</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Modal di conferma per il reset -->
+    <div class="modal" id="reset-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Conferma Reset</h3>
+                <button class="close-modal" id="close-modal">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-icon warning">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path
+                            d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z">
+                        </path>
+                        <line x1="12" y1="9" x2="12" y2="13"></line>
+                        <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                    </svg>
+                </div>
+                <p>Sei sicuro di voler azzerare il contatore dell'acqua?</p>
+                <p class="modal-subtext">Questa azione non può essere annullata.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" id="cancel-reset">Annulla</button>
+                <button class="btn-danger" id="confirm-reset">Azzera</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal di congratulazioni per il 100% -->
+    <div class="modal" id="success-modal">
+        <div class="modal-content success">
+            <div class="modal-header">
+                <h3>Congratulazioni!</h3>
+                <button class="close-modal" id="close-success-modal">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-icon success">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                    </svg>
+                </div>
+                <p>Hai raggiunto il tuo obiettivo di idratazione giornaliero!</p>
+                <p class="modal-subtext">Continua così per mantenere una buona idratazione.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-success" id="close-success-btn">Fantastico!</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

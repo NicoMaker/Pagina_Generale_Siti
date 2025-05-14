@@ -15,6 +15,6 @@
 - **[Pasqua](Pasqua/Readme.md)** [2 Progetti]
 - **[Pokemon](https://github.com/NicoMaker/PokeApi)** [1 Progetto]
 - **[Random](Random/Readme.md)** [12 Progetti]
-- **[Salute](Salute/Readme.md)** [1 Progetto]
+- **[Salute](Salute/Readme.md)** [2 Progetti]
 - **[Storia](Storia/Readme.md)** [1 Progetto]
 - **[Temperatura](Temperatura/Readme.md)** [1 Progetto]
