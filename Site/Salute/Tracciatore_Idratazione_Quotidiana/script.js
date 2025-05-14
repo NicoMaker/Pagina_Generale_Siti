@@ -1,13 +1,11 @@
 document.addEventListener("DOMContentLoaded", () => {
     // Elementi DOM
-    const goalValue = document.getElementById("goal-value")
     const goalDisplay = document.getElementById("goal-display")
+    const headerGoalDisplay = document.getElementById("header-goal-display")
     const currentValue = document.getElementById("current-value")
     const percentageDisplay = document.getElementById("percentage")
     const percentageCircle = document.getElementById("percentage-circle")
     const waterLevel = document.getElementById("water-level")
-    const increaseGoalBtn = document.getElementById("increase-goal")
-    const decreaseGoalBtn = document.getElementById("decrease-goal")
     const waterButtons = document.querySelectorAll(".water-btn")
     const customAmountInput = document.getElementById("custom-amount")
     const addCustomBtn = document.getElementById("add-custom")
@@ -16,6 +14,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const newTipBtn = document.getElementById("new-tip")
     const completionBadge = document.getElementById("completion-badge")
     const confettiContainer = document.getElementById("confetti-container")
+
+    // Elementi per l'impostazione manuale dell'obiettivo
+    const manualGoalInput = document.getElementById("manual-goal-input")
+    const saveManualGoalBtn = document.getElementById("save-manual-goal")
+    const goalSaveIndicator = document.getElementById("goal-save-indicator")
+    const presetButtons = document.querySelectorAll(".preset-btn")
 
     // Elementi Modal
     const resetModal = document.getElementById("reset-modal")
@@ -26,11 +30,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const closeSuccessModalBtn = document.getElementById("close-success-modal")
     const closeSuccessBtn = document.getElementById("close-success-btn")
 
-    // Elementi per il testo modificabile
-    const editableText = document.getElementById("editable-text")
-    const toggleEditBtn = document.getElementById("toggle-edit-btn")
-    const saveIndicator = document.getElementById("save-indicator")
-
     // Variabili di stato
     let goal = 2000 // ml
     let current = 0 // ml
@@ -38,14 +37,11 @@ document.addEventListener("DOMContentLoaded", () => {
     let goalReachedAnimationShown = false
     let waterHistory = {} // Storico dell'acqua per data
 
-    // Chiave per localStorage del testo modificabile
-    const EDITABLE_TEXT_KEY = "userCustomText"
+    // Chiave per localStorage
+    const GOAL_KEY = "userGoal"
 
     // Carica i dati salvati se disponibili
     loadData()
-
-    // Carica il testo personalizzato
-    loadSavedText()
 
     // Aggiorna l'interfaccia
     updateUI()
@@ -53,37 +49,32 @@ document.addEventListener("DOMContentLoaded", () => {
     // Mostra un consiglio casuale
     showRandomTip()
 
-    // Event listeners per l'obiettivo
-    increaseGoalBtn.addEventListener("click", () => {
-        goal += 100
-        updateUI()
-        saveData()
-
-        // Aggiungi animazione al pulsante
-        increaseGoalBtn.classList.add("pulse")
-        setTimeout(() => {
-            increaseGoalBtn.classList.remove("pulse")
-        }, 300)
+    // Event listeners per l'impostazione manuale dell'obiettivo
+    saveManualGoalBtn.addEventListener("click", () => {
+        saveManualGoal()
     })
 
-    decreaseGoalBtn.addEventListener("click", () => {
-        if (goal > 100) {
-            goal -= 100
-
-            // Se il consumo attuale supera il nuovo obiettivo, limitalo al nuovo obiettivo
-            if (current > goal) {
-                current = goal
-            }
-
-            updateUI()
-            saveData()
-
-            // Aggiungi animazione al pulsante
-            decreaseGoalBtn.classList.add("pulse")
-            setTimeout(() => {
-                decreaseGoalBtn.classList.remove("pulse")
-            }, 300)
+    manualGoalInput.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") {
+            saveManualGoal()
         }
+    })
+
+    // Event listeners per i pulsanti preset
+    presetButtons.forEach(button => {
+        button.addEventListener("click", function () {
+            const presetValue = parseInt(this.dataset.value)
+            manualGoalInput.value = presetValue
+
+            // Rimuovi la classe active da tutti i pulsanti
+            presetButtons.forEach(btn => btn.classList.remove("active"))
+
+            // Aggiungi la classe active al pulsante cliccato
+            this.classList.add("active")
+
+            // Salva l'obiettivo
+            saveManualGoal()
+        })
     })
 
     // Event listeners per l'acqua
@@ -177,68 +168,33 @@ document.addEventListener("DOMContentLoaded", () => {
         showRandomTip()
 
         // Aggiungi animazione al pulsante
-        newTipBtn.classList.add('pulse")st.add("pulse')
+        newTipBtn.classList.add("pulse")
         setTimeout(() => {
             newTipBtn.classList.remove("pulse")
         }, 300)
     })
 
-    // Event listeners per il testo modificabile
-    toggleEditBtn.addEventListener("click", () => {
-        const isEditable = editableText.contentEditable === "true"
+    // Funzione per salvare l'obiettivo manuale
+    function saveManualGoal() {
+        const newGoal = Number.parseInt(manualGoalInput.value)
+        if (newGoal && newGoal > 0) {
+            goal = newGoal
+            updateUI()
+            saveData()
 
-        if (isEditable) {
-            // Disabilita la modifica
-            editableText.contentEditable = "false"
+            // Mostra l'indicatore di salvataggio
+            goalSaveIndicator.classList.add("show")
 
-            // Salva il testo
-            saveText()
+            // Aggiungi animazione al valore nell'header
+            headerGoalDisplay.classList.add("pulse")
 
-            // Aggiungi animazione al pulsante
-            toggleEditBtn.classList.add("pulse")
+            // Nascondi l'indicatore dopo 3 secondi
             setTimeout(() => {
-                toggleEditBtn.classList.remove("pulse")
-            }, 300)
-        } else {
-            // Abilita la modifica
-            editableText.contentEditable = "true"
-
-            // Se c'è un placeholder, rimuovilo quando si inizia a modificare
-            const placeholder = editableText.querySelector(".editable-text-placeholder")
-            if (placeholder) {
-                editableText.innerHTML = ""
-            }
-
-            // Focus sull'elemento
-            editableText.focus()
-
-            // Aggiungi animazione al pulsante
-            toggleEditBtn.classList.add("pulse")
-            setTimeout(() => {
-                toggleEditBtn.classList.remove("pulse")
-            }, 300)
+                goalSaveIndicator.classList.remove("show")
+                headerGoalDisplay.classList.remove("pulse")
+            }, 3000)
         }
-    })
-
-    // Event listener per il testo modificabile
-    editableText.addEventListener("input", () => {
-        // Salva automaticamente dopo un breve ritardo
-        clearTimeout(window.saveTimeout)
-        window.saveTimeout = setTimeout(() => {
-            saveText()
-        }, 1000)
-    })
-
-    // Event listener per il blur (quando si clicca fuori)
-    editableText.addEventListener("blur", () => {
-        if (editableText.contentEditable === "true") {
-            // Disabilita la modifica
-            editableText.contentEditable = "false"
-
-            // Salva il testo
-            saveText()
-        }
-    })
+    }
 
     // Funzioni per l'acqua
     function addWater(amount) {
@@ -288,8 +244,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function updateUI() {
-        goalValue.textContent = goal
         goalDisplay.textContent = goal
+        headerGoalDisplay.textContent = goal + " ml"
         currentValue.textContent = current
 
         const percentage = Math.min(Math.round((current / goal) * 100), 100)
@@ -337,11 +293,28 @@ document.addEventListener("DOMContentLoaded", () => {
         // Salva lo storico completo
         localStorage.setItem("waterHistory", JSON.stringify(waterHistory))
         localStorage.setItem("waterDate", currentDate)
+
+        // Salva l'obiettivo personalizzato
+        localStorage.setItem(GOAL_KEY, goal.toString())
     }
 
     function loadData() {
         const savedDate = localStorage.getItem("waterDate")
         const currentDate = new Date().toDateString()
+
+        // Carica l'obiettivo personalizzato
+        const savedGoal = localStorage.getItem(GOAL_KEY)
+        if (savedGoal) {
+            goal = parseInt(savedGoal)
+            manualGoalInput.value = goal
+
+            // Evidenzia il pulsante preset corrispondente se esiste
+            presetButtons.forEach(btn => {
+                if (parseInt(btn.dataset.value) === goal) {
+                    btn.classList.add("active")
+                }
+            })
+        }
 
         // Carica lo storico completo
         const savedHistory = localStorage.getItem("waterHistory")
@@ -356,16 +329,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Se abbiamo dati per oggi, caricali
         if (waterHistory[currentDate]) {
-            goal = waterHistory[currentDate].goal
             current = waterHistory[currentDate].current
         }
-        // Se non abbiamo dati per oggi ma abbiamo dati per ieri, copia l'obiettivo ma azzera il consumo
+        // Se non abbiamo dati per oggi ma abbiamo dati per ieri, azzera il consumo
         else if (savedDate && savedDate !== currentDate) {
-            // Usa l'ultimo obiettivo impostato
-            if (waterHistory[savedDate]) {
-                goal = waterHistory[savedDate].goal
-            }
-
             // Inizializza i dati per oggi
             waterHistory[currentDate] = {
                 goal: goal,
@@ -377,51 +344,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Salva i dati aggiornati
         saveData()
-    }
-
-    // Funzioni per il testo modificabile
-    function loadSavedText() {
-        const savedText = localStorage.getItem(EDITABLE_TEXT_KEY)
-
-        if (savedText) {
-            editableText.innerHTML = savedText
-        }
-    }
-
-    function saveText() {
-        const text = editableText.innerHTML.trim()
-
-        // Se il testo è vuoto, mostra il placeholder
-        if (text === "" || text === "<br>") {
-            editableText.innerHTML =
-                '<span class="editable-text-placeholder">Clicca sull\'icona di modifica per impostare il tuo obiettivo personale...</span>'
-            localStorage.removeItem(EDITABLE_TEXT_KEY)
-        } else {
-            // Assicurati che il testo non contenga solo tag HTML vuoti
-            const tempDiv = document.createElement("div")
-            tempDiv.innerHTML = text
-            const textContent = tempDiv.textContent.trim()
-
-            if (textContent === "") {
-                editableText.innerHTML =
-                    '<span class="editable-text-placeholder">Clicca sull\'icona di modifica per impostare il tuo obiettivo personale...</span>'
-                localStorage.removeItem(EDITABLE_TEXT_KEY)
-            } else {
-                localStorage.setItem(EDITABLE_TEXT_KEY, text)
-
-                // Mostra l'indicatore di salvataggio
-                saveIndicator.classList.add("show")
-
-                // Aggiungi animazione al testo
-                editableText.classList.add("save-animation")
-
-                // Nascondi l'indicatore dopo 2 secondi
-                setTimeout(() => {
-                    saveIndicator.classList.remove("show")
-                    editableText.classList.remove("save-animation")
-                }, 2000)
-            }
-        }
     }
 
     function showRandomTip() {
@@ -441,6 +363,8 @@ document.addEventListener("DOMContentLoaded", () => {
             "Il tè e le tisane non zuccherate contribuiscono all'idratazione quotidiana.",
             "Molti alimenti come frutta e verdura contengono acqua che contribuisce all'idratazione.",
             "Bere acqua può aiutare a prevenire i calcoli renali.",
+            "Imposta il tuo obiettivo di idratazione in base al tuo peso corporeo e livello di attività.",
+            "Un adulto dovrebbe bere circa 30-35 ml di acqua per kg di peso corporeo al giorno.",
         ]
 
         // Ottieni il consiglio attuale per evitare di mostrare lo stesso due volte
