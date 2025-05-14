@@ -26,6 +26,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const closeSuccessModalBtn = document.getElementById("close-success-modal")
     const closeSuccessBtn = document.getElementById("close-success-btn")
 
+    // Elementi per il testo modificabile
+    const editableText = document.getElementById("editable-text")
+    const toggleEditBtn = document.getElementById("toggle-edit-btn")
+    const saveIndicator = document.getElementById("save-indicator")
+
     // Variabili di stato
     let goal = 2000 // ml
     let current = 0 // ml
@@ -33,8 +38,14 @@ document.addEventListener("DOMContentLoaded", () => {
     let goalReachedAnimationShown = false
     let waterHistory = {} // Storico dell'acqua per data
 
+    // Chiave per localStorage del testo modificabile
+    const EDITABLE_TEXT_KEY = "userCustomText"
+
     // Carica i dati salvati se disponibili
     loadData()
+
+    // Carica il testo personalizzato
+    loadSavedText()
 
     // Aggiorna l'interfaccia
     updateUI()
@@ -42,7 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Mostra un consiglio casuale
     showRandomTip()
 
-    // Event listeners
+    // Event listeners per l'obiettivo
     increaseGoalBtn.addEventListener("click", () => {
         goal += 100
         updateUI()
@@ -58,6 +69,12 @@ document.addEventListener("DOMContentLoaded", () => {
     decreaseGoalBtn.addEventListener("click", () => {
         if (goal > 100) {
             goal -= 100
+
+            // Se il consumo attuale supera il nuovo obiettivo, limitalo al nuovo obiettivo
+            if (current > goal) {
+                current = goal
+            }
+
             updateUI()
             saveData()
 
@@ -69,6 +86,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     })
 
+    // Event listeners per l'acqua
     waterButtons.forEach((button) => {
         button.addEventListener("click", function () {
             const amount = Number.parseInt(this.dataset.ml)
@@ -113,6 +131,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     })
 
+    // Event listener per il reset
     resetBtn.addEventListener("click", () => {
         // Mostra il modal di conferma invece di usare confirm()
         showModal(resetModal)
@@ -153,17 +172,75 @@ document.addEventListener("DOMContentLoaded", () => {
         hideModal(successModal)
     })
 
+    // Event listener per i consigli
     newTipBtn.addEventListener("click", () => {
         showRandomTip()
 
         // Aggiungi animazione al pulsante
-        newTipBtn.classList.add("pulse")
+        newTipBtn.classList.add('pulse")st.add("pulse')
         setTimeout(() => {
             newTipBtn.classList.remove("pulse")
         }, 300)
     })
 
-    // Funzioni
+    // Event listeners per il testo modificabile
+    toggleEditBtn.addEventListener("click", () => {
+        const isEditable = editableText.contentEditable === "true"
+
+        if (isEditable) {
+            // Disabilita la modifica
+            editableText.contentEditable = "false"
+
+            // Salva il testo
+            saveText()
+
+            // Aggiungi animazione al pulsante
+            toggleEditBtn.classList.add("pulse")
+            setTimeout(() => {
+                toggleEditBtn.classList.remove("pulse")
+            }, 300)
+        } else {
+            // Abilita la modifica
+            editableText.contentEditable = "true"
+
+            // Se c'è un placeholder, rimuovilo quando si inizia a modificare
+            const placeholder = editableText.querySelector(".editable-text-placeholder")
+            if (placeholder) {
+                editableText.innerHTML = ""
+            }
+
+            // Focus sull'elemento
+            editableText.focus()
+
+            // Aggiungi animazione al pulsante
+            toggleEditBtn.classList.add("pulse")
+            setTimeout(() => {
+                toggleEditBtn.classList.remove("pulse")
+            }, 300)
+        }
+    })
+
+    // Event listener per il testo modificabile
+    editableText.addEventListener("input", () => {
+        // Salva automaticamente dopo un breve ritardo
+        clearTimeout(window.saveTimeout)
+        window.saveTimeout = setTimeout(() => {
+            saveText()
+        }, 1000)
+    })
+
+    // Event listener per il blur (quando si clicca fuori)
+    editableText.addEventListener("blur", () => {
+        if (editableText.contentEditable === "true") {
+            // Disabilita la modifica
+            editableText.contentEditable = "false"
+
+            // Salva il testo
+            saveText()
+        }
+    })
+
+    // Funzioni per l'acqua
     function addWater(amount) {
         const previousPercentage = Math.min(Math.round((current / goal) * 100), 100)
         current += amount
@@ -254,7 +331,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // Salva i dati per la data corrente
         waterHistory[currentDate] = {
             goal: goal,
-            current: current
+            current: current,
         }
 
         // Salva lo storico completo
@@ -269,7 +346,12 @@ document.addEventListener("DOMContentLoaded", () => {
         // Carica lo storico completo
         const savedHistory = localStorage.getItem("waterHistory")
         if (savedHistory) {
-            waterHistory = JSON.parse(savedHistory)
+            try {
+                waterHistory = JSON.parse(savedHistory)
+            } catch (e) {
+                console.error("Errore nel parsing dello storico:", e)
+                waterHistory = {}
+            }
         }
 
         // Se abbiamo dati per oggi, caricali
@@ -287,7 +369,7 @@ document.addEventListener("DOMContentLoaded", () => {
             // Inizializza i dati per oggi
             waterHistory[currentDate] = {
                 goal: goal,
-                current: 0
+                current: 0,
             }
 
             current = 0
@@ -295,6 +377,51 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Salva i dati aggiornati
         saveData()
+    }
+
+    // Funzioni per il testo modificabile
+    function loadSavedText() {
+        const savedText = localStorage.getItem(EDITABLE_TEXT_KEY)
+
+        if (savedText) {
+            editableText.innerHTML = savedText
+        }
+    }
+
+    function saveText() {
+        const text = editableText.innerHTML.trim()
+
+        // Se il testo è vuoto, mostra il placeholder
+        if (text === "" || text === "<br>") {
+            editableText.innerHTML =
+                '<span class="editable-text-placeholder">Clicca sull\'icona di modifica per impostare il tuo obiettivo personale...</span>'
+            localStorage.removeItem(EDITABLE_TEXT_KEY)
+        } else {
+            // Assicurati che il testo non contenga solo tag HTML vuoti
+            const tempDiv = document.createElement("div")
+            tempDiv.innerHTML = text
+            const textContent = tempDiv.textContent.trim()
+
+            if (textContent === "") {
+                editableText.innerHTML =
+                    '<span class="editable-text-placeholder">Clicca sull\'icona di modifica per impostare il tuo obiettivo personale...</span>'
+                localStorage.removeItem(EDITABLE_TEXT_KEY)
+            } else {
+                localStorage.setItem(EDITABLE_TEXT_KEY, text)
+
+                // Mostra l'indicatore di salvataggio
+                saveIndicator.classList.add("show")
+
+                // Aggiungi animazione al testo
+                editableText.classList.add("save-animation")
+
+                // Nascondi l'indicatore dopo 2 secondi
+                setTimeout(() => {
+                    saveIndicator.classList.remove("show")
+                    editableText.classList.remove("save-animation")
+                }, 2000)
+            }
+        }
     }
 
     function showRandomTip() {

@@ -1067,3 +1067,93 @@ footer {
     opacity: 0;
   }
 }
+
+/* Pulse animation for buttons */
+.pulse {
+  animation: pulse 0.3s ease-out;
+}
+
+/* Editable text styles */
+.editable-text-wrapper {
+  position: relative;
+}
+
+.editable-text-content {
+  min-height: 100px;
+  padding: 1rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  background-color: var(--primary-lighter);
+  transition: var(--transition);
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.editable-text-content:hover {
+  border-color: var(--primary-light);
+}
+
+.editable-text-content:focus {
+  outline: none;
+  border-color: var(--primary);
+  background-color: white;
+  box-shadow: 0 0 0 2px var(--primary-light);
+}
+
+.editable-text-placeholder {
+  color: var(--text-light);
+  font-style: italic;
+}
+
+.edit-button {
+  background: none;
+  border: none;
+  color: var(--primary);
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.edit-button:hover {
+  color: var(--primary-dark);
+  transform: rotate(15deg);
+}
+
+.edit-button svg {
+  width: 20px;
+  height: 20px;
+}
+
+.save-indicator {
+  position: absolute;
+  bottom: -25px;
+  right: 0;
+  font-size: 0.8rem;
+  color: var(--success);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.save-indicator.show {
+  opacity: 1;
+}
+
+/* Animazione per il salvataggio */
+@keyframes save-pulse {
+  0% {
+    background-color: var(--primary-lighter);
+  }
+  50% {
+    background-color: rgba(16, 185, 129, 0.2);
+  }
+  100% {
+    background-color: var(--primary-lighter);
+  }
+}
+
+.save-animation {
+  animation: save-pulse 1s ease;
+}
