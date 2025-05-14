@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const closeSuccessBtn = document.getElementById("close-success-btn")
 
     // Variabili di stato
-    let goal = 3000 // ml
+    let goal = 2000 // ml
     let current = 0 // ml
     let goalReached = false
     let goalReachedAnimationShown = false
