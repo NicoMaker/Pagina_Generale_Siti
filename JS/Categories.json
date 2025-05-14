@@ -329,8 +329,8 @@
         "link": "Site/Salute/Calcolo_peso_altezza_ideale/index.html"
       },
       {
-        "name":"Tracciatore Idratazione Quotidiana",
-        "link":"Site/Salute/Tracciatore_Idratazione_Quotidiana/index.html"
+        "name": "Tracciatore Idratazione Quotidiana",
+        "link": "Site/Salute/Tracciatore_Idratazione_Quotidiana/index.html"
       }
     ],
     "Storia": [
@@ -343,6 +343,10 @@
       {
         "name": "Conversioni Temperatura",
         "link": "Site/Temperatura/Conversioni_Temp/index.html"
+      },
+      {
+        "name": "Meteo",
+        "link": "Site/Temperatura/Meteo/index.html"
       }
     ],
     "Astronomia": [
