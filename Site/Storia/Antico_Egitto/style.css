@@ -375,7 +375,7 @@ header.scrolled {
 
 .timeline-item {
   width: 100%;
-  margin-bottom: 4rem;
+  margin-bottom: 6rem; /* Aumentato per dare più spazio tra gli elementi */
   position: relative;
 }
 
@@ -402,6 +402,7 @@ header.scrolled {
   z-index: 2;
 }
 
+/* Stile migliorato per le date della timeline */
 .timeline-date {
   color: #ffd700; /* Oro più brillante */
   background-color: rgba(
@@ -419,8 +420,11 @@ header.scrolled {
   border: 2px solid #ffd700; /* Bordo dorato */
   text-shadow: 0 0 5px rgba(0, 0, 0, 0.8); /* Ombra testo per leggibilità */
   position: absolute;
-  top: 0;
+  top: -40px; /* Spostato più in alto per fare spazio al titolo */
   font-family: var(--font-heading);
+  min-width: 150px; /* Larghezza minima per garantire che il testo sia visibile */
+  text-align: center; /* Centrato per estetica */
+  white-space: nowrap; /* Impedisce il wrapping del testo */
 }
 
 .timeline-item:nth-child(odd) .timeline-date {
@@ -441,18 +445,47 @@ header.scrolled {
   background-color: rgba(0, 0, 0, 0.7);
   color: var(--color-white);
   border: 1px solid var(--color-gold);
+  border-radius: 8px; /* Bordo più arrotondato */
+  padding: 1.5rem;
+  position: relative;
   z-index: 2;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  margin-top: 20px; /* Spazio aggiunto sopra il contenuto per evitare sovrapposizioni */
 }
 
 .timeline-content h3 {
   color: var(--color-gold);
+  font-size: 1.4rem; /* Testo più grande */
+  margin-bottom: 0.8rem;
+  text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.timeline-content p {
+  font-size: 1.1rem; /* Testo più grande */
+  line-height: 1.6;
 }
 
 .timeline-item:nth-child(odd) .timeline-content::before {
+  content: "";
+  position: absolute;
+  top: 20px;
+  right: -15px;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 10px 0 10px 15px;
   border-color: transparent transparent transparent rgba(0, 0, 0, 0.7);
 }
 
 .timeline-item:nth-child(even) .timeline-content::before {
+  content: "";
+  position: absolute;
+  top: 20px;
+  left: -15px;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 10px 15px 10px 0;
   border-color: transparent rgba(0, 0, 0, 0.7) transparent transparent;
 }
 
@@ -848,6 +881,7 @@ footer {
   .timeline-item:nth-child(even) {
     padding: 0 0 0 70px;
     text-align: left;
+    margin-bottom: 5rem; /* Spazio aumentato tra gli elementi */
   }
 
   .timeline::before {
@@ -861,17 +895,25 @@ footer {
   .timeline-item:nth-child(odd) .timeline-date,
   .timeline-item:nth-child(even) .timeline-date {
     left: 0;
-    top: -40px; /* Aumentato per evitare sovrapposizioni */
+    top: -50px; /* Spostato più in alto per evitare sovrapposizioni */
     right: auto;
-    font-size: 1.1rem; /* Leggermente più piccolo su mobile */
-    padding: 0.4rem 0.8rem; /* Padding leggermente ridotto */
+    font-size: 1.1rem;
+    padding: 0.4rem 0.8rem;
+    width: auto; /* Larghezza automatica su mobile */
+    min-width: 0; /* Rimuove la larghezza minima su mobile */
+    max-width: 100%; /* Assicura che non superi la larghezza del contenitore */
+    white-space: normal; /* Permette il wrapping del testo su mobile */
   }
 
   .timeline-item:nth-child(odd) .timeline-content::before {
     right: auto;
     left: -15px;
     border-width: 10px 15px 10px 0;
-    border-color: transparent var(--color-white) transparent transparent;
+    border-color: transparent rgba(0, 0, 0, 0.7) transparent transparent;
+  }
+
+  .timeline-content {
+    margin-top: 30px; /* Spazio aumentato sopra il contenuto su mobile */
   }
 
   .footer-content {
@@ -933,6 +975,14 @@ footer {
   .slider-container {
     height: 400px;
   }
+
+  .timeline-content h3 {
+    font-size: 1.3rem; /* Testo leggermente più piccolo su mobile */
+  }
+
+  .timeline-content p {
+    font-size: 1rem; /* Testo leggermente più piccolo su mobile */
+  }
 }
 
 @media (max-width: 480px) {
@@ -973,6 +1023,15 @@ footer {
   .filter-btn {
     width: 80%;
     margin-bottom: 0.5rem;
+  }
+
+  .timeline-item {
+    margin-bottom: 4rem; /* Spazio ridotto su schermi molto piccoli */
+  }
+
+  .timeline-date {
+    font-size: 1rem; /* Testo più piccolo su schermi molto piccoli */
+    padding: 0.3rem 0.6rem;
   }
 }
 
@@ -1200,16 +1259,4 @@ section.active-section {
 section.active-section .section-title {
   transform: scale(1.05);
   text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
-}
-
-/* Assicurarsi che le date siano visibili in modalità mobile */
-@media (max-width: 1024px) {
-  .timeline-item:nth-child(odd) .timeline-date,
-  .timeline-item:nth-child(even) .timeline-date {
-    left: 0;
-    top: -40px; /* Aumentato per evitare sovrapposizioni */
-    right: auto;
-    font-size: 1.1rem; /* Leggermente più piccolo su mobile */
-    padding: 0.4rem 0.8rem; /* Padding leggermente ridotto */
-  }
 }
