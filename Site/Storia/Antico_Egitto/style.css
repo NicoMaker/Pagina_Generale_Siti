@@ -1090,173 +1090,6 @@ section::before {
   color: var(--color-gold);
 }
 
-/* Modificare lo stile per le scritte arabe e italiane per migliorare la leggibilità */
-.arabic-title {
-  font-family: var(--font-heading);
-  color: var(--color-gold);
-  margin-bottom: 0.5rem;
-  font-size: 2.2rem;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
-  background-color: rgba(0, 0, 0, 0.5);
-  padding: 0.5rem 1rem;
-  border-radius: 5px;
-  display: inline-block;
-}
-
-.translation {
-  font-style: italic;
-  color: var(--color-white);
-  font-size: 1.3rem;
-  background-color: rgba(0, 0, 0, 0.6);
-  padding: 0.3rem 0.8rem;
-  border-radius: 4px;
-  margin-bottom: 1rem;
-  display: inline-block;
-  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
-}
-
-/* Aggiungere lo stesso sfondo a tutte le sezioni */
-section {
-  padding: 5rem 2rem;
-  position: relative;
-  background-image: url("https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/All_Gizah_Pyramids.jpg/1280px-All_Gizah_Pyramids.jpg");
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-}
-
-section::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.7);
-  z-index: 0;
-}
-
-/* Modificare i contenitori delle sezioni per garantire la leggibilità */
-.timeline-section,
-.faraoni-section,
-.divinita-section,
-.monumenti-section,
-.gallery-section,
-.intro {
-  color: var(--color-white);
-}
-
-.section-title {
-  position: relative;
-  z-index: 1;
-  color: var(--color-gold);
-}
-
-.timeline,
-.cards-container,
-.gods-container,
-.monuments-slider,
-.gallery-container,
-.papyrus-container {
-  position: relative;
-  z-index: 1;
-}
-
-/* Modificare lo stile della timeline per adattarsi al nuovo sfondo */
-.timeline::before {
-  background: linear-gradient(
-    to bottom,
-    transparent,
-    var(--color-gold),
-    var(--color-gold),
-    transparent
-  );
-  z-index: 1;
-}
-
-.timeline-dot {
-  z-index: 2;
-  background-color: var(--color-gold);
-  border: 4px solid rgba(0, 0, 0, 0.5);
-}
-
-.timeline-date {
-  color: var(--color-gold);
-  background-color: rgba(0, 0, 0, 0.7);
-  padding: 0.3rem 0.6rem;
-  border-radius: 4px;
-  z-index: 2;
-}
-
-.timeline-content {
-  background-color: rgba(0, 0, 0, 0.7);
-  color: var(--color-white);
-  border: 1px solid var(--color-gold);
-  z-index: 2;
-}
-
-.timeline-content h3 {
-  color: var(--color-gold);
-}
-
-.timeline-item:nth-child(odd) .timeline-content::before {
-  border-color: transparent transparent transparent rgba(0, 0, 0, 0.7);
-}
-
-.timeline-item:nth-child(even) .timeline-content::before {
-  border-color: transparent rgba(0, 0, 0, 0.7) transparent transparent;
-}
-
-/* Modificare lo stile delle card per adattarsi al nuovo sfondo */
-.card {
-  background-color: rgba(0, 0, 0, 0.7);
-  border: 1px solid var(--color-gold);
-}
-
-.card-content h3 {
-  color: var(--color-gold);
-}
-
-.card-content p {
-  color: var(--color-white);
-}
-
-/* Modificare lo stile delle divinità per adattarsi al nuovo sfondo */
-.god-card h3 {
-  color: var(--color-gold);
-}
-
-.god-card p {
-  color: var(--color-white);
-  background-color: rgba(0, 0, 0, 0.7);
-  padding: 0.3rem 0.6rem;
-  border-radius: 4px;
-}
-
-/* Modificare lo stile della galleria per adattarsi al nuovo sfondo */
-.filter-btn {
-  background-color: rgba(0, 0, 0, 0.7);
-  border: 2px solid var(--color-gold);
-  color: var(--color-gold);
-}
-
-.filter-btn:hover,
-.filter-btn.active {
-  background-color: var(--color-gold);
-  color: var(--color-black);
-}
-
-/* Modificare lo stile del papiro per adattarsi al nuovo sfondo */
-.papyrus-container {
-  background-color: rgba(0, 0, 0, 0.7);
-  border: 1px solid var(--color-gold);
-  color: var(--color-white);
-}
-
-.papyrus-container h2 {
-  color: var(--color-gold);
-}
-
 /* Modificare lo stile della galleria per garantire che il testo sia sempre bianco */
 .gallery-overlay {
   position: absolute;
@@ -1281,6 +1114,70 @@ section::before {
   transform: translateY(0);
 }
 
-.timeline-date{
+.timeline-date {
   color: gold;
+}
+
+/* Sostituire la sezione "Stili per la sezione attiva" con questo codice più moderno */
+
+/* Stili per la sezione attiva */
+section.active-section::before {
+  background-color: rgba(0, 0, 0, 0.75);
+  transition: background-color 0.5s ease;
+}
+
+section.active-section {
+  transition: all 0.5s ease;
+}
+
+/* Colori moderni e più visibili per ogni sezione quando attiva */
+#home.active-section::before {
+  background-color: rgba(41, 128, 185, 0.85); /* Blu moderno */
+}
+
+#introduzione.active-section::before {
+  background-color: rgba(192, 57, 43, 0.85); /* Rosso moderno */
+}
+
+#storia.active-section::before {
+  background-color: rgba(142, 68, 173, 0.85); /* Viola moderno */
+}
+
+#faraoni.active-section::before {
+  background-color: rgba(243, 156, 18, 0.85); /* Arancione dorato */
+}
+
+#divinita.active-section::before {
+  background-color: rgba(22, 160, 133, 0.85); /* Verde acqua */
+}
+
+#monumenti.active-section::before {
+  background-color: rgba(211, 84, 0, 0.85); /* Arancione bruciato */
+}
+
+#galleria.active-section::before {
+  background-color: rgba(52, 73, 94, 0.85); /* Blu ardesia */
+}
+
+/* Migliorare lo stile per i link di navigazione attivi */
+.nav-links a.active-link {
+  color: #f39c12; /* Oro più brillante */
+  font-weight: bold;
+}
+
+.nav-links a.active-link::after {
+  width: 100%;
+  height: 3px; /* Linea più spessa */
+  background-color: #f39c12; /* Oro più brillante */
+}
+
+/* Aggiungere un bordo luminoso alle sezioni attive */
+section.active-section {
+  box-shadow: inset 0 0 30px rgba(255, 255, 255, 0.2);
+}
+
+/* Migliorare la visibilità dei titoli nelle sezioni attive */
+section.active-section .section-title {
+  transform: scale(1.05);
+  text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
 }
