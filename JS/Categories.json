@@ -249,12 +249,16 @@
         "link": "Site/Opzioni_Con_Le_Frasi/Criptazione_Cesare/index.html"
       },
       {
-        "name": "Stampa Frase Invertita",
-        "link": "Site/Opzioni_Con_Le_Frasi/Stampa_Frase_Invertita/index.html"
+        "name": "Invertitore di Parole",
+        "link": "Site/Opzioni_Con_Le_Frasi/Invertitore_di_Parole/index.html"
       },
       {
         "name": "Generatore di Anagrammi",
         "link": "Site/Opzioni_Con_Le_Frasi/Generatore_di_Anagrammi/index.html"
+      },
+      {
+        "name": "Parole Specchio",
+        "link": "Site/Opzioni_Con_Le_Frasi/Parole_Specchio/index.html"
       }
     ],
     "Pasqua": [
