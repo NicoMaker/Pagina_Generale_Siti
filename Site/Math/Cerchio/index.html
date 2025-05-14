@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geometria Circolare | Esplora il Mondo dei Cerchi</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;1,400&display=swap"
+        rel="stylesheet">
+
+    <link rel="icon"
+        href="https://th.bing.com/th/id/R.14066470b66a80e7c9937941de9b254e?rik=%2fwiDo77YDrwF9w&riu=http%3a%2f%2fwww.matemania.it%2fIMG%2fpng%2farea_cerchio.png&ehk=ey3ylUbfZKuglziWy1mKBwLK5vG0kGwzChysQcuwa%2bw%3d&risl=&pid=ImgRaw&r=0"
+        type="image/jpg" />
+</head>
+
+<body>
+    <header>
+        <nav>
+            <a href="#hero" class="logo-link">
+                <div class="logo">
+                    <div class="logo-icon"></div>
+                    <span>Geometria Circolare</span>
+                </div>
+            </a>
+            <div class="menu-toggle" id="menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="#introduzione" class="nav-item">Introduzione</a></li>
+                <li><a href="#proprieta" class="nav-item">Proprietà</a></li>
+                <li><a href="#formule" class="nav-item">Formule</a></li>
+                <li><a href="#interattivo" class="nav-item">Interattivo</a></li>
+                <li><a href="#applicazioni" class="nav-item">Applicazioni</a></li>
+            </ul>
+        </nav>
+        <div class="section-indicator">
+            <span id="current-section">Sezione attuale: Home</span>
+        </div>
+    </header>
+
+    <main>
+        <section id="hero">
+            <div class="hero-content">
+                <h1>Il Mondo dei <span class="highlight">Cerchi</span></h1>
+                <p>Scopri la bellezza e la matematica dietro le forme circolari attraverso visualizzazioni interattive e
+                    spiegazioni intuitive</p>
+                <div class="hero-buttons">
+                    <button class="btn-primary">Inizia ad Esplorare</button>
+                    <a href="#formule" class="btn-secondary-outline">Scopri le Formule</a>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="circle-animation">
+                    <div class="circle-pulse"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="introduzione" class="container section">
+            <div class="section-header">
+                <h2>Introduzione ai Cerchi</h2>
+                <div class="section-divider"></div>
+            </div>
+            <div class="content-wrapper">
+                <div class="text-content">
+                    <p>Un cerchio è una figura geometrica piana costituita da tutti i punti equidistanti da un punto
+                        fisso chiamato centro. La distanza dal centro a qualsiasi punto sul cerchio è chiamata raggio.
+                    </p>
+                    <p>I cerchi sono tra le forme più perfette in natura e hanno affascinato matematici, artisti e
+                        filosofi per millenni. La loro simmetria e proprietà matematiche li rendono fondamentali in
+                        molti campi della scienza e dell'arte.</p>
+                    <div class="fact-box">
+                        <div class="fact-icon">💡</div>
+                        <p>Il rapporto tra la circonferenza e il diametro di qualsiasi cerchio è sempre uguale a π (pi
+                            greco), una costante matematica approssimata a 3,14159...</p>
+                    </div>
+                </div>
+                <div class="image-content">
+                    <div class="circle-demo">
+                        <div class="circle">
+                            <div class="center-point"></div>
+                            <div class="radius-line"></div>
+                        </div>
+                        <div class="labels">
+                            <span class="label-center">Centro</span>
+                            <span class="label-radius">Raggio</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="proprieta" class="container alternate section">
+            <div class="section-header">
+                <h2>Proprietà dei Cerchi</h2>
+                <div class="section-divider"></div>
+            </div>
+            <div class="cards-container">
+                <div class="card">
+                    <div class="card-icon">
+                        <div class="mini-circle"></div>
+                    </div>
+                    <h3>Simmetria</h3>
+                    <p>Un cerchio ha infiniti assi di simmetria che passano per il suo centro, rendendolo una delle
+                        forme più perfette in geometria.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">
+                        <div class="mini-circle-diameter"></div>
+                    </div>
+                    <h3>Diametro</h3>
+                    <p>Il diametro è una corda che passa per il centro ed è pari a due volte il raggio. Divide il
+                        cerchio in due semicerchi uguali.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">
+                        <div class="mini-circle-circumference"></div>
+                    </div>
+                    <h3>Circonferenza</h3>
+                    <p>La circonferenza è il perimetro del cerchio ed è proporzionale al diametro secondo la costante π
+                        (pi greco).</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">
+                        <div class="mini-circle-area"></div>
+                    </div>
+                    <h3>Area</h3>
+                    <p>L'area del cerchio è proporzionale al quadrato del raggio, dimostrando come piccole variazioni
+                        nel raggio causino grandi cambiamenti nell'area.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="formule" class="container section">
+            <div class="section-header">
+                <h2>Formule Matematiche</h2>
+                <div class="section-divider"></div>
+            </div>
+            <div class="formulas-container">
+                <div class="formula-card">
+                    <div class="formula-header">
+                        <div class="formula-icon">⭕</div>
+                        <h3>Circonferenza</h3>
+                    </div>
+                    <div class="formula">C = 2πr</div>
+                    <p>Dove r è il raggio e π (pi greco) è circa 3,14159...</p>
+                    <div class="formula-alt">C = πd</div>
+                    <p>Dove d è il diametro (d = 2r)</p>
+                </div>
+                <div class="formula-card">
+                    <div class="formula-header">
+                        <div class="formula-icon">📏</div>
+                        <h3>Area</h3>
+                    </div>
+                    <div class="formula">A = πr<sup>2</sup></div>
+                    <p>L'area è proporzionale al quadrato del raggio.</p>
+                    <div class="formula-alt">A = <div class="fraction"><span
+                                class="numerator">πd<sup>2</sup></span><span class="denominator">4</span></div>
+                    </div>
+                    <p>In funzione del diametro d</p>
+                </div>
+                <div class="formula-card">
+                    <div class="formula-header">
+                        <div class="formula-icon">🧮</div>
+                        <h3>Lunghezza dell'Arco</h3>
+                    </div>
+                    <div class="formula">L = rθ</div>
+                    <p>Dove θ è l'angolo in radianti.</p>
+                    <div class="formula-alt">L = <div class="fraction"><span class="numerator">θ</span><span
+                                class="denominator">360°</span></div> × C</div>
+                    <p>Dove θ è l'angolo in gradi e C è la circonferenza</p>
+                </div>
+                <div class="formula-card">
+                    <div class="formula-header">
+                        <div class="formula-icon">📐</div>
+                        <h3>Area del Settore</h3>
+                    </div>
+                    <div class="formula">A = <div class="fraction"><span class="numerator">1</span><span
+                                class="denominator">2</span></div>r<sup>2</sup>θ</div>
+                    <p>Dove θ è l'angolo in radianti.</p>
+                    <div class="formula-alt">A = <div class="fraction"><span class="numerator">θ</span><span
+                                class="denominator">360°</span></div> × πr<sup>2</sup></div>
+                    <p>Dove θ è l'angolo in gradi</p>
+                </div>
+                <div class="formula-card">
+                    <div class="formula-header">
+                        <div class="formula-icon">🔍</div>
+                        <h3>Area del Segmento</h3>
+                    </div>
+                    <div class="formula">A = <div class="fraction"><span class="numerator">1</span><span
+                                class="denominator">2</span></div>r<sup>2</sup>(θ - sin θ)</div>
+                    <p>Dove θ è l'angolo in radianti.</p>
+                </div>
+                <div class="formula-card">
+                    <div class="formula-header">
+                        <div class="formula-icon">📊</div>
+                        <h3>Lunghezza della Corda</h3>
+                    </div>
+                    <div class="formula">c = 2r × sin(<div class="fraction"><span class="numerator">θ</span><span
+                                class="denominator">2</span></div>)</div>
+                    <p>Dove θ è l'angolo al centro in radianti.</p>
+                </div>
+                <div class="formula-card">
+                    <div class="formula-header">
+                        <div class="formula-icon">📉</div>
+                        <h3>Distanza dal Centro alla Corda</h3>
+                    </div>
+                    <div class="formula">h = r × cos(<div class="fraction"><span class="numerator">θ</span><span
+                                class="denominator">2</span></div>)</div>
+                    <p>Dove θ è l'angolo al centro in radianti.</p>
+                    <div class="formula-alt">h = r - s</div>
+                    <p>Dove s è la sagitta (altezza del segmento)</p>
+                </div>
+                <div class="formula-card">
+                    <div class="formula-header">
+                        <div class="formula-icon">🔢</div>
+                        <h3>Teorema di Pitagora nel Cerchio</h3>
+                    </div>
+                    <div class="formula">h<sup>2</sup> + (<div class="fraction"><span class="numerator">c</span><span
+                                class="denominator">2</span></div>)<sup>2</sup> = r<sup>2</sup></div>
+                    <p>Dove h è la distanza dal centro alla corda e c è la lunghezza della corda.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="interattivo" class="container alternate section">
+            <div class="section-header">
+                <h2>Esplora Interattivamente</h2>
+                <div class="section-divider"></div>
+            </div>
+            <div class="interactive-demo">
+                <div class="controls">
+                    <div class="control-group">
+                        <label for="radius-slider">Raggio: <span id="radius-value">50</span> px</label>
+                        <input type="range" id="radius-slider" min="20" max="150" value="50" class="slider">
+                    </div>
+                    <div class="control-group buttons-grid">
+                        <button id="show-diameter" class="btn-control">Mostra Diametro</button>
+                        <button id="show-circumference" class="btn-control">Mostra Circonferenza</button>
+                        <button id="show-chord" class="btn-control">Mostra Corda</button>
+                        <button id="show-sector" class="btn-control">Mostra Settore</button>
+                    </div>
+                    <div class="measurements">
+                        <div id="radius-measurement">Raggio: 50 px</div>
+                        <div id="diameter-measurement">Diametro: 100 px</div>
+                        <div id="circumference-measurement">Circonferenza: 314.16 px</div>
+                        <div id="area-measurement">Area: 7853.98 px²</div>
+                        <div id="chord-measurement" class="hidden">Corda: 0 px</div>
+                        <div id="sector-measurement" class="hidden">Area Settore: 0 px²</div>
+                    </div>
+                </div>
+                <div class="canvas-container">
+                    <canvas id="circle-canvas" width="300" height="300"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section id="applicazioni" class="container section">
+            <div class="section-header">
+                <h2>Applicazioni nella Vita Reale</h2>
+                <div class="section-divider"></div>
+            </div>
+            <div class="applications-grid">
+                <div class="application-item">
+                    <div class="application-icon">🏙️</div>
+                    <h3>Architettura</h3>
+                    <p>I cerchi sono utilizzati in architettura per la loro stabilità strutturale e bellezza estetica.
+                        Cupole, archi e colonne circolari sono esempi comuni.</p>
+                </div>
+                <div class="application-item">
+                    <div class="application-icon">🚗</div>
+                    <h3>Ingegneria</h3>
+                    <p>Le ruote, gli ingranaggi e molti altri componenti meccanici sono basati su forme circolari per
+                        garantire un movimento fluido e una distribuzione uniforme delle forze.</p>
+                </div>
+                <div class="application-item">
+                    <div class="application-icon">🎨</div>
+                    <h3>Arte</h3>
+                    <p>I cerchi sono elementi fondamentali in molte opere d'arte e design per la loro perfezione
+                        geometrica. Rappresentano spesso l'infinito, l'unità e l'armonia.</p>
+                </div>
+                <div class="application-item">
+                    <div class="application-icon">🌍</div>
+                    <h3>Natura</h3>
+                    <p>Dalla forma dei pianeti alle onde nell'acqua, i cerchi sono presenti ovunque in natura. Le orbite
+                        planetarie seguono percorsi ellittici, una variazione del cerchio.</p>
+                </div>
+                <div class="application-item">
+                    <div class="application-icon">📡</div>
+                    <h3>Tecnologia</h3>
+                    <p>Antenne paraboliche, lenti, CD/DVD e molti altri dispositivi tecnologici utilizzano principi
+                        basati sui cerchi per la trasmissione e la riflessione di onde.</p>
+                </div>
+                <div class="application-item">
+                    <div class="application-icon">🧮</div>
+                    <h3>Matematica</h3>
+                    <p>Il cerchio è fondamentale in trigonometria, calcolo e geometria analitica. Il concetto di π (pi
+                        greco) è uno dei più importanti in matematica.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="mobile-visible">
+        <div class="copyright">
+            <p>&copy; 2025 Geometria Circolare. Tutti i diritti riservati.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

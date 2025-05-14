@@ -7,6 +7,7 @@
 - **[Calcolatrice](Calcolatrice)**
 - **[Calcolatrice Scientifica](Calcolatrice_Scientifica)**
 - **[Calcolatrice Scientifica V2](Calcolatrice_scientifica_V2)**
+- **[Cerchio](Cerchio)**
 - **[Collatz](Collatz)**
 - **[Conversione Basi](Conversione%20Basi)**
 - **[Esercizio Trifase](Esercizio%20trifase)**
