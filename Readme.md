@@ -242,6 +242,7 @@ Il portfolio include numerose categorie di progetti, ciascuna con la propria ico
 | Salute               | ❤️    | Calcolatori per il benessere e la salute                 |
 | Storia               | 📜    | Progetti e applicazioni su eventi e personaggi storici   |
 | Temperatura          | 🌡️    | Convertitori e strumenti legati alla temperatura         |
+| Utilita'             | 🛠️    | Strumenti utili e di utilizzo generale                   |
 
 ## Elenco Completo dei Siti
 

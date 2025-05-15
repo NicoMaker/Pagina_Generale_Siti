@@ -37,10 +37,6 @@
         "name": "Calcola Giorno della Settimana",
         "link": "Site/Calendario/Controllo_data/index.html"
       },
-      {
-        "name": "Cronometro / Timer",
-        "link": "Site/Calendario/Cronometro_timer/index.html"
-      },
       { "name": "Calendario", "link": "Site/Calendario/Calendario/index.html" },
       {
         "name": "Calcolatore di Tempo",
@@ -365,6 +361,12 @@
       {
         "name": "Sistema Solare",
         "link": "Site/Astronomia/Sistema_Solare/index.html"
+      }
+    ],
+    "Utilità": [
+      {
+        "name": "Cronometro / Timer",
+        "link": "Site/Utilities/Cronometro_timer/index.html"
       }
     ]
   }

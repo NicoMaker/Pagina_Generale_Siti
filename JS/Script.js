@@ -72,6 +72,7 @@ const categoryIcons = {
   Salute: "fa-heartbeat",
   Storia: "fa-landmark",
   Temperatura: "fa-temperature-high",
+  Utilità: "fa-wrench"
 };
 
 
