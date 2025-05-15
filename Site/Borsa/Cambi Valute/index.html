@@ -17,6 +17,26 @@
     <header>
       <h1>Convertitore di Valuta</h1>
       <p class="subtitle">Converti facilmente tra diverse valute mondiali</p>
+      <div class="theme-switch-container">
+        <button id="theme-toggle" class="theme-toggle" aria-label="Cambia tema">
+          <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+          <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </button>
+      </div>
     </header>
 
     <main class="converter-card">
@@ -29,49 +49,14 @@
 
       <div class="currency-container">
         <div class="currency-group">
-          <label for="from">Da</label>
-          <div class="select-wrapper">
-            <select id="from">
-              <option value="EUR" selected>EUR - Euro</option>
-              <option value="USD">USD - Dollaro americano</option>
-              <option value="GBP">GBP - Sterlina britannica</option>
-              <option value="CHF">CHF - Franco svizzero</option>
-              <option value="JPY">JPY - Yen giapponese</option>
-              <option value="CAD">CAD - Dollaro canadese</option>
-              <option value="AUD">AUD - Dollaro australiano</option>
-              <option value="CNY">CNY - Yuan cinese</option>
-              <option value="INR">INR - Rupia indiana</option>
-              <option value="BRL">BRL - Real brasiliano</option>
-              <option value="RUB">RUB - Rublo russo</option>
-              <option value="ZAR">ZAR - Rand sudafricano</option>
-              <option value="MXN">MXN - Peso messicano</option>
-              <option value="SGD">SGD - Dollaro di Singapore</option>
-              <option value="HKD">HKD - Dollaro di Hong Kong</option>
-              <option value="KRW">KRW - Won sudcoreano</option>
-              <option value="SEK">SEK - Corona svedese</option>
-              <option value="NOK">NOK - Corona norvegese</option>
-              <option value="DKK">DKK - Corona danese</option>
-              <option value="PLN">PLN - Zloty polacco</option>
-              <option value="THB">THB - Baht thailandese</option>
-              <option value="NZD">NZD - Dollaro neozelandese</option>
-              <option value="TRY">TRY - Lira turca</option>
-              <option value="MYR">MYR - Ringgit malese</option>
-              <option value="IDR">IDR - Rupiah indonesiana</option>
-              <option value="PHP">PHP - Peso filippino</option>
-              <option value="AED">AED - Dirham degli Emirati Arabi Uniti</option>
-              <option value="SAR">SAR - Riyal saudita</option>
-              <option value="ARS">ARS - Peso argentino</option>
-              <option value="CLP">CLP - Peso cileno</option>
-              <option value="COP">COP - Peso colombiano</option>
-              <option value="PKR">PKR - Rupia pakistana</option>
-              <option value="EGP">EGP - Sterlina egiziana</option>
-              <option value="VND">VND - Dong vietnamita</option>
-              <option value="ILS">ILS - Nuovo shekel israeliano</option>
-              <option value="TWD">TWD - Nuovo dollaro taiwanese</option>
-              <option value="CZK">CZK - Corona ceca</option>
-              <option value="HUF">HUF - Fiorino ungherese</option>
-              <option value="RON">RON - Leu rumeno</option>
-            </select>
+          <label for="from-select">Da</label>
+          <div class="custom-select" id="from-container">
+            <input type="text" id="from-select" class="select-input" placeholder="Cerca o seleziona valuta..."
+              autocomplete="off" aria-label="Cerca valuta di origine">
+            <div class="select-dropdown" id="from-dropdown">
+              <!-- Le opzioni verranno generate dinamicamente con JavaScript -->
+            </div>
+            <input type="hidden" id="from-value" value="EUR">
           </div>
         </div>
 
@@ -83,49 +68,14 @@
         </div>
 
         <div class="currency-group">
-          <label for="to">A</label>
-          <div class="select-wrapper">
-            <select id="to">
-              <option value="USD" selected>USD - Dollaro americano</option>
-              <option value="EUR">EUR - Euro</option>
-              <option value="GBP">GBP - Sterlina britannica</option>
-              <option value="CHF">CHF - Franco svizzero</option>
-              <option value="JPY">JPY - Yen giapponese</option>
-              <option value="CAD">CAD - Dollaro canadese</option>
-              <option value="AUD">AUD - Dollaro australiano</option>
-              <option value="CNY">CNY - Yuan cinese</option>
-              <option value="INR">INR - Rupia indiana</option>
-              <option value="BRL">BRL - Real brasiliano</option>
-              <option value="RUB">RUB - Rublo russo</option>
-              <option value="ZAR">ZAR - Rand sudafricano</option>
-              <option value="MXN">MXN - Peso messicano</option>
-              <option value="SGD">SGD - Dollaro di Singapore</option>
-              <option value="HKD">HKD - Dollaro di Hong Kong</option>
-              <option value="KRW">KRW - Won sudcoreano</option>
-              <option value="SEK">SEK - Corona svedese</option>
-              <option value="NOK">NOK - Corona norvegese</option>
-              <option value="DKK">DKK - Corona danese</option>
-              <option value="PLN">PLN - Zloty polacco</option>
-              <option value="THB">THB - Baht thailandese</option>
-              <option value="NZD">NZD - Dollaro neozelandese</option>
-              <option value="TRY">TRY - Lira turca</option>
-              <option value="MYR">MYR - Ringgit malese</option>
-              <option value="IDR">IDR - Rupiah indonesiana</option>
-              <option value="PHP">PHP - Peso filippino</option>
-              <option value="AED">AED - Dirham degli Emirati Arabi Uniti</option>
-              <option value="SAR">SAR - Riyal saudita</option>
-              <option value="ARS">ARS - Peso argentino</option>
-              <option value="CLP">CLP - Peso cileno</option>
-              <option value="COP">COP - Peso colombiano</option>
-              <option value="PKR">PKR - Rupia pakistana</option>
-              <option value="EGP">EGP - Sterlina egiziana</option>
-              <option value="VND">VND - Dong vietnamita</option>
-              <option value="ILS">ILS - Nuovo shekel israeliano</option>
-              <option value="TWD">TWD - Nuovo dollaro taiwanese</option>
-              <option value="CZK">CZK - Corona ceca</option>
-              <option value="HUF">HUF - Fiorino ungherese</option>
-              <option value="RON">RON - Leu rumeno</option>
-            </select>
+          <label for="to-select">A</label>
+          <div class="custom-select" id="to-container">
+            <input type="text" id="to-select" class="select-input" placeholder="Cerca o seleziona valuta..."
+              autocomplete="off" aria-label="Cerca valuta di destinazione">
+            <div class="select-dropdown" id="to-dropdown">
+              <!-- Le opzioni verranno generate dinamicamente con JavaScript -->
+            </div>
+            <input type="hidden" id="to-value" value="USD">
           </div>
         </div>
       </div>

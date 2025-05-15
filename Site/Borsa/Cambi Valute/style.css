@@ -12,6 +12,8 @@
   --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   --transition: all 0.3s ease;
   --result-bg: rgba(58, 134, 255, 0.1);
+  --hover-bg: rgba(0, 0, 0, 0.05);
+  --selected-bg: rgba(58, 134, 255, 0.15);
 }
 
 /* Tema scuro */
@@ -27,6 +29,8 @@ html[data-theme="dark"] {
   --success-color: #4cc70a;
   --shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
   --result-bg: rgba(77, 154, 255, 0.15);
+  --hover-bg: rgba(255, 255, 255, 0.05);
+  --selected-bg: rgba(77, 154, 255, 0.25);
 }
 
 * {
@@ -88,11 +92,7 @@ header {
 }
 
 .theme-toggle:hover {
-  background-color: rgba(0, 0, 0, 0.05);
-}
-
-html[data-theme="dark"] .theme-toggle:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: var(--hover-bg);
 }
 
 .sun-icon,
@@ -168,7 +168,8 @@ label {
   position: relative;
 }
 
-input[type="number"] {
+input[type="number"],
+input[type="text"] {
   width: 100%;
   padding: 0.8rem 1rem;
   border: 2px solid var(--border-color);
@@ -180,12 +181,14 @@ input[type="number"] {
   color: var(--text-color);
 }
 
-input[type="number"]:focus {
+input[type="number"]:focus,
+input[type="text"]:focus {
   border-color: var(--primary-color);
   box-shadow: 0 0 0 3px rgba(58, 134, 255, 0.2);
 }
 
-html[data-theme="dark"] input[type="number"]:focus {
+html[data-theme="dark"] input[type="number"]:focus,
+html[data-theme="dark"] input[type="text"]:focus {
   box-shadow: 0 0 0 3px rgba(77, 154, 255, 0.3);
 }
 
@@ -201,42 +204,93 @@ html[data-theme="dark"] input[type="number"]:focus {
   flex: 1;
 }
 
-.select-wrapper {
+/* Stili per il selettore personalizzato con ricerca */
+.custom-select {
   position: relative;
-}
-
-.select-wrapper::after {
-  content: "▼";
-  font-size: 0.8rem;
-  position: absolute;
-  right: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: var(--text-light);
-  pointer-events: none;
-}
-
-select {
   width: 100%;
-  padding: 0.8rem 1rem;
-  border: 2px solid var(--border-color);
-  border-radius: 8px;
-  font-size: 1rem;
-  appearance: none;
-  background-color: var(--card-color);
-  color: var(--text-color);
+}
+
+.select-input {
+  width: 100%;
+  padding-right: 2.5rem;
   cursor: pointer;
+}
+
+.select-input.has-value {
+  color: var(--text-color);
+}
+
+.select-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  max-height: 250px;
+  overflow-y: auto;
+  background-color: var(--card-color);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  margin-top: 5px;
+  box-shadow: var(--shadow);
+  z-index: 10;
+  display: none;
+}
+
+.select-dropdown.show {
+  display: block;
+}
+
+.select-option {
+  padding: 10px 15px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
   transition: var(--transition);
-  outline: none;
 }
 
-select:focus {
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 3px rgba(58, 134, 255, 0.2);
+.select-option:hover {
+  background-color: var(--hover-bg);
 }
 
-html[data-theme="dark"] select:focus {
-  box-shadow: 0 0 0 3px rgba(77, 154, 255, 0.3);
+.select-option.selected {
+  background-color: var(--selected-bg);
+}
+
+.currency-symbol {
+  font-weight: bold;
+  min-width: 25px;
+  margin-right: 8px;
+}
+
+.currency-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.currency-code {
+  font-weight: 600;
+}
+
+.currency-name {
+  color: var(--text-light);
+  font-size: 0.9rem;
+}
+
+.no-results {
+  padding: 15px;
+  text-align: center;
+  color: var(--text-light);
+}
+
+/* Stile per evidenziare la corrispondenza nella ricerca */
+.highlight {
+  background-color: rgba(255, 215, 0, 0.3);
+  padding: 0 2px;
+  border-radius: 2px;
+}
+
+html[data-theme="dark"] .highlight {
+  background-color: rgba(255, 215, 0, 0.2);
 }
 
 .swap-button {
@@ -416,4 +470,16 @@ button.loading .spinner {
 
 .fade-in {
   animation: fadeIn 0.3s ease-in-out forwards;
+}
+
+/* Stile per la freccia del selettore */
+.custom-select::after {
+  content: "▼";
+  font-size: 0.8rem;
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-light);
+  pointer-events: none;
 }
