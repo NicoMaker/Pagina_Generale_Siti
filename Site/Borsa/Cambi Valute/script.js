@@ -16,12 +16,6 @@ async function loadCurrencies() {
   } catch (error) {
     console.error("Errore nel caricamento delle valute:", error)
     // Fallback: usa un array di valute predefinito
-    currencies = [
-      { code: "EUR", name: "Euro", symbol: "€" },
-      { code: "USD", name: "Dollaro americano", symbol: "$" },
-      { code: "GBP", name: "Sterlina britannica", symbol: "£" },
-      // Aggiungi altre valute di base come fallback
-    ]
     initializeSelectors()
   }
 }
@@ -55,6 +49,7 @@ function initializeSelector(id, defaultValue) {
     dropdown.classList.add("show")
   })
 
+
   // Aggiungi event listener per il focus
   input.addEventListener("focus", function () {
     // Se l'input ha già un valore, seleziona tutto il testo
@@ -69,12 +64,13 @@ function initializeSelector(id, defaultValue) {
   })
 
   // Aggiungi event listener per il click sull'input
-  input.addEventListener("click", () => {
+  input.addEventListener("click", function (e) {
+    e.stopPropagation() // Previene che il click si propaghi al documento
     dropdown.classList.add("show")
   })
 
   // Chiudi il dropdown quando si clicca fuori
-  document.addEventListener("click", (e) => {
+  document.addEventListener("click", function (e) {
     if (!container.contains(e.target)) {
       dropdown.classList.remove("show")
       // Ripristina il display dell'input
@@ -83,7 +79,7 @@ function initializeSelector(id, defaultValue) {
   })
 
   // Gestisci la navigazione da tastiera
-  input.addEventListener("keydown", (e) => {
+  input.addEventListener("keydown", function (e) {
     if (e.key === "Escape") {
       dropdown.classList.remove("show")
       updateInputDisplay(input, hiddenInput.value)
@@ -139,7 +135,18 @@ function createOptionElement(currency, selectId) {
   `
 
   // Aggiungi event listener per selezionare la valuta
-  option.addEventListener("click", () => {
+  // Usa mousedown invece di click per dispositivi mobili
+  option.addEventListener("mousedown", function (e) {
+    e.preventDefault() // Previene la perdita di focus
+    const input = document.getElementById(`${selectId}-select`)
+    const hiddenInput = document.getElementById(`${selectId}-value`)
+    const dropdown = document.getElementById(`${selectId}-dropdown`)
+    selectCurrency(selectId, currency.code, input, hiddenInput, dropdown)
+  })
+
+  // Aggiungi anche touchstart per dispositivi mobili
+  option.addEventListener("touchstart", function (e) {
+    e.preventDefault() // Previene comportamenti indesiderati su mobile
     const input = document.getElementById(`${selectId}-select`)
     const hiddenInput = document.getElementById(`${selectId}-value`)
     const dropdown = document.getElementById(`${selectId}-dropdown`)
@@ -287,6 +294,12 @@ function selectCurrency(selectId, currencyCode, input, hiddenInput, dropdown) {
   if (document.getElementById("amount").value) {
     convert()
   }
+
+  // Feedback visivo per la selezione
+  input.classList.add("selection-made")
+  setTimeout(() => {
+    input.classList.remove("selection-made")
+  }, 300)
 }
 
 // Funzione per aggiornare il display dell'input
@@ -398,6 +411,11 @@ function convert() {
       const resultContainer = document.getElementById("result-container")
       resultContainer.classList.remove("hidden")
       resultContainer.classList.add("fade-in")
+
+      // Vibrazione di feedback su dispositivi mobili
+      if (navigator.vibrate) {
+        navigator.vibrate(50)
+      }
     })
     .catch((error) => {
       console.error(error)
@@ -488,6 +506,54 @@ function setupEventListeners() {
       convert()
     }
   })
+
+  // Migliora l'esperienza mobile
+  setupMobileExperience()
+}
+
+// Funzione per migliorare l'esperienza su dispositivi mobili
+function setupMobileExperience() {
+  // Rileva se è un dispositivo mobile
+  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+
+  if (isMobile) {
+    // Aggiungi classe per stili specifici per mobile
+    document.body.classList.add("mobile-device")
+
+    // Migliora l'interazione con i dropdown su mobile
+    const selectInputs = document.querySelectorAll(".select-input")
+    selectInputs.forEach(input => {
+      input.addEventListener("touchend", function (e) {
+        // Previeni il comportamento predefinito che può causare problemi su alcuni browser mobile
+        e.preventDefault()
+        this.focus()
+      })
+    })
+
+    // Migliora la selezione delle opzioni su mobile
+    document.addEventListener("touchstart", function (e) {
+
+      // Se l'utente tocca un'opzione, assicurati che venga selezionata
+      if (target.classList.contains("select-option") || target.closest(".select-option")) {
+        const option = target.classList.contains("select-option") ? target : target.closest(".select-option")
+        if (option) {
+          const selectId = option.closest(".select-dropdown")?.id.split("-")[0]
+          const currencyCode = option.getAttribute("data-code")
+
+          if (selectId && currencyCode) {
+            const input = document.getElementById(`${selectId}-select`)
+            const hiddenInput = document.getElementById(`${selectId}-value`)
+            const dropdown = document.getElementById(`${selectId}-dropdown`)
+
+            if (input && hiddenInput && dropdown) {
+              e.preventDefault()
+              selectCurrency(selectId, currencyCode, input, hiddenInput, dropdown)
+            }
+          }
+        }
+      }
+    }, { passive: false })
+  }
 }
 
 // Imposta la data di ultimo aggiornamento
@@ -499,8 +565,52 @@ function setLastUpdateDate() {
   })
 }
 
+// Aggiungi stili CSS per migliorare l'esperienza mobile
+function addMobileStyles() {
+  const style = document.createElement("style")
+  style.textContent = `
+    /* Stili migliorati per dispositivi mobili */
+    .mobile-device .select-option {
+      padding: 15px;  /* Aree di tocco più grandi */
+    }
+    
+    .mobile-device .select-dropdown {
+      max-height: 300px;  /* Dropdown più grande su mobile */
+    }
+    
+    /* Feedback visivo per la selezione */
+    .selection-made {
+      background-color: var(--selected-bg) !important;
+      transition: background-color 0.3s ease;
+    }
+    
+    /* Animazione per il pulsante di scambio */
+    .swap-button.active svg {
+      transform: rotate(180deg);
+      transition: transform 0.3s ease;
+    }
+    
+    /* Migliora la visibilità del focus */
+    .select-option:focus {
+      outline: 2px solid var(--primary-color);
+      background-color: var(--hover-bg);
+    }
+    
+    /* Previeni lo zoom su input nei dispositivi iOS */
+    @media screen and (-webkit-min-device-pixel-ratio: 0) {
+      select, textarea, input[type="text"], input[type="number"] {
+        font-size: 16px;
+      }
+    }
+  `
+  document.head.appendChild(style)
+}
+
 // Inizializza l'applicazione quando il DOM è caricato
 document.addEventListener("DOMContentLoaded", () => {
+  // Aggiungi stili migliorati per mobile
+  addMobileStyles()
+
   // Inizializza il tema
   initTheme()
 
