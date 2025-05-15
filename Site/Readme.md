@@ -6,7 +6,7 @@
 - **[Bici](https://github.com/NicoMaker/Giri-in-bici)** [1 Progetto]
 - **[Borsa](Borsa/Readme.md)** [5 Progetti]
 - **[Calcio](Calcio/Readme.md)** [2 Progetti]
-- **[Calendario](Calendario/Readme.md)** [5 Progetti]
+- **[Calendario](Calendario/Readme.md)** [4 Progetti]
 - **[Giochi](Giochi/Readme.md)** [20 Progetti]
 - **[Info Paesi / Stati](Info_Paesi_Stati/Readme.md)** [4 Progetti]
 - **[Matematica](Math/Readme.md)** [24 Progetti]
