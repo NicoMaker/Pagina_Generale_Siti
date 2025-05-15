@@ -82,6 +82,9 @@ document.addEventListener("DOMContentLoaded", () => {
   // Carica il tema salvato
   loadThemePreference();
 
+  // Carica i dati salvati
+  caricaDatiSalvati();
+
   // Aggiungi event listeners
   setupEventListeners();
 
@@ -145,6 +148,9 @@ function setupEventListeners() {
     if (fileFeedbackModal && e.target === fileFeedbackModal) {
       hideFileFeedbackModal();
     }
+    if (editNameModal && e.target === editNameModal) {
+      hideEditNameModal();
+    }
   });
 
   // Gestione modale vittoria
@@ -190,6 +196,9 @@ function setupEventListeners() {
       if (fileFeedbackModal && fileFeedbackModal.style.display === "flex") {
         hideFileFeedbackModal();
       }
+      if (editNameModal && editNameModal.style.display === "flex") {
+        hideEditNameModal();
+      }
     }
   });
 
@@ -226,6 +235,24 @@ function setupEventListeners() {
 
   // Setup share modal close button
   setupShareModalCloseButton();
+
+  // Setup edit name modal event listeners
+  const closeEditNameModalBtn = document.getElementById(
+    "close-edit-name-modal"
+  );
+  if (closeEditNameModalBtn) {
+    closeEditNameModalBtn.addEventListener("click", hideEditNameModal);
+  }
+
+  const cancelEditNameBtn = document.getElementById("cancel-edit-name-btn");
+  if (cancelEditNameBtn) {
+    cancelEditNameBtn.addEventListener("click", hideEditNameModal);
+  }
+
+  const confirmEditNameBtn = document.getElementById("confirm-edit-name-btn");
+  if (confirmEditNameBtn) {
+    confirmEditNameBtn.addEventListener("click", salvaModificaNome);
+  }
 }
 
 // Funzioni per la gestione del tema
@@ -337,9 +364,11 @@ function showTieModal(vincitori, punti) {
   let detailsHTML = `<div class="tie-participants">Con un punteggio di <strong>${punti}</strong> punti:</div><ul class="tie-list">`;
 
   vincitori.forEach((vincitore, index) => {
-    detailsHTML += `<li><span class="medal medal-${index < 3 ? ["gold", "silver", "bronze"][index] : "default"
-      }">${index + 1}</span> ${vincitore.nome} <span class="winner-id">#${vincitore.id
-      }</span></li>`;
+    detailsHTML += `<li><span class="medal medal-${
+      index < 3 ? ["gold", "silver", "bronze"][index] : "default"
+    }">${index + 1}</span> ${vincitore.nome} <span class="winner-id">#${
+      vincitore.id
+    }</span></li>`;
   });
 
   detailsHTML += `</ul>`;
@@ -423,8 +452,9 @@ function mostraClassifica() {
     minute: "2-digit",
   };
   leaderboardDate.textContent = oggi.toLocaleDateString("it-IT", opzioniData);
-  leaderboardMode.textContent = `Modalità: ${modalitàVittoria === "max" ? "Più punti" : "Meno punti"
-    }`;
+  leaderboardMode.textContent = `Modalità: ${
+    modalitàVittoria === "max" ? "Più punti" : "Meno punti"
+  }`;
 
   // Ordina i partecipanti
   const partecipantiOrdinati = [...partecipanti].sort((a, b) =>
@@ -487,8 +517,9 @@ function creaPodio(partecipantiOrdinati) {
 
       // Blocco del podio
       const podiumBlock = document.createElement("div");
-      podiumBlock.className = `podium-block podium-${posizione === 1 ? "first" : posizione === 2 ? "second" : "third"
-        }`;
+      podiumBlock.className = `podium-block podium-${
+        posizione === 1 ? "first" : posizione === 2 ? "second" : "third"
+      }`;
       podiumBlock.textContent = posizione;
 
       // Informazioni sul partecipante
@@ -555,8 +586,9 @@ function creaTabellaCassifica(partecipantiOrdinati) {
     // Aggiungi medaglia per i primi 3
     if (index < 3) {
       const medalSpan = document.createElement("span");
-      medalSpan.className = `medal medal-${["gold", "silver", "bronze"][index]
-        }`;
+      medalSpan.className = `medal medal-${
+        ["gold", "silver", "bronze"][index]
+      }`;
       medalSpan.textContent = index + 1;
       positionCell.appendChild(medalSpan);
     } else {
@@ -608,10 +640,10 @@ function condividiClassifica() {
       index === 0
         ? "🥇"
         : index === 1
-          ? "🥈"
-          : index === 2
-            ? "🥉"
-            : `${index + 1}.`;
+        ? "🥈"
+        : index === 2
+        ? "🥉"
+        : `${index + 1}.`;
     testoCondivisione += `${medaglia} ${partecipante.nome} #${partecipante.id}: ${partecipante.punti} punti\n`;
   });
 
@@ -744,7 +776,6 @@ function copiaTestoClassifica() {
   }
 }
 
-
 // Funzione per creare coriandoli
 function createConfetti() {
   if (!confettiContainer) return;
@@ -845,6 +876,7 @@ function aggiungiPartecipante() {
   partecipanti.push({ id, nome, punti: 0 });
   aggiornaListaPartecipanti();
   aggiornaSelezionePartecipante();
+  salvaDati();
 
   // Pulisci e focus sull'input
   participantNameInput.value = "";
@@ -863,6 +895,7 @@ function eliminaPartecipante(index) {
 
   aggiornaListaPartecipanti();
   aggiornaSelezionePartecipante();
+  salvaDati();
 
   showToast(`${partecipante.nome} rimosso`, "info");
 }
@@ -884,7 +917,7 @@ function riorganizzaIds() {
   nextParticipantId = partecipanti.length + 1;
 }
 
-// Update the aggiornaListaPartecipanti function to display the ID
+// Update the aggiornaListaPartecipanti function to display the ID and add edit button
 function aggiornaListaPartecipanti() {
   if (!participantList) return;
 
@@ -913,8 +946,9 @@ function aggiornaListaPartecipanti() {
     // Aggiungi medaglia per i primi 3
     if (index < 3) {
       const medalSpan = document.createElement("span");
-      medalSpan.className = `medal medal-${["gold", "silver", "bronze"][index]
-        }`;
+      medalSpan.className = `medal medal-${
+        ["gold", "silver", "bronze"][index]
+      }`;
       medalSpan.textContent = index + 1;
       infoContainer.appendChild(medalSpan);
     }
@@ -939,6 +973,33 @@ function aggiornaListaPartecipanti() {
     infoContainer.appendChild(document.createTextNode(": "));
     infoContainer.appendChild(pointsSpan);
 
+    // Contenitore per i pulsanti
+    const buttonsContainer = document.createElement("div");
+    buttonsContainer.className = "participant-buttons";
+
+    // Bottone modifica
+    const editButton = document.createElement("button");
+    editButton.className = "edit-btn";
+    editButton.setAttribute(
+      "aria-label",
+      `Modifica ${partecipante.nome} (ID: ${partecipante.id})`
+    );
+
+    const editIcon = document.createElement("span");
+    editIcon.className = "material-icons";
+    editIcon.textContent = "edit";
+
+    editButton.appendChild(editIcon);
+    editButton.addEventListener("click", () => {
+      // Trova l'indice del partecipante nell'array originale
+      const originalIndex = partecipanti.findIndex(
+        (p) => p.id === partecipante.id
+      );
+      if (originalIndex !== -1) {
+        mostraEditNameModal(originalIndex);
+      }
+    });
+
     // Bottone elimina
     const deleteButton = document.createElement("button");
     deleteButton.className = "delete-btn";
@@ -954,14 +1015,19 @@ function aggiornaListaPartecipanti() {
     deleteButton.appendChild(deleteIcon);
     deleteButton.addEventListener("click", () => {
       // Trova l'indice del partecipante nell'array originale
-      const originalIndex = partecipanti.findIndex(p => p.id === partecipante.id);
+      const originalIndex = partecipanti.findIndex(
+        (p) => p.id === partecipante.id
+      );
       if (originalIndex !== -1) {
         eliminaPartecipante(originalIndex);
       }
     });
 
+    buttonsContainer.appendChild(editButton);
+    buttonsContainer.appendChild(deleteButton);
+
     listItem.appendChild(infoContainer);
-    listItem.appendChild(deleteButton);
+    listItem.appendChild(buttonsContainer);
     participantList.appendChild(listItem);
   });
 }
@@ -1028,6 +1094,7 @@ function aggiungiPunti() {
   aggiornaListaPartecipanti();
   pointsInput.value = "0";
   pointsInput.focus();
+  salvaDati();
 }
 
 function togliPunti() {
@@ -1062,11 +1129,13 @@ function togliPunti() {
   aggiornaListaPartecipanti();
   pointsInput.value = "0";
   pointsInput.focus();
+  salvaDati();
 }
 
 function impostaModalitàVittoria(modalità) {
   modalitàVittoria = modalità;
   aggiornaListaPartecipanti();
+  salvaDati();
 
   showToast(
     `Modalità vittoria: ${modalità === "max" ? "Più punti" : "Meno punti"}`,
@@ -1217,6 +1286,7 @@ function eseguiReset() {
         // Reset points
         partecipanti.forEach((partecipante) => (partecipante.punti = 0));
         aggiornaListaPartecipanti();
+        salvaDati();
         showToast("Punteggi azzerati con successo", "success");
       } else if (resetType === "all") {
         // Reset everything
@@ -1225,6 +1295,7 @@ function eseguiReset() {
         nextParticipantId = 1;
         aggiornaListaPartecipanti();
         aggiornaSelezionePartecipante();
+        salvaDati();
         showToast("Tutti i partecipanti sono stati eliminati", "success");
       }
 
@@ -1398,7 +1469,9 @@ function caricaDaFile() {
               const punti = Number.parseFloat(item.punti) || 0;
 
               // Check for duplicates by name
-              const existingIndex = partecipanti.findIndex((p) => p.nome === nome);
+              const existingIndex = partecipanti.findIndex(
+                (p) => p.nome === nome
+              );
 
               if (existingIndex >= 0) {
                 // Update existing participant
@@ -1451,7 +1524,9 @@ function caricaDaFile() {
               }
 
               // Check for duplicates by name
-              const existingIndex = partecipanti.findIndex((p) => p.nome === nome);
+              const existingIndex = partecipanti.findIndex(
+                (p) => p.nome === nome
+              );
 
               if (existingIndex >= 0) {
                 // Update existing participant
@@ -1487,6 +1562,7 @@ function caricaDaFile() {
         // Update UI
         aggiornaListaPartecipanti();
         aggiornaSelezionePartecipante();
+        salvaDati();
 
         // Show feedback modal
         showFileFeedbackModal(results);
@@ -1576,10 +1652,7 @@ function salvaSuFile() {
   function saveAsTxt() {
     // Crea il contenuto in formato leggibile
     const contenuto = partecipanti
-      .map(
-        (partecipante) =>
-          `${partecipante.nome}:${partecipante.punti}`
-      )
+      .map((partecipante) => `${partecipante.nome}:${partecipante.punti}`)
       .join("\n");
 
     // Crea un blob per il download
@@ -1626,4 +1699,158 @@ function resettaPunti() {
 
 function resettaTotale() {
   mostraResetModal("all");
+}
+
+// Funzioni per la gestione del localStorage
+function salvaDati() {
+  try {
+    // Salva i partecipanti
+    localStorage.setItem("partecipanti", JSON.stringify(partecipanti));
+
+    // Salva la modalità vittoria
+    localStorage.setItem("modalitaVittoria", modalitàVittoria);
+
+    // Salva il nextParticipantId
+    localStorage.setItem("nextParticipantId", nextParticipantId);
+  } catch (error) {
+    console.error("Errore durante il salvataggio dei dati:", error);
+    showToast("Errore durante il salvataggio dei dati", "error");
+  }
+}
+
+function caricaDatiSalvati() {
+  try {
+    // Carica i partecipanti
+    const partecipantiSalvati = localStorage.getItem("partecipanti");
+    if (partecipantiSalvati) {
+      const parsed = JSON.parse(partecipantiSalvati);
+      partecipanti.length = 0; // Svuota l'array
+      parsed.forEach((p) => partecipanti.push(p)); // Aggiungi i partecipanti salvati
+    }
+
+    // Carica la modalità vittoria
+    const modalitaSalvata = localStorage.getItem("modalitaVittoria");
+    if (modalitaSalvata) {
+      modalitàVittoria = modalitaSalvata;
+
+      // Aggiorna il radio button corrispondente
+      const radioButtons = document.querySelectorAll(
+        'input[name="winning-mode"]'
+      );
+      radioButtons.forEach((radio) => {
+        if (radio.value === modalitàVittoria) {
+          radio.checked = true;
+        }
+      });
+    }
+
+    // Carica il nextParticipantId
+    const nextIdSalvato = localStorage.getItem("nextParticipantId");
+    if (nextIdSalvato) {
+      nextParticipantId = parseInt(nextIdSalvato);
+    }
+
+    showToast("Dati caricati con successo", "success");
+  } catch (error) {
+    console.error("Errore durante il caricamento dei dati:", error);
+    showToast("Errore durante il caricamento dei dati", "error");
+  }
+}
+
+// Variabili per la modifica del nome
+let editingParticipantIndex = -1;
+const editNameModal = document.createElement("div");
+editNameModal.className = "modal";
+editNameModal.id = "edit-name-modal";
+editNameModal.setAttribute("aria-hidden", "true");
+editNameModal.innerHTML = `
+  <div class="modal-content" role="dialog" aria-labelledby="edit-name-title">
+    <div class="modal-header">
+      <h2 id="edit-name-title">Modifica Nome</h2>
+      <button class="close-btn" id="close-edit-name-modal" aria-label="Chiudi">
+        <span class="material-icons">close</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label for="edit-name-input">Nuovo nome</label>
+        <input type="text" id="edit-name-input" class="form-control" placeholder="Inserisci nuovo nome">
+      </div>
+      <div class="edit-name-actions">
+        <button class="btn btn-secondary" id="cancel-edit-name-btn">Annulla</button>
+        <button class="btn btn-primary" id="confirm-edit-name-btn">Salva</button>
+      </div>
+    </div>
+  </div>
+`;
+document.body.appendChild(editNameModal);
+
+function mostraEditNameModal(index) {
+  if (!editNameModal) return;
+
+  editingParticipantIndex = index;
+  const partecipante = partecipanti[index];
+
+  // Imposta il valore corrente nel campo di input
+  const editNameInput = document.getElementById("edit-name-input");
+  if (editNameInput) {
+    editNameInput.value = partecipante.nome;
+  }
+
+  // Mostra la modale
+  editNameModal.style.display = "flex";
+  editNameModal.setAttribute("aria-hidden", "false");
+
+  // Focus sul campo di input
+  setTimeout(() => {
+    if (editNameInput) {
+      editNameInput.focus();
+      editNameInput.select();
+    }
+  }, 100);
+}
+
+function hideEditNameModal() {
+  if (editNameModal) {
+    editNameModal.style.display = "none";
+    editNameModal.setAttribute("aria-hidden", "true");
+    editingParticipantIndex = -1;
+  }
+}
+
+function salvaModificaNome() {
+  if (
+    editingParticipantIndex < 0 ||
+    editingParticipantIndex >= partecipanti.length
+  ) {
+    hideEditNameModal();
+    return;
+  }
+
+  const editNameInput = document.getElementById("edit-name-input");
+  if (!editNameInput) {
+    hideEditNameModal();
+    return;
+  }
+
+  const nuovoNome = editNameInput.value.trim();
+
+  if (nuovoNome === "") {
+    showToast("Il nome non può essere vuoto", "error");
+    return;
+  }
+
+  // Aggiorna il nome del partecipante
+  const vecchioNome = partecipanti[editingParticipantIndex].nome;
+  partecipanti[editingParticipantIndex].nome = nuovoNome;
+
+  // Aggiorna l'interfaccia
+  aggiornaListaPartecipanti();
+  aggiornaSelezionePartecipante();
+  salvaDati();
+
+  // Chiudi la modale
+  hideEditNameModal();
+
+  showToast(`Nome modificato da "${vecchioNome}" a "${nuovoNome}"`, "success");
 }
