@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organizzatore di Note</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+
+    <link rel="icon" href="https://th.bing.com/th/id/OIP.ngnyQDH32OTZFRSTPgqkPgHaFQ?cb=iwc2&rs=1&pid=ImgDetMain"
+        type="image/jpg">
+</head>
+
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="header-content">
+                <h1>Organizzatore di Note</h1>
+                <div class="header-actions">
+                    <button id="theme-toggle" class="icon-button" aria-label="Cambia tema">
+                        <i class="icon">dark_mode</i>
+                    </button>
+                </div>
+            </div>
+            <div class="search-container">
+                <div class="search-input-wrapper">
+                    <i class="icon">search</i>
+                    <input type="text" id="search-input" placeholder="Cerca note..." aria-label="Cerca note">
+                </div>
+                <div class="filter-tags">
+                    <span class="filter-label">Filtri:</span>
+                    <div id="active-filters" class="active-filters"></div>
+                    <button id="clear-filters" class="text-button">Cancella</button>
+                </div>
+            </div>
+        </header>
+
+        <main class="app-content">
+            <div class="sidebar">
+                <div class="sidebar-header">
+                    <h2>Categorie</h2>
+                </div>
+                <div class="tag-list" id="tag-list">
+                    <!-- I tag verranno inseriti qui dinamicamente -->
+                </div>
+                <div class="sidebar-footer">
+                    <div class="task-progress">
+                        <div class="progress-text">
+                            <span id="completed-count">0</span>/<span id="total-count">0</span> completati
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progress-fill"></div>
+                        </div>
+                    </div>
+                    <div id="completion-emoji" class="completion-emoji">😐</div>
+                </div>
+            </div>
+
+            <div class="notes-container">
+                <div class="notes-header">
+                    <h2>Le mie note</h2>
+                    <button id="add-note-btn" class="primary-button">
+                        <i class="icon">add</i> Nuova nota
+                    </button>
+                </div>
+
+                <div id="notes-grid" class="notes-grid">
+                    <!-- Le note verranno inserite qui dinamicamente -->
+                </div>
+            </div>
+        </main>
+
+        <!-- Modal per aggiungere/modificare note -->
+        <div id="note-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="modal-title">Aggiungi nota</h3>
+                    <button id="close-modal" class="icon-button" aria-label="Chiudi">
+                        <i class="icon">close</i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="note-title">Titolo</label>
+                        <input type="text" id="note-title" placeholder="Titolo della nota">
+                    </div>
+                    <div class="form-group">
+                        <label for="note-content">Contenuto</label>
+                        <textarea id="note-content" placeholder="Scrivi qui il contenuto..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="note-tags">Tag (separati da virgola)</label>
+                        <input type="text" id="note-tags" placeholder="lavoro, personale, urgente...">
+                    </div>
+                    <div class="form-group checkbox-group">
+                        <input type="checkbox" id="is-task">
+                        <label for="is-task">È un impegno da completare</label>
+                    </div>
+                    <div id="task-completed-container" class="form-group checkbox-group hidden">
+                        <input type="checkbox" id="is-completed">
+                        <label for="is-completed">Impegno completato</label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="delete-note" class="text-button danger-button">Elimina</button>
+                    <button id="save-note" class="primary-button">Salva</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal di conferma per eliminazione -->
+        <div id="confirm-modal" class="modal">
+            <div class="modal-content confirm-content">
+                <div class="modal-header">
+                    <h3>Conferma eliminazione</h3>
+                    <button id="close-confirm-modal" class="icon-button" aria-label="Chiudi">
+                        <i class="icon">close</i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Sei sicuro di voler eliminare questa nota?</p>
+                    <p class="warning-text">Questa azione non può essere annullata.</p>
+                </div>
+                <div class="modal-footer">
+                    <button id="cancel-delete" class="text-button">Annulla</button>
+                    <button id="confirm-delete" class="danger-button-solid">Elimina</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="modal-overlay" class="modal-overlay"></div>
+
+        <!-- Toast per notifiche -->
+        <div id="toast" class="toast">
+            <div class="toast-content">
+                <i id="toast-icon" class="icon">check_circle</i>
+                <div class="toast-message" id="toast-message"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
