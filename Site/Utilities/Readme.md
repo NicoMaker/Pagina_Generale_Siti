@@ -3,3 +3,4 @@
 # Utilità
 
 - **[Cronometro timer](Cronometro_timer)**
+- **[Traduttore](Traduttore)**

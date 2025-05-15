@@ -367,6 +367,10 @@
       {
         "name": "Cronometro / Timer",
         "link": "Site/Utilities/Cronometro_timer/index.html"
+      },
+      {
+        "name":"Traduttore",
+        "link":"Site/Utilities/Traduttore/index.html"
       }
     ]
   }
