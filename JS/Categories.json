@@ -53,6 +53,10 @@
         "link": "Site/Giochi/Tombola/index.html"
       },
       {
+        "name":"Generatore Cartelle Tombola",
+        "link":"Site/Giochi/Cartelle_Tombola/index.html"
+      },
+      {
         "name": "Gioco Sasso Carta Forbice",
         "link": "Site/Giochi/Sasso_Carta_Forbice/index.html"
       },
@@ -271,6 +275,10 @@
       {
         "name": "Generatore Password",
         "link": "Site/Random/Password/index.html"
+      },
+      {
+        "name":"Password Analyzer",
+        "link":"Site/Random/Password_Analyzer/index.html"
       },
       {
         "name": "Lancio dei Dadi",

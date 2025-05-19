@@ -2,6 +2,7 @@
 
 # Random
 
+- **[Password Analyzer](Password_Analyzer)**
 - **[Coach Life Generator](Coach_Life_Generator)**
 - **[Genera un Colore Casuale](Colore_Casuale)**
 - **[Estrattore Regione Casuale](Estrai_Regione)**

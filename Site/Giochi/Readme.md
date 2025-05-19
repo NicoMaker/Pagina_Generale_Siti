@@ -2,6 +2,7 @@
 
 # Giochi
 
+- **[Cartelle Tombola](Cartelle_Tombola)**
 - **[Casinò](Casino)**
 - **[Dama](Dama)**
 - **[Dino Game](Dino-Game)**
