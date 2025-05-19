@@ -23,6 +23,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const loaderIcon = document.getElementById("loaderIcon")
     const loaderPhase = document.getElementById("loaderPhase")
     const loaderMessage = document.getElementById("loaderMessage")
+    const progressFraction = document.getElementById("progressFraction")
+
+    // Variabile globale per memorizzare l'ultima percentuale raggiunta
+    // Questo garantisce che la barra non vada mai indietro anche tra diverse chiamate a updateLoader
+    let globalLastPercentage = 0
 
     // Imposta l'attributo max sull'input
     numGiocatoriInput.max = sumcartelle
@@ -185,14 +190,18 @@ document.addEventListener("DOMContentLoaded", () => {
      * @param {string} phase - Fase corrente del processo
      */
     function updateLoader(percentage, processed, total, phase) {
+        // IMPORTANTE: Assicurati che la percentuale non diminuisca mai
+        // usando la variabile globale globalLastPercentage
+        const safePercentage = Math.max(globalLastPercentage, percentage)
+        globalLastPercentage = safePercentage
+
         // Aggiorna la percentuale
-        progressPercentage.textContent = `${Math.round(percentage)}%`
+        progressPercentage.textContent = `${Math.round(safePercentage)}%`
 
         // Aggiorna il contatore
         progressCounter.textContent = `${processed}/${total} giocatori`
 
         // Aggiorna la frazione
-        const progressFraction = document.getElementById("progressFraction")
         let fractionText = ""
 
         // Calcola i valori per ogni quarto
@@ -214,17 +223,17 @@ document.addEventListener("DOMContentLoaded", () => {
         progressFraction.textContent = `${fractionText} completato`
 
         // Aggiorna la barra di progresso
-        progressBar.style.width = `${percentage}%`
+        progressBar.style.width = `${safePercentage}%`
 
         // Aggiungi classi alla barra di progresso in base alla percentuale
         progressBar.classList.remove("quarter", "half", "three-quarters", "complete")
-        if (percentage >= 100) {
+        if (safePercentage >= 100) {
             progressBar.classList.add("complete")
-        } else if (percentage >= 75) {
+        } else if (safePercentage >= 75) {
             progressBar.classList.add("three-quarters")
-        } else if (percentage >= 50) {
+        } else if (safePercentage >= 50) {
             progressBar.classList.add("half")
-        } else if (percentage >= 25) {
+        } else if (safePercentage >= 25) {
             progressBar.classList.add("quarter")
         }
 
@@ -232,22 +241,22 @@ document.addEventListener("DOMContentLoaded", () => {
         loaderPhase.textContent = phase
 
         // Aggiorna il messaggio in base alla percentuale
-        if (percentage < 25) {
+        if (safePercentage < 25) {
             loaderMessage.textContent = "Inizializzazione della generazione delle cartelle..."
-        } else if (percentage < 50) {
+        } else if (safePercentage < 50) {
             loaderMessage.textContent = "Creazione struttura delle cartelle in corso..."
-        } else if (percentage < 75) {
+        } else if (safePercentage < 75) {
             loaderMessage.textContent = "Distribuzione dei numeri nelle cartelle..."
         } else {
             loaderMessage.textContent = "Finalizzazione e preparazione per la visualizzazione..."
         }
 
         // Cambia l'icona e lo stile della barra di progresso in base alla percentuale
-        if (percentage < 33) {
+        if (safePercentage < 33) {
             loaderIcon.innerHTML = '<i class="fas fa-cog fa-spin"></i>'
             progressBar.style.background = "var(--loader-initial)"
             progressPercentage.style.color = "var(--primary-color)"
-        } else if (percentage < 66) {
+        } else if (safePercentage < 66) {
             loaderIcon.innerHTML = '<i class="fas fa-dice"></i>'
             progressBar.style.background = "var(--loader-middle)"
             progressPercentage.style.color = "var(--warning-color)"
@@ -258,7 +267,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         // Aggiungi animazione di completamento quando raggiunge il 100%
-        if (percentage >= 100) {
+        if (safePercentage >= 100) {
             loadingEl.classList.add("loader-complete")
             loaderMessage.textContent = "Generazione completata con successo!"
 
@@ -275,6 +284,9 @@ document.addEventListener("DOMContentLoaded", () => {
      * Genera le cartelle della tombola
      */
     async function generateCards() {
+        // Resetta la variabile globale per una nuova generazione
+        globalLastPercentage = 0
+
         // Rimuovi la classe loader-complete se presente
         loadingEl.classList.remove("loader-complete")
 
@@ -330,7 +342,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 // Genera il batch corrente
                 const batchGiocatori = []
-                let lastPercentage = 0 // Memorizza l'ultima percentuale raggiunta
+                let batchLastPercentage = globalLastPercentage // Usa la percentuale globale come punto di partenza
 
                 for (let i = 0; i < batchCount; i++) {
                     batchGiocatori.push(generateTombolaGiocatore(start + i + 1))
@@ -340,8 +352,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     const currentPercentage = (processedGiocatori / numGiocatori) * 100
 
                     // Assicurati che la percentuale non diminuisca mai
-                    const percentage = Math.max(lastPercentage, currentPercentage)
-                    lastPercentage = percentage
+                    const percentage = Math.max(batchLastPercentage, currentPercentage)
+                    batchLastPercentage = percentage
 
                     updateLoader(percentage, processedGiocatori, numGiocatori, currentPhase)
 
@@ -404,13 +416,15 @@ document.addEventListener("DOMContentLoaded", () => {
         // Renderizza i giocatori in batch per evitare di bloccare l'interfaccia
         const batchSize = 10 // Numero di giocatori da renderizzare per batch
         const totalBatches = Math.ceil(giocatori.length / batchSize)
-        let lastRenderPercentage = 0 // Per assicurarsi che la percentuale non diminuisca
+        let renderLastPercentage = globalLastPercentage // Usa la percentuale globale come punto di partenza
 
         for (let batchIndex = 0; batchIndex < totalBatches; batchIndex++) {
             // Calcola la percentuale di rendering
             const currentRenderPercentage = ((batchIndex + 1) / totalBatches) * 100
-            const renderPercentage = Math.max(lastRenderPercentage, currentRenderPercentage)
-            lastRenderPercentage = renderPercentage
+
+            // Assicurati che la percentuale non diminuisca mai
+            const renderPercentage = Math.max(renderLastPercentage, currentRenderPercentage)
+            renderLastPercentage = renderPercentage
 
             const processedCount = Math.min((batchIndex + 1) * batchSize, giocatori.length)
 
