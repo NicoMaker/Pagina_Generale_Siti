@@ -36,6 +36,14 @@
 
   /* Tipografia */
   --font-family: "Montserrat", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+
+  /* Loader */
+  --loader-height: 8px;
+  --loader-bg: #f0f0f0;
+  --loader-initial: linear-gradient(90deg, #e53935 0%, #ef5350 100%);
+  --loader-middle: linear-gradient(90deg, #ff9800 0%, #ffb74d 100%);
+  --loader-final: linear-gradient(90deg, #4caf50 0%, #81c784 100%);
+  --loader-glow: rgba(229, 57, 53, 0.5);
 }
 
 /* Reset e stili base */
@@ -460,136 +468,199 @@ input[type="number"]::-webkit-inner-spin-button {
   box-shadow: none;
 }
 
-/* Loading spinner */
+/* Nuovo Loader Avanzato */
 .loading-container {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin: 1.875rem 0;
-  padding: 1.5rem;
+  margin: 2rem 0;
+  padding: 2rem;
   background-color: var(--card-background);
-  border-radius: var(--border-radius);
-  box-shadow: var(--shadow-md);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-lg);
   position: relative;
   overflow: hidden;
   border: 1px solid var(--border-color);
+  animation: fadeIn 0.5s ease;
 }
 
-.loading-spinner {
-  width: 50px;
-  height: 50px;
-  border: 5px solid rgba(229, 57, 53, 0.1);
-  border-radius: 50%;
-  border-top-color: var(--primary-color);
-  animation: spin 1s ease-in-out infinite;
-  margin-bottom: 0.9375rem;
-  position: relative;
-}
-
-/* Nuovo stile per l'icona di progresso */
-.progress-icon {
-  position: absolute;
-  top: 1.5rem;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 50px;
-  height: 50px;
+.loader-header {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
-  font-size: 1.5rem;
-  color: var(--primary-color);
-  transition: all 0.5s ease;
+  margin-bottom: 1.5rem;
 }
 
-.progress-icon.initial {
-  color: var(--primary-color);
-}
-
-.progress-icon.middle {
-  color: var(--warning-color);
-}
-
-.progress-icon.final {
-  color: var(--success-color);
-}
-
-.progress-icon i {
-  transition: transform 0.3s ease;
-}
-
-.progress-icon.final i {
-  animation: pulse-icon 1.5s infinite;
-}
-
-@keyframes pulse-icon {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.2);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-
-.loading-message {
-  margin: 1rem 0;
-  font-weight: 500;
-  color: var(--text-color);
-  text-align: center;
-}
-
-/* Nuovi stili per le statistiche di progresso */
-.progress-stats {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 0.75rem;
-  gap: 1rem;
-}
-
-.progress-percentage {
+.loader-title {
   font-size: 1.5rem;
   font-weight: 700;
   color: var(--primary-color);
 }
 
-.progress-counter {
+.loader-phase {
   font-size: 0.9rem;
   color: var(--text-light);
   background-color: rgba(0, 0, 0, 0.05);
-  padding: 0.25rem 0.5rem;
-  border-radius: var(--border-radius-sm);
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  animation: fadeInOut 2s infinite;
 }
 
-.progress-container {
+@keyframes fadeInOut {
+  0%,
+  100% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.loader-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+}
+
+.loader-icon-container {
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+
+.loader-spinner-container {
+  width: 80px;
+  height: 80px;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.loader-spinner {
+  width: 80px;
+  height: 80px;
+  border: 4px solid rgba(229, 57, 53, 0.1);
+  border-radius: 50%;
+  border-top-color: var(--primary-color);
+  animation: spin 1.5s linear infinite;
+}
+
+.loader-spinner-inner {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  right: 10px;
+  bottom: 10px;
+  border: 3px solid transparent;
+  border-radius: 50%;
+  border-bottom-color: var(--secondary-color);
+  animation: spin 2s linear infinite reverse;
+}
+
+.loader-icon {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
-  max-width: 400px;
-  height: 10px;
-  background-color: var(--border-color);
-  border-radius: 5px;
-  margin-top: 0.5rem;
-  overflow: hidden;
-  position: relative;
-}
-
-.progress-bar {
   height: 100%;
-  background: linear-gradient(
-    90deg,
-    var(--primary-color) 0%,
-    var(--primary-dark) 100%
-  );
-  border-radius: 5px;
-  width: 0%;
-  transition: width 0.3s ease-out;
-  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  color: var(--primary-color);
+  z-index: 2;
+  transition: all 0.5s ease;
 }
 
-.progress-bar::after {
+.loader-stats {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.5rem;
+}
+
+.loader-percentage-container {
+  position: relative;
+  height: 3rem;
+}
+
+.loader-percentage {
+  font-size: 3rem;
+  font-weight: 800;
+  color: var(--primary-color);
+  position: relative;
+  z-index: 2;
+  transition: color 0.5s ease;
+}
+
+.loader-percentage-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(229, 57, 53, 0.1) 0%,
+    rgba(229, 57, 53, 0.05) 100%
+  );
+  border-radius: 0.5rem;
+  z-index: 1;
+  transform: skewX(-10deg);
+  animation: pulse-bg 2s infinite;
+}
+
+@keyframes pulse-bg {
+  0%,
+  100% {
+    opacity: 0.5;
+    transform: skewX(-10deg) scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: skewX(-10deg) scale(1.05);
+  }
+}
+
+.loader-counter {
+  font-size: 1rem;
+  color: var(--text-light);
+  background-color: rgba(0, 0, 0, 0.05);
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  transition: all 0.3s ease;
+}
+
+.loader-fraction {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--primary-color);
+  background-color: rgba(229, 57, 53, 0.1);
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  margin-top: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+@keyframes celebrate {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+}
+
+.loader-complete .loader-icon {
+  animation: celebrate 0.5s ease-in-out 3;
+}
+
+.loader-complete .loader-percentage {
+  animation: celebrate 0.5s ease-in-out 3;
+}
+
+.loader-complete .loader-progress-bar::after {
   content: "";
   position: absolute;
   top: 0;
@@ -599,20 +670,125 @@ input[type="number"]::-webkit-inner-spin-button {
   background: linear-gradient(
     90deg,
     rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 0.3) 50%,
+    rgba(255, 255, 255, 0.8) 50%,
     rgba(255, 255, 255, 0) 100%
   );
-  animation: shimmer 1.5s infinite;
-  transform: skewX(-20deg);
+  animation: flash 1s ease-in-out 3;
 }
 
-@keyframes shimmer {
+@keyframes flash {
+  0%,
+  100% {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+  50% {
+    opacity: 1;
+    transform: translateX(100%);
+  }
+}
+
+.loader-marker span {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-color);
+  white-space: nowrap;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 2px 5px;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.loader-marker span {
+  font-weight: 600;
+}
+
+.loader-progress-container {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.loader-progress-bg {
+  height: var(--loader-height);
+  background-color: var(--loader-bg);
+  border-radius: 1rem;
+  overflow: hidden;
+  position: relative;
+}
+
+.loader-progress-bar {
+  height: 100%;
+  width: 0%;
+  border-radius: 1rem;
+  background: var(--loader-initial);
+  transition: width 0.5s ease-out, background 0.5s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.loader-progress-glow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 60px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.6),
+    transparent
+  );
+  animation: glow 2s infinite;
+  z-index: 2;
+  transform: translateX(-100%);
+}
+
+@keyframes glow {
   0% {
-    transform: translateX(-100%) skewX(-20deg);
+    transform: translateX(-100%);
   }
   100% {
-    transform: translateX(100%) skewX(-20deg);
+    transform: translateX(1000%);
   }
+}
+
+.loader-progress-markers {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.5rem;
+  position: relative;
+  height: 20px;
+}
+
+.loader-marker {
+  position: absolute;
+  width: 2px;
+  height: 8px;
+  background-color: var(--text-light);
+  transform: translateX(-50%);
+}
+
+.loader-marker span {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.7rem;
+  color: var(--text-light);
+  white-space: nowrap;
+}
+
+.loader-message {
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--text-color);
+  margin-top: 1rem;
+  font-style: italic;
+  animation: fadeInOut 2s infinite;
 }
 
 @keyframes spin {
@@ -1194,6 +1370,15 @@ input[type="number"]::-webkit-inner-spin-button {
     flex-direction: column;
     gap: 1rem;
   }
+
+  .loader-content {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .loader-stats {
+    align-items: center;
+  }
 }
 
 @media (max-width: 480px) {
@@ -1207,6 +1392,21 @@ input[type="number"]::-webkit-inner-spin-button {
 
   .combinations-grid {
     grid-template-columns: 1fr;
+  }
+
+  .loader-header {
+    flex-direction: column;
+    gap: 0.5rem;
+    text-align: center;
+  }
+
+  .loader-progress-markers .loader-marker span {
+    display: none;
+  }
+
+  .loader-marker:first-child span,
+  .loader-marker:last-child span {
+    display: block;
   }
 }
 
@@ -1225,7 +1425,8 @@ input[type="number"]::-webkit-inner-spin-button {
   .alert-container,
   .modal-container,
   .app-nav,
-  .theme-toggle {
+  .theme-toggle,
+  .loading-container {
     display: none !important;
   }
 
