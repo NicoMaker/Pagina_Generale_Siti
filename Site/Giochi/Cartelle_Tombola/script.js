@@ -147,7 +147,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // Calcola i valori per ogni quarto
         const quarter = Math.ceil(total / 4)
         const half = Math.ceil(total / 2)
-        const threeQuarters = Math.ceil(total * 3 / 4)
+        const threeQuarters = Math.ceil((total * 3) / 4)
 
         // Aggiorna i marcatori con i valori calcolati
         marker25.textContent = quarter.toString()
@@ -195,11 +195,17 @@ document.addEventListener("DOMContentLoaded", () => {
         const progressFraction = document.getElementById("progressFraction")
         let fractionText = ""
 
-        if (processed <= Math.ceil(total / 4)) {
+        // Calcola i valori per ogni quarto
+        const quarter = Math.ceil(total / 4)
+        const half = Math.ceil(total / 2)
+        const threeQuarters = Math.ceil((total * 3) / 4)
+
+        // Determina in quale quarto siamo
+        if (processed <= quarter) {
             fractionText = "1/4"
-        } else if (processed <= Math.ceil(total / 2)) {
+        } else if (processed <= half) {
             fractionText = "2/4"
-        } else if (processed <= Math.ceil(total * 3 / 4)) {
+        } else if (processed <= threeQuarters) {
             fractionText = "3/4"
         } else {
             fractionText = "4/4"
@@ -209,6 +215,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Aggiorna la barra di progresso
         progressBar.style.width = `${percentage}%`
+
+        // Aggiungi classi alla barra di progresso in base alla percentuale
+        progressBar.classList.remove("quarter", "half", "three-quarters", "complete")
+        if (percentage >= 100) {
+            progressBar.classList.add("complete")
+        } else if (percentage >= 75) {
+            progressBar.classList.add("three-quarters")
+        } else if (percentage >= 50) {
+            progressBar.classList.add("half")
+        } else if (percentage >= 25) {
+            progressBar.classList.add("quarter")
+        }
 
         // Aggiorna la fase
         loaderPhase.textContent = phase
@@ -312,12 +330,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 // Genera il batch corrente
                 const batchGiocatori = []
+                let lastPercentage = 0 // Memorizza l'ultima percentuale raggiunta
+
                 for (let i = 0; i < batchCount; i++) {
                     batchGiocatori.push(generateTombolaGiocatore(start + i + 1))
                     processedGiocatori++
 
                     // Aggiorna il progresso dopo ogni giocatore generato
-                    const percentage = (processedGiocatori / numGiocatori) * 100
+                    const currentPercentage = (processedGiocatori / numGiocatori) * 100
+
+                    // Assicurati che la percentuale non diminuisca mai
+                    const percentage = Math.max(lastPercentage, currentPercentage)
+                    lastPercentage = percentage
+
                     updateLoader(percentage, processedGiocatori, numGiocatori, currentPhase)
 
                     // Piccola pausa per rendere visibile l'animazione
