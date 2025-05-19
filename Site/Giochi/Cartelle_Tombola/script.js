@@ -835,7 +835,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Assicurati che ogni riga abbia esattamente 5 numeri
         for (const card of cards) {
-            balanceCardRows(card)
+            ensureExactlyFiveNumbersPerRow(card)
         }
     }
 
@@ -894,15 +894,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     /**
-     * Bilancia le righe di una cartella per assicurarsi che ogni riga abbia esattamente 5 numeri
+     * Assicura che ogni riga abbia esattamente 5 numeri
      * @param {Array} card - La cartella da bilanciare
      */
-    function balanceCardRows(card) {
+    function ensureExactlyFiveNumbersPerRow(card) {
         // Conta i numeri in ogni riga
         const rowCounts = card.map((row) => row.filter((cell) => cell !== null).length)
-
-        // Se tutte le righe hanno 5 numeri, non fare nulla
-        if (rowCounts.every((count) => count === 5)) return
 
         // Righe con troppi numeri
         const excessRows = rowCounts
@@ -944,5 +941,122 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             }
         }
+
+        // Se ci sono ancora righe con meno di 5 numeri, aggiungi numeri da altre colonne
+        if (deficitRows.length > 0) {
+            addNumbersToDeficitRows(card, deficitRows)
+        }
+
+        // Se ci sono ancora righe con più di 5 numeri, rimuovi numeri in eccesso
+        if (excessRows.length > 0) {
+            removeExcessNumbers(card, excessRows)
+        }
+    }
+
+    /**
+     * Aggiunge numeri alle righe con meno di 5 numeri
+     * @param {Array} card - La cartella
+     * @param {Array} deficitRows - Righe con meno di 5 numeri
+     */
+    function addNumbersToDeficitRows(card, deficitRows) {
+        for (const row of deficitRows) {
+            const needed = 5 - row.count
+            if (needed <= 0) continue
+
+            // Trova colonne vuote in questa riga
+            const emptyCols = []
+            for (let col = 0; col < 9; col++) {
+                if (card[row.index][col] === null) {
+                    emptyCols.push(col)
+                }
+            }
+
+            // Mescola le colonne vuote
+            shuffleArray(emptyCols)
+
+            // Aggiungi numeri nelle colonne vuote
+            for (let i = 0; i < Math.min(needed, emptyCols.length); i++) {
+                const col = emptyCols[i]
+                // Genera un numero valido per questa colonna
+                let min, max
+                if (col === 0) {
+                    min = 1
+                    max = 9
+                } else if (col === 8) {
+                    min = 80
+                    max = 90
+                } else {
+                    min = col * 10
+                    max = col * 10 + 9
+                }
+
+                // Verifica che il numero non sia già presente nella cartella
+                let number
+                let attempts = 0
+                const maxAttempts = 100
+                do {
+                    number = Math.floor(Math.random() * (max - min + 1)) + min
+                    attempts++
+                    if (attempts > maxAttempts) {
+                        // Se dopo molti tentativi non troviamo un numero valido, passiamo alla colonna successiva
+                        break
+                    }
+                } while (isNumberInCard(card, number))
+
+                if (attempts <= maxAttempts) {
+                    card[row.index][col] = number
+                    row.count++
+                }
+            }
+        }
+    }
+
+    /**
+     * Rimuove numeri in eccesso dalle righe con più di 5 numeri
+     * @param {Array} card - La cartella
+     * @param {Array} excessRows - Righe con più di 5 numeri
+     */
+    function removeExcessNumbers(card, excessRows) {
+        for (const row of excessRows) {
+            const excess = row.count - 5
+            if (excess <= 0) continue
+
+            // Trova colonne con numeri in questa riga
+            const filledCols = []
+            for (let col = 0; col < 9; col++) {
+                if (card[row.index][col] !== null) {
+                    filledCols.push(col)
+                }
+            }
+
+            // Mescola le colonne piene
+            shuffleArray(filledCols)
+
+            // Rimuovi numeri in eccesso
+            for (let i = 0; i < excess; i++) {
+                if (i < filledCols.length) {
+                    const col = filledCols[i]
+                    card[row.index][col] = null
+                    row.count--
+                }
+            }
+        }
+    }
+
+    /**
+     * Verifica se un numero è già presente nella cartella
+     * @param {Array} card - La cartella
+     * @param {number} number - Il numero da verificare
+     * @returns {boolean} True se il numero è già presente, false altrimenti
+     */
+    function isNumberInCard(card, number) {
+        for (let row = 0; row < 3; row++) {
+            for (let col = 0; col < 9; col++) {
+                if (card[row][col] === number) {
+                    return true
+                }
+            }
+        }
+        return false
     }
 })
