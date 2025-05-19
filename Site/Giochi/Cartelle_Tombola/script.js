@@ -404,10 +404,14 @@ document.addEventListener("DOMContentLoaded", () => {
         // Renderizza i giocatori in batch per evitare di bloccare l'interfaccia
         const batchSize = 10 // Numero di giocatori da renderizzare per batch
         const totalBatches = Math.ceil(giocatori.length / batchSize)
+        let lastRenderPercentage = 0 // Per assicurarsi che la percentuale non diminuisca
 
         for (let batchIndex = 0; batchIndex < totalBatches; batchIndex++) {
             // Calcola la percentuale di rendering
-            const renderPercentage = ((batchIndex + 1) / totalBatches) * 100
+            const currentRenderPercentage = ((batchIndex + 1) / totalBatches) * 100
+            const renderPercentage = Math.max(lastRenderPercentage, currentRenderPercentage)
+            lastRenderPercentage = renderPercentage
+
             const processedCount = Math.min((batchIndex + 1) * batchSize, giocatori.length)
 
             // Aggiorna il loader con la fase di rendering
