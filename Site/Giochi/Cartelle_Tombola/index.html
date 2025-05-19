@@ -81,7 +81,14 @@
 
                 <div id="loading" class="loading-container hidden">
                     <div class="loading-spinner"></div>
-                    <p>Generazione in corso...</p>
+                    <div id="progressIcon" class="progress-icon initial">
+                        <i class="fas fa-cog fa-spin"></i>
+                    </div>
+                    <p class="loading-message">Generazione in corso...</p>
+                    <div class="progress-stats">
+                        <span id="progressPercentage" class="progress-percentage">0%</span>
+                        <span id="progressCounter" class="progress-counter">0/0 giocatori</span>
+                    </div>
                     <div class="progress-container">
                         <div class="progress-bar" id="progressBar"></div>
                     </div>

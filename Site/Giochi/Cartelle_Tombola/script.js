@@ -17,6 +17,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const sections = document.querySelectorAll(".section-container");
     const sumcartelle = 600; // Limite massimo di cartelle
 
+    // Nuovi elementi per il loader migliorato
+    const progressPercentage = document.getElementById("progressPercentage");
+    const progressCounter = document.getElementById("progressCounter");
+    const progressIcon = document.getElementById("progressIcon");
+
     // Imposta l'attributo max sull'input
     numGiocatoriInput.max = sumcartelle;
 
@@ -149,6 +154,23 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     /**
+     * Aggiorna l'icona del loader in base alla percentuale di completamento
+     * @param {number} percentage - Percentuale di completamento
+     */
+    function updateLoaderIcon(percentage) {
+        if (percentage < 30) {
+            progressIcon.innerHTML = '<i class="fas fa-cog fa-spin"></i>';
+            progressIcon.className = 'progress-icon initial';
+        } else if (percentage < 70) {
+            progressIcon.innerHTML = '<i class="fas fa-dice"></i>';
+            progressIcon.className = 'progress-icon middle';
+        } else {
+            progressIcon.innerHTML = '<i class="fas fa-check-circle"></i>';
+            progressIcon.className = 'progress-icon final';
+        }
+    }
+
+    /**
      * Genera le cartelle della tombola
      */
     async function generateCards() {
@@ -164,31 +186,62 @@ document.addEventListener("DOMContentLoaded", () => {
         cardsContainer.innerHTML = "";
         printBtn.disabled = true;
         progressBar.style.width = "0%";
+        progressPercentage.textContent = "0%";
+        progressCounter.textContent = `0/${numGiocatori} giocatori`;
+        updateLoaderIcon(0);
 
         try {
             // Aggiorna il messaggio di caricamento
-            const loadingMessage = loadingEl.querySelector("p");
+            const loadingMessage = loadingEl.querySelector(".loading-message");
             loadingMessage.textContent =
                 "Generazione in corso... Questo potrebbe richiedere alcuni secondi per grandi volumi.";
 
             // Inizia a misurare il tempo
             const startTime = performance.now();
 
-            // Aggiorna la barra di progresso (simulazione)
-            let progress = 0;
-            const progressInterval = setInterval(() => {
-                progress += 1;
-                if (progress <= 90) {
-                    progressBar.style.width = `${progress}%`;
-                }
-            }, 50);
+            // Aggiorna la barra di progresso in modo più realistico
+            let processedGiocatori = 0;
+            const updateProgress = (processed, total) => {
+                const percentage = Math.min(Math.round((processed / total) * 100), 100);
+                progressBar.style.width = `${percentage}%`;
+                progressPercentage.textContent = `${percentage}%`;
+                progressCounter.textContent = `${processed}/${total} giocatori`;
+                updateLoaderIcon(percentage);
+            };
 
             // Genera i giocatori in modo asincrono per non bloccare l'interfaccia
-            const giocatori = await generateGiocatoriAsync(numGiocatori);
+            const batchSize = 5; // Numero di giocatori da generare per batch
+            const totalBatches = Math.ceil(numGiocatori / batchSize);
+            const giocatori = [];
+
+            for (let batchIndex = 0; batchIndex < totalBatches; batchIndex++) {
+                // Attendi il prossimo frame di animazione per mantenere l'interfaccia reattiva
+                await new Promise((resolve) => requestAnimationFrame(resolve));
+
+                const start = batchIndex * batchSize;
+                const end = Math.min(start + batchSize, numGiocatori);
+                const batchCount = end - start;
+
+                // Genera il batch corrente
+                const batchGiocatori = [];
+                for (let i = 0; i < batchCount; i++) {
+                    batchGiocatori.push(generateTombolaGiocatore(start + i + 1));
+                    processedGiocatori++;
+
+                    // Aggiorna il progresso dopo ogni giocatore generato
+                    if (processedGiocatori % 1 === 0 || processedGiocatori === numGiocatori) {
+                        updateProgress(processedGiocatori, numGiocatori);
+                    }
+                }
+
+                giocatori.push(...batchGiocatori);
+
+                // Aggiorna il messaggio di caricamento
+                loadingMessage.textContent = `Generazione in corso... ${processedGiocatori}/${numGiocatori} giocatori`;
+            }
 
             // Completa la barra di progresso
-            clearInterval(progressInterval);
-            progressBar.style.width = "100%";
+            updateProgress(numGiocatori, numGiocatori);
 
             // Calcola il tempo impiegato
             const endTime = performance.now();
@@ -221,24 +274,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     /**
-     * Genera i giocatori in modo asincrono per non bloccare l'interfaccia
-     * @param {number} numGiocatori - Numero di giocatori da generare
-     * @returns {Promise<Array>} Promise che risolve con l'array di giocatori
-     */
-    function generateGiocatoriAsync(numGiocatori) {
-        return new Promise((resolve) => {
-            // Utilizziamo setTimeout per non bloccare l'interfaccia
-            setTimeout(() => {
-                const giocatori = [];
-                for (let i = 0; i < numGiocatori; i++) {
-                    giocatori.push(generateTombolaGiocatore(i + 1));
-                }
-                resolve(giocatori);
-            }, 0);
-        });
-    }
-
-    /**
      * Renderizza le cartelle in modo ottimizzato per grandi volumi
      * @param {Array} giocatori - Array di giocatori di cartelle
      */
@@ -255,11 +290,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
         for (let batchIndex = 0; batchIndex < totalBatches; batchIndex++) {
             // Aggiorna il messaggio di caricamento
-            loadingEl.querySelector("p").textContent =
+            loadingEl.querySelector(".loading-message").textContent =
                 `Rendering in corso... ${Math.min((batchIndex + 1) * batchSize, giocatori.length)}/${giocatori.length} giocatori`;
 
             // Aggiorna la barra di progresso
-            progressBar.style.width = `${Math.min((((batchIndex + 1) * batchSize) / giocatori.length) * 100, 100)}%`;
+            const renderProgress = Math.min((((batchIndex + 1) * batchSize) / giocatori.length) * 100, 100);
+            progressBar.style.width = `${renderProgress}%`;
+            progressPercentage.textContent = `${Math.round(renderProgress)}%`;
+            progressCounter.textContent = `${Math.min((batchIndex + 1) * batchSize, giocatori.length)}/${giocatori.length} giocatori`;
+            updateLoaderIcon(renderProgress);
 
             // Attendi il prossimo frame di animazione per mantenere l'interfaccia reattiva
             await new Promise((resolve) => requestAnimationFrame(resolve));
