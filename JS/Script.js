@@ -54,27 +54,25 @@ document.addEventListener("DOMContentLoaded", () => {
   // Set current year in footer
   currentYearElement.textContent = new Date().getFullYear();
 
-
-const categoryIcons = {
-  Astronomia: "fa-meteor", 
-  Bici: "fa-bicycle",
-  Borsa: "fa-chart-line",
-  Calendario: "fa-calendar-alt",
-  Calcio: "fa-futbol",
-  Giochi: "fa-gamepad",
-  Info_Paesi_Stati: "fa-globe",
-  Matematica: "fa-calculator",
-  Natale: "fa-gifts",
-  Opzioni_Con_Le_Frasi: "fa-font",
-  Pasqua: "fa-egg",
-  Pokemon: "fa-dragon",
-  Random: "fa-random",
-  Salute: "fa-heartbeat",
-  Storia: "fa-landmark",
-  Temperatura: "fa-temperature-high",
-  Utilità: "fa-wrench"
-};
-
+  const categoryIcons = {
+    Astronomia: "fa-meteor",
+    Bici: "fa-bicycle",
+    Borsa: "fa-chart-line",
+    Calendario: "fa-calendar-alt",
+    Calcio: "fa-futbol",
+    Giochi: "fa-gamepad",
+    Info_Paesi_Stati: "fa-globe",
+    Matematica: "fa-calculator",
+    Natale: "fa-gifts",
+    Opzioni_Con_Le_Frasi: "fa-font",
+    Pasqua: "fa-egg",
+    Pokemon: "fa-dragon",
+    Random: "fa-random",
+    Salute: "fa-heartbeat",
+    Storia: "fa-landmark",
+    Temperatura: "fa-temperature-high",
+    Utilità: "fa-wrench"
+  };
 
   // Advanced preloader with loading bar
   function simulateLoading() {
@@ -384,6 +382,31 @@ const categoryIcons = {
     renderCategoryNavigation(categoriesData);
     updateCounters(categoriesData);
     setupEventListeners(data);
+
+    // Aggiungi questo codice per assicurarti che la navigazione sia impostata correttamente all'avvio
+    // Imposta Home come sezione attiva all'avvio
+    const currentHash = window.location.hash || "#home";
+
+    // Aggiorna i link di navigazione desktop
+    navLinks.forEach((link) => {
+      link.classList.remove("active");
+      if (link.getAttribute("href") === currentHash) {
+        link.classList.add("active");
+      }
+    });
+
+    // Aggiorna i link di navigazione mobile
+    mobileNavLinks.forEach((link) => {
+      link.classList.remove("active");
+      if (link.getAttribute("href") === currentHash) {
+        link.classList.add("active");
+      }
+    });
+
+    // Se non c'è hash, imposta #home come default
+    if (!window.location.hash) {
+      window.location.hash = "#home";
+    }
   }
 
   // Update counters
