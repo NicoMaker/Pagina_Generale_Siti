@@ -2106,3 +2106,49 @@ html {
   outline: none;
   background-color: transparent;
 }
+
+/* Remove blue outline on focus/click for all interactive elements */
+a:focus,
+button:focus,
+input:focus,
+textarea:focus,
+select:focus,
+.nav-link:focus,
+.logo:focus,
+.avatar-logo:focus,
+.hero-image:focus,
+.mobile-avatar:focus,
+.preloader-avatar:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Remove blue outline specifically for the avatar images */
+.avatar-logo,
+.hero-image,
+.mobile-avatar,
+.preloader-avatar {
+  outline: none !important;
+}
+
+/* Remove focus outline for navigation links */
+.nav-link:focus::after,
+.mobile-nav-link:focus {
+  outline: none !important;
+}
+
+/* Remove outline for scroll arrow */
+.scroll-down-arrow a:focus,
+.scroll-down-arrow a:active {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* For touch devices, ensure no outline or highlight appears */
+@media (hover: none) {
+  a, button, input, textarea, select, 
+  .nav-link, .logo, .hero-image, 
+  .avatar-logo, .mobile-avatar, .preloader-avatar {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
