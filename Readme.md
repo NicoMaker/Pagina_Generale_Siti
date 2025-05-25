@@ -1,4 +1,4 @@
-### Guida Utente - Pagina Generale Siti di Nico Maker the best 
+### Guida Utente - Pagina Generale Siti di Nico Maker
 
 ## Indice dei Contenuti
 
