@@ -40,6 +40,11 @@ const difficultySelector = document.getElementById("difficulty")
 const startGameButton = document.getElementById("start-game")
 const currentDifficultyElement = document.getElementById("current-difficulty")
 
+// Pause/Resume elements
+const pauseResumeBtn = document.getElementById("pause-resume-btn")
+const pauseOverlay = document.getElementById("pause-overlay")
+const resumeFromOverlayBtn = document.getElementById("resume-from-overlay")
+
 // Victory modal elements
 const victoryModal = document.getElementById("victory-modal")
 const victoryScoreElement = document.getElementById("victory-score")
@@ -169,10 +174,82 @@ async function initGame() {
     setupVictoryModal()
     setupGameOverAlert()
     setupInfoModal()
+    setupPauseControls()
 
     // Show initial board without starting the game
     createGameBoard()
     renderBoard()
+}
+
+// Set up pause/resume controls
+function setupPauseControls() {
+    // Pause/Resume button click
+    pauseResumeBtn.addEventListener("click", togglePause)
+
+    // Resume from overlay button
+    resumeFromOverlayBtn.addEventListener("click", resumeGame)
+
+    // Close overlay when clicking outside
+    pauseOverlay.addEventListener("click", (e) => {
+        if (e.target === pauseOverlay) {
+            resumeGame()
+        }
+    })
+}
+
+// Toggle pause/resume
+function togglePause() {
+    if (!isGameStarted) return
+
+    if (isPaused) {
+        resumeGame()
+    } else {
+        pauseGame()
+    }
+}
+
+// Pause the game
+function pauseGame() {
+    if (!isGameStarted || isPaused) return
+
+    isPaused = true
+
+    // Update button appearance
+    pauseResumeBtn.classList.add("paused")
+    pauseResumeBtn.innerHTML = '<span class="play-icon">▶️</span><span class="pause-text">Riprendi</span>'
+
+    // Show pause overlay
+    pauseOverlay.classList.add("show")
+
+    console.log("Game paused")
+}
+
+// Resume the game
+function resumeGame() {
+    if (!isGameStarted || !isPaused) return
+
+    isPaused = false
+
+    // Update button appearance
+    pauseResumeBtn.classList.remove("paused")
+    pauseResumeBtn.innerHTML = '<span class="pause-icon">⏸️</span><span class="pause-text">Pausa</span>'
+
+    // Hide pause overlay
+    pauseOverlay.classList.remove("show")
+
+    console.log("Game resumed")
+}
+
+// Show pause button
+function showPauseButton() {
+    pauseResumeBtn.style.display = "flex"
+}
+
+// Hide pause button
+function hidePauseButton() {
+    pauseResumeBtn.style.display = "none"
+    pauseOverlay.classList.remove("show")
+    isPaused = false
 }
 
 // Set up custom game over alert
@@ -293,6 +370,9 @@ function startGame() {
     updateScore()
     isPaused = false
     isGameStarted = true
+
+    // Show pause button
+    showPauseButton()
 
     // Create the game board
     createGameBoard()
@@ -671,6 +751,9 @@ function gameOver() {
     clearInterval(ghostsInterval)
     isGameStarted = false
 
+    // Hide pause button
+    hidePauseButton()
+
     // Show the custom game over alert
     showGameOverAlert()
 }
@@ -680,6 +763,9 @@ function winGame() {
     clearInterval(gameInterval)
     clearInterval(ghostsInterval)
     isGameStarted = false
+
+    // Hide pause button
+    hidePauseButton()
 
     // Get the next difficulty level
     let nextDifficulty
@@ -839,6 +925,9 @@ function resetGame() {
     isGameStarted = false
     isPaused = false
 
+    // Hide pause button
+    hidePauseButton()
+
     // Clear the board
     gameBoard = []
     ghosts = []
@@ -862,41 +951,58 @@ function updateLives() {
 function setupControls() {
     // Keyboard controls
     document.addEventListener("keydown", (e) => {
+        // Pause/Resume with spacebar
+        if (e.key === " " || e.code === "Space") {
+            e.preventDefault()
+            if (isGameStarted) {
+                togglePause()
+            }
+            return
+        }
+
         if (!isGameStarted) return
 
         switch (e.key) {
             case "ArrowUp":
+                e.preventDefault()
                 pacman.direction = DIRECTIONS.UP
                 break
             case "ArrowDown":
+                e.preventDefault()
                 pacman.direction = DIRECTIONS.DOWN
                 break
             case "ArrowLeft":
+                e.preventDefault()
                 pacman.direction = DIRECTIONS.LEFT
                 break
             case "ArrowRight":
+                e.preventDefault()
                 pacman.direction = DIRECTIONS.RIGHT
                 break
         }
     })
 
     // Touch controls
-    upBtn.addEventListener("touchstart", () => {
+    upBtn.addEventListener("touchstart", (e) => {
+        e.preventDefault()
         if (!isGameStarted) return
         pacman.direction = DIRECTIONS.UP
     })
 
-    downBtn.addEventListener("touchstart", () => {
+    downBtn.addEventListener("touchstart", (e) => {
+        e.preventDefault()
         if (!isGameStarted) return
         pacman.direction = DIRECTIONS.DOWN
     })
 
-    leftBtn.addEventListener("touchstart", () => {
+    leftBtn.addEventListener("touchstart", (e) => {
+        e.preventDefault()
         if (!isGameStarted) return
         pacman.direction = DIRECTIONS.LEFT
     })
 
-    rightBtn.addEventListener("touchstart", () => {
+    rightBtn.addEventListener("touchstart", (e) => {
+        e.preventDefault()
         if (!isGameStarted) return
         pacman.direction = DIRECTIONS.RIGHT
     })

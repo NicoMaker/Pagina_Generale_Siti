@@ -35,17 +35,37 @@
             <div class="level-container">Livello: <span id="current-difficulty">Facile</span></div>
         </div>
 
+        <!-- Pause/Resume Button -->
+        <div class="pause-container">
+            <button id="pause-resume-btn" class="pause-resume-button" style="display: none;">
+                <span class="pause-icon">⏸️</span>
+                <span class="pause-text">Pausa</span>
+            </button>
+        </div>
+
         <div id="game-board"></div>
 
         <div class="controls-container">
             <div class="touch-controls">
-                <br>
                 <button id="up-btn" aria-label="Su">↑</button>
                 <div class="horizontal-controls">
                     <button id="left-btn" aria-label="Sinistra">←</button>
                     <button id="right-btn" aria-label="Destra">→</button>
                 </div>
                 <button id="down-btn" aria-label="Giù">↓</button>
+            </div>
+        </div>
+
+        <!-- Pause Overlay -->
+        <div id="pause-overlay" class="pause-overlay">
+            <div class="pause-content">
+                <h2 class="pause-title">GIOCO IN PAUSA</h2>
+                <div class="pause-icon-large">⏸️</div>
+                <p class="pause-message">Il gioco è stato messo in pausa</p>
+                <button id="resume-from-overlay" class="resume-button">
+                    <span class="play-icon">▶️</span>
+                    Riprendi Gioco
+                </button>
             </div>
         </div>
 
@@ -64,6 +84,7 @@
                         <h3>Controlli</h3>
                         <p>Su dispositivi mobili e tablet: Usa i pulsanti freccia sullo schermo.</p>
                         <p>Su PC: Usa i tasti freccia della tastiera.</p>
+                        <p><strong>Pausa:</strong> Clicca il pulsante pausa o premi la barra spaziatrice (PC).</p>
                     </div>
                     <div class="rule-section">
                         <h3>Punteggio</h3>
