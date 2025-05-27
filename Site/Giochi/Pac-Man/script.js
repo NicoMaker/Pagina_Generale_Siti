@@ -47,6 +47,12 @@ const completedLevelElement = document.getElementById("completed-level")
 const nextLevelElement = document.getElementById("next-level")
 const continueButton = document.getElementById("continue-button")
 
+// Custom Game Over Alert elements
+const gameOverAlert = document.getElementById("game-over-alert")
+const finalScoreElement = document.getElementById("final-score")
+const playAgainBtn = document.getElementById("play-again-btn")
+const changeLevelBtn = document.getElementById("change-level-btn")
+
 // Info modal elements
 const infoButton = document.getElementById("info-button")
 const infoModal = document.getElementById("info-modal")
@@ -161,11 +167,51 @@ async function initGame() {
     setupControls()
     setupDifficultySelector()
     setupVictoryModal()
+    setupGameOverAlert()
     setupInfoModal()
 
     // Show initial board without starting the game
     createGameBoard()
     renderBoard()
+}
+
+// Set up custom game over alert
+function setupGameOverAlert() {
+    playAgainBtn.addEventListener("click", () => {
+        hideGameOverAlert()
+        // Restart the game with the same difficulty
+        startGame()
+    })
+
+    changeLevelBtn.addEventListener("click", () => {
+        hideGameOverAlert()
+        // Reset the game state
+        resetGame()
+    })
+
+    // Close alert when clicking backdrop
+    gameOverAlert.addEventListener("click", (e) => {
+        if (e.target === gameOverAlert) {
+            hideGameOverAlert()
+            resetGame()
+        }
+    })
+}
+
+// Show custom game over alert
+function showGameOverAlert() {
+    finalScoreElement.textContent = score
+    gameOverAlert.classList.add("show")
+
+    // Add a slight delay for the score animation
+    setTimeout(() => {
+        finalScoreElement.style.animation = "scoreCounter 0.8s ease-out"
+    }, 300)
+}
+
+// Hide custom game over alert
+function hideGameOverAlert() {
+    gameOverAlert.classList.remove("show")
 }
 
 // Set up info modal
@@ -619,13 +665,14 @@ function resetPositions() {
     }, 1000)
 }
 
-// Game over
+// Game over - now with beautiful custom alert
 function gameOver() {
     clearInterval(gameInterval)
     clearInterval(ghostsInterval)
     isGameStarted = false
 
-    alert("Game Over! Il tuo punteggio: " + score)
+    // Show the custom game over alert
+    showGameOverAlert()
 }
 
 // Modify the winGame function to show a nice victory modal

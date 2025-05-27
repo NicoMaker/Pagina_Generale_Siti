@@ -39,6 +39,7 @@
 
         <div class="controls-container">
             <div class="touch-controls">
+                <br>
                 <button id="up-btn" aria-label="Su">↑</button>
                 <div class="horizontal-controls">
                     <button id="left-btn" aria-label="Sinistra">←</button>
@@ -105,6 +106,38 @@
                     <p>Prossimo livello: <span id="next-level">Medio</span></p>
                 </div>
                 <button id="continue-button" class="victory-button">Continua al Prossimo Livello</button>
+            </div>
+        </div>
+
+        <!-- Custom Game Over Alert -->
+        <div id="game-over-alert" class="custom-alert">
+            <div class="alert-backdrop"></div>
+            <div class="alert-container">
+                <div class="alert-header">
+                    <div class="skull-icon">💀</div>
+                    <h2 class="alert-title">GAME OVER</h2>
+                    <div class="skull-icon">💀</div>
+                </div>
+                <div class="alert-body">
+                    <div class="score-display">
+                        <span class="score-label">Punteggio Finale</span>
+                        <span id="final-score" class="score-value">0</span>
+                    </div>
+                    <div class="game-over-message">
+                        <p>Hai perso tutte le vite!</p>
+                        <p class="encouragement">Riprova per battere il tuo record!</p>
+                    </div>
+                </div>
+                <div class="alert-footer">
+                    <button id="play-again-btn" class="alert-button primary">
+                        <span class="button-icon">🎮</span>
+                        Gioca Ancora
+                    </button>
+                    <button id="change-level-btn" class="alert-button secondary">
+                        <span class="button-icon">⚙️</span>
+                        Cambia Livello
+                    </button>
+                </div>
             </div>
         </div>
     </div>
