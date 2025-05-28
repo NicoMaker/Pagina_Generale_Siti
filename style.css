@@ -435,10 +435,8 @@ input {
   height: 50px;
   border-radius: 50%;
   object-fit: cover;
-  border: 2px solid var(--primary);
   width: 55px;
   height: 55px;
-  border: 3px solid var(--primary);
   box-shadow: 0 0 15px rgba(106, 61, 232, 0.3);
 }
 
@@ -1646,7 +1644,6 @@ html {
 .mobile-avatar {
   width: 55px;
   height: 55px;
-  border: 3px solid var(--primary);
   box-shadow: 0 0 15px rgba(106, 61, 232, 0.3);
 }
 
