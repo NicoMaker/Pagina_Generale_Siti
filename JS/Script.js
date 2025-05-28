@@ -66,6 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
     Natale: "fa-gifts",
     Opzioni_Con_Le_Frasi: "fa-font",
     Pasqua: "fa-egg",
+    Password : "fa-key",
     Pokemon: "fa-dragon",
     Random: "fa-random",
     Salute: "fa-heartbeat",

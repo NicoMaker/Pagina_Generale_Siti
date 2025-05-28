@@ -6,7 +6,6 @@
 - **[Genera un Colore Casuale](Colore_Casuale)**
 - **[Estrattore Regione Casuale](Estrai_Regione)**
 - **[Generatore di Carte](Generatore_di_Carte)**
-- **[Generatore di Password](Password)**
 - **[Lancio dei Dadi con n Facce Grafico](Lancio%20Dadi%20N%20facce)**
 - **[Lancio di n Monete](Lancio%20Monete)**
 - **[Lancio Dadi](Lancio_Dadi)**
@@ -14,4 +13,3 @@
 - **[Lettera Casuale](Lettera_Casuale)**
 - **[Nomi Casuali](Nomi%20Casuali)**
 - **[Numeri Casuali](Numeri_Casuali)**
-- **[Password Analyzer](Password_Analyzer)**

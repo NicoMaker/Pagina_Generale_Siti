@@ -53,8 +53,8 @@
         "link": "Site/Giochi/Tombola/index.html"
       },
       {
-        "name":"Generatore Cartelle Tombola",
-        "link":"Site/Giochi/Cartelle_Tombola/index.html"
+        "name": "Generatore Cartelle Tombola",
+        "link": "Site/Giochi/Cartelle_Tombola/index.html"
       },
       {
         "name": "Gioco Sasso Carta Forbice",
@@ -273,14 +273,6 @@
     ],
     "Random": [
       {
-        "name": "Generatore Password",
-        "link": "Site/Random/Password/index.html"
-      },
-      {
-        "name":"Password Analyzer",
-        "link":"Site/Random/Password_Analyzer/index.html"
-      },
-      {
         "name": "Lancio dei Dadi",
         "link": "Site/Random/Lancio_Dadi/index.html"
       },
@@ -377,12 +369,22 @@
         "link": "Site/Utilities/Cronometro_timer/index.html"
       },
       {
-        "name":"Traduttore",
-        "link":"Site/Utilities/Traduttore/index.html"
+        "name": "Traduttore",
+        "link": "Site/Utilities/Traduttore/index.html"
       },
       {
-        "name":"Organizzazione Note",
-        "link":"Site/Utilities/Organizzazione_Note/index.html"
+        "name": "Organizzazione Note",
+        "link": "Site/Utilities/Organizzazione_Note/index.html"
+      }
+    ],
+    "Password": [
+      {
+        "name": "Generatore di Password",
+        "link": "Site/Password/Generatore_Password/index.html"
+      },
+      {
+        "name": "Password Analyzer",
+        "link": "Site/Password/Password_Analyzer/index.html"
       }
     ]
   }

@@ -237,6 +237,7 @@ Il portfolio include numerose categorie di progetti, ciascuna con la propria ico
 | Natale               | 🎄    | Progetti a tema natalizio                                |
 | Opzioni con le Frasi | 💬    | Strumenti per la manipolazione del testo                 |
 | Pasqua               | 🐰    | Progetti a tema pasquale                                 |
+| Password             | 🔑    | Strumenti per la sicurezza delle password                |
 | Pokemon              | 🐉    | Applicazioni sui Pokemon                                 |
 | Random               | 🎲    | Generatori casuali di vario tipo                         |
 | Salute               | ❤️    | Calcolatori per il benessere e la salute                 |
