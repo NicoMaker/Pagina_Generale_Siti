@@ -8,6 +8,8 @@ document.addEventListener("DOMContentLoaded", () => {
   // Modified header logo click event
   const headerLogo = document.querySelector(".header .logo"); // Selects the logo in the header
   const logoText = document.querySelector(".header .logo span"); // Select the text span specifically
+  const mobileLogoContainer = document.querySelector(".mobile-logo-container"); // Select the mobile logo container
+  const mobileLogoText = document.querySelector(".mobile-logo-container h2"); // Select the mobile text specifically
 
   // Make both the logo and text trigger the preloader
   headerLogo.addEventListener("click", (e) => {
@@ -20,6 +22,40 @@ document.addEventListener("DOMContentLoaded", () => {
     logoText.addEventListener("click", (e) => {
       e.preventDefault();
       showPreloader();
+    });
+  }
+
+  // Add click event to mobile menu logo container
+  if (mobileLogoContainer) {
+    mobileLogoContainer.addEventListener("click", (e) => {
+      e.preventDefault();
+      showPreloader();
+
+      // Close mobile menu after clicking
+      const menuToggle = document.querySelector(".menu-toggle");
+      const mobileMenu = document.querySelector(".mobile-menu");
+      if (menuToggle && mobileMenu) {
+        menuToggle.classList.remove("active");
+        mobileMenu.classList.remove("active");
+        document.body.classList.remove("no-scroll");
+      }
+    });
+  }
+
+  // Add click event specifically to mobile logo text
+  if (mobileLogoText) {
+    mobileLogoText.addEventListener("click", (e) => {
+      e.preventDefault();
+      showPreloader();
+
+      // Close mobile menu after clicking
+      const menuToggle = document.querySelector(".menu-toggle");
+      const mobileMenu = document.querySelector(".mobile-menu");
+      if (menuToggle && mobileMenu) {
+        menuToggle.classList.remove("active");
+        mobileMenu.classList.remove("active");
+        document.body.classList.remove("no-scroll");
+      }
     });
   }
 
