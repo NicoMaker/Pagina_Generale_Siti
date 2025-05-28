@@ -54,26 +54,24 @@ document.addEventListener("DOMContentLoaded", () => {
   // Set current year in footer
   currentYearElement.textContent = new Date().getFullYear();
 
-  const categoryIcons = {
-    Astronomia: "fa-meteor",
-    Bici: "fa-bicycle",
-    Borsa: "fa-chart-line",
-    Calendario: "fa-calendar-alt",
-    Calcio: "fa-futbol",
-    Giochi: "fa-gamepad",
-    Info_Paesi_Stati: "fa-globe",
-    Matematica: "fa-calculator",
-    Natale: "fa-gifts",
-    Opzioni_Con_Le_Frasi: "fa-font",
-    Pasqua: "fa-egg",
-    Password : "fa-key",
-    Pokemon: "fa-dragon",
-    Random: "fa-random",
-    Salute: "fa-heartbeat",
-    Storia: "fa-landmark",
-    Temperatura: "fa-temperature-high",
-    Utilità: "fa-wrench"
-  };
+  let categoryIcons = {};
+
+  fetch('JSON/categoryIcons.json')
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Errore nel caricamento del file JSON');
+      }
+      return response.json();
+    })
+    .then(data => {
+      categoryIcons = data;
+      console.log("Icone caricate:", categoryIcons);
+      // Usa categoryIcons come preferisci qui
+    })
+    .catch(error => {
+      console.error("Errore durante il caricamento delle icone:", error);
+    });
+
 
   // Advanced preloader with loading bar
   function simulateLoading() {
@@ -362,7 +360,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Load categories and projects data
   async function loadData() {
     try {
-      const response = await fetch("JS/Categories.json");
+      const response = await fetch("JSON/Categories.json");
       const data = await response.json();
       return data;
     } catch (error) {
