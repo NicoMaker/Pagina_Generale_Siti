@@ -259,6 +259,9 @@
       {
         "name": "Parole Specchio",
         "link": "Site/Opzioni_Con_Le_Frasi/Parole_Specchio/index.html"
+      },{
+        "name":"TextTools",
+        "link":"Site/Opzioni_Con_Le_Frasi/TextTools/index.html"
       }
     ],
     "Pasqua": [

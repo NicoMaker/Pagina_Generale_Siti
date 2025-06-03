@@ -7,3 +7,4 @@
 - **[Generatore Anagrammi](Generatore_di_Anagrammi)**
 - **[Invertitore di Parole](Invertitore_di_Parole)**
 - **[Parole Specchio](Parole_Specchio)**
+- **[TextTools](TextTools)**

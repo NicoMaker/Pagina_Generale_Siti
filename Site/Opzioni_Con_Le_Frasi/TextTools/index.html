@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TextTools - App Linguistica Moderna</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+    <link rel="icon"
+        href="https://th.bing.com/th/id/R.1ae9a335b1da46f9e9e4c03e698ded2f?rik=6yWx4JD8wm0%2fPA&pid=ImgRaw&r=0"
+        type="image/jpg" />
+</head>
+
+<body>
+    <h1><i class="fas fa-tools"></i> TextTools - Strumenti Linguistici</h1>
+    <div class="container">
+
+        <div class="tool">
+            <h2>Contatore Testo</h2>
+            <textarea id="textInput" placeholder="Scrivi qualcosa..."></textarea>
+            <div class="result" id="textStats">Parole: 0 | Frasi: 0 | Caratteri: 0</div>
+        </div>
+
+        <div class="tool">
+            <h2>Rimuovi Parole Duplicate</h2>
+            <textarea id="dupInput" placeholder="Incolla testo con ripetizioni..."></textarea>
+            <button onclick="removeDuplicates()">Rimuovi</button>
+            <div class="result" id="dupResult"></div>
+        </div>
+
+        <div class="tool">
+            <h2>Analizzatore Base (Demo)</h2>
+            <textarea id="posInput" placeholder="Scrivi una frase..."></textarea>
+            <button onclick="mockPOS()">Analizza</button>
+            <div class="result" id="posResult"></div>
+        </div>
+
+        <div class="tool">
+            <h2>Suggeritore di Sinonimi</h2>
+            <textarea id="synInput" placeholder="Inserisci una parola comune..."></textarea>
+            <button onclick="suggestSynonym()">Suggerisci</button>
+            <div class="result" id="synResult"></div>
+        </div>
+
+        <div class="tool">
+            <h2>Scioglilingua Casuale</h2>
+            <button onclick="generateTongueTwister()">Genera</button>
+            <div class="result" id="twisterResult"></div>
+        </div>
+
+        <div class="tool">
+            <h2>Crea Parola Inventata</h2>
+            <button onclick="generateWord()">Genera</button>
+            <div class="result" id="inventedWord"></div>
+        </div>
+
+        <div class="tool">
+            <h2>Test Velocità Scrittura (10s)</h2>
+            <textarea id="speedInput" placeholder="Scrivi più velocemente possibile qui..." onfocus="startTimer()"
+                disabled></textarea>
+            <button onclick="startTypingTest()">Inizia</button>
+            <div class="result" id="speedStats">Tempo: 0s</div>
+        </div>
+
+    </div>
+
+</body>
+
+</html>
