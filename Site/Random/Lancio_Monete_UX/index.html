@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lancio N Monete</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+    <link rel="icon"
+        href="https://c8.alamy.com/compit/2f60rf4/icona-della-linea-vettoriale-relativa-al-lancio-di-monete-2f60rf4.jpg"
+        type="image/jpg">
+</head>
+
+<body>
+    <div class="app-container">
+        <header class="header">
+            <h1>Lancio Monete</h1>
+            <p>Lancia la moneta e scopri il tuo destino</p>
+        </header>
+
+        <div class="controls-panel">
+            <div class="control-group">
+                <label for="coinCount">Numero di Monete</label>
+                <div class="number-input">
+                    <button type="button" id="decreaseBtn">−</button>
+                    <input type="number" id="coinCount" value="1" min="1" max="1000">
+                    <button type="button" id="increaseBtn">+</button>
+                </div>
+                <button id="flipBtn" class="flip-button">
+                    🪙 Lancia Moneta
+                </button>
+            </div>
+        </div>
+
+        <div class="coin-display">
+            <div class="result-banner" id="resultBanner">
+                <div class="result-text" id="resultText">Clicca per lanciare la moneta</div>
+            </div>
+
+            <div class="coin-container">
+                <div class="coin" id="coin">
+                    <div class="coin-face coin-heads">H</div>
+                    <div class="coin-face coin-tails">T</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="charts-panel">
+            <div class="chart-container">
+                <div class="chart-title">Distribuzione Risultati</div>
+                <canvas id="pieChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <div class="chart-title">Tendenza nel Tempo</div>
+                <canvas id="lineChart"></canvas>
+            </div>
+        </div>
+
+        <div class="stats-panel">
+            <h3 class="stats-title">Statistiche</h3>
+            <div class="stats-grid">
+                <div class="stat-card heads">
+                    <div class="stat-value" id="headsCount">0</div>
+                    <div class="stat-label">Teste</div>
+                    <div class="stat-percentage" id="headsPercentage">0%</div>
+                </div>
+                <div class="stat-card tails">
+                    <div class="stat-value" id="tailsCount">0</div>
+                    <div class="stat-label">Croci</div>
+                    <div class="stat-percentage" id="tailsPercentage">0%</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="history-panel" id="historyPanel">
+            <div class="history-header">
+                <h3 class="history-title">Cronologia Lanci</h3>
+                <button class="toggle-history" id="toggleHistory">Nascondi</button>
+            </div>
+            <div class="history-list" id="historyList">
+                <div class="empty-history">Nessun lancio effettuato</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

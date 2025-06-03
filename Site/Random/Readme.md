@@ -8,6 +8,7 @@
 - **[Generatore di Carte](Generatore_di_Carte)**
 - **[Lancio dei Dadi con n Facce Grafico](Lancio%20Dadi%20N%20facce)**
 - **[Lancio di n Monete](Lancio%20Monete)**
+- **[Lancio di N Monete UX Design](Lancio_Monete_UX)**
 - **[Lancio Dadi](Lancio_Dadi)**
 - **[Lancio dei Dadi n Facce Normale](Lancio_dei_dadi_N)**
 - **[Lettera Casuale](Lettera_Casuale)**

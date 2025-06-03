@@ -293,7 +293,7 @@
         "link": "Site/Random/Numeri_Casuali/index.html"
       },
       {
-        "name": "Estrazionne Lancio n Monete",
+        "name": "Lancio N Monete",
         "link": "Site/Random/Lancio Monete/index.html"
       },
       {
@@ -315,6 +315,9 @@
       {
         "name": "Estattore Regione Casuale",
         "link": "Site/Random/Estrai_Regione/index.html"
+      },{
+        "name": "Lancio N Monete UX design",
+        "link": "Site/Random/Lancio_Monete_UX/index.html"
       }
     ],
     "Pokemon": [
