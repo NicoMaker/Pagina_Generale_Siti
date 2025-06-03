@@ -2,70 +2,113 @@
 <html lang="it">
 
 <head>
+    <link rel="icon"
+        href="https://th.bing.com/th/id/R.1ae9a335b1da46f9e9e4c03e698ded2f?rik=6yWx4JD8wm0%2fPA&pid=ImgRaw&r=0"
+        type="image/jpg" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TextTools - App Linguistica Moderna</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <script src="script.js" defer></script>
-    <link rel="icon"
-        href="https://th.bing.com/th/id/R.1ae9a335b1da46f9e9e4c03e698ded2f?rik=6yWx4JD8wm0%2fPA&pid=ImgRaw&r=0"
-        type="image/jpg" />
 </head>
 
 <body>
-    <h1><i class="fas fa-tools"></i> TextTools - Strumenti Linguistici</h1>
-    <div class="container">
-
-        <div class="tool">
-            <h2>Contatore Testo</h2>
-            <textarea id="textInput" placeholder="Scrivi qualcosa..."></textarea>
-            <div class="result" id="textStats">Parole: 0 | Frasi: 0 | Caratteri: 0</div>
-        </div>
-
-        <div class="tool">
-            <h2>Rimuovi Parole Duplicate</h2>
-            <textarea id="dupInput" placeholder="Incolla testo con ripetizioni..."></textarea>
-            <button onclick="removeDuplicates()">Rimuovi</button>
-            <div class="result" id="dupResult"></div>
-        </div>
-
-        <div class="tool">
-            <h2>Analizzatore Base (Demo)</h2>
-            <textarea id="posInput" placeholder="Scrivi una frase..."></textarea>
-            <button onclick="mockPOS()">Analizza</button>
-            <div class="result" id="posResult"></div>
-        </div>
-
-        <div class="tool">
-            <h2>Suggeritore di Sinonimi</h2>
-            <textarea id="synInput" placeholder="Inserisci una parola comune..."></textarea>
-            <button onclick="suggestSynonym()">Suggerisci</button>
-            <div class="result" id="synResult"></div>
-        </div>
-
-        <div class="tool">
-            <h2>Scioglilingua Casuale</h2>
-            <button onclick="generateTongueTwister()">Genera</button>
-            <div class="result" id="twisterResult"></div>
-        </div>
-
-        <div class="tool">
-            <h2>Crea Parola Inventata</h2>
-            <button onclick="generateWord()">Genera</button>
-            <div class="result" id="inventedWord"></div>
-        </div>
-
-        <div class="tool">
-            <h2>Test Velocità Scrittura (10s)</h2>
-            <textarea id="speedInput" placeholder="Scrivi più velocemente possibile qui..." onfocus="startTimer()"
-                disabled></textarea>
-            <button onclick="startTypingTest()">Inizia</button>
-            <div class="result" id="speedStats">Tempo: 0s</div>
-        </div>
-
+    <div class="header">
+        <h1><i class="fas fa-magic"></i> TextTools</h1>
+        <p>Suite avanzata di strumenti linguistici con design moderno e interfaccia intuitiva</p>
     </div>
+
+    <div class="container">
+        <div class="tool tool-counter">
+            <h2><i class="fas fa-chart-bar"></i>Contatore Intelligente</h2>
+            <textarea id="textInput"
+                placeholder="Inizia a scrivere per vedere le statistiche in tempo reale..."></textarea>
+            <div class="stats">
+                <div class="stat-item">
+                    <span class="stat-number" id="wordCount">0</span>
+                    <div class="stat-label">Parole</div>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" id="sentenceCount">0</span>
+                    <div class="stat-label">Frasi</div>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" id="charCount">0</span>
+                    <div class="stat-label">Caratteri</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tool tool-duplicates">
+            <h2><i class="fas fa-filter"></i>Rimuovi Duplicati</h2>
+            <textarea id="dupInput" placeholder="Incolla il testo con parole ripetute qui..."></textarea>
+            <button class="btn" onclick="removeDuplicates()">
+                <i class="fas fa-broom"></i> Pulisci Testo
+            </button>
+            <div class="result" id="dupResult">Il testo pulito apparirà qui...</div>
+        </div>
+
+        <div class="tool tool-pos">
+            <h2><i class="fas fa-brain"></i>Analizzatore Grammaticale</h2>
+            <textarea id="posInput" placeholder="Scrivi una frase per l'analisi grammaticale..."></textarea>
+            <button class="btn" onclick="mockPOS()">
+                <i class="fas fa-search"></i> Analizza
+            </button>
+            <div class="result" id="posResult">L'analisi grammaticale apparirà qui...</div>
+        </div>
+
+        <div class="tool tool-synonym">
+            <h2><i class="fas fa-book"></i>Dizionario Sinonimi</h2>
+            <textarea id="synInput" placeholder="Inserisci una parola per trovare sinonimi..."></textarea>
+            <button class="btn" onclick="suggestSynonym()">
+                <i class="fas fa-lightbulb"></i> Trova Sinonimi
+            </button>
+            <div class="result" id="synResult">I sinonimi suggeriti appariranno qui...</div>
+        </div>
+
+        <div class="tool tool-twister">
+            <h2><i class="fas fa-tongue"></i>Scioglilingua Generatore</h2>
+            <button class="btn" onclick="generateTongueTwister()">
+                <i class="fas fa-random"></i> Genera Scioglilingua
+            </button>
+            <div class="result" id="twisterResult">Clicca per generare uno scioglilingua casuale!</div>
+        </div>
+
+        <div class="tool">
+            <h2><i class="fas fa-star"></i>Creatore di Parole</h2>
+            <button class="btn" onclick="generateWord()">
+                <i class="fas fa-plus-circle"></i> Crea Parola
+            </button>
+            <div class="result" id="inventedWord">Genera una parola completamente inventata!</div>
+        </div>
+
+        <div class="tool">
+            <h2><i class="fas fa-stopwatch"></i>Test Velocità Scrittura</h2>
+            <textarea id="speedInput" placeholder="Clicca 'Inizia' e scrivi il più velocemente possibile..."
+                onfocus="startTimer()" disabled></textarea>
+            <div class="stats">
+                <div class="stat-item">
+                    <span class="stat-number" id="timeDisplay">0</span>
+                    <div class="stat-label">Secondi</div>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" id="wordDisplay">0</span>
+                    <div class="stat-label">Parole</div>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" id="charDisplay">0</span>
+                    <div class="stat-label">Caratteri</div>
+                </div>
+            </div>
+            <button class="btn" onclick="startTypingTest()">
+                <i class="fas fa-play"></i> Inizia Test
+            </button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
 
 </body>
 
