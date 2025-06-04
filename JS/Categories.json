@@ -1,397 +1,435 @@
 {
   "categories": {
-    "Bici": [
-      { "name": "Giri In Bici", "link": "https://giri-in-bici.netlify.app/" }
-    ],
-    "Borsa": [
-      { "name": "Cambi Valute", "link": "Site/Borsa/Cambi Valute/index.html" },
-      {
-        "name": "Valore Titoli di Borsa",
-        "link": "Site/Borsa/Valore Titoli/index.html"
-      },
-      {
-        "name": "Immunizzazione Finanziaria",
-        "link": "Site/Borsa/Immunizzazione_Finanziaria/index.html"
-      },
-      {
-        "name": "Dashboard Titoli",
-        "link": "Site/Borsa/Dashboard_Titoli/index.html"
-      },
-      {
-        "name": "Algorirmo di Taylor",
-        "link": "Site/Borsa/Algoritmo_Taylor/index.html"
-      }
-    ],
-    "Calcio": [
-      {
-        "name": "Albo Classifica Serie A",
-        "link": "https://tabelloneseriea.netlify.app/"
-      },
-      {
-        "name": "Archivio Rose Milan",
-        "link": "https://milannico.netlify.app/"
-      }
-    ],
-    "Calendario": [
-      {
-        "name": "Calcola Giorno della Settimana",
-        "link": "Site/Calendario/Controllo_data/index.html"
-      },
-      { "name": "Calendario", "link": "Site/Calendario/Calendario/index.html" },
-      {
-        "name": "Calcolatore di Tempo",
-        "link": "Site/Calendario/Calcolatore_di_tempo/index.html"
-      },
-      {
-        "name": "Differenza Tra due Date",
-        "link": "Site/Calendario/Differenza_Tra_Due_Date/index.html"
-      }
-    ],
-    "Giochi": [
-      {
-        "name": "Gioco della Tombola",
-        "link": "Site/Giochi/Tombola/index.html"
-      },
-      {
-        "name": "Generatore Cartelle Tombola",
-        "link": "Site/Giochi/Cartelle_Tombola/index.html"
-      },
-      {
-        "name": "Gioco Sasso Carta Forbice",
-        "link": "Site/Giochi/Sasso_Carta_Forbice/index.html"
-      },
-      { "name": "Gioco del Tris", "link": "Site/Giochi/Tris/index.html" },
-      {
-        "name": "Gioco del Tris versione 2",
-        "link": "Site/Giochi/Tris2/index.html"
-      },
-      { "name": "Forza 4", "link": "Site/Giochi/Forza 4/index.html" },
-      { "name": "Snake Game", "link": "Site/Giochi/SnakeGame/index.html" },
-      {
-        "name": "Indovinello dei Dinosauri",
-        "link": "Site/Giochi/Dino-Game/Index.html"
-      },
-      {
-        "name": "Generazione 4 Lettere Casuali",
-        "link": "Site/Giochi/Generated_4_Letters/index.html"
-      },
-      {
-        "name": "Slot Machine",
-        "link": "Site/Giochi/Slot_Machine/index.html"
-      },
-      {
-        "name": "Slot Machine UX",
-        "link": "Site/Giochi/Slot_Macchine_UX/index.html"
-      },
-      {
-        "name": "Generazione 4 Numeri Casuali",
-        "link": "Site/Giochi/Generated_4_Numbers/index.html"
-      },
-      {
-        "name": "Rotella Movimentata",
-        "link": "Site/Giochi/Rotella Movimentata/index.html"
-      },
-      {
-        "name": "Casinò",
-        "link": "Site/Giochi/Casino/index.html"
-      },
-      {
-        "name": "Dama",
-        "link": "Site/Giochi/Dama/index.html"
-      },
-      {
-        "name": "Pac-Man",
-        "link": "Site/Giochi/Pac-Man/index.html"
-      },
-      {
-        "name": "Gestione Punteggi",
-        "link": "Site/Giochi/Punteggi/index.html"
-      },
-      {
-        "name": "Gestione Punteggi UX Design",
-        "link": "Site/Giochi/Punteggi_UX_Design/index.html"
-      },
-      {
-        "name": "Gestione Turni",
-        "link": "Site/Giochi/Gestione_Turni/index.html"
-      },
-      {
-        "name": "Scacchi",
-        "link": "Site/Giochi/Scacchi/index.html"
-      },
-      {
-        "name": "Solitario",
-        "link": "Site/Giochi/Solitario/index.html"
-      }
-    ],
-    "Info_Paesi_Stati": [
-      {
-        "name": "Verifica Fuso Orario Città",
-        "link": "Site/Info_Paesi_Stati/Fuso Orario/index.html"
-      },
-      {
-        "name": "Info Stato",
-        "link": "Site/Info_Paesi_Stati/Stati_info/index.html"
-      },
-      {
-        "name": "Selettore Fuso Orario in Tempo Reale",
-        "link": "Site/Info_Paesi_Stati/Contatore_Tempo_Tempo_Reale_Fuso/index.html"
-      },
-      {
-        "name": "Planisfero",
-        "link": "Site/Info_Paesi_Stati/Planisfero/index.html"
-      }
-    ],
-    "Matematica": [
-      {
-        "name": "Esercizio Trifase",
-        "link": "Site/Math/Esercizio Trifase/index.html"
-      },
-      {
-        "name": "Biografia su Alan Turing",
-        "link": "Site/Math/Biografia su Alan Turing/index.html"
-      },
-      {
-        "name": "Calcolatrice",
-        "link": "Site/Math/Calcolatrice/index.html"
-      },
-      {
-        "name": "Calcolatrice Scientifica",
-        "link": "Site/Math/Calcolatrice_Scientifica/index.html"
-      },
-      {
-        "name": "Calcolatrice Scientifica V2",
-        "link": "Site/Math/Calcolatrice_scientifica_V2/index.html"
-      },
-      {
-        "name": "Conversioni Base",
-        "link": "Site/Math/Conversione Basi/index.html"
-      },
-      {
-        "name": "Verifica Numero Primo",
-        "link": "Site/Math/Numero Primo/index.html"
-      },
-      {
-        "name": "Verifica Numeri Primi Precedenti",
-        "link": "Site/Math/Verifica Numeri Primi Precedenti/index.html"
-      },
-      { "name": "Tabelline", "link": "Site/Math/Tabelline/index.html" },
-      {
-        "name": "Tabelline UX Design",
-        "link": "Site/Math/Tabelline_UX_Design/index.html"
-      },
-      {
-        "name": "Triangolo di Tartaglia",
-        "link": "Site/Math/Triangolo di Tartaglia/index.html"
-      },
-      {
-        "name": "Calcola Esponenziali / Radici",
-        "link": "Site/Math/Esponenziali  e Radici/index.html"
-      },
-      {
-        "name": "Calcola Logaritmi",
-        "link": "Site/Math/Logaritmi/index.html"
-      },
-      { "name": "Fattoriale", "link": "Site/Math/Fattoriale/index.html" },
-      {
-        "name": "Calcola Numero di Fibonacci",
-        "link": "Site/Math/Fibonacci/index.html"
-      },
-      {
-        "name": "Calcolatore Triangolo di Pitagora",
-        "link": "Site/Math/Pitagora/index.html"
-      },
-      {
-        "name": "Stampa Numeri Pari / Dispari o Tutti",
-        "link": "Site/Math/StampaNumeri/index.html"
-      },
-      {
-        "name": "Calcolo Valore Assoluto",
-        "link": "Site/Math/Valore_Assoluto/index.html"
-      },
-      { "name": "Ahmes", "link": "Site/Math/Ahmes/index.html" },
-      { "name": "Euclide", "link": "Site/Math/Euclide/index.html" },
-      { "name": "Collatz", "link": "Site/Math/Collatz/index.html" },
-      {
-        "name": "Calcolo Trigonometrico",
-        "link": "Site/Math/Trigonometria/index.html"
-      },
-      {
-        "name": "Teoremi di Euclide",
-        "link": "Site/Math/Teorema_Euclide/index.html"
-      },
-      {
-        "name": "Cerchio",
-        "link": "Site/Math/Cerchio/index.html"
-      }
-    ],
-    "Natale": [
-      {
-        "name": "Calendario dell'Avvento",
-        "link": "Site/Natale/Advent-Calendar/index.html"
-      },
-      {
-        "name": "Conto alla rovescia data di Natale",
-        "link": "Site/Natale/Countdown_Natale/index.html"
-      },
-      {
-        "name": "Conto Alla rovescia Anno Nuovo",
-        "link": "Site/Natale/Countdown_anno_nuovo/index.html"
-      }
-    ],
-    "Opzioni_Con_Le_Frasi": [
-      {
-        "name": "Criptazione con Alfabeto Opposto",
-        "link": "Site/Opzioni_Con_Le_Frasi/Criptazione Alfabeto Contrario/index.html"
-      },
-      {
-        "name": "Cifrario di Cesare",
-        "link": "Site/Opzioni_Con_Le_Frasi/Criptazione_Cesare/index.html"
-      },
-      {
-        "name": "Invertitore di Parole",
-        "link": "Site/Opzioni_Con_Le_Frasi/Invertitore_di_Parole/index.html"
-      },
-      {
-        "name": "Generatore di Anagrammi",
-        "link": "Site/Opzioni_Con_Le_Frasi/Generatore_di_Anagrammi/index.html"
-      },
-      {
-        "name": "Parole Specchio",
-        "link": "Site/Opzioni_Con_Le_Frasi/Parole_Specchio/index.html"
-      },{
-        "name":"TextTools",
-        "link":"Site/Opzioni_Con_Le_Frasi/TextTools/index.html"
-      }
-    ],
-    "Pasqua": [
-      {
-        "name": "Calcola la Data di Pasqua",
-        "link": "Site/Pasqua/Pasqua/index.html"
-      },
-      {
-        "name": "Conto alla rovescia data di Pasqua",
-        "link": "Site/Pasqua/Countdown_Pasqua/index.html"
-      }
-    ],
-    "Random": [
-      {
-        "name": "Lancio dei Dadi",
-        "link": "Site/Random/Lancio_Dadi/index.html"
-      },
-      {
-        "name": "Lancio dei Dadi con n facce Grafico",
-        "link": "Site/Random/Lancio Dadi N facce/index.html"
-      },
-      {
-        "name": "Lancio dei Dadi con n facce Normale",
-        "link": "Site/Random/Lancio_dei_Dadi_N/index.html"
-      },
-      {
-        "name": "Estrazione Lettera Casuale",
-        "link": "Site/Random/Lettera_Casuale/index.html"
-      },
-      {
-        "name": "Estrazione Numeri Casuali tra un intervallo",
-        "link": "Site/Random/Numeri_Casuali/index.html"
-      },
-      {
-        "name": "Lancio N Monete",
-        "link": "Site/Random/Lancio Monete/index.html"
-      },
-      {
-        "name": "Generatore di Carte (Scala 40 o Briscola)",
-        "link": "Site/Random/Generatore_di_Carte/index.html"
-      },
-      {
-        "name": "Genera Nomi Casuali",
-        "link": "Site/Random/Nomi Casuali/index.html"
-      },
-      {
-        "name": "Coach Life Generator",
-        "link": "Site/Random/Coach_Life_Generator/index.html"
-      },
-      {
-        "name": "Generatore Colore Casuale",
-        "link": "Site/Random/Colore_Casuale/index.html"
-      },
-      {
-        "name": "Estattore Regione Casuale",
-        "link": "Site/Random/Estrai_Regione/index.html"
-      },{
-        "name": "Lancio N Monete UX design",
-        "link": "Site/Random/Lancio_Monete_UX/index.html"
-      }
-    ],
-    "Pokemon": [
-      {
-        "name": "Sito sui Pokemon",
-        "link": "https://pokeapinico.netlify.app/"
-      }
-    ],
-    "Salute": [
-      {
-        "name": "Sito che Calcola Altezza ideale o Peso Ideale",
-        "link": "Site/Salute/Calcolo_peso_altezza_ideale/index.html"
-      },
-      {
-        "name": "Tracciatore Idratazione Quotidiana",
-        "link": "Site/Salute/Tracciatore_Idratazione_Quotidiana/index.html"
-      }
-    ],
-    "Storia": [
-      {
-        "name": "Antico Egitto",
-        "link": "Site/Storia/Antico_Egitto/index.html"
-      }
-    ],
-    "Temperatura": [
-      {
-        "name": "Conversioni Temperatura",
-        "link": "Site/Temperatura/Conversioni_Temp/index.html"
-      },
-      {
-        "name": "Meteo",
-        "link": "Site/Temperatura/Meteo/index.html"
-      }
-    ],
-    "Astronomia": [
-      {
-        "name": "Fasi Lunari",
-        "link": "Site/Astronomia/Fasi_Lunari/index.html"
-      },
-      {
-        "name": "Calcolo Segno Zodiacale",
-        "link": "Site/Astronomia/Segno_Zodiacale/index.html"
-      },
-      {
-        "name": "Sistema Solare",
-        "link": "Site/Astronomia/Sistema_Solare/index.html"
-      }
-    ],
-    "Utilità": [
-      {
-        "name": "Cronometro / Timer",
-        "link": "Site/Utilities/Cronometro_timer/index.html"
-      },
-      {
-        "name": "Traduttore",
-        "link": "Site/Utilities/Traduttore/index.html"
-      },
-      {
-        "name": "Organizzazione Note",
-        "link": "Site/Utilities/Organizzazione_Note/index.html"
-      }
-    ],
-    "Password": [
-      {
-        "name": "Generatore di Password",
-        "link": "Site/Password/Generatore_Password/index.html"
-      },
-      {
-        "name": "Password Analyzer",
-        "link": "Site/Password/Password_Analyzer/index.html"
-      }
-    ]
+    "Astronomia": {
+      "icon": "fa-meteor",
+      "projects": [
+        {
+          "name": "Fasi Lunari",
+          "link": "Site/Astronomia/Fasi_Lunari/index.html"
+        },
+        {
+          "name": "Calcolo Segno Zodiacale",
+          "link": "Site/Astronomia/Segno_Zodiacale/index.html"
+        },
+        {
+          "name": "Sistema Solare",
+          "link": "Site/Astronomia/Sistema_Solare/index.html"
+        }
+      ]
+    },
+    "Bici": {
+      "icon": "fa-bicycle",
+      "projects": [
+        { "name": "Giri In Bici", "link": "https://giri-in-bici.netlify.app/" }
+      ]
+    },
+    "Borsa": {
+      "icon": "fa-chart-line",
+      "projects": [
+        {
+          "name": "Cambi Valute",
+          "link": "Site/Borsa/Cambi Valute/index.html"
+        },
+        {
+          "name": "Valore Titoli di Borsa",
+          "link": "Site/Borsa/Valore Titoli/index.html"
+        },
+        {
+          "name": "Immunizzazione Finanziaria",
+          "link": "Site/Borsa/Immunizzazione_Finanziaria/index.html"
+        },
+        {
+          "name": "Dashboard Titoli",
+          "link": "Site/Borsa/Dashboard_Titoli/index.html"
+        },
+        {
+          "name": "Algorirmo di Taylor",
+          "link": "Site/Borsa/Algoritmo_Taylor/index.html"
+        }
+      ]
+    },
+    "Calendario": {
+      "icon": "fa-calendar-alt",
+      "projects": [
+        {
+          "name": "Calcola Giorno della Settimana",
+          "link": "Site/Calendario/Controllo_data/index.html"
+        },
+        {
+          "name": "Calendario",
+          "link": "Site/Calendario/Calendario/index.html"
+        },
+        {
+          "name": "Calcolatore di Tempo",
+          "link": "Site/Calendario/Calcolatore_di_tempo/index.html"
+        },
+        {
+          "name": "Differenza Tra due Date",
+          "link": "Site/Calendario/Differenza_Tra_Due_Date/index.html"
+        }
+      ]
+    },
+    "Calcio": {
+      "icon": "fa-futbol",
+      "projects": [
+        {
+          "name": "Albo Classifica Serie A",
+          "link": "https://tabelloneseriea.netlify.app/"
+        },
+        {
+          "name": "Archivio Rose Milan",
+          "link": "https://milannico.netlify.app/"
+        }
+      ]
+    },
+    "Giochi": {
+      "icon": "fa-gamepad",
+      "projects": [
+        {
+          "name": "Gioco della Tombola",
+          "link": "Site/Giochi/Tombola/index.html"
+        },
+        {
+          "name": "Generatore Cartelle Tombola",
+          "link": "Site/Giochi/Cartelle_Tombola/index.html"
+        },
+        {
+          "name": "Gioco Sasso Carta Forbice",
+          "link": "Site/Giochi/Sasso_Carta_Forbice/index.html"
+        },
+        { "name": "Gioco del Tris", "link": "Site/Giochi/Tris/index.html" },
+        {
+          "name": "Gioco del Tris versione 2",
+          "link": "Site/Giochi/Tris2/index.html"
+        },
+        { "name": "Forza 4", "link": "Site/Giochi/Forza 4/index.html" },
+        { "name": "Snake Game", "link": "Site/Giochi/SnakeGame/index.html" },
+        {
+          "name": "Indovinello dei Dinosauri",
+          "link": "Site/Giochi/Dino-Game/Index.html"
+        },
+        {
+          "name": "Generazione 4 Lettere Casuali",
+          "link": "Site/Giochi/Generated_4_Letters/index.html"
+        },
+        {
+          "name": "Slot Machine",
+          "link": "Site/Giochi/Slot_Machine/index.html"
+        },
+        {
+          "name": "Slot Machine UX",
+          "link": "Site/Giochi/Slot_Macchine_UX/index.html"
+        },
+        {
+          "name": "Generazione 4 Numeri Casuali",
+          "link": "Site/Giochi/Generated_4_Numbers/index.html"
+        },
+        {
+          "name": "Rotella Movimentata",
+          "link": "Site/Giochi/Rotella Movimentata/index.html"
+        },
+        { "name": "Casinò", "link": "Site/Giochi/Casino/index.html" },
+        { "name": "Dama", "link": "Site/Giochi/Dama/index.html" },
+        { "name": "Pac-Man", "link": "Site/Giochi/Pac-Man/index.html" },
+        {
+          "name": "Gestione Punteggi",
+          "link": "Site/Giochi/Punteggi/index.html"
+        },
+        {
+          "name": "Gestione Punteggi UX Design",
+          "link": "Site/Giochi/Punteggi_UX_Design/index.html"
+        },
+        {
+          "name": "Gestione Turni",
+          "link": "Site/Giochi/Gestione_Turni/index.html"
+        },
+        { "name": "Scacchi", "link": "Site/Giochi/Scacchi/index.html" },
+        { "name": "Solitario", "link": "Site/Giochi/Solitario/index.html" }
+      ]
+    },
+    "Info_Paesi_Stati": {
+      "icon": "fa-globe",
+      "projects": [
+        {
+          "name": "Verifica Fuso Orario Città",
+          "link": "Site/Info_Paesi_Stati/Fuso Orario/index.html"
+        },
+        {
+          "name": "Info Stato",
+          "link": "Site/Info_Paesi_Stati/Stati_info/index.html"
+        },
+        {
+          "name": "Selettore Fuso Orario in Tempo Reale",
+          "link": "Site/Info_Paesi_Stati/Contatore_Tempo_Tempo_Reale_Fuso/index.html"
+        },
+        {
+          "name": "Planisfero",
+          "link": "Site/Info_Paesi_Stati/Planisfero/index.html"
+        }
+      ]
+    },
+    "Matematica": {
+      "icon": "fa-calculator",
+      "projects": [
+        {
+          "name": "Esercizio Trifase",
+          "link": "Site/Math/Esercizio Trifase/index.html"
+        },
+        {
+          "name": "Biografia su Alan Turing",
+          "link": "Site/Math/Biografia su Alan Turing/index.html"
+        },
+        { "name": "Calcolatrice", "link": "Site/Math/Calcolatrice/index.html" },
+        {
+          "name": "Calcolatrice Scientifica",
+          "link": "Site/Math/Calcolatrice_Scientifica/index.html"
+        },
+        {
+          "name": "Calcolatrice Scientifica V2",
+          "link": "Site/Math/Calcolatrice_scientifica_V2/index.html"
+        },
+        {
+          "name": "Conversioni Base",
+          "link": "Site/Math/Conversione Basi/index.html"
+        },
+        {
+          "name": "Verifica Numero Primo",
+          "link": "Site/Math/Numero Primo/index.html"
+        },
+        {
+          "name": "Verifica Numeri Primi Precedenti",
+          "link": "Site/Math/Verifica Numeri Primi Precedenti/index.html"
+        },
+        { "name": "Tabelline", "link": "Site/Math/Tabelline/index.html" },
+        {
+          "name": "Tabelline UX Design",
+          "link": "Site/Math/Tabelline_UX_Design/index.html"
+        },
+        {
+          "name": "Triangolo di Tartaglia",
+          "link": "Site/Math/Triangolo di Tartaglia/index.html"
+        },
+        {
+          "name": "Calcola Esponenziali / Radici",
+          "link": "Site/Math/Esponenziali  e Radici/index.html"
+        },
+        {
+          "name": "Calcola Logaritmi",
+          "link": "Site/Math/Logaritmi/index.html"
+        },
+        { "name": "Fattoriale", "link": "Site/Math/Fattoriale/index.html" },
+        {
+          "name": "Calcola Numero di Fibonacci",
+          "link": "Site/Math/Fibonacci/index.html"
+        },
+        {
+          "name": "Calcolatore Triangolo di Pitagora",
+          "link": "Site/Math/Pitagora/index.html"
+        },
+        {
+          "name": "Stampa Numeri Pari / Dispari o Tutti",
+          "link": "Site/Math/StampaNumeri/index.html"
+        },
+        {
+          "name": "Calcolo Valore Assoluto",
+          "link": "Site/Math/Valore_Assoluto/index.html"
+        },
+        { "name": "Ahmes", "link": "Site/Math/Ahmes/index.html" },
+        { "name": "Euclide", "link": "Site/Math/Euclide/index.html" },
+        { "name": "Collatz", "link": "Site/Math/Collatz/index.html" },
+        {
+          "name": "Calcolo Trigonometrico",
+          "link": "Site/Math/Trigonometria/index.html"
+        },
+        {
+          "name": "Teoremi di Euclide",
+          "link": "Site/Math/Teorema_Euclide/index.html"
+        },
+        { "name": "Cerchio", "link": "Site/Math/Cerchio/index.html" }
+      ]
+    },
+    "Natale": {
+      "icon": "fa-gifts",
+      "projects": [
+        {
+          "name": "Calendario dell'Avvento",
+          "link": "Site/Natale/Advent-Calendar/index.html"
+        },
+        {
+          "name": "Conto alla rovescia data di Natale",
+          "link": "Site/Natale/Countdown_Natale/index.html"
+        },
+        {
+          "name": "Conto Alla rovescia Anno Nuovo",
+          "link": "Site/Natale/Countdown_anno_nuovo/index.html"
+        }
+      ]
+    },
+    "Opzioni_Con_Le_Frasi": {
+      "icon": "fa-font",
+      "projects": [
+        {
+          "name": "Criptazione con Alfabeto Opposto",
+          "link": "Site/Opzioni_Con_Le_Frasi/Criptazione Alfabeto Contrario/index.html"
+        },
+        {
+          "name": "Cifrario di Cesare",
+          "link": "Site/Opzioni_Con_Le_Frasi/Criptazione_Cesare/index.html"
+        },
+        {
+          "name": "Invertitore di Parole",
+          "link": "Site/Opzioni_Con_Le_Frasi/Invertitore_di_Parole/index.html"
+        },
+        {
+          "name": "Generatore di Anagrammi",
+          "link": "Site/Opzioni_Con_Le_Frasi/Generatore_di_Anagrammi/index.html"
+        },
+        {
+          "name": "Parole Specchio",
+          "link": "Site/Opzioni_Con_Le_Frasi/Parole_Specchio/index.html"
+        },
+        {
+          "name": "TextTools",
+          "link": "Site/Opzioni_Con_Le_Frasi/TextTools/index.html"
+        }
+      ]
+    },
+    "Pasqua": {
+      "icon": "fa-egg",
+      "projects": [
+        {
+          "name": "Calcola la Data di Pasqua",
+          "link": "Site/Pasqua/Pasqua/index.html"
+        },
+        {
+          "name": "Conto alla rovescia data di Pasqua",
+          "link": "Site/Pasqua/Countdown_Pasqua/index.html"
+        }
+      ]
+    },
+    "Password": {
+      "icon": "fa-key",
+      "projects": [
+        {
+          "name": "Generatore di Password",
+          "link": "Site/Password/Generatore_Password/index.html"
+        },
+        {
+          "name": "Password Analyzer",
+          "link": "Site/Password/Password_Analyzer/index.html"
+        }
+      ]
+    },
+    "Pokemon": {
+      "icon": "fa-dragon",
+      "projects": [
+        {
+          "name": "Sito sui Pokemon",
+          "link": "https://pokeapinico.netlify.app/"
+        }
+      ]
+    },
+    "Random": {
+      "icon": "fa-random",
+      "projects": [
+        {
+          "name": "Lancio dei Dadi",
+          "link": "Site/Random/Lancio_Dadi/index.html"
+        },
+        {
+          "name": "Lancio dei Dadi con n facce Grafico",
+          "link": "Site/Random/Lancio Dadi N facce/index.html"
+        },
+        {
+          "name": "Lancio dei Dadi con n facce Normale",
+          "link": "Site/Random/Lancio_dei_Dadi_N/index.html"
+        },
+        {
+          "name": "Estrazione Lettera Casuale",
+          "link": "Site/Random/Lettera_Casuale/index.html"
+        },
+        {
+          "name": "Estrazione Numeri Casuali tra un intervallo",
+          "link": "Site/Random/Numeri_Casuali/index.html"
+        },
+        {
+          "name": "Lancio N Monete",
+          "link": "Site/Random/Lancio Monete/index.html"
+        },
+        {
+          "name": "Generatore di Carte (Scala 40 o Briscola)",
+          "link": "Site/Random/Generatore_di_Carte/index.html"
+        },
+        {
+          "name": "Genera Nomi Casuali",
+          "link": "Site/Random/Nomi Casuali/index.html"
+        },
+        {
+          "name": "Coach Life Generator",
+          "link": "Site/Random/Coach_Life_Generator/index.html"
+        },
+        {
+          "name": "Generatore Colore Casuale",
+          "link": "Site/Random/Colore_Casuale/index.html"
+        },
+        {
+          "name": "Estattore Regione Casuale",
+          "link": "Site/Random/Estrai_Regione/index.html"
+        },
+        {
+          "name": "Lancio N Monete UX design",
+          "link": "Site/Random/Lancio_Monete_UX/index.html"
+        }
+      ]
+    },
+    "Salute": {
+      "icon": "fa-heartbeat",
+      "projects": [
+        {
+          "name": "Sito che Calcola Altezza ideale o Peso Ideale",
+          "link": "Site/Salute/Calcolo_peso_altezza_ideale/index.html"
+        },
+        {
+          "name": "Tracciatore Idratazione Quotidiana",
+          "link": "Site/Salute/Tracciatore_Idratazione_Quotidiana/index.html"
+        }
+      ]
+    },
+    "Storia": {
+      "icon": "fa-landmark",
+      "projects": [
+        {
+          "name": "Antico Egitto",
+          "link": "Site/Storia/Antico_Egitto/index.html"
+        }
+      ]
+    },
+    "Temperatura": {
+      "icon": "fa-temperature-high",
+      "projects": [
+        {
+          "name": "Conversioni Temperatura",
+          "link": "Site/Temperatura/Conversioni_Temp/index.html"
+        },
+        { "name": "Meteo", "link": "Site/Temperatura/Meteo/index.html" }
+      ]
+    },
+    "Utilità": {
+      "icon": "fa-wrench",
+      "projects": [
+        {
+          "name": "Cronometro / Timer",
+          "link": "Site/Utilities/Cronometro_timer/index.html"
+        },
+        {
+          "name": "Traduttore",
+          "link": "Site/Utilities/Traduttore/index.html"
+        },
+        {
+          "name": "Organizzazione Note",
+          "link": "Site/Utilities/Organizzazione_Note/index.html"
+        }
+      ]
+    }
   }
 }
