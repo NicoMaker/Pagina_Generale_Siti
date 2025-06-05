@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="en">
 
 <head>
     <link rel="icon"
@@ -7,109 +7,233 @@
         type="image/jpg" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TextTools - App Linguistica Moderna</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
-        rel="stylesheet">
+    <title>TextTools - Modern Linguistic Suite</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <div class="header">
-        <h1><i class="fas fa-magic"></i> TextTools</h1>
-        <p>Suite avanzata di strumenti linguistici con design moderno e interfaccia intuitiva</p>
-    </div>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <span class="logo-icon">✨</span>
+                <span class="logo-text">TextTools</span>
+            </div>
 
-    <div class="container">
-        <div class="tool tool-counter">
-            <h2><i class="fas fa-chart-bar"></i>Contatore Intelligente</h2>
-            <textarea id="textInput"
-                placeholder="Inizia a scrivere per vedere le statistiche in tempo reale..."></textarea>
-            <div class="stats">
-                <div class="stat-item">
-                    <span class="stat-number" id="wordCount">0</span>
-                    <div class="stat-label">Parole</div>
+            <div class="nav-menu" id="navMenu">
+                <a href="#home" class="nav-link">Home</a>
+                <a href="#tools" class="nav-link">Tools</a>
+                <a href="#about" class="nav-link">About</a>
+                <a href="#contact" class="nav-link">Contact</a>
+            </div>
+
+            <div class="hamburger" id="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">
+                <span class="hero-icon">🚀</span>
+                TextTools
+            </h1>
+            <p class="hero-subtitle">Advanced linguistic suite with modern design and intuitive interface</p>
+            <button class="cta-button" onclick="scrollToTools()">
+                <span>Explore Tools</span>
+                <span class="arrow">→</span>
+            </button>
+        </div>
+        <div class="hero-background">
+            <div class="floating-shape shape-1"></div>
+            <div class="floating-shape shape-2"></div>
+            <div class="floating-shape shape-3"></div>
+        </div>
+    </section>
+
+    <!-- Tools Section -->
+    <section id="tools" class="tools-section">
+        <div class="container">
+            <h2 class="section-title">Linguistic Tools</h2>
+
+            <div class="tools-grid">
+                <!-- Smart Counter -->
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <span class="tool-icon">📊</span>
+                        <h3>Smart Counter</h3>
+                    </div>
+                    <textarea id="textInput" placeholder="Start typing to see real-time statistics..."></textarea>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <span class="stat-number" id="wordCount">0</span>
+                            <span class="stat-label">Words</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number" id="sentenceCount">0</span>
+                            <span class="stat-label">Sentences</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number" id="charCount">0</span>
+                            <span class="stat-label">Characters</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="stat-item">
-                    <span class="stat-number" id="sentenceCount">0</span>
-                    <div class="stat-label">Frasi</div>
+
+                <!-- Duplicate Remover -->
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <span class="tool-icon">🧹</span>
+                        <h3>Remove Duplicates</h3>
+                    </div>
+                    <textarea id="dupInput" placeholder="Paste text with repeated words here..."></textarea>
+                    <button class="tool-button" onclick="removeDuplicates()">
+                        <span>Clean Text</span>
+                    </button>
+                    <div class="result-box" id="dupResult">Cleaned text will appear here...</div>
                 </div>
-                <div class="stat-item">
-                    <span class="stat-number" id="charCount">0</span>
-                    <div class="stat-label">Caratteri</div>
+
+                <!-- Grammar Analyzer -->
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <span class="tool-icon">🧠</span>
+                        <h3>Grammar Analyzer</h3>
+                    </div>
+                    <textarea id="posInput" placeholder="Write a sentence for grammatical analysis..."></textarea>
+                    <button class="tool-button" onclick="analyzeGrammar()">
+                        <span>Analyze</span>
+                    </button>
+                    <div class="result-box" id="posResult">Grammatical analysis will appear here...</div>
+                </div>
+
+                <!-- Synonym Dictionary -->
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <span class="tool-icon">📚</span>
+                        <h3>Synonym Dictionary</h3>
+                    </div>
+                    <textarea id="synInput" placeholder="Enter a word to find synonyms..."></textarea>
+                    <button class="tool-button" onclick="findSynonyms()">
+                        <span>Find Synonyms</span>
+                    </button>
+                    <div class="result-box" id="synResult">Suggested synonyms will appear here...</div>
+                </div>
+
+                <!-- Tongue Twister Generator -->
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <span class="tool-icon">🗣️</span>
+                        <h3>Tongue Twister Generator</h3>
+                    </div>
+                    <button class="tool-button" onclick="generateTongueTwister()">
+                        <span>Generate Tongue Twister</span>
+                    </button>
+                    <div class="result-box" id="twisterResult">Click to generate a random tongue twister!</div>
+                </div>
+
+                <!-- Word Creator -->
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <span class="tool-icon">⭐</span>
+                        <h3>Word Creator</h3>
+                    </div>
+                    <button class="tool-button" onclick="generateWord()">
+                        <span>Create Word</span>
+                    </button>
+                    <div class="result-box" id="inventedWord">Generate a completely invented word!</div>
+                </div>
+
+                <!-- Typing Speed Test -->
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <span class="tool-icon">⏱️</span>
+                        <h3>Typing Speed Test</h3>
+                    </div>
+                    <textarea id="speedInput" placeholder="Click 'Start' and type as fast as possible..."
+                        disabled></textarea>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <span class="stat-number" id="timeDisplay">0</span>
+                            <span class="stat-label">Seconds</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number" id="wordDisplay">0</span>
+                            <span class="stat-label">Words</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number" id="charDisplay">0</span>
+                            <span class="stat-label">Characters</span>
+                        </div>
+                    </div>
+                    <button class="tool-button" onclick="startTypingTest()">
+                        <span>Start Test</span>
+                    </button>
                 </div>
             </div>
         </div>
+    </section>
 
-        <div class="tool tool-duplicates">
-            <h2><i class="fas fa-filter"></i>Rimuovi Duplicati</h2>
-            <textarea id="dupInput" placeholder="Incolla il testo con parole ripetute qui..."></textarea>
-            <button class="btn" onclick="removeDuplicates()">
-                <i class="fas fa-broom"></i> Pulisci Testo
-            </button>
-            <div class="result" id="dupResult">Il testo pulito apparirà qui...</div>
-        </div>
-
-        <div class="tool tool-pos">
-            <h2><i class="fas fa-brain"></i>Analizzatore Grammaticale</h2>
-            <textarea id="posInput" placeholder="Scrivi una frase per l'analisi grammaticale..."></textarea>
-            <button class="btn" onclick="mockPOS()">
-                <i class="fas fa-search"></i> Analizza
-            </button>
-            <div class="result" id="posResult">L'analisi grammaticale apparirà qui...</div>
-        </div>
-
-        <div class="tool tool-synonym">
-            <h2><i class="fas fa-book"></i>Dizionario Sinonimi</h2>
-            <textarea id="synInput" placeholder="Inserisci una parola per trovare sinonimi..."></textarea>
-            <button class="btn" onclick="suggestSynonym()">
-                <i class="fas fa-lightbulb"></i> Trova Sinonimi
-            </button>
-            <div class="result" id="synResult">I sinonimi suggeriti appariranno qui...</div>
-        </div>
-
-        <div class="tool tool-twister">
-            <h2><i class="fas fa-comment-dots"></i>Scioglilingua Generatore</h2>
-            <button class="btn" onclick="generateTongueTwister()">
-                <i class="fas fa-random"></i> Genera Scioglilingua
-            </button>
-            <div class="result" id="twisterResult">Clicca per generare uno scioglilingua casuale!</div>
-        </div>
-
-        <div class="tool">
-            <h2><i class="fas fa-star"></i>Creatore di Parole</h2>
-            <button class="btn" onclick="generateWord()">
-                <i class="fas fa-plus-circle"></i> Crea Parola
-            </button>
-            <div class="result" id="inventedWord">Genera una parola completamente inventata!</div>
-        </div>
-
-        <div class="tool">
-            <h2><i class="fas fa-stopwatch"></i>Test Velocità Scrittura</h2>
-            <textarea id="speedInput" placeholder="Clicca 'Inizia' e scrivi il più velocemente possibile..."
-                onfocus="startTimer()" disabled></textarea>
-            <div class="stats">
-                <div class="stat-item">
-                    <span class="stat-number" id="timeDisplay">0</span>
-                    <div class="stat-label">Secondi</div>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-number" id="wordDisplay">0</span>
-                    <div class="stat-label">Parole</div>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-number" id="charDisplay">0</span>
-                    <div class="stat-label">Caratteri</div>
+    <!-- About Section -->
+    <section id="about" class="about-section">
+        <div class="container">
+            <h2 class="section-title">About TextTools</h2>
+            <div class="about-content">
+                <p>TextTools is a comprehensive linguistic suite designed to help writers, students, and language
+                    enthusiasts analyze and improve their text. Our modern interface combines powerful functionality
+                    with intuitive design.</p>
+                <div class="features-grid">
+                    <div class="feature-item">
+                        <span class="feature-icon">⚡</span>
+                        <h4>Real-time Analysis</h4>
+                        <p>Get instant feedback as you type</p>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">📱</span>
+                        <h4>Mobile Friendly</h4>
+                        <p>Works perfectly on all devices</p>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">🎨</span>
+                        <h4>Modern Design</h4>
+                        <p>Beautiful and intuitive interface</p>
+                    </div>
                 </div>
             </div>
-            <button class="btn" onclick="startTypingTest()">
-                <i class="fas fa-play"></i> Inizia Test
-            </button>
         </div>
-    </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact-section">
+        <div class="container">
+            <h2 class="section-title">Get in Touch</h2>
+            <div class="contact-content">
+                <p>Have questions or suggestions? We'd love to hear from you!</p>
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <span class="contact-icon">📧</span>
+                        <span>hello@texttools.com</span>
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-icon">🌐</span>
+                        <span>www.texttools.com</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 TextTools. All rights reserved.</p>
+        </div>
+    </footer>
 
     <script src="script.js"></script>
-
 </body>
 
 </html>
