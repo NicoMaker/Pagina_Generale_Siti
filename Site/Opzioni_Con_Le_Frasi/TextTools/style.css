@@ -1,4 +1,4 @@
-/* Reset and Base Styles */
+/* Reset e Stili Base */
 * {
   margin: 0;
   padding: 0;
@@ -6,7 +6,7 @@
 }
 
 :root {
-  --primary-color: #6366f1;
+  --primary-color: #06b6d4;
   --primary-dark: #4f46e5;
   --secondary-color: #ec4899;
   --accent-color: #06b6d4;
@@ -54,7 +54,7 @@ body {
   padding: 0 1rem;
 }
 
-/* Navigation */
+/* Navigazione */
 .navbar {
   position: fixed;
   top: 0;
@@ -102,6 +102,7 @@ body {
   font-weight: 500;
   transition: var(--transition);
   position: relative;
+  padding: 0.5rem 0;
 }
 
 .nav-link:hover {
@@ -121,6 +122,20 @@ body {
 
 .nav-link:hover::after {
   width: 100%;
+}
+
+/* Stile per il link attivo nella navigazione - NUOVO */
+.nav-link.active {
+  color: var(--accent-color);
+  font-weight: 600;
+  text-shadow: 0 0 10px rgba(6, 182, 212, 0.5);
+}
+
+.nav-link.active::after {
+  width: 100%;
+  background: var(--accent-color);
+  height: 3px;
+  box-shadow: 0 0 10px rgba(6, 182, 212, 0.7);
 }
 
 /* Hamburger Menu */
@@ -152,7 +167,7 @@ body {
   transform: rotate(-45deg) translate(7px, -6px);
 }
 
-/* Hero Section */
+/* Sezione Hero */
 .hero {
   min-height: 100vh;
   display: flex;
@@ -238,7 +253,7 @@ body {
   transform: translateX(4px);
 }
 
-/* Hero Background */
+/* Sfondo Hero */
 .hero-background {
   position: absolute;
   top: 0;
@@ -292,7 +307,7 @@ body {
   }
 }
 
-/* Tools Section */
+/* Sezione Strumenti */
 .tools-section {
   padding: 5rem 0;
   background: var(--bg-secondary);
@@ -385,7 +400,7 @@ body {
   color: var(--text-primary);
 }
 
-/* Form Elements */
+/* Elementi Form */
 textarea {
   width: 100%;
   min-height: 120px;
@@ -439,7 +454,7 @@ textarea::placeholder {
   transform: translateY(0);
 }
 
-/* Stats Grid */
+/* Griglia Statistiche */
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -468,7 +483,7 @@ textarea::placeholder {
   margin-top: 0.25rem;
 }
 
-/* Result Box */
+/* Box Risultati */
 .result-box {
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid var(--border-color);
@@ -481,7 +496,63 @@ textarea::placeholder {
   margin-top: 1rem;
 }
 
-/* About Section */
+/* Righe Decorative - RIGHE COLORATE */
+.decorative-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 2rem 0 1rem 0;
+  padding: 1rem 0;
+}
+
+.line {
+  height: 3px;
+  border-radius: 2px;
+  animation: lineGlow 2s ease-in-out infinite alternate;
+}
+
+.line-1 {
+  background: linear-gradient(
+    90deg,
+    var(--primary-color),
+    var(--secondary-color)
+  );
+  width: 100%;
+  animation-delay: 0s;
+}
+
+.line-2 {
+  background: linear-gradient(90deg, var(--accent-color), var(--success-color));
+  width: 80%;
+  margin-left: auto;
+  animation-delay: 0.3s;
+}
+
+.line-3 {
+  background: linear-gradient(90deg, var(--warning-color), var(--danger-color));
+  width: 60%;
+  margin-left: auto;
+  margin-right: auto;
+  animation-delay: 0.6s;
+}
+
+@keyframes lineGlow {
+  0% {
+    opacity: 0.6;
+    transform: scaleX(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}
+
+/* Spaziatore Pulsante - SPAZIO AGGIUNTIVO */
+.button-spacer {
+  height: 1.5rem;
+}
+
+/* Sezione Chi Siamo */
 .about-section {
   padding: 5rem 0;
   background: var(--bg-primary);
@@ -537,7 +608,7 @@ textarea::placeholder {
   margin: 0;
 }
 
-/* Contact Section */
+/* Sezione Contatti */
 .contact-section {
   padding: 5rem 0;
   background: var(--bg-secondary);
@@ -586,7 +657,7 @@ textarea::placeholder {
   color: var(--text-muted);
 }
 
-/* Loading Animation */
+/* Animazione Caricamento */
 .loading {
   display: inline-block;
   width: 20px;
@@ -606,7 +677,7 @@ textarea::placeholder {
   }
 }
 
-/* Responsive Design */
+/* Design Responsive */
 @media (max-width: 768px) {
   .hamburger {
     display: flex;
@@ -635,6 +706,10 @@ textarea::placeholder {
     display: block;
   }
 
+  .nav-link.active::after {
+    bottom: 0;
+  }
+
   .tools-grid {
     grid-template-columns: 1fr;
     gap: 1.5rem;
@@ -657,6 +732,15 @@ textarea::placeholder {
     flex-direction: column;
     gap: 0.5rem;
   }
+
+  /* Responsive per le righe decorative */
+  .line-2 {
+    width: 90%;
+  }
+
+  .line-3 {
+    width: 70%;
+  }
 }
 
 @media (max-width: 480px) {
@@ -671,14 +755,23 @@ textarea::placeholder {
   .hero-content {
     padding: 0 0.5rem;
   }
+
+  .decorative-lines {
+    margin: 1.5rem 0 0.5rem 0;
+  }
+
+  .button-spacer {
+    height: 1rem;
+  }
 }
 
-/* Smooth Scrolling */
+/* Scorrimento Fluido */
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 70px; /* Aggiunto per compensare l'altezza della navbar fissa */
 }
 
-/* Focus Styles for Accessibility */
+/* Stili Focus per Accessibilità */
 button:focus,
 textarea:focus,
 .nav-link:focus {
@@ -686,7 +779,7 @@ textarea:focus,
   outline-offset: 2px;
 }
 
-/* Animation Classes */
+/* Classi Animazione */
 .fade-in {
   animation: fadeIn 0.6s ease-out;
 }
@@ -700,4 +793,23 @@ textarea:focus,
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* Indicatore di sezione attiva - NUOVO */
+.section-indicator {
+  position: fixed;
+  top: 70px;
+  left: 0;
+  width: 100%;
+  background: var(--accent-color);
+  height: 3px;
+  z-index: 999;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+  box-shadow: 0 0 10px rgba(6, 182, 212, 0.7);
+}
+
+.section-indicator.visible {
+  transform: scaleX(1);
 }

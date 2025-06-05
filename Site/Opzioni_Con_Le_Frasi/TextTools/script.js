@@ -1,4 +1,4 @@
-// Navigation functionality
+// Funzionalità navigazione
 const hamburger = document.getElementById('hamburger');
 const navMenu = document.getElementById('navMenu');
 
@@ -7,7 +7,7 @@ hamburger.addEventListener('click', () => {
     navMenu.classList.toggle('active');
 });
 
-// Close mobile menu when clicking on a link
+// Chiudi menu mobile quando si clicca su un link
 document.querySelectorAll('.nav-link').forEach(link => {
     link.addEventListener('click', () => {
         hamburger.classList.remove('active');
@@ -15,7 +15,7 @@ document.querySelectorAll('.nav-link').forEach(link => {
     });
 });
 
-// Close mobile menu when clicking outside
+// Chiudi menu mobile quando si clicca fuori
 document.addEventListener('click', (e) => {
     if (!hamburger.contains(e.target) && !navMenu.contains(e.target)) {
         hamburger.classList.remove('active');
@@ -23,14 +23,45 @@ document.addEventListener('click', (e) => {
     }
 });
 
-// Smooth scroll to tools section
+// Scorrimento fluido alla sezione strumenti
 function scrollToTools() {
     document.getElementById('tools').scrollIntoView({
         behavior: 'smooth'
     });
 }
 
-// Text Counter with Live Updates
+// NUOVO: Rilevamento sezione attiva durante lo scroll
+function updateActiveSection() {
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-link[data-section]');
+
+    let currentSection = '';
+
+    sections.forEach(section => {
+        const sectionTop = section.offsetTop - 100; // Offset per la navbar
+        const sectionHeight = section.offsetHeight;
+
+        if (window.scrollY >= sectionTop && window.scrollY < sectionTop + sectionHeight) {
+            currentSection = section.getAttribute('id');
+        }
+    });
+
+    // Aggiorna i link di navigazione
+    navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('data-section') === currentSection) {
+            link.classList.add('active');
+        }
+    });
+}
+
+// Ascolta l'evento scroll per aggiornare la sezione attiva
+window.addEventListener('scroll', updateActiveSection);
+
+// Inizializza la sezione attiva al caricamento della pagina
+document.addEventListener('DOMContentLoaded', updateActiveSection);
+
+// Contatore Testo con Aggiornamenti Live
 const textInput = document.getElementById('textInput');
 const wordCountEl = document.getElementById('wordCount');
 const sentenceCountEl = document.getElementById('sentenceCount');
@@ -43,7 +74,7 @@ if (textInput) {
         const sentenceCount = (text.match(/[.!?]+/g) || []).length;
         const charCount = text.length;
 
-        // Animate numbers
+        // Anima i numeri
         animateNumber(wordCountEl, parseInt(wordCountEl.textContent), wordCount);
         animateNumber(sentenceCountEl, parseInt(sentenceCountEl.textContent), sentenceCount);
         animateNumber(charCountEl, parseInt(charCountEl.textContent), charCount);
@@ -65,17 +96,17 @@ function animateNumber(element, from, to) {
     }, 16);
 }
 
-// Remove Duplicates Function
+// Funzione Rimuovi Duplicati
 function removeDuplicates() {
     const btn = event.target;
     const originalText = btn.innerHTML;
-    btn.innerHTML = '<div class="loading"></div> Processing...';
+    btn.innerHTML = '<div class="loading"></div> Elaborando...';
     btn.disabled = true;
 
     setTimeout(() => {
         const text = document.getElementById('dupInput').value;
         if (!text.trim()) {
-            document.getElementById('dupResult').textContent = 'Please enter some text first.';
+            document.getElementById('dupResult').textContent = 'Inserisci del testo prima.';
             btn.innerHTML = originalText;
             btn.disabled = false;
             return;
@@ -94,24 +125,24 @@ function removeDuplicates() {
         const removedCount = words.length - unique.length;
 
         document.getElementById('dupResult').innerHTML =
-            `<strong>Removed ${removedCount} duplicate word(s):</strong><br><br>${result}`;
+            `<strong>Rimosse ${removedCount} parole duplicate:</strong><br><br>${result}`;
 
         btn.innerHTML = originalText;
         btn.disabled = false;
     }, 800);
 }
 
-// Grammar Analyzer (Mock Implementation)
+// Analizzatore Grammaticale (Implementazione Mock)
 function analyzeGrammar() {
     const btn = event.target;
     const originalText = btn.innerHTML;
-    btn.innerHTML = '<div class="loading"></div> Analyzing...';
+    btn.innerHTML = '<div class="loading"></div> Analizzando...';
     btn.disabled = true;
 
     setTimeout(() => {
         const text = document.getElementById('posInput').value;
         if (!text.trim()) {
-            document.getElementById('posResult').textContent = 'Please enter some text first.';
+            document.getElementById('posResult').textContent = 'Inserisci del testo prima.';
             btn.innerHTML = originalText;
             btn.disabled = false;
             return;
@@ -119,14 +150,15 @@ function analyzeGrammar() {
 
         const words = text.split(/\s+/).map(w => w.toLowerCase().replace(/[^\w]/g, ''));
         const analysis = words.map(word => {
-            // Simple mock analysis based on word patterns
-            if (word.match(/ing$/)) return `<span style="color: #10b981; font-weight: 600;">${word}</span> <small>(verb-ing)</small>`;
-            if (word.match(/ed$/)) return `<span style="color: #10b981; font-weight: 600;">${word}</span> <small>(verb-past)</small>`;
-            if (word.match(/ly$/)) return `<span style="color: #f59e0b; font-weight: 600;">${word}</span> <small>(adverb)</small>`;
-            if (word.match(/^(the|a|an)$/)) return `<span style="color: #ec4899; font-weight: 600;">${word}</span> <small>(article)</small>`;
-            if (word.match(/^(and|or|but|so)$/)) return `<span style="color: #8b5cf6; font-weight: 600;">${word}</span> <small>(conjunction)</small>`;
-            if (word.match(/s$/)) return `<span style="color: #06b6d4; font-weight: 600;">${word}</span> <small>(noun-plural)</small>`;
-            return `<span style="color: #06b6d4; font-weight: 600;">${word}</span> <small>(noun)</small>`;
+            // Analisi mock semplice basata sui pattern delle parole italiane
+            if (word.match(/are$/)) return `<span style="color: #10b981; font-weight: 600;">${word}</span> <small>(verbo-are)</small>`;
+            if (word.match(/ere$/)) return `<span style="color: #10b981; font-weight: 600;">${word}</span> <small>(verbo-ere)</small>`;
+            if (word.match(/ire$/)) return `<span style="color: #10b981; font-weight: 600;">${word}</span> <small>(verbo-ire)</small>`;
+            if (word.match(/mente$/)) return `<span style="color: #f59e0b; font-weight: 600;">${word}</span> <small>(avverbio)</small>`;
+            if (word.match(/^(il|la|lo|gli|le|un|una|uno)$/)) return `<span style="color: #ec4899; font-weight: 600;">${word}</span> <small>(articolo)</small>`;
+            if (word.match(/^(e|o|ma|però|quindi)$/)) return `<span style="color: #8b5cf6; font-weight: 600;">${word}</span> <small>(congiunzione)</small>`;
+            if (word.match(/i$/)) return `<span style="color: #06b6d4; font-weight: 600;">${word}</span> <small>(nome-plurale)</small>`;
+            return `<span style="color: #06b6d4; font-weight: 600;">${word}</span> <small>(nome)</small>`;
         });
 
         document.getElementById('posResult').innerHTML = analysis.join(' ');
@@ -135,42 +167,42 @@ function analyzeGrammar() {
     }, 1000);
 }
 
-// Synonym Finder
+// Trova Sinonimi
 function findSynonyms() {
     const btn = event.target;
     const originalText = btn.innerHTML;
-    btn.innerHTML = '<div class="loading"></div> Searching...';
+    btn.innerHTML = '<div class="loading"></div> Cercando...';
     btn.disabled = true;
 
     setTimeout(() => {
         const word = document.getElementById('synInput').value.toLowerCase().trim();
         if (!word) {
-            document.getElementById('synResult').textContent = 'Please enter a word first.';
+            document.getElementById('synResult').textContent = 'Inserisci una parola prima.';
             btn.innerHTML = originalText;
             btn.disabled = false;
             return;
         }
 
         const synonyms = {
-            happy: ['joyful', 'cheerful', 'delighted', 'pleased', 'content'],
-            sad: ['unhappy', 'sorrowful', 'melancholy', 'dejected', 'gloomy'],
-            big: ['large', 'huge', 'enormous', 'massive', 'gigantic'],
-            small: ['tiny', 'little', 'miniature', 'petite', 'compact'],
-            fast: ['quick', 'rapid', 'swift', 'speedy', 'hasty'],
-            slow: ['sluggish', 'leisurely', 'gradual', 'unhurried', 'delayed'],
-            good: ['excellent', 'wonderful', 'great', 'fantastic', 'superb'],
-            bad: ['terrible', 'awful', 'horrible', 'dreadful', 'poor'],
-            beautiful: ['gorgeous', 'stunning', 'lovely', 'attractive', 'pretty'],
-            ugly: ['hideous', 'unattractive', 'unsightly', 'repulsive', 'grotesque']
+            felice: ['gioioso', 'allegro', 'contento', 'lieto', 'sereno'],
+            triste: ['infelice', 'malinconico', 'afflitto', 'sconsolato', 'mesto'],
+            grande: ['enorme', 'immenso', 'gigantesco', 'vasto', 'colossale'],
+            piccolo: ['minuscolo', 'tiny', 'minimo', 'ridotto', 'compatto'],
+            veloce: ['rapido', 'celere', 'fulmineo', 'sprint', 'svelto'],
+            lento: ['pigro', 'tardivo', 'graduale', 'flemmatico', 'ritardato'],
+            buono: ['eccellente', 'ottimo', 'fantastico', 'splendido', 'magnifico'],
+            cattivo: ['terribile', 'orribile', 'pessimo', 'spaventoso', 'malvagio'],
+            bello: ['magnifico', 'stupendo', 'incantevole', 'attraente', 'grazioso'],
+            brutto: ['orrendo', 'sgradevole', 'ripugnante', 'disgustoso', 'orribile']
         };
 
         const result = synonyms[word];
         if (result) {
             document.getElementById('synResult').innerHTML =
-                `<strong>Synonyms for "${word}":</strong><br><br><span style="color: #10b981; font-weight: 600;">${result.join(', ')}</span>`;
+                `<strong>Sinonimi per "${word}":</strong><br><br><span style="color: #10b981; font-weight: 600;">${result.join(', ')}</span>`;
         } else {
             document.getElementById('synResult').innerHTML =
-                `<span style="color: #f59e0b;">No synonyms found for "${word}". Try words like: happy, sad, big, small, fast, slow, good, bad, beautiful, ugly</span>`;
+                `<span style="color: #f59e0b;">Nessun sinonimo trovato per "${word}". Prova parole come: felice, triste, grande, piccolo, veloce, lento, buono, cattivo, bello, brutto</span>`;
         }
 
         btn.innerHTML = originalText;
@@ -178,41 +210,41 @@ function findSynonyms() {
     }, 600);
 }
 
-// Tongue Twister Generator
+// Generatore Scioglilingua
 function generateTongueTwister() {
     const btn = event.target;
     const originalText = btn.innerHTML;
-    btn.innerHTML = '<div class="loading"></div> Generating...';
+    btn.innerHTML = '<div class="loading"></div> Generando...';
     btn.disabled = true;
 
     setTimeout(() => {
         const twisters = [
-            'Peter Piper picked a peck of pickled peppers.',
-            'She sells seashells by the seashore.',
-            'How much wood would a woodchuck chuck if a woodchuck could chuck wood?',
-            'Fuzzy Wuzzy was a bear. Fuzzy Wuzzy had no hair.',
-            'Red lorry, yellow lorry, red lorry, yellow lorry.',
-            'Six sick slick slim sycamore saplings.',
-            'A proper copper coffee pot.',
-            'Which witch switched the Swiss wristwatches?',
-            'Toy boat, toy boat, toy boat.',
-            'Unique New York, unique New York, unique New York.'
+            'Trentatré trentini entrarono a Trento, tutti e trentatré trotterellando.',
+            'Apelle figlio di Apollo fece una palla di pelle di pollo.',
+            'Sopra la panca la capra campa, sotto la panca la capra crepa.',
+            'Se l\'arcivescovo di Costantinopoli si disarcivescoviscostantinopolizzasse, vi disarcivescoviscostantinopolizzereste voi?',
+            'Il cuoco cuoce in cucina e la cuoca cuoce in cucina il cuoco.',
+            'Chi ama chiama, chi è chiamato ama.',
+            'Tre tigri contro tre tigri.',
+            'Figlia, sfoglia la foglia, sfoglia la foglia, figlia.',
+            'Sotto le frasche del capanno quattro gatti grossi stanno.',
+            'Al pozzo dei pazzi una pazza lavava le pezze.'
         ];
 
         const randomTwister = twisters[Math.floor(Math.random() * twisters.length)];
         document.getElementById('twisterResult').innerHTML =
-            `<span style="color: #f59e0b; font-weight: 600; font-size: 1.1rem;">"${randomTwister}"</span><br><br><small style="color: #64748b;">Try saying this three times fast! 🗣️</small>`;
+            `<span style="color: #f59e0b; font-weight: 600; font-size: 1.1rem;">"${randomTwister}"</span><br><br><small style="color: #64748b;">Prova a dirlo tre volte velocemente! 🗣️</small>`;
 
         btn.innerHTML = originalText;
         btn.disabled = false;
     }, 500);
 }
 
-// Word Generator
+// Generatore Parole
 function generateWord() {
     const btn = event.target;
     const originalText = btn.innerHTML;
-    btn.innerHTML = '<div class="loading"></div> Creating...';
+    btn.innerHTML = '<div class="loading"></div> Creando...';
     btn.disabled = true;
 
     setTimeout(() => {
@@ -230,7 +262,7 @@ function generateWord() {
         document.getElementById('inventedWord').innerHTML =
             `<span style="color: #06b6d4; font-weight: 700; font-size: 1.8rem;">${newWord}</span><br><br>
              <small style="color: #94a3b8; font-style: italic;">${definition}</small><br><br>
-             <small style="color: #64748b;">✨ Completely invented word!</small>`;
+             <small style="color: #64748b;">✨ Parola completamente inventata!</small>`;
 
         btn.innerHTML = originalText;
         btn.disabled = false;
@@ -238,18 +270,18 @@ function generateWord() {
 }
 
 function generateDefinition() {
-    const adjectives = ['mysterious', 'sparkling', 'whimsical', 'enchanted', 'peculiar', 'delightful'];
-    const nouns = ['feeling', 'object', 'phenomenon', 'experience', 'state', 'quality'];
-    const verbs = ['describes', 'represents', 'embodies', 'captures', 'expresses', 'signifies'];
+    const adjectives = ['misterioso', 'scintillante', 'bizzarro', 'incantato', 'peculiare', 'delizioso'];
+    const nouns = ['sentimento', 'oggetto', 'fenomeno', 'esperienza', 'stato', 'qualità'];
+    const verbs = ['descrive', 'rappresenta', 'incarna', 'cattura', 'esprime', 'significa'];
 
     const adj = adjectives[Math.floor(Math.random() * adjectives.length)];
     const noun = nouns[Math.floor(Math.random() * nouns.length)];
     const verb = verbs[Math.floor(Math.random() * verbs.length)];
 
-    return `A ${adj} ${noun} that ${verb} something indescribable.`;
+    return `Un ${adj} ${noun} che ${verb} qualcosa di indescrivibile.`;
 }
 
-// Typing Speed Test
+// Test Velocità Scrittura
 let typingTimer = null;
 let typingCounter = 0;
 let typingInterval = null;
@@ -261,32 +293,32 @@ function startTypingTest() {
     const wordDisplay = document.getElementById('wordDisplay');
     const charDisplay = document.getElementById('charDisplay');
 
-    // Reset everything
+    // Reset tutto
     input.disabled = false;
     input.value = '';
     input.focus();
     typingCounter = 0;
 
-    // Update button state
-    btn.innerHTML = '<span>⏱️ Test in Progress...</span>';
+    // Aggiorna stato pulsante
+    btn.innerHTML = '<span>⏱️ Test in Corso...</span>';
     btn.disabled = true;
 
-    // Start the timer
+    // Avvia il timer
     typingInterval = setInterval(() => {
         typingCounter++;
         timeDisplay.textContent = typingCounter;
 
-        // Update live stats
+        // Aggiorna statistiche live
         const words = input.value.trim() === '' ? 0 : (input.value.match(/\b\w+\b/g) || []).length;
         const chars = input.value.length;
         wordDisplay.textContent = words;
         charDisplay.textContent = chars;
     }, 1000);
 
-    // Set test duration (30 seconds)
+    // Imposta durata test (30 secondi)
     if (typingTimer) clearTimeout(typingTimer);
     typingTimer = setTimeout(() => {
-        // Stop the test
+        // Ferma il test
         input.disabled = true;
         clearInterval(typingInterval);
 
@@ -294,29 +326,29 @@ function startTypingTest() {
         const finalChars = input.value.length;
         const wpm = Math.round((finalWords / 30) * 60);
 
-        // Show final results
+        // Mostra risultati finali
         timeDisplay.textContent = '30';
         wordDisplay.textContent = finalWords;
         charDisplay.textContent = finalChars;
 
-        // Show results modal
+        // Mostra modal risultati
         setTimeout(() => {
             let performance = '';
-            if (wpm >= 40) performance = 'Excellent! 🏆';
-            else if (wpm >= 30) performance = 'Great job! 🎉';
-            else if (wpm >= 20) performance = 'Good work! 👍';
-            else performance = 'Keep practicing! 💪';
+            if (wpm >= 40) performance = 'Eccellente! 🏆';
+            else if (wpm >= 30) performance = 'Ottimo lavoro! 🎉';
+            else if (wpm >= 20) performance = 'Buon lavoro! 👍';
+            else performance = 'Continua a praticare! 💪';
 
-            alert(`🎯 Typing Test Complete!\n\nResults:\n• ${finalWords} words typed\n• ${finalChars} characters total\n• ${wpm} words per minute\n\n${performance}`);
+            alert(`🎯 Test di Velocità Completato!\n\nRisultati:\n• ${finalWords} parole scritte\n• ${finalChars} caratteri totali\n• ${wpm} parole al minuto\n\n${performance}`);
         }, 500);
 
-        // Reset button
-        btn.innerHTML = '<span>Start Test</span>';
+        // Reset pulsante
+        btn.innerHTML = '<span>Inizia Test</span>';
         btn.disabled = false;
-    }, 30000); // 30 seconds
+    }, 30000); // 30 secondi
 }
 
-// Add intersection observer for animations
+// Aggiungi intersection observer per animazioni
 const observerOptions = {
     threshold: 0.1,
     rootMargin: '0px 0px -50px 0px'
@@ -330,7 +362,7 @@ const observer = new IntersectionObserver((entries) => {
     });
 }, observerOptions);
 
-// Observe all tool cards
+// Osserva tutte le card degli strumenti
 document.addEventListener('DOMContentLoaded', () => {
     const toolCards = document.querySelectorAll('.tool-card');
     toolCards.forEach(card => {
@@ -338,7 +370,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// Add some interactive hover effects
+// Aggiungi effetti hover interattivi
 document.querySelectorAll('.tool-card').forEach(card => {
     card.addEventListener('mouseenter', () => {
         card.style.transform = 'translateY(-8px)';
@@ -349,7 +381,7 @@ document.querySelectorAll('.tool-card').forEach(card => {
     });
 });
 
-// Navbar scroll effect
+// Effetto scroll navbar
 window.addEventListener('scroll', () => {
     const navbar = document.querySelector('.navbar');
     if (window.scrollY > 100) {
