@@ -151,9 +151,10 @@
                 <div class="tool-card">
                     <div class="tool-header">
                         <span class="tool-icon">⏱️</span>
-                        <h3>Test Velocità Scrittura</h3>
+                        <h3>Test Velocità Scrittura (60 secondi)</h3>
                     </div>
-                    <textarea id="speedInput" placeholder="Clicca 'Inizia' e scrivi il più velocemente possibile..."
+                    <textarea id="speedInput"
+                        placeholder="Clicca 'Inizia' e scrivi il più velocemente possibile per 60 secondi..."
                         disabled></textarea>
                     <div class="stats-grid">
                         <div class="stat-item">
@@ -217,13 +218,59 @@
         </div>
     </section>
 
-
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
             <p>&copy; 2024 TextTools. Tutti i diritti riservati.</p>
         </div>
     </footer>
+
+    <!-- Modal Risultati Test Velocità -->
+    <div id="resultsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🎯 Test Completato!</h2>
+                <span class="close" onclick="closeModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="results-container">
+                    <div class="result-item">
+                        <div class="result-icon">📝</div>
+                        <div class="result-info">
+                            <span class="result-number" id="modalWords">0</span>
+                            <span class="result-label">Parole Scritte</span>
+                        </div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-icon">⚡</div>
+                        <div class="result-info">
+                            <span class="result-number" id="modalWPM">0</span>
+                            <span class="result-label">Parole al Minuto</span>
+                        </div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-icon">🔤</div>
+                        <div class="result-info">
+                            <span class="result-number" id="modalChars">0</span>
+                            <span class="result-label">Caratteri Totali</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="performance-badge" id="performanceBadge">
+                    <span class="badge-icon">🏆</span>
+                    <span class="badge-text" id="performanceText">Eccellente!</span>
+                </div>
+                <div class="modal-actions">
+                    <button class="modal-button primary" onclick="startTypingTest(); closeModal();">
+                        🔄 Riprova
+                    </button>
+                    <button class="modal-button secondary" onclick="closeModal();">
+                        ✅ Chiudi
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>

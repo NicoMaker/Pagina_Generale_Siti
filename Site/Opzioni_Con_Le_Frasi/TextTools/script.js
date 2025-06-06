@@ -30,7 +30,7 @@ function scrollToTools() {
     });
 }
 
-// NUOVO: Rilevamento sezione attiva durante lo scroll
+// Rilevamento sezione attiva durante lo scroll
 function updateActiveSection() {
     const sections = document.querySelectorAll('section[id]');
     const navLinks = document.querySelectorAll('.nav-link[data-section]');
@@ -38,7 +38,7 @@ function updateActiveSection() {
     let currentSection = '';
 
     sections.forEach(section => {
-        const sectionTop = section.offsetTop - 100; // Offset per la navbar
+        const sectionTop = section.offsetTop - 100;
         const sectionHeight = section.offsetHeight;
 
         if (window.scrollY >= sectionTop && window.scrollY < sectionTop + sectionHeight) {
@@ -46,7 +46,6 @@ function updateActiveSection() {
         }
     });
 
-    // Aggiorna i link di navigazione
     navLinks.forEach(link => {
         link.classList.remove('active');
         if (link.getAttribute('data-section') === currentSection) {
@@ -55,10 +54,7 @@ function updateActiveSection() {
     });
 }
 
-// Ascolta l'evento scroll per aggiornare la sezione attiva
 window.addEventListener('scroll', updateActiveSection);
-
-// Inizializza la sezione attiva al caricamento della pagina
 document.addEventListener('DOMContentLoaded', updateActiveSection);
 
 // Contatore Testo con Aggiornamenti Live
@@ -74,7 +70,6 @@ if (textInput) {
         const sentenceCount = (text.match(/[.!?]+/g) || []).length;
         const charCount = text.length;
 
-        // Anima i numeri
         animateNumber(wordCountEl, parseInt(wordCountEl.textContent), wordCount);
         animateNumber(sentenceCountEl, parseInt(sentenceCountEl.textContent), sentenceCount);
         animateNumber(charCountEl, parseInt(charCountEl.textContent), charCount);
@@ -132,7 +127,7 @@ function removeDuplicates() {
     }, 800);
 }
 
-// Analizzatore Grammaticale (Implementazione Mock)
+// Analizzatore Grammaticale
 function analyzeGrammar() {
     const btn = event.target;
     const originalText = btn.innerHTML;
@@ -150,7 +145,6 @@ function analyzeGrammar() {
 
         const words = text.split(/\s+/).map(w => w.toLowerCase().replace(/[^\w]/g, ''));
         const analysis = words.map(word => {
-            // Analisi mock semplice basata sui pattern delle parole italiane
             if (word.match(/are$/)) return `<span style="color: #10b981; font-weight: 600;">${word}</span> <small>(verbo-are)</small>`;
             if (word.match(/ere$/)) return `<span style="color: #10b981; font-weight: 600;">${word}</span> <small>(verbo-ere)</small>`;
             if (word.match(/ire$/)) return `<span style="color: #10b981; font-weight: 600;">${word}</span> <small>(verbo-ire)</small>`;
@@ -281,7 +275,7 @@ function generateDefinition() {
     return `Un ${adj} ${noun} che ${verb} qualcosa di indescrivibile.`;
 }
 
-// Test Velocità Scrittura
+// Test Velocità Scrittura - AGGIORNATO PER 60 SECONDI
 let typingTimer = null;
 let typingCounter = 0;
 let typingInterval = null;
@@ -300,7 +294,7 @@ function startTypingTest() {
     typingCounter = 0;
 
     // Aggiorna stato pulsante
-    btn.innerHTML = '<span>⏱️ Test in Corso...</span>';
+    btn.innerHTML = '<span>⏱️ Test in Corso... (60s)</span>';
     btn.disabled = true;
 
     // Avvia il timer
@@ -315,7 +309,7 @@ function startTypingTest() {
         charDisplay.textContent = chars;
     }, 1000);
 
-    // Imposta durata test (30 secondi)
+    // Imposta durata test (60 secondi)
     if (typingTimer) clearTimeout(typingTimer);
     typingTimer = setTimeout(() => {
         // Ferma il test
@@ -324,31 +318,94 @@ function startTypingTest() {
 
         const finalWords = input.value.trim() === '' ? 0 : (input.value.match(/\b\w+\b/g) || []).length;
         const finalChars = input.value.length;
-        const wpm = Math.round((finalWords / 30) * 60);
+        const wpm = Math.round(finalWords); // WPM per 60 secondi
 
-        // Mostra risultati finali
-        timeDisplay.textContent = '30';
+        // Aggiorna display finale
+        timeDisplay.textContent = '60';
         wordDisplay.textContent = finalWords;
         charDisplay.textContent = finalChars;
 
         // Mostra modal risultati
         setTimeout(() => {
-            let performance = '';
-            if (wpm >= 40) performance = 'Eccellente! 🏆';
-            else if (wpm >= 30) performance = 'Ottimo lavoro! 🎉';
-            else if (wpm >= 20) performance = 'Buon lavoro! 👍';
-            else performance = 'Continua a praticare! 💪';
-
-            alert(`🎯 Test di Velocità Completato!\n\nRisultati:\n• ${finalWords} parole scritte\n• ${finalChars} caratteri totali\n• ${wpm} parole al minuto\n\n${performance}`);
+            showResultsModal(finalWords, wpm, finalChars);
         }, 500);
 
         // Reset pulsante
         btn.innerHTML = '<span>Inizia Test</span>';
         btn.disabled = false;
-    }, 30000); // 30 secondi
+    }, 60000); // 60 secondi
 }
 
-// Aggiungi intersection observer per animazioni
+// Funzione per mostrare il modal dei risultati
+function showResultsModal(words, wpm, chars) {
+    const modal = document.getElementById('resultsModal');
+    const modalWords = document.getElementById('modalWords');
+    const modalWPM = document.getElementById('modalWPM');
+    const modalChars = document.getElementById('modalChars');
+    const performanceBadge = document.getElementById('performanceBadge');
+    const performanceText = document.getElementById('performanceText');
+
+    // Aggiorna i valori nel modal
+    modalWords.textContent = words;
+    modalWPM.textContent = wpm;
+    modalChars.textContent = chars;
+
+    // Determina il livello di performance
+    let performance = '';
+    let badgeClass = '';
+
+    if (wpm >= 60) {
+        performance = 'Straordinario! 🏆';
+        badgeClass = 'excellent';
+    } else if (wpm >= 45) {
+        performance = 'Eccellente! 🌟';
+        badgeClass = 'great';
+    } else if (wpm >= 30) {
+        performance = 'Ottimo lavoro! 🎉';
+        badgeClass = 'good';
+    } else if (wpm >= 20) {
+        performance = 'Buon lavoro! 👍';
+        badgeClass = 'fair';
+    } else {
+        performance = 'Continua a praticare! 💪';
+        badgeClass = 'practice';
+    }
+
+    performanceText.textContent = performance;
+    performanceBadge.className = `performance-badge ${badgeClass}`;
+
+    // Mostra il modal
+    modal.style.display = 'block';
+
+    // Aggiungi animazione di entrata
+    setTimeout(() => {
+        modal.querySelector('.modal-content').style.transform = 'scale(1)';
+        modal.querySelector('.modal-content').style.opacity = '1';
+    }, 10);
+}
+
+// Funzione per chiudere il modal
+function closeModal() {
+    const modal = document.getElementById('resultsModal');
+    modal.style.display = 'none';
+}
+
+// Chiudi modal cliccando fuori
+window.onclick = function (event) {
+    const modal = document.getElementById('resultsModal');
+    if (event.target === modal) {
+        closeModal();
+    }
+}
+
+// Chiudi modal con ESC
+document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape') {
+        closeModal();
+    }
+});
+
+// Intersection observer per animazioni
 const observerOptions = {
     threshold: 0.1,
     rootMargin: '0px 0px -50px 0px'
@@ -370,7 +427,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// Aggiungi effetti hover interattivi
+// Effetti hover interattivi
 document.querySelectorAll('.tool-card').forEach(card => {
     card.addEventListener('mouseenter', () => {
         card.style.transform = 'translateY(-8px)';
