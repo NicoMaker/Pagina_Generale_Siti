@@ -51,6 +51,8 @@
             <div class="floating-shape shape-1"></div>
             <div class="floating-shape shape-2"></div>
             <div class="floating-shape shape-3"></div>
+            <div class="floating-shape shape-4"></div>
+            <div class="floating-shape shape-5"></div>
         </div>
     </section>
 
@@ -61,7 +63,7 @@
 
             <div class="tools-grid">
                 <!-- Contatore Intelligente -->
-                <div class="tool-card">
+                <div class="tool-card" data-tool="counter">
                     <div class="tool-header">
                         <span class="tool-icon">📊</span>
                         <h3>Contatore Intelligente</h3>
@@ -85,7 +87,7 @@
                 </div>
 
                 <!-- Rimuovi Duplicati -->
-                <div class="tool-card">
+                <div class="tool-card" data-tool="duplicates">
                     <div class="tool-header">
                         <span class="tool-icon">🧹</span>
                         <h3>Rimuovi Duplicati</h3>
@@ -98,7 +100,7 @@
                 </div>
 
                 <!-- Analizzatore Grammaticale -->
-                <div class="tool-card">
+                <div class="tool-card" data-tool="grammar">
                     <div class="tool-header">
                         <span class="tool-icon">🧠</span>
                         <h3>Analizzatore Grammaticale</h3>
@@ -111,7 +113,7 @@
                 </div>
 
                 <!-- Dizionario Sinonimi -->
-                <div class="tool-card">
+                <div class="tool-card" data-tool="synonyms">
                     <div class="tool-header">
                         <span class="tool-icon">📚</span>
                         <h3>Dizionario Sinonimi</h3>
@@ -124,7 +126,7 @@
                 </div>
 
                 <!-- Generatore Scioglilingua -->
-                <div class="tool-card">
+                <div class="tool-card" data-tool="twister">
                     <div class="tool-header">
                         <span class="tool-icon">🗣️</span>
                         <h3>Generatore Scioglilingua</h3>
@@ -136,7 +138,7 @@
                 </div>
 
                 <!-- Creatore di Parole -->
-                <div class="tool-card">
+                <div class="tool-card" data-tool="wordgen">
                     <div class="tool-header">
                         <span class="tool-icon">⭐</span>
                         <h3>Creatore di Parole</h3>
@@ -147,14 +149,14 @@
                     <div class="result-box" id="inventedWord">Genera una parola completamente inventata!</div>
                 </div>
 
-                <!-- Test Velocità Scrittura -->
-                <div class="tool-card">
+                <!-- Test Velocità Scrittura - AGGIORNATO A 10 SECONDI -->
+                <div class="tool-card speed-test-card" data-tool="speed">
                     <div class="tool-header">
                         <span class="tool-icon">⏱️</span>
-                        <h3>Test Velocità Scrittura (60 secondi)</h3>
+                        <h3>Test Velocità Scrittura (10 secondi)</h3>
                     </div>
                     <textarea id="speedInput"
-                        placeholder="Clicca 'Inizia' e scrivi il più velocemente possibile per 60 secondi..."
+                        placeholder="Clicca 'Inizia' e scrivi il più velocemente possibile per 10 secondi..."
                         disabled></textarea>
                     <div class="stats-grid">
                         <div class="stat-item">
@@ -171,17 +173,23 @@
                         </div>
                     </div>
 
-                    <!-- Righe colorate decorative -->
+                    <!-- Righe colorate decorative animate -->
                     <div class="decorative-lines">
                         <div class="line line-1"></div>
                         <div class="line line-2"></div>
                         <div class="line line-3"></div>
+                        <div class="line line-4"></div>
                     </div>
 
-                    <!-- Spazio aggiuntivo prima del pulsante -->
+                    <!-- Progress bar per il countdown -->
+                    <div class="progress-container" id="progressContainer" style="display: none;">
+                        <div class="progress-bar" id="progressBar"></div>
+                        <div class="progress-text" id="progressText">10</div>
+                    </div>
+
                     <div class="button-spacer"></div>
 
-                    <button class="tool-button" onclick="startTypingTest()">
+                    <button class="tool-button speed-button" onclick="startTypingTest()">
                         <span>Inizia Test</span>
                     </button>
                 </div>
@@ -271,6 +279,9 @@
             </div>
         </div>
     </div>
+
+    <!-- Particelle di sfondo animate -->
+    <div class="particles-container" id="particles"></div>
 
     <script src="script.js"></script>
 </body>

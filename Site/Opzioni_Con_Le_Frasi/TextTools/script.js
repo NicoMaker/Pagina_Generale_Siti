@@ -57,6 +57,23 @@ function updateActiveSection() {
 window.addEventListener('scroll', updateActiveSection);
 document.addEventListener('DOMContentLoaded', updateActiveSection);
 
+// Generatore di particelle animate
+function createParticles() {
+    const particlesContainer = document.getElementById('particles');
+    if (!particlesContainer) return;
+
+    const particleCount = 50;
+
+    for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.animationDelay = Math.random() * 8 + 's';
+        particle.style.animationDuration = (Math.random() * 3 + 5) + 's';
+        particlesContainer.appendChild(particle);
+    }
+}
+
 // Contatore Testo con Aggiornamenti Live
 const textInput = document.getElementById('textInput');
 const wordCountEl = document.getElementById('wordCount');
@@ -101,7 +118,8 @@ function removeDuplicates() {
     setTimeout(() => {
         const text = document.getElementById('dupInput').value;
         if (!text.trim()) {
-            document.getElementById('dupResult').textContent = 'Inserisci del testo prima.';
+            document.getElementById('dupResult').innerHTML =
+                '<span style="color: var(--warning-color);">⚠️ Inserisci del testo prima.</span>';
             btn.innerHTML = originalText;
             btn.disabled = false;
             return;
@@ -120,7 +138,7 @@ function removeDuplicates() {
         const removedCount = words.length - unique.length;
 
         document.getElementById('dupResult').innerHTML =
-            `<strong>Rimosse ${removedCount} parole duplicate:</strong><br><br>${result}`;
+            `<strong>✅ Rimosse ${removedCount} parole duplicate:</strong><br><br>${result}`;
 
         btn.innerHTML = originalText;
         btn.disabled = false;
@@ -137,7 +155,8 @@ function analyzeGrammar() {
     setTimeout(() => {
         const text = document.getElementById('posInput').value;
         if (!text.trim()) {
-            document.getElementById('posResult').textContent = 'Inserisci del testo prima.';
+            document.getElementById('posResult').innerHTML =
+                '<span style="color: var(--warning-color);">⚠️ Inserisci del testo prima.</span>';
             btn.innerHTML = originalText;
             btn.disabled = false;
             return;
@@ -171,7 +190,8 @@ function findSynonyms() {
     setTimeout(() => {
         const word = document.getElementById('synInput').value.toLowerCase().trim();
         if (!word) {
-            document.getElementById('synResult').textContent = 'Inserisci una parola prima.';
+            document.getElementById('synResult').innerHTML =
+                '<span style="color: var(--warning-color);">⚠️ Inserisci una parola prima.</span>';
             btn.innerHTML = originalText;
             btn.disabled = false;
             return;
@@ -193,10 +213,10 @@ function findSynonyms() {
         const result = synonyms[word];
         if (result) {
             document.getElementById('synResult').innerHTML =
-                `<strong>Sinonimi per "${word}":</strong><br><br><span style="color: #10b981; font-weight: 600;">${result.join(', ')}</span>`;
+                `<strong>📚 Sinonimi per "${word}":</strong><br><br><span style="color: #10b981; font-weight: 600;">${result.join(', ')}</span>`;
         } else {
             document.getElementById('synResult').innerHTML =
-                `<span style="color: #f59e0b;">Nessun sinonimo trovato per "${word}". Prova parole come: felice, triste, grande, piccolo, veloce, lento, buono, cattivo, bello, brutto</span>`;
+                `<span style="color: #f59e0b;">❌ Nessun sinonimo trovato per "${word}". Prova parole come: felice, triste, grande, piccolo, veloce, lento, buono, cattivo, bello, brutto</span>`;
         }
 
         btn.innerHTML = originalText;
@@ -227,7 +247,7 @@ function generateTongueTwister() {
 
         const randomTwister = twisters[Math.floor(Math.random() * twisters.length)];
         document.getElementById('twisterResult').innerHTML =
-            `<span style="color: #f59e0b; font-weight: 600; font-size: 1.1rem;">"${randomTwister}"</span><br><br><small style="color: #64748b;">Prova a dirlo tre volte velocemente! 🗣️</small>`;
+            `<span style="color: #f59e0b; font-weight: 600; font-size: 1.1rem;">"${randomTwister}"</span><br><br><small style="color: #64748b;">🗣️ Prova a dirlo tre volte velocemente!</small>`;
 
         btn.innerHTML = originalText;
         btn.disabled = false;
@@ -275,7 +295,7 @@ function generateDefinition() {
     return `Un ${adj} ${noun} che ${verb} qualcosa di indescrivibile.`;
 }
 
-// Test Velocità Scrittura - AGGIORNATO PER 60 SECONDI
+// Test Velocità Scrittura - CORRETTO PER 10 SECONDI
 let typingTimer = null;
 let typingCounter = 0;
 let typingInterval = null;
@@ -286,6 +306,9 @@ function startTypingTest() {
     const timeDisplay = document.getElementById('timeDisplay');
     const wordDisplay = document.getElementById('wordDisplay');
     const charDisplay = document.getElementById('charDisplay');
+    const progressContainer = document.getElementById('progressContainer');
+    const progressBar = document.getElementById('progressBar');
+    const progressText = document.getElementById('progressText');
 
     // Reset tutto
     input.disabled = false;
@@ -293,14 +316,29 @@ function startTypingTest() {
     input.focus();
     typingCounter = 0;
 
+    // Mostra progress bar
+    if (progressContainer) {
+        progressContainer.style.display = 'block';
+        progressBar.style.width = '100%';
+        progressText.textContent = '10';
+    }
+
     // Aggiorna stato pulsante
-    btn.innerHTML = '<span>⏱️ Test in Corso... (60s)</span>';
+    btn.innerHTML = '<span>⏱️ Test in Corso... (10s)</span>';
     btn.disabled = true;
 
     // Avvia il timer
     typingInterval = setInterval(() => {
         typingCounter++;
+        const remainingTime = 10 - typingCounter;
         timeDisplay.textContent = typingCounter;
+
+        // Aggiorna progress bar
+        if (progressBar && progressText) {
+            const progressPercent = ((10 - remainingTime) / 10) * 100;
+            progressBar.style.width = (100 - progressPercent) + '%';
+            progressText.textContent = remainingTime;
+        }
 
         // Aggiorna statistiche live
         const words = input.value.trim() === '' ? 0 : (input.value.match(/\b\w+\b/g) || []).length;
@@ -309,19 +347,25 @@ function startTypingTest() {
         charDisplay.textContent = chars;
     }, 1000);
 
-    // Imposta durata test (60 secondi)
+    // Imposta durata test (10 secondi)
     if (typingTimer) clearTimeout(typingTimer);
     typingTimer = setTimeout(() => {
         // Ferma il test
         input.disabled = true;
         clearInterval(typingInterval);
 
+        // Nascondi progress bar
+        if (progressContainer) {
+            progressContainer.style.display = 'none';
+        }
+
         const finalWords = input.value.trim() === '' ? 0 : (input.value.match(/\b\w+\b/g) || []).length;
         const finalChars = input.value.length;
-        const wpm = Math.round(finalWords); // WPM per 60 secondi
+        // Calcolo WPM corretto per 10 secondi: (parole / 10 secondi) * 60 = WPM
+        const wpm = Math.round((finalWords / 10) * 60);
 
         // Aggiorna display finale
-        timeDisplay.textContent = '60';
+        timeDisplay.textContent = '10';
         wordDisplay.textContent = finalWords;
         charDisplay.textContent = finalChars;
 
@@ -333,7 +377,7 @@ function startTypingTest() {
         // Reset pulsante
         btn.innerHTML = '<span>Inizia Test</span>';
         btn.disabled = false;
-    }, 60000); // 60 secondi
+    }, 10000); // 10 secondi esatti
 }
 
 // Funzione per mostrare il modal dei risultati
@@ -350,7 +394,7 @@ function showResultsModal(words, wpm, chars) {
     modalWPM.textContent = wpm;
     modalChars.textContent = chars;
 
-    // Determina il livello di performance
+    // Determina il livello di performance (adattato per test di 10 secondi)
     let performance = '';
     let badgeClass = '';
 
@@ -421,6 +465,10 @@ const observer = new IntersectionObserver((entries) => {
 
 // Osserva tutte le card degli strumenti
 document.addEventListener('DOMContentLoaded', () => {
+    // Crea particelle animate
+    createParticles();
+
+    // Osserva le card per animazioni
     const toolCards = document.querySelectorAll('.tool-card');
     toolCards.forEach(card => {
         observer.observe(card);
