@@ -10,9 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Special+Elite&display=swap"
         rel="stylesheet">
     <title>ALAN TURING</title>
-    <link rel="icon"
-    href="Img/Alan_Turing.JPG"
-    type="image/jpeg">
+    <link rel="icon" href="Img/Alan_Turing.JPG" type="image/jpeg">
 </head>
 
 <body>
@@ -219,18 +217,7 @@ STATO ATTUALE | SIMBOLO LETTO | SIMBOLO SCRITTO | MOVIMENTO | NUOVO STATO
         </footer>
     </div>
 
-    <script>
-        // Script to update scroll indicator position
-        document.addEventListener('DOMContentLoaded', function () {
-            const scrollContent = document.querySelector('.scrollable-content');
-            const scrollThumb = document.querySelector('.scroll-thumb');
-
-            scrollContent.addEventListener('scroll', function () {
-                const scrollPercentage = (scrollContent.scrollTop / (scrollContent.scrollHeight - scrollContent.clientHeight)) * 100;
-                scrollThumb.style.top = `${scrollPercentage}%`;
-            });
-        });
-    </script>
+    <script src="script.js"></script>
 </body>
 
 </html>
