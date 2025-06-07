@@ -60,6 +60,17 @@ const fileFeedbackList = document.getElementById("file-feedback-list");
 const fileFeedbackSummary = document.getElementById("file-feedback-summary");
 const fileFeedbackOkBtn = document.getElementById("file-feedback-ok-btn");
 
+// Add delete modal elements
+const deleteParticipantModal = document.getElementById("delete-participant-modal");
+const closeDeleteModalBtn = document.getElementById("close-delete-modal");
+const cancelDeleteBtn = document.getElementById("cancel-delete-btn");
+const confirmDeleteBtn = document.getElementById("confirm-delete-btn");
+const deleteParticipantName = document.getElementById("delete-participant-name");
+const deleteParticipantStats = document.getElementById("delete-participant-stats");
+
+// Variable to track which participant is being deleted
+let participantToDelete = -1;
+
 // Colori per i coriandoli
 const confettiColors = [
   "#4361ee",
@@ -151,6 +162,9 @@ function setupEventListeners() {
     if (editNameModal && e.target === editNameModal) {
       hideEditNameModal();
     }
+    if (deleteParticipantModal && e.target === deleteParticipantModal) {
+      hideDeleteParticipantModal();
+    }
   });
 
   // Gestione modale vittoria
@@ -170,6 +184,19 @@ function setupEventListeners() {
   // Gestione modale condivisione
   if (closeShareModalBtn) {
     closeShareModalBtn.addEventListener("click", hideShareModal);
+  }
+
+  // Gestione modale eliminazione partecipante
+  if (closeDeleteModalBtn) {
+    closeDeleteModalBtn.addEventListener("click", hideDeleteParticipantModal);
+  }
+
+  if (cancelDeleteBtn) {
+    cancelDeleteBtn.addEventListener("click", hideDeleteParticipantModal);
+  }
+
+  if (confirmDeleteBtn) {
+    confirmDeleteBtn.addEventListener("click", confermaEliminazionePartecipante);
   }
 
   // Gestione tasti per accessibilità
@@ -198,6 +225,9 @@ function setupEventListeners() {
       }
       if (editNameModal && editNameModal.style.display === "flex") {
         hideEditNameModal();
+      }
+      if (deleteParticipantModal && deleteParticipantModal.style.display === "flex") {
+        hideDeleteParticipantModal();
       }
     }
   });
@@ -252,6 +282,51 @@ function setupEventListeners() {
   const confirmEditNameBtn = document.getElementById("confirm-edit-name-btn");
   if (confirmEditNameBtn) {
     confirmEditNameBtn.addEventListener("click", salvaModificaNome);
+  }
+}
+
+// Delete participant modal functions
+function mostraDeleteParticipantModal(index) {
+  if (!deleteParticipantModal || !deleteParticipantName || !deleteParticipantStats) return;
+
+  const partecipante = partecipanti[index];
+  participantToDelete = index;
+
+  // Imposta le informazioni del partecipante
+  deleteParticipantName.innerHTML = `${partecipante.nome} <span class="participant-id">#${partecipante.id}</span>`;
+  deleteParticipantStats.textContent = `Punteggio attuale: ${partecipante.punti} punti`;
+
+  // Mostra la modale
+  deleteParticipantModal.style.display = "flex";
+  deleteParticipantModal.setAttribute("aria-hidden", "false");
+
+  // Focus sul pulsante di annullamento per sicurezza
+  setTimeout(() => {
+    if (cancelDeleteBtn) {
+      cancelDeleteBtn.focus();
+    }
+  }, 100);
+
+  // Annuncia per screen reader
+  announceForScreenReader(`Conferma eliminazione di ${partecipante.nome} ID ${partecipante.id}`);
+}
+
+function hideDeleteParticipantModal() {
+  if (deleteParticipantModal) {
+    deleteParticipantModal.style.display = "none";
+    deleteParticipantModal.setAttribute("aria-hidden", "true");
+    participantToDelete = -1;
+  }
+}
+
+function confermaEliminazionePartecipante() {
+  if (participantToDelete >= 0 && participantToDelete < partecipanti.length) {
+    const partecipante = partecipanti[participantToDelete];
+    eliminaPartecipante(participantToDelete);
+    hideDeleteParticipantModal();
+
+    // Mostra toast di conferma
+    showToast(`${partecipante.nome} #${partecipante.id} eliminato definitivamente`, "success");
   }
 }
 
@@ -364,11 +439,9 @@ function showTieModal(vincitori, punti) {
   let detailsHTML = `<div class="tie-participants">Con un punteggio di <strong>${punti}</strong> punti:</div><ul class="tie-list">`;
 
   vincitori.forEach((vincitore, index) => {
-    detailsHTML += `<li><span class="medal medal-${
-      index < 3 ? ["gold", "silver", "bronze"][index] : "default"
-    }">${index + 1}</span> ${vincitore.nome} <span class="winner-id">#${
-      vincitore.id
-    }</span></li>`;
+    detailsHTML += `<li><span class="medal medal-${index < 3 ? ["gold", "silver", "bronze"][index] : "default"
+      }">${index + 1}</span> ${vincitore.nome} <span class="winner-id">#${vincitore.id
+      }</span></li>`;
   });
 
   detailsHTML += `</ul>`;
@@ -452,9 +525,8 @@ function mostraClassifica() {
     minute: "2-digit",
   };
   leaderboardDate.textContent = oggi.toLocaleDateString("it-IT", opzioniData);
-  leaderboardMode.textContent = `Modalità: ${
-    modalitàVittoria === "max" ? "Più punti" : "Meno punti"
-  }`;
+  leaderboardMode.textContent = `Modalità: ${modalitàVittoria === "max" ? "Più punti" : "Meno punti"
+    }`;
 
   // Ordina i partecipanti
   const partecipantiOrdinati = [...partecipanti].sort((a, b) =>
@@ -517,9 +589,8 @@ function creaPodio(partecipantiOrdinati) {
 
       // Blocco del podio
       const podiumBlock = document.createElement("div");
-      podiumBlock.className = `podium-block podium-${
-        posizione === 1 ? "first" : posizione === 2 ? "second" : "third"
-      }`;
+      podiumBlock.className = `podium-block podium-${posizione === 1 ? "first" : posizione === 2 ? "second" : "third"
+        }`;
       podiumBlock.textContent = posizione;
 
       // Informazioni sul partecipante
@@ -586,9 +657,8 @@ function creaTabellaCassifica(partecipantiOrdinati) {
     // Aggiungi medaglia per i primi 3
     if (index < 3) {
       const medalSpan = document.createElement("span");
-      medalSpan.className = `medal medal-${
-        ["gold", "silver", "bronze"][index]
-      }`;
+      medalSpan.className = `medal medal-${["gold", "silver", "bronze"][index]
+        }`;
       medalSpan.textContent = index + 1;
       positionCell.appendChild(medalSpan);
     } else {
@@ -640,10 +710,10 @@ function condividiClassifica() {
       index === 0
         ? "🥇"
         : index === 1
-        ? "🥈"
-        : index === 2
-        ? "🥉"
-        : `${index + 1}.`;
+          ? "🥈"
+          : index === 2
+            ? "🥉"
+            : `${index + 1}.`;
     testoCondivisione += `${medaglia} ${partecipante.nome} #${partecipante.id}: ${partecipante.punti} punti\n`;
   });
 
@@ -946,9 +1016,8 @@ function aggiornaListaPartecipanti() {
     // Aggiungi medaglia per i primi 3
     if (index < 3) {
       const medalSpan = document.createElement("span");
-      medalSpan.className = `medal medal-${
-        ["gold", "silver", "bronze"][index]
-      }`;
+      medalSpan.className = `medal medal-${["gold", "silver", "bronze"][index]
+        }`;
       medalSpan.textContent = index + 1;
       infoContainer.appendChild(medalSpan);
     }
@@ -1000,7 +1069,7 @@ function aggiornaListaPartecipanti() {
       }
     });
 
-    // Bottone elimina
+    // Bottone elimina con conferma
     const deleteButton = document.createElement("button");
     deleteButton.className = "delete-btn";
     deleteButton.setAttribute(
@@ -1019,7 +1088,8 @@ function aggiornaListaPartecipanti() {
         (p) => p.id === partecipante.id
       );
       if (originalIndex !== -1) {
-        eliminaPartecipante(originalIndex);
+        // Mostra il modal di conferma invece di eliminare direttamente
+        mostraDeleteParticipantModal(originalIndex);
       }
     });
 
