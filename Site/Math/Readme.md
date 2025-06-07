@@ -11,7 +11,7 @@
 - **[Collatz](Collatz)**
 - **[Conversione Basi](Conversione%20Basi)**
 - **[Esercizio Trifase](Esercizio%20trifase)**
-- **[Esponenziali e Radici](Esponenziali%20%20e%20Radici)**
+- **[Esponenziali e Radici](Esponenziali%20e%20Radici)**
 - **[Euclide](Euclide)**
 - **[Fattoriale](Fattoriale)**
 - **[Fibonacci](Fibonacci)**
