@@ -58,9 +58,10 @@ function generaTabellina() {
         showNotification("I valori minimo e massimo sono stati scambiati.");
     }
 
+    const number = 1000000; // Numero massimo di operazioni consentite
     // Limita il range per evitare problemi di prestazioni
-    if (max - min > 1000) {
-        showError("Per favore, limita l'intervallo a 1000 numeri per prestazioni ottimali.");
+    if (max - min > number) {
+        showError(`Per favore, limita l'intervallo a ${number} numeri per prestazioni ottimali.`);
         return;
     }
 
