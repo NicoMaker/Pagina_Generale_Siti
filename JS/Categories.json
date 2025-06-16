@@ -428,6 +428,10 @@
         {
           "name": "Organizzazione Note",
           "link": "Site/Utilities/Organizzazione_Note/index.html"
+        },
+        {
+          "name": "QR Code Generator",
+          "link": "Site/Utilities/QR_Code_Generator/index.html"
         }
       ]
     }
