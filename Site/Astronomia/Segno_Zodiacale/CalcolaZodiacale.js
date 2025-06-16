@@ -22,21 +22,42 @@ const noResults = document.getElementById("no-results");
 // Variabili per la ricerca
 let allZodiacSigns = [];
 
-// Mappa dei simboli zodiacali
-const zodiacSymbols = {
-  Ariete: "♈",
-  Toro: "♉",
-  Gemelli: "♊",
-  Cancro: "♋",
-  Leone: "♌",
-  Vergine: "♍",
-  Bilancia: "♎",
-  Scorpione: "♏",
-  Sagittario: "♐",
-  Capricorno: "♑",
-  Acquario: "♒",
-  Pesci: "♓",
-};
+async function loadZodiacSymbols() {
+  try {
+    const response = await fetch('JSON/symbols.json');
+    const data = await response.json();
+    return data.zodiacSymbols;
+  } catch (error) {
+    console.error('Errore nel caricamento del JSON:', error);
+  }
+}
+
+// Utilizzo del metodo 1
+loadZodiacSymbols().then(symbols => {
+  console.log(symbols);
+  console.log('Simbolo Ariete:', symbols.Ariete); // ♈
+});
+
+// Metodo 2: Se il JSON è embedded come stringa
+const jsonString = `{
+  "zodiacSymbols": {
+    "Ariete": "♈",
+    "Toro": "♉",
+    "Gemelli": "♊",
+    "Cancro": "♋",
+    "Leone": "♌",
+    "Vergine": "♍",
+    "Bilancia": "♎",
+    "Scorpione": "♏",
+    "Sagittario": "♐",
+    "Capricorno": "♑",
+    "Acquario": "♒",
+    "Pesci": "♓"
+  }
+}`;
+
+const zodiacData = JSON.parse(jsonString);
+const symbols = zodiacData.zodiacSymbols;
 
 // Funzioni di utilità
 const showDefaultImage = () => {
@@ -47,9 +68,8 @@ const showDefaultImage = () => {
 };
 
 const updateOutput = (text, isError = false) => {
-  output.innerHTML = `<p class="${
-    isError ? "error" : "colorSegno"
-  } fade-in">${text}</p>`;
+  output.innerHTML = `<p class="${isError ? "error" : "colorSegno"
+    } fade-in">${text}</p>`;
 };
 
 const showLoading = () => {
@@ -87,7 +107,7 @@ function createStars() {
 // Carica configurazione zodiacale
 async function loadZodiacConfig() {
   try {
-    const response = await fetch("configurazioni.json");
+    const response = await fetch("JSON/configurazioni.json");
     if (!response.ok) {
       throw new Error(`Errore HTTP: ${response.status}`);
     }
@@ -172,7 +192,7 @@ async function calcolaSegnoZodiacale() {
       immagine.style.display = "none";
 
       // Mostra il simbolo del segno
-      signSymbol.textContent = zodiacSymbols[segno.segno] || "?";
+      signSymbol.textContent = symbols[segno.segno] || "?";
 
       const caratteristicheFormatte = segno.Caratteristiche.split(",")
         .map((c) => c.trim())
@@ -297,9 +317,8 @@ async function populateSignsInfo(filteredSigns = null) {
         </div>
         <div class="sign-info">
           <div class="sign-dates"><strong>Periodo:</strong> ${periodi}</div>
-          <div class="sign-element"><strong>Elemento:</strong> ${
-            sign.Elemento
-          }</div>
+          <div class="sign-element"><strong>Elemento:</strong> ${sign.Elemento
+        }</div>
           <div class="sign-characteristics">
             <strong>Caratteristiche:</strong>
             <ul class="characteristics-list">
