@@ -6,6 +6,7 @@
 - **[Genera un Colore Casuale](Colore_Casuale)**
 - **[Estrattore Regione Casuale](Estrai_Regione)**
 - **[Generatore di Carte](Generatore_di_Carte)**
+- **[Generatore di Palette di Colori](Generatore_Palette)**
 - **[Lancio dei Dadi con n Facce Grafico](Lancio%20Dadi%20N%20facce)**
 - **[Lancio di n Monete](Lancio%20Monete)**
 - **[Lancio di N Monete UX Design](Lancio_Monete_UX)**

@@ -379,6 +379,9 @@
         {
           "name": "Lancio N Monete UX design",
           "link": "Site/Random/Lancio_Monete_UX/index.html"
+        },{
+          "name":"Generatore di Palette di Colori",
+          "link":"Site/Random/Generatore_Palette/index.html"
         }
       ]
     },
