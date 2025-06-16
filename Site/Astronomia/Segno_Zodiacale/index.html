@@ -1,101 +1,205 @@
 <!DOCTYPE html>
 <html lang="it">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Calcolo Segno Zodiacale</title>
-  <link rel="stylesheet" href="StyleZodiacale.css">
-  <script src="CalcolaZodiacale.js" defer></script>
+  <title>Calcolatore Zodiacale Moderno</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Raleway:wght@300;400;600&display=swap"
-    rel="stylesheet">
-
-        <link rel="icon" href="Img/segni.jpg"
-        type="image/x-icon">
-    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⭐</text></svg>">
 </head>
 
 <body>
+  <!-- Sfondo stellato animato -->
   <div id="stars-container"></div>
-  <div id="container">
-    <h1>Calcolatore del Segno Zodiacale</h1>
-    <p>Inserisci il tuo giorno e mese di nascita per scoprire il tuo segno zodiacale e le sue caratteristiche</p>
-    
-
-    <div class="input-section">
-      <div class="input-wrapper">
-        <label for="day">Giorno</label>
-        <input type="number" id="day" placeholder="Giorno" min="1" max="31">
-      </div>
-
-      <div class="months-bar">
-        <p class="months-label">Seleziona il mese:</p>
-        <div class="months-container">
-          <div class="month-item" data-month="1">Gen</div>
-          <div class="month-item" data-month="2">Feb</div>
-          <div class="month-item" data-month="3">Mar</div>
-          <div class="month-item" data-month="4">Apr</div>
-          <div class="month-item" data-month="5">Mag</div>
-          <div class="month-item" data-month="6">Giu</div>
-          <div class="month-item" data-month="7">Lug</div>
-          <div class="month-item" data-month="8">Ago</div>
-          <div class="month-item" data-month="9">Set</div>
-          <div class="month-item" data-month="10">Ott</div>
-          <div class="month-item" data-month="11">Nov</div>
-          <div class="month-item" data-month="12">Dic</div>
+  
+  <!-- Loading iniziale -->
+  <div id="initial-loading" class="initial-loading">
+    <div class="loading-content">
+      <div class="loading-spinner"></div>
+      <h2>Caricamento dati zodiacali...</h2>
+      <p>Preparazione dell'esperienza astrale</p>
+    </div>
+  </div>
+  
+  <!-- Contenitore principale -->
+  <div class="main-container" id="main-container" style="display: none;">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-content">
+        <div class="logo">
+          <span class="star-icon">⭐</span>
+          <h1>Calcolatore Zodiacale</h1>
+          <span class="star-icon">⭐</span>
         </div>
-        <input type="hidden" id="month" value="">
+        <p class="subtitle">Scopri il tuo segno zodiacale e le sue caratteristiche uniche</p>
       </div>
-    </div>
+    </header>
 
-    <button id="calcola-btn" onclick="calcolaSegnoZodiacale()">
-      <span class="btn-text">Calcola il mio segno</span>
-      <span class="btn-icon">✨</span>
+    <!-- Contenuto principale -->
+    <main class="main-content">
+      <div class="calculator-grid">
+        
+        <!-- Sezione calcolatore -->
+        <section class="calculator-section">
+          <div class="card calculator-card">
+            <div class="card-header">
+              <h2>📅 Inserisci la tua data di nascita</h2>
+              <p>Seleziona il giorno e il mese per calcolare il tuo segno</p>
+            </div>
+            
+            <div class="card-content">
+              <!-- Input giorno -->
+              <div class="input-group">
+                <label for="day-input">Giorno</label>
+                <input 
+                  type="number" 
+                  id="day-input" 
+                  placeholder="Giorno (1-31)" 
+                  min="1" 
+                  max="31"
+                  class="day-input"
+                >
+              </div>
+
+              <!-- Selezione mese -->
+              <div class="month-selection">
+                <label class="month-label">Seleziona il mese:</label>
+                <div class="months-grid">
+                  <button class="month-btn" data-month="1">Gen</button>
+                  <button class="month-btn" data-month="2">Feb</button>
+                  <button class="month-btn" data-month="3">Mar</button>
+                  <button class="month-btn" data-month="4">Apr</button>
+                  <button class="month-btn" data-month="5">Mag</button>
+                  <button class="month-btn" data-month="6">Giu</button>
+                  <button class="month-btn" data-month="7">Lug</button>
+                  <button class="month-btn" data-month="8">Ago</button>
+                  <button class="month-btn" data-month="9">Set</button>
+                  <button class="month-btn" data-month="10">Ott</button>
+                  <button class="month-btn" data-month="11">Nov</button>
+                  <button class="month-btn" data-month="12">Dic</button>
+                </div>
+                <input type="hidden" id="selected-month" value="">
+              </div>
+
+              <!-- Pulsanti azione -->
+              <div class="action-buttons">
+                <button id="calculate-btn" class="btn-primary" disabled>
+                  <span class="btn-icon">✨</span>
+                  <span class="btn-text">Calcola il mio segno</span>
+                </button>
+                <button id="reset-btn" class="btn-secondary" style="display: none;">
+                  <span class="btn-icon">🔄</span>
+                  <span class="btn-text">Calcola un altro segno</span>
+                </button>
+              </div>
+
+              <!-- Messaggio di stato -->
+              <div id="status-message" class="status-message"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Sezione risultato -->
+        <section class="result-section">
+          <div class="card result-card" id="result-card">
+            <div id="placeholder-content" class="placeholder-content">
+              <div class="placeholder-icon">⭐</div>
+              <p>Il tuo segno zodiacale apparirà qui dopo il calcolo</p>
+            </div>
+            
+            <div id="result-content" class="result-content" style="display: none;">
+              <div class="result-header">
+                <div class="zodiac-symbol" id="zodiac-symbol"></div>
+                <h3 class="zodiac-name" id="zodiac-name"></h3>
+                <div class="element-badge" id="element-badge"></div>
+              </div>
+              
+              <div class="result-details">
+                <div class="characteristics-section">
+                  <h4>Caratteristiche principali:</h4>
+                  <div class="characteristics-tags" id="characteristics-tags"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <!-- Pulsante info floating -->
+    <button id="info-btn" class="info-floating-btn" title="Guida ai segni zodiacali">
+      <span>ℹ️</span>
     </button>
+  </div>
 
-    <div id="output"></div>
+  <!-- Modal informazioni -->
+  <div id="info-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>🌟 Guida ai Segni Zodiacali</h2>
+        <button class="modal-close" id="modal-close">&times;</button>
+      </div>
+      
+      <div class="modal-body">
+        <!-- Tabs -->
+        <div class="tabs">
+          <button class="tab-btn active" data-tab="search">🔍 Ricerca</button>
+          <button class="tab-btn" data-tab="all">📋 Tutti i segni</button>
+        </div>
 
-    <div id="immagine" class="sign-image">
-      <img src="img/segni.jpg" alt="Segni zodiacali" class="default-image">
-    </div>
+        <!-- Tab Ricerca -->
+        <div id="search-tab" class="tab-content active">
+          <div class="search-container">
+            <div class="search-input-wrapper">
+              <input 
+                type="text" 
+                id="search-input" 
+                placeholder="Cerca per nome, elemento o caratteristica..." 
+                class="search-input"
+              >
+              <span class="search-icon">🔍</span>
+            </div>
+          </div>
+          
+          <div id="search-results" class="signs-grid"></div>
+          <div id="no-results" class="no-results" style="display: none;">
+            <p>Nessun segno trovato. <button id="clear-search" class="link-btn">Mostra tutti i segni</button></p>
+          </div>
+        </div>
 
-    <div id="result-container" class="hidden">
-      <div id="sign-symbol" class="sign-symbol"></div>
-      <div id="definition"></div>
+        <!-- Tab Tutti i segni -->
+        <div id="all-tab" class="tab-content">
+          <div id="all-signs" class="signs-grid"></div>
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- Info Button -->
-  <button id="info-btn" class="info-button" title="Informazioni sui segni zodiacali">
-    <span>ℹ️</span>
-  </button>
+  <!-- Loading overlay -->
+  <div id="loading-overlay" class="loading-overlay" style="display: none;">
+    <div class="loading-spinner"></div>
+    <p>Calcolando il tuo segno...</p>
+  </div>
 
-  <!-- Popup per le informazioni sui segni zodiacali -->
-  <div id="info-popup" class="info-popup">
-    <div class="popup-content">
-      <span class="close-popup">&times;</span>
-      <h2>Informazioni sui Segni Zodiacali</h2>
-
-      <!-- Barra di ricerca -->
-      <div class="search-container">
-        <input type="text" id="search-sign" placeholder="Cerca un segno zodiacale..." class="search-input">
-        <button id="search-btn" class="search-btn">Cerca</button>
-        <button id="reset-search-btn" class="reset-btn">Mostra tutti</button>
+  <!-- Error modal -->
+  <div id="error-modal" class="modal">
+    <div class="modal-content error-modal-content">
+      <div class="modal-header">
+        <h2>⚠️ Errore di Caricamento</h2>
+        <button class="modal-close" id="error-modal-close">&times;</button>
       </div>
-
-      <div id="no-results" class="no-results hidden">
-        <p>Nessun segno zodiacale trovato. Prova con un altro termine o <button id="reset-search-btn-inline"
-            class="reset-btn-inline">mostra tutti i segni</button>.</p>
-      </div>
-
-      <div class="signs-list" id="signs-list">
-        <!-- I segni zodiacali verranno inseriti qui dinamicamente -->
+      <div class="modal-body">
+        <p id="error-message">Si è verificato un errore nel caricamento dei dati zodiacali.</p>
+        <div class="error-actions">
+          <button id="retry-btn" class="btn-primary">🔄 Riprova</button>
+          <button id="continue-offline-btn" class="btn-secondary">📱 Continua offline</button>
+        </div>
       </div>
     </div>
   </div>
 </body>
-
 </html>

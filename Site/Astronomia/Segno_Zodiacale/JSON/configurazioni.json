@@ -4,90 +4,90 @@
     "inizio": "12-22",
     "fine": "12-31",
     "Elemento": "Terra",
-    "Caratteristiche": "Ambizioso, responsabile, pragmatico."
+    "Caratteristiche": "Ambizioso, responsabile, pragmatico, determinato, paziente"
   },
   {
     "segno": "Capricorno",
     "inizio": "01-01",
     "fine": "01-19",
     "Elemento": "Terra",
-    "Caratteristiche": "Ambizioso, responsabile, pragmatico."
+    "Caratteristiche": "Ambizioso, responsabile, pragmatico, determinato, paziente"
   },
   {
     "segno": "Acquario",
     "inizio": "01-20",
     "fine": "02-19",
     "Elemento": "Aria",
-    "Caratteristiche": "Ambizioso, responsabile, pragmatico."
+    "Caratteristiche": "Innovativo, indipendente, visionario, altruista, originale"
   },
   {
     "segno": "Pesci",
     "inizio": "02-20",
     "fine": "03-20",
     "Elemento": "Acqua",
-    "Caratteristiche": "Sensibile, intuitivo, spirituale."
+    "Caratteristiche": "Sensibile, intuitivo, spirituale, compassionevole, artistico"
   },
   {
     "segno": "Ariete",
     "inizio": "03-21",
     "fine": "04-19",
     "Elemento": "Fuoco",
-    "Caratteristiche": "Coraggioso, impulsivo, dinamico."
+    "Caratteristiche": "Coraggioso, impulsivo, dinamico, leader, energico"
   },
   {
     "segno": "Toro",
     "inizio": "04-20",
     "fine": "05-20",
     "Elemento": "Terra",
-    "Caratteristiche": "Sensuale, stabile, pratico."
+    "Caratteristiche": "Sensuale, stabile, pratico, leale, testardo"
   },
   {
     "segno": "Gemelli",
     "inizio": "05-21",
     "fine": "06-20",
     "Elemento": "Aria",
-    "Caratteristiche": "Curioso, comunicativo, adattabile."
+    "Caratteristiche": "Curioso, comunicativo, adattabile, intelligente, versatile"
   },
   {
     "segno": "Cancro",
     "inizio": "06-21",
     "fine": "07-22",
     "Elemento": "Acqua",
-    "Caratteristiche": "Empatico, protettivo, emotivo."
+    "Caratteristiche": "Empatico, protettivo, emotivo, intuitivo, familiare"
   },
   {
     "segno": "Leone",
     "inizio": "07-23",
     "fine": "08-23",
     "Elemento": "Fuoco",
-    "Caratteristiche": "Carismatico, creativo, leale."
+    "Caratteristiche": "Carismatico, creativo, leale, generoso, teatrale"
   },
   {
     "segno": "Vergine",
     "inizio": "08-24",
     "fine": "09-22",
     "Elemento": "Terra",
-    "Caratteristiche": "Analitico, preciso, riservato."
+    "Caratteristiche": "Analitico, preciso, riservato, perfezionista, servizievole"
   },
   {
     "segno": "Bilancia",
     "inizio": "09-23",
     "fine": "10-22",
     "Elemento": "Aria",
-    "Caratteristiche": "Socievole, diplomatico, armonioso."
+    "Caratteristiche": "Socievole, diplomatico, armonioso, giusto, elegante"
   },
   {
     "segno": "Scorpione",
     "inizio": "10-23",
     "fine": "11-21",
     "Elemento": "Acqua",
-    "Caratteristiche": "Intenso, passionale, misterioso."
+    "Caratteristiche": "Intenso, passionale, misterioso, determinato, magnetico"
   },
   {
     "segno": "Sagittario",
     "inizio": "11-22",
     "fine": "12-21",
     "Elemento": "Fuoco",
-    "Caratteristiche": "Avventuroso, ottimista, filosofico."
+    "Caratteristiche": "Avventuroso, ottimista, filosofico, libero, esploratore"
   }
 ]
