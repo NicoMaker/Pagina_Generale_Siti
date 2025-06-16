@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="it">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -9,16 +8,13 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="icon"
-    href="https://th.bing.com/th/id/R.d3f6be99a93c8e8eb7007186e5bb1512?rik=T4ZYLOQRwq4nqw&riu=http%3a%2f%2fwww.cacheirofrias.com.ar%2fMapa_del_mundo.gif&ehk=XFf%2f0dW6Xtqy747ZNp61mQ1Twcnni2BkzHg0ye2wHaw%3d&risl=&pid=ImgRaw&r=0"
-    type="image/jpg" />
-  <script src="script.js" defer></script>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌍</text></svg>" type="image/svg+xml" />
 </head>
 
 <body>
   <header class="app-header">
     <div class="container">
-      <h1>Planisfero Interattivo</h1>
+      <h1>🌍 Planisfero Interattivo</h1>
       <p class="subtitle">
         Esplora il mondo e scopri informazioni dettagliate su ogni nazione
       </p>
@@ -43,12 +39,8 @@
       </div>
       <div class="zoom-controls">
         <button id="zoom-in" class="zoom-btn" aria-label="Zoom in">+</button>
-        <button id="zoom-out" class="zoom-btn" aria-label="Zoom out">
-          −
-        </button>
-        <button id="zoom-reset" class="zoom-btn" aria-label="Reset zoom">
-          ↺
-        </button>
+        <button id="zoom-out" class="zoom-btn" aria-label="Zoom out">−</button>
+        <button id="zoom-reset" class="zoom-btn" aria-label="Reset zoom">↺</button>
       </div>
     </div>
 
@@ -58,8 +50,7 @@
       <div class="search-container">
         <div class="search-input-wrapper">
           <span class="search-icon">🔍</span>
-          <input type="text" id="country-search" placeholder="Cerca una nazione..." class="search-input"
-            aria-label="Cerca una nazione" />
+          <input type="text" id="country-search" placeholder="Cerca una nazione..." class="search-input" aria-label="Cerca una nazione" />
         </div>
         <div id="no-results" class="no-results-message">
           Nessuna nazione trovata
@@ -78,8 +69,7 @@
           <h3 class="filter-title">Filtra per valuta</h3>
           <div class="search-input-wrapper">
             <span class="search-icon">💰</span>
-            <input type="text" id="currency-search" placeholder="Cerca una valuta..." class="search-input"
-              aria-label="Cerca una valuta" />
+            <input type="text" id="currency-search" placeholder="Cerca una valuta..." class="search-input" aria-label="Cerca una valuta" />
           </div>
           <div id="currency-filters-container" class="filters-container">
             <!-- I filtri per valuta verranno aggiunti qui dinamicamente -->
@@ -95,12 +85,10 @@
 
   <div class="popup" id="country-popup">
     <div class="popup-content">
-      <button id="close-popup" class="close-btn" aria-label="Chiudi">
-        ×
-      </button>
+      <button id="close-popup" class="close-btn" aria-label="Chiudi">×</button>
 
       <div class="country-header">
-        <img id="country-flag" class="country-flag" src="/placeholder.svg" alt="Bandiera" />
+        <img id="country-flag" class="country-flag" src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='80' height='60' viewBox='0 0 80 60'><rect width='80' height='60' fill='%23f0f0f0'/><text x='40' y='35' text-anchor='middle' font-size='12' fill='%23666'>🏳️</text></svg>" alt="Bandiera" />
         <div class="country-title">
           <h2 id="country-name" class="country-name"></h2>
           <div id="native-name" class="native-name"></div>
@@ -161,6 +149,6 @@
   </div>
 
   <div id="footer"></div>
+  <script src="script.js"></script>
 </body>
-
 </html>
