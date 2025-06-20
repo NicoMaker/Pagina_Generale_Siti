@@ -518,3 +518,98 @@ document.querySelectorAll("input, textarea").forEach((element) => {
         }
     })
 })
+
+// === Import/Export ===
+
+// Trigger apertura file
+document.getElementById("import-btn").addEventListener("click", () => {
+    document.getElementById("import-file").click()
+})
+
+// Importa da file JSON o TXT
+document.getElementById("import-file").addEventListener("change", (e) => {
+    const file = e.target.files[0]
+    if (!file) return
+
+    const reader = new FileReader()
+    reader.onload = (event) => {
+        try {
+            let importedNotes = []
+            if (file.name.endsWith(".json")) {
+                importedNotes = JSON.parse(event.target.result)
+            } else {
+                importedNotes = parseTxtNotes(event.target.result)
+            }
+
+            if (!Array.isArray(importedNotes)) throw new Error("Formato non valido")
+
+            importedNotes.forEach((note) => {
+                if (note.title && note.content) {
+                    addNote(note)
+                }
+            })
+
+            showToast("Note importate correttamente")
+        } catch (error) {
+            showToast("Errore nell'importazione", "error")
+        }
+    }
+    reader.readAsText(file)
+})
+
+// Esporta in JSON
+document.getElementById("export-json-btn").addEventListener("click", () => {
+    const blob = new Blob([JSON.stringify(notes, null, 2)], { type: "application/json" })
+    downloadBlob(blob, "note.json")
+})
+
+// Esporta in TXT
+document.getElementById("export-txt-btn").addEventListener("click", () => {
+    const text = notes.map((n) =>
+        `Titolo: ${n.title}\nContenuto: ${n.content}\nTag: ${n.tags.join(", ")}\nCompletato: ${n.completed ? "Sì" : "No"}\n---\n`
+    ).join("\n")
+    const blob = new Blob([text], { type: "text/plain" })
+    downloadBlob(blob, "note.txt")
+})
+
+// Helpers
+function downloadBlob(blob, filename) {
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement("a")
+    a.href = url
+    a.download = filename
+    a.click()
+    URL.revokeObjectURL(url)
+}
+
+function parseTxtNotes(txt) {
+    const lines = txt.split(/\r?\n/)
+    const notesParsed = []
+    let currentNote = { title: "", content: "", tags: [], completed: false }
+
+    lines.forEach(line => {
+        if (line.startsWith("Titolo:")) {
+            if (currentNote.title || currentNote.content) {
+                notesParsed.push({ ...currentNote })
+            }
+            currentNote = {
+                title: line.replace("Titolo:", "").trim(),
+                content: "",
+                tags: [],
+                completed: false
+            }
+        } else if (line.startsWith("Contenuto:")) {
+            currentNote.content = line.replace("Contenuto:", "").trim()
+        } else if (line.startsWith("Tag:")) {
+            currentNote.tags = line.replace("Tag:", "").split(",").map(t => t.trim()).filter(Boolean)
+        } else if (line.startsWith("Completato:")) {
+            currentNote.completed = line.includes("Sì")
+        }
+    })
+
+    if (currentNote.title || currentNote.content) {
+        notesParsed.push({ ...currentNote })
+    }
+
+    return notesParsed
+}

@@ -23,6 +23,7 @@
                     </button>
                 </div>
             </div>
+
             <div class="search-container">
                 <div class="search-input-wrapper">
                     <i class="icon">search</i>
@@ -32,6 +33,13 @@
                     <span class="filter-label">Filtri:</span>
                     <div id="active-filters" class="active-filters"></div>
                     <button id="clear-filters" class="text-button">Cancella</button>
+                </div>
+
+                <div class="import-export-buttons">
+                    <input type="file" id="import-file" accept=".json,.txt" hidden>
+                    <button id="import-btn" class="text-button">📂 Carica</button>
+                    <button id="export-json-btn" class="text-button">💾 Esporta JSON</button>
+                    <button id="export-txt-btn" class="text-button">📝 Esporta TXT</button>
                 </div>
             </div>
         </header>
