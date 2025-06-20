@@ -1,15 +1,16 @@
+<!-- index.html -->
 <!DOCTYPE html>
 <html lang="it">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Organizzatore di Note</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
-
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" />
     <link rel="icon" href="https://th.bing.com/th/id/OIP.ngnyQDH32OTZFRSTPgqkPgHaFQ?cb=iwc2&rs=1&pid=ImgDetMain"
-        type="image/jpg">
+        type="image/jpg" />
 </head>
 
 <body>
@@ -27,16 +28,15 @@
             <div class="search-container">
                 <div class="search-input-wrapper">
                     <i class="icon">search</i>
-                    <input type="text" id="search-input" placeholder="Cerca note..." aria-label="Cerca note">
+                    <input type="text" id="search-input" placeholder="Cerca note..." aria-label="Cerca note" />
                 </div>
                 <div class="filter-tags">
                     <span class="filter-label">Filtri:</span>
                     <div id="active-filters" class="active-filters"></div>
                     <button id="clear-filters" class="text-button">Cancella</button>
                 </div>
-
                 <div class="import-export-buttons">
-                    <input type="file" id="import-file" accept=".json,.txt" hidden>
+                    <input type="file" id="import-file" accept=".json,.txt" hidden />
                     <button id="import-btn" class="text-button">📂 Carica</button>
                     <button id="export-json-btn" class="text-button">💾 Esporta JSON</button>
                     <button id="export-txt-btn" class="text-button">📝 Esporta TXT</button>
@@ -49,14 +49,11 @@
                 <div class="sidebar-header">
                     <h2>Categorie</h2>
                 </div>
-                <div class="tag-list" id="tag-list">
-                    <!-- I tag verranno inseriti qui dinamicamente -->
-                </div>
+                <div class="tag-list" id="tag-list"></div>
                 <div class="sidebar-footer">
                     <div class="task-progress">
-                        <div class="progress-text">
-                            <span id="completed-count">0</span>/<span id="total-count">0</span> completati
-                        </div>
+                        <div class="progress-text"><span id="completed-count">0</span>/<span id="total-count">0</span>
+                            completati</div>
                         <div class="progress-bar">
                             <div class="progress-fill" id="progress-fill"></div>
                         </div>
@@ -68,14 +65,11 @@
             <div class="notes-container">
                 <div class="notes-header">
                     <h2>Le mie note</h2>
-                    <button id="add-note-btn" class="primary-button">
-                        <i class="icon">add</i> Nuova nota
-                    </button>
+                    <div class="flex">
+                        <button id="add-note-btn" class="primary-button"><i class="icon">add</i> Nuova nota</button>
+                    </div>
                 </div>
-
-                <div id="notes-grid" class="notes-grid">
-                    <!-- Le note verranno inserite qui dinamicamente -->
-                </div>
+                <div id="notes-grid" class="notes-grid"></div>
             </div>
         </main>
 
@@ -84,29 +78,27 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h3 id="modal-title">Aggiungi nota</h3>
-                    <button id="close-modal" class="icon-button" aria-label="Chiudi">
-                        <i class="icon">close</i>
-                    </button>
+                    <button id="close-modal" class="icon-button"><i class="icon">close</i></button>
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="note-title">Titolo</label>
-                        <input type="text" id="note-title" placeholder="Titolo della nota">
+                        <input type="text" id="note-title" />
                     </div>
                     <div class="form-group">
                         <label for="note-content">Contenuto</label>
-                        <textarea id="note-content" placeholder="Scrivi qui il contenuto..."></textarea>
+                        <textarea id="note-content"></textarea>
                     </div>
                     <div class="form-group">
                         <label for="note-tags">Tag (separati da virgola)</label>
-                        <input type="text" id="note-tags" placeholder="lavoro, personale, urgente...">
+                        <input type="text" id="note-tags" />
                     </div>
                     <div class="form-group checkbox-group">
-                        <input type="checkbox" id="is-task">
+                        <input type="checkbox" id="is-task" />
                         <label for="is-task">È un impegno da completare</label>
                     </div>
                     <div id="task-completed-container" class="form-group checkbox-group hidden">
-                        <input type="checkbox" id="is-completed">
+                        <input type="checkbox" id="is-completed" />
                         <label for="is-completed">Impegno completato</label>
                     </div>
                 </div>
@@ -117,14 +109,12 @@
             </div>
         </div>
 
-        <!-- Modal di conferma per eliminazione -->
+        <!-- Modal conferma eliminazione -->
         <div id="confirm-modal" class="modal">
             <div class="modal-content confirm-content">
                 <div class="modal-header">
                     <h3>Conferma eliminazione</h3>
-                    <button id="close-confirm-modal" class="icon-button" aria-label="Chiudi">
-                        <i class="icon">close</i>
-                    </button>
+                    <button id="close-confirm-modal" class="icon-button"><i class="icon">close</i></button>
                 </div>
                 <div class="modal-body">
                     <p>Sei sicuro di voler eliminare questa nota?</p>
@@ -139,7 +129,6 @@
 
         <div id="modal-overlay" class="modal-overlay"></div>
 
-        <!-- Toast per notifiche -->
         <div id="toast" class="toast">
             <div class="toast-content">
                 <i id="toast-icon" class="icon">check_circle</i>

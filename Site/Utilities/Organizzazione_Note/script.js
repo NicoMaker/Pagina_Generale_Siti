@@ -613,3 +613,239 @@ function parseTxtNotes(txt) {
 
     return notesParsed
 }
+
+function renderNotes() {
+    notesGrid.innerHTML = ""
+
+    const filteredNotes = filterNotes()
+
+    if (filteredNotes.length === 0) {
+        notesGrid.innerHTML = `
+      <div class="empty-state">
+        <i class="icon">note</i>
+        <p>Nessuna nota trovata</p>
+      </div>
+    `
+        return
+    }
+
+    filteredNotes.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
+
+    filteredNotes.forEach((note) => {
+        const noteCard = document.createElement("div")
+        noteCard.className = `note-card ${note.completed ? "completed" : ""}`
+        noteCard.dataset.id = note.id
+
+        const formattedDate = formatDate(note.updatedAt)
+
+        noteCard.innerHTML = `
+      <div class="note-header">
+        <h3 class="note-title">${escapeHtml(note.title)}</h3>
+        <div class="note-actions">
+          <span class="note-date">${formattedDate}</span>
+          <button class="icon-button delete-from-card" title="Elimina" data-id="${note.id}">
+            <i class="icon">delete</i>
+          </button>
+        </div>
+      </div>
+      <div class="note-content">${escapeHtml(note.content)}</div>
+      <div class="note-footer">
+        <div class="note-tags">
+          ${note.tags.map((tag) => `<span class="note-tag">${escapeHtml(tag)}</span>`).join("")}
+        </div>
+        ${note.isTask
+                ? `
+          <div class="task-status ${note.completed ? "completed" : "pending"}">
+            <i class="icon">${note.completed ? "task_alt" : "pending"}</i>
+            <span>${note.completed ? "Completato" : "Da completare"}</span>
+          </div>
+        ` : ""}
+      </div>
+    `
+
+        noteCard.addEventListener("click", () => openEditNoteModal(note))
+
+        noteCard.querySelector(".delete-from-card").addEventListener("click", (e) => {
+            e.stopPropagation()
+            openDeleteConfirmation(note.id)
+        })
+
+        if (note.isTask) {
+            const taskStatus = noteCard.querySelector(".task-status")
+            taskStatus.addEventListener("click", (e) => {
+                e.stopPropagation()
+                toggleTaskCompletion(note.id)
+            })
+        }
+
+        notesGrid.appendChild(noteCard)
+    })
+}
+
+function openDeleteConfirmation(id = null) {
+    if (id) currentNoteId = id
+    noteModal.classList.remove("show")
+    confirmModal.classList.add("show")
+    modalOverlay.classList.add("show")
+
+    const modalBody = confirmModal.querySelector(".modal-body")
+    modalBody.innerHTML = `
+      <p>Sei sicuro di voler eliminare ${id ? "questa nota" : "tutte le note"}?</p>
+      <p class="warning-text">Questa azione non può essere annullata.</p>
+    `
+}
+
+function deleteAllNotes() {
+    notes = []
+    saveNotes()
+    renderNotes()
+    renderTags()
+    updateTaskProgress()
+    showToast("Tutte le note sono state eliminate", "success")
+}
+
+confirmDeleteBtn.addEventListener("click", () => {
+    if (currentNoteId) {
+        deleteNote(currentNoteId)
+        closeConfirmModal()
+        closeModal()
+    } else {
+        deleteAllNotes()
+        closeConfirmModal()
+    }
+})
+
+document.getElementById("delete-all-btn").addEventListener("click", openDeleteAllConfirmation)
+
+filteredNotes.forEach((note) => {
+    const noteCard = document.createElement("div")
+    noteCard.className = `note-card ${note.completed ? "completed" : ""}`
+    noteCard.dataset.id = note.id
+
+    const formattedDate = formatDate(note.updatedAt)
+
+    noteCard.innerHTML = `
+      <div class="note-header">
+        <h3 class="note-title">${escapeHtml(note.title)}</h3>
+        <div class="note-actions">
+          <span class="note-date">${formattedDate}</span>
+          <button class="icon-button edit-note" title="Modifica" data-id="${note.id}">
+            <i class="icon">edit</i>
+          </button>
+          <button class="icon-button delete-from-card" title="Elimina" data-id="${note.id}">
+            <i class="icon">delete</i>
+          </button>
+        </div>
+      </div>
+      <div class="note-content">${escapeHtml(note.content)}</div>
+      <div class="note-footer">
+        <div class="note-tags">
+          ${note.tags.map((tag) => `<span class="note-tag">${escapeHtml(tag)}</span>`).join("")}
+        </div>
+        ${note.isTask
+            ? `
+          <div class="task-status ${note.completed ? "completed" : "pending"}">
+            <i class="icon">${note.completed ? "task_alt" : "pending"}</i>
+            <span>${note.completed ? "Completato" : "Da completare"}</span>
+          </div>
+        ` : ""}
+      </div>
+    `
+
+    // 🗑️ Elimina
+    noteCard.querySelector(".delete-from-card").addEventListener("click", (e) => {
+        e.stopPropagation()
+        openDeleteConfirmation(note.id)
+    })
+
+    // ✏️ Modifica
+    noteCard.querySelector(".edit-note").addEventListener("click", (e) => {
+        e.stopPropagation()
+        openEditNoteModal(note)
+    })
+
+    // ✅ Toggle completato (se è impegno)
+    if (note.isTask) {
+        const taskStatus = noteCard.querySelector(".task-status")
+        taskStatus.addEventListener("click", (e) => {
+            e.stopPropagation()
+            toggleTaskCompletion(note.id)
+        })
+    }
+
+    notesGrid.appendChild(noteCard)
+})
+
+function closeConfirmModal() {
+    confirmModal.classList.remove("show")
+    modalOverlay.classList.remove("show")
+}
+
+
+document.getElementById("delete-all-btn").addEventListener("click", () => openDeleteConfirmation(null))
+
+
+function openDeleteConfirmation(id = null) {
+    currentNoteId = id // può essere null
+
+    noteModal.classList.remove("show")
+    confirmModal.classList.add("show")
+    modalOverlay.classList.add("show")
+
+    const modalBody = confirmModal.querySelector(".modal-body")
+    if (id) {
+        modalBody.innerHTML = `
+          <p>Sei sicuro di voler eliminare questa nota?</p>
+          <p class="warning-text">Questa azione non può essere annullata.</p>
+        `
+    } else {
+        modalBody.innerHTML = `
+          <p>Vuoi davvero eliminare <strong>tutte le note</strong>?</p>
+          <p class="warning-text">Questa azione è irreversibile.</p>
+        `
+    }
+}
+
+confirmDeleteBtn.addEventListener("click", () => {
+    if (currentNoteId) {
+        deleteNote(currentNoteId)
+        closeConfirmModal()
+        closeModal()
+    } else {
+        deleteAllNotes()
+        closeConfirmModal()
+    }
+})
+
+function deleteAllNotes() {
+    notes = []
+    saveNotes()
+    renderNotes()
+    renderTags()
+    updateTaskProgress()
+    showToast("Tutte le note sono state eliminate", "success")
+}
+
+document.getElementById("delete-all-btn").addEventListener("click", () => openDeleteConfirmation(null))
+
+function openDeleteConfirmation(id = null) {
+    currentNoteId = id
+
+    noteModal.classList.remove("show")
+    confirmModal.classList.add("show")
+    modalOverlay.classList.add("show")
+
+    const modalBody = confirmModal.querySelector(".modal-body")
+    modalBody.innerHTML = id
+        ? `<p>Sei sicuro di voler eliminare questa nota?</p><p class="warning-text">Questa azione non può essere annullata.</p>`
+        : `<p>Vuoi davvero eliminare <strong>tutte le note</strong>?</p><p class="warning-text">Questa azione è irreversibile.</p>`
+}
+
+
+function closeConfirmModal() {
+    confirmModal.classList.remove("show")
+    modalOverlay.classList.remove("show")
+}
+
+noteCard.addEventListener("click", () => openEditNoteModal(note))
+
