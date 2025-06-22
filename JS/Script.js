@@ -1,4 +1,3 @@
-// Declare variables
 let isPreloaderActive = false
 const projectsSection = document.querySelector("#projects")
 let categoriesData
