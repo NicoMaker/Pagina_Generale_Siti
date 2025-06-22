@@ -1,23 +1,26 @@
-// Find the headerLogo event listener in your code and modify it
-// This should be around line 180-185 in your script.js file
-
-// Add click event to header logo AND the text
 document.addEventListener("DOMContentLoaded", () => {
-  // Your existing code...
+  // === Variabili globali ===
+  window.isPreloaderActive = false; // Evita duplicazioni tra script
+  const projectsSection = document.querySelector("#projects");
+  let categoriesData;
+  let updateCounters;
+  const navLinks = document.querySelectorAll(".nav-link");
+  const mobileNavLinks = document.querySelectorAll(".mobile-nav-link");
 
-  // Modified header logo click event
-  const headerLogo = document.querySelector(".header .logo"); // Selects the logo in the header
-  const logoText = document.querySelector(".header .logo span"); // Select the text span specifically
-  const mobileLogoContainer = document.querySelector(".mobile-logo-container"); // Select the mobile logo container
-  const mobileLogoText = document.querySelector(".mobile-logo-container h2"); // Select the mobile text specifically
+  // === Logo e logo mobile ===
+  const headerLogo = document.querySelector(".header .logo");
+  const logoText = document.querySelector(".header .logo span");
+  const mobileLogoContainer = document.querySelector(".mobile-logo-container");
+  const mobileLogoText = document.querySelector(".mobile-logo-container h2");
 
-  // Make both the logo and text trigger the preloader
-  headerLogo.addEventListener("click", (e) => {
-    e.preventDefault(); // Prevent default anchor behavior
-    showPreloader(); // Show the preloader
-  });
+  // === Eventi click su logo ===
+  if (headerLogo) {
+    headerLogo.addEventListener("click", (e) => {
+      e.preventDefault();
+      showPreloader();
+    });
+  }
 
-  // Optional: Add specific listener for just the text if needed
   if (logoText) {
     logoText.addEventListener("click", (e) => {
       e.preventDefault();
@@ -25,73 +28,48 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Add click event to mobile menu logo container
   if (mobileLogoContainer) {
     mobileLogoContainer.addEventListener("click", (e) => {
       e.preventDefault();
       showPreloader();
-
-      // Close mobile menu after clicking
-      const menuToggle = document.querySelector(".menu-toggle");
-      const mobileMenu = document.querySelector(".mobile-menu");
-      if (menuToggle && mobileMenu) {
-        menuToggle.classList.remove("active");
-        mobileMenu.classList.remove("active");
-        document.body.classList.remove("no-scroll");
-      }
+      closeMobileMenu();
     });
   }
 
-  // Add click event specifically to mobile logo text
   if (mobileLogoText) {
     mobileLogoText.addEventListener("click", (e) => {
       e.preventDefault();
       showPreloader();
-
-      // Close mobile menu after clicking
-      const menuToggle = document.querySelector(".menu-toggle");
-      const mobileMenu = document.querySelector(".mobile-menu");
-      if (menuToggle && mobileMenu) {
-        menuToggle.classList.remove("active");
-        mobileMenu.classList.remove("active");
-        document.body.classList.remove("no-scroll");
-      }
+      closeMobileMenu();
     });
   }
 
-  // Your existing code continues...
-});
-
-// Declare variables
-let isPreloaderActive = false;
-const projectsSection = document.querySelector("#projects"); // Assuming projects section has id "projects"
-let categoriesData; // Will be populated later
-const navLinks = document.querySelectorAll(".nav-link"); // Assuming your nav links have class "nav-link"
-const mobileNavLinks = document.querySelectorAll(".mobile-nav-link"); // Assuming your mobile nav links have class "mobile-nav-link"
-let updateCounters; // Declare updateCounters
-
-// Ensure the showPreloader function is working correctly
-function showPreloader() {
-  // If the preloader is already active, don't do anything
-  if (isPreloaderActive) return;
-
-  // Set the flag to true
-  isPreloaderActive = true;
-
-  // Hide the projects section if it's visible
-  if (projectsSection && projectsSection.style.display === "block") {
-    projectsSection.style.display = "none";
+  function closeMobileMenu() {
+    const menuToggle = document.querySelector(".menu-toggle");
+    const mobileMenu = document.querySelector(".mobile-menu");
+    if (menuToggle && mobileMenu) {
+      menuToggle.classList.remove("active");
+      mobileMenu.classList.remove("active");
+      document.body.classList.remove("no-scroll");
+    }
   }
 
-  try {
-    // Check if a preloader already exists
-    let currentPreloader = document.querySelector(".preloader");
+  // === Funzione preloader ===
+  function showPreloader() {
+    if (window.isPreloaderActive) return;
+    window.isPreloaderActive = true;
 
-    // If it doesn't exist, create a new one
-    if (!currentPreloader) {
-      currentPreloader = document.createElement("div");
-      currentPreloader.className = "preloader";
-      currentPreloader.innerHTML = `
+    if (projectsSection && projectsSection.style.display === "block") {
+      projectsSection.style.display = "none";
+    }
+
+    try {
+      let currentPreloader = document.querySelector(".preloader");
+
+      if (!currentPreloader) {
+        currentPreloader = document.createElement("div");
+        currentPreloader.className = "preloader";
+        currentPreloader.innerHTML = `
           <div class="preloader-content">
             <div class="avatar-container">
               <img src="Icons/Avatar.jpg" alt="Nico Maker Avatar" class="preloader-avatar">
@@ -109,66 +87,56 @@ function showPreloader() {
             </div>
           </div>
         `;
-      document.body.prepend(currentPreloader);
-    } else {
-      // Reset preloader state and make it visible
-      currentPreloader.classList.remove("hidden");
+        document.body.prepend(currentPreloader);
+      } else {
+        currentPreloader.classList.remove("hidden");
 
-      // Important: Reset the loading bar animation
-      const loadingBar = currentPreloader.querySelector(".loading-bar");
-      if (loadingBar) {
-        loadingBar.style.animation = "none";
-        // Force reflow to restart animation
-        void loadingBar.offsetWidth;
-        loadingBar.style.animation = "loadingProgress 2s ease forwards";
+        const loadingBar = currentPreloader.querySelector(".loading-bar");
+        if (loadingBar) {
+          loadingBar.style.animation = "none";
+          void loadingBar.offsetWidth;
+          loadingBar.style.animation = "loadingProgress 2s ease forwards";
+        }
       }
-    }
 
-    document.body.style.overflow = "hidden"; // Disable scrolling during preloader
+      document.body.style.overflow = "hidden";
 
-    // Simulate loading again
-    setTimeout(() => {
-      const updatedPreloader = document.querySelector(".preloader");
-      if (updatedPreloader) {
-        updatedPreloader.classList.add("hidden");
-      }
+      setTimeout(() => {
+        const updatedPreloader = document.querySelector(".preloader");
+        if (updatedPreloader) {
+          updatedPreloader.classList.add("hidden");
+        }
+        document.body.style.overflow = "auto";
+        window.isPreloaderActive = false;
+
+        window.scrollTo({ top: 0, behavior: "auto" });
+
+        if (categoriesData) {
+          renderCategories(categoriesData);
+          renderCategoryNavigation(categoriesData);
+          if (updateCounters) {
+            updateCounters(categoriesData);
+          }
+        }
+
+        navLinks.forEach((link) => {
+          link.classList.remove("active");
+          if (link.getAttribute("href") === "#home") {
+            link.classList.add("active");
+          }
+        });
+
+        mobileNavLinks.forEach((link) => {
+          link.classList.remove("active");
+          if (link.getAttribute("href") === "#home") {
+            link.classList.add("active");
+          }
+        });
+      }, 3000);
+    } catch (error) {
+      console.error("Errore nel preloader:", error);
       document.body.style.overflow = "auto";
-      isPreloaderActive = false;
-
-      // Scroll to the top of the page
-      window.scrollTo({
-        top: 0,
-        behavior: "auto",
-      });
-
-      // Important: reload the data after the preloader disappears
-      if (categoriesData) {
-        renderCategories(categoriesData);
-        renderCategoryNavigation(categoriesData);
-        if (updateCounters) {
-          updateCounters(categoriesData);
-        }
-      }
-
-      // Update the active state of navigation links
-      navLinks.forEach((link) => {
-        link.classList.remove("active");
-        if (link.getAttribute("href") === "#home") {
-          link.classList.add("active");
-        }
-      });
-
-      mobileNavLinks.forEach((link) => {
-        link.classList.remove("active");
-        if (link.getAttribute("href") === "#home") {
-          link.classList.add("active");
-        }
-      });
-    }, 3000);
-  } catch (error) {
-    console.error("Errore nel preloader:", error);
-    // Make sure scrolling is always enabled in case of error
-    document.body.style.overflow = "auto";
-    isPreloaderActive = false;
+      window.isPreloaderActive = false;
+    }
   }
-}
+});
