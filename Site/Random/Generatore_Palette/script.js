@@ -165,6 +165,12 @@ class ColorCraft {
         this.currentPalette = this.generateColorHarmony(baseColor, harmonyType, count, brightness, saturation)
         this.updatePaletteDisplay()
         this.updatePaletteInfo()
+
+        if (!this.isValidHex(baseColor)) {
+            this.showToast("Il colore base non è valido", "error");
+            return;
+        }
+
     }
 
     generateColorHarmony(baseColor, harmonyType, count, brightness, saturation) {
@@ -620,11 +626,17 @@ class ColorCraft {
     }
 
     loadPalette(colors) {
-        this.currentPalette = [...colors]
-        this.updatePaletteDisplay()
-        this.updatePaletteInfo()
-        this.showToast("Palette caricata!", "success")
+        this.currentPalette = [...colors];
+
+        // Imposta il primo colore come colore base
+        const baseColor = colors[0];
+        this.baseColor.value = baseColor;
+        this.baseColorHex.value = baseColor;
+
+        this.generatePalette(); // rigenera tutto correttamente
+        this.showToast("Palette caricata!", "success");
     }
+
 
     // Modal management
     showSavedPalettes() {
