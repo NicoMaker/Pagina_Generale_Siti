@@ -12,6 +12,9 @@
     <link rel="icon"
         href="https://th.bing.com/th/id/OIP.ZZa-0kOA5nqcG3DtZUSbOwAAAA?o=7rm=3&rs=1&pid=ImgDetMain&cb=idpwebp1&o=7&rm=3"
         type="image/jpg">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+
 </head>
 
 <body>
@@ -100,53 +103,44 @@
                                 <option value="500">Extra Large (500px)</option>
                             </select>
                         </div>
-                        <div class="input-group">
-                            <label for="qr-color">Colore</label>
-                            <input type="color" id="qr-color" class="color-input" value="#000000">
-                        </div>
-                        <div class="input-group">
-                            <label for="bg-color">Sfondo</label>
-                            <input type="color" id="bg-color" class="color-input" value="#ffffff">
-                        </div>
                     </div>
-                </div>
 
-                <button id="generate-btn" class="generate-btn">
-                    <i class="fas fa-magic"></i>
-                    Genera QR Code
-                </button>
-            </div>
-
-            <div class="output-section">
-                <div class="qr-container" id="qr-container">
-                    <div class="placeholder">
-                        <i class="fas fa-qrcode"></i>
-                        <p>Il tuo QR Code apparirà qui</p>
-                    </div>
-                </div>
-
-                <div class="download-section hidden" id="download-section">
-                    <button id="download-btn" class="download-btn">
-                        <i class="fas fa-download"></i>
-                        Scarica QR Code
-                    </button>
-                    <button id="copy-btn" class="copy-btn">
-                        <i class="fas fa-copy"></i>
-                        Copia negli appunti
+                    <button id="generate-btn" class="generate-btn">
+                        <i class="fas fa-magic"></i>
+                        Genera QR Code
                     </button>
                 </div>
 
-                <div class="info-section" id="info-section">
-                    <div class="info-card">
-                        <h4>Informazioni QR Code</h4>
-                        <div class="info-content">
-                            <p><strong>Tipo:</strong> <span id="info-type">-</span></p>
-                            <p><strong>Dimensione:</strong> <span id="info-size">-</span></p>
-                            <p><strong>Contenuto:</strong> <span id="info-content">-</span></p>
+                <div class="output-section">
+                    <div class="qr-container" id="qr-container">
+                        <div class="placeholder">
+                            <i class="fas fa-qrcode"></i>
+                            <p>Il tuo QR Code apparirà qui</p>
+                        </div>
+                    </div>
+
+                    <div class="download-section hidden" id="download-section">
+                        <button id="download-btn" class="download-btn">
+                            <i class="fas fa-download"></i>
+                            Scarica QR Code
+                        </button>
+                        <button id="copy-btn" class="copy-btn">
+                            <i class="fas fa-copy"></i>
+                            Copia negli appunti
+                        </button>
+                    </div>
+
+                    <div class="info-section" id="info-section">
+                        <div class="info-card">
+                            <h4>Informazioni QR Code</h4>
+                            <div class="info-content">
+                                <p><strong>Tipo:</strong> <span id="info-type">-</span></p>
+                                <p><strong>Dimensione:</strong> <span id="info-size">-</span></p>
+                                <p><strong>Contenuto:</strong> <span id="info-content">-</span></p>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
         </main>
 
         <footer class="footer">

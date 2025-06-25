@@ -395,3 +395,27 @@ textarea.input-field {
 .output-section {
   animation-delay: 0.2s;
 }
+
+.custom-row {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem; /* spazio tra le righe, opzionale */
+  width: 100%;
+}
+
+.input-group {
+  display: block;
+  width: 100%;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+.input-field {
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 1rem;
+}
