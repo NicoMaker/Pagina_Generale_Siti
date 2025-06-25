@@ -216,7 +216,7 @@ Questo cursore si adatta quando passi sopra elementi cliccabili o durante il cli
 
 Quando scorri verso il basso nella pagina, appare un pulsante nell'angolo in basso a destra:
 
-Cliccando su questo pulsante, verrai riportato all'inizio della pagina con un'animazione fluida. v
+Cliccando su questo pulsante, verrai riportato all'inizio della pagina con un'animazione fluida. 
 
 ---
 
