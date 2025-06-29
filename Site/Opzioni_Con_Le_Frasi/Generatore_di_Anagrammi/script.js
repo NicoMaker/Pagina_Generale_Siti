@@ -61,7 +61,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Update character count
   wordInput.addEventListener("input", () => {
     const count = wordInput.value.length;
-    charCount.textContent = `${count}/8`;
+    charCount.textContent = `${count}/15`;
 
     // Add warning color if approaching limit
     if (count >= 6) {
@@ -74,7 +74,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Clear input
   clearBtn.addEventListener("click", () => {
     wordInput.value = "";
-    charCount.textContent = "0/8";
+    charCount.textContent = "0/15";
     charCount.style.color = "var(--text-light)";
     wordInput.focus();
   });
@@ -94,7 +94,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const randomWord =
       randomWords[Math.floor(Math.random() * randomWords.length)];
     wordInput.value = randomWord;
-    charCount.textContent = `${randomWord.length}/8`;
+    charCount.textContent = `${randomWord.length}/15`;
     charCount.style.color =
       randomWord.length >= 6 ? "var(--warning)" : "var(--text-light)";
     wordInput.focus();
@@ -111,8 +111,8 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    if (word.length > 8) {
-      showError("Per prestazioni ottimali, usa parole con massimo 8 caratteri");
+    if (word.length > 15) {
+      showError("Per prestazioni ottimali, usa parole con massimo 15 caratteri");
       return;
     }
 
@@ -184,7 +184,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // For longer words, use a more efficient algorithm
     let anagrams;
 
-    if (word.length <= 8) {
+    if (word.length <= 15) {
       anagrams = generateAllAnagrams(word);
     } else {
       // For longer words, limit the number of anagrams
