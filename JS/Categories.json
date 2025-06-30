@@ -1,5 +1,18 @@
 {
   "categories": {
+    "Animali": {
+      "icon": "fa-paw",
+      "projects": [
+        {
+          "name": "Convertitore Età Gatto",
+          "link": "Site/Animals/Convertitore_Eta_Gatto/index.html"
+        },
+        {
+          "name": "Convertitore Età Cane",
+          "link": "Site/Animals/Convertitore_Età_Cane/index.html"
+        }
+      ]
+    },
     "Astronomia": {
       "icon": "fa-meteor",
       "projects": [
@@ -379,9 +392,10 @@
         {
           "name": "Lancio N Monete UX design",
           "link": "Site/Random/Lancio_Monete_UX/index.html"
-        },{
-          "name":"Generatore di Palette di Colori",
-          "link":"Site/Random/Generatore_Palette/index.html"
+        },
+        {
+          "name": "Generatore di Palette di Colori",
+          "link": "Site/Random/Generatore_Palette/index.html"
         }
       ]
     },
