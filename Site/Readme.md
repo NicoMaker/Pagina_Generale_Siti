@@ -2,7 +2,7 @@
 
 # Categorie dei Progetti
 
-- **[Animali](Animali/Readme.md)** [2 Progetti]
+- **[Animali](Animals/Readme.md)** [2 Progetti]
 - **[Astronomia](Astronomia/Readme.md)** [3 Progetti]
 - **[Bici](https://github.com/NicoMaker/Giri-in-bici)** [1 Progetto]
 - **[Borsa](Borsa/Readme.md)** [5 Progetti]
