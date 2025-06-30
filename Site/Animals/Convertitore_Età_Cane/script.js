@@ -5,7 +5,7 @@ function convertAge() {
 
     const totalDays = (years * 365) + (months * 30) + days;
     if (totalDays <= 0) {
-        alert('🐶 Per favore inserisci un\'età valida per il tuo cane!');
+        showAlert();
         return;
     }
 
@@ -70,3 +70,9 @@ document.getElementById('days').addEventListener('input', function () {
         document.getElementById('funFact').classList.remove('show');
     });
 });
+
+const showAlert = () =>
+    document.getElementById('customAlert').style.display = 'flex';
+
+const closeAlert = () =>
+    document.getElementById('customAlert').style.display = 'none';

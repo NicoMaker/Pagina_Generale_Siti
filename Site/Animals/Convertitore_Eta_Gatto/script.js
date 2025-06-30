@@ -10,8 +10,9 @@ function convertAge() {
     const factTextSpan = document.getElementById('factText');
 
     const totalDays = (years * 365) + (months * 30) + days;
+
     if (totalDays <= 0) {
-        alert('🐱 Per favore inserisci un\'età valida per il tuo gatto!');
+        showAlert();
         return;
     }
 
@@ -94,3 +95,10 @@ function updatePlaceholder() {
 }
 select?.addEventListener('change', updatePlaceholder);
 updatePlaceholder();
+
+
+const showAlert = () =>
+    document.getElementById('customAlert').style.display = 'flex';
+
+const closeAlert = () =>
+    document.getElementById('customAlert').style.display = 'none';
