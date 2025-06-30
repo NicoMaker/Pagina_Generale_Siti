@@ -17,17 +17,15 @@
         <h1>Convertitore Età del Cane</h1>
 
         <div class="input-group">
-            <label for="dogAge">Età del tuo cane:</label>
+            <label for="years">Età del tuo Cane:</label>
             <div class="input-container">
-                <input type="number" id="dogAge" placeholder="Inserisci l'età" min="0" max="30" step="0.1">
-                <select id="timeUnit">
-                    <option value="months">Mesi</option>
-                    <option value="years">Anni</option>
-                </select>
+                <input type="number" id="years" placeholder="Anni" min="0" step="1">
+                <input type="number" id="months" placeholder="Mesi" min="0" max="11" step="1">
+                <input type="number" id="days" placeholder="Giorni" min="0" max="30" step="1">
             </div>
         </div>
 
-        <button class="convert-btn" onclick="convertDogAge()">
+        <button class="convert-btn" onclick="convertAge()">
             🐾 Converti Età
         </button>
 

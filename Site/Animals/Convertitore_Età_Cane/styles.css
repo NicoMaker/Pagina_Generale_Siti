@@ -328,3 +328,14 @@ select:focus {
     transform: translateY(0);
   }
 }
+
+.input-container {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.input-container input {
+  flex: 1;
+  min-width: 80px;
+}
