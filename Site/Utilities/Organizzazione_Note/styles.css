@@ -934,38 +934,6 @@ h1 {
   padding: 2rem;
 }
 
-/* Card delle note (per quando saranno aggiunte) */
-.note-card {
-  background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
-  border-radius: 16px;
-  padding: 1.5rem;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-  overflow: hidden;
-}
-
-.note-card::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: linear-gradient(90deg, #667eea, #764ba2);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.note-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
-}
-
-.note-card:hover::before {
-  opacity: 1;
-}
 
 /* Responsive Design */
 @media (max-width: 768px) {
@@ -1057,3 +1025,4 @@ h1 {
 .text-button:active {
   transform: scale(0.98);
 }
+
