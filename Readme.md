@@ -1,4 +1,4 @@
-### Guida Utente - Pagina Generale Siti di Nico Maker 
+### Guida Utente - Pagina Generale Siti di Nico Maker
 
 ## Indice dei Contenuti
 
@@ -167,17 +167,17 @@ Sono disponibili tre metodi principali di contatto, ciascuno con un pulsante di 
 
 1. **Email**:
 
-1. Indirizzo: [Nicola.marano02@gmail.com](mailto:Nicola.marano02@gmail.com)
-1. Pulsante "Invia Email": Apre il client di posta predefinito con l'indirizzo già compilato
+- Indirizzo: [Nicola.marano02@gmail.com](mailto:Nicola.marano02@gmail.com)
+- Pulsante "Invia Email": Apre il client di posta predefinito con l'indirizzo già compilato
 
-1. **Telefono**:
+2. **Telefono**:
 
-1. Numero: +39 333 702 4320
-1. Pulsante "Chiama": Avvia una chiamata (su dispositivi mobili) o mostra il numero
+- Numero: [+39 333 702 4320](tel:+393337024320)
+- Pulsante "Chiama": Avvia una chiamata (su dispositivi mobili) o mostra il numero
 
-1. **WhatsApp**:
+3. **WhatsApp**:
 
-1. Pulsante "Apri Chat": Apre una chat WhatsApp con un messaggio predefinito
+- Pulsante "Apri Chat": [Apri chat WhatsApp](https://wa.me/393337024320?text=Ciao%2C%20vorrei%20avere%20maggiori%20informazioni.)
 
 ### Link Social
 
@@ -216,7 +216,7 @@ Questo cursore si adatta quando passi sopra elementi cliccabili o durante il cli
 
 Quando scorri verso il basso nella pagina, appare un pulsante nell'angolo in basso a destra:
 
-Cliccando su questo pulsante, verrai riportato all'inizio della pagina con un'animazione fluida. 
+Cliccando su questo pulsante, verrai riportato all'inizio della pagina con un'animazione fluida.
 
 ---
 
