@@ -43,6 +43,10 @@ document.addEventListener("DOMContentLoaded", () => {
     renderTags()
     updateTaskProgress()
     initTheme()
+    document.getElementById("delete-all-btn").addEventListener("click", () => openDeleteConfirmation(null))
+    document.getElementById("confirm-delete").addEventListener("click", handleDeleteConfirmation)
+    document.getElementById("cancel-delete").addEventListener("click", closeConfirmModal)
+    document.getElementById("close-confirm-modal").addEventListener("click", closeConfirmModal)
 
     // Event listeners
     addNoteBtn.addEventListener("click", openAddNoteModal)
@@ -848,4 +852,37 @@ function closeConfirmModal() {
 }
 
 noteCard.addEventListener("click", () => openEditNoteModal(note))
+function openDeleteConfirmation(id = null) {
+    currentNoteId = id
+    document.getElementById("note-modal")?.classList.remove("show")
+    document.getElementById("confirm-modal").classList.add("show")
+    document.getElementById("modal-overlay").classList.add("show")
 
+    const modalBody = document.querySelector("#confirm-modal .modal-body")
+    modalBody.innerHTML = id
+        ? `<p>Sei sicuro di voler eliminare questa nota?</p><p class="warning-text">Questa azione non può essere annullata.</p>`
+        : `<p>Vuoi davvero eliminare <strong>tutte le note</strong>?</p><p class="warning-text">Questa azione è irreversibile.</p>`
+}
+
+function closeConfirmModal() {
+    document.getElementById("confirm-modal").classList.remove("show")
+    document.getElementById("modal-overlay").classList.remove("show")
+}
+
+function handleDeleteConfirmation() {
+    if (currentNoteId) {
+        deleteNote(currentNoteId)
+    } else {
+        deleteAllNotes()
+    }
+    closeConfirmModal()
+}
+
+function deleteAllNotes() {
+    notes = []
+    saveNotes()
+    renderNotes()
+    renderTags()
+    updateTaskProgress()
+    showToast("Tutte le note eliminate", "success")
+}

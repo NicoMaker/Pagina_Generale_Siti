@@ -76,6 +76,10 @@
                     <div class="flex">
                         <button id="add-note-btn" class="primary-button"><i class="icon">add</i> Nuova nota</button>
                     </div>
+
+                    <button id="delete-all-btn" class="text-button danger-button" style="margin-left: 1rem;">
+                        <i class="icon">delete</i> Elimina tutte
+                    </button>
                 </div>
                 <div id="notes-grid" class="notes-grid"></div>
             </div>
@@ -144,6 +148,25 @@
             </div>
         </div>
     </div>
+
+    <div id="modal-overlay" class="modal-overlay"></div>
+
+    <div id="confirm-modal" class="modal confirm-content">
+        <div class="modal-header">
+            <h3>Conferma eliminazione</h3>
+            <button id="close-confirm-modal" class="icon-button">
+                <i class="icon">close</i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <!-- Messaggio di conferma viene iniettato via JS -->
+        </div>
+        <div class="modal-footer">
+            <button id="cancel-delete" class="text-button">Annulla</button>
+            <button id="confirm-delete" class="danger-button-solid">Conferma</button>
+        </div>
+    </div>
+
 
     <script src="script.js"></script>
 </body>
