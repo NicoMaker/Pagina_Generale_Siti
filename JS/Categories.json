@@ -4,11 +4,11 @@
       "icon": "fa-paw",
       "projects": [
         {
-          "name": "Convertitore Età Gatto",
+          "name": "Convertitore Età del Gatto",
           "link": "Site/Animals/Convertitore_Età_Gatto/index.html"
         },
         {
-          "name": "Convertitore Età Cane",
+          "name": "Convertitore Età del Cane",
           "link": "Site/Animals/Convertitore_Età_Cane/index.html"
         }
       ]
