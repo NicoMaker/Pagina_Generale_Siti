@@ -5,46 +5,211 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🐱 Convertitore Età del Gatto</title>
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐱</text></svg>">
     <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
 </head>
 
 <body>
-    <div class="container">
-
+    <div class="main-container">
+        <!-- Custom Alert -->
         <div id="customAlert" class="custom-alert">
             <div class="alert-content">
                 <p>🐱 Per favore inserisci un'età valida per il tuo gatto!</p>
-                <button onclick="closeAlert()">Ok</button>
+                <button onclick="closeAlert()">Ok, capito!</button>
             </div>
         </div>
 
-        <div class="paw-prints">🐾</div>
-        <div class="cat-emoji">🐱</div>
-        <h1>Convertitore Età del Gatto</h1>
+        <!-- Header -->
+        <div class="header">
+            <div class="cat-emoji">🐱</div>
+            <h1>Convertitore Età del Gatto</h1>
+            <p class="subtitle">Scopri quanti anni umani ha il tuo felino</p>
+        </div>
 
-        <div class="input-group">
-            <label for="years">Età del tuo gatto:</label>
-            <div class="input-container">
-                <input type="number" id="years" placeholder="Anni" min="0" step="1">
-                <input type="number" id="months" placeholder="Mesi" min="0" max="11" step="1">
-                <input type="number" id="days" placeholder="Giorni" min="0" max="30" step="1">
+        <!-- Main Content Grid -->
+        <div class="content-grid">
+            <!-- Converter Section -->
+            <div class="converter-card">
+                <div class="input-group">
+                    <label for="years">Età del tuo gatto:</label>
+                    <div class="input-container">
+                        <input type="number" id="years" placeholder="Anni" min="0" step="1">
+                        <input type="number" id="months" placeholder="Mesi" min="0" max="11" step="1">
+                        <input type="number" id="days" placeholder="Giorni" min="0" max="30" step="1">
+                    </div>
+                </div>
+
+                <button class="convert-btn" onclick="convertAge()">🐾 Converti Età</button>
+
+                <div id="result" class="result">
+                    <div class="result-text">Il tuo gatto ha</div>
+                    <span id="humanAge" class="result-number">0</span>
+                    <div class="result-text">anni umani! 🎉</div>
+                </div>
+
+                <div id="funFact" class="tip-card"
+                    style="margin-top: 20px; opacity: 0; transform: translateY(20px); transition: all 0.5s ease;">
+                    <span class="tip-icon">🧠</span>
+                    <div class="tip-title">Lo sapevi che:</div>
+                    <div id="factText" class="tip-description"></div>
+                </div>
             </div>
-        </div>
 
-        <button class="convert-btn" onclick="convertAge()">🐾 Converti Età</button>
+            <!-- Info Section -->
+            <div class="info-section">
+                <!-- Age Stages -->
+                <div class="info-card">
+                    <h2 class="info-title">
+                        <span>🌱</span>
+                        Fasi della Vita del Gatto
+                    </h2>
+                    <div class="age-stages">
+                        <div class="stage-card kitten">
+                            <div class="stage-title">Gattino</div>
+                            <div class="stage-age">0-6 mesi (0-10 anni umani)</div>
+                            <div class="stage-description">Periodo di rapida crescita e apprendimento. I gattini sono
+                                curiosi, giocherelloni e hanno bisogno di molte cure e attenzioni.</div>
+                        </div>
+                        <div class="stage-card junior">
+                            <div class="stage-title">Giovane</div>
+                            <div class="stage-age">7 mesi - 2 anni (11-24 anni umani)</div>
+                            <div class="stage-description">Fase dell'adolescenza felina. Molto attivi ed energici,
+                                iniziano a sviluppare la loro personalità adulta.</div>
+                        </div>
+                        <div class="stage-card prime">
+                            <div class="stage-title">Adulto</div>
+                            <div class="stage-age">3-6 anni (28-40 anni umani)</div>
+                            <div class="stage-description">Nel pieno della loro forma fisica e mentale. Equilibrio
+                                perfetto tra energia e maturità.</div>
+                        </div>
+                        <div class="stage-card mature">
+                            <div class="stage-title">Maturo</div>
+                            <div class="stage-age">7-10 anni (44-57 anni umani)</div>
+                            <div class="stage-description">Iniziano a rallentare leggermente. Più affettuosi e
+                                rilassati, ma ancora in buona salute.</div>
+                        </div>
+                        <div class="stage-card senior">
+                            <div class="stage-title">Anziano</div>
+                            <div class="stage-age">11+ anni (61+ anni umani)</div>
+                            <div class="stage-description">Necessitano di cure speciali e controlli veterinari più
+                                frequenti. Meritano tutto il nostro amore e attenzione.</div>
+                        </div>
+                    </div>
+                </div>
 
-        <div id="result" class="result">
-            <div>Il tuo gatto ha</div>
-            <span id="humanAge" class="result-number">0</span>
-            <div>anni umani! 🎉</div>
-        </div>
+                <!-- Conversion Examples -->
+                <div class="info-card">
+                    <h2 class="info-title">
+                        <span>🔄</span>
+                        Esempi di Conversione
+                    </h2>
+                    <div class="conversion-examples">
+                        <div class="example-card">
+                            <div class="example-cat-age">6 mesi</div>
+                            <div class="example-human-age">10</div>
+                            <div class="example-label">anni umani</div>
+                        </div>
+                        <div class="example-card">
+                            <div class="example-cat-age">1 anno</div>
+                            <div class="example-human-age">15</div>
+                            <div class="example-label">anni umani</div>
+                        </div>
+                        <div class="example-card">
+                            <div class="example-cat-age">2 anni</div>
+                            <div class="example-human-age">24</div>
+                            <div class="example-label">anni umani</div>
+                        </div>
+                        <div class="example-card">
+                            <div class="example-cat-age">5 anni</div>
+                            <div class="example-human-age">36</div>
+                            <div class="example-label">anni umani</div>
+                        </div>
+                        <div class="example-card">
+                            <div class="example-cat-age">10 anni</div>
+                            <div class="example-human-age">57</div>
+                            <div class="example-label">anni umani</div>
+                        </div>
+                        <div class="example-card">
+                            <div class="example-cat-age">15 anni</div>
+                            <div class="example-human-age">77</div>
+                            <div class="example-label">anni umani</div>
+                        </div>
+                    </div>
+                </div>
 
-        <div id="funFact" class="fun-fact">
-            <strong>🧠 Lo sapevi che:</strong> <span id="factText"></span>
+                <!-- Care Tips -->
+                <div class="info-card">
+                    <h2 class="info-title">
+                        <span>💝</span>
+                        Consigli per la Cura
+                    </h2>
+                    <div class="care-tips">
+                        <div class="tip-card">
+                            <span class="tip-icon">🥗</span>
+                            <div class="tip-title">Alimentazione</div>
+                            <div class="tip-description">Adatta l'alimentazione all'età: i gattini hanno bisogno di più
+                                proteine, mentre i gatti anziani necessitano di diete specifiche.</div>
+                        </div>
+                        <div class="tip-card">
+                            <span class="tip-icon">🏃‍♂️</span>
+                            <div class="tip-title">Esercizio</div>
+                            <div class="tip-description">Mantieni il tuo gatto attivo con giochi appropriati alla sua
+                                età. I gatti anziani preferiscono attività più tranquille.</div>
+                        </div>
+                        <div class="tip-card">
+                            <span class="tip-icon">🩺</span>
+                            <div class="tip-title">Controlli Veterinari</div>
+                            <div class="tip-description">Visite regolari dal veterinario sono essenziali. I gatti
+                                anziani dovrebbero essere controllati più frequentemente.</div>
+                        </div>
+                        <div class="tip-card">
+                            <span class="tip-icon">🧸</span>
+                            <div class="tip-title">Stimolazione Mentale</div>
+                            <div class="tip-description">Fornisci giocattoli e attività che stimolino la mente del tuo
+                                gatto, indipendentemente dalla sua età.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fun Facts -->
+                <div class="info-card">
+                    <h2 class="info-title">
+                        <span>🤔</span>
+                        Curiosità sui Gatti
+                    </h2>
+                    <div class="care-tips">
+                        <div class="tip-card">
+                            <span class="tip-icon">⏰</span>
+                            <div class="tip-title">Longevità</div>
+                            <div class="tip-description">I gatti domestici vivono in media 13-17 anni, ma alcuni possono
+                                raggiungere anche i 20 anni con le cure appropriate.</div>
+                        </div>
+                        <div class="tip-card">
+                            <span class="tip-icon">😴</span>
+                            <div class="tip-title">Sonno</div>
+                            <div class="tip-description">I gatti dormono in media 12-16 ore al giorno. I gattini e gli
+                                anziani tendono a dormire ancora di più.</div>
+                        </div>
+                        <div class="tip-card">
+                            <span class="tip-icon">👶</span>
+                            <div class="tip-title">Maturità</div>
+                            <div class="tip-description">I gatti raggiungono la maturità sessuale tra i 4-6 mesi, molto
+                                prima rispetto agli umani.</div>
+                        </div>
+                        <div class="tip-card">
+                            <span class="tip-icon">🧬</span>
+                            <div class="tip-title">Genetica</div>
+                            <div class="tip-description">La razza, le dimensioni e lo stile di vita influenzano
+                                significativamente la longevità del gatto.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <script src="script.js"></script>
 </body>
 
 </html>

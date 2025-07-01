@@ -8,46 +8,188 @@
     <link rel="icon"
         href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐶</text></svg>">
     <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
 </head>
 
 <body>
-    <div class="container">
-        <div class="paw-prints">🐾</div>
-        <div class="cat-emoji">🐶</div>
-        <h1>Convertitore Età del Cane</h1>
-
+    <div class="main-container">
         <div id="customAlert" class="custom-alert">
             <div class="alert-content">
-                <p>🐶 Per favore inserisci un'età valida per il tuo Cane!</p>
-                <button onclick="closeAlert()">Ok</button>
+                <p>🐶 Per favore inserisci un'età valida per il tuo cane!</p>
+                <button onclick="closeAlert()">Ok, capito!</button>
             </div>
         </div>
 
+        <div class="header">
+            <div class="cat-emoji">🐶</div>
+            <h1>Convertitore Età del Cane</h1>
+            <p class="subtitle">Scopri quanti anni umani ha il tuo cane</p>
+        </div>
 
-        <div class="input-group">
-            <label for="years">Età del tuo Cane:</label>
-            <div class="input-container">
-                <input type="number" id="years" placeholder="Anni" min="0" step="1">
-                <input type="number" id="months" placeholder="Mesi" min="0" max="11" step="1">
-                <input type="number" id="days" placeholder="Giorni" min="0" max="30" step="1">
+        <div class="content-grid">
+            <div class="converter-card">
+                <div class="input-group">
+                    <label for="years">Età del tuo cane:</label>
+                    <div class="input-container">
+                        <input type="number" id="years" placeholder="Anni" min="0" step="1">
+                        <input type="number" id="months" placeholder="Mesi" min="0" max="11" step="1">
+                        <input type="number" id="days" placeholder="Giorni" min="0" max="30" step="1">
+                    </div>
+                </div>
+
+                <button class="convert-btn" onclick="convertAge()">🐾 Converti Età</button>
+
+                <div id="result" class="result">
+                    <div class="result-text">Il tuo cane ha</div>
+                    <span id="humanAge" class="result-number">0</span>
+                    <div class="result-text">anni umani! 🎉</div>
+                </div>
+
+                <div id="funFact" class="tip-card" style="margin-top: 20px; opacity: 0; transform: translateY(20px); transition: all 0.5s ease;">
+                    <span class="tip-icon">🧠</span>
+                    <div class="tip-title">Lo sapevi che:</div>
+                    <div id="factText" class="tip-description"></div>
+                </div>
             </div>
-        </div>
 
-        <button class="convert-btn" onclick="convertAge()">
-            🐾 Converti Età
-        </button>
+            <div class="info-section">
+                <div class="info-card">
+                    <h2 class="info-title">
+                        <span>🌱</span>
+                        Fasi della Vita del Cane
+                    </h2>
+                    <div class="age-stages">
+                        <div class="stage-card kitten">
+                            <div class="stage-title">Cucciolo</div>
+                            <div class="stage-age">0-6 mesi (0-8 anni umani)</div>
+                            <div class="stage-description">Crescita rapida e apprendimento. I cuccioli sono energici, curiosi e richiedono molta attenzione.</div>
+                        </div>
+                        <div class="stage-card junior">
+                            <div class="stage-title">Giovane</div>
+                            <div class="stage-age">7 mesi - 2 anni (9-24 anni umani)</div>
+                            <div class="stage-description">Fase esplorativa e socializzante, sviluppano abitudini e personalità.</div>
+                        </div>
+                        <div class="stage-card prime">
+                            <div class="stage-title">Adulto</div>
+                            <div class="stage-age">3-6 anni (29-44 anni umani)</div>
+                            <div class="stage-description">In piena forma fisica e mentale, equilibrio perfetto tra energia e maturità.</div>
+                        </div>
+                        <div class="stage-card mature">
+                            <div class="stage-title">Maturo</div>
+                            <div class="stage-age">7-10 anni (44-65 anni umani)</div>
+                            <div class="stage-description">Cominciano a rallentare, necessitano di maggiore attenzione veterinaria e alimentare.</div>
+                        </div>
+                        <div class="stage-card senior">
+                            <div class="stage-title">Anziano</div>
+                            <div class="stage-age">11+ anni (70+ anni umani)</div>
+                            <div class="stage-description">Necessitano di cure speciali e coccole extra. La loro esperienza è preziosa.</div>
+                        </div>
+                    </div>
+                </div>
 
-        <div id="result" class="result">
-            <div>Il tuo cane ha</div>
-            <span id="humanAge" class="result-number">0</span>
-            <div>anni umani! 🎉</div>
-        </div>
+                <div class="info-card">
+                    <h2 class="info-title">
+                        <span>🔄</span>
+                        Esempi di Conversione
+                    </h2>
+                    <div class="conversion-examples">
+                        <div class="example-card">
+                            <div class="example-cat-age">6 mesi</div>
+                            <div class="example-human-age">8</div>
+                            <div class="example-label">anni umani</div>
+                        </div>
+                        <div class="example-card">
+                            <div class="example-cat-age">1 anno</div>
+                            <div class="example-human-age">15</div>
+                            <div class="example-label">anni umani</div>
+                        </div>
+                        <div class="example-card">
+                            <div class="example-cat-age">2 anni</div>
+                            <div class="example-human-age">24</div>
+                            <div class="example-label">anni umani</div>
+                        </div>
+                        <div class="example-card">
+                            <div class="example-cat-age">5 anni</div>
+                            <div class="example-human-age">39</div>
+                            <div class="example-label">anni umani</div>
+                        </div>
+                        <div class="example-card">
+                            <div class="example-cat-age">10 anni</div>
+                            <div class="example-human-age">65</div>
+                            <div class="example-label">anni umani</div>
+                        </div>
+                        <div class="example-card">
+                            <div class="example-cat-age">15 anni</div>
+                            <div class="example-human-age">90</div>
+                            <div class="example-label">anni umani</div>
+                        </div>
+                    </div>
+                </div>
 
-        <div id="funFact" class="fun-fact">
-            <strong>🧠 Lo sapevi che:</strong> <span id="factText"></span>
+                <div class="info-card">
+                    <h2 class="info-title">
+                        <span>💕</span>
+                        Consigli per la Cura
+                    </h2>
+                    <div class="care-tips">
+                        <div class="tip-card">
+                            <span class="tip-icon">🥗</span>
+                            <div class="tip-title">Alimentazione</div>
+                            <div class="tip-description">I cuccioli hanno bisogno di pasti frequenti e ricchi. I cani anziani diete specifiche e controllate.</div>
+                        </div>
+                        <div class="tip-card">
+                            <span class="tip-icon">🏃‍♂️</span>
+                            <div class="tip-title">Esercizio</div>
+                            <div class="tip-description">Ogni cane ha bisogno di attività fisica regolare. Adatta la durata e l'intensità all'età e razza.</div>
+                        </div>
+                        <div class="tip-card">
+                            <span class="tip-icon">🦠</span>
+                            <div class="tip-title">Controlli Veterinari</div>
+                            <div class="tip-description">Controlli regolari aiutano a prevenire e monitorare problemi di salute.</div>
+                        </div>
+                        <div class="tip-card">
+                            <span class="tip-icon">🦝</span>
+                            <div class="tip-title">Stimolazione Mentale</div>
+                            <div class="tip-description">Giochi di attivazione mentale e addestramento rafforzano il legame e migliorano il comportamento.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <h2 class="info-title">
+                        <span>🤔</span>
+                        Curiosità sui Cani
+                    </h2>
+                    <div class="care-tips">
+                        <div class="tip-card">
+                            <span class="tip-icon">⏰</span>
+                            <div class="tip-title">Longevità</div>
+                            <div class="tip-description">I cani vivono in media tra 10 e 13 anni, anche se razze piccole possono superare i 15.</div>
+                        </div>
+                        <div class="tip-card">
+                            <span class="tip-icon">🛌</span>
+                            <div class="tip-title">Sonno</div>
+                            <div class="tip-description">I cuccioli e gli anziani dormono di più. Il riposo è essenziale per la salute mentale e fisica.</div>
+                        </div>
+                        <div class="tip-card">
+                            <span class="tip-icon">👶</span>
+                            <div class="tip-title">Maturità</div>
+                            <div class="tip-description">I cani raggiungono la maturità sessuale tra i 6 e i 12 mesi, dipende dalla razza.</div>
+                        </div>
+                        <div class="tip-card">
+                            <span class="tip-icon">🧬</span>
+                            <div class="tip-title">Razza</div>
+                            <div class="tip-description">La razza ha un impatto su dimensioni, comportamento e longevità. Informati prima di adottare.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-    <script src="script.js"></script>
+
+    <script>
+
+    </script>
 </body>
 
 </html>
