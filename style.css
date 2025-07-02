@@ -20,6 +20,7 @@
     var(--secondary) 100%
   );
   --header-height: 70px;
+  border;
 }
 
 * {
