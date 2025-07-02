@@ -104,7 +104,7 @@ function aggiornaListaPartecipanti() {
 function aggiornaSelezionePartecipante() {
   const select = document.getElementById("selected-participant");
   select.innerHTML =
-    '<option value="-1">Seleziona un partecipante</option><option value="all">Tutti</option>';
+    '<option value="-1">-- Seleziona un partecipante --</option><option value="all">Tutti</option>';
 
   partecipanti.forEach((partecipante, index) => {
     const option = document.createElement("option");

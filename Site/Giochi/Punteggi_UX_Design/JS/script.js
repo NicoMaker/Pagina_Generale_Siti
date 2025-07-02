@@ -1111,7 +1111,7 @@ function aggiornaSelezionePartecipante() {
   // Opzioni di default
   const defaultOption = document.createElement("option");
   defaultOption.value = "-1";
-  defaultOption.textContent = "Seleziona un partecipante";
+  defaultOption.textContent = "-- Seleziona un partecipante --";
   selectedParticipantSelect.appendChild(defaultOption);
 
   const allOption = document.createElement("option");
