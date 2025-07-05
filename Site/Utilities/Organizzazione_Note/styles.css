@@ -1194,3 +1194,7 @@ textarea:focus-visible {
 .nero{
   color: black;
 }
+
+#confirm-delete{
+  color: black;
+}
