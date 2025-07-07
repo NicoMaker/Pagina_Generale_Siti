@@ -1191,10 +1191,16 @@ textarea:focus-visible {
   background: var(--text-tertiary);
 }
 
-.nero{
+.nero {
   color: black;
 }
 
-#confirm-delete{
+#confirm-delete {
   color: black;
+}
+
+.close-button:hover {
+  background: var(--bg-tertiary); /* sfondo neutro */
+  color: black; /* testo (icona X) nero */
+  border-color: var(--border-medium);
 }
