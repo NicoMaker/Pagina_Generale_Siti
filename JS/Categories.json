@@ -432,7 +432,11 @@
           "name": "Conversioni Temperatura",
           "link": "Site/Temperatura/Conversioni_Temp/index.html"
         },
-        { "name": "Meteo", "link": "Site/Temperatura/Meteo/index.html" }
+        { "name": "Meteo", "link": "Site/Temperatura/Meteo/index.html" },
+        {
+          "name":"Thermolab",
+          "link":"Site/Temperatura/Thermolab/index.html"
+        }
       ]
     },
     "Utilità": {
