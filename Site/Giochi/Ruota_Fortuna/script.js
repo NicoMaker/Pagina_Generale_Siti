@@ -2,12 +2,6 @@ class WheelOfFortune {
     constructor() {
         this.names = [];
         this.isSpinning = false;
-        this.colors = [
-            '#ff6b6b', '#4ecdc4', '#45b7d1', '#f9ca24',
-            '#f0932b', '#eb4d4b', '#6c5ce7', '#a29bfe',
-            '#fd79a8', '#e84393', '#00b894', '#00cec9',
-            '#0984e3', '#6c5ce7', '#fd79a8', '#fdcb6e'
-        ];
         this.init();
     }
 
@@ -27,6 +21,15 @@ class WheelOfFortune {
         document.getElementById('fileInput').addEventListener('change', (e) => this.loadFile(e));
         document.getElementById('exportTxtBtn').addEventListener('click', () => this.exportTxt());
         document.getElementById('exportJsonBtn').addEventListener('click', () => this.exportJson());
+    }
+
+    generateColors(count) {
+        const colors = [];
+        const hueStep = 360 / count;
+        for (let i = 0; i < count; i++) {
+            colors.push(`hsl(${i * hueStep}, 70%, 60%)`);
+        }
+        return colors;
     }
 
     addName() {
@@ -73,7 +76,6 @@ class WheelOfFortune {
         svg.innerHTML = '';
 
         if (this.names.length === 0) {
-            // Ruota vuota
             const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
             circle.setAttribute('cx', '200');
             circle.setAttribute('cy', '200');
@@ -96,6 +98,7 @@ class WheelOfFortune {
             return;
         }
 
+        const colors = this.generateColors(this.names.length);
         const centerX = 200;
         const centerY = 200;
         const radius = 180;
@@ -118,7 +121,7 @@ class WheelOfFortune {
             const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
             const pathData = `M ${centerX} ${centerY} L ${x1} ${y1} A ${radius} ${radius} 0 ${largeArcFlag} 1 ${x2} ${y2} Z`;
             path.setAttribute('d', pathData);
-            path.setAttribute('fill', this.colors[index % this.colors.length]);
+            path.setAttribute('fill', colors[index]);
             path.setAttribute('stroke', 'white');
             path.setAttribute('stroke-width', '3');
             path.classList.add('wheel-section');
@@ -149,23 +152,22 @@ class WheelOfFortune {
 
         if (this.names.length === 0) {
             namesList.innerHTML = `
-                        <div class="empty-state">
-                            <div class="emoji">📝</div>
-                            <p>Nessun nome ancora.<br>Aggiungi alcuni nomi per iniziare!</p>
-                        </div>
-                    `;
+        <div class="empty-state">
+          <div class="emoji">📝</div>
+          <p>Nessun nome ancora.<br>Aggiungi alcuni nomi per iniziare!</p>
+        </div>`;
             return;
         }
 
         namesList.innerHTML = this.names.map((name, index) => `
-                    <div class="name-item">
-                        <span class="name-text">${name}</span>
-                        <div class="name-actions">
-                            <button class="btn btn-secondary btn-small" onclick="wheel.editName(${index})">✏️</button>
-                            <button class="btn btn-danger btn-small" onclick="wheel.deleteName(${index})">🗑️</button>
-                        </div>
-                    </div>
-                `).join('');
+      <div class="name-item">
+        <span class="name-text">${name}</span>
+        <div class="name-actions">
+          <button class="btn btn-secondary btn-small" onclick="wheel.editName(${index})">✏️</button>
+          <button class="btn btn-danger btn-small" onclick="wheel.deleteName(${index})">🗑️</button>
+        </div>
+      </div>
+    `).join('');
     }
 
     spinWheel() {
@@ -177,14 +179,14 @@ class WheelOfFortune {
         spinButton.textContent = '🔄 Girando...';
 
         const svg = document.getElementById('wheelSvg');
-        const randomRotation = Math.random() * 360 + 3600; // 10 giri + extra
+        const randomRotation = Math.random() * 360 + 3600;
 
         svg.style.setProperty('--spin-rotation', randomRotation + 'deg');
         svg.classList.add('spinning');
 
         setTimeout(() => {
             const normalizedRotation = randomRotation % 360;
-            const winnerIndex = Math.floor(((360 - normalizedRotation) / 360) * this.names.length);
+            const winnerIndex = Math.floor(((360 - normalizedRotation) / 360) * this.names.length) % this.names.length;
             const winner = this.names[winnerIndex];
 
             this.showResult(winner);
@@ -198,14 +200,12 @@ class WheelOfFortune {
     showResult(winner) {
         const resultDisplay = document.getElementById('resultDisplay');
         const winnerName = document.getElementById('winnerName');
-
         winnerName.textContent = winner;
         resultDisplay.classList.add('show');
     }
 
     hideResult() {
-        const resultDisplay = document.getElementById('resultDisplay');
-        resultDisplay.classList.remove('show');
+        document.getElementById('resultDisplay').classList.remove('show');
     }
 
     loadFile(event) {
@@ -225,7 +225,6 @@ class WheelOfFortune {
                     newNames = content.split('\n').map(name => name.trim()).filter(name => name);
                 }
 
-                // Filtra nomi duplicati
                 const uniqueNames = newNames.filter(name => !this.names.includes(name));
                 this.names = [...this.names, ...uniqueNames];
 
@@ -234,7 +233,7 @@ class WheelOfFortune {
                 this.hideResult();
 
                 alert(`Caricati ${uniqueNames.length} nomi!`);
-            } catch (error) {
+            } catch {
                 alert('Errore nel caricamento del file. Controlla il formato.');
             }
         };
@@ -243,46 +242,26 @@ class WheelOfFortune {
     }
 
     exportTxt() {
-        if (this.names.length === 0) {
-            alert('Nessun nome da esportare!');
-            return;
-        }
-
-        const content = this.names.join('\n');
-        const blob = new Blob([content], { type: 'text/plain' });
-        const url = URL.createObjectURL(blob);
-
+        if (this.names.length === 0) return alert('Nessun nome da esportare!');
+        const blob = new Blob([this.names.join('\n')], { type: 'text/plain' });
         const a = document.createElement('a');
-        a.href = url;
+        a.href = URL.createObjectURL(blob);
         a.download = 'nomi_ruota_fortuna.txt';
         a.click();
-
-        URL.revokeObjectURL(url);
+        URL.revokeObjectURL(a.href);
     }
 
     exportJson() {
-        if (this.names.length === 0) {
-            alert('Nessun nome da esportare!');
-            return;
-        }
-
-        const data = {
-            names: this.names,
-            exported: new Date().toISOString()
-        };
-
-        const content = JSON.stringify(data, null, 2);
-        const blob = new Blob([content], { type: 'application/json' });
-        const url = URL.createObjectURL(blob);
-
+        if (this.names.length === 0) return alert('Nessun nome da esportare!');
+        const data = { names: this.names, exported: new Date().toISOString() };
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
         const a = document.createElement('a');
-        a.href = url;
+        a.href = URL.createObjectURL(blob);
         a.download = 'nomi_ruota_fortuna.json';
         a.click();
-
-        URL.revokeObjectURL(url);
+        URL.revokeObjectURL(a.href);
     }
 }
 
-// Inizializza l'app
+// Inizializza
 const wheel = new WheelOfFortune();
