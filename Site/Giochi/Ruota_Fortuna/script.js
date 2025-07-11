@@ -19,9 +19,16 @@ class WheelOfFortune {
         document.getElementById('spinButton').addEventListener('click', () => this.spinWheel());
         document.getElementById('clearAllBtn').addEventListener('click', () => this.clearAll());
         document.getElementById('fileInput').addEventListener('change', (e) => this.loadFile(e));
+
+        // ⬇️ AGGIUNGI QUESTA RIGA QUI:
+        document.getElementById('loadFileBtn').addEventListener('click', () => {
+            document.getElementById('fileInput').click();
+        });
+
         document.getElementById('exportTxtBtn').addEventListener('click', () => this.exportTxt());
         document.getElementById('exportJsonBtn').addEventListener('click', () => this.exportJson());
     }
+
 
     generateColors(count) {
         const colors = [];
