@@ -227,7 +227,7 @@ Il portfolio include numerose categorie di progetti, ciascuna con la propria ico
 | Categoria            | Icona | Descrizione                                              |
 | -------------------- | ----- | -------------------------------------------------------- |
 | Astronomia           | 🌌    | Progetti dedicati allo spazio e all'osservazione celeste |
-| Animals              | 🐶    | Applicazioni per l'interazione di dati di animali        |
+| Animali              | 🐶    | Applicazioni per l'interazione di dati di animali        |
 | Bici                 | 🚲    | Progetti relativi al ciclismo                            |
 | Borsa                | 📈    | Strumenti finanziari e di borsa                          |
 | Calendario           | 📅    | Applicazioni per la gestione del tempo                   |
