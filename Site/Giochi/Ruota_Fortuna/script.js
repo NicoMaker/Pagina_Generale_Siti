@@ -1,0 +1,288 @@
+class WheelOfFortune {
+    constructor() {
+        this.names = [];
+        this.isSpinning = false;
+        this.colors = [
+            '#ff6b6b', '#4ecdc4', '#45b7d1', '#f9ca24',
+            '#f0932b', '#eb4d4b', '#6c5ce7', '#a29bfe',
+            '#fd79a8', '#e84393', '#00b894', '#00cec9',
+            '#0984e3', '#6c5ce7', '#fd79a8', '#fdcb6e'
+        ];
+        this.init();
+    }
+
+    init() {
+        this.bindEvents();
+        this.updateWheel();
+        this.updateNamesList();
+    }
+
+    bindEvents() {
+        document.getElementById('addNameBtn').addEventListener('click', () => this.addName());
+        document.getElementById('nameInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') this.addName();
+        });
+        document.getElementById('spinButton').addEventListener('click', () => this.spinWheel());
+        document.getElementById('clearAllBtn').addEventListener('click', () => this.clearAll());
+        document.getElementById('fileInput').addEventListener('change', (e) => this.loadFile(e));
+        document.getElementById('exportTxtBtn').addEventListener('click', () => this.exportTxt());
+        document.getElementById('exportJsonBtn').addEventListener('click', () => this.exportJson());
+    }
+
+    addName() {
+        const input = document.getElementById('nameInput');
+        const name = input.value.trim();
+
+        if (name && !this.names.includes(name)) {
+            this.names.push(name);
+            input.value = '';
+            this.updateWheel();
+            this.updateNamesList();
+            this.hideResult();
+        }
+    }
+
+    editName(index) {
+        const newName = prompt('Modifica nome:', this.names[index]);
+        if (newName && newName.trim() && !this.names.includes(newName.trim())) {
+            this.names[index] = newName.trim();
+            this.updateWheel();
+            this.updateNamesList();
+            this.hideResult();
+        }
+    }
+
+    deleteName(index) {
+        this.names.splice(index, 1);
+        this.updateWheel();
+        this.updateNamesList();
+        this.hideResult();
+    }
+
+    clearAll() {
+        if (confirm('Sei sicuro di voler cancellare tutti i nomi?')) {
+            this.names = [];
+            this.updateWheel();
+            this.updateNamesList();
+            this.hideResult();
+        }
+    }
+
+    updateWheel() {
+        const svg = document.getElementById('wheelSvg');
+        svg.innerHTML = '';
+
+        if (this.names.length === 0) {
+            // Ruota vuota
+            const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            circle.setAttribute('cx', '200');
+            circle.setAttribute('cy', '200');
+            circle.setAttribute('r', '180');
+            circle.setAttribute('fill', '#e1e5e9');
+            circle.setAttribute('stroke', '#ccc');
+            circle.setAttribute('stroke-width', '3');
+            svg.appendChild(circle);
+
+            const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            text.setAttribute('x', '200');
+            text.setAttribute('y', '200');
+            text.setAttribute('text-anchor', 'middle');
+            text.setAttribute('dominant-baseline', 'middle');
+            text.setAttribute('fill', '#999');
+            text.setAttribute('font-size', '18');
+            text.setAttribute('font-weight', 'bold');
+            text.textContent = 'Aggiungi nomi';
+            svg.appendChild(text);
+            return;
+        }
+
+        const centerX = 200;
+        const centerY = 200;
+        const radius = 180;
+        const angleStep = 360 / this.names.length;
+
+        this.names.forEach((name, index) => {
+            const startAngle = index * angleStep;
+            const endAngle = (index + 1) * angleStep;
+
+            const startAngleRad = (startAngle * Math.PI) / 180;
+            const endAngleRad = (endAngle * Math.PI) / 180;
+
+            const x1 = centerX + radius * Math.cos(startAngleRad);
+            const y1 = centerY + radius * Math.sin(startAngleRad);
+            const x2 = centerX + radius * Math.cos(endAngleRad);
+            const y2 = centerY + radius * Math.sin(endAngleRad);
+
+            const largeArcFlag = angleStep > 180 ? 1 : 0;
+
+            const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            const pathData = `M ${centerX} ${centerY} L ${x1} ${y1} A ${radius} ${radius} 0 ${largeArcFlag} 1 ${x2} ${y2} Z`;
+            path.setAttribute('d', pathData);
+            path.setAttribute('fill', this.colors[index % this.colors.length]);
+            path.setAttribute('stroke', 'white');
+            path.setAttribute('stroke-width', '3');
+            path.classList.add('wheel-section');
+            svg.appendChild(path);
+
+            const textAngle = startAngle + angleStep / 2;
+            const textRadius = radius * 0.7;
+            const textX = centerX + textRadius * Math.cos((textAngle * Math.PI) / 180);
+            const textY = centerY + textRadius * Math.sin((textAngle * Math.PI) / 180);
+
+            const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            text.setAttribute('x', textX);
+            text.setAttribute('y', textY);
+            text.setAttribute('text-anchor', 'middle');
+            text.setAttribute('dominant-baseline', 'middle');
+            text.setAttribute('fill', 'white');
+            text.setAttribute('font-size', Math.min(14, 150 / this.names.length + 8));
+            text.setAttribute('font-weight', 'bold');
+            text.setAttribute('transform', `rotate(${textAngle}, ${textX}, ${textY})`);
+            text.textContent = name.length > 10 ? name.substring(0, 10) + '...' : name;
+            text.classList.add('wheel-text');
+            svg.appendChild(text);
+        });
+    }
+
+    updateNamesList() {
+        const namesList = document.getElementById('namesList');
+
+        if (this.names.length === 0) {
+            namesList.innerHTML = `
+                        <div class="empty-state">
+                            <div class="emoji">📝</div>
+                            <p>Nessun nome ancora.<br>Aggiungi alcuni nomi per iniziare!</p>
+                        </div>
+                    `;
+            return;
+        }
+
+        namesList.innerHTML = this.names.map((name, index) => `
+                    <div class="name-item">
+                        <span class="name-text">${name}</span>
+                        <div class="name-actions">
+                            <button class="btn btn-secondary btn-small" onclick="wheel.editName(${index})">✏️</button>
+                            <button class="btn btn-danger btn-small" onclick="wheel.deleteName(${index})">🗑️</button>
+                        </div>
+                    </div>
+                `).join('');
+    }
+
+    spinWheel() {
+        if (this.names.length === 0 || this.isSpinning) return;
+
+        this.isSpinning = true;
+        const spinButton = document.getElementById('spinButton');
+        spinButton.disabled = true;
+        spinButton.textContent = '🔄 Girando...';
+
+        const svg = document.getElementById('wheelSvg');
+        const randomRotation = Math.random() * 360 + 3600; // 10 giri + extra
+
+        svg.style.setProperty('--spin-rotation', randomRotation + 'deg');
+        svg.classList.add('spinning');
+
+        setTimeout(() => {
+            const normalizedRotation = randomRotation % 360;
+            const winnerIndex = Math.floor(((360 - normalizedRotation) / 360) * this.names.length);
+            const winner = this.names[winnerIndex];
+
+            this.showResult(winner);
+            this.isSpinning = false;
+            spinButton.disabled = false;
+            spinButton.textContent = '🎲 Gira la Ruota!';
+            svg.classList.remove('spinning');
+        }, 3000);
+    }
+
+    showResult(winner) {
+        const resultDisplay = document.getElementById('resultDisplay');
+        const winnerName = document.getElementById('winnerName');
+
+        winnerName.textContent = winner;
+        resultDisplay.classList.add('show');
+    }
+
+    hideResult() {
+        const resultDisplay = document.getElementById('resultDisplay');
+        resultDisplay.classList.remove('show');
+    }
+
+    loadFile(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            try {
+                const content = e.target.result;
+                let newNames = [];
+
+                if (file.name.endsWith('.json')) {
+                    const data = JSON.parse(content);
+                    newNames = Array.isArray(data) ? data : data.names || [];
+                } else {
+                    newNames = content.split('\n').map(name => name.trim()).filter(name => name);
+                }
+
+                // Filtra nomi duplicati
+                const uniqueNames = newNames.filter(name => !this.names.includes(name));
+                this.names = [...this.names, ...uniqueNames];
+
+                this.updateWheel();
+                this.updateNamesList();
+                this.hideResult();
+
+                alert(`Caricati ${uniqueNames.length} nomi!`);
+            } catch (error) {
+                alert('Errore nel caricamento del file. Controlla il formato.');
+            }
+        };
+        reader.readAsText(file);
+        event.target.value = '';
+    }
+
+    exportTxt() {
+        if (this.names.length === 0) {
+            alert('Nessun nome da esportare!');
+            return;
+        }
+
+        const content = this.names.join('\n');
+        const blob = new Blob([content], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'nomi_ruota_fortuna.txt';
+        a.click();
+
+        URL.revokeObjectURL(url);
+    }
+
+    exportJson() {
+        if (this.names.length === 0) {
+            alert('Nessun nome da esportare!');
+            return;
+        }
+
+        const data = {
+            names: this.names,
+            exported: new Date().toISOString()
+        };
+
+        const content = JSON.stringify(data, null, 2);
+        const blob = new Blob([content], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'nomi_ruota_fortuna.json';
+        a.click();
+
+        URL.revokeObjectURL(url);
+    }
+}
+
+// Inizializza l'app
+const wheel = new WheelOfFortune();

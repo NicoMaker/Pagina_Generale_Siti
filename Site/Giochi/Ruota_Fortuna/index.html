@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ruota della Fortuna</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+    <link rel="icon" href="https://tse1.mm.bing.net/th/id/OIP.r4_dGgrMCMaLVk-yNrGQDAHaH6?rs=1&pid=ImgDetMain&o=7&rm=3"
+        type="image/jpg">
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 Ruota della Fortuna</h1>
+            <p>Aggiungi i nomi e gira la ruota per scoprire il vincitore!</p>
+        </div>
+
+        <div class="main-content">
+            <div class="wheel-container">
+                <div class="wheel-content">
+                    <div class="wheel-svg-container" style="position: relative;">
+                        <svg class="wheel-svg" id="wheelSvg" viewBox="0 0 400 400">
+                            <!-- La ruota verrà generata dinamicamente -->
+                        </svg>
+                        <div class="wheel-pointer"></div>
+                    </div>
+                    <button class="spin-button" id="spinButton">🎲 Gira la Ruota!</button>
+                    <div class="result-display" id="resultDisplay">
+                        <h4>🏆 Vincitore:</h4>
+                        <div class="winner" id="winnerName"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="controls-panel">
+                <h3>⚙️ Controlli</h3>
+
+                <div class="input-group">
+                    <label for="nameInput">Aggiungi Nome:</label>
+                    <input type="text" id="nameInput" placeholder="Inserisci un nome...">
+                </div>
+                <button class="btn btn-primary" id="addNameBtn">➕ Aggiungi</button>
+
+                <div class="file-input">
+                    <label>📁 Carica Nomi:</label>
+                    <input type="file" id="fileInput" accept=".txt,.json">
+                </div>
+
+                <div class="export-section">
+                    <h4>💾 Esporta Nomi</h4>
+                    <button class="btn btn-secondary" id="exportTxtBtn">📄 Scarica TXT</button>
+                    <button class="btn btn-secondary" id="exportJsonBtn">📋 Scarica JSON</button>
+                </div>
+
+                <button class="btn btn-danger" id="clearAllBtn">🗑️ Cancella Tutto</button>
+
+                <div class="names-list" id="namesList">
+                    <div class="empty-state">
+                        <div class="emoji">📝</div>
+                        <p>Nessun nome ancora.<br>Aggiungi alcuni nomi per iniziare!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

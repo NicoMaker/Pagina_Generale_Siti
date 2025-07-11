@@ -157,7 +157,11 @@
           "link": "Site/Giochi/Gestione_Turni/index.html"
         },
         { "name": "Scacchi", "link": "Site/Giochi/Scacchi/index.html" },
-        { "name": "Solitario", "link": "Site/Giochi/Solitario/index.html" }
+        { "name": "Solitario", "link": "Site/Giochi/Solitario/index.html" },
+        {
+          "name":"Ruota della Fortuna",
+          "link":"Site/Giochi/Ruota_Fortuna/index.html"
+        }
       ]
     },
     "Info_Paesi_Stati": {
