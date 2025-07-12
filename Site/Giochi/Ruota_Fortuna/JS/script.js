@@ -6,6 +6,7 @@ class WheelOfFortune {
     }
 
     init() {
+        this.loadFromLocalStorage();
         this.bindEvents();
         this.updateWheel();
         this.updateNamesList();
@@ -24,6 +25,23 @@ class WheelOfFortune {
         });
         document.getElementById('exportTxtBtn').addEventListener('click', () => this.exportTxt());
         document.getElementById('exportJsonBtn').addEventListener('click', () => this.exportJson());
+    }
+
+    saveToLocalStorage = () =>
+        localStorage.setItem('wheelOfFortuneNames', JSON.stringify(this.names));
+
+    loadFromLocalStorage() {
+        const saved = localStorage.getItem('wheelOfFortuneNames');
+        if (saved) {
+            try {
+                const parsed = JSON.parse(saved);
+                if (Array.isArray(parsed)) {
+                    this.names = parsed.slice(0, 100);
+                }
+            } catch (e) {
+                console.error('Errore caricando da localStorage:', e);
+            }
+        }
     }
 
     generateColors(count) {
@@ -49,30 +67,49 @@ class WheelOfFortune {
             input.value = '';
             this.updateWheel();
             this.updateNamesList();
+            this.saveToLocalStorage();
             this.hideResult();
         }
     }
 
     editName(index) {
+        if (this.isSpinning) {
+            alert("⛔ Non puoi modificare i nomi mentre la ruota gira.");
+            return;
+        }
+
         const newName = prompt('Modifica nome:', this.names[index]);
         if (newName && newName.trim() && !this.names.includes(newName.trim())) {
             this.names[index] = newName.trim();
             this.updateWheel();
             this.updateNamesList();
+            this.saveToLocalStorage();
             this.hideResult();
         }
     }
 
     deleteName(index) {
+        if (this.isSpinning) {
+            alert("⛔ Non puoi eliminare partecipanti mentre la ruota sta girando.");
+            return;
+        }
+
         this.names.splice(index, 1);
         this.updateWheel();
         this.updateNamesList();
+        this.saveToLocalStorage();
         this.hideResult();
     }
 
     clearAll() {
+        if (this.isSpinning) {
+            alert("⛔ Attendi che la ruota finisca di girare prima di resettare.");
+            return;
+        }
+
         if (confirm('Sei sicuro di voler cancellare tutti i nomi?')) {
             this.names = [];
+            localStorage.removeItem('wheelOfFortuneNames');
             this.updateWheel();
             this.updateNamesList();
             this.hideResult();
@@ -188,6 +225,10 @@ class WheelOfFortune {
         spinButton.disabled = true;
         spinButton.textContent = '🔄 Girando...';
 
+        // Disabilita i pulsanti di modifica/rimozione
+        document.querySelectorAll('.btn-danger, .btn-secondary').forEach(btn => btn.disabled = true);
+        document.getElementById('clearAllBtn').disabled = true;
+
         const svg = document.getElementById('wheelSvg');
         const winnerIndex = Math.floor(Math.random() * this.names.length);
         const anglePerSegment = 360 / this.names.length;
@@ -210,6 +251,11 @@ class WheelOfFortune {
             this.isSpinning = false;
             spinButton.disabled = false;
             spinButton.textContent = '🎲 Gira la Ruota!';
+
+            // Riattiva i pulsanti
+            document.querySelectorAll('.btn-danger, .btn-secondary').forEach(btn => btn.disabled = false);
+            document.getElementById('clearAllBtn').disabled = false;
+
             svg.classList.remove('spinning');
         }, 4000);
     }
@@ -221,9 +267,8 @@ class WheelOfFortune {
         resultDisplay.classList.add('show');
     }
 
-    hideResult() {
+    hideResult = () =>
         document.getElementById('resultDisplay').classList.remove('show');
-    }
 
     loadFile(event) {
         const file = event.target.files[0];
@@ -249,6 +294,7 @@ class WheelOfFortune {
                 this.names = [...this.names, ...namesToAdd];
                 this.updateWheel();
                 this.updateNamesList();
+                this.saveToLocalStorage();
                 this.hideResult();
 
                 alert(`Caricati ${namesToAdd.length} nomi!${uniqueNames.length > namesToAdd.length ? ' (Limite di 100 raggiunto)' : ''}`);
