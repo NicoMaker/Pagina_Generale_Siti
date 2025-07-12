@@ -19,16 +19,12 @@ class WheelOfFortune {
         document.getElementById('spinButton').addEventListener('click', () => this.spinWheel());
         document.getElementById('clearAllBtn').addEventListener('click', () => this.clearAll());
         document.getElementById('fileInput').addEventListener('change', (e) => this.loadFile(e));
-
-        // ⬇️ AGGIUNGI QUESTA RIGA QUI:
         document.getElementById('loadFileBtn').addEventListener('click', () => {
             document.getElementById('fileInput').click();
         });
-
         document.getElementById('exportTxtBtn').addEventListener('click', () => this.exportTxt());
         document.getElementById('exportJsonBtn').addEventListener('click', () => this.exportJson());
     }
-
 
     generateColors(count) {
         const colors = [];
@@ -42,7 +38,6 @@ class WheelOfFortune {
     addName() {
         const input = document.getElementById('nameInput');
         const name = input.value.trim();
-
         if (name && !this.names.includes(name)) {
             this.names.push(name);
             input.value = '';
@@ -147,6 +142,9 @@ class WheelOfFortune {
             text.setAttribute('fill', 'white');
             text.setAttribute('font-size', Math.min(14, 150 / this.names.length + 8));
             text.setAttribute('font-weight', 'bold');
+            text.setAttribute('paint-order', 'stroke');
+            text.setAttribute('stroke', 'black');
+            text.setAttribute('stroke-width', '0.8');
             text.setAttribute('transform', `rotate(${textAngle}, ${textX}, ${textY})`);
             text.textContent = name.length > 10 ? name.substring(0, 10) + '...' : name;
             text.classList.add('wheel-text');
@@ -156,25 +154,24 @@ class WheelOfFortune {
 
     updateNamesList() {
         const namesList = document.getElementById('namesList');
-
         if (this.names.length === 0) {
             namesList.innerHTML = `
-        <div class="empty-state">
-          <div class="emoji">📝</div>
-          <p>Nessun nome ancora.<br>Aggiungi alcuni nomi per iniziare!</p>
-        </div>`;
+                <div class="empty-state">
+                    <div class="emoji">📝</div>
+                    <p>Nessun nome ancora.<br>Aggiungi alcuni nomi per iniziare!</p>
+                </div>`;
             return;
         }
 
         namesList.innerHTML = this.names.map((name, index) => `
-      <div class="name-item">
-        <span class="name-text">${name}</span>
-        <div class="name-actions">
-          <button class="btn btn-secondary btn-small" onclick="wheel.editName(${index})">✏️</button>
-          <button class="btn btn-danger btn-small" onclick="wheel.deleteName(${index})">🗑️</button>
-        </div>
-      </div>
-    `).join('');
+            <div class="name-item">
+                <span class="name-text">${name}</span>
+                <div class="name-actions">
+                    <button class="btn btn-secondary btn-small" onclick="wheel.editName(${index})">✏️</button>
+                    <button class="btn btn-danger btn-small" onclick="wheel.deleteName(${index})">🗑️</button>
+                </div>
+            </div>
+        `).join('');
     }
 
     spinWheel() {
@@ -186,22 +183,29 @@ class WheelOfFortune {
         spinButton.textContent = '🔄 Girando...';
 
         const svg = document.getElementById('wheelSvg');
-        const randomRotation = Math.random() * 360 + 3600;
+        const winnerIndex = Math.floor(Math.random() * this.names.length);
+        const anglePerSegment = 360 / this.names.length;
+        const stopAngle = 360 - (winnerIndex * anglePerSegment + anglePerSegment / 2);
+        const extraSpins = 10 * 360;
+        const finalRotation = extraSpins + stopAngle;
 
-        svg.style.setProperty('--spin-rotation', randomRotation + 'deg');
+        svg.style.setProperty('--spin-rotation', finalRotation + 'deg');
         svg.classList.add('spinning');
 
         setTimeout(() => {
-            const normalizedRotation = randomRotation % 360;
-            const winnerIndex = Math.floor(((360 - normalizedRotation) / 360) * this.names.length) % this.names.length;
             const winner = this.names[winnerIndex];
-
             this.showResult(winner);
+
+            const paths = svg.querySelectorAll('.wheel-section');
+            paths.forEach((path, i) => {
+                path.classList.toggle('winner', i === winnerIndex);
+            });
+
             this.isSpinning = false;
             spinButton.disabled = false;
             spinButton.textContent = '🎲 Gira la Ruota!';
             svg.classList.remove('spinning');
-        }, 3000);
+        }, 4000);
     }
 
     showResult(winner) {
