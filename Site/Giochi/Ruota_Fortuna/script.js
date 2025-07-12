@@ -38,6 +38,12 @@ class WheelOfFortune {
     addName() {
         const input = document.getElementById('nameInput');
         const name = input.value.trim();
+
+        if (this.names.length >= 100) {
+            alert('Puoi inserire al massimo 100 nomi!');
+            return;
+        }
+
         if (name && !this.names.includes(name)) {
             this.names.push(name);
             input.value = '';
@@ -237,13 +243,15 @@ class WheelOfFortune {
                 }
 
                 const uniqueNames = newNames.filter(name => !this.names.includes(name));
-                this.names = [...this.names, ...uniqueNames];
+                const remainingSlots = 100 - this.names.length;
+                const namesToAdd = uniqueNames.slice(0, remainingSlots);
 
+                this.names = [...this.names, ...namesToAdd];
                 this.updateWheel();
                 this.updateNamesList();
                 this.hideResult();
 
-                alert(`Caricati ${uniqueNames.length} nomi!`);
+                alert(`Caricati ${namesToAdd.length} nomi!${uniqueNames.length > namesToAdd.length ? ' (Limite di 100 raggiunto)' : ''}`);
             } catch {
                 alert('Errore nel caricamento del file. Controlla il formato.');
             }
