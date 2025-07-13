@@ -1,4 +1,4 @@
--document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", () => {
   // Elementi DOM
   const tabButtons = document.querySelectorAll(".tab-btn")
   const tabContents = document.querySelectorAll(".tab-content")
@@ -33,11 +33,8 @@
   // Gestione delle tab
   tabButtons.forEach((button) => {
     button.addEventListener("click", () => {
-      // Rimuovi la classe active da tutti i pulsanti e contenuti
       tabButtons.forEach((btn) => btn.classList.remove("active"))
       tabContents.forEach((content) => content.classList.remove("active"))
-
-      // Aggiungi la classe active al pulsante cliccato e al contenuto corrispondente
       button.classList.add("active")
       const tabId = button.getAttribute("data-tab")
       document.getElementById(`${tabId}-tab`).classList.add("active")
@@ -50,21 +47,17 @@
       isRunning = true
       cronometro = setInterval(() => {
         seconds++
-
         if (seconds >= 60) {
           seconds = 0
           minutes++
         }
-
         if (minutes >= 60) {
           minutes = 0
           hours++
         }
-
         updateCronometroDisplay()
       }, 1000)
 
-      // Aggiorna i pulsanti
       startCronometroBtn.disabled = true
       stopCronometroBtn.disabled = false
       resetCronometroBtn.disabled = false
@@ -75,8 +68,6 @@
     if (isRunning) {
       clearInterval(cronometro)
       isRunning = false
-
-      // Aggiorna i pulsanti
       startCronometroBtn.disabled = false
       stopCronometroBtn.disabled = true
     }
@@ -88,27 +79,20 @@
     seconds = 0
     minutes = 0
     hours = 0
-
     updateCronometroDisplay()
-
-    // Aggiorna i pulsanti
     startCronometroBtn.disabled = false
     stopCronometroBtn.disabled = true
     resetCronometroBtn.disabled = true
-
-    // Resetta l'anello di progresso
     cronometroProgress.style.strokeDashoffset = 691.15
   }
 
   function updateCronometroDisplay() {
-    cronometroDisplay.textContent = `${hours
-      .toString()
-      .padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`
+    cronometroDisplay.textContent = `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`
 
-    // Aggiorna l'anello di progresso (basato sui secondi)
-    const progressValue = seconds
-    const circumference = 691.15 // 2 * π * r (110)
-    const offset = circumference - (progressValue / 60) * circumference
+    const fullCycleSeconds = 60
+    const progressSeconds = seconds % fullCycleSeconds
+    const circumference = 691.15
+    const offset = circumference - (progressSeconds / fullCycleSeconds) * circumference
     cronometroProgress.style.strokeDashoffset = offset
   }
 
@@ -129,13 +113,10 @@
     }
 
     timerRemainingSeconds = timerTotalSeconds
-
-    // Aggiorna i pulsanti
     startTimerBtn.disabled = true
     stopTimerBtn.disabled = false
     resetTimerBtn.disabled = false
 
-    // Disabilita gli input
     document.getElementById("ore").disabled = true
     document.getElementById("minuti").disabled = true
     document.getElementById("secondi").disabled = true
@@ -145,7 +126,6 @@
     timerIsRunning = true
     timer = setInterval(() => {
       timerRemainingSeconds--
-
       if (timerRemainingSeconds <= 0) {
         clearInterval(timer)
         timerIsRunning = false
@@ -153,8 +133,6 @@
         timerDisplay.classList.add("pulse")
         document.querySelector(".card").classList.add("completed")
         riproduciMessaggioVocale("Timer finito!")
-
-        // Aggiorna i pulsanti
         startTimerBtn.disabled = false
         stopTimerBtn.disabled = true
       } else {
@@ -167,8 +145,6 @@
     if (timerIsRunning) {
       clearInterval(timer)
       timerIsRunning = false
-
-      // Aggiorna i pulsanti
       startTimerBtn.disabled = false
       stopTimerBtn.disabled = true
     }
@@ -179,27 +155,22 @@
     timerIsRunning = false
     timerRemainingSeconds = 0
 
-    // Resetta il display
     timerDisplay.textContent = "00:00:00"
     timerDisplay.classList.remove("pulse")
     document.querySelector(".card").classList.remove("completed")
 
-    // Abilita gli input
     document.getElementById("ore").disabled = false
     document.getElementById("minuti").disabled = false
     document.getElementById("secondi").disabled = false
 
-    // Resetta gli input
     document.getElementById("ore").value = 0
     document.getElementById("minuti").value = 0
     document.getElementById("secondi").value = 0
 
-    // Aggiorna i pulsanti
     startTimerBtn.disabled = false
     stopTimerBtn.disabled = true
     resetTimerBtn.disabled = true
 
-    // Resetta l'anello di progresso
     timerProgress.style.strokeDashoffset = 0
   }
 
@@ -208,12 +179,9 @@
     const m = Math.floor((timerRemainingSeconds % 3600) / 60)
     const s = timerRemainingSeconds % 60
 
-    timerDisplay.textContent = `${h.toString().padStart(2, "0")}:${m
-      .toString()
-      .padStart(2, "0")}:${s.toString().padStart(2, "0")}`
+    timerDisplay.textContent = `${h.toString().padStart(2, "0")}:${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`
 
-    // Aggiorna l'anello di progresso
-    const circumference = 691.15 // 2 * π * r (110)
+    const circumference = 691.15
     const offset = (timerRemainingSeconds / timerTotalSeconds) * circumference
     timerProgress.style.strokeDashoffset = circumference - offset
   }
@@ -222,7 +190,6 @@
     const synthesis = window.speechSynthesis
     const utterance = new SpeechSynthesisUtterance(messaggio)
 
-    // Imposta la lingua italiana se disponibile
     const voci = synthesis.getVoices()
     const voceItaliana = voci.find((voce) => voce.lang === "it-IT")
     if (voceItaliana) {
@@ -232,6 +199,5 @@
     synthesis.speak(utterance)
   }
 
-  // Inizializzazione
   updateCronometroDisplay()
 })
