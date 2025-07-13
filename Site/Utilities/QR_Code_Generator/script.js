@@ -40,8 +40,6 @@ class QRGenerator {
         };
 
         this.sizeSelect = document.getElementById("qr-size");
-        this.colorInput = document.getElementById("qr-color");
-        this.bgColorInput = document.getElementById("bg-color");
     }
 
     bindEvents() {
@@ -53,14 +51,12 @@ class QRGenerator {
             if (input) input.addEventListener("input", () => this.debounceGenerate());
         });
 
-        [this.sizeSelect, this.colorInput, this.bgColorInput].forEach((element) => {
-            element.addEventListener("change", () => this.debounceGenerate());
-        });
+        this.sizeSelect.addEventListener("change", () => this.debounceGenerate());
     }
 
     handleTypeChange() {
         const selectedType = this.typeSelect.value;
-        Object.values(this.inputContainers).forEach(container => container.classList.add("hidden"));
+        Object.values(this.inputContainers).forEach((container) => container.classList.add("hidden"));
         if (this.inputContainers[selectedType]) {
             this.inputContainers[selectedType].classList.remove("hidden");
         }
@@ -116,8 +112,8 @@ class QRGenerator {
     generateQR() {
         const data = this.getQRData();
         const size = parseInt(this.sizeSelect.value, 10);
-        const foreground = this.colorInput.value;
-        const background = this.bgColorInput.value;
+        const foreground = "#000000";
+        const background = "#ffffff";
 
         if (!data) return;
 
@@ -127,7 +123,7 @@ class QRGenerator {
             value: data,
             size,
             foreground,
-            background
+            background,
         });
 
         this.qrContainer.innerHTML = "";
@@ -153,11 +149,10 @@ class QRGenerator {
 
     clearQR() {
         this.qrContainer.innerHTML = `
-            <div class="placeholder">
-                <i class="fas fa-qrcode"></i>
-                <p>Il tuo QR Code apparirà qui</p>
-            </div>
-        `;
+      <div class="placeholder">
+        <i class="fas fa-qrcode"></i>
+        <p>Il tuo QR Code apparirà qui</p>
+      </div>`;
         this.qrContainer.classList.remove("has-qr");
         this.downloadSection.classList.add("hidden");
         this.currentQR = null;
@@ -173,19 +168,21 @@ class QRGenerator {
             url: "URL/Link",
             email: "Email",
             phone: "Telefono",
-            wifi: "WiFi"
+            wifi: "WiFi",
         };
         this.infoType.textContent = typeMap[this.currentQR.type] || this.currentQR.type;
         this.infoSize.textContent = `${this.currentQR.size}px`;
-        this.infoContent.textContent = this.currentQR.data.length > 50
-            ? this.currentQR.data.slice(0, 50) + "..."
-            : this.currentQR.data;
+        this.infoContent.textContent =
+            this.currentQR.data.length > 50
+                ? this.currentQR.data.slice(0, 50) + "..."
+                : this.currentQR.data;
     }
 
     showToast(msg, type = "success") {
         this.toastMessage.textContent = msg;
         this.toast.style.background = type === "error" ? "#ff6b6b" : "#4ecdc4";
-        this.toast.querySelector("i").className = type === "error" ? "fas fa-exclamation-circle" : "fas fa-check-circle";
+        this.toast.querySelector("i").className =
+            type === "error" ? "fas fa-exclamation-circle" : "fas fa-check-circle";
         this.toast.classList.add("show");
         setTimeout(() => this.toast.classList.remove("show"), 3000);
     }
