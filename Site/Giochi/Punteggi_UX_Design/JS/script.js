@@ -1335,7 +1335,6 @@ function setupCustomComboPartecipante() {
     if (dropdown.style.display === 'block') closeDropdown();
     else openDropdown();
   });
-  // MOBILE: apertura anche su touchstart
   comboInput.addEventListener('touchstart', function (e) {
     e.preventDefault();
     if (dropdown.style.display === 'block') closeDropdown();
@@ -1360,7 +1359,6 @@ function setupCustomComboPartecipante() {
     if (!comboInput.contains(e.target) && !dropdown.contains(e.target)) closeDropdown();
   });
 
-  // MOBILE: previeni chiusura su blur se stai toccando la lista
   list.addEventListener('touchstart', function () { isTouchingList = true; });
   list.addEventListener('touchend', function () { setTimeout(() => { isTouchingList = false; }, 100); });
   searchInput.addEventListener('blur', function () {
@@ -1400,6 +1398,7 @@ function setupCustomComboPartecipante() {
       selectedSpan.textContent = e.target.textContent;
       customComboSelectedValue = e.target.dataset.value;
       closeDropdown();
+      aggiornaPlaceholderPunti();
     }
   });
   // Selezione con touch
@@ -1410,9 +1409,26 @@ function setupCustomComboPartecipante() {
       selectedSpan.textContent = target.textContent;
       customComboSelectedValue = target.dataset.value;
       closeDropdown();
+      aggiornaPlaceholderPunti();
     }
   });
 }
+
+function aggiornaPlaceholderPunti() {
+  const idx = getSelectedParticipantIndex();
+  if (idx === -1 || idx === 'all') {
+    pointsInput.placeholder = '0';
+    return;
+  }
+  const partecipante = partecipanti[idx];
+  pointsInput.placeholder = partecipante && partecipante.punti > 0 ? partecipante.punti : '0';
+  pointsInput.value = '';
+}
+
+// Quando inizi a digitare, svuota l'input
+pointsInput.addEventListener('focus', function() {
+  this.value = '';
+});
 
 // Utility per ottenere l'indice selezionato (o 'all')
 function getSelectedParticipantIndex() {
