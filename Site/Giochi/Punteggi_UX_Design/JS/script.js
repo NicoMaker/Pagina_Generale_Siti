@@ -1280,15 +1280,18 @@ function setupCustomComboPartecipante() {
   const selectedSpan = document.getElementById('custom-combo-selected');
   if (!comboInput || !dropdown || !searchInput || !list || !selectedSpan) return;
 
+  let isTouchingList = false;
+
   function renderList(filter = '') {
     list.innerHTML = '';
     let results = [];
     const query = filter.trim().toLowerCase();
-    const sorted = getSortedPartecipanti();
+    // Ordina alfabeticamente per la visualizzazione della combo
+    const sortedAlpha = [...partecipanti].sort((a, b) => a.nome.localeCompare(b.nome));
     if (query === '') {
-      results = sorted;
+      results = sortedAlpha;
     } else {
-      results = sorted.filter(p => p.nome.toLowerCase().includes(query));
+      results = sortedAlpha.filter(p => p.nome.toLowerCase().includes(query));
     }
     // Opzione "Tutti"
     const allLi = document.createElement('li');
@@ -1296,12 +1299,12 @@ function setupCustomComboPartecipante() {
     allLi.dataset.value = 'all';
     allLi.className = 'custom-combo-item';
     list.appendChild(allLi);
-    // Partecipanti ordinati con posizione
+    // Partecipanti in ordine alfabetico, senza numeri o punti
     if (results.length > 0) {
-      results.forEach((p, i) => {
+      results.forEach((p) => {
         const idx = partecipanti.indexOf(p);
         const li = document.createElement('li');
-        li.textContent = `${i + 1}. ${p.nome} (${p.punti})`;
+        li.textContent = p.nome;
         li.dataset.value = idx;
         li.className = 'custom-combo-item';
         list.appendChild(li);
@@ -1332,6 +1335,13 @@ function setupCustomComboPartecipante() {
     if (dropdown.style.display === 'block') closeDropdown();
     else openDropdown();
   });
+  // MOBILE: apertura anche su touchstart
+  comboInput.addEventListener('touchstart', function (e) {
+    e.preventDefault();
+    if (dropdown.style.display === 'block') closeDropdown();
+    else openDropdown();
+  }, {passive: false});
+
   comboInput.addEventListener('keydown', function (e) {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
@@ -1348,6 +1358,13 @@ function setupCustomComboPartecipante() {
   });
   document.addEventListener('click', function (e) {
     if (!comboInput.contains(e.target) && !dropdown.contains(e.target)) closeDropdown();
+  });
+
+  // MOBILE: previeni chiusura su blur se stai toccando la lista
+  list.addEventListener('touchstart', function () { isTouchingList = true; });
+  list.addEventListener('touchend', function () { setTimeout(() => { isTouchingList = false; }, 100); });
+  searchInput.addEventListener('blur', function () {
+    setTimeout(() => { if (!isTouchingList) closeDropdown(); }, 120);
   });
 
   searchInput.addEventListener('input', function () {
@@ -1377,10 +1394,21 @@ function setupCustomComboPartecipante() {
       comboInput.focus();
     }
   });
+  // Selezione con mouse
   list.addEventListener('mousedown', function (e) {
     if (e.target && e.target.matches('li.custom-combo-item') && !e.target.classList.contains('custom-combo-empty')) {
       selectedSpan.textContent = e.target.textContent;
       customComboSelectedValue = e.target.dataset.value;
+      closeDropdown();
+    }
+  });
+  // Selezione con touch
+  list.addEventListener('touchend', function (e) {
+    const touch = e.changedTouches[0];
+    const target = document.elementFromPoint(touch.clientX, touch.clientY);
+    if (target && target.matches('li.custom-combo-item') && !target.classList.contains('custom-combo-empty')) {
+      selectedSpan.textContent = target.textContent;
+      customComboSelectedValue = target.dataset.value;
       closeDropdown();
     }
   });
