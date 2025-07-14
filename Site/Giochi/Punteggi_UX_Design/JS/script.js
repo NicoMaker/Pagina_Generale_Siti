@@ -103,9 +103,54 @@ document.addEventListener("DOMContentLoaded", () => {
   aggiornaListaPartecipanti();
   aggiornaSelezionePartecipante();
 
+  // --- Ricerca partecipanti nella select ---
+  const searchInput = document.getElementById("search-participant");
+  if (searchInput) {
+    searchInput.addEventListener("input", function () {
+      filtraPartecipantiSelect(this.value);
+    });
+  }
+
   // Initialize the footer with the accessibility button
   initializeFooter();
+
+  // --- Autocomplete custom per selezione partecipante ---
+  setupAutocompletePartecipante();
+
+  // --- Combo custom con ricerca interna ---
+  setupCustomComboPartecipante();
 });
+
+function filtraPartecipantiSelect(query) {
+  const select = document.getElementById("selected-participant");
+  if (!select) return;
+  const lowerQuery = query.trim().toLowerCase();
+  // Salva il valore selezionato
+  const selectedValue = select.value;
+  // Ricostruisci le opzioni
+  select.innerHTML = '';
+  select.appendChild(new Option('Seleziona un partecipante', '-1'));
+  select.appendChild(new Option('Tutti', 'all'));
+  partecipanti.forEach((p, idx) => {
+    if (!lowerQuery || p.nome.toLowerCase().includes(lowerQuery)) {
+      const opt = new Option(p.nome, idx);
+      select.appendChild(opt);
+    }
+  });
+  // Ripristina la selezione se ancora presente
+  if ([...select.options].some(opt => opt.value === selectedValue)) {
+    select.value = selectedValue;
+  }
+}
+
+// Modifica aggiornaSelezionePartecipante per chiamare il filtro se c'è testo
+function aggiornaSelezionePartecipante() {
+  const select = document.getElementById("selected-participant");
+  if (!select) return;
+  const searchInput = document.getElementById("search-participant");
+  const query = searchInput ? searchInput.value : '';
+  filtraPartecipantiSelect(query);
+}
 
 // Function to initialize the footer with the accessibility button
 function initializeFooter() {
@@ -1128,78 +1173,242 @@ function aggiornaSelezionePartecipante() {
   });
 }
 
-// Funzioni per la gestione dei punti
-function aggiungiPunti() {
-  if (!pointsInput || !selectedParticipantSelect) return;
+// --- Autocomplete custom per selezione partecipante ---
+let selectedParticipantIndex = -1;
 
-  const punti = Number.parseFloat(pointsInput.value);
-  const selectedParticipantIndex = selectedParticipantSelect.value;
+function setupAutocompletePartecipante() {
+  const input = document.getElementById('selected-participant-autocomplete');
+  const list = document.getElementById('autocomplete-list');
+  if (!input || !list) return;
 
-  if (isNaN(punti) || punti < 0) {
-    showToast("Inserisci un valore valido", "error");
-    pointsInput.focus();
-    return;
-  }
-
-  if (selectedParticipantIndex === "-1") {
-    showToast("Seleziona un partecipante", "warning");
-    selectedParticipantSelect.focus();
-    return;
-  }
-
-  if (selectedParticipantIndex === "all") {
-    for (const partecipante of partecipanti) {
-      partecipante.punti += punti;
+  function renderList(filter = '') {
+    list.innerHTML = '';
+    let results = [];
+    const query = filter.trim().toLowerCase();
+    if (query === '') {
+      results = partecipanti;
+    } else {
+      results = partecipanti.filter(p => p.nome.toLowerCase().includes(query));
     }
-    showToast(`${punti} punti aggiunti a tutti i partecipanti`, "success");
-  } else {
-    const index = Number.parseInt(selectedParticipantIndex);
-    partecipanti[index].punti += punti;
-    showToast(
-      `${punti} punti aggiunti a ${partecipanti[index].nome}`,
-      "success"
-    );
+    // Opzione "Tutti"
+    const allLi = document.createElement('li');
+    allLi.textContent = 'Tutti';
+    allLi.dataset.value = 'all';
+    allLi.className = 'autocomplete-item';
+    list.appendChild(allLi);
+    // Partecipanti
+    results.forEach((p, idx) => {
+      const li = document.createElement('li');
+      li.textContent = p.nome;
+      li.dataset.value = idx;
+      li.className = 'autocomplete-item';
+      list.appendChild(li);
+    });
+    list.style.display = results.length > 0 || query === '' ? 'block' : 'none';
   }
 
+  input.addEventListener('input', function () {
+    renderList(this.value);
+  });
+
+  input.addEventListener('focus', function () {
+    renderList(this.value);
+  });
+
+  input.addEventListener('blur', function () {
+    setTimeout(() => { list.style.display = 'none'; }, 150);
+  });
+
+  list.addEventListener('mousedown', function (e) {
+    if (e.target && e.target.matches('li.autocomplete-item')) {
+      input.value = e.target.textContent;
+      input.dataset.selectedValue = e.target.dataset.value;
+      selectedParticipantIndex = e.target.dataset.value;
+      list.style.display = 'none';
+    }
+  });
+
+  // Tastiera: frecce e invio
+  input.addEventListener('keydown', function (e) {
+    const items = Array.from(list.querySelectorAll('li'));
+    let idx = items.findIndex(li => li.classList.contains('active'));
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      if (idx < items.length - 1) idx++;
+      else idx = 0;
+      items.forEach(li => li.classList.remove('active'));
+      if (items[idx]) items[idx].classList.add('active');
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      if (idx > 0) idx--;
+      else idx = items.length - 1;
+      items.forEach(li => li.classList.remove('active'));
+      if (items[idx]) items[idx].classList.add('active');
+    } else if (e.key === 'Enter') {
+      if (idx >= 0 && items[idx]) {
+        input.value = items[idx].textContent;
+        input.dataset.selectedValue = items[idx].dataset.value;
+        selectedParticipantIndex = items[idx].dataset.value;
+        list.style.display = 'none';
+        input.blur();
+      }
+    }
+  });
+}
+
+// --- Combo custom con ricerca interna ---
+let customComboSelectedValue = -1;
+
+function setupCustomComboPartecipante() {
+  const comboInput = document.getElementById('custom-combo-participant');
+  const dropdown = document.getElementById('custom-combo-dropdown');
+  const searchInput = document.getElementById('custom-combo-search');
+  const list = document.getElementById('custom-combo-list');
+  const selectedSpan = document.getElementById('custom-combo-selected');
+  if (!comboInput || !dropdown || !searchInput || !list || !selectedSpan) return;
+
+  function renderList(filter = '') {
+    list.innerHTML = '';
+    let results = [];
+    const query = filter.trim().toLowerCase();
+    if (query === '') {
+      results = partecipanti;
+    } else {
+      results = partecipanti.filter(p => p.nome.toLowerCase().includes(query));
+    }
+    // Opzione "Tutti"
+    const allLi = document.createElement('li');
+    allLi.textContent = 'Tutti';
+    allLi.dataset.value = 'all';
+    allLi.className = 'custom-combo-item';
+    list.appendChild(allLi);
+    // Partecipanti
+    if (results.length > 0) {
+      results.forEach((p, idx) => {
+        const li = document.createElement('li');
+        li.textContent = p.nome;
+        li.dataset.value = partecipanti.indexOf(p);
+        li.className = 'custom-combo-item';
+        list.appendChild(li);
+      });
+    } else {
+      const li = document.createElement('li');
+      li.textContent = 'Nessun partecipante trovato';
+      li.className = 'custom-combo-item custom-combo-empty';
+      li.style.color = '#888';
+      li.style.cursor = 'default';
+      list.appendChild(li);
+    }
+  }
+
+  function openDropdown() {
+    dropdown.style.display = 'block';
+    comboInput.setAttribute('aria-expanded', 'true');
+    searchInput.value = '';
+    renderList();
+    setTimeout(() => searchInput.focus(), 50);
+  }
+  function closeDropdown() {
+    dropdown.style.display = 'none';
+    comboInput.setAttribute('aria-expanded', 'false');
+  }
+
+  comboInput.addEventListener('click', function () {
+    if (dropdown.style.display === 'block') closeDropdown();
+    else openDropdown();
+  });
+  comboInput.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      if (dropdown.style.display === 'block') closeDropdown();
+      else openDropdown();
+    }
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      openDropdown();
+      const first = list.querySelector('.custom-combo-item:not(.custom-combo-empty)');
+      if (first) first.classList.add('active');
+    }
+    if (e.key === 'Escape') closeDropdown();
+  });
+  document.addEventListener('click', function (e) {
+    if (!comboInput.contains(e.target) && !dropdown.contains(e.target)) closeDropdown();
+  });
+
+  searchInput.addEventListener('input', function () {
+    renderList(this.value);
+  });
+  searchInput.addEventListener('keydown', function (e) {
+    const items = Array.from(list.querySelectorAll('.custom-combo-item:not(.custom-combo-empty)'));
+    let idx = items.findIndex(li => li.classList.contains('active'));
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      if (idx < items.length - 1) idx++;
+      else idx = 0;
+      items.forEach(li => li.classList.remove('active'));
+      if (items[idx]) items[idx].classList.add('active');
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      if (idx > 0) idx--;
+      else idx = items.length - 1;
+      items.forEach(li => li.classList.remove('active'));
+      if (items[idx]) items[idx].classList.add('active');
+    } else if (e.key === 'Enter') {
+      if (idx >= 0 && items[idx]) {
+        items[idx].click();
+      }
+    } else if (e.key === 'Escape') {
+      closeDropdown();
+      comboInput.focus();
+    }
+  });
+  list.addEventListener('mousedown', function (e) {
+    if (e.target && e.target.matches('li.custom-combo-item') && !e.target.classList.contains('custom-combo-empty')) {
+      selectedSpan.textContent = e.target.textContent;
+      customComboSelectedValue = e.target.dataset.value;
+      closeDropdown();
+    }
+  });
+}
+
+// Utility per ottenere l'indice selezionato (o 'all')
+function getSelectedParticipantIndex() {
+  if (customComboSelectedValue === 'all') return 'all';
+  const idx = parseInt(customComboSelectedValue);
+  return isNaN(idx) ? -1 : idx;
+}
+
+// Modifica le funzioni aggiungiPunti/togliPunti per usare getSelectedParticipantIndex()
+function aggiungiPunti() {
+  const idx = getSelectedParticipantIndex();
+  const punti = parseInt(pointsInput.value, 10) || 0;
+  if (idx === -1) {
+    showToast('Seleziona un partecipante valido!', 'error');
+    return;
+  }
+  if (idx === 'all') {
+    partecipanti.forEach(p => p.punti += punti);
+  } else {
+    partecipanti[idx].punti += punti;
+  }
   aggiornaListaPartecipanti();
-  pointsInput.value = "0";
-  pointsInput.focus();
-  salvaDati();
+  setupCustomComboPartecipante();
 }
 
 function togliPunti() {
-  if (!pointsInput || !selectedParticipantSelect) return;
-
-  const punti = Number.parseFloat(pointsInput.value);
-  const selectedParticipantIndex = selectedParticipantSelect.value;
-
-  if (isNaN(punti) || punti < 0) {
-    showToast("Inserisci un valore valido", "error");
-    pointsInput.focus();
+  const idx = getSelectedParticipantIndex();
+  const punti = parseInt(pointsInput.value, 10) || 0;
+  if (idx === -1) {
+    showToast('Seleziona un partecipante valido!', 'error');
     return;
   }
-
-  if (selectedParticipantIndex === "-1") {
-    showToast("Seleziona un partecipante", "warning");
-    selectedParticipantSelect.focus();
-    return;
-  }
-
-  if (selectedParticipantIndex === "all") {
-    for (const partecipante of partecipanti) {
-      partecipante.punti -= punti;
-    }
-    showToast(`${punti} punti tolti a tutti i partecipanti`, "success");
+  if (idx === 'all') {
+    partecipanti.forEach(p => p.punti = Math.max(0, p.punti - punti));
   } else {
-    const index = Number.parseInt(selectedParticipantIndex);
-    partecipanti[index].punti -= punti;
-    showToast(`${punti} punti tolti a ${partecipanti[index].nome}`, "success");
+    partecipanti[idx].punti = Math.max(0, partecipanti[idx].punti - punti);
   }
-
   aggiornaListaPartecipanti();
-  pointsInput.value = "0";
-  pointsInput.focus();
-  salvaDati();
+  setupCustomComboPartecipante();
 }
 
 function impostaModalitàVittoria(modalità) {
