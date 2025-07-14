@@ -1145,6 +1145,15 @@ function aggiornaListaPartecipanti() {
     listItem.appendChild(buttonsContainer);
     participantList.appendChild(listItem);
   });
+
+  // Mantieni la selezione se possibile
+  const selectedSpan = document.getElementById('custom-combo-selected');
+  if (selectedSpan && customComboSelectedValue !== -1 && customComboSelectedValue !== 'all') {
+    const idx = parseInt(customComboSelectedValue);
+    if (!isNaN(idx) && partecipanti[idx]) {
+      selectedSpan.textContent = partecipanti[idx].nome;
+    }
+  }
 }
 
 // Update the aggiornaSelezionePartecipante function to display the ID
@@ -1392,7 +1401,8 @@ function aggiungiPunti() {
     partecipanti[idx].punti += punti;
   }
   aggiornaListaPartecipanti();
-  setupCustomComboPartecipante();
+  // NON resettare la selezione della combo!
+  // Mantieni la selezione attuale
 }
 
 function togliPunti() {
@@ -1408,7 +1418,8 @@ function togliPunti() {
     partecipanti[idx].punti = Math.max(0, partecipanti[idx].punti - punti);
   }
   aggiornaListaPartecipanti();
-  setupCustomComboPartecipante();
+  // NON resettare la selezione della combo!
+  // Mantieni la selezione attuale
 }
 
 function impostaModalitàVittoria(modalità) {
