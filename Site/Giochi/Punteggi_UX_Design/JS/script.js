@@ -1149,9 +1149,13 @@ function aggiornaListaPartecipanti() {
   // Mantieni la selezione se possibile
   const selectedSpan = document.getElementById('custom-combo-selected');
   if (selectedSpan && customComboSelectedValue !== -1 && customComboSelectedValue !== 'all') {
+    // Trova la posizione attuale del partecipante selezionato nella classifica
     const idx = parseInt(customComboSelectedValue);
-    if (!isNaN(idx) && partecipanti[idx]) {
-      selectedSpan.textContent = partecipanti[idx].nome;
+    const sorted = getSortedPartecipanti();
+    const p = partecipanti[idx];
+    const pos = sorted.findIndex(x => x === p);
+    if (!isNaN(idx) && partecipanti[idx] && pos !== -1) {
+      selectedSpan.textContent = `${pos + 1}. ${partecipanti[idx].nome} (${partecipanti[idx].punti})`;
     }
   }
 }
@@ -1280,10 +1284,11 @@ function setupCustomComboPartecipante() {
     list.innerHTML = '';
     let results = [];
     const query = filter.trim().toLowerCase();
+    const sorted = getSortedPartecipanti();
     if (query === '') {
-      results = partecipanti;
+      results = sorted;
     } else {
-      results = partecipanti.filter(p => p.nome.toLowerCase().includes(query));
+      results = sorted.filter(p => p.nome.toLowerCase().includes(query));
     }
     // Opzione "Tutti"
     const allLi = document.createElement('li');
@@ -1291,12 +1296,13 @@ function setupCustomComboPartecipante() {
     allLi.dataset.value = 'all';
     allLi.className = 'custom-combo-item';
     list.appendChild(allLi);
-    // Partecipanti
+    // Partecipanti ordinati con posizione
     if (results.length > 0) {
-      results.forEach((p, idx) => {
+      results.forEach((p, i) => {
+        const idx = partecipanti.indexOf(p);
         const li = document.createElement('li');
-        li.textContent = p.nome;
-        li.dataset.value = partecipanti.indexOf(p);
+        li.textContent = `${i + 1}. ${p.nome} (${p.punti})`;
+        li.dataset.value = idx;
         li.className = 'custom-combo-item';
         list.appendChild(li);
       });
@@ -1401,8 +1407,8 @@ function aggiungiPunti() {
     partecipanti[idx].punti += punti;
   }
   aggiornaListaPartecipanti();
-  // NON resettare la selezione della combo!
-  // Mantieni la selezione attuale
+  pointsInput.value = '';
+  pointsInput.focus();
 }
 
 function togliPunti() {
@@ -1418,8 +1424,8 @@ function togliPunti() {
     partecipanti[idx].punti = Math.max(0, partecipanti[idx].punti - punti);
   }
   aggiornaListaPartecipanti();
-  // NON resettare la selezione della combo!
-  // Mantieni la selezione attuale
+  pointsInput.value = '';
+  pointsInput.focus();
 }
 
 function impostaModalitàVittoria(modalità) {
@@ -1700,286 +1706,93 @@ function hideFileFeedbackModal() {
 
 // Replace the existing caricaDaFile function with this enhanced version
 function caricaDaFile() {
-  // Crea un input di tipo file
-  const input = document.createElement("input");
-  input.type = "file";
-  input.accept = ".txt,.json";
-
-  // Gestisci il caricamento del file
-  input.addEventListener("change", (event) => {
-    const file = event.target.files[0];
-    if (!file) {
-      showToast("Nessun file selezionato", "warning");
-      return;
-    }
-
-    // Show loading toast
-    showToast("Caricamento file in corso...", "info");
-
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = '.json,.txt';
+  input.onchange = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
     const reader = new FileReader();
-
-    reader.onload = (e) => {
+    reader.onload = (ev) => {
       try {
-        const fileContent = e.target.result;
-        const fileExtension = file.name.split(".").pop().toLowerCase();
-
-        // Results tracking
-        const results = {
-          total: 0,
-          success: [],
-          warnings: [],
-          errors: [],
-        };
-
-        // Process based on file type
-        if (fileExtension === "json") {
-          // Parse JSON file
-          const jsonData = JSON.parse(fileContent);
-
-          if (!Array.isArray(jsonData)) {
-            throw new Error(
-              "Il file JSON non contiene un array di partecipanti"
-            );
+        const content = ev.target.result;
+        let data;
+        if (file.name.endsWith('.json')) {
+          data = JSON.parse(content);
+          if (data.partecipanti && Array.isArray(data.partecipanti)) {
+            partecipanti.length = 0;
+            data.partecipanti.forEach(p => partecipanti.push({...p}));
           }
-
-          results.total = jsonData.length;
-
-          // Process each participant
-          jsonData.forEach((item) => {
-            try {
-              // Validate data
-              if (!item.nome || item.punti === undefined) {
-                results.errors.push({
-                  message: `Dati incompleti: ${JSON.stringify(item)}`,
-                });
-                return;
-              }
-
-              const nome = item.nome.trim();
-              const punti = Number.parseFloat(item.punti) || 0;
-
-              // Check for duplicates by name
-              const existingIndex = partecipanti.findIndex(
-                (p) => p.nome === nome
-              );
-
-              if (existingIndex >= 0) {
-                // Update existing participant
-                partecipanti[existingIndex].punti = punti;
-
-                results.warnings.push({
-                  nome,
-                  id: partecipanti[existingIndex].id,
-                  punti,
-                });
-              } else {
-                // Add new participant with next available ID
-                const id = nextParticipantId++;
-                partecipanti.push({ id, nome, punti });
-
-                results.success.push({
-                  nome,
-                  id,
-                  punti,
-                });
-              }
-            } catch (itemError) {
-              results.errors.push({
-                message: `Errore nell'elaborazione: ${itemError.message}`,
-              });
-            }
-          });
-
-          // Riorganizza gli ID dopo il caricamento
-          riorganizzaIds();
+          if (typeof data.modalita === 'string') {
+            modalitàVittoria = data.modalita.trim();
+            // Aggiorna radio
+            const radioMax = document.querySelector('input[name="winning-mode"][value="max"]');
+            const radioMin = document.querySelector('input[name="winning-mode"][value="min"]');
+            if (modalitàVittoria === 'min' && radioMin) radioMin.checked = true;
+            else if (modalitàVittoria === 'max' && radioMax) radioMax.checked = true;
+          }
         } else {
-          // Process text file (default)
-          const righe = fileContent
-            .split("\n")
-            .filter((riga) => riga.trim() !== "");
-          results.total = righe.length;
-
-          righe.forEach((riga) => {
-            try {
-              // Format: nome:punti
-              const parti = riga.split(":");
-              const nome = parti[0].trim();
-              const punti = Number.parseFloat(parti[1]) || 0;
-
-              if (!nome) {
-                results.errors.push({
-                  message: `Nome mancante: ${riga}`,
-                });
-                return;
-              }
-
-              // Check for duplicates by name
-              const existingIndex = partecipanti.findIndex(
-                (p) => p.nome === nome
-              );
-
-              if (existingIndex >= 0) {
-                // Update existing participant
-                partecipanti[existingIndex].punti = punti;
-
-                results.warnings.push({
-                  nome,
-                  id: partecipanti[existingIndex].id,
-                  punti,
-                });
-              } else {
-                // Add new participant with next available ID
-                const id = nextParticipantId++;
-                partecipanti.push({ id, nome, punti });
-
-                results.success.push({
-                  nome,
-                  id,
-                  punti,
-                });
-              }
-            } catch (rigaError) {
-              results.errors.push({
-                message: `Errore nell'elaborazione: ${rigaError.message}`,
-              });
+          // TXT: prima riga modalita, poi posizione. nome\tpunti
+          const lines = content.split(/\r?\n/).filter(l => l.trim() !== '');
+          let startIdx = 0;
+          if (lines[0] && lines[0].startsWith('modalita:')) {
+            modalitàVittoria = lines[0].split(':')[1].trim();
+            // Aggiorna radio
+            const radioMax = document.querySelector('input[name="winning-mode"][value="max"]');
+            const radioMin = document.querySelector('input[name="winning-mode"][value="min"]');
+            if (modalitàVittoria === 'min' && radioMin) radioMin.checked = true;
+            else if (modalitàVittoria === 'max' && radioMax) radioMax.checked = true;
+            startIdx = 1;
+          }
+          partecipanti.length = 0;
+          for (let i = startIdx; i < lines.length; i++) {
+            // formato: posizione. nome\tpunti
+            const match = lines[i].match(/^\s*\d+\.\s*(.+)\t(\d+)$/);
+            if (match) {
+              const nome = match[1].trim();
+              const punti = parseInt(match[2], 10) || 0;
+              partecipanti.push({ nome, punti });
             }
-          });
-
-          // Riorganizza gli ID dopo il caricamento
-          riorganizzaIds();
+          }
         }
-
-        // Update UI
         aggiornaListaPartecipanti();
-        aggiornaSelezionePartecipante();
-        salvaDati();
-
-        // Show feedback modal
-        showFileFeedbackModal(results);
-      } catch (error) {
-        console.error("Errore durante il caricamento del file:", error);
-        showToast(
-          `Errore durante il caricamento del file: ${error.message}`,
-          "error"
-        );
+        setupCustomComboPartecipante();
+      } catch (err) {
+        showToast('Errore nel caricamento del file', 'error');
       }
     };
-
-    reader.onerror = () => {
-      showToast("Errore nella lettura del file", "error");
-    };
-
-    // Read the file based on its type
     reader.readAsText(file);
-  });
-
-  // Simula il clic per aprire il dialogo file
+  };
   input.click();
 }
 
 // Update the salvaSuFile function to support JSON export
 function salvaSuFile() {
-  if (partecipanti.length === 0) {
-    showToast("Nessun partecipante da salvare", "error");
-    return;
-  }
+  const data = {
+    partecipanti: partecipanti,
+    modalita: modalitàVittoria // sempre presente
+  };
+  const json = JSON.stringify(data, null, 2);
+  const blob = new Blob([json], { type: 'application/json' });
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = 'punteggi.json';
+  link.click();
+  setTimeout(() => URL.revokeObjectURL(link.href), 100);
+}
 
-  // Ask user for file format
-  const formatOptions = document.createElement("div");
-  formatOptions.className = "format-options";
-  formatOptions.innerHTML = `
-    <div class="format-option">
-      <input type="radio" id="format-txt" name="format" value="txt" checked>
-      <label for="format-txt">File di testo (.txt)</label>
-    </div>
-    <div class="format-option">
-      <input type="radio" id="format-json" name="format" value="json">
-      <label for="format-json">File JSON (.json)</label>
-    </div>
-  `;
-
-  // Create a custom dialog
-  const dialog = document.createElement("div");
-  dialog.className = "custom-dialog";
-  dialog.innerHTML = `
-    <div class="dialog-content">
-      <h3>Seleziona formato file</h3>
-      <div class="dialog-body"></div>
-      <div class="dialog-actions">
-        <button class="btn btn-secondary" id="cancel-format">Annulla</button>
-        <button class="btn btn-primary" id="confirm-format">Salva</button>
-      </div>
-    </div>
-  `;
-
-  document.body.appendChild(dialog);
-  dialog.querySelector(".dialog-body").appendChild(formatOptions);
-
-  // Add event listeners
-  const cancelBtn = dialog.querySelector("#cancel-format");
-  const confirmBtn = dialog.querySelector("#confirm-format");
-
-  cancelBtn.addEventListener("click", () => {
-    document.body.removeChild(dialog);
+function salvaSuTxt() {
+  let txt = `modalita: ${modalitàVittoria}\n`;
+  const sorted = getSortedPartecipanti();
+  sorted.forEach((p, i) => {
+    txt += `${i + 1}. ${p.nome}\t${p.punti}\n`;
   });
-
-  confirmBtn.addEventListener("click", () => {
-    const format = dialog.querySelector('input[name="format"]:checked').value;
-    document.body.removeChild(dialog);
-
-    // Save file in selected format
-    if (format === "json") {
-      saveAsJson();
-    } else {
-      saveAsTxt();
-    }
-  });
-
-  // Show dialog
-  dialog.style.display = "flex";
-
-  // Functions to save in different formats
-  function saveAsTxt() {
-    // Crea il contenuto in formato leggibile
-    const contenuto = partecipanti
-      .map((partecipante) => `${partecipante.nome}:${partecipante.punti}`)
-      .join("\n");
-
-    // Crea un blob per il download
-    const blob = new Blob([contenuto], { type: "text/plain" });
-    const url = URL.createObjectURL(blob);
-
-    // Crea un link temporaneo per il download
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "partecipanti.txt";
-    a.click();
-
-    // Revoca l'URL per liberare memoria
-    URL.revokeObjectURL(url);
-
-    showToast("File salvato con successo", "success");
-  }
-
-  function saveAsJson() {
-    // Create JSON content
-    const jsonContent = JSON.stringify(partecipanti, null, 2);
-
-    // Create blob for download
-    const blob = new Blob([jsonContent], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-
-    // Create temporary link for download
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "partecipanti.json";
-    a.click();
-
-    // Revoca URL to free memory
-    URL.revokeObjectURL(url);
-
-    showToast("File JSON salvato con successo", "success");
-  }
+  const blob = new Blob([txt], { type: 'text/plain' });
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = 'punteggi.txt';
+  link.click();
+  setTimeout(() => URL.revokeObjectURL(link.href), 100);
 }
 
 // Remove the old reset functions and replace with these stubs that call the new modal
@@ -2143,4 +1956,13 @@ function salvaModificaNome() {
   hideEditNameModal();
 
   showToast(`Nome modificato da "${vecchioNome}" a "${nuovoNome}"`, "success");
+}
+
+function getSortedPartecipanti() {
+  // Ordina in base alla modalità classifica
+  if (modalitàVittoria === 'min') {
+    return [...partecipanti].sort((a, b) => a.punti - b.punti || a.nome.localeCompare(b.nome));
+  } else {
+    return [...partecipanti].sort((a, b) => b.punti - a.punti || a.nome.localeCompare(b.nome));
+  }
 }
