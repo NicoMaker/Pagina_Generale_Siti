@@ -50,14 +50,7 @@
       <div class="currency-container">
         <div class="currency-group">
           <label for="from-select">Da</label>
-          <div class="custom-select" id="from-container">
-            <input type="text" id="from-select" class="select-input" placeholder="Cerca o seleziona valuta..."
-              autocomplete="off" aria-label="Cerca valuta di origine">
-            <div class="select-dropdown" id="from-dropdown">
-              <!-- Le opzioni verranno generate dinamicamente con JavaScript -->
-            </div>
-            <input type="hidden" id="from-value" value="EUR">
-          </div>
+          <select id="from-select" class="simple-select" aria-label="Valuta di origine"></select>
         </div>
 
         <div class="swap-button" onclick="swapCurrencies()">
@@ -69,14 +62,7 @@
 
         <div class="currency-group">
           <label for="to-select">A</label>
-          <div class="custom-select" id="to-container">
-            <input type="text" id="to-select" class="select-input" placeholder="Cerca o seleziona valuta..."
-              autocomplete="off" aria-label="Cerca valuta di destinazione">
-            <div class="select-dropdown" id="to-dropdown">
-              <!-- Le opzioni verranno generate dinamicamente con JavaScript -->
-            </div>
-            <input type="hidden" id="to-value" value="USD">
-          </div>
+          <select id="to-select" class="simple-select" aria-label="Valuta di destinazione"></select>
         </div>
       </div>
 

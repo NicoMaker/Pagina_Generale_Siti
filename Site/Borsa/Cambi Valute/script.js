@@ -11,342 +11,34 @@ async function loadCurrencies() {
     const data = await response.json()
     currencies = data.currencies
 
-    // Inizializza i selettori dopo aver caricato i dati
-    initializeSelectors()
+    // Inizializza i selettori semplici dopo aver caricato i dati
+    initializeSimpleSelectors()
   } catch (error) {
     console.error("Errore nel caricamento delle valute:", error)
     // Fallback: usa un array di valute predefinito
-    initializeSelectors()
+    initializeSimpleSelectors()
   }
 }
 
-// Funzione per inizializzare i selettori personalizzati
-function initializeSelectors() {
-  initializeSelector("from", "EUR")
-  initializeSelector("to", "USD")
-}
-
-// Funzione per inizializzare un singolo selettore personalizzato
-function initializeSelector(id, defaultValue) {
-  const input = document.getElementById(`${id}-select`)
-  const dropdown = document.getElementById(`${id}-dropdown`)
-  const hiddenInput = document.getElementById(`${id}-value`)
-  const container = document.getElementById(`${id}-container`)
-
-  // Imposta il valore predefinito
-  hiddenInput.value = defaultValue
-
-  // Popola il dropdown con le opzioni
-  populateDropdown(dropdown, id)
-
-  // Aggiorna il display dell'input con il valore predefinito
-  updateInputDisplay(input, defaultValue)
-
-  // Aggiungi event listener per l'input
-  input.addEventListener("input", function () {
-    const searchTerm = this.value.trim().toLowerCase()
-    filterDropdownOptions(dropdown, searchTerm)
-    dropdown.classList.add("show")
-  })
-
-
-  // Aggiungi event listener per il focus
-  input.addEventListener("focus", function () {
-    // Se l'input ha già un valore, seleziona tutto il testo
-    if (this.value) {
-      this.select()
-    }
-    dropdown.classList.add("show")
-    // Se non c'è un termine di ricerca, mostra tutte le opzioni
-    if (!this.value.trim()) {
-      resetDropdownOptions(dropdown)
-    }
-  })
-
-  // Aggiungi event listener per il click sull'input
-  input.addEventListener("click", function (e) {
-    e.stopPropagation() // Previene che il click si propaghi al documento
-    dropdown.classList.add("show")
-  })
-
-  // Chiudi il dropdown quando si clicca fuori
-  document.addEventListener("click", function (e) {
-    if (!container.contains(e.target)) {
-      dropdown.classList.remove("show")
-      // Ripristina il display dell'input
-      updateInputDisplay(input, hiddenInput.value)
-    }
-  })
-
-  // Gestisci la navigazione da tastiera
-  input.addEventListener("keydown", function (e) {
-    if (e.key === "Escape") {
-      dropdown.classList.remove("show")
-      updateInputDisplay(input, hiddenInput.value)
-    } else if (e.key === "ArrowDown") {
-      e.preventDefault()
-      const firstOption = dropdown.querySelector(".select-option")
-      if (firstOption) {
-        firstOption.focus()
-      }
-    } else if (e.key === "Enter") {
-      e.preventDefault()
-      const selectedOption =
-        dropdown.querySelector(".select-option.selected") || dropdown.querySelector(".select-option")
-      if (selectedOption) {
-        const currencyCode = selectedOption.dataset.code
-        selectCurrency(id, currencyCode, input, hiddenInput, dropdown)
-      }
-    }
-  })
-}
-
-// Funzione per popolare il dropdown con le opzioni
-function populateDropdown(dropdown, selectId) {
-  // Svuota il dropdown
-  dropdown.innerHTML = ""
-
-  // Aggiungi le opzioni
-  currencies.forEach((currency) => {
-    const option = createOptionElement(currency, selectId)
-    dropdown.appendChild(option)
-  })
-}
-
-// Funzione per creare un elemento opzione
-function createOptionElement(currency, selectId) {
-  const option = document.createElement("div")
-  option.className = "select-option"
-  option.tabIndex = 0 // Per permettere il focus da tastiera
-  option.dataset.code = currency.code
-
-  // Controlla se questa opzione è selezionata
-  const hiddenInput = document.getElementById(`${selectId}-value`)
-  if (currency.code === hiddenInput.value) {
-    option.classList.add("selected")
-  }
-
-  option.innerHTML = `
-    <span class="currency-symbol">${currency.symbol}</span>
-    <div class="currency-details">
-      <span class="currency-code">${currency.code}</span>
-      <span class="currency-name">${currency.name}</span>
-    </div>
-  `
-
-  // Aggiungi event listener per selezionare la valuta
-  // Usa mousedown invece di click per dispositivi mobili
-  option.addEventListener("mousedown", function (e) {
-    e.preventDefault() // Previene la perdita di focus
-    const input = document.getElementById(`${selectId}-select`)
-    const hiddenInput = document.getElementById(`${selectId}-value`)
-    const dropdown = document.getElementById(`${selectId}-dropdown`)
-    selectCurrency(selectId, currency.code, input, hiddenInput, dropdown)
-  })
-
-  // Aggiungi anche touchstart per dispositivi mobili
-  option.addEventListener("touchstart", function (e) {
-    e.preventDefault() // Previene comportamenti indesiderati su mobile
-    const input = document.getElementById(`${selectId}-select`)
-    const hiddenInput = document.getElementById(`${selectId}-value`)
-    const dropdown = document.getElementById(`${selectId}-dropdown`)
-    selectCurrency(selectId, currency.code, input, hiddenInput, dropdown)
-  })
-
-  // Gestisci la navigazione da tastiera all'interno del dropdown
-  option.addEventListener("keydown", function (e) {
-    if (e.key === "Enter" || e.key === " ") {
-      e.preventDefault()
-      const input = document.getElementById(`${selectId}-select`)
-      const hiddenInput = document.getElementById(`${selectId}-value`)
-      const dropdown = document.getElementById(`${selectId}-dropdown`)
-      selectCurrency(selectId, currency.code, input, hiddenInput, dropdown)
-    } else if (e.key === "ArrowDown") {
-      e.preventDefault()
-      const nextOption = this.nextElementSibling
-      if (nextOption) {
-        nextOption.focus()
-      }
-    } else if (e.key === "ArrowUp") {
-      e.preventDefault()
-      const prevOption = this.previousElementSibling
-      if (prevOption) {
-        prevOption.focus()
-      } else {
-        // Se siamo al primo elemento, torniamo all'input
-        document.getElementById(`${selectId}-select`).focus()
-      }
-    } else if (e.key === "Escape") {
-      e.preventDefault()
-      const dropdown = document.getElementById(`${selectId}-dropdown`)
-      dropdown.classList.remove("show")
-      document.getElementById(`${selectId}-select`).focus()
-    }
-  })
-
-  return option
-}
-
-// Funzione per filtrare le opzioni del dropdown
-function filterDropdownOptions(dropdown, searchTerm) {
-  const options = dropdown.querySelectorAll(".select-option")
-  let visibleCount = 0
-
-  // Se non c'è un termine di ricerca, mostra tutte le opzioni
-  if (!searchTerm) {
-    options.forEach((option) => {
-      option.style.display = ""
-      // Rimuovi l'evidenziazione
-      removeHighlighting(option)
-    })
-    return
-  }
-
-  options.forEach((option) => {
-    const code = option.dataset.code.toLowerCase()
-    const name = option.querySelector(".currency-name").textContent.toLowerCase()
-
-    if (code.includes(searchTerm) || name.includes(searchTerm)) {
-      option.style.display = ""
-      // Evidenzia il termine di ricerca
-      highlightSearchTerm(option, searchTerm)
-      visibleCount++
-    } else {
-      option.style.display = "none"
-    }
-  })
-
-  // Se non ci sono risultati, mostra un messaggio
-  if (visibleCount === 0) {
-    const noResults = document.createElement("div")
-    noResults.className = "no-results"
-    noResults.textContent = `Nessuna valuta trovata per "${searchTerm}"`
-    dropdown.innerHTML = ""
-    dropdown.appendChild(noResults)
-  }
-}
-
-// Funzione per evidenziare il termine di ricerca
-function highlightSearchTerm(option, searchTerm) {
-  const codeElement = option.querySelector(".currency-code")
-  const nameElement = option.querySelector(".currency-name")
-
-  codeElement.innerHTML = highlightText(codeElement.textContent, searchTerm)
-  nameElement.innerHTML = highlightText(nameElement.textContent, searchTerm)
-}
-
-// Funzione per rimuovere l'evidenziazione
-function removeHighlighting(option) {
-  const codeElement = option.querySelector(".currency-code")
-  const nameElement = option.querySelector(".currency-name")
-
-  codeElement.textContent = codeElement.textContent
-  nameElement.textContent = nameElement.textContent
-}
-
-// Funzione per evidenziare il testo
-function highlightText(text, searchTerm) {
-  if (!searchTerm) return text
-
-  const regex = new RegExp(`(${searchTerm})`, "gi")
-  return text.replace(regex, '<span class="highlight">$1</span>')
-}
-
-// Funzione per ripristinare le opzioni del dropdown
-function resetDropdownOptions(dropdown) {
-  // Rimuovi eventuali messaggi di "nessun risultato"
-  const noResults = dropdown.querySelector(".no-results")
-  if (noResults) {
-    dropdown.removeChild(noResults)
-    populateDropdown(dropdown, dropdown.id.split("-")[0])
-  }
-
-  // Mostra tutte le opzioni
-  const options = dropdown.querySelectorAll(".select-option")
-  options.forEach((option) => {
-    option.style.display = ""
-    removeHighlighting(option)
-  })
-}
-
-// Funzione per selezionare una valuta
-function selectCurrency(selectId, currencyCode, input, hiddenInput, dropdown) {
-  // Aggiorna il valore nascosto
-  hiddenInput.value = currencyCode
-
-  // Aggiorna il display dell'input
-  updateInputDisplay(input, currencyCode)
-
-  // Aggiorna la classe selected nelle opzioni
-  const options = dropdown.querySelectorAll(".select-option")
-  options.forEach((option) => {
-    if (option.dataset.code === currencyCode) {
-      option.classList.add("selected")
-    } else {
-      option.classList.remove("selected")
-    }
-  })
-
-  // Chiudi il dropdown
-  dropdown.classList.remove("show")
-
-  // Aggiorna la conversione se c'è già un importo
-  if (document.getElementById("amount").value) {
-    convert()
-  }
-
-  // Feedback visivo per la selezione
-  input.classList.add("selection-made")
-  setTimeout(() => {
-    input.classList.remove("selection-made")
-  }, 300)
-}
-
-// Funzione per aggiornare il display dell'input
-function updateInputDisplay(input, currencyCode) {
-  // Trova la valuta selezionata
-  const selectedCurrency = currencies.find((c) => c.code === currencyCode)
-
-  if (selectedCurrency) {
-    // Imposta il valore dell'input come il codice e il nome della valuta
-    input.value = `${selectedCurrency.symbol} ${selectedCurrency.code} - ${selectedCurrency.name}`
-    input.classList.add("has-value")
-  } else {
-    input.value = ""
-    input.classList.remove("has-value")
-  }
-}
-
-// Funzione per scambiare le valute
-function swapCurrencies() {
-  const fromValue = document.getElementById("from-value").value
-  const toValue = document.getElementById("to-value").value
-  const fromInput = document.getElementById("from-select")
-  const toInput = document.getElementById("to-select")
-
-  // Scambia i valori
-  document.getElementById("from-value").value = toValue
-  document.getElementById("to-value").value = fromValue
-
-  // Aggiorna i display degli input
-  updateInputDisplay(fromInput, toValue)
-  updateInputDisplay(toInput, fromValue)
-
-  // Aggiorna le classi selected nei dropdown
-  updateSelectedOptions("from", toValue)
-  updateSelectedOptions("to", fromValue)
-
-  // Se c'è già un risultato, aggiorna la conversione
-  if (!document.getElementById("result-container").classList.contains("hidden")) {
-    convert()
-  }
-
-  // Animazione del pulsante di scambio
-  const swapButton = document.querySelector(".swap-button")
-  swapButton.classList.add("active")
-  setTimeout(() => {
-    swapButton.classList.remove("active")
-  }, 300)
+// Inizializza le <select> semplici
+function initializeSimpleSelectors() {
+  const fromSelect = document.getElementById('from-select');
+  const toSelect = document.getElementById('to-select');
+  if (!fromSelect || !toSelect) return;
+  fromSelect.innerHTML = '';
+  toSelect.innerHTML = '';
+  currencies.forEach(currency => {
+    const optFrom = document.createElement('option');
+    optFrom.value = currency.code;
+    optFrom.textContent = `${currency.code} - ${currency.name}`;
+    fromSelect.appendChild(optFrom);
+    const optTo = document.createElement('option');
+    optTo.value = currency.code;
+    optTo.textContent = `${currency.code} - ${currency.name}`;
+    toSelect.appendChild(optTo);
+  });
+  fromSelect.value = 'EUR';
+  toSelect.value = 'USD';
 }
 
 // Funzione per aggiornare le opzioni selezionate
@@ -365,14 +57,16 @@ function updateSelectedOptions(selectId, currencyCode) {
 
 // Funzione per convertire le valute
 function convert() {
-  const amount = document.getElementById("amount").value
-  const from = document.getElementById("from-value").value
-  const to = document.getElementById("to-value").value
-
-  // Validazione dell'input
-  if (!amount || isNaN(amount) || amount <= 0) {
-    showError("Inserisci un importo valido maggiore di zero")
-    return
+  const amountInput = document.getElementById('amount');
+  const fromSelect = document.getElementById('from-select');
+  const toSelect = document.getElementById('to-select');
+  if (!amountInput || !fromSelect || !toSelect) return;
+  const amount = parseFloat(amountInput.value);
+  const from = fromSelect.value;
+  const to = toSelect.value;
+  if (isNaN(amount) || amount <= 0) {
+    showError('Inserisci un importo valido');
+    return;
   }
 
   // Mostra lo stato di caricamento
