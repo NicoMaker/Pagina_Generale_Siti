@@ -1,3 +1,4 @@
+
 // At the top of the file, add a new variable to track the next available ID
 const partecipanti = [];
 let modalitàVittoria = "max";
@@ -103,54 +104,9 @@ document.addEventListener("DOMContentLoaded", () => {
   aggiornaListaPartecipanti();
   aggiornaSelezionePartecipante();
 
-  // --- Ricerca partecipanti nella select ---
-  const searchInput = document.getElementById("search-participant");
-  if (searchInput) {
-    searchInput.addEventListener("input", function () {
-      filtraPartecipantiSelect(this.value);
-    });
-  }
-
   // Initialize the footer with the accessibility button
   initializeFooter();
-
-  // --- Autocomplete custom per selezione partecipante ---
-  setupAutocompletePartecipante();
-
-  // --- Combo custom con ricerca interna ---
-  setupCustomComboPartecipante();
 });
-
-function filtraPartecipantiSelect(query) {
-  const select = document.getElementById("selected-participant");
-  if (!select) return;
-  const lowerQuery = query.trim().toLowerCase();
-  // Salva il valore selezionato
-  const selectedValue = select.value;
-  // Ricostruisci le opzioni
-  select.innerHTML = '';
-  select.appendChild(new Option('Seleziona un partecipante', '-1'));
-  select.appendChild(new Option('Tutti', 'all'));
-  partecipanti.forEach((p, idx) => {
-    if (!lowerQuery || p.nome.toLowerCase().includes(lowerQuery)) {
-      const opt = new Option(p.nome, idx);
-      select.appendChild(opt);
-    }
-  });
-  // Ripristina la selezione se ancora presente
-  if ([...select.options].some(opt => opt.value === selectedValue)) {
-    select.value = selectedValue;
-  }
-}
-
-// Modifica aggiornaSelezionePartecipante per chiamare il filtro se c'è testo
-function aggiornaSelezionePartecipante() {
-  const select = document.getElementById("selected-participant");
-  if (!select) return;
-  const searchInput = document.getElementById("search-participant");
-  const query = searchInput ? searchInput.value : '';
-  filtraPartecipantiSelect(query);
-}
 
 // Function to initialize the footer with the accessibility button
 function initializeFooter() {
@@ -1145,19 +1101,6 @@ function aggiornaListaPartecipanti() {
     listItem.appendChild(buttonsContainer);
     participantList.appendChild(listItem);
   });
-
-  // Mantieni la selezione se possibile
-  const selectedSpan = document.getElementById('custom-combo-selected');
-  if (selectedSpan && customComboSelectedValue !== -1 && customComboSelectedValue !== 'all') {
-    // Trova la posizione attuale del partecipante selezionato nella classifica
-    const idx = parseInt(customComboSelectedValue);
-    const sorted = getSortedPartecipanti();
-    const p = partecipanti[idx];
-    const pos = sorted.findIndex(x => x === p);
-    if (!isNaN(idx) && partecipanti[idx] && pos !== -1) {
-      selectedSpan.textContent = `${pos + 1}. ${partecipanti[idx].nome} (${partecipanti[idx].punti})`;
-    }
-  }
 }
 
 // Update the aggiornaSelezionePartecipante function to display the ID
@@ -1186,290 +1129,78 @@ function aggiornaSelezionePartecipante() {
   });
 }
 
-// --- Autocomplete custom per selezione partecipante ---
-let selectedParticipantIndex = -1;
-
-function setupAutocompletePartecipante() {
-  const input = document.getElementById('selected-participant-autocomplete');
-  const list = document.getElementById('autocomplete-list');
-  if (!input || !list) return;
-
-  function renderList(filter = '') {
-    list.innerHTML = '';
-    let results = [];
-    const query = filter.trim().toLowerCase();
-    if (query === '') {
-      results = partecipanti;
-    } else {
-      results = partecipanti.filter(p => p.nome.toLowerCase().includes(query));
-    }
-    // Opzione "Tutti"
-    const allLi = document.createElement('li');
-    allLi.textContent = 'Tutti';
-    allLi.dataset.value = 'all';
-    allLi.className = 'autocomplete-item';
-    list.appendChild(allLi);
-    // Partecipanti
-    results.forEach((p, idx) => {
-      const li = document.createElement('li');
-      li.textContent = p.nome;
-      li.dataset.value = idx;
-      li.className = 'autocomplete-item';
-      list.appendChild(li);
-    });
-    list.style.display = results.length > 0 || query === '' ? 'block' : 'none';
-  }
-
-  input.addEventListener('input', function () {
-    renderList(this.value);
-  });
-
-  input.addEventListener('focus', function () {
-    renderList(this.value);
-  });
-
-  input.addEventListener('blur', function () {
-    setTimeout(() => { list.style.display = 'none'; }, 150);
-  });
-
-  list.addEventListener('mousedown', function (e) {
-    if (e.target && e.target.matches('li.autocomplete-item')) {
-      input.value = e.target.textContent;
-      input.dataset.selectedValue = e.target.dataset.value;
-      selectedParticipantIndex = e.target.dataset.value;
-      list.style.display = 'none';
-    }
-  });
-
-  // Tastiera: frecce e invio
-  input.addEventListener('keydown', function (e) {
-    const items = Array.from(list.querySelectorAll('li'));
-    let idx = items.findIndex(li => li.classList.contains('active'));
-    if (e.key === 'ArrowDown') {
-      e.preventDefault();
-      if (idx < items.length - 1) idx++;
-      else idx = 0;
-      items.forEach(li => li.classList.remove('active'));
-      if (items[idx]) items[idx].classList.add('active');
-    } else if (e.key === 'ArrowUp') {
-      e.preventDefault();
-      if (idx > 0) idx--;
-      else idx = items.length - 1;
-      items.forEach(li => li.classList.remove('active'));
-      if (items[idx]) items[idx].classList.add('active');
-    } else if (e.key === 'Enter') {
-      if (idx >= 0 && items[idx]) {
-        input.value = items[idx].textContent;
-        input.dataset.selectedValue = items[idx].dataset.value;
-        selectedParticipantIndex = items[idx].dataset.value;
-        list.style.display = 'none';
-        input.blur();
-      }
-    }
-  });
-}
-
-// --- Combo custom con ricerca interna ---
-let customComboSelectedValue = -1;
-
-function setupCustomComboPartecipante() {
-  const comboInput = document.getElementById('custom-combo-participant');
-  const dropdown = document.getElementById('custom-combo-dropdown');
-  const searchInput = document.getElementById('custom-combo-search');
-  const list = document.getElementById('custom-combo-list');
-  const selectedSpan = document.getElementById('custom-combo-selected');
-  if (!comboInput || !dropdown || !searchInput || !list || !selectedSpan) return;
-
-  let isTouchingList = false;
-
-  function renderList(filter = '') {
-    list.innerHTML = '';
-    let results = [];
-    const query = filter.trim().toLowerCase();
-    // Ordina alfabeticamente per la visualizzazione della combo
-    const sortedAlpha = [...partecipanti].sort((a, b) => a.nome.localeCompare(b.nome));
-    if (query === '') {
-      results = sortedAlpha;
-    } else {
-      results = sortedAlpha.filter(p => p.nome.toLowerCase().includes(query));
-    }
-    // Opzione "Tutti"
-    const allLi = document.createElement('li');
-    allLi.textContent = 'Tutti';
-    allLi.dataset.value = 'all';
-    allLi.className = 'custom-combo-item';
-    list.appendChild(allLi);
-    // Partecipanti in ordine alfabetico, senza numeri o punti
-    if (results.length > 0) {
-      results.forEach((p) => {
-        const idx = partecipanti.indexOf(p);
-        const li = document.createElement('li');
-        li.textContent = p.nome;
-        li.dataset.value = idx;
-        li.className = 'custom-combo-item';
-        list.appendChild(li);
-      });
-    } else {
-      const li = document.createElement('li');
-      li.textContent = 'Nessun partecipante trovato';
-      li.className = 'custom-combo-item custom-combo-empty';
-      li.style.color = '#888';
-      li.style.cursor = 'default';
-      list.appendChild(li);
-    }
-  }
-
-  function openDropdown() {
-    dropdown.style.display = 'block';
-    comboInput.setAttribute('aria-expanded', 'true');
-    searchInput.value = '';
-    renderList();
-    setTimeout(() => searchInput.focus(), 50);
-  }
-  function closeDropdown() {
-    dropdown.style.display = 'none';
-    comboInput.setAttribute('aria-expanded', 'false');
-  }
-
-  comboInput.addEventListener('click', function () {
-    if (dropdown.style.display === 'block') closeDropdown();
-    else openDropdown();
-  });
-  comboInput.addEventListener('touchstart', function (e) {
-    e.preventDefault();
-    if (dropdown.style.display === 'block') closeDropdown();
-    else openDropdown();
-  }, {passive: false});
-
-  comboInput.addEventListener('keydown', function (e) {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      if (dropdown.style.display === 'block') closeDropdown();
-      else openDropdown();
-    }
-    if (e.key === 'ArrowDown') {
-      e.preventDefault();
-      openDropdown();
-      const first = list.querySelector('.custom-combo-item:not(.custom-combo-empty)');
-      if (first) first.classList.add('active');
-    }
-    if (e.key === 'Escape') closeDropdown();
-  });
-  document.addEventListener('click', function (e) {
-    if (!comboInput.contains(e.target) && !dropdown.contains(e.target)) closeDropdown();
-  });
-
-  list.addEventListener('touchstart', function () { isTouchingList = true; });
-  list.addEventListener('touchend', function () { setTimeout(() => { isTouchingList = false; }, 100); });
-  searchInput.addEventListener('blur', function () {
-    setTimeout(() => { if (!isTouchingList) closeDropdown(); }, 120);
-  });
-
-  searchInput.addEventListener('input', function () {
-    renderList(this.value);
-  });
-  searchInput.addEventListener('keydown', function (e) {
-    const items = Array.from(list.querySelectorAll('.custom-combo-item:not(.custom-combo-empty)'));
-    let idx = items.findIndex(li => li.classList.contains('active'));
-    if (e.key === 'ArrowDown') {
-      e.preventDefault();
-      if (idx < items.length - 1) idx++;
-      else idx = 0;
-      items.forEach(li => li.classList.remove('active'));
-      if (items[idx]) items[idx].classList.add('active');
-    } else if (e.key === 'ArrowUp') {
-      e.preventDefault();
-      if (idx > 0) idx--;
-      else idx = items.length - 1;
-      items.forEach(li => li.classList.remove('active'));
-      if (items[idx]) items[idx].classList.add('active');
-    } else if (e.key === 'Enter') {
-      if (idx >= 0 && items[idx]) {
-        items[idx].click();
-      }
-    } else if (e.key === 'Escape') {
-      closeDropdown();
-      comboInput.focus();
-    }
-  });
-  // Selezione con mouse
-  list.addEventListener('mousedown', function (e) {
-    if (e.target && e.target.matches('li.custom-combo-item') && !e.target.classList.contains('custom-combo-empty')) {
-      selectedSpan.textContent = e.target.textContent;
-      customComboSelectedValue = e.target.dataset.value;
-      closeDropdown();
-      aggiornaPlaceholderPunti();
-    }
-  });
-  // Selezione con touch
-  list.addEventListener('touchend', function (e) {
-    const touch = e.changedTouches[0];
-    const target = document.elementFromPoint(touch.clientX, touch.clientY);
-    if (target && target.matches('li.custom-combo-item') && !target.classList.contains('custom-combo-empty')) {
-      selectedSpan.textContent = target.textContent;
-      customComboSelectedValue = target.dataset.value;
-      closeDropdown();
-      aggiornaPlaceholderPunti();
-    }
-  });
-}
-
-function aggiornaPlaceholderPunti() {
-  const idx = getSelectedParticipantIndex();
-  if (idx === -1 || idx === 'all') {
-    pointsInput.placeholder = '0';
-    return;
-  }
-  const partecipante = partecipanti[idx];
-  pointsInput.placeholder = partecipante && partecipante.punti > 0 ? partecipante.punti : '0';
-  pointsInput.value = '';
-}
-
-// Quando inizi a digitare, svuota l'input
-pointsInput.addEventListener('focus', function() {
-  this.value = '';
-});
-
-// Utility per ottenere l'indice selezionato (o 'all')
-function getSelectedParticipantIndex() {
-  if (customComboSelectedValue === 'all') return 'all';
-  const idx = parseInt(customComboSelectedValue);
-  return isNaN(idx) ? -1 : idx;
-}
-
-// Modifica le funzioni aggiungiPunti/togliPunti per usare getSelectedParticipantIndex()
+// Funzioni per la gestione dei punti
 function aggiungiPunti() {
-  const idx = getSelectedParticipantIndex();
-  const punti = parseInt(pointsInput.value, 10) || 0;
-  if (idx === -1) {
-    showToast('Seleziona un partecipante valido!', 'error');
+  if (!pointsInput || !selectedParticipantSelect) return;
+
+  const punti = Number.parseFloat(pointsInput.value);
+  const selectedParticipantIndex = selectedParticipantSelect.value;
+
+  if (isNaN(punti) || punti < 0) {
+    showToast("Inserisci un valore valido", "error");
+    pointsInput.focus();
     return;
   }
-  if (idx === 'all') {
-    partecipanti.forEach(p => p.punti += punti);
-  } else {
-    partecipanti[idx].punti += punti;
+
+  if (selectedParticipantIndex === "-1") {
+    showToast("Seleziona un partecipante", "warning");
+    selectedParticipantSelect.focus();
+    return;
   }
+
+  if (selectedParticipantIndex === "all") {
+    for (const partecipante of partecipanti) {
+      partecipante.punti += punti;
+    }
+    showToast(`${punti} punti aggiunti a tutti i partecipanti`, "success");
+  } else {
+    const index = Number.parseInt(selectedParticipantIndex);
+    partecipanti[index].punti += punti;
+    showToast(
+      `${punti} punti aggiunti a ${partecipanti[index].nome}`,
+      "success"
+    );
+  }
+
   aggiornaListaPartecipanti();
-  pointsInput.value = '';
+  pointsInput.value = "0";
   pointsInput.focus();
+  salvaDati();
 }
 
 function togliPunti() {
-  const idx = getSelectedParticipantIndex();
-  const punti = parseInt(pointsInput.value, 10) || 0;
-  if (idx === -1) {
-    showToast('Seleziona un partecipante valido!', 'error');
+  if (!pointsInput || !selectedParticipantSelect) return;
+
+  const punti = Number.parseFloat(pointsInput.value);
+  const selectedParticipantIndex = selectedParticipantSelect.value;
+
+  if (isNaN(punti) || punti < 0) {
+    showToast("Inserisci un valore valido", "error");
+    pointsInput.focus();
     return;
   }
-  if (idx === 'all') {
-    partecipanti.forEach(p => p.punti = Math.max(0, p.punti - punti));
-  } else {
-    partecipanti[idx].punti = Math.max(0, partecipanti[idx].punti - punti);
+
+  if (selectedParticipantIndex === "-1") {
+    showToast("Seleziona un partecipante", "warning");
+    selectedParticipantSelect.focus();
+    return;
   }
+
+  if (selectedParticipantIndex === "all") {
+    for (const partecipante of partecipanti) {
+      partecipante.punti -= punti;
+    }
+    showToast(`${punti} punti tolti a tutti i partecipanti`, "success");
+  } else {
+    const index = Number.parseInt(selectedParticipantIndex);
+    partecipanti[index].punti -= punti;
+    showToast(`${punti} punti tolti a ${partecipanti[index].nome}`, "success");
+  }
+
   aggiornaListaPartecipanti();
-  pointsInput.value = '';
+  pointsInput.value = "0";
   pointsInput.focus();
+  salvaDati();
 }
 
 function impostaModalitàVittoria(modalità) {
@@ -1750,93 +1481,286 @@ function hideFileFeedbackModal() {
 
 // Replace the existing caricaDaFile function with this enhanced version
 function caricaDaFile() {
-  const input = document.createElement('input');
-  input.type = 'file';
-  input.accept = '.json,.txt';
-  input.onchange = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
+  // Crea un input di tipo file
+  const input = document.createElement("input");
+  input.type = "file";
+  input.accept = ".txt,.json";
+
+  // Gestisci il caricamento del file
+  input.addEventListener("change", (event) => {
+    const file = event.target.files[0];
+    if (!file) {
+      showToast("Nessun file selezionato", "warning");
+      return;
+    }
+
+    // Show loading toast
+    showToast("Caricamento file in corso...", "info");
+
     const reader = new FileReader();
-    reader.onload = (ev) => {
+
+    reader.onload = (e) => {
       try {
-        const content = ev.target.result;
-        let data;
-        if (file.name.endsWith('.json')) {
-          data = JSON.parse(content);
-          if (data.partecipanti && Array.isArray(data.partecipanti)) {
-            partecipanti.length = 0;
-            data.partecipanti.forEach(p => partecipanti.push({...p}));
+        const fileContent = e.target.result;
+        const fileExtension = file.name.split(".").pop().toLowerCase();
+
+        // Results tracking
+        const results = {
+          total: 0,
+          success: [],
+          warnings: [],
+          errors: [],
+        };
+
+        // Process based on file type
+        if (fileExtension === "json") {
+          // Parse JSON file
+          const jsonData = JSON.parse(fileContent);
+
+          if (!Array.isArray(jsonData)) {
+            throw new Error(
+              "Il file JSON non contiene un array di partecipanti"
+            );
           }
-          if (typeof data.modalita === 'string') {
-            modalitàVittoria = data.modalita.trim();
-            // Aggiorna radio
-            const radioMax = document.querySelector('input[name="winning-mode"][value="max"]');
-            const radioMin = document.querySelector('input[name="winning-mode"][value="min"]');
-            if (modalitàVittoria === 'min' && radioMin) radioMin.checked = true;
-            else if (modalitàVittoria === 'max' && radioMax) radioMax.checked = true;
-          }
-        } else {
-          // TXT: prima riga modalita, poi posizione. nome\tpunti
-          const lines = content.split(/\r?\n/).filter(l => l.trim() !== '');
-          let startIdx = 0;
-          if (lines[0] && lines[0].startsWith('modalita:')) {
-            modalitàVittoria = lines[0].split(':')[1].trim();
-            // Aggiorna radio
-            const radioMax = document.querySelector('input[name="winning-mode"][value="max"]');
-            const radioMin = document.querySelector('input[name="winning-mode"][value="min"]');
-            if (modalitàVittoria === 'min' && radioMin) radioMin.checked = true;
-            else if (modalitàVittoria === 'max' && radioMax) radioMax.checked = true;
-            startIdx = 1;
-          }
-          partecipanti.length = 0;
-          for (let i = startIdx; i < lines.length; i++) {
-            // formato: posizione. nome\tpunti
-            const match = lines[i].match(/^\s*\d+\.\s*(.+)\t(\d+)$/);
-            if (match) {
-              const nome = match[1].trim();
-              const punti = parseInt(match[2], 10) || 0;
-              partecipanti.push({ nome, punti });
+
+          results.total = jsonData.length;
+
+          // Process each participant
+          jsonData.forEach((item) => {
+            try {
+              // Validate data
+              if (!item.nome || item.punti === undefined) {
+                results.errors.push({
+                  message: `Dati incompleti: ${JSON.stringify(item)}`,
+                });
+                return;
+              }
+
+              const nome = item.nome.trim();
+              const punti = Number.parseFloat(item.punti) || 0;
+
+              // Check for duplicates by name
+              const existingIndex = partecipanti.findIndex(
+                (p) => p.nome === nome
+              );
+
+              if (existingIndex >= 0) {
+                // Update existing participant
+                partecipanti[existingIndex].punti = punti;
+
+                results.warnings.push({
+                  nome,
+                  id: partecipanti[existingIndex].id,
+                  punti,
+                });
+              } else {
+                // Add new participant with next available ID
+                const id = nextParticipantId++;
+                partecipanti.push({ id, nome, punti });
+
+                results.success.push({
+                  nome,
+                  id,
+                  punti,
+                });
+              }
+            } catch (itemError) {
+              results.errors.push({
+                message: `Errore nell'elaborazione: ${itemError.message}`,
+              });
             }
-          }
+          });
+
+          // Riorganizza gli ID dopo il caricamento
+          riorganizzaIds();
+        } else {
+          // Process text file (default)
+          const righe = fileContent
+            .split("\n")
+            .filter((riga) => riga.trim() !== "");
+          results.total = righe.length;
+
+          righe.forEach((riga) => {
+            try {
+              // Format: nome:punti
+              const parti = riga.split(":");
+              const nome = parti[0].trim();
+              const punti = Number.parseFloat(parti[1]) || 0;
+
+              if (!nome) {
+                results.errors.push({
+                  message: `Nome mancante: ${riga}`,
+                });
+                return;
+              }
+
+              // Check for duplicates by name
+              const existingIndex = partecipanti.findIndex(
+                (p) => p.nome === nome
+              );
+
+              if (existingIndex >= 0) {
+                // Update existing participant
+                partecipanti[existingIndex].punti = punti;
+
+                results.warnings.push({
+                  nome,
+                  id: partecipanti[existingIndex].id,
+                  punti,
+                });
+              } else {
+                // Add new participant with next available ID
+                const id = nextParticipantId++;
+                partecipanti.push({ id, nome, punti });
+
+                results.success.push({
+                  nome,
+                  id,
+                  punti,
+                });
+              }
+            } catch (rigaError) {
+              results.errors.push({
+                message: `Errore nell'elaborazione: ${rigaError.message}`,
+              });
+            }
+          });
+
+          // Riorganizza gli ID dopo il caricamento
+          riorganizzaIds();
         }
+
+        // Update UI
         aggiornaListaPartecipanti();
-        setupCustomComboPartecipante();
-      } catch (err) {
-        showToast('Errore nel caricamento del file', 'error');
+        aggiornaSelezionePartecipante();
+        salvaDati();
+
+        // Show feedback modal
+        showFileFeedbackModal(results);
+      } catch (error) {
+        console.error("Errore durante il caricamento del file:", error);
+        showToast(
+          `Errore durante il caricamento del file: ${error.message}`,
+          "error"
+        );
       }
     };
+
+    reader.onerror = () => {
+      showToast("Errore nella lettura del file", "error");
+    };
+
+    // Read the file based on its type
     reader.readAsText(file);
-  };
+  });
+
+  // Simula il clic per aprire il dialogo file
   input.click();
 }
 
 // Update the salvaSuFile function to support JSON export
 function salvaSuFile() {
-  const data = {
-    partecipanti: partecipanti,
-    modalita: modalitàVittoria // sempre presente
-  };
-  const json = JSON.stringify(data, null, 2);
-  const blob = new Blob([json], { type: 'application/json' });
-  const link = document.createElement('a');
-  link.href = URL.createObjectURL(blob);
-  link.download = 'punteggi.json';
-  link.click();
-  setTimeout(() => URL.revokeObjectURL(link.href), 100);
-}
+  if (partecipanti.length === 0) {
+    showToast("Nessun partecipante da salvare", "error");
+    return;
+  }
 
-function salvaSuTxt() {
-  let txt = `modalita: ${modalitàVittoria}\n`;
-  const sorted = getSortedPartecipanti();
-  sorted.forEach((p, i) => {
-    txt += `${i + 1}. ${p.nome}\t${p.punti}\n`;
+  // Ask user for file format
+  const formatOptions = document.createElement("div");
+  formatOptions.className = "format-options";
+  formatOptions.innerHTML = `
+    <div class="format-option">
+      <input type="radio" id="format-txt" name="format" value="txt" checked>
+      <label for="format-txt">File di testo (.txt)</label>
+    </div>
+    <div class="format-option">
+      <input type="radio" id="format-json" name="format" value="json">
+      <label for="format-json">File JSON (.json)</label>
+    </div>
+  `;
+
+  // Create a custom dialog
+  const dialog = document.createElement("div");
+  dialog.className = "custom-dialog";
+  dialog.innerHTML = `
+    <div class="dialog-content">
+      <h3>Seleziona formato file</h3>
+      <div class="dialog-body"></div>
+      <div class="dialog-actions">
+        <button class="btn btn-secondary" id="cancel-format">Annulla</button>
+        <button class="btn btn-primary" id="confirm-format">Salva</button>
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(dialog);
+  dialog.querySelector(".dialog-body").appendChild(formatOptions);
+
+  // Add event listeners
+  const cancelBtn = dialog.querySelector("#cancel-format");
+  const confirmBtn = dialog.querySelector("#confirm-format");
+
+  cancelBtn.addEventListener("click", () => {
+    document.body.removeChild(dialog);
   });
-  const blob = new Blob([txt], { type: 'text/plain' });
-  const link = document.createElement('a');
-  link.href = URL.createObjectURL(blob);
-  link.download = 'punteggi.txt';
-  link.click();
-  setTimeout(() => URL.revokeObjectURL(link.href), 100);
+
+  confirmBtn.addEventListener("click", () => {
+    const format = dialog.querySelector('input[name="format"]:checked').value;
+    document.body.removeChild(dialog);
+
+    // Save file in selected format
+    if (format === "json") {
+      saveAsJson();
+    } else {
+      saveAsTxt();
+    }
+  });
+
+  // Show dialog
+  dialog.style.display = "flex";
+
+  // Functions to save in different formats
+  function saveAsTxt() {
+    // Crea il contenuto in formato leggibile
+    const contenuto = partecipanti
+      .map((partecipante) => `${partecipante.nome}:${partecipante.punti}`)
+      .join("\n");
+
+    // Crea un blob per il download
+    const blob = new Blob([contenuto], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+
+    // Crea un link temporaneo per il download
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "partecipanti.txt";
+    a.click();
+
+    // Revoca l'URL per liberare memoria
+    URL.revokeObjectURL(url);
+
+    showToast("File salvato con successo", "success");
+  }
+
+  function saveAsJson() {
+    // Create JSON content
+    const jsonContent = JSON.stringify(partecipanti, null, 2);
+
+    // Create blob for download
+    const blob = new Blob([jsonContent], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+
+    // Create temporary link for download
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "partecipanti.json";
+    a.click();
+
+    // Revoca URL to free memory
+    URL.revokeObjectURL(url);
+
+    showToast("File JSON salvato con successo", "success");
+  }
 }
 
 // Remove the old reset functions and replace with these stubs that call the new modal
@@ -2000,13 +1924,4 @@ function salvaModificaNome() {
   hideEditNameModal();
 
   showToast(`Nome modificato da "${vecchioNome}" a "${nuovoNome}"`, "success");
-}
-
-function getSortedPartecipanti() {
-  // Ordina in base alla modalità classifica
-  if (modalitàVittoria === 'min') {
-    return [...partecipanti].sort((a, b) => a.punti - b.punti || a.nome.localeCompare(b.nome));
-  } else {
-    return [...partecipanti].sort((a, b) => b.punti - a.punti || a.nome.localeCompare(b.nome));
-  }
 }

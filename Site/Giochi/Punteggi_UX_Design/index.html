@@ -80,17 +80,11 @@
         </div>
 
         <div class="form-group">
-          <label for="custom-combo-participant">Seleziona Partecipante</label>
-          <div class="custom-combo-wrapper" style="position:relative;">
-            <div id="custom-combo-participant" class="custom-combo-input" tabindex="0" aria-haspopup="listbox" aria-expanded="false">
-              <span id="custom-combo-selected">Seleziona un partecipante</span>
-              <span class="custom-combo-arrow">▼</span>
-            </div>
-            <div id="custom-combo-dropdown" class="custom-combo-dropdown" style="display:none;position:absolute;top:100%;left:0;right:0;z-index:20;">
-              <input type="text" id="custom-combo-search" class="custom-combo-search" placeholder="Cerca partecipante..." autocomplete="off" />
-              <ul id="custom-combo-list" class="custom-combo-list" role="listbox" style="max-height:180px;overflow-y:auto;"></ul>
-            </div>
-          </div>
+          <label for="selected-participant">Seleziona Partecipante</label>
+          <select id="selected-participant" aria-label="Seleziona partecipante">
+            <option value="-1">Seleziona un partecipante</option>
+            <option value="all">Tutti</option>
+          </select>
         </div>
 
         <div class="button-group">
