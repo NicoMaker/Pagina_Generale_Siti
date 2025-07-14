@@ -6,7 +6,7 @@ class WheelOfFortune {
     }
 
     init() {
-        this.loadFromLocalStorage();
+        this.loadFromStorage();
         this.bindEvents();
         this.updateWheel();
         this.updateNamesList();
@@ -27,20 +27,26 @@ class WheelOfFortune {
         document.getElementById('exportJsonBtn').addEventListener('click', () => this.exportJson());
     }
 
-    saveToLocalStorage = () =>
-        localStorage.setItem('wheelOfFortuneNames', JSON.stringify(this.names));
+    saveToStorage() {
+        try {
+            const data = JSON.stringify(this.names);
+            // Usa variabile in memoria invece di localStorage
+            window.wheelData = data;
+        } catch (e) {
+            console.error('Errore nel salvataggio:', e);
+        }
+    }
 
-    loadFromLocalStorage() {
-        const saved = localStorage.getItem('wheelOfFortuneNames');
-        if (saved) {
-            try {
-                const parsed = JSON.parse(saved);
+    loadFromStorage() {
+        try {
+            if (window.wheelData) {
+                const parsed = JSON.parse(window.wheelData);
                 if (Array.isArray(parsed)) {
                     this.names = parsed.slice(0, 100);
                 }
-            } catch (e) {
-                console.error('Errore caricando da localStorage:', e);
             }
+        } catch (e) {
+            console.error('Errore nel caricamento:', e);
         }
     }
 
@@ -67,7 +73,7 @@ class WheelOfFortune {
             input.value = '';
             this.updateWheel();
             this.updateNamesList();
-            this.saveToLocalStorage();
+            this.saveToStorage();
             this.hideResult();
         }
     }
@@ -83,7 +89,7 @@ class WheelOfFortune {
             this.names[index] = newName.trim();
             this.updateWheel();
             this.updateNamesList();
-            this.saveToLocalStorage();
+            this.saveToStorage();
             this.hideResult();
         }
     }
@@ -97,7 +103,7 @@ class WheelOfFortune {
         this.names.splice(index, 1);
         this.updateWheel();
         this.updateNamesList();
-        this.saveToLocalStorage();
+        this.saveToStorage();
         this.hideResult();
     }
 
@@ -109,7 +115,7 @@ class WheelOfFortune {
 
         if (confirm('Sei sicuro di voler cancellare tutti i nomi?')) {
             this.names = [];
-            localStorage.removeItem('wheelOfFortuneNames');
+            window.wheelData = null;
             this.updateWheel();
             this.updateNamesList();
             this.hideResult();
@@ -199,22 +205,22 @@ class WheelOfFortune {
         const namesList = document.getElementById('namesList');
         if (this.names.length === 0) {
             namesList.innerHTML = `
-                <div class="empty-state">
-                    <div class="emoji">📝</div>
-                    <p>Nessun nome ancora.<br>Aggiungi alcuni nomi per iniziare!</p>
-                </div>`;
+                        <div class="empty-state">
+                            <div class="emoji">📝</div>
+                            <p>Nessun nome ancora.<br>Aggiungi alcuni nomi per iniziare!</p>
+                        </div>`;
             return;
         }
 
         namesList.innerHTML = this.names.map((name, index) => `
-            <div class="name-item">
-                <span class="name-text">${name}</span>
-                <div class="name-actions">
-                    <button class="btn btn-secondary btn-small" onclick="wheel.editName(${index})">✏️</button>
-                    <button class="btn btn-danger btn-small" onclick="wheel.deleteName(${index})">🗑️</button>
-                </div>
-            </div>
-        `).join('');
+                    <div class="name-item">
+                        <span class="name-text">${name}</span>
+                        <div class="name-actions">
+                            <button class="btn btn-secondary btn-small" onclick="wheel.editName(${index})">✏️</button>
+                            <button class="btn btn-danger btn-small" onclick="wheel.deleteName(${index})">🗑️</button>
+                        </div>
+                    </div>
+                `).join('');
     }
 
     spinWheel() {
@@ -267,8 +273,9 @@ class WheelOfFortune {
         resultDisplay.classList.add('show');
     }
 
-    hideResult = () =>
+    hideResult() {
         document.getElementById('resultDisplay').classList.remove('show');
+    }
 
     loadFile(event) {
         const file = event.target.files[0];
@@ -294,11 +301,11 @@ class WheelOfFortune {
                 this.names = [...this.names, ...namesToAdd];
                 this.updateWheel();
                 this.updateNamesList();
-                this.saveToLocalStorage();
+                this.saveToStorage();
                 this.hideResult();
 
                 alert(`Caricati ${namesToAdd.length} nomi!${uniqueNames.length > namesToAdd.length ? ' (Limite di 100 raggiunto)' : ''}`);
-            } catch {
+            } catch (err) {
                 alert('Errore nel caricamento del file. Controlla il formato.');
             }
         };
@@ -328,5 +335,5 @@ class WheelOfFortune {
     }
 }
 
-// Inizializza
+// Inizializza l'applicazione
 const wheel = new WheelOfFortune();
