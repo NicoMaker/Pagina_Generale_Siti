@@ -24,13 +24,12 @@ class WheelOfFortune {
             document.getElementById('fileInput').click();
         });
         document.getElementById('exportTxtBtn').addEventListener('click', () => this.exportTxt());
-        document.getElementById('exportJsonBtn').addEventListener('click', () => this.exportJson());
+        document.getElementById('exportJsonBtn')?.addEventListener('click', () => this.exportJson());
     }
 
     saveToStorage() {
         try {
             const data = JSON.stringify(this.names);
-            // Usa variabile in memoria invece di localStorage
             window.wheelData = data;
         } catch (e) {
             console.error('Errore nel salvataggio:', e);
@@ -100,11 +99,13 @@ class WheelOfFortune {
             return;
         }
 
-        this.names.splice(index, 1);
-        this.updateWheel();
-        this.updateNamesList();
-        this.saveToStorage();
-        this.hideResult();
+        if (confirm(`Vuoi eliminare "${this.names[index]}"?`)) {
+            this.names.splice(index, 1);
+            this.updateWheel();
+            this.updateNamesList();
+            this.saveToStorage();
+            this.hideResult();
+        }
     }
 
     clearAll() {
@@ -205,22 +206,22 @@ class WheelOfFortune {
         const namesList = document.getElementById('namesList');
         if (this.names.length === 0) {
             namesList.innerHTML = `
-                        <div class="empty-state">
-                            <div class="emoji">📝</div>
-                            <p>Nessun nome ancora.<br>Aggiungi alcuni nomi per iniziare!</p>
-                        </div>`;
+                <div class="empty-state">
+                    <div class="emoji">📝</div>
+                    <p>Nessun nome ancora.<br>Aggiungi alcuni nomi per iniziare!</p>
+                </div>`;
             return;
         }
 
         namesList.innerHTML = this.names.map((name, index) => `
-                    <div class="name-item">
-                        <span class="name-text">${name}</span>
-                        <div class="name-actions">
-                            <button class="btn btn-secondary btn-small" onclick="wheel.editName(${index})">✏️</button>
-                            <button class="btn btn-danger btn-small" onclick="wheel.deleteName(${index})">🗑️</button>
-                        </div>
-                    </div>
-                `).join('');
+            <div class="name-item">
+                <span class="name-text">${name}</span>
+                <div class="name-actions">
+                    <button class="btn btn-secondary btn-small" onclick="wheel.editName(${index})">✏️</button>
+                    <button class="btn btn-danger btn-small" onclick="wheel.deleteName(${index})">🗑️</button>
+                </div>
+            </div>
+        `).join('');
     }
 
     spinWheel() {
@@ -231,7 +232,6 @@ class WheelOfFortune {
         spinButton.disabled = true;
         spinButton.textContent = '🔄 Girando...';
 
-        // Disabilita i pulsanti di modifica/rimozione
         document.querySelectorAll('.btn-danger, .btn-secondary').forEach(btn => btn.disabled = true);
         document.getElementById('clearAllBtn').disabled = true;
 
@@ -258,7 +258,6 @@ class WheelOfFortune {
             spinButton.disabled = false;
             spinButton.textContent = '🎲 Gira la Ruota!';
 
-            // Riattiva i pulsanti
             document.querySelectorAll('.btn-danger, .btn-secondary').forEach(btn => btn.disabled = false);
             document.getElementById('clearAllBtn').disabled = false;
 
@@ -273,9 +272,8 @@ class WheelOfFortune {
         resultDisplay.classList.add('show');
     }
 
-    hideResult() {
+    hideResult = () =>
         document.getElementById('resultDisplay').classList.remove('show');
-    }
 
     loadFile(event) {
         const file = event.target.files[0];
@@ -335,5 +333,6 @@ class WheelOfFortune {
     }
 }
 
-// Inizializza l'applicazione
+// ✅ Inizializza e rende visibile globalmente l'istanza per i pulsanti
 const wheel = new WheelOfFortune();
+window.wheel = wheel;
