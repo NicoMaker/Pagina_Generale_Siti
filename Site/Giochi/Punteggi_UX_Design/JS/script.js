@@ -1444,12 +1444,21 @@ function showFileFeedbackModal(results) {
     fileFeedbackList.appendChild(listItem);
   });
 
-  // Mostra la modalità importata se presente
-  if (results.importedMode) {
-    fileFeedbackSummary.innerHTML = `<strong>Modalità importata:</strong> ${results.importedMode === "max" ? "Più punti" : "Meno punti"}`;
-  } else {
-    fileFeedbackSummary.innerHTML = "";
-  }
+  // Set summary
+  fileFeedbackSummary.innerHTML = `
+    <div>
+      <span class="material-icons" style="color: var(--color-success)">check_circle</span>
+      ${results.success.length} aggiunti
+    </div>
+    <div>
+      <span class="material-icons" style="color: var(--color-warning)">warning</span>
+      ${results.warnings.length} aggiornati
+    </div>
+    <div>
+      <span class="material-icons" style="color: var(--color-danger)">error</span>
+      ${results.errors.length} errori
+    </div>
+  `;
 
   // Show the modal
   fileFeedbackModal.style.display = "flex";
@@ -1501,7 +1510,6 @@ function caricaDaFile() {
           success: [],
           warnings: [],
           errors: [],
-          importedMode: null,
         };
 
         // Process based on file type
@@ -1509,28 +1517,16 @@ function caricaDaFile() {
           // Parse JSON file
           const jsonData = JSON.parse(fileContent);
 
-          let partecipantiArray = [];
-          let importedMode = null;
-
-          if (Array.isArray(jsonData)) {
-            partecipantiArray = jsonData;
-          } else if (jsonData && Array.isArray(jsonData.partecipanti)) {
-            partecipantiArray = jsonData.partecipanti;
-            importedMode = jsonData.modalitàVittoria || jsonData.modalitaVittoria;
-          } else {
+          if (!Array.isArray(jsonData)) {
             throw new Error(
-              "Il file JSON non contiene un array di partecipanti o un oggetto valido"
+              "Il file JSON non contiene un array di partecipanti"
             );
           }
 
-          results.total = partecipantiArray.length;
-          if (importedMode) {
-            modalitàVittoria = importedMode;
-            results.importedMode = importedMode;
-          }
+          results.total = jsonData.length;
 
           // Process each participant
-          partecipantiArray.forEach((item) => {
+          jsonData.forEach((item) => {
             try {
               // Validate data
               if (!item.nome || item.punti === undefined) {
@@ -1584,20 +1580,7 @@ function caricaDaFile() {
             .filter((riga) => riga.trim() !== "");
           results.total = righe.length;
 
-          let startIdx = 0;
-          let importedMode = null;
-          if (righe[0] && righe[0].toLowerCase().startsWith("modalità:")) {
-            const modeVal = righe[0].split(":")[1]?.trim();
-            if (modeVal === "max" || modeVal === "min") {
-              modalitàVittoria = modeVal;
-              results.importedMode = modeVal;
-              importedMode = modeVal;
-              startIdx = 1;
-            }
-          }
-
-          for (let i = startIdx; i < righe.length; i++) {
-            const riga = righe[i];
+          righe.forEach((riga) => {
             try {
               // Format: nome:punti
               const parti = riga.split(":");
@@ -1608,7 +1591,7 @@ function caricaDaFile() {
                 results.errors.push({
                   message: `Nome mancante: ${riga}`,
                 });
-                continue;
+                return;
               }
 
               // Check for duplicates by name
@@ -1641,7 +1624,7 @@ function caricaDaFile() {
                 message: `Errore nell'elaborazione: ${rigaError.message}`,
               });
             }
-          }
+          });
 
           // Riorganizza gli ID dopo il caricamento
           riorganizzaIds();
@@ -1652,7 +1635,7 @@ function caricaDaFile() {
         aggiornaSelezionePartecipante();
         salvaDati();
 
-        // Show feedback modal (passa la modalità importata)
+        // Show feedback modal
         showFileFeedbackModal(results);
       } catch (error) {
         console.error("Errore durante il caricamento del file:", error);
@@ -1738,12 +1721,10 @@ function salvaSuFile() {
 
   // Functions to save in different formats
   function saveAsTxt() {
-    // Prima riga modalità, poi partecipanti
-    const contenuto =
-      `modalità vittoria :${modalitàVittoria}\n` +
-      partecipanti
-        .map((partecipante) => `${partecipante.nome}:${partecipante.punti}`)
-        .join("\n");
+    // Crea il contenuto in formato leggibile
+    const contenuto = partecipanti
+      .map((partecipante) => `${partecipante.nome}:${partecipante.punti}`)
+      .join("\n");
 
     // Crea un blob per il download
     const blob = new Blob([contenuto], { type: "text/plain" });
@@ -1762,8 +1743,8 @@ function salvaSuFile() {
   }
 
   function saveAsJson() {
-    // Esporta oggetto con modalità e partecipanti
-    const jsonContent = JSON.stringify({ modalitàVittoria, partecipanti }, null, 2);
+    // Create JSON content
+    const jsonContent = JSON.stringify(partecipanti, null, 2);
 
     // Create blob for download
     const blob = new Blob([jsonContent], { type: "application/json" });
