@@ -11,6 +11,28 @@
 </head>
 
 <body>
+    <!-- Floating Orbs Background -->
+    <div class="floating-orbs">
+        <div class="orb"></div>
+        <div class="orb"></div>
+        <div class="orb"></div>
+    </div>
+
+    <!-- Custom Notification System -->
+    <div class="notification-container" id="notificationContainer"></div>
+
+    <!-- Custom Modal System -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-content" id="modalContent">
+            <div class="modal-header">
+                <h3 id="modalTitle"></h3>
+                <button class="modal-close" id="modalClose">✕</button>
+            </div>
+            <div class="modal-body" id="modalBody"></div>
+            <div class="modal-footer" id="modalFooter"></div>
+        </div>
+    </div>
+
     <div class="container">
         <div class="header">
             <h1>🎯 Ruota della Fortuna</h1>
@@ -48,6 +70,7 @@
                 <div class="export-section">
                     <h4>💾 Esporta Nomi</h4>
                     <button class="btn btn-secondary" id="exportTxtBtn">📄 Scarica TXT</button>
+                    <button class="btn btn-secondary" id="exportJsonBtn">📋 Scarica JSON</button>
                 </div>
 
                 <button class="btn btn-danger" id="clearAllBtn">🗑️ Cancella Tutto</button>
