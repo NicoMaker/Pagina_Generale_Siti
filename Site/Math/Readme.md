@@ -10,6 +10,8 @@
 - **[Cerchio](Cerchio)**
 - **[Collatz](Collatz)**
 - **[Conversione Basi](Conversione%20Basi)**
+- **[Dividento con il resto](Divisione_con_il_Resto)**
+- **[Esercizi Elementari](Esrcizi_Elementari)**
 - **[Esercizio Trifase](Esercizio%20trifase)**
 - **[Esponenziali e Radici](Esponenziali%20e%20Radici)**
 - **[Euclide](Euclide)**

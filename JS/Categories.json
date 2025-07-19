@@ -262,7 +262,9 @@
           "name": "Teoremi di Euclide",
           "link": "Site/Math/Teorema_Euclide/index.html"
         },
-        { "name": "Cerchio", "link": "Site/Math/Cerchio/index.html" }
+        { "name": "Cerchio", "link": "Site/Math/Cerchio/index.html" },
+        { "name": "Divisione con il resto", "link":"Site/Math/Divisione_con_il_Resto/index.html"},
+        {"name":"Esercizi Elementari", "link":"Site/Math/Esercizi_Elementari/index.html"}
       ]
     },
     "Natale": {

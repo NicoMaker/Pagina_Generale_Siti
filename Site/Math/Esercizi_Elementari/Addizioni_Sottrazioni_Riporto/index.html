@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Addizioni e Sottrazioni con il Riporto</title>
+    <link rel="icon" type="image/png" href="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/2795.png">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-link" aria-label="Torna alla scelta esercizi">← Torna alla scelta esercizi</a>
+        <h1>Addizioni e Sottrazioni con il Riporto</h1>
+        <p>Impara come si fanno addizioni e sottrazioni con il riporto, passo dopo passo!</p>
+        <div class="step-addsot">
+            <h2>Addizione con il Riporto</h2>
+            <ol>
+                <li>Scrivi i due numeri uno sotto l'altro, allineando le cifre a destra.</li>
+                <li>Somma le cifre partendo da destra. Se la somma supera 9, scrivi la cifra delle unità e riporta la
+                    decina sopra la colonna successiva.</li>
+                <li>Continua fino a sinistra, aggiungendo eventuali riporti.</li>
+            </ol>
+        </div>
+        <div class="step-addsot">
+            <h2>Sottrazione con il Prestito</h2>
+            <ol>
+                <li>Scrivi i due numeri uno sotto l'altro, allineando le cifre a destra.</li>
+                <li>Se la cifra sopra è più piccola di quella sotto, prendi in prestito 1 dalla colonna a sinistra.</li>
+                <li>Continua fino a sinistra, restituendo i prestiti se necessario.</li>
+            </ol>
+        </div>
+        <div class="step-addsot">
+            <h2>Esempio Addizione</h2>
+            <ul>
+                <li>47 + 38: 7 + 8 = 15 (scrivo 5, riporto 1), 4 + 3 + 1 = 8 → <b>Risultato: 85</b></li>
+            </ul>
+            <h2>Esempio Sottrazione</h2>
+            <ul>
+                <li>52 - 38: 2 - 8 non si può, prendo 1 dalla colonna delle decine (5 diventa 4, 2 diventa 12), 12 - 8 =
+                    4, 4 - 3 = 1 → <b>Risultato: 14</b></li>
+            </ul>
+        </div>
+        <div class="interactive-addsot">
+            <h2>Prova tu!</h2>
+            <form id="addSotForm">
+                <label for="numA">Primo numero:</label>
+                <input type="number" id="numA" required>
+                <label for="numB">Secondo numero:</label>
+                <input type="number" id="numB" required>
+                <label for="op">Operazione:</label>
+                <select id="op">
+                    <option value="add">Addizione</option>
+                    <option value="sub">Sottrazione</option>
+                </select>
+                <button type="submit">Calcola</button>
+            </form>
+            <div id="addSotResult"></div>
+            <div id="addSotSteps"></div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>

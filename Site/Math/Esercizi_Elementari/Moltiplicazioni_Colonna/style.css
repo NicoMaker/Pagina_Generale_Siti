@@ -1,0 +1,25 @@
+.back-link {
+    display: block;
+    margin-bottom: 18px;
+    color: #3b5bdb;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.08em;
+    background: #e0e7ff;
+    border-radius: 8px;
+    padding: 8px 14px;
+    width: fit-content;
+    transition: background 0.2s, color 0.2s;
+}
+.back-link:hover {
+    background: #3b5bdb;
+    color: #fff;
+}
+@media (max-width: 600px) {
+    .back-link {
+        font-size: 1em;
+        padding: 10px 8px;
+        width: 100%;
+        text-align: center;
+    }
+} 

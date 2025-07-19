@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moltiplicazioni in Colonna</title>
+    <link rel="icon" type="image/png" href="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/2716.png">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-link" aria-label="Torna alla scelta esercizi">← Torna alla scelta esercizi</a>
+        <h1>Moltiplicazioni in Colonna</h1>
+        <p>Impara come si fanno le moltiplicazioni in colonna, passo dopo passo!</p>
+        <div class="step-mult">
+            <ol>
+                <li>Scrivi i due numeri uno sotto l'altro, allineando le cifre a destra.</li>
+                <li>Moltiplica ogni cifra del secondo numero (quello sotto) per ogni cifra del primo, partendo da
+                    destra.</li>
+                <li>Scrivi ogni risultato parziale sotto, spostando a sinistra di una posizione per ogni nuova riga.
+                </li>
+                <li>Somma tutti i risultati parziali: il totale è il risultato della moltiplicazione!</li>
+            </ol>
+        </div>
+        <div class="step-mult">
+            <h2>Esempio</h2>
+            <p>Facciamo 23 × 14:</p>
+            <ul>
+                <li>4 × 3 = 12 (scrivo 2, riporto 1), 4 × 2 = 8 + 1 = 9 → <b>Risultato parziale: 92</b></li>
+                <li>1 × 3 = 3, 1 × 2 = 2 → <b>Risultato parziale: 230</b> (spostato di una posizione a sinistra)</li>
+                <li>Sommo: 92 + 230 = <b>322</b></li>
+            </ul>
+        </div>
+        <div class="interactive-mult">
+            <h2>Prova tu!</h2>
+            <form id="multForm">
+                <label for="num1">Primo numero:</label>
+                <input type="number" id="num1" required>
+                <label for="num2">Secondo numero:</label>
+                <input type="number" id="num2" required>
+                <button type="submit">Calcola</button>
+            </form>
+            <div id="multResult"></div>
+            <div id="multSteps"></div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>

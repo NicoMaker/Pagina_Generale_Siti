@@ -10,7 +10,7 @@
 - **[Calendario](Calendario/Readme.md)** [4 Progetti]
 - **[Giochi](Giochi/Readme.md)** [22 Progetti]
 - **[Info Paesi / Stati](Info_Paesi_Stati/Readme.md)** [4 Progetti]
-- **[Matematica](Math/Readme.md)** [24 Progetti]
+- **[Matematica](Math/Readme.md)** [26 Progetti]
 - **[Natale](Natale/Readme.md)** [3 Progetti]
 - **[Opzioni con le Frasi](Opzioni_Con_Le_Frasi/Readme.md)** [6 Progetti]
 - **[Pasqua](Pasqua/Readme.md)** [2 Progetti]
