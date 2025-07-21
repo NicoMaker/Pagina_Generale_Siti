@@ -1351,7 +1351,7 @@ function eseguiReset() {
 }
 
 // File feedback modal functions
-function showFileFeedbackModal(results) {
+function showFileFeedbackModal(results, onConfirm, onCancel) {
   if (
     !fileFeedbackModal ||
     !fileFeedbackIcon ||
@@ -1436,6 +1436,20 @@ function showFileFeedbackModal(results) {
   fileFeedbackModal.style.display = "flex"
   fileFeedbackModal.setAttribute("aria-hidden", "false")
 
+  // Gestione pulsanti
+  if (fileFeedbackOkBtn) {
+    fileFeedbackOkBtn.onclick = function() {
+      hideFileFeedbackModal();
+      if (typeof onConfirm === 'function') onConfirm();
+    };
+  }
+  const fileFeedbackCancelBtn = document.getElementById("file-feedback-cancel-btn");
+  if (fileFeedbackCancelBtn) {
+    fileFeedbackCancelBtn.onclick = function() {
+      hideFileFeedbackModal();
+      if (typeof onCancel === 'function') onCancel();
+    };
+  }
   // Focus on the OK button
   setTimeout(() => {
     if (fileFeedbackOkBtn) {
@@ -1453,209 +1467,123 @@ function hideFileFeedbackModal() {
 
 // Replace the existing caricaDaFile function with this enhanced version
 function caricaDaFile() {
-  // Crea un input di tipo file
   const input = document.createElement("input")
   input.type = "file"
   input.accept = ".txt,.json"
-
-  // Gestisci il caricamento del file
   input.addEventListener("change", (event) => {
     const file = event.target.files[0]
     if (!file) {
       showToast("Nessun file selezionato", "warning")
       return
     }
-
-    // Show loading toast
     showToast("Caricamento file in corso...", "info")
-
     const reader = new FileReader()
-
     reader.onload = (e) => {
       try {
         const fileContent = e.target.result
         const fileExtension = file.name.split(".").pop().toLowerCase()
-
         // Results tracking
-        const results = {
-          total: 0,
-          success: [],
-          warnings: [],
-          errors: [],
-        }
-
-        // Process based on file type
+        const results = { total: 0, success: [], warnings: [], errors: [] };
+        let importData = { partecipanti: [], modalitaVittoria: null };
         if (fileExtension === "json") {
-          // Parse JSON file
           const jsonData = JSON.parse(fileContent)
-
-          // Check if it's the expected structure (e.g., { participants: [], winningMode: "" })
           if (typeof jsonData !== "object" || jsonData === null) {
             throw new Error("Il file JSON non contiene un oggetto valido.")
           }
-
-          const loadedParticipants = Array.isArray(jsonData.partecipanti) ? jsonData.partecipanti : []
-          const loadedWinningMode = typeof jsonData.modalitaVittoria === "string" ? jsonData.modalitaVittoria : null
-
-          results.total = loadedParticipants.length
-
-          // Process each participant
-          loadedParticipants.forEach((item) => {
-            try {
-              // Validate data
-              if (!item.nome || item.punti === undefined) {
-                results.errors.push({
-                  message: `Dati incompleti: ${JSON.stringify(item)}`,
-                })
-                return
+          importData.partecipanti = [];
+          importData.modalitaVittoria = typeof jsonData.modalitaVittoria === "string" ? jsonData.modalitaVittoria : null;
+          results.total = Array.isArray(jsonData.partecipanti) ? jsonData.partecipanti.length : 0;
+          if (Array.isArray(jsonData.partecipanti)) {
+            jsonData.partecipanti.forEach((item) => {
+              try {
+                if (!item.nome || item.punti === undefined) {
+                  results.errors.push({ message: `Dati incompleti: ${JSON.stringify(item)}` });
+                  return;
+                }
+                const nome = item.nome.trim();
+                const punti = Number.parseFloat(item.punti);
+                importData.partecipanti.push({ nome, punti: isNaN(punti) ? 0 : punti });
+                results.success.push({ nome, id: item.id || null, punti: isNaN(punti) ? 0 : punti });
+              } catch (itemError) {
+                results.errors.push({ message: `Errore nell'elaborazione: ${itemError.message}` });
               }
-
-              const nome = item.nome.trim()
-              const punti = Number.parseFloat(item.punti) || 0
-
-              // Check for duplicates by name
-              const existingIndex = partecipanti.findIndex((p) => p.nome === nome)
-
-              if (existingIndex >= 0) {
-                // Update existing participant
-                partecipanti[existingIndex].punti = punti
-
-                results.warnings.push({
-                  nome,
-                  id: partecipanti[existingIndex].id,
-                  punti,
-                })
-              } else {
-                // Add new participant with next available ID
-                const id = nextParticipantId++
-                partecipanti.push({ id, nome, punti })
-
-                results.success.push({
-                  nome,
-                  id,
-                  punti,
-                })
-              }
-            } catch (itemError) {
-              results.errors.push({
-                message: `Errore nell'elaborazione: ${itemError.message}`,
-              })
-            }
-          })
-
-          // Update winning mode if present in JSON
-          if (loadedWinningMode && (loadedWinningMode === "max" || loadedWinningMode === "min")) {
-            impostaModalitàVittoria(loadedWinningMode)
-            // Manually update radio buttons if impostaModalitàVittoria doesn't
-            const radioButtons = document.querySelectorAll('input[name="winning-mode"]')
-            radioButtons.forEach((radio) => {
-              if (radio.value === loadedWinningMode) {
-                radio.checked = true
-              }
-            })
+            });
           }
         } else {
-          // Process text file (default)
-          const righe = fileContent.split("\n").filter((riga) => riga.trim() !== "")
-          let startIndex = 0 // Start index for participants
-
-          // Check for winning mode on the first line
+          // Parsing TXT compatibile con l'export
+          const righe = fileContent.split("\n");
+          let startIndex = 0;
           if (righe.length > 0 && righe[0].startsWith("#MODALITA_VITTORIA:")) {
-            const modeLine = righe[0]
-            const modeMatch = modeLine.match(/#MODALITA_VITTORIA:(max|min)/)
+            const modeLine = righe[0];
+            const modeMatch = modeLine.match(/#MODALITA_VITTORIA:(max|min)/);
             if (modeMatch && modeMatch[1]) {
-              const loadedMode = modeMatch[1]
-              impostaModalitàVittoria(loadedMode)
-              // Manually update radio buttons
-              const radioButtons = document.querySelectorAll('input[name="winning-mode"]')
-              radioButtons.forEach((radio) => {
-                if (radio.value === loadedMode) {
-                  radio.checked = true
-                }
-              })
-              showToast(
-                `Modalità vittoria caricata da file: ${loadedMode === "max" ? "Più punti" : "Meno punti"}`,
-                "info",
-              )
+              importData.modalitaVittoria = modeMatch[1];
             } else {
-              results.warnings.push({ message: `Formato modalità vittoria non valido nella prima riga: ${modeLine}` })
+              results.warnings.push({ message: `Formato modalità vittoria non valido nella prima riga: ${modeLine}` });
             }
-            startIndex = 1 // Skip the mode line for participant processing
+            startIndex = 1;
           }
-
-          results.total = righe.length - startIndex // Total participants to process
-
+          importData.partecipanti = [];
+          results.total = righe.length - startIndex;
           for (let i = startIndex; i < righe.length; i++) {
-            const riga = righe[i]
-            try {
-              // Format: nome:punti
-              const parti = riga.split(":")
-              const nome = parti[0].trim()
-              const punti = Number.parseFloat(parti[1]) || 0
-
-              if (!nome) {
-                results.errors.push({
-                  message: `Nome mancante: ${riga}`,
-                })
-                continue // Skip to next line
-              }
-
-              // Check for duplicates by name
-              const existingIndex = partecipanti.findIndex((p) => p.nome === nome)
-
-              if (existingIndex >= 0) {
-                // Update existing participant
-                partecipanti[existingIndex].punti = punti
-
-                results.warnings.push({
-                  nome,
-                  id: partecipanti[existingIndex].id,
-                  punti,
-                })
-              } else {
-                // Add new participant with next available ID
-                const id = nextParticipantId++
-                partecipanti.push({ id, nome, punti })
-
-                results.success.push({
-                  nome,
-                  id,
-                  punti,
-                })
-              }
-            } catch (rigaError) {
-              results.errors.push({
-                message: `Errore nell'elaborazione riga "${riga}": ${rigaError.message}`,
-              })
+            const riga = righe[i].trim();
+            if (!riga) continue; // Salta righe vuote
+            if (!riga.includes(":")) {
+              results.errors.push({ message: `Riga non valida (manca ':'): ${riga}` });
+              continue;
             }
+            const parti = riga.split(":");
+            const nome = parti[0].trim();
+            const punti = Number.parseFloat(parti[1]);
+            if (!nome) {
+              results.errors.push({ message: `Nome mancante: ${riga}` });
+              continue;
+            }
+            importData.partecipanti.push({ nome, punti: isNaN(punti) ? 0 : punti });
+            results.success.push({ nome, id: null, punti: isNaN(punti) ? 0 : punti });
           }
         }
-
-        // Riorganizza gli ID dopo il caricamento (per entrambi i formati)
-        riorganizzaIds()
-
-        // Update UI
-        aggiornaListaPartecipanti()
-        aggiornaSelezionePartecipante()
-        salvaDati() // Save to localStorage after file load
-
-        // Show feedback modal
-        showFileFeedbackModal(results)
+        // Salva i dati temporanei
+        pendingImport = importData;
+        // Mostra il modal con conferma/annulla
+        showFileFeedbackModal(results, function() {
+          // Conferma: applica i dati
+          if (!pendingImport) return;
+          // Svuota e riempi partecipanti
+          partecipanti.length = 0;
+          let idCounter = 1;
+          pendingImport.partecipanti.forEach((item) => {
+            partecipanti.push({ id: idCounter++, nome: item.nome.trim(), punti: Number.parseFloat(item.punti) || 0 });
+          });
+          nextParticipantId = idCounter;
+          if (pendingImport.modalitaVittoria && (pendingImport.modalitaVittoria === "max" || pendingImport.modalitaVittoria === "min")) {
+            impostaModalitàVittoria(pendingImport.modalitaVittoria);
+            const radioButtons = document.querySelectorAll('input[name="winning-mode"]');
+            radioButtons.forEach((radio) => {
+              if (radio.value === pendingImport.modalitaVittoria) {
+                radio.checked = true;
+              }
+            });
+          }
+          aggiornaListaPartecipanti();
+          aggiornaSelezionePartecipante();
+          salvaDati();
+          pendingImport = null;
+        }, function() {
+          // Annulla: non applica nulla
+          showToast("Caricamento annullato, nessun dato importato", "warning");
+          pendingImport = null;
+        });
       } catch (error) {
         console.error("Errore durante il caricamento del file:", error)
         showToast(`Errore durante il caricamento del file: ${error.message}`, "error")
       }
     }
-
     reader.onerror = () => {
       showToast("Errore nella lettura del file", "error")
     }
-
-    // Read the file based on its type
     reader.readAsText(file)
   })
-
-  // Simula il clic per aprire il dialogo file
   input.click()
 }
 
