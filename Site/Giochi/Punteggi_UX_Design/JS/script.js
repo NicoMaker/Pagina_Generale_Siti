@@ -1478,7 +1478,7 @@ function showFileFeedbackModal(results, onConfirm, onCancel, options = {}) {
     listItem.className = "file-feedback-item success"
     listItem.innerHTML = `
     <span class="material-icons file-feedback-item-icon">check_circle</span>
-    <span>${item.nome} #${item.id}: ${item.punti} punti</span>
+    <span>${item.nome}:${item.punti} punti</span>
   `
     fileFeedbackList.appendChild(listItem)
   })
@@ -1551,6 +1551,13 @@ function hideFileFeedbackModal() {
   if (fileFeedbackModal) {
     fileFeedbackModal.style.display = "none"
     fileFeedbackModal.setAttribute("aria-hidden", "true")
+    // Sposta il focus su un elemento visibile fuori dalla modale (es: bottone 'Carica da File')
+    const loadBtn = document.getElementById("load-btn");
+    if (loadBtn) {
+      loadBtn.focus();
+    } else {
+      document.body.focus();
+    }
   }
 }
 
@@ -1631,8 +1638,10 @@ function caricaDaFile() {
             const nome = riga.substring(0, sepIndex).trim();
             const puntiStr = riga.substring(sepIndex + 1).trim();
             const punti = Number.parseFloat(puntiStr);
-            if (!nome) {
-              results.errors.push({ message: `Nome mancante: ${riga}` });
+            // BLOCCO: ignora solo se nome è esattamente 'null' o '#null' (case insensitive)
+            const nomeLower = nome.toLowerCase();
+            if (nomeLower === 'null' || nomeLower === '#null') {
+              results.errors.push({ message: `Nome non valido (null o #null): ${nome}` });
               continue;
             }
             if (isNaN(punti)) {
