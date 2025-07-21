@@ -923,24 +923,25 @@ function showToast(message, type = "info") {
 // Update the aggiungiPartecipante function to assign a unique ID
 function aggiungiPartecipante() {
   if (!participantNameInput) return
-
   const nome = participantNameInput.value.trim()
-
   if (nome === "") {
     showToast("Inserisci un nome valido", "error")
     participantNameInput.focus()
     return
   }
-
   // Generate a unique ID for the new participant
   const id = nextParticipantId++
-
-  // Add the participant with the unique ID
+  // BLOCCO: non inserire se nome vuoto/null o punti non numerici
+  if (!nome || typeof nome !== "string") {
+    console.warn("Tentativo di aggiungere partecipante non valido:", nome)
+    return;
+  }
   partecipanti.push({ id, nome, punti: 0 })
+  filtraPartecipantiValidi();
   aggiornaListaPartecipanti()
   aggiornaSelezionePartecipante()
   salvaDati()
-
+  console.log("Partecipanti dopo aggiunta:", JSON.parse(JSON.stringify(partecipanti)));
   // Pulisci e focus sull'input
   participantNameInput.value = ""
   participantNameInput.focus()
@@ -957,10 +958,9 @@ function aggiungiPartecipante() {
 function eliminaPartecipante(index) {
   const partecipante = partecipanti[index]
   partecipanti.splice(index, 1)
-
+  filtraPartecipantiValidi();
   // Riorganizza gli ID per mantenere la sequenza 1, 2, 3, ...
   riorganizzaIds()
-
   aggiornaListaPartecipanti()
   aggiornaSelezionePartecipante()
   salvaDati()
@@ -987,6 +987,7 @@ function riorganizzaIds() {
 
 // Update the aggiornaListaPartecipanti function to display the ID and add edit button
 function aggiornaListaPartecipanti() {
+  filtraPartecipantiValidi();
   if (!participantList) return
 
   participantList.innerHTML = ""
@@ -1095,8 +1096,10 @@ const participantSearchInput = document.getElementById("participant-search");
 
 // Aggiorno la funzione aggiornaSelezionePartecipante per la nuova UI
 function aggiornaSelezionePartecipante() {
+  filtraPartecipantiValidi();
   if (!participantsCheckboxList) return;
-  // --- NON salvo più la selezione qui, uso la variabile globale ---
+  // Reset selezione ogni volta che aggiorno la UI
+  selectedParticipantIds = [];
   const allChecked = participantsCheckboxList.querySelector('input[type="checkbox"].all-checkbox')?.checked;
   participantsCheckboxList.innerHTML = "";
   const searchTerm = participantSearchInput ? participantSearchInput.value.trim().toLowerCase() : "";
@@ -1125,11 +1128,6 @@ function aggiornaSelezionePartecipante() {
     checkbox.value = partecipante.id;
     checkbox.id = `participant-checkbox-${partecipante.id}`;
     checkbox.setAttribute("data-participant-id", partecipante.id);
-    // --- Ripristina selezione dalla variabile globale ---
-    if (selectedParticipantIds.includes(partecipante.id)) {
-      checkbox.checked = true;
-      div.classList.add("highlighted");
-    }
     // Aggiorna la variabile globale quando cambia la selezione
     checkbox.addEventListener("change", function() {
       if (checkbox.checked) {
@@ -1137,6 +1135,7 @@ function aggiornaSelezionePartecipante() {
       } else {
         selectedParticipantIds = selectedParticipantIds.filter(id => id !== partecipante.id);
       }
+      console.log("selectedParticipantIds dopo click:", selectedParticipantIds);
       updateHighlightAndAllCheckbox();
     });
     const label = document.createElement("label");
@@ -1171,7 +1170,13 @@ function aggiornaSelezionePartecipante() {
   allCheckbox.addEventListener("change", function () {
     participantDivs.forEach(({checkbox, div}) => {
       checkbox.checked = allCheckbox.checked;
+      if (allCheckbox.checked) {
+        if (!selectedParticipantIds.includes(Number(checkbox.value))) selectedParticipantIds.push(Number(checkbox.value));
+      } else {
+        selectedParticipantIds = [];
+      }
     });
+    console.log("selectedParticipantIds dopo click su 'Tutti':", selectedParticipantIds);
     updateHighlightAndAllCheckbox();
   });
   // --- Ripristina selezione "Tutti" se era selezionata ---
@@ -1181,7 +1186,9 @@ function aggiornaSelezionePartecipante() {
     participantDivs.forEach(({checkbox, div}) => {
       checkbox.checked = true;
       div.classList.add("highlighted");
+      if (!selectedParticipantIds.includes(Number(checkbox.value))) selectedParticipantIds.push(Number(checkbox.value));
     });
+    console.log("selectedParticipantIds dopo ripristino 'Tutti':", selectedParticipantIds);
   }
   updateHighlightAndAllCheckbox();
 }
@@ -1204,9 +1211,13 @@ function aggiungiPunti() {
     pointsInput.focus();
     return;
   }
+  // FILTRO DI SICUREZZA: selectedParticipantIds solo validi
+  selectedParticipantIds = selectedParticipantIds.filter(id => partecipanti.some(p => p.id === id));
   const selectedIndexes = getSelectedParticipantIndexes();
+  console.log("ID selezionati:", selectedParticipantIds, "Indici selezionati:", selectedIndexes);
   if (selectedIndexes.length === 0) {
-    showToast("Seleziona almeno un partecipante", "warning");
+    const debugIds = selectedParticipantIds.length > 0 ? ` (ID selezionati: ${selectedParticipantIds.join(", ")})` : "";
+    showToast("Seleziona almeno un partecipante" + debugIds, "warning");
     return;
   }
   selectedIndexes.forEach(index => {
@@ -1237,9 +1248,13 @@ function togliPunti() {
     pointsInput.focus();
     return;
   }
+  // FILTRO DI SICUREZZA: selectedParticipantIds solo validi
+  selectedParticipantIds = selectedParticipantIds.filter(id => partecipanti.some(p => p.id === id));
   const selectedIndexes = getSelectedParticipantIndexes();
+  console.log("ID selezionati:", selectedParticipantIds, "Indici selezionati:", selectedIndexes);
   if (selectedIndexes.length === 0) {
-    showToast("Seleziona almeno un partecipante", "warning");
+    const debugIds = selectedParticipantIds.length > 0 ? ` (ID selezionati: ${selectedParticipantIds.join(", ")})` : "";
+    showToast("Seleziona almeno un partecipante" + debugIds, "warning");
     return;
   }
   selectedIndexes.forEach(index => {
@@ -1570,14 +1585,19 @@ function caricaDaFile() {
           if (Array.isArray(jsonData.partecipanti)) {
             jsonData.partecipanti.forEach((item) => {
               try {
-                if (!item.nome || item.punti === undefined) {
-                  results.errors.push({ message: `Dati incompleti: ${JSON.stringify(item)}` });
+                // FILTRO: nome non nullo/vuoto e punti validi
+                if (!item.nome || typeof item.nome !== "string" || item.nome.trim() === "") {
+                  results.errors.push({ message: `Nome mancante o non valido: ${JSON.stringify(item)}` });
                   return;
                 }
                 const nome = item.nome.trim();
                 const punti = Number.parseFloat(item.punti);
-                importData.partecipanti.push({ nome, punti: isNaN(punti) ? 0 : punti });
-                results.success.push({ nome, id: item.id || null, punti: isNaN(punti) ? 0 : punti });
+                if (isNaN(punti)) {
+                  results.errors.push({ message: `Punti non validi per ${nome}: ${item.punti}` });
+                  return;
+                }
+                importData.partecipanti.push({ nome, punti });
+                results.success.push({ nome, id: item.id || null, punti });
               } catch (itemError) {
                 results.errors.push({ message: `Errore nell'elaborazione: ${itemError.message}` });
               }
@@ -1602,19 +1622,25 @@ function caricaDaFile() {
           for (let i = startIndex; i < righe.length; i++) {
             const riga = righe[i].trim();
             if (!riga) continue; // Salta righe vuote
-            if (!riga.includes(":")) {
+            // CORREZIONE: accetta solo la prima occorrenza di ':'
+            const sepIndex = riga.indexOf(":");
+            if (sepIndex === -1) {
               results.errors.push({ message: `Riga non valida (manca ':'): ${riga}` });
               continue;
             }
-            const parti = riga.split(":");
-            const nome = parti[0].trim();
-            const punti = Number.parseFloat(parti[1]);
+            const nome = riga.substring(0, sepIndex).trim();
+            const puntiStr = riga.substring(sepIndex + 1).trim();
+            const punti = Number.parseFloat(puntiStr);
             if (!nome) {
               results.errors.push({ message: `Nome mancante: ${riga}` });
               continue;
             }
-            importData.partecipanti.push({ nome, punti: isNaN(punti) ? 0 : punti });
-            results.success.push({ nome, id: null, punti: isNaN(punti) ? 0 : punti });
+            if (isNaN(punti)) {
+              results.errors.push({ message: `Punti non validi per ${nome}: ${puntiStr}` });
+              continue;
+            }
+            importData.partecipanti.push({ nome, punti });
+            results.success.push({ nome, id: null, punti });
           }
         }
         // Salva i dati temporanei
@@ -1627,17 +1653,27 @@ function caricaDaFile() {
           const nomiEsistenti = new Set(partecipanti.map(p => p.nome.trim().toLowerCase()));
           let idCounter = nextParticipantId;
           pendingImport.partecipanti.forEach((item) => {
-            const nomeLower = item.nome.trim().toLowerCase();
+            const nome = item.nome ? item.nome.trim() : "";
+            const punti = Number.parseFloat(item.punti);
+            // BLOCCO: non inserire se nome vuoto/null o punti non numerici
+            if (!nome || typeof nome !== "string" || isNaN(punti)) {
+              console.warn("Tentativo di importare partecipante non valido:", item);
+              return;
+            }
+            const nomeLower = nome.toLowerCase();
             if (!nomiEsistenti.has(nomeLower)) {
-              partecipanti.push({ id: idCounter++, nome: item.nome.trim(), punti: Number.parseFloat(item.punti) || 0 });
+              partecipanti.push({ id: idCounter++, nome, punti });
               nomiEsistenti.add(nomeLower);
             }
             // Se il nome esiste già, non aggiorno i punti
           });
           nextParticipantId = idCounter;
+          filtraPartecipantiValidi();
+          selectedParticipantIds = [];
+          console.log("Partecipanti dopo import:", JSON.parse(JSON.stringify(partecipanti)));
           if (pendingImport.modalitaVittoria && (pendingImport.modalitaVittoria === "max" || pendingImport.modalitaVittoria === "min")) {
             impostaModalitàVittoria(pendingImport.modalitaVittoria);
-            const radioButtons = document.querySelectorAll('input[name="winning-mode"]');
+            const radioButtons = document.querySelectorAll('input[name=\"winning-mode\"]');
             radioButtons.forEach((radio) => {
               if (radio.value === pendingImport.modalitaVittoria) {
                 radio.checked = true;
@@ -1944,3 +1980,13 @@ function aggiornaStileCampoPunti() {
   }
 }
 // --- FINE: Gestione colore campo punti ---
+
+function filtraPartecipantiValidi() {
+  // Rimuove tutti i partecipanti con nome vuoto/null/undefined o punti non numerici
+  for (let i = partecipanti.length - 1; i >= 0; i--) {
+    const p = partecipanti[i];
+    if (!p.nome || typeof p.nome !== "string" || p.nome.trim() === "" || isNaN(p.punti)) {
+      partecipanti.splice(i, 1);
+    }
+  }
+}
