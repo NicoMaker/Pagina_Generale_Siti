@@ -1476,9 +1476,11 @@ function showFileFeedbackModal(results, onConfirm, onCancel, options = {}) {
   results.success.forEach((item) => {
     const listItem = document.createElement("div")
     listItem.className = "file-feedback-item success"
+    // Mostra #ID solo se presente (cioè se viene da JSON)
+    const idPart = (item.id !== undefined && item.id !== null) ? ` #${item.id}` : "";
     listItem.innerHTML = `
     <span class="material-icons file-feedback-item-icon">check_circle</span>
-    <span>${item.nome}:${item.punti} punti</span>
+    <span>${item.nome}${idPart}: ${item.punti} punti</span>
   `
     fileFeedbackList.appendChild(listItem)
   })
