@@ -3,6 +3,9 @@ const partecipanti = []
 let modalitàVittoria = "max"
 let nextParticipantId = 1 // Start from 1
 
+// Variabile globale per tenere traccia degli id selezionati
+let selectedParticipantIds = [];
+
 // Elementi DOM
 const participantList = document.getElementById("participant-list")
 const participantNameInput = document.getElementById("participant-name")
@@ -1087,16 +1090,9 @@ const participantSearchInput = document.getElementById("participant-search");
 // Aggiorno la funzione aggiornaSelezionePartecipante per la nuova UI
 function aggiornaSelezionePartecipante() {
   if (!participantsCheckboxList) return;
-  // --- Salva selezione attuale PRIMA di svuotare la lista ---
-  const selectedIds = Array.from(participantsCheckboxList.querySelectorAll('input[type="checkbox"][data-participant-index]:checked'))
-    .map(cb => {
-      const idx = Number(cb.value);
-      return partecipanti[idx]?.id;
-    })
-    .filter(id => id !== undefined);
+  // --- NON salvo più la selezione qui, uso la variabile globale ---
   const allChecked = participantsCheckboxList.querySelector('input[type="checkbox"].all-checkbox')?.checked;
   participantsCheckboxList.innerHTML = "";
-  // --- Dichiaro searchTerm qui ---
   const searchTerm = participantSearchInput ? participantSearchInput.value.trim().toLowerCase() : "";
   // Opzione "Tutti"
   const allDiv = document.createElement("div");
@@ -1123,11 +1119,20 @@ function aggiornaSelezionePartecipante() {
     checkbox.value = partecipante.id;
     checkbox.id = `participant-checkbox-${partecipante.id}`;
     checkbox.setAttribute("data-participant-id", partecipante.id);
-    // --- Ripristina selezione se l'id era selezionato prima ---
-    if (selectedIds.includes(partecipante.id)) {
+    // --- Ripristina selezione dalla variabile globale ---
+    if (selectedParticipantIds.includes(partecipante.id)) {
       checkbox.checked = true;
       div.classList.add("highlighted");
     }
+    // Aggiorna la variabile globale quando cambia la selezione
+    checkbox.addEventListener("change", function() {
+      if (checkbox.checked) {
+        if (!selectedParticipantIds.includes(partecipante.id)) selectedParticipantIds.push(partecipante.id);
+      } else {
+        selectedParticipantIds = selectedParticipantIds.filter(id => id !== partecipante.id);
+      }
+      updateHighlightAndAllCheckbox();
+    });
     const label = document.createElement("label");
     label.htmlFor = `participant-checkbox-${partecipante.id}`;
     label.textContent = `${partecipante.nome} #${partecipante.id}`;
@@ -1182,13 +1187,7 @@ if (participantSearchInput) {
 
 // Modifico aggiungiPunti e togliPunti per agire su tutti i selezionati
 function getSelectedParticipantIndexes() {
-  if (!participantsCheckboxList) return [];
-  const checkboxes = participantsCheckboxList.querySelectorAll('input[type="checkbox"][data-participant-id]:checked');
-  return Array.from(checkboxes).map(cb => {
-    const id = Number(cb.value);
-    // Trova l'indice nell'array partecipanti
-    return partecipanti.findIndex(p => p.id === id);
-  }).filter(idx => idx !== -1);
+  return selectedParticipantIds.map(id => partecipanti.findIndex(p => p.id === id)).filter(idx => idx !== -1);
 }
 
 function aggiungiPunti() {
@@ -1221,6 +1220,7 @@ function aggiungiPunti() {
     items.forEach(item => item.classList.remove('highlighted'));
   }
   salvaDati();
+  selectedParticipantIds = [];
 }
 
 function togliPunti() {
@@ -1253,6 +1253,7 @@ function togliPunti() {
     items.forEach(item => item.classList.remove('highlighted'));
   }
   salvaDati();
+  selectedParticipantIds = [];
 }
 
 function impostaModalitàVittoria(modalità) {
