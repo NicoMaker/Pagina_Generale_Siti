@@ -101,6 +101,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Initialize the footer with the accessibility button
   initializeFooter()
+
+  if (pointsInput) {
+    pointsInput.value = "";
+    pointsInput.setAttribute("placeholder", "0");
+    aggiornaStileCampoPunti();
+  }
 })
 
 // Function to initialize the footer with the accessibility button
@@ -1208,7 +1214,7 @@ function aggiungiPunti() {
   });
   showToast(`${punti} punti aggiunti a ${selectedIndexes.length} partecipante/i`, "success");
   aggiornaListaPartecipanti();
-  pointsInput.value = "0";
+  pointsInput.value = "";
   aggiornaStileCampoPunti(); // aggiorna colore dopo reset
   pointsInput.focus();
   // --- Deseleziona tutte le checkbox solo dopo l'azione di aggiunta punti ---
@@ -1241,7 +1247,7 @@ function togliPunti() {
   });
   showToast(`${punti} punti tolti a ${selectedIndexes.length} partecipante/i`, "success");
   aggiornaListaPartecipanti();
-  pointsInput.value = "0";
+  pointsInput.value = "";
   aggiornaStileCampoPunti(); // aggiorna colore dopo reset
   pointsInput.focus();
   // --- Deseleziona tutte le checkbox solo dopo l'azione di sottrazione punti ---
