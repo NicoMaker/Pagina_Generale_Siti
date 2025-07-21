@@ -1057,101 +1057,135 @@ function aggiornaListaPartecipanti() {
   })
 }
 
-// Update the aggiornaSelezionePartecipante function to display the ID
+// Sostituisco il riferimento al select con la nuova lista di checkbox e input ricerca
+const participantsCheckboxList = document.getElementById("participants-checkbox-list");
+const participantSearchInput = document.getElementById("participant-search");
+
+// Aggiorno la funzione aggiornaSelezionePartecipante per la nuova UI
 function aggiornaSelezionePartecipante() {
-  if (!selectedParticipantSelect) return
-
-  selectedParticipantSelect.innerHTML = ""
-
-  // Opzioni di default
-  const defaultOption = document.createElement("option")
-  defaultOption.value = "-1"
-  defaultOption.textContent = "-- Seleziona un partecipante --"
-  selectedParticipantSelect.appendChild(defaultOption)
-
-  const allOption = document.createElement("option")
-  allOption.value = "all"
-  allOption.textContent = "Tutti"
-  selectedParticipantSelect.appendChild(allOption)
-
-  // Aggiungi tutti i partecipanti
-  partecipanti.forEach((partecipante, index) => {
-    const option = document.createElement("option")
-    option.value = index
-    option.textContent = `${partecipante.nome} #${partecipante.id}`
-    selectedParticipantSelect.appendChild(option)
-  })
+  if (!participantsCheckboxList) return;
+  const searchTerm = participantSearchInput ? participantSearchInput.value.trim().toLowerCase() : "";
+  participantsCheckboxList.innerHTML = "";
+  // Opzione "Tutti"
+  const allDiv = document.createElement("div");
+  const allCheckbox = document.createElement("input");
+  allCheckbox.type = "checkbox";
+  allCheckbox.id = "participant-all";
+  allCheckbox.value = "all";
+  allCheckbox.className = "all-checkbox";
+  const allLabel = document.createElement("label");
+  allLabel.htmlFor = "participant-all";
+  allLabel.textContent = "Tutti";
+  allDiv.appendChild(allCheckbox);
+  allDiv.appendChild(allLabel);
+  participantsCheckboxList.appendChild(allDiv);
+  // Lista partecipanti ORDINATA ALFABETICAMENTE
+  const partecipantiOrdinati = [...partecipanti].sort((a, b) => a.nome.localeCompare(b.nome, 'it', {sensitivity: 'base'}));
+  const participantDivs = [];
+  partecipantiOrdinati.forEach((partecipante) => {
+    if (searchTerm && !partecipante.nome.toLowerCase().includes(searchTerm)) return;
+    const index = partecipanti.indexOf(partecipante);
+    const div = document.createElement("div");
+    div.className = "participant-checkbox-item";
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.value = index;
+    checkbox.id = `participant-checkbox-${index}`;
+    checkbox.setAttribute("data-participant-index", index);
+    const label = document.createElement("label");
+    label.htmlFor = `participant-checkbox-${index}`;
+    label.textContent = `${partecipante.nome} #${partecipante.id}`;
+    div.appendChild(checkbox);
+    div.appendChild(label);
+    participantsCheckboxList.appendChild(div);
+    participantDivs.push({div, checkbox});
+  });
+  // Gestione evidenziazione e sincronizzazione
+  function updateHighlightAndAllCheckbox() {
+    let allChecked = true;
+    participantDivs.forEach(({div, checkbox}) => {
+      if (checkbox.checked) {
+        div.classList.add("highlighted");
+      } else {
+        div.classList.remove("highlighted");
+        allChecked = false;
+      }
+    });
+    allCheckbox.checked = allChecked && participantDivs.length > 0;
+    if (allCheckbox.checked) {
+      allDiv.classList.add("highlighted");
+    } else {
+      allDiv.classList.remove("highlighted");
+    }
+  }
+  participantDivs.forEach(({div, checkbox}) => {
+    checkbox.addEventListener("change", updateHighlightAndAllCheckbox);
+  });
+  allCheckbox.addEventListener("change", function () {
+    participantDivs.forEach(({checkbox, div}) => {
+      checkbox.checked = allCheckbox.checked;
+    });
+    updateHighlightAndAllCheckbox();
+  });
+  updateHighlightAndAllCheckbox();
 }
 
-// Funzioni per la gestione dei punti
+// Aggiorno la ricerca dinamica
+if (participantSearchInput) {
+  participantSearchInput.addEventListener("input", aggiornaSelezionePartecipante);
+}
+
+// Modifico aggiungiPunti e togliPunti per agire su tutti i selezionati
+function getSelectedParticipantIndexes() {
+  if (!participantsCheckboxList) return [];
+  const checkboxes = participantsCheckboxList.querySelectorAll('input[type="checkbox"][data-participant-index]:checked');
+  return Array.from(checkboxes).map(cb => Number(cb.value));
+}
+
 function aggiungiPunti() {
-  if (!pointsInput || !selectedParticipantSelect) return
-
-  const punti = Number.parseFloat(pointsInput.value)
-  const selectedParticipantIndex = selectedParticipantSelect.value
-
+  if (!pointsInput || !participantsCheckboxList) return;
+  const punti = Number.parseFloat(pointsInput.value);
   if (isNaN(punti) || punti < 0) {
-    showToast("Inserisci un valore valido", "error")
-    pointsInput.focus()
-    return
+    showToast("Inserisci un valore valido", "error");
+    pointsInput.focus();
+    return;
   }
-
-  if (selectedParticipantIndex === "-1") {
-    showToast("Seleziona un partecipante", "warning")
-    selectedParticipantSelect.focus()
-    return
+  const selectedIndexes = getSelectedParticipantIndexes();
+  if (selectedIndexes.length === 0) {
+    showToast("Seleziona almeno un partecipante", "warning");
+    return;
   }
-
-  if (selectedParticipantIndex === "all") {
-    for (const partecipante of partecipanti) {
-      partecipante.punti += punti
-    }
-    showToast(`${punti} punti aggiunti a tutti i partecipanti`, "success")
-  } else {
-    const index = Number.parseInt(selectedParticipantIndex)
-    partecipanti[index].punti += punti
-    showToast(`${punti} punti aggiunti a ${partecipanti[index].nome}`, "success")
-  }
-
-  aggiornaListaPartecipanti()
-  pointsInput.value = "0"
-  pointsInput.focus()
-  salvaDati()
+  selectedIndexes.forEach(index => {
+    partecipanti[index].punti += punti;
+  });
+  showToast(`${punti} punti aggiunti a ${selectedIndexes.length} partecipante/i`, "success");
+  aggiornaListaPartecipanti();
+  pointsInput.value = "0";
+  pointsInput.focus();
+  salvaDati();
 }
 
 function togliPunti() {
-  if (!pointsInput || !selectedParticipantSelect) return
-
-  const punti = Number.parseFloat(pointsInput.value)
-  const selectedParticipantIndex = selectedParticipantSelect.value
-
+  if (!pointsInput || !participantsCheckboxList) return;
+  const punti = Number.parseFloat(pointsInput.value);
   if (isNaN(punti) || punti < 0) {
-    showToast("Inserisci un valore valido", "error")
-    pointsInput.focus()
-    return
+    showToast("Inserisci un valore valido", "error");
+    pointsInput.focus();
+    return;
   }
-
-  if (selectedParticipantIndex === "-1") {
-    showToast("Seleziona un partecipante", "warning")
-    selectedParticipantSelect.focus()
-    return
+  const selectedIndexes = getSelectedParticipantIndexes();
+  if (selectedIndexes.length === 0) {
+    showToast("Seleziona almeno un partecipante", "warning");
+    return;
   }
-
-  if (selectedParticipantIndex === "all") {
-    for (const partecipante of partecipanti) {
-      partecipante.punti -= punti
-    }
-    showToast(`${punti} punti tolti a tutti i partecipanti`, "success")
-  } else {
-    const index = Number.parseInt(selectedParticipantIndex)
-    partecipanti[index].punti -= punti
-    showToast(`${punti} punti tolti a ${partecipanti[index].nome}`, "success")
-  }
-
-  aggiornaListaPartecipanti()
-  pointsInput.value = "0"
-  pointsInput.focus()
-  salvaDati()
+  selectedIndexes.forEach(index => {
+    partecipanti[index].punti -= punti;
+  });
+  showToast(`${punti} punti tolti a ${selectedIndexes.length} partecipante/i`, "success");
+  aggiornaListaPartecipanti();
+  pointsInput.value = "0";
+  pointsInput.focus();
+  salvaDati();
 }
 
 function impostaModalitàVittoria(modalità) {
