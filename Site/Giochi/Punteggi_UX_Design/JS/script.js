@@ -94,6 +94,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Inizializza l'interfaccia
   aggiornaListaPartecipanti()
   aggiornaSelezionePartecipante()
+  aggiornaStileCampoPunti(); // Imposta stile iniziale campo punti
 
   // Initialize the footer with the accessibility button
   initializeFooter()
@@ -272,6 +273,23 @@ function setupEventListeners() {
   const confirmEditNameBtn = document.getElementById("confirm-edit-name-btn")
   if (confirmEditNameBtn) {
     confirmEditNameBtn.addEventListener("click", salvaModificaNome)
+  }
+
+  // Gestione colore campo punti dinamico
+  if (pointsInput) {
+    pointsInput.addEventListener("input", aggiornaStileCampoPunti);
+    pointsInput.addEventListener("focus", function() {
+      if (pointsInput.value === "0") {
+        pointsInput.value = "";
+        aggiornaStileCampoPunti();
+      }
+    });
+    pointsInput.addEventListener("blur", function() {
+      if (pointsInput.value === "") {
+        pointsInput.value = "0";
+        aggiornaStileCampoPunti();
+      }
+    });
   }
 }
 
@@ -917,6 +935,11 @@ function aggiungiPartecipante() {
   // Pulisci e focus sull'input
   participantNameInput.value = ""
   participantNameInput.focus()
+  // Reset campo punti a 0 e aggiorna stile
+  if (pointsInput) {
+    pointsInput.value = "0";
+    aggiornaStileCampoPunti();
+  }
 
   showToast(`${nome} (ID: ${id}) aggiunto con successo`, "success")
 }
@@ -1064,8 +1087,17 @@ const participantSearchInput = document.getElementById("participant-search");
 // Aggiorno la funzione aggiornaSelezionePartecipante per la nuova UI
 function aggiornaSelezionePartecipante() {
   if (!participantsCheckboxList) return;
-  const searchTerm = participantSearchInput ? participantSearchInput.value.trim().toLowerCase() : "";
+  // --- Salva selezione attuale PRIMA di svuotare la lista ---
+  const selectedIds = Array.from(participantsCheckboxList.querySelectorAll('input[type="checkbox"][data-participant-index]:checked'))
+    .map(cb => {
+      const idx = Number(cb.value);
+      return partecipanti[idx]?.id;
+    })
+    .filter(id => id !== undefined);
+  const allChecked = participantsCheckboxList.querySelector('input[type="checkbox"].all-checkbox')?.checked;
   participantsCheckboxList.innerHTML = "";
+  // --- Dichiaro searchTerm qui ---
+  const searchTerm = participantSearchInput ? participantSearchInput.value.trim().toLowerCase() : "";
   // Opzione "Tutti"
   const allDiv = document.createElement("div");
   const allCheckbox = document.createElement("input");
@@ -1084,16 +1116,20 @@ function aggiornaSelezionePartecipante() {
   const participantDivs = [];
   partecipantiOrdinati.forEach((partecipante) => {
     if (searchTerm && !partecipante.nome.toLowerCase().includes(searchTerm)) return;
-    const index = partecipanti.indexOf(partecipante);
     const div = document.createElement("div");
     div.className = "participant-checkbox-item";
     const checkbox = document.createElement("input");
     checkbox.type = "checkbox";
-    checkbox.value = index;
-    checkbox.id = `participant-checkbox-${index}`;
-    checkbox.setAttribute("data-participant-index", index);
+    checkbox.value = partecipante.id;
+    checkbox.id = `participant-checkbox-${partecipante.id}`;
+    checkbox.setAttribute("data-participant-id", partecipante.id);
+    // --- Ripristina selezione se l'id era selezionato prima ---
+    if (selectedIds.includes(partecipante.id)) {
+      checkbox.checked = true;
+      div.classList.add("highlighted");
+    }
     const label = document.createElement("label");
-    label.htmlFor = `participant-checkbox-${index}`;
+    label.htmlFor = `participant-checkbox-${partecipante.id}`;
     label.textContent = `${partecipante.nome} #${partecipante.id}`;
     div.appendChild(checkbox);
     div.appendChild(label);
@@ -1127,6 +1163,15 @@ function aggiornaSelezionePartecipante() {
     });
     updateHighlightAndAllCheckbox();
   });
+  // --- Ripristina selezione "Tutti" se era selezionata ---
+  if (allChecked) {
+    allCheckbox.checked = true;
+    allDiv.classList.add("highlighted");
+    participantDivs.forEach(({checkbox, div}) => {
+      checkbox.checked = true;
+      div.classList.add("highlighted");
+    });
+  }
   updateHighlightAndAllCheckbox();
 }
 
@@ -1138,8 +1183,12 @@ if (participantSearchInput) {
 // Modifico aggiungiPunti e togliPunti per agire su tutti i selezionati
 function getSelectedParticipantIndexes() {
   if (!participantsCheckboxList) return [];
-  const checkboxes = participantsCheckboxList.querySelectorAll('input[type="checkbox"][data-participant-index]:checked');
-  return Array.from(checkboxes).map(cb => Number(cb.value));
+  const checkboxes = participantsCheckboxList.querySelectorAll('input[type="checkbox"][data-participant-id]:checked');
+  return Array.from(checkboxes).map(cb => {
+    const id = Number(cb.value);
+    // Trova l'indice nell'array partecipanti
+    return partecipanti.findIndex(p => p.id === id);
+  }).filter(idx => idx !== -1);
 }
 
 function aggiungiPunti() {
@@ -1161,7 +1210,16 @@ function aggiungiPunti() {
   showToast(`${punti} punti aggiunti a ${selectedIndexes.length} partecipante/i`, "success");
   aggiornaListaPartecipanti();
   pointsInput.value = "0";
+  aggiornaStileCampoPunti(); // aggiorna colore dopo reset
   pointsInput.focus();
+  // --- Deseleziona tutte le checkbox solo dopo l'azione di aggiunta punti ---
+  if (participantsCheckboxList) {
+    const checkboxes = participantsCheckboxList.querySelectorAll('input[type="checkbox"]');
+    checkboxes.forEach(cb => { cb.checked = false; });
+    // Aggiorna evidenziazione
+    const items = participantsCheckboxList.querySelectorAll('.participant-checkbox-item, .all-checkbox');
+    items.forEach(item => item.classList.remove('highlighted'));
+  }
   salvaDati();
 }
 
@@ -1184,7 +1242,16 @@ function togliPunti() {
   showToast(`${punti} punti tolti a ${selectedIndexes.length} partecipante/i`, "success");
   aggiornaListaPartecipanti();
   pointsInput.value = "0";
+  aggiornaStileCampoPunti(); // aggiorna colore dopo reset
   pointsInput.focus();
+  // --- Deseleziona tutte le checkbox solo dopo l'azione di sottrazione punti ---
+  if (participantsCheckboxList) {
+    const checkboxes = participantsCheckboxList.querySelectorAll('input[type="checkbox"]');
+    checkboxes.forEach(cb => { cb.checked = false; });
+    // Aggiorna evidenziazione
+    const items = participantsCheckboxList.querySelectorAll('.participant-checkbox-item, .all-checkbox');
+    items.forEach(item => item.classList.remove('highlighted'));
+  }
   salvaDati();
 }
 
@@ -1859,3 +1926,14 @@ function salvaModificaNome() {
 
   showToast(`Nome modificato da "${vecchioNome}" a "${nuovoNome}"`, "success")
 }
+
+// --- INIZIO: Gestione colore campo punti ---
+function aggiornaStileCampoPunti() {
+  if (!pointsInput) return;
+  if (pointsInput.value === "0" || pointsInput.value === "") {
+    pointsInput.classList.add("input-punti-grigio");
+  } else {
+    pointsInput.classList.remove("input-punti-grigio");
+  }
+}
+// --- FINE: Gestione colore campo punti ---

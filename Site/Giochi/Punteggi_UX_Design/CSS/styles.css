@@ -1755,3 +1755,14 @@ textarea:focus-visible {
     flex-direction: column;
   }
 }
+
+/* Campo punti grigio quando valore 0 */
+.input-punti-grigio {
+  background-color: #e9ecef !important;
+  color: #6c757d !important;
+}
+
+[data-theme="dark"] .input-punti-grigio {
+  background-color: #343a40 !important;
+  color: #adb5bd !important;
+}
