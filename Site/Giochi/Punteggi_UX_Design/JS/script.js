@@ -1351,7 +1351,7 @@ function eseguiReset() {
 }
 
 // File feedback modal functions
-function showFileFeedbackModal(results, onConfirm, onCancel) {
+function showFileFeedbackModal(results, onConfirm, onCancel, options = {}) {
   if (
     !fileFeedbackModal ||
     !fileFeedbackIcon ||
@@ -1549,11 +1549,16 @@ function caricaDaFile() {
         showFileFeedbackModal(results, function() {
           // Conferma: applica i dati
           if (!pendingImport) return;
-          // Svuota e riempi partecipanti
-          partecipanti.length = 0;
-          let idCounter = 1;
+          // Crea una mappa dei nomi già presenti (case insensitive)
+          const nomiEsistenti = new Set(partecipanti.map(p => p.nome.trim().toLowerCase()));
+          let idCounter = nextParticipantId;
           pendingImport.partecipanti.forEach((item) => {
-            partecipanti.push({ id: idCounter++, nome: item.nome.trim(), punti: Number.parseFloat(item.punti) || 0 });
+            const nomeLower = item.nome.trim().toLowerCase();
+            if (!nomiEsistenti.has(nomeLower)) {
+              partecipanti.push({ id: idCounter++, nome: item.nome.trim(), punti: Number.parseFloat(item.punti) || 0 });
+              nomiEsistenti.add(nomeLower);
+            }
+            // Se il nome esiste già, non aggiorno i punti
           });
           nextParticipantId = idCounter;
           if (pendingImport.modalitaVittoria && (pendingImport.modalitaVittoria === "max" || pendingImport.modalitaVittoria === "min")) {
@@ -1573,6 +1578,9 @@ function caricaDaFile() {
           // Annulla: non applica nulla
           showToast("Caricamento annullato, nessun dato importato", "warning");
           pendingImport = null;
+        }, {
+          // Opzione aggiuntiva: messaggio di avviso chiaro
+          warningMessage: "ATTENZIONE: Caricando un file, i partecipanti nuovi verranno aggiunti a quelli già presenti. Quelli già esistenti non verranno modificati. Procedere?"
         });
       } catch (error) {
         console.error("Errore durante il caricamento del file:", error)
