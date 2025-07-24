@@ -1766,3 +1766,7 @@ textarea:focus-visible {
   background-color: #343a40 !important;
   color: #adb5bd !important;
 }
+
+#partecipant-search{
+display:none;
+}
