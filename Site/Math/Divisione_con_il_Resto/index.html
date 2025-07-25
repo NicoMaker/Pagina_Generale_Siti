@@ -13,6 +13,7 @@
     <div class="container">
         <h1>Divisione con il Resto</h1>
         <p>Impara come si fa la divisione con il resto, passo dopo passo!</p>
+
         <div class="steps">
             <ol>
                 <li><strong>Scegli due numeri:</strong> il dividendo (il numero da dividere) e il divisore (il numero
@@ -23,6 +24,7 @@
                 <li><strong>Il risultato:</strong> il numero che rimane è il <b>resto</b>!</li>
             </ol>
         </div>
+
         <div class="example">
             <h2>Esempio</h2>
             <p>Facciamo 17 ÷ 5:</p>
@@ -33,14 +35,18 @@
                 <li><b>Risultato:</b> 17 ÷ 5 = 3 con resto di 2</li>
             </ul>
         </div>
+
         <div class="interactive">
             <h2>Prova tu!</h2>
             <form id="divisionForm">
                 <label for="dividendo">Dividendo:</label>
                 <input type="number" id="dividendo" required>
+
                 <label for="divisore">Divisore:</label>
                 <input type="number" id="divisore" required>
+
                 <button type="submit">Calcola</button>
+                <button type="reset" class="secondary-btn">Reset</button>
             </form>
             <div id="result"></div>
             <div id="steps"></div>

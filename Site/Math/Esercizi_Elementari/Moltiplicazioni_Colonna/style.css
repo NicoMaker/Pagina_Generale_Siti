@@ -1,25 +1,124 @@
-.back-link {
-    display: block;
-    margin-bottom: 18px;
-    color: #3b5bdb;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 1.08em;
-    background: #e0e7ff;
-    border-radius: 8px;
-    padding: 8px 14px;
-    width: fit-content;
-    transition: background 0.2s, color 0.2s;
+:root {
+  --main-blue: #4263eb;
+  --accent-yellow: #ffd43b;
+  --text-dark: #212529;
+  --text-muted: #6c757d;
+  --bg-light: #f8f9fa;
+  --white: #ffffff;
 }
-.back-link:hover {
-    background: #3b5bdb;
-    color: #fff;
+
+body {
+  font-family: "Poppins", sans-serif;
+  margin: 0;
+  padding: 24px;
+  background: linear-gradient(135deg, #e3f2fd, #ffffff);
+  color: var(--text-dark);
 }
+
+.container {
+  max-width: 720px;
+  margin: auto;
+  background: var(--white);
+  padding: 32px;
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  animation: fadeIn 0.4s ease;
+}
+
+h1 {
+  text-align: center;
+  color: var(--main-blue);
+  font-size: 2em;
+  margin-bottom: 8px;
+}
+
+h2 {
+  font-size: 1.4em;
+  color: var(--main-blue);
+  margin-top: 24px;
+}
+
+p {
+  text-align: center;
+  color: var(--text-muted);
+  margin-bottom: 24px;
+}
+
+label {
+  display: block;
+  font-weight: 600;
+  margin-top: 16px;
+}
+
+input {
+  width: 100%;
+  padding: 12px;
+  font-size: 1em;
+  margin-top: 6px;
+  border-radius: 8px;
+  border: 1px solid #ced4da;
+}
+
+button {
+  margin-top: 24px;
+  background: var(--main-blue);
+  color: white;
+  border: none;
+  padding: 14px;
+  border-radius: 8px;
+  font-size: 1em;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  transition: background 0.3s ease;
+}
+
+button:hover {
+  background: #364fc7;
+}
+
+.result-output {
+  margin-top: 24px;
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #22863a;
+}
+
+.steps-output {
+  margin-top: 16px;
+  padding-left: 20px;
+}
+
+.steps-output li {
+  padding: 6px 0;
+  font-size: 0.98em;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 @media (max-width: 600px) {
-    .back-link {
-        font-size: 1em;
-        padding: 10px 8px;
-        width: 100%;
-        text-align: center;
-    }
-} 
+  .container {
+    padding: 20px 16px;
+  }
+
+  h1 {
+    font-size: 1.6em;
+  }
+
+  h2 {
+    font-size: 1.2em;
+  }
+
+  button {
+    font-size: 1em;
+  }
+}
