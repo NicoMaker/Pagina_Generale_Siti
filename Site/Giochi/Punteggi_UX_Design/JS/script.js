@@ -107,6 +107,8 @@ document.addEventListener("DOMContentLoaded", () => {
     pointsInput.setAttribute("placeholder", "0");
     aggiornaStileCampoPunti();
   }
+
+  
 })
 
 // Function to initialize the footer with the accessibility button
@@ -287,13 +289,13 @@ function setupEventListeners() {
   // Gestione colore campo punti dinamico
   if (pointsInput) {
     pointsInput.addEventListener("input", aggiornaStileCampoPunti);
-    pointsInput.addEventListener("focus", function() {
+    pointsInput.addEventListener("focus", function () {
       if (pointsInput.value === "0") {
         pointsInput.value = "";
         aggiornaStileCampoPunti();
       }
     });
-    pointsInput.addEventListener("blur", function() {
+    pointsInput.addEventListener("blur", function () {
       if (pointsInput.value === "") {
         pointsInput.value = "0";
         aggiornaStileCampoPunti();
@@ -453,9 +455,8 @@ function showTieModal(vincitori, punti) {
   let detailsHTML = `<div class="tie-participants">Con un punteggio di <strong>${punti}</strong> punti:</div><ul class="tie-list">`
 
   vincitori.forEach((vincitore, index) => {
-    detailsHTML += `<li><span class="medal medal-${
-      index < 3 ? ["gold", "silver", "bronze"][index] : "default"
-    }">${index + 1}</span> ${vincitore.nome} <span class="winner-id">#${vincitore.id}</span></li>`
+    detailsHTML += `<li><span class="medal medal-${index < 3 ? ["gold", "silver", "bronze"][index] : "default"
+      }">${index + 1}</span> ${vincitore.nome} <span class="winner-id">#${vincitore.id}</span></li>`
   })
 
   detailsHTML += `</ul>`
@@ -1117,7 +1118,7 @@ function aggiornaSelezionePartecipante() {
   allDiv.appendChild(allLabel);
   participantsCheckboxList.appendChild(allDiv);
   // Lista partecipanti ORDINATA ALFABETICAMENTE
-  const partecipantiOrdinati = [...partecipanti].sort((a, b) => a.nome.localeCompare(b.nome, 'it', {sensitivity: 'base'}));
+  const partecipantiOrdinati = [...partecipanti].sort((a, b) => a.nome.localeCompare(b.nome, 'it', { sensitivity: 'base' }));
   const participantDivs = [];
   partecipantiOrdinati.forEach((partecipante) => {
     if (searchTerm && !partecipante.nome.toLowerCase().includes(searchTerm)) return;
@@ -1129,7 +1130,7 @@ function aggiornaSelezionePartecipante() {
     checkbox.id = `participant-checkbox-${partecipante.id}`;
     checkbox.setAttribute("data-participant-id", partecipante.id);
     // Aggiorna la variabile globale quando cambia la selezione
-    checkbox.addEventListener("change", function() {
+    checkbox.addEventListener("change", function () {
       if (checkbox.checked) {
         if (!selectedParticipantIds.includes(partecipante.id)) selectedParticipantIds.push(partecipante.id);
       } else {
@@ -1144,12 +1145,12 @@ function aggiornaSelezionePartecipante() {
     div.appendChild(checkbox);
     div.appendChild(label);
     participantsCheckboxList.appendChild(div);
-    participantDivs.push({div, checkbox});
+    participantDivs.push({ div, checkbox });
   });
   // Gestione evidenziazione e sincronizzazione
   function updateHighlightAndAllCheckbox() {
     let allChecked = true;
-    participantDivs.forEach(({div, checkbox}) => {
+    participantDivs.forEach(({ div, checkbox }) => {
       if (checkbox.checked) {
         div.classList.add("highlighted");
       } else {
@@ -1164,11 +1165,11 @@ function aggiornaSelezionePartecipante() {
       allDiv.classList.remove("highlighted");
     }
   }
-  participantDivs.forEach(({div, checkbox}) => {
+  participantDivs.forEach(({ div, checkbox }) => {
     checkbox.addEventListener("change", updateHighlightAndAllCheckbox);
   });
   allCheckbox.addEventListener("change", function () {
-    participantDivs.forEach(({checkbox, div}) => {
+    participantDivs.forEach(({ checkbox, div }) => {
       checkbox.checked = allCheckbox.checked;
       if (allCheckbox.checked) {
         if (!selectedParticipantIds.includes(Number(checkbox.value))) selectedParticipantIds.push(Number(checkbox.value));
@@ -1183,7 +1184,7 @@ function aggiornaSelezionePartecipante() {
   if (allChecked) {
     allCheckbox.checked = true;
     allDiv.classList.add("highlighted");
-    participantDivs.forEach(({checkbox, div}) => {
+    participantDivs.forEach(({ checkbox, div }) => {
       checkbox.checked = true;
       div.classList.add("highlighted");
       if (!selectedParticipantIds.includes(Number(checkbox.value))) selectedParticipantIds.push(Number(checkbox.value));
@@ -1529,14 +1530,14 @@ function showFileFeedbackModal(results, onConfirm, onCancel, options = {}) {
 
   // Gestione pulsanti
   if (fileFeedbackOkBtn) {
-    fileFeedbackOkBtn.onclick = function() {
+    fileFeedbackOkBtn.onclick = function () {
       hideFileFeedbackModal();
       if (typeof onConfirm === 'function') onConfirm();
     };
   }
   const fileFeedbackCancelBtn = document.getElementById("file-feedback-cancel-btn");
   if (fileFeedbackCancelBtn) {
-    fileFeedbackCancelBtn.onclick = function() {
+    fileFeedbackCancelBtn.onclick = function () {
       hideFileFeedbackModal();
       if (typeof onCancel === 'function') onCancel();
     };
@@ -1657,7 +1658,7 @@ function caricaDaFile() {
         // Salva i dati temporanei
         pendingImport = importData;
         // Mostra il modal con conferma/annulla
-        showFileFeedbackModal(results, function() {
+        showFileFeedbackModal(results, function () {
           // Conferma: applica i dati
           if (!pendingImport) return;
           // Crea una mappa dei nomi già presenti (case insensitive)
@@ -1695,7 +1696,7 @@ function caricaDaFile() {
           aggiornaSelezionePartecipante();
           salvaDati();
           pendingImport = null;
-        }, function() {
+        }, function () {
           // Annulla: non applica nulla
           showToast("Caricamento annullato, nessun dato importato", "warning");
           pendingImport = null;
@@ -1999,5 +2000,215 @@ function filtraPartecipantiValidi() {
     if (!p.nome || typeof p.nome !== "string" || p.nome.trim() === "" || isNaN(p.punti)) {
       partecipanti.splice(i, 1);
     }
+  }
+}
+
+
+function aggiornaSelezionePartecipante() {
+  const lista = document.getElementById("participants-checkbox-list");
+  const filtro = document.getElementById("participant-search")?.value.toLowerCase() || "";
+
+  if (!lista) return;
+
+  lista.innerHTML = ""; // pulisci lista
+
+  const partecipantiFiltrati = partecipanti.filter((p) =>
+    p.nome.toLowerCase().includes(filtro)
+  );
+
+  partecipantiFiltrati.forEach((p) => {
+    const div = document.createElement("div");
+    div.classList.add("checkbox-participant");
+
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.value = p.id;
+    checkbox.checked = selectedParticipantIds.includes(p.id);
+    checkbox.addEventListener("change", () => {
+      if (checkbox.checked) {
+        selectedParticipantIds.push(p.id);
+      } else {
+        selectedParticipantIds = selectedParticipantIds.filter((id) => id !== p.id);
+      }
+    });
+
+    const label = document.createElement("label");
+    label.textContent = `${p.nome} (#${p.id})`;
+    label.style.marginLeft = "0.5rem";
+
+    div.appendChild(checkbox);
+    div.appendChild(label);
+    lista.appendChild(div);
+  });
+}
+
+function aggiornaSelezionePartecipante() {
+  const lista = document.getElementById("participants-checkbox-list");
+  const filtro = document.getElementById("participant-search")?.value.toLowerCase() || "";
+
+  if (!lista) return;
+
+  lista.innerHTML = "";
+
+  // Crea checkbox "Tutti"
+  const allDiv = document.createElement("div");
+  const allCheckbox = document.createElement("input");
+  allCheckbox.type = "checkbox";
+  allCheckbox.id = "select-all";
+  allCheckbox.checked = selectedParticipantIds.length === partecipanti.length;
+
+  allCheckbox.addEventListener("change", () => {
+    if (allCheckbox.checked) {
+      selectedParticipantIds = partecipanti.map(p => p.id);
+    } else {
+      selectedParticipantIds = [];
+    }
+    aggiornaSelezionePartecipante();
+  });
+
+  const allLabel = document.createElement("label");
+  allLabel.textContent = "Tutti";
+  allLabel.setAttribute("for", "select-all");
+  allLabel.style.marginLeft = "0.5rem";
+
+  allDiv.appendChild(allCheckbox);
+  allDiv.appendChild(allLabel);
+  allDiv.style.marginBottom = "0.5rem";
+  lista.appendChild(allDiv);
+
+  // Filtra solo se non è selezionato "Tutti"
+  const mostraTutti = selectedParticipantIds.length === partecipanti.length;
+  const partecipantiFiltrati = mostraTutti
+    ? partecipanti
+    : partecipanti.filter(p => p.nome.toLowerCase().includes(filtro));
+
+  partecipantiFiltrati.forEach((p) => {
+    const div = document.createElement("div");
+    div.classList.add("checkbox-participant");
+
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.value = p.id;
+    checkbox.checked = selectedParticipantIds.includes(p.id);
+    checkbox.addEventListener("change", () => {
+      if (checkbox.checked) {
+        if (!selectedParticipantIds.includes(p.id)) {
+          selectedParticipantIds.push(p.id);
+        }
+      } else {
+        selectedParticipantIds = selectedParticipantIds.filter(id => id !== p.id);
+      }
+      aggiornaSelezionePartecipante();
+    });
+
+    const label = document.createElement("label");
+    label.textContent = `${p.nome} (#${p.id})`;
+    label.style.marginLeft = "0.5rem";
+
+    div.appendChild(checkbox);
+    div.appendChild(label);
+    lista.appendChild(div);
+  });
+}
+
+function setupRicercaCheckbox() {
+  const searchInput = document.getElementById("participant-search");
+  if (searchInput) {
+    searchInput.addEventListener("input", () => {
+      const tuttiSelezionati = selectedParticipantIds.length === partecipanti.length;
+      if (!tuttiSelezionati) {
+        aggiornaSelezionePartecipante();
+      }
+    });
+  }
+}
+
+
+function aggiornaSelezionePartecipante() {
+  const lista = document.getElementById("participants-checkbox-list");
+  const filtro = document.getElementById("participant-search")?.value.toLowerCase() || "";
+
+  if (!lista) return;
+
+  lista.innerHTML = "";
+
+  // Filtra i partecipanti in base al testo
+  const partecipantiFiltrati = partecipanti.filter(p =>
+    p.nome.toLowerCase().includes(filtro)
+  );
+
+  // Crea checkbox "Tutti"
+  const allDiv = document.createElement("div");
+  const allCheckbox = document.createElement("input");
+  allCheckbox.type = "checkbox";
+  allCheckbox.id = "select-all";
+
+  // Verifica se tutti quelli filtrati sono selezionati
+  const tuttiFiltratiSelezionati = partecipantiFiltrati.every(p => selectedParticipantIds.includes(p.id));
+  allCheckbox.checked = tuttiFiltratiSelezionati;
+
+  allCheckbox.addEventListener("change", () => {
+    if (allCheckbox.checked) {
+      // Aggiungi solo quelli visibili
+      partecipantiFiltrati.forEach(p => {
+        if (!selectedParticipantIds.includes(p.id)) {
+          selectedParticipantIds.push(p.id);
+        }
+      });
+    } else {
+      // Rimuovi solo quelli visibili
+      selectedParticipantIds = selectedParticipantIds.filter(id => 
+        !partecipantiFiltrati.some(p => p.id === id)
+      );
+    }
+    aggiornaSelezionePartecipante();
+  });
+
+  const allLabel = document.createElement("label");
+  allLabel.textContent = "Tutti (visibili)";
+  allLabel.setAttribute("for", "select-all");
+  allLabel.style.marginLeft = "0.5rem";
+
+  allDiv.appendChild(allCheckbox);
+  allDiv.appendChild(allLabel);
+  allDiv.style.marginBottom = "0.5rem";
+  lista.appendChild(allDiv);
+
+  // Crea checkbox per ogni partecipante filtrato
+  partecipantiFiltrati.forEach(p => {
+    const div = document.createElement("div");
+    div.classList.add("checkbox-participant");
+
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.value = p.id;
+    checkbox.checked = selectedParticipantIds.includes(p.id);
+    checkbox.addEventListener("change", () => {
+      if (checkbox.checked) {
+        if (!selectedParticipantIds.includes(p.id)) {
+          selectedParticipantIds.push(p.id);
+        }
+      } else {
+        selectedParticipantIds = selectedParticipantIds.filter(id => id !== p.id);
+      }
+      aggiornaSelezionePartecipante();
+    });
+
+    const label = document.createElement("label");
+    label.textContent = `${p.nome} (#${p.id})`;
+    label.style.marginLeft = "0.5rem";
+
+    div.appendChild(checkbox);
+    div.appendChild(label);
+    lista.appendChild(div);
+  });
+}
+
+function setupRicercaCheckbox() {
+  const searchInput = document.getElementById("participant-search");
+  if (searchInput) {
+    searchInput.addEventListener("input", () => {
+      aggiornaSelezionePartecipante();
+    });
   }
 }
