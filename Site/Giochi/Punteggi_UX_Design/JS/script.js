@@ -108,7 +108,7 @@ document.addEventListener("DOMContentLoaded", () => {
     aggiornaStileCampoPunti();
   }
 
-  
+
 })
 
 // Function to initialize the footer with the accessibility button
@@ -2139,6 +2139,7 @@ function aggiornaSelezionePartecipante() {
 
   // Crea checkbox "Tutti"
   const allDiv = document.createElement("div");
+  allDiv.classList.add("checkbox-participant");
   const allCheckbox = document.createElement("input");
   allCheckbox.type = "checkbox";
   allCheckbox.id = "select-all";
@@ -2157,7 +2158,7 @@ function aggiornaSelezionePartecipante() {
       });
     } else {
       // Rimuovi solo quelli visibili
-      selectedParticipantIds = selectedParticipantIds.filter(id => 
+      selectedParticipantIds = selectedParticipantIds.filter(id =>
         !partecipantiFiltrati.some(p => p.id === id)
       );
     }
@@ -2165,7 +2166,7 @@ function aggiornaSelezionePartecipante() {
   });
 
   const allLabel = document.createElement("label");
-  allLabel.textContent = "Tutti (visibili)";
+  allLabel.textContent = "Tutti";
   allLabel.setAttribute("for", "select-all");
   allLabel.style.marginLeft = "0.5rem";
 
