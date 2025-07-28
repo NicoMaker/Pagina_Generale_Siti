@@ -1,51 +1,53 @@
-const apiKey = "e004d9474c784ab88e8a5d8a8c771c2a"
+const apiKey = "e004d9474c784ab88e8a5d8a8c771c2a";
 
 // DOM elements
-const cityInput = document.getElementById("cityInput")
-const searchButton = document.getElementById("searchButton")
-const resultContainer = document.getElementById("resultContainer")
-const result = document.getElementById("result")
+const cityInput = document.getElementById("cityInput");
+const searchButton = document.getElementById("searchButton");
+const resultContainer = document.getElementById("resultContainer");
+const result = document.getElementById("result");
 
 // Event listeners
 cityInput.addEventListener("keypress", (event) => {
   if (event.key === "Enter") {
-    event.preventDefault()
-    getCityInfo()
+    event.preventDefault();
+    getCityInfo();
   }
-})
+});
 
 // Set city from quick selection
 function setCity(cityName) {
-  cityInput.value = cityName
-  getCityInfo()
+  cityInput.value = cityName;
+  getCityInfo();
 }
 
 // Main function to get city information
 function getCityInfo() {
-  const cityName = cityInput.value.trim()
+  const cityName = cityInput.value.trim();
 
   if (!cityName) {
-    displayError("Per favore, inserisci il nome di una città.")
-    return
+    displayError("Per favore, inserisci il nome di una città.");
+    return;
   }
 
   // Show loading state
-  showLoading(true)
+  showLoading(true);
 
-  fetch(`https://api.opencagedata.com/geocode/v1/json?q=${encodeURIComponent(cityName)}&key=${apiKey}&language=it`)
+  fetch(
+    `https://api.opencagedata.com/geocode/v1/json?q=${encodeURIComponent(cityName)}&key=${apiKey}&language=it`,
+  )
     .then((response) => {
       if (!response.ok) {
-        throw new Error(`Errore di rete: ${response.status}`)
+        throw new Error(`Errore di rete: ${response.status}`);
       }
-      return response.json()
+      return response.json();
     })
     .then((data) => {
-      showLoading(false)
+      showLoading(false);
 
       if (data.results.length === 0) {
-        displayError("Città non trovata. Controlla il nome e riprova.")
+        displayError("Città non trovata. Controlla il nome e riprova.");
       } else {
-        const city = data.results[0]
+        const city = data.results[0];
         const cityInfo = {
           name:
             city.components.city ||
@@ -61,28 +63,30 @@ function getCityInfo() {
           flag: city.annotations.flag || "",
           currency: city.annotations.currency?.name || "N/A",
           currencySymbol: city.annotations.currency?.symbol || "",
-        }
+        };
 
         const currentTime = new Date().toLocaleString("it-IT", {
           timeZone: cityInfo.timezone,
           dateStyle: "full",
           timeStyle: "medium",
-        })
+        });
 
-        displayCityInfo(cityInfo, currentTime)
+        displayCityInfo(cityInfo, currentTime);
       }
     })
     .catch((error) => {
-      showLoading(false)
-      console.error("Errore durante la richiesta API:", error)
-      displayError("Si è verificato un errore durante la ricerca. Riprova più tardi.")
-    })
+      showLoading(false);
+      console.error("Errore durante la richiesta API:", error);
+      displayError(
+        "Si è verificato un errore durante la ricerca. Riprova più tardi.",
+      );
+    });
 }
 
 // Display error message
 function displayError(message) {
-  result.innerHTML = `<div class="error-message">${message}</div>`
-  resultContainer.classList.add("active")
+  result.innerHTML = `<div class="error-message">${message}</div>`;
+  resultContainer.classList.add("active");
 }
 
 // Display city information in a structured format
@@ -129,91 +133,97 @@ function displayCityInfo(cityInfo, currentTime) {
         </iframe>
       </div>
     </div>
-  `
+  `;
 
-  result.innerHTML = html
-  resultContainer.classList.add("active")
+  result.innerHTML = html;
+  resultContainer.classList.add("active");
 }
 
 // Toggle loading state
 function showLoading(isLoading) {
-  const buttonText = document.querySelector(".button-text")
-  const loader = document.querySelector(".loader")
+  const buttonText = document.querySelector(".button-text");
+  const loader = document.querySelector(".loader");
 
   if (isLoading) {
-    buttonText.style.opacity = "0"
-    loader.style.display = "block"
-    searchButton.disabled = true
+    buttonText.style.opacity = "0";
+    loader.style.display = "block";
+    searchButton.disabled = true;
   } else {
-    buttonText.style.opacity = "1"
-    loader.style.display = "none"
-    searchButton.disabled = false
+    buttonText.style.opacity = "1";
+    loader.style.display = "none";
+    searchButton.disabled = false;
   }
 }
 
 // Initialize the app
 function initApp() {
   // Focus on input field when page loads
-  cityInput.focus()
+  cityInput.focus();
 
   // Check if browser supports geolocation
   if (navigator.geolocation) {
-    const geolocateButton = document.createElement("button")
-    geolocateButton.className = "city-chip"
-    geolocateButton.innerHTML = "La mia posizione"
-    geolocateButton.onclick = getUserLocation
+    const geolocateButton = document.createElement("button");
+    geolocateButton.className = "city-chip";
+    geolocateButton.innerHTML = "La mia posizione";
+    geolocateButton.onclick = getUserLocation;
 
-    document.querySelector(".city-chips").appendChild(geolocateButton)
+    document.querySelector(".city-chips").appendChild(geolocateButton);
   }
 }
 
 // Get user's current location
 function getUserLocation() {
   if (navigator.geolocation) {
-    showLoading(true)
+    showLoading(true);
 
     navigator.geolocation.getCurrentPosition(
       (position) => {
-        const lat = position.coords.latitude
-        const lng = position.coords.longitude
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
 
-        fetch(`https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lng}&key=${apiKey}&language=it`)
+        fetch(
+          `https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lng}&key=${apiKey}&language=it`,
+        )
           .then((response) => response.json())
           .then((data) => {
-            showLoading(false)
+            showLoading(false);
 
             if (data.results.length > 0) {
-              const location = data.results[0]
+              const location = data.results[0];
               const city =
                 location.components.city ||
                 location.components.town ||
                 location.components.village ||
-                location.components.county
+                location.components.county;
 
               if (city) {
-                cityInput.value = city
-                getCityInfo()
+                cityInput.value = city;
+                getCityInfo();
               } else {
-                displayError("Non è stato possibile determinare la tua città.")
+                displayError("Non è stato possibile determinare la tua città.");
               }
             } else {
-              displayError("Non è stato possibile determinare la tua posizione.")
+              displayError(
+                "Non è stato possibile determinare la tua posizione.",
+              );
             }
           })
           .catch((error) => {
-            showLoading(false)
-            console.error("Errore durante la ricerca della posizione:", error)
-            displayError("Si è verificato un errore durante la ricerca della tua posizione.")
-          })
+            showLoading(false);
+            console.error("Errore durante la ricerca della posizione:", error);
+            displayError(
+              "Si è verificato un errore durante la ricerca della tua posizione.",
+            );
+          });
       },
       (error) => {
-        showLoading(false)
-        console.error("Errore di geolocalizzazione:", error)
-        displayError("Non è stato possibile accedere alla tua posizione.")
+        showLoading(false);
+        console.error("Errore di geolocalizzazione:", error);
+        displayError("Non è stato possibile accedere alla tua posizione.");
       },
-    )
+    );
   }
 }
 
 // Initialize the app when DOM is loaded
-document.addEventListener("DOMContentLoaded", initApp)
+document.addEventListener("DOMContentLoaded", initApp);

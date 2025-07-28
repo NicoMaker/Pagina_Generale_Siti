@@ -1,141 +1,174 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="it">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ThermoLab - Temperature Science Hub</title>
     <script src="script.js" defer></script>
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="https://cdn-icons-png.freepik.com/512/76/76660.png" type="image/jpg" />
-</head>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="icon"
+      href="https://cdn-icons-png.freepik.com/512/76/76660.png"
+      type="image/jpg"
+    />
+  </head>
 
-<body>
+  <body>
     <div class="hero">
-        <div class="hero-content">
-            <h1 class="hero-title">ThermoLab</h1>
-            <p class="hero-subtitle">Esplora il mondo affascinante della temperatura attraverso scienza, fisica e
-                curiosità</p>
-            <button class="cta-button" onclick="scrollToContent()">Inizia l'Esplorazione</button>
-        </div>
+      <div class="hero-content">
+        <h1 class="hero-title">ThermoLab</h1>
+        <p class="hero-subtitle">
+          Esplora il mondo affascinante della temperatura attraverso scienza,
+          fisica e curiosità
+        </p>
+        <button class="cta-button" onclick="scrollToContent()">
+          Inizia l'Esplorazione
+        </button>
+      </div>
     </div>
 
     <div class="content-section" id="content">
-        <h2 class="section-title">Scopri la Temperatura</h2>
+      <h2 class="section-title">Scopri la Temperatura</h2>
 
-        <div class="features-grid">
-            <div class="feature-card">
-                <div class="feature-icon">🔬</div>
-                <h3 class="feature-title">Fisica Quantistica</h3>
-                <p class="feature-description">Esplora come la temperatura influenza il comportamento degli atomi e
-                    delle molecole a livello quantistico</p>
-            </div>
-
-            <div class="feature-card">
-                <div class="feature-icon">🌡️</div>
-                <h3 class="feature-title">Scale Termometriche</h3>
-                <p class="feature-description">Scopri la storia e la scienza dietro le diverse scale di temperatura
-                    utilizzate nel mondo</p>
-            </div>
-
-            <div class="feature-card">
-                <div class="feature-icon">❄️</div>
-                <h3 class="feature-title">Stati della Materia</h3>
-                <p class="feature-description">Comprendi come la temperatura determina se la materia è solida, liquida,
-                    gassosa o plasma</p>
-            </div>
-
-            <div class="feature-card">
-                <div class="feature-icon">🌟</div>
-                <h3 class="feature-title">Temperature Estreme</h3>
-                <p class="feature-description">Viaggio attraverso le temperature più estreme dell'universo, dallo zero
-                    assoluto al cuore delle stelle</p>
-            </div>
-
-            <div class="feature-card">
-                <div class="feature-icon">🧪</div>
-                <h3 class="feature-title">Esperimenti Virtuali</h3>
-                <p class="feature-description">Simula esperimenti termici in un ambiente sicuro e controllato</p>
-            </div>
-
-            <div class="feature-card">
-                <div class="feature-icon">📊</div>
-                <h3 class="feature-title">Dati Scientifici</h3>
-                <p class="feature-description">Accedi a database di proprietà termiche di materiali e sostanze</p>
-            </div>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">🔬</div>
+          <h3 class="feature-title">Fisica Quantistica</h3>
+          <p class="feature-description">
+            Esplora come la temperatura influenza il comportamento degli atomi e
+            delle molecole a livello quantistico
+          </p>
         </div>
 
-        <div class="interactive-demo">
-            <h3 class="section-title">Scala delle Temperature Estreme</h3>
-            <p>Clicca sui punti per esplorare temperature significative nell'universo</p>
-
-            <div class="temp-scale">
-                <div class="temp-line"></div>
-                <div class="temp-point absolute-zero" onclick="showTempInfo('zero')">
-                    <div>Zero<br>Assoluto<br>-273°C</div>
-                </div>
-                <div class="temp-point water-freeze" onclick="showTempInfo('freeze')">
-                    <div>Acqua<br>Congela<br>0°C</div>
-                </div>
-                <div class="temp-point body-temp" onclick="showTempInfo('body')">
-                    <div>Corpo<br>Umano<br>37°C</div>
-                </div>
-                <div class="temp-point water-boil" onclick="showTempInfo('boil')">
-                    <div>Acqua<br>Bolle<br>100°C</div>
-                </div>
-                <div class="temp-point sun-surface" onclick="showTempInfo('sun')">
-                    <div>Superficie<br>Solare<br>5778°C</div>
-                </div>
-            </div>
-
-            <div id="temp-info"
-                style="margin-top: 30px; padding: 20px; background: rgba(255,255,255,0.1); border-radius: 15px; display: none;">
-                <h4 id="info-title"></h4>
-                <p id="info-description"></p>
-            </div>
+        <div class="feature-card">
+          <div class="feature-icon">🌡️</div>
+          <h3 class="feature-title">Scale Termometriche</h3>
+          <p class="feature-description">
+            Scopri la storia e la scienza dietro le diverse scale di temperatura
+            utilizzate nel mondo
+          </p>
         </div>
 
-        <h3 class="section-title">Base di Conoscenza</h3>
-        <div class="knowledge-base">
-            <div class="knowledge-item" onclick="toggleKnowledge(this)">
-                <h4 class="knowledge-title">Termodinamica</h4>
-                <p>Le leggi fondamentali che governano il trasferimento di calore e energia</p>
-            </div>
-
-            <div class="knowledge-item" onclick="toggleKnowledge(this)">
-                <h4 class="knowledge-title">Conducibilità Termica</h4>
-                <p>Come diversi materiali conducono il calore in modo diverso</p>
-            </div>
-
-            <div class="knowledge-item" onclick="toggleKnowledge(this)">
-                <h4 class="knowledge-title">Effetto Serra</h4>
-                <p>Come la temperatura influenza il clima terrestre</p>
-            </div>
-
-            <div class="knowledge-item" onclick="toggleKnowledge(this)">
-                <h4 class="knowledge-title">Superconduttività</h4>
-                <p>Fenomeni quantistici che si verificano a temperature estremamente basse</p>
-            </div>
-
-            <div class="knowledge-item" onclick="toggleKnowledge(this)">
-                <h4 class="knowledge-title">Fusione Nucleare</h4>
-                <p>Come temperature estreme permettono la fusione negli astri</p>
-            </div>
-
-            <div class="knowledge-item" onclick="toggleKnowledge(this)">
-                <h4 class="knowledge-title">Criogenia</h4>
-                <p>Applicazioni pratiche delle temperature ultra-basse</p>
-            </div>
+        <div class="feature-card">
+          <div class="feature-icon">❄️</div>
+          <h3 class="feature-title">Stati della Materia</h3>
+          <p class="feature-description">
+            Comprendi come la temperatura determina se la materia è solida,
+            liquida, gassosa o plasma
+          </p>
         </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">🌟</div>
+          <h3 class="feature-title">Temperature Estreme</h3>
+          <p class="feature-description">
+            Viaggio attraverso le temperature più estreme dell'universo, dallo
+            zero assoluto al cuore delle stelle
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">🧪</div>
+          <h3 class="feature-title">Esperimenti Virtuali</h3>
+          <p class="feature-description">
+            Simula esperimenti termici in un ambiente sicuro e controllato
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">📊</div>
+          <h3 class="feature-title">Dati Scientifici</h3>
+          <p class="feature-description">
+            Accedi a database di proprietà termiche di materiali e sostanze
+          </p>
+        </div>
+      </div>
+
+      <div class="interactive-demo">
+        <h3 class="section-title">Scala delle Temperature Estreme</h3>
+        <p>
+          Clicca sui punti per esplorare temperature significative nell'universo
+        </p>
+
+        <div class="temp-scale">
+          <div class="temp-line"></div>
+          <div class="temp-point absolute-zero" onclick="showTempInfo('zero')">
+            <div>Zero<br />Assoluto<br />-273°C</div>
+          </div>
+          <div class="temp-point water-freeze" onclick="showTempInfo('freeze')">
+            <div>Acqua<br />Congela<br />0°C</div>
+          </div>
+          <div class="temp-point body-temp" onclick="showTempInfo('body')">
+            <div>Corpo<br />Umano<br />37°C</div>
+          </div>
+          <div class="temp-point water-boil" onclick="showTempInfo('boil')">
+            <div>Acqua<br />Bolle<br />100°C</div>
+          </div>
+          <div class="temp-point sun-surface" onclick="showTempInfo('sun')">
+            <div>Superficie<br />Solare<br />5778°C</div>
+          </div>
+        </div>
+
+        <div
+          id="temp-info"
+          style="
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            display: none;
+          "
+        >
+          <h4 id="info-title"></h4>
+          <p id="info-description"></p>
+        </div>
+      </div>
+
+      <h3 class="section-title">Base di Conoscenza</h3>
+      <div class="knowledge-base">
+        <div class="knowledge-item" onclick="toggleKnowledge(this)">
+          <h4 class="knowledge-title">Termodinamica</h4>
+          <p>
+            Le leggi fondamentali che governano il trasferimento di calore e
+            energia
+          </p>
+        </div>
+
+        <div class="knowledge-item" onclick="toggleKnowledge(this)">
+          <h4 class="knowledge-title">Conducibilità Termica</h4>
+          <p>Come diversi materiali conducono il calore in modo diverso</p>
+        </div>
+
+        <div class="knowledge-item" onclick="toggleKnowledge(this)">
+          <h4 class="knowledge-title">Effetto Serra</h4>
+          <p>Come la temperatura influenza il clima terrestre</p>
+        </div>
+
+        <div class="knowledge-item" onclick="toggleKnowledge(this)">
+          <h4 class="knowledge-title">Superconduttività</h4>
+          <p>
+            Fenomeni quantistici che si verificano a temperature estremamente
+            basse
+          </p>
+        </div>
+
+        <div class="knowledge-item" onclick="toggleKnowledge(this)">
+          <h4 class="knowledge-title">Fusione Nucleare</h4>
+          <p>Come temperature estreme permettono la fusione negli astri</p>
+        </div>
+
+        <div class="knowledge-item" onclick="toggleKnowledge(this)">
+          <h4 class="knowledge-title">Criogenia</h4>
+          <p>Applicazioni pratiche delle temperature ultra-basse</p>
+        </div>
+      </div>
     </div>
 
     <div class="footer">
-        <div class="footer-content">
-            <h3 class="footer-title">ThermoLab</h3>
-            <p>Esplorando la scienza della temperatura dal 2025</p>
-        </div>
+      <div class="footer-content">
+        <h3 class="footer-title">ThermoLab</h3>
+        <p>Esplorando la scienza della temperatura dal 2025</p>
+      </div>
     </div>
-
-</body>
-
+  </body>
 </html>

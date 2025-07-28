@@ -114,7 +114,7 @@ document.addEventListener("DOMContentLoaded", () => {
       foodY + GRID_SIZE / 2,
       GRID_SIZE / 2,
       0,
-      2 * Math.PI
+      2 * Math.PI,
     );
     ctx.fill();
     ctx.stroke();

@@ -143,8 +143,8 @@ function calcolaAhmes() {
       isNaN(numero1) && isNaN(numero2)
         ? "Per favore, inserisci entrambi i numeri."
         : isNaN(numero1)
-        ? "Per favore, inserisci il primo numero."
-        : "Per favore, inserisci il secondo numero.";
+          ? "Per favore, inserisci il primo numero."
+          : "Per favore, inserisci il secondo numero.";
 
     showNotification(errorMessage);
     passaggiDiv.innerHTML = "";
@@ -165,7 +165,7 @@ function calcolaAhmes() {
   // Check if result exceeds MAX_NUMBER_SYMBOLS
   if (risultato > MAX_NUMBER_SYMBOLS) {
     showNotification(
-      `Il risultato (${risultato}) supera il massimo consentito di ${MAX_NUMBER_SYMBOLS} per i geroglifici. I geroglifici non possono essere visualizzati correttamente.`
+      `Il risultato (${risultato}) supera il massimo consentito di ${MAX_NUMBER_SYMBOLS} per i geroglifici. I geroglifici non possono essere visualizzati correttamente.`,
     );
 
     risultatoDiv.innerHTML = `
@@ -233,7 +233,7 @@ function calcolaRisultato(numero1, numero2) {
       `,
         isEven,
         currentNum1,
-        currentNum2
+        currentNum2,
       );
 
       currentNum1 /= 2;
@@ -257,7 +257,7 @@ function calcolaRisultato(numero1, numero2) {
       `,
         isEven,
         currentNum1,
-        currentNum2
+        currentNum2,
       );
 
       currentNum1--;

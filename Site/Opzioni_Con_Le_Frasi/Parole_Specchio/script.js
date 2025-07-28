@@ -1,62 +1,63 @@
 // Wait for DOM to be fully loaded
 document.addEventListener("DOMContentLoaded", () => {
   // DOM Elements
-  const inputField = document.getElementById("input")
-  const clearBtn = document.getElementById("clear-btn")
-  const invertBtn = document.getElementById("invert-btn")
-  const exampleBtn = document.getElementById("example-btn")
-  const copyBtn = document.getElementById("copy-btn")
-  const outputDiv = document.getElementById("output")
-  const charCount = document.getElementById("char-count")
-  const themeToggle = document.getElementById("theme-toggle")
-  const currentYearSpan = document.getElementById("current-year")
+  const inputField = document.getElementById("input");
+  const clearBtn = document.getElementById("clear-btn");
+  const invertBtn = document.getElementById("invert-btn");
+  const exampleBtn = document.getElementById("example-btn");
+  const copyBtn = document.getElementById("copy-btn");
+  const outputDiv = document.getElementById("output");
+  const charCount = document.getElementById("char-count");
+  const themeToggle = document.getElementById("theme-toggle");
+  const currentYearSpan = document.getElementById("current-year");
 
   // Set current year
-  currentYearSpan.textContent = new Date().getFullYear()
+  currentYearSpan.textContent = new Date().getFullYear();
 
   // Check for saved theme preference
   if (localStorage.getItem("theme") === "dark") {
-    document.body.classList.add("dark-theme")
+    document.body.classList.add("dark-theme");
   }
 
   // Theme toggle functionality
   themeToggle.addEventListener("click", () => {
-    document.body.classList.toggle("dark-theme")
+    document.body.classList.toggle("dark-theme");
 
     // Save theme preference
     if (document.body.classList.contains("dark-theme")) {
-      localStorage.setItem("theme", "dark")
+      localStorage.setItem("theme", "dark");
     } else {
-      localStorage.setItem("theme", "light")
+      localStorage.setItem("theme", "light");
     }
-  })
+  });
 
   // Update character count
   inputField.addEventListener("input", () => {
-    const count = inputField.value.length
-    charCount.textContent = count
+    const count = inputField.value.length;
+    charCount.textContent = count;
 
     // Add warning color if approaching limit
     if (count > 200) {
-      charCount.style.color = "var(--warning)"
+      charCount.style.color = "var(--warning)";
     } else {
-      charCount.style.color = "var(--text-light)"
+      charCount.style.color = "var(--text-light)";
     }
 
     // Auto-resize textarea
-    inputField.style.height = "auto"
-    inputField.style.height = inputField.scrollHeight + "px"
-  })
+    inputField.style.height = "auto";
+    inputField.style.height = inputField.scrollHeight + "px";
+  });
 
   // Clear input
   clearBtn.addEventListener("click", () => {
-    inputField.value = ""
-    charCount.textContent = "0"
-    charCount.style.color = "var(--text-light)"
-    outputDiv.innerHTML = '<div class="placeholder-text">Il testo trasformato apparirà qui</div>'
-    inputField.style.height = "auto"
-    inputField.focus()
-  })
+    inputField.value = "";
+    charCount.textContent = "0";
+    charCount.style.color = "var(--text-light)";
+    outputDiv.innerHTML =
+      '<div class="placeholder-text">Il testo trasformato apparirà qui</div>';
+    inputField.style.height = "auto";
+    inputField.focus();
+  });
 
   // Example button
   exampleBtn.addEventListener("click", () => {
@@ -66,25 +67,27 @@ document.addEventListener("DOMContentLoaded", () => {
       "la vita è bella",
       "il tempo vola come una freccia",
       "ogni parola riflessa è come uno specchio",
-    ]
-    const randomExample = examples[Math.floor(Math.random() * examples.length)]
-    inputField.value = randomExample
-    charCount.textContent = randomExample.length
-    charCount.style.color = "var(--text-light)"
-    inputField.style.height = "auto"
-    inputField.style.height = inputField.scrollHeight + "px"
-    invertiFrase()
-    inputField.focus()
-  })
+    ];
+    const randomExample = examples[Math.floor(Math.random() * examples.length)];
+    inputField.value = randomExample;
+    charCount.textContent = randomExample.length;
+    charCount.style.color = "var(--text-light)";
+    inputField.style.height = "auto";
+    inputField.style.height = inputField.scrollHeight + "px";
+    invertiFrase();
+    inputField.focus();
+  });
 
   // Invert button
-  invertBtn.addEventListener("click", invertiFrase)
+  invertBtn.addEventListener("click", invertiFrase);
 
   // Copy button
   copyBtn.addEventListener("click", () => {
-    const resultText = outputDiv.querySelector(".result-inverted strong")?.textContent
+    const resultText = outputDiv.querySelector(
+      ".result-inverted strong",
+    )?.textContent;
     if (!resultText || resultText === "Il testo trasformato apparirà qui") {
-      return
+      return;
     }
 
     // Use modern clipboard API if available
@@ -92,54 +95,54 @@ document.addEventListener("DOMContentLoaded", () => {
       navigator.clipboard
         .writeText(resultText)
         .then(() => showCopySuccess())
-        .catch(() => fallbackCopy(resultText))
+        .catch(() => fallbackCopy(resultText));
     } else {
-      fallbackCopy(resultText)
+      fallbackCopy(resultText);
     }
-  })
+  });
 
   // Fallback copy method
   function fallbackCopy(text) {
-    const textarea = document.createElement("textarea")
-    textarea.value = text
-    textarea.style.position = "fixed"
-    document.body.appendChild(textarea)
-    textarea.select()
+    const textarea = document.createElement("textarea");
+    textarea.value = text;
+    textarea.style.position = "fixed";
+    document.body.appendChild(textarea);
+    textarea.select();
 
     try {
-      document.execCommand("copy")
-      showCopySuccess()
+      document.execCommand("copy");
+      showCopySuccess();
     } catch (err) {
-      console.error("Fallback copy failed:", err)
+      console.error("Fallback copy failed:", err);
     }
 
-    document.body.removeChild(textarea)
+    document.body.removeChild(textarea);
   }
 
   // Show copy success animation
   function showCopySuccess() {
-    const originalIcon = copyBtn.innerHTML
+    const originalIcon = copyBtn.innerHTML;
     copyBtn.innerHTML = `
       <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <polyline points="20 6 9 17 4 12"></polyline>
       </svg>
-    `
-    copyBtn.style.color = "var(--success)"
+    `;
+    copyBtn.style.color = "var(--success)";
 
     setTimeout(() => {
-      copyBtn.innerHTML = originalIcon
-      copyBtn.style.color = "var(--text-light)"
-    }, 2000)
+      copyBtn.innerHTML = originalIcon;
+      copyBtn.style.color = "var(--text-light)";
+    }, 2000);
   }
 
   // Add keyboard support
   inputField.addEventListener("keydown", (e) => {
     if (e.key === "Enter" && e.ctrlKey) {
-      e.preventDefault()
-      invertiFrase()
+      e.preventDefault();
+      invertiFrase();
     }
-  })
+  });
 
   // Main function to invert the phrase
   function invertiFrase() {
@@ -152,10 +155,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Inverti completamente (ordine parole e lettere)
     const output = input
-      .split(" ")                          // Dividi in parole
-      .reverse()                           // Inverti l'ordine delle parole
-      .map(word => word.split("").reverse().join("")) // Inverti le lettere di ogni parola
-      .join(" ");                          // Riunisci con spazi
+      .split(" ") // Dividi in parole
+      .reverse() // Inverti l'ordine delle parole
+      .map((word) => word.split("").reverse().join("")) // Inverti le lettere di ogni parola
+      .join(" "); // Riunisci con spazi
 
     // Output con formattazione
     outputDiv.innerHTML = `
@@ -165,8 +168,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Initialize
-  inputField.focus()
-})
+  inputField.focus();
+});
 
 // Add CSS animations
 document.head.insertAdjacentHTML(
@@ -206,4 +209,4 @@ document.head.insertAdjacentHTML(
     }
   </style>
 `,
-)
+);

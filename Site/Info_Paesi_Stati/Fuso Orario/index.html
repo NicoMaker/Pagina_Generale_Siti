@@ -1,58 +1,83 @@
-
-<!DOCTYPE html>
+<!doctype html>
 <html lang="it">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Informazioni sulla Città</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="icon" href="https://cdn.icon-icons.com/icons2/2031/PNG/512/worldwide_internet_globe_icon_124096.png" type="image/jpg">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      rel="icon"
+      href="https://cdn.icon-icons.com/icons2/2031/PNG/512/worldwide_internet_globe_icon_124096.png"
+      type="image/jpg"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
     <script src="script.js" defer></script>
-</head>
-<body>
+  </head>
+  <body>
     <header>
-        <div class="logo">
-            <img src="https://cdn.icon-icons.com/icons2/2031/PNG/512/worldwide_internet_globe_icon_124096.png" alt="Globe Icon">
-            <h1>CityInfo</h1>
-        </div>
+      <div class="logo">
+        <img
+          src="https://cdn.icon-icons.com/icons2/2031/PNG/512/worldwide_internet_globe_icon_124096.png"
+          alt="Globe Icon"
+        />
+        <h1>CityInfo</h1>
+      </div>
     </header>
 
     <main>
-        <div class="container">
-            <div class="search-container">
-                <h2>Informazioni sulla città</h2>
-                <p class="subtitle">Inserisci il nome di una città per scoprire informazioni dettagliate</p>
-                
-                <div class="input-group">
-                    <input type="text" id="cityInput" placeholder="Nome città..." aria-label="Nome città">
-                    <button onclick="getCityInfo()" id="searchButton">
-                        <span class="button-text">Trova</span>
-                        <span class="loader"></span>
-                    </button>
-                </div>
-                
-                <div class="popular-cities">
-                    <p>Città popolari:</p>
-                    <div class="city-chips">
-                        <button class="city-chip" onclick="setCity('Roma')">Roma</button>
-                        <button class="city-chip" onclick="setCity('Milano')">Milano</button>
-                        <button class="city-chip" onclick="setCity('Napoli')">Napoli</button>
-                        <button class="city-chip" onclick="setCity('Firenze')">Firenze</button>
-                    </div>
-                </div>
+      <div class="container">
+        <div class="search-container">
+          <h2>Informazioni sulla città</h2>
+          <p class="subtitle">
+            Inserisci il nome di una città per scoprire informazioni dettagliate
+          </p>
+
+          <div class="input-group">
+            <input
+              type="text"
+              id="cityInput"
+              placeholder="Nome città..."
+              aria-label="Nome città"
+            />
+            <button onclick="getCityInfo()" id="searchButton">
+              <span class="button-text">Trova</span>
+              <span class="loader"></span>
+            </button>
+          </div>
+
+          <div class="popular-cities">
+            <p>Città popolari:</p>
+            <div class="city-chips">
+              <button class="city-chip" onclick="setCity('Roma')">Roma</button>
+              <button class="city-chip" onclick="setCity('Milano')">
+                Milano
+              </button>
+              <button class="city-chip" onclick="setCity('Napoli')">
+                Napoli
+              </button>
+              <button class="city-chip" onclick="setCity('Firenze')">
+                Firenze
+              </button>
             </div>
-            
-            <div class="result-container" id="resultContainer">
-                <div id="result"></div>
-            </div>
+          </div>
         </div>
+
+        <div class="result-container" id="resultContainer">
+          <div id="result"></div>
+        </div>
+      </div>
     </main>
 
     <footer>
-        <p>© 2024 CityInfo | Dati forniti da <a href="https://opencagedata.com/" target="_blank">OpenCage Data</a></p>
+      <p>
+        © 2024 CityInfo | Dati forniti da
+        <a href="https://opencagedata.com/" target="_blank">OpenCage Data</a>
+      </p>
     </footer>
-</body>
+  </body>
 </html>

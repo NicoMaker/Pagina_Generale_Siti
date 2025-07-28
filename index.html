@@ -1,364 +1,477 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nico Maker | Pagina Generale Siti</title>
+    <meta name="author" content="Nico Maker" />
+    <meta name="language" content="italian" />
+    <meta
+      name="keywords"
+      content="Portfolio, Web Developer, Progetti Web, Nico Maker"
+    />
+    <meta
+      name="description"
+      content="Portfolio di progetti web sviluppati da Nico Maker, organizzati per categoria"
+    />
+    <link
+      rel="icon"
+      href="https://th.bing.com/th/id/OIP.-jLu0ZtLGW3rmhl8991jWwHaHa?rs=1&pid=ImgDetMain"
+      type="image/jpg"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nico Maker | Pagina Generale Siti</title>
-  <meta name="author" content="Nico Maker">
-  <meta name="language" content="italian">
-  <meta name="keywords" content="Portfolio, Web Developer, Progetti Web, Nico Maker">
-  <meta name="description" content="Portfolio di progetti web sviluppati da Nico Maker, organizzati per categoria">
-  <link rel="icon" href="https://th.bing.com/th/id/OIP.-jLu0ZtLGW3rmhl8991jWwHaHa?rs=1&pid=ImgDetMain" type="image/jpg">
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Titolo SEO -->
+    <title>Nico Maker | Portfolio Web Developer - Progetti e Siti Web</title>
 
-  <!-- Titolo SEO -->
-  <title>Nico Maker | Portfolio Web Developer - Progetti e Siti Web</title>
+    <!-- Meta informazioni base -->
+    <meta name="author" content="Nico Maker" />
+    <meta name="language" content="it" />
+    <meta name="robots" content="index, follow" />
+    <meta
+      name="description"
+      content="Esplora il portfolio di Nico Maker: progetti web e siti realizzati con passione, organizzati per categoria."
+    />
 
-  <!-- Meta informazioni base -->
-  <meta name="author" content="Nico Maker">
-  <meta name="language" content="it">
-  <meta name="robots" content="index, follow">
-  <meta name="description"
-    content="Esplora il portfolio di Nico Maker: progetti web e siti realizzati con passione, organizzati per categoria.">
+    <!-- Parole chiave (opzionale) -->
+    <meta
+      name="keywords"
+      content="Portfolio, Web Developer, Progetti Web, Siti Web, Frontend, Backend, Nico Maker"
+    />
 
-  <!-- Parole chiave (opzionale) -->
-  <meta name="keywords" content="Portfolio, Web Developer, Progetti Web, Siti Web, Frontend, Backend, Nico Maker">
+    <!-- Canonical URL (sostituisci con la URL reale) -->
+    <link rel="canonical" href="https://paginageneralesiti.netlify.app/" />
 
-  <!-- Canonical URL (sostituisci con la URL reale) -->
-  <link rel="canonical" href="https://paginageneralesiti.netlify.app/" />
+    <!-- Open Graph (per Facebook, LinkedIn) -->
+    <meta property="og:title" content="Nico Maker | Portfolio Web Developer" />
+    <meta
+      property="og:description"
+      content="Scopri i progetti realizzati da Nico Maker: siti web moderni e funzionali."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://paginageneralesiti.netlify.app/" />
+    <meta
+      property="og:image"
+      content="https://th.bing.com/th/id/OIP.-jLu0ZtLGW3rmhl8991jWwHaHa?rs=1&pid=ImgDetMain"
+    />
 
-  <!-- Open Graph (per Facebook, LinkedIn) -->
-  <meta property="og:title" content="Nico Maker | Portfolio Web Developer" />
-  <meta property="og:description"
-    content="Scopri i progetti realizzati da Nico Maker: siti web moderni e funzionali." />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://paginageneralesiti.netlify.app/" />
-  <meta property="og:image" content="https://th.bing.com/th/id/OIP.-jLu0ZtLGW3rmhl8991jWwHaHa?rs=1&pid=ImgDetMain" />
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Nico Maker | Portfolio Web Developer" />
+    <meta
+      name="twitter:description"
+      content="Portfolio di progetti web creati da Nico Maker. Scopri il mio lavoro!"
+    />
+    <meta
+      name="twitter:image"
+      content="https://th.bing.com/th/id/OIP.-jLu0ZtLGW3rmhl8991jWwHaHa?rs=1&pid=ImgDetMain"
+    />
 
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Nico Maker | Portfolio Web Developer" />
-  <meta name="twitter:description" content="Portfolio di progetti web creati da Nico Maker. Scopri il mio lavoro!" />
-  <meta name="twitter:image" content="https://th.bing.com/th/id/OIP.-jLu0ZtLGW3rmhl8991jWwHaHa?rs=1&pid=ImgDetMain" />
+    <!-- Favicon -->
+    <link
+      rel="icon"
+      href="https://th.bing.com/th/id/OIP.-jLu0ZtLGW3rmhl8991jWwHaHa?rs=1&pid=ImgDetMain"
+      type="image/jpg"
+    />
 
-  <!-- Favicon -->
-  <link rel="icon" href="https://th.bing.com/th/id/OIP.-jLu0ZtLGW3rmhl8991jWwHaHa?rs=1&pid=ImgDetMain" type="image/jpg">
+    <!-- Stili e font -->
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+  </head>
 
-  <!-- Stili e font -->
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-</head>
-
-<body onload="setHomeActive()">
-  <!-- Advanced Preloader -->
-  <div class="preloader">
-    <div class="preloader-content">
-      <div class="avatar-container">
-        <img src="Icons/Avatar.jpg" alt="Nico Maker Avatar" class="preloader-avatar">
-      </div>
-      <div class="logo-container">
-        <img
-          src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Logo_chiaro.jpg-d1WCG74xFBZkcoQrlmO4SobXjTaScn.png"
-          alt="Nico Maker Logo" class="preloader-logo">
-      </div>
-      <div class="text-container">
-        <h2 class="preloader-text">Pagina Generale Siti</h2>
-      </div>
-      <div class="loading-bar-container">
-        <div class="loading-bar"></div>
+  <body onload="setHomeActive()">
+    <!-- Advanced Preloader -->
+    <div class="preloader">
+      <div class="preloader-content">
+        <div class="avatar-container">
+          <img
+            src="Icons/Avatar.jpg"
+            alt="Nico Maker Avatar"
+            class="preloader-avatar"
+          />
+        </div>
+        <div class="logo-container">
+          <img
+            src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Logo_chiaro.jpg-d1WCG74xFBZkcoQrlmO4SobXjTaScn.png"
+            alt="Nico Maker Logo"
+            class="preloader-logo"
+          />
+        </div>
+        <div class="text-container">
+          <h2 class="preloader-text">Pagina Generale Siti</h2>
+        </div>
+        <div class="loading-bar-container">
+          <div class="loading-bar"></div>
+        </div>
       </div>
     </div>
-  </div>
 
-  <!-- Cursor -->
-  <div class="cursor-dot-outline"></div>
-  <div class="cursor-dot"></div>
+    <!-- Cursor -->
+    <div class="cursor-dot-outline"></div>
+    <div class="cursor-dot"></div>
 
-  <!-- Header -->
-  <header class="header">
-    <div class="container">
-      <br>
-      <div class="header-content">
-        <div class="header-left">
-          <a href="#home" class="logo">
-            <img src="Icons/Logo Scuro.jpg" alt="Nico Maker Avatar" class="avatar-logo">
-            <span>Pagina Generale Siti</span>
-          </a>
-        </div>
-        <div class="header-center">
-          <nav class="nav">
-            <ul class="nav-list">
-              <li><a href="#home" class="nav-link active">Home</a></li>
-              <li><a href="#categories" class="nav-link">Categorie</a></li>
-              <li><a href="#contact" class="nav-link">Contatti</a></li>
-            </ul>
-          </nav>
-        </div>
-        <div class="header-right">
-          <button class="theme-toggle" aria-label="Cambia tema">
-            <i class="fas fa-moon"></i>
-          </button>
-          <button class="menu-toggle" aria-label="Menu">
-            <i class="material-icons menu-icon">menu</i>
-          </button>
-        </div>
-      </div>
-    </div>
-  </header>
-
-  <!-- Mobile Menu -->
-  <div class="mobile-menu">
-    <div class="mobile-menu-top">
-      <div class="mobile-menu-header">
-        <div class="mobile-logo-container">
-          <img src="Icons/Logo Scuro.jpg" alt="Nico Maker Avatar" class="mobile-avatar">
-          <h2>Pagina Generale Siti</h2>
-        </div>
-        <button class="mobile-close" aria-label="Chiudi menu">
-          <i class="material-icons">close</i>
-        </button>
-      </div>
-      <div class="mobile-theme-toggle">
-        <button class="theme-toggle-mobile" aria-label="Cambia tema">
-        </button>
-      </div>
-    </div>
-    <ul class="mobile-nav-list">
-      <li><a href="#home" class="mobile-nav-link">Home</a></li>
-      <li><a href="#categories" class="mobile-nav-link">Categorie</a></li>
-      <li><a href="#contact" class="mobile-nav-link">Contatti</a></li>
-    </ul>
-  </div>
-
-  <!-- Hero Section -->
-  <section class="hero" id="home">
-    <div class="container">
-      <div class="hero-content">
-        <div class="hero-text">
-          <h1 class="animate-text">Pagina Generale Siti</h1>
-          <p class="animate-text-delay">Benvenuto nella mia collezione di progetti Web, organizzati per categoria</p>
-          <div class="hero-buttons">
-            <a href="#categories" class="btn btn-primary">
-              <i class="fas fa-folder-open btn-icon"></i>
-              <span>Esplora Progetti</span>
-            </a>
-            <a href="#contact" class="btn btn-outline">
-              <i class="fas fa-envelope btn-icon"></i>
-              <span>Contattami</span>
-            </a>
-            <a href="index.html" target="_blank" class="btn btn-outline btn-external">
-              <i class="fas fa-clone btn-icon"></i>
-              <span>Sito in un'altra pagina</span>
-              <i class="fas fa-external-link-alt btn-icon-right"></i>
+    <!-- Header -->
+    <header class="header">
+      <div class="container">
+        <br />
+        <div class="header-content">
+          <div class="header-left">
+            <a href="#home" class="logo">
+              <img
+                src="Icons/Logo Scuro.jpg"
+                alt="Nico Maker Avatar"
+                class="avatar-logo"
+              />
+              <span>Pagina Generale Siti</span>
             </a>
           </div>
-        </div>
-        <div class="hero-image-container">
-          <div class="hero-image-wrapper">
-            <img src="https://th.bing.com/th/id/OIP.-jLu0ZtLGW3rmhl8991jWwHaHa?rs=1&pid=ImgDetMain" alt="Avatar"
-              class="hero-image">
-            <div class="hero-image-bg"></div>
+          <div class="header-center">
+            <nav class="nav">
+              <ul class="nav-list">
+                <li><a href="#home" class="nav-link active">Home</a></li>
+                <li><a href="#categories" class="nav-link">Categorie</a></li>
+                <li><a href="#contact" class="nav-link">Contatti</a></li>
+              </ul>
+            </nav>
           </div>
-          <div class="floating-icons">
-            <div class="floating-icon" style="--delay: 0s">
-              <i class="fab fa-html5"></i>
-            </div>
-            <div class="floating-icon" style="--delay: 1s">
-              <i class="fab fa-css3-alt"></i>
-            </div>
-            <div class="floating-icon" style="--delay: 2s">
-              <i class="fab fa-js"></i>
-            </div>
-            <div class="floating-icon" style="--delay: 3s">
-              <i class="fab fa-react"></i>
-            </div>
+          <div class="header-right">
+            <button class="theme-toggle" aria-label="Cambia tema">
+              <i class="fas fa-moon"></i>
+            </button>
+            <button class="menu-toggle" aria-label="Menu">
+              <i class="material-icons menu-icon">menu</i>
+            </button>
           </div>
         </div>
       </div>
-      <!-- Added arrow to navigate to categories -->
-      <div class="scroll-down-arrow">
-        <a href="#categories" aria-label="Scorri alle categorie">
-          <i class="fas fa-chevron-down"></i>
-        </a>
-      </div>
-    </div>
-  </section>
+    </header>
 
-  <!-- Categories Section -->
-  <section class="categories" id="categories">
-    <div class="container">
-      <div class="section-header">
-        <h2 class="section-title">Categorie di Progetti</h2>
-        <p class="section-subtitle">Esplora i miei progetti organizzati per categoria</p>
-      </div>
-      <div class="search-container">
-        <div class="search-input-wrapper">
-          <input type="text" id="searchInput" placeholder="Cerca categoria..." aria-label="Cerca categoria">
-          <i class="fas fa-search search-icon"></i>
-        </div>
-      </div>
-      <!-- Added category navigation bar -->
-      <div class="category-nav-bar">
-        <div class="category-nav-container" id="categoryNavContainer">
-          <!-- Category navigation items will be populated by JavaScript -->
-        </div>
-      </div>
-      <div class="categories-grid" id="categoriesGrid">
-        <!-- Categories will be populated by JavaScript -->
-      </div>
-      <div id="noCategoriesFound" class="no-results">
-        <div class="no-results-content">
-          <i class="fas fa-folder-open no-results-icon"></i>
-          <h3>Nessuna categoria trovata</h3>
-          <p>Prova a modificare i termini di ricerca</p>
-        </div>
-      </div>
-      <div class="categories-counter">
-        <div class="counter-item">
-          <span class="counter-number" id="categoriesCount">0</span>
-          <span class="counter-label">Categorie</span>
-        </div>
-        <div class="counter-item">
-          <span class="counter-number" id="projectsCount">0</span>
-          <span class="counter-label">Progetti Totali</span>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Projects Section -->
-  <section class="projects" id="projectsSection">
-    <div class="container">
-      <div class="projects-header">
-        <h2 id="categoryTitle">Seleziona una categoria</h2>
-        <button class="back-button" id="backButton">
-          <i class="fas fa-arrow-left"></i> Torna alle categorie
-        </button>
-      </div>
-      <div class="search-container">
-        <div class="search-input-wrapper">
-          <input type="text" id="projectSearchInput" placeholder="Cerca progetto..." aria-label="Cerca progetto">
-          <i class="fas fa-search search-icon"></i>
-        </div>
-      </div>
-      <div class="projects-grid" id="projectsGrid">
-        <!-- Projects will be populated by JavaScript -->
-      </div>
-      <div id="noProjectsFound" class="no-results">
-        <div class="no-results-content">
-          <i class="fas fa-file-alt no-results-icon"></i>
-          <h3>Nessun progetto trovato</h3>
-          <p>Prova a modificare i termini di ricerca</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Contact Section -->
-  <section class="contact" id="contact">
-    <div class="container">
-      <div class="section-header">
-        <h2 class="section-title">Contattami</h2>
-        <p class="section-subtitle">Hai domande o vuoi collaborare? Contattami!</p>
-      </div>
-      <div class="contact-content">
-        <div class="contact-info">
-          <div class="contact-card">
-            <div class="contact-card-icon">
-              <i class="fas fa-envelope"></i>
-            </div>
-            <div class="contact-card-content">
-              <h3>Email</h3>
-              <p>Nicola.marano02@gmail.com</p>
-              <button class="btn btn-sm" onclick="contactEmail('Nicola.marano02@gmail.com','Portfolio')">
-                Invia Email
-              </button>
-            </div>
-          </div>
-          <div class="contact-card">
-            <div class="contact-card-icon">
-              <i class="fas fa-phone"></i>
-            </div>
-            <div class="contact-card-content">
-              <h3>Telefono</h3>
-              <p>+39 333 702 4320</p>
-              <button class="btn btn-sm" onclick="contactCell()">
-                Chiama
-              </button>
-            </div>
-          </div>
-          <div class="contact-card">
-            <div class="contact-card-icon">
-              <i class="fab fa-whatsapp"></i>
-            </div>
-            <div class="contact-card-content">
-              <h3>WhatsApp</h3>
-              <p>Contattami su WhatsApp</p>
-              <button class="btn btn-sm" onclick="openWhatsAppChat()">
-                Apri Chat
-              </button>
-            </div>
-          </div>
-        </div>
-        <div class="social-links">
-          <a href="https://github.com/NicoMaker" target="_blank" class="social-link" aria-label="GitHub Profile">
-            <i class="fab fa-github"></i>
-          </a>
-          <a href="https://github.com/NicoMaker/Pagina_Generale_Siti" target="_blank" class="social-link"
-            aria-label="GitHub Repository">
-            <i class="fas fa-code-branch"></i>
-          </a>
-          <a href="https://nicomaker.netlify.app/" target="_blank" class="social-link"
-            aria-label="Link Sito Principale">
-            <i class="fas fa-globe"></i>
-          </a>
-          <a href="https://drive.google.com/file/d/1jouYKNyfHzE5lnQHvGRPCnzWrS_c2aas/view?usp=sharing" target="_blank"
-            class="social-link" aria-label="QR Code">
-            <i class="fas fa-qrcode"></i>
-          </a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="container">
-      <div class="footer-content">
-        <div class="footer-logo">
-          <img src="https://th.bing.com/th/id/OIP.-jLu0ZtLGW3rmhl8991jWwHaHa?rs=1&pid=ImgDetMain" alt="Nico Maker Logo">
-          <span>Pagina Generale Siti</span>
-        </div>
-        <div class="footer-links">
-          <a href="https://nicomaker.netlify.app/" target="_blank" class="footer-link">
+    <!-- Mobile Menu -->
+    <div class="mobile-menu">
+      <div class="mobile-menu-top">
+        <div class="mobile-menu-header">
+          <div class="mobile-logo-container">
             <img
-              src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Logo_chiaro.jpg-d1WCG74xFBZkcoQrlmO4SobXjTaScn.png"
-              alt="Nico Maker Logo" class="footer-custom-logo">
-            <span>Visita il mio sito principale</span>
+              src="Icons/Logo Scuro.jpg"
+              alt="Nico Maker Avatar"
+              class="mobile-avatar"
+            />
+            <h2>Pagina Generale Siti</h2>
+          </div>
+          <button class="mobile-close" aria-label="Chiudi menu">
+            <i class="material-icons">close</i>
+          </button>
+        </div>
+        <div class="mobile-theme-toggle">
+          <button class="theme-toggle-mobile" aria-label="Cambia tema"></button>
+        </div>
+      </div>
+      <ul class="mobile-nav-list">
+        <li><a href="#home" class="mobile-nav-link">Home</a></li>
+        <li><a href="#categories" class="mobile-nav-link">Categorie</a></li>
+        <li><a href="#contact" class="mobile-nav-link">Contatti</a></li>
+      </ul>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+      <div class="container">
+        <div class="hero-content">
+          <div class="hero-text">
+            <h1 class="animate-text">Pagina Generale Siti</h1>
+            <p class="animate-text-delay">
+              Benvenuto nella mia collezione di progetti Web, organizzati per
+              categoria
+            </p>
+            <div class="hero-buttons">
+              <a href="#categories" class="btn btn-primary">
+                <i class="fas fa-folder-open btn-icon"></i>
+                <span>Esplora Progetti</span>
+              </a>
+              <a href="#contact" class="btn btn-outline">
+                <i class="fas fa-envelope btn-icon"></i>
+                <span>Contattami</span>
+              </a>
+              <a
+                href="index.html"
+                target="_blank"
+                class="btn btn-outline btn-external"
+              >
+                <i class="fas fa-clone btn-icon"></i>
+                <span>Sito in un'altra pagina</span>
+                <i class="fas fa-external-link-alt btn-icon-right"></i>
+              </a>
+            </div>
+          </div>
+          <div class="hero-image-container">
+            <div class="hero-image-wrapper">
+              <img
+                src="https://th.bing.com/th/id/OIP.-jLu0ZtLGW3rmhl8991jWwHaHa?rs=1&pid=ImgDetMain"
+                alt="Avatar"
+                class="hero-image"
+              />
+              <div class="hero-image-bg"></div>
+            </div>
+            <div class="floating-icons">
+              <div class="floating-icon" style="--delay: 0s">
+                <i class="fab fa-html5"></i>
+              </div>
+              <div class="floating-icon" style="--delay: 1s">
+                <i class="fab fa-css3-alt"></i>
+              </div>
+              <div class="floating-icon" style="--delay: 2s">
+                <i class="fab fa-js"></i>
+              </div>
+              <div class="floating-icon" style="--delay: 3s">
+                <i class="fab fa-react"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Added arrow to navigate to categories -->
+        <div class="scroll-down-arrow">
+          <a href="#categories" aria-label="Scorri alle categorie">
+            <i class="fas fa-chevron-down"></i>
           </a>
         </div>
-        <p class="footer-text">Progetti Web sviluppati con passione</p>
-        <p class="copyright">
-          &copy; <span id="currentYear"></span> Nico Maker Pagina Generale Siti - Tutti i diritti riservati
-        </p>
       </div>
-    </div>
-  </footer>
+    </section>
 
-  <script src="JS/script.js"></script>
-  <script src="JS/script2.js"></script>
-  <script src="JS/theme.js"></script>
-  <script src="JS/navigation-fix.js"></script>
-  <script src="JS/scroll.js"></script>
-</body>
+    <!-- Categories Section -->
+    <section class="categories" id="categories">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Categorie di Progetti</h2>
+          <p class="section-subtitle">
+            Esplora i miei progetti organizzati per categoria
+          </p>
+        </div>
+        <div class="search-container">
+          <div class="search-input-wrapper">
+            <input
+              type="text"
+              id="searchInput"
+              placeholder="Cerca categoria..."
+              aria-label="Cerca categoria"
+            />
+            <i class="fas fa-search search-icon"></i>
+          </div>
+        </div>
+        <!-- Added category navigation bar -->
+        <div class="category-nav-bar">
+          <div class="category-nav-container" id="categoryNavContainer">
+            <!-- Category navigation items will be populated by JavaScript -->
+          </div>
+        </div>
+        <div class="categories-grid" id="categoriesGrid">
+          <!-- Categories will be populated by JavaScript -->
+        </div>
+        <div id="noCategoriesFound" class="no-results">
+          <div class="no-results-content">
+            <i class="fas fa-folder-open no-results-icon"></i>
+            <h3>Nessuna categoria trovata</h3>
+            <p>Prova a modificare i termini di ricerca</p>
+          </div>
+        </div>
+        <div class="categories-counter">
+          <div class="counter-item">
+            <span class="counter-number" id="categoriesCount">0</span>
+            <span class="counter-label">Categorie</span>
+          </div>
+          <div class="counter-item">
+            <span class="counter-number" id="projectsCount">0</span>
+            <span class="counter-label">Progetti Totali</span>
+          </div>
+        </div>
+      </div>
+    </section>
 
+    <!-- Projects Section -->
+    <section class="projects" id="projectsSection">
+      <div class="container">
+        <div class="projects-header">
+          <h2 id="categoryTitle">Seleziona una categoria</h2>
+          <button class="back-button" id="backButton">
+            <i class="fas fa-arrow-left"></i> Torna alle categorie
+          </button>
+        </div>
+        <div class="search-container">
+          <div class="search-input-wrapper">
+            <input
+              type="text"
+              id="projectSearchInput"
+              placeholder="Cerca progetto..."
+              aria-label="Cerca progetto"
+            />
+            <i class="fas fa-search search-icon"></i>
+          </div>
+        </div>
+        <div class="projects-grid" id="projectsGrid">
+          <!-- Projects will be populated by JavaScript -->
+        </div>
+        <div id="noProjectsFound" class="no-results">
+          <div class="no-results-content">
+            <i class="fas fa-file-alt no-results-icon"></i>
+            <h3>Nessun progetto trovato</h3>
+            <p>Prova a modificare i termini di ricerca</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Contattami</h2>
+          <p class="section-subtitle">
+            Hai domande o vuoi collaborare? Contattami!
+          </p>
+        </div>
+        <div class="contact-content">
+          <div class="contact-info">
+            <div class="contact-card">
+              <div class="contact-card-icon">
+                <i class="fas fa-envelope"></i>
+              </div>
+              <div class="contact-card-content">
+                <h3>Email</h3>
+                <p>Nicola.marano02@gmail.com</p>
+                <button
+                  class="btn btn-sm"
+                  onclick="contactEmail('Nicola.marano02@gmail.com','Portfolio')"
+                >
+                  Invia Email
+                </button>
+              </div>
+            </div>
+            <div class="contact-card">
+              <div class="contact-card-icon">
+                <i class="fas fa-phone"></i>
+              </div>
+              <div class="contact-card-content">
+                <h3>Telefono</h3>
+                <p>+39 333 702 4320</p>
+                <button class="btn btn-sm" onclick="contactCell()">
+                  Chiama
+                </button>
+              </div>
+            </div>
+            <div class="contact-card">
+              <div class="contact-card-icon">
+                <i class="fab fa-whatsapp"></i>
+              </div>
+              <div class="contact-card-content">
+                <h3>WhatsApp</h3>
+                <p>Contattami su WhatsApp</p>
+                <button class="btn btn-sm" onclick="openWhatsAppChat()">
+                  Apri Chat
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="social-links">
+            <a
+              href="https://github.com/NicoMaker"
+              target="_blank"
+              class="social-link"
+              aria-label="GitHub Profile"
+            >
+              <i class="fab fa-github"></i>
+            </a>
+            <a
+              href="https://github.com/NicoMaker/Pagina_Generale_Siti"
+              target="_blank"
+              class="social-link"
+              aria-label="GitHub Repository"
+            >
+              <i class="fas fa-code-branch"></i>
+            </a>
+            <a
+              href="https://nicomaker.netlify.app/"
+              target="_blank"
+              class="social-link"
+              aria-label="Link Sito Principale"
+            >
+              <i class="fas fa-globe"></i>
+            </a>
+            <a
+              href="https://drive.google.com/file/d/1jouYKNyfHzE5lnQHvGRPCnzWrS_c2aas/view?usp=sharing"
+              target="_blank"
+              class="social-link"
+              aria-label="QR Code"
+            >
+              <i class="fas fa-qrcode"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-logo">
+            <img
+              src="https://th.bing.com/th/id/OIP.-jLu0ZtLGW3rmhl8991jWwHaHa?rs=1&pid=ImgDetMain"
+              alt="Nico Maker Logo"
+            />
+            <span>Pagina Generale Siti</span>
+          </div>
+          <div class="footer-links">
+            <a
+              href="https://nicomaker.netlify.app/"
+              target="_blank"
+              class="footer-link"
+            >
+              <img
+                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Logo_chiaro.jpg-d1WCG74xFBZkcoQrlmO4SobXjTaScn.png"
+                alt="Nico Maker Logo"
+                class="footer-custom-logo"
+              />
+              <span>Visita il mio sito principale</span>
+            </a>
+          </div>
+          <p class="footer-text">Progetti Web sviluppati con passione</p>
+          <p class="copyright">
+            &copy; <span id="currentYear"></span> Nico Maker Pagina Generale
+            Siti - Tutti i diritti riservati
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="JS/script.js"></script>
+    <script src="JS/script2.js"></script>
+    <script src="JS/theme.js"></script>
+    <script src="JS/navigation-fix.js"></script>
+    <script src="JS/scroll.js"></script>
+  </body>
 </html>

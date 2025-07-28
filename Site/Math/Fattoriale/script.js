@@ -68,7 +68,7 @@ function calculateFactorialValue(number) {
 // Display result with animation
 function showResult(number, result) {
   resultDiv.textContent = `Il fattoriale di ${number} è: ${formatNumber(
-    result
+    result,
   )}`;
   resultDiv.className = "result success";
 

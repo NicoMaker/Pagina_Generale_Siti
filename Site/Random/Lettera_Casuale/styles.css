@@ -121,7 +121,8 @@ main {
   );
   box-shadow: 0 10px 20px rgba(98, 0, 234, 0.3);
   position: relative;
-  transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+  transition:
+    transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275),
     background 0.5s ease;
   user-select: none;
 }
@@ -395,7 +396,9 @@ footer i {
   gap: 8px;
   z-index: 1000;
   opacity: 0;
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
 }
 
 .toast.show {

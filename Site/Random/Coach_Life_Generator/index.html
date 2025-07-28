@@ -1,75 +1,82 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="it">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Life Coach Generator</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="icon" href="https://cdn0.lefrasi.it/it/posts/4/4/1/frasi_motivazionali_144_orig.jpg" type="image/jpg">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="styles.css" />
     <link
-        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap"
-        rel="stylesheet">
-</head>
+      rel="icon"
+      href="https://cdn0.lefrasi.it/it/posts/4/4/1/frasi_motivazionali_144_orig.jpg"
+      type="image/jpg"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
 
-<body>
+  <body>
     <div class="container">
-        <header>
-            <h1>Life Coach Generator</h1>
-            <p class="subtitle">Saggezza, ispirazione e motivazione per illuminare il tuo cammino</p>
-        </header>
+      <header>
+        <h1>Life Coach Generator</h1>
+        <p class="subtitle">
+          Saggezza, ispirazione e motivazione per illuminare il tuo cammino
+        </p>
+      </header>
 
-        <main>
-            <div class="quote-container">
-                <div class="quote-card">
-                    <div class="quote-icon">"</div>
-                    <div id="quote-content">
-                        <p id="quote-text" class="quote-text">Le Frasi hanno un Potere particolare di guarire le persone
-                            nei propri sentimenti oppure distruggerli, fanne buon uso</p>
-                        <p id="quote-author" class="quote-author"></p>
-                        <p id="quote-counter" class="quote-counter"></p>
-                    </div>
-                    <div class="quote-icon closing">"</div>
-                </div>
+      <main>
+        <div class="quote-container">
+          <div class="quote-card">
+            <div class="quote-icon">"</div>
+            <div id="quote-content">
+              <p id="quote-text" class="quote-text">
+                Le Frasi hanno un Potere particolare di guarire le persone nei
+                propri sentimenti oppure distruggerli, fanne buon uso
+              </p>
+              <p id="quote-author" class="quote-author"></p>
+              <p id="quote-counter" class="quote-counter"></p>
             </div>
-
-            <div class="controls">
-                <button id="generate-btn" class="btn primary-btn">
-                    <span class="btn-text">Nuova Frase</span>
-                    <span class="btn-icon">✨</span>
-                </button>
-
-                <button id="copy-btn" class="btn secondary-btn">
-                    <span class="btn-text">Copia</span>
-                    <span class="btn-icon">📋</span>
-                </button>
-
-                <button id="share-btn" class="btn secondary-btn">
-                    <span class="btn-text">Condividi</span>
-                    <span class="btn-icon">🔗</span>
-                </button>
-            </div>
-        </main>
-
-        <div class="decoration">
-            <div class="circle circle-1"></div>
-            <div class="circle circle-2"></div>
-            <div class="circle circle-3"></div>
+            <div class="quote-icon closing">"</div>
+          </div>
         </div>
 
-        <footer>
-            <p>Trova la tua ispirazione quotidiana</p>
-            <p class="copyright">© 2024 Life Coach Generator</p>
-        </footer>
+        <div class="controls">
+          <button id="generate-btn" class="btn primary-btn">
+            <span class="btn-text">Nuova Frase</span>
+            <span class="btn-icon">✨</span>
+          </button>
+
+          <button id="copy-btn" class="btn secondary-btn">
+            <span class="btn-text">Copia</span>
+            <span class="btn-icon">📋</span>
+          </button>
+
+          <button id="share-btn" class="btn secondary-btn">
+            <span class="btn-text">Condividi</span>
+            <span class="btn-icon">🔗</span>
+          </button>
+        </div>
+      </main>
+
+      <div class="decoration">
+        <div class="circle circle-1"></div>
+        <div class="circle circle-2"></div>
+        <div class="circle circle-3"></div>
+      </div>
+
+      <footer>
+        <p>Trova la tua ispirazione quotidiana</p>
+        <p class="copyright">© 2024 Life Coach Generator</p>
+      </footer>
     </div>
 
     <div id="notification" class="notification">
-        <p>Frase copiata negli appunti!</p>
+      <p>Frase copiata negli appunti!</p>
     </div>
 
     <script src="script.js"></script>
-</body>
-
+  </body>
 </html>

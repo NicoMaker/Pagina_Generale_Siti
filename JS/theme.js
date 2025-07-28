@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const newMobileToggle = themeToggleMobile.cloneNode(true);
     themeToggleMobile.parentNode.replaceChild(
       newMobileToggle,
-      themeToggleMobile
+      themeToggleMobile,
     );
     newMobileToggle.addEventListener("click", window.toggleTheme);
   }

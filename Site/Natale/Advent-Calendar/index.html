@@ -1,32 +1,30 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="it">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Calendario dell'Avvento</title>
-    <link rel="icon" href="Img/Immagine icona.jpg" type="image/jpg">
-    <link rel="stylesheet" href="StyleNatale.css">
+    <link rel="icon" href="Img/Immagine icona.jpg" type="image/jpg" />
+    <link rel="stylesheet" href="StyleNatale.css" />
     <script src="calculatedata.js" defer></script>
-</head>
+  </head>
 
-<body>
+  <body>
     <h1>Calendario dell' Avvento</h1>
     <table id="calendarTable"></table>
     <div id="dati"></div>
     <div class="image-container">
-        <img src="Img/slitta.jpg" alt="Slitta di Babbo Natale">
+      <img src="Img/slitta.jpg" alt="Slitta di Babbo Natale" />
     </div>
 
     <footer>
-        <p>Merry Christmas! 🎄</p>
-        <p id="copyright">© <span id="year"></span> Calendario dell'Avvento</p>
+      <p>Merry Christmas! 🎄</p>
+      <p id="copyright">© <span id="year"></span> Calendario dell'Avvento</p>
     </footer>
 
     <script>
-        // Imposta l'anno corrente nel copyright
-        document.getElementById('year').textContent = new Date().getFullYear();
+      // Imposta l'anno corrente nel copyright
+      document.getElementById("year").textContent = new Date().getFullYear();
     </script>
-</body>
-
+  </body>
 </html>

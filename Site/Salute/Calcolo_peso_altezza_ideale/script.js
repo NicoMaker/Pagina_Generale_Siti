@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     showToast(
       "Errore",
       "Impossibile caricare le formule. Riprova più tardi.",
-      "error"
+      "error",
     );
 
     // Formule di fallback
@@ -126,7 +126,7 @@ function handleFormSubmit(event) {
     showToast(
       "Errore",
       "Inserisci un'altezza valida tra 50 e 250 cm.",
-      "error"
+      "error",
     );
     return;
   }
@@ -181,7 +181,7 @@ function calculateResult(type, gender, height, weight) {
     showToast(
       "Errore",
       "Si è verificato un errore durante il calcolo. Riprova.",
-      "error"
+      "error",
     );
   }
 }
@@ -230,12 +230,12 @@ function updateResultDetails(result) {
   if (result.type === "weight") {
     detailsHTML += createDetailItem(
       "Genere",
-      result.gender === "male" ? "Uomo" : "Donna"
+      result.gender === "male" ? "Uomo" : "Donna",
     );
     detailsHTML += createDetailItem("Altezza", `${result.height} cm`);
     detailsHTML += createDetailItem(
       "Peso ideale",
-      `${result.calculatedWeight.toFixed(1)} kg`
+      `${result.calculatedWeight.toFixed(1)} kg`,
     );
 
     // Calcola il BMI
@@ -249,17 +249,17 @@ function updateResultDetails(result) {
     // Aggiungi la formula utilizzata
     detailsHTML += createDetailItem(
       "Formula utilizzata",
-      `(Altezza - 100) × ${result.gender === "male" ? "0.9" : "0.85"}`
+      `(Altezza - 100) × ${result.gender === "male" ? "0.9" : "0.85"}`,
     );
   } else {
     detailsHTML += createDetailItem(
       "Genere",
-      result.gender === "male" ? "Uomo" : "Donna"
+      result.gender === "male" ? "Uomo" : "Donna",
     );
     detailsHTML += createDetailItem("Peso", `${result.weight} kg`);
     detailsHTML += createDetailItem(
       "Altezza ideale",
-      `${result.calculatedHeight.toFixed(1)} cm`
+      `${result.calculatedHeight.toFixed(1)} cm`,
     );
 
     // Calcola il BMI
@@ -274,7 +274,7 @@ function updateResultDetails(result) {
     // Aggiungi la formula utilizzata
     detailsHTML += createDetailItem(
       "Formula utilizzata",
-      `(Peso / ${result.gender === "male" ? "0.9" : "0.85"}) + 100`
+      `(Peso / ${result.gender === "male" ? "0.9" : "0.85"}) + 100`,
     );
   }
 
@@ -320,11 +320,11 @@ function shareResult() {
 
   if (currentResult.type === "weight") {
     shareText = `Il mio peso ideale è ${currentResult.calculatedWeight.toFixed(
-      1
+      1,
     )} kg (altezza: ${currentResult.height} cm)`;
   } else {
     shareText = `La mia altezza ideale è ${currentResult.calculatedHeight.toFixed(
-      1
+      1,
     )} cm (peso: ${currentResult.weight} kg)`;
   }
 

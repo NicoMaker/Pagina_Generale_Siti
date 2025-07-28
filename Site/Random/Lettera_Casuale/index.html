@@ -1,76 +1,90 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Generatore di Lettere Casuali</title>
+    <link
+      rel="icon"
+      href="https://www.gerenimot.com/img/gerenimot_og.png"
+      type="image/png"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      rel="icon"
+      href="https://www.gerenimot.com/img/gerenimot_og.png"
+      type="image/png"
+    />
+  </head>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Generatore di Lettere Casuali</title>
-  <link rel="icon" href="https://www.gerenimot.com/img/gerenimot_og.png" type="image/png">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
-  <link rel="icon" href="https://www.gerenimot.com/img/gerenimot_og.png" type="image/png">
-</head>
+  <body>
+    <div class="app-container">
+      <header>
+        <h1 class="title">Generatore di Lettere</h1>
+        <p class="subtitle">Estrai una lettera casuale dell'alfabeto</p>
+      </header>
 
-<body>
-  <div class="app-container">
-    <header>
-      <h1 class="title">Generatore di Lettere</h1>
-      <p class="subtitle">Estrai una lettera casuale dell'alfabeto</p>
-    </header>
-
-    <main>
-      <div class="letter-card">
-        <div class="letter-display" id="letter-display">
-          <div class="letter-placeholder">?</div>
-        </div>
-        <div class="letter-info" id="letter-info"></div>
-      </div>
-
-      <div class="controls">
-        <button id="generateButton" class="generate-button">
-          <span class="button-text">Estrai Lettera</span>
-          <i class="fas fa-random"></i>
-        </button>
-
-        <button id="copyButton" class="action-button" disabled>
-          <i class="fas fa-copy"></i>
-          <span>Copia</span>
-        </button>
-      </div>
-
-      <div class="options-panel">
-        <div class="option-group">
-          <label class="option-label">
-            <input type="checkbox" id="uppercaseToggle" checked>
-            <span class="checkbox-custom"></span>
-            Maiuscole
-          </label>
-
-          <label class="option-label">
-            <input type="checkbox" id="lowercaseToggle" checked>
-            <span class="checkbox-custom"></span>
-            Minuscole
-          </label>
+      <main>
+        <div class="letter-card">
+          <div class="letter-display" id="letter-display">
+            <div class="letter-placeholder">?</div>
+          </div>
+          <div class="letter-info" id="letter-info"></div>
         </div>
 
-        <div class="history-container">
-          <h3>Lettere Recenti</h3>
-          <div class="history-items" id="history-items"></div>
+        <div class="controls">
+          <button id="generateButton" class="generate-button">
+            <span class="button-text">Estrai Lettera</span>
+            <i class="fas fa-random"></i>
+          </button>
+
+          <button id="copyButton" class="action-button" disabled>
+            <i class="fas fa-copy"></i>
+            <span>Copia</span>
+          </button>
         </div>
-      </div>
-    </main>
 
-    <footer>
-      <p>Creato con <i class="fas fa-heart"></i> per gli amanti delle lettere</p>
-    </footer>
-  </div>
+        <div class="options-panel">
+          <div class="option-group">
+            <label class="option-label">
+              <input type="checkbox" id="uppercaseToggle" checked />
+              <span class="checkbox-custom"></span>
+              Maiuscole
+            </label>
 
-  <div class="confetti-container" id="confetti-container"></div>
+            <label class="option-label">
+              <input type="checkbox" id="lowercaseToggle" checked />
+              <span class="checkbox-custom"></span>
+              Minuscole
+            </label>
+          </div>
 
-  <script src="script.js"></script>
-</body>
+          <div class="history-container">
+            <h3>Lettere Recenti</h3>
+            <div class="history-items" id="history-items"></div>
+          </div>
+        </div>
+      </main>
 
+      <footer>
+        <p>
+          Creato con <i class="fas fa-heart"></i> per gli amanti delle lettere
+        </p>
+      </footer>
+    </div>
+
+    <div class="confetti-container" id="confetti-container"></div>
+
+    <script src="script.js"></script>
+  </body>
 </html>

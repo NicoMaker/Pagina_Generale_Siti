@@ -70,7 +70,8 @@ body {
   color: var(--text-primary);
   line-height: 1.6;
   min-height: 100vh;
-  transition: background-color var(--transition-normal),
+  transition:
+    background-color var(--transition-normal),
     color var(--transition-normal);
 }
 
@@ -188,7 +189,8 @@ body.dark-mode .moon-icon {
   box-shadow: var(--shadow-md);
   overflow: hidden;
   margin-bottom: var(--spacing-xl);
-  transition: transform var(--transition-fast),
+  transition:
+    transform var(--transition-fast),
     box-shadow var(--transition-fast);
 }
 
@@ -252,7 +254,8 @@ body.dark-mode .moon-icon {
   border-radius: var(--radius-md);
   background-color: var(--surface);
   color: var(--text-primary);
-  transition: border-color var(--transition-fast),
+  transition:
+    border-color var(--transition-fast),
     box-shadow var(--transition-fast);
 }
 
@@ -286,7 +289,8 @@ body.dark-mode .moon-icon {
   align-items: center;
   justify-content: center;
   gap: var(--spacing-sm);
-  transition: background-color var(--transition-fast),
+  transition:
+    background-color var(--transition-fast),
     transform var(--transition-fast);
 }
 

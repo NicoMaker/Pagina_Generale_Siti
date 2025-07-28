@@ -1,76 +1,90 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="icon"
+      href="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Image-AQNwGoKT16OAxWHHQhK9KSH3lf1Dym.png"
+      type="image/png"
+    />
+    <title>Triangolo di Tartaglia</title>
+    <link rel="stylesheet" href="tartaglia.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap"
+      rel="stylesheet"
+    />
+  </head>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon"
-    href="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Image-AQNwGoKT16OAxWHHQhK9KSH3lf1Dym.png"
-    type="image/png">
-  <title>Triangolo di Tartaglia</title>
-  <link rel="stylesheet" href="tartaglia.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap"
-    rel="stylesheet">
-</head>
+  <body>
+    <div class="greek-column left"></div>
+    <div class="greek-column right"></div>
 
-<body>
-  <div class="greek-column left"></div>
-  <div class="greek-column right"></div>
+    <div class="pediment">
+      <div class="pediment-decoration"></div>
+    </div>
 
-  <div class="pediment">
-    <div class="pediment-decoration"></div>
-  </div>
+    <main class="container">
+      <header>
+        <h1>Triangolo di Tartaglia</h1>
+        <div class="subtitle">Τὸ τοῦ Πασκὰλ τρίγωνον</div>
+      </header>
 
-  <main class="container">
-    <header>
-      <h1>Triangolo di Tartaglia</h1>
-      <div class="subtitle">Τὸ τοῦ Πασκὰλ τρίγωνον</div>
-    </header>
+      <div class="greek-pattern meander"></div>
 
-    <div class="greek-pattern meander"></div>
+      <section class="input-section">
+        <div class="scroll">
+          <div class="form-group">
+            <label for="number">Numero di righe:</label>
+            <input
+              type="number"
+              id="number"
+              min="1"
+              max="10"
+              value="5"
+              aria-describedby="input-hint"
+            />
+            <div id="input-hint" class="input-hint">
+              Inserisci un valore tra 1 e 10
+            </div>
+          </div>
 
-    <section class="input-section">
-      <div class="scroll">
-        <div class="form-group">
-          <label for="number">Numero di righe:</label>
-          <input type="number" id="number" min="1" max="10" value="5" aria-describedby="input-hint">
-          <div id="input-hint" class="input-hint">Inserisci un valore tra 1 e 10</div>
+          <button id="generate-btn" onclick="generateTriangle()">
+            <span class="btn-text">Genera Triangolo</span>
+          </button>
+        </div>
+      </section>
+
+      <div class="greek-pattern meander"></div>
+
+      <section class="output-section">
+        <div class="triangle-container">
+          <div class="triangle" id="output"></div>
         </div>
 
-        <button id="generate-btn" onclick="generateTriangle()">
-          <span class="btn-text">Genera Triangolo</span>
-        </button>
-      </div>
-    </section>
+        <div class="triangle-info">
+          <h2>Proprietà del Triangolo</h2>
+          <p>
+            Il triangolo di Tartaglia, noto anche come triangolo di Pascal, è
+            una disposizione triangolare dei coefficienti binomiali.
+          </p>
+          <p>
+            Ogni numero è la somma dei due numeri direttamente sopra di esso.
+          </p>
+        </div>
+      </section>
 
-    <div class="greek-pattern meander"></div>
+      <div class="greek-pattern meander"></div>
 
-    <section class="output-section">
-      <div class="triangle-container">
-        <div class="triangle" id="output"></div>
-      </div>
+      <footer>
+        <div class="laurel-left"></div>
+        <p>Niccolò Fontana Tartaglia (1499-1557)</p>
+        <div class="laurel-right"></div>
+      </footer>
+    </main>
 
-      <div class="triangle-info">
-        <h2>Proprietà del Triangolo</h2>
-        <p>Il triangolo di Tartaglia, noto anche come triangolo di Pascal, è una disposizione triangolare dei
-          coefficienti binomiali.</p>
-        <p>Ogni numero è la somma dei due numeri direttamente sopra di esso.</p>
-      </div>
-    </section>
-
-    <div class="greek-pattern meander"></div>
-
-    <footer>
-      <div class="laurel-left"></div>
-      <p>Niccolò Fontana Tartaglia (1499-1557)</p>
-      <div class="laurel-right"></div>
-    </footer>
-  </main>
-
-  <script src="trataglia.js"></script>
-</body>
-
+    <script src="trataglia.js"></script>
+  </body>
 </html>

@@ -1,168 +1,198 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="it">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
     <title>Gioco Pac-Man</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQnvnxdr72o3b97_vL3XNwdvJ-M5ANmD3kslA&s"
-        type="image/png">
-</head>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="icon"
+      href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQnvnxdr72o3b97_vL3XNwdvJ-M5ANmD3kslA&s"
+      type="image/png"
+    />
+  </head>
 
-<body>
+  <body>
     <div class="game-container">
-        <h1 class="game-title">PAC MAN</h1>
+      <h1 class="game-title">PAC MAN</h1>
 
-        <div class="game-controls-row">
-            <div class="difficulty-selector">
-                <label for="difficulty">Difficoltà:</label>
-                <select id="difficulty">
-                    <option value="easy" selected>Facile</option>
-                    <option value="medium">Medio</option>
-                    <option value="hard">Difficile</option>
-                    <option value="expert">Esperto</option>
-                </select>
-                <button id="start-game">Inizia Gioco</button>
+      <div class="game-controls-row">
+        <div class="difficulty-selector">
+          <label for="difficulty">Difficoltà:</label>
+          <select id="difficulty">
+            <option value="easy" selected>Facile</option>
+            <option value="medium">Medio</option>
+            <option value="hard">Difficile</option>
+            <option value="expert">Esperto</option>
+          </select>
+          <button id="start-game">Inizia Gioco</button>
+        </div>
+
+        <button id="info-button" class="info-button">Regole</button>
+      </div>
+
+      <div class="game-header">
+        <div class="score-container">Punteggio: <span id="score">0</span></div>
+        <div class="lives-container">Vite: <span id="lives">5</span></div>
+        <div class="level-container">
+          Livello: <span id="current-difficulty">Facile</span>
+        </div>
+      </div>
+
+      <!-- Pause/Resume Button -->
+      <div class="pause-container">
+        <button
+          id="pause-resume-btn"
+          class="pause-resume-button"
+          style="display: none"
+        >
+          <span class="pause-icon">⏸️</span>
+          <span class="pause-text">Pausa</span>
+        </button>
+      </div>
+
+      <div id="game-board"></div>
+
+      <div class="controls-container">
+        <div class="touch-controls">
+          <button id="up-btn" aria-label="Su">↑</button>
+          <div class="horizontal-controls">
+            <button id="left-btn" aria-label="Sinistra">←</button>
+            <button id="right-btn" aria-label="Destra">→</button>
+          </div>
+          <button id="down-btn" aria-label="Giù">↓</button>
+        </div>
+      </div>
+
+      <!-- Pause Overlay -->
+      <div id="pause-overlay" class="pause-overlay">
+        <div class="pause-content">
+          <h2 class="pause-title">GIOCO IN PAUSA</h2>
+          <div class="pause-icon-large">⏸️</div>
+          <p class="pause-message">Il gioco è stato messo in pausa</p>
+          <button id="resume-from-overlay" class="resume-button">
+            <span class="play-icon">▶️</span>
+            Riprendi Gioco
+          </button>
+        </div>
+      </div>
+
+      <!-- Info Modal -->
+      <div id="info-modal" class="modal">
+        <div class="modal-content">
+          <span class="close-button">&times;</span>
+          <h2>Regole del Gioco</h2>
+          <div class="rules-content">
+            <div class="rule-section">
+              <h3>Obiettivo</h3>
+              <p>
+                Mangia tutti i puntini nel labirinto evitando i fantasmi per
+                passare al livello successivo.
+              </p>
             </div>
-
-            <button id="info-button" class="info-button">Regole</button>
+            <div class="rule-section">
+              <h3>Controlli</h3>
+              <p>
+                Su dispositivi mobili e tablet: Usa i pulsanti freccia sullo
+                schermo.
+              </p>
+              <p>Su PC: Usa i tasti freccia della tastiera.</p>
+              <p>
+                <strong>Pausa:</strong> Clicca il pulsante pausa o premi la
+                barra spaziatrice (PC).
+              </p>
+            </div>
+            <div class="rule-section">
+              <h3>Punteggio</h3>
+              <ul>
+                <li>Puntino piccolo: 10 punti</li>
+                <li>Puntino grande (power pellet): 50 punti</li>
+                <li>Mangiare un fantasma: 200 punti</li>
+              </ul>
+            </div>
+            <div class="rule-section">
+              <h3>Power Pellet</h3>
+              <p>
+                Mangiando un power pellet (puntino grande), i fantasmi diventano
+                blu e possono essere mangiati per un breve periodo.
+              </p>
+            </div>
+            <div class="rule-section">
+              <h3>Livelli di Difficoltà</h3>
+              <ul>
+                <li><strong>Facile:</strong> 5 vite, fantasmi lenti</li>
+                <li><strong>Medio:</strong> 3 vite, fantasmi più veloci</li>
+                <li>
+                  <strong>Difficile:</strong> 2 vite, fantasmi veloci e più
+                  intelligenti
+                </li>
+                <li>
+                  <strong>Esperto:</strong> 1 vita, fantasmi molto veloci e
+                  molto intelligenti
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
+      </div>
 
-        <div class="game-header">
-            <div class="score-container">Punteggio: <span id="score">0</span></div>
-            <div class="lives-container">Vite: <span id="lives">5</span></div>
-            <div class="level-container">Livello: <span id="current-difficulty">Facile</span></div>
+      <!-- Victory Modal -->
+      <div id="victory-modal" class="victory-modal">
+        <div class="victory-content">
+          <h2 class="victory-title">VITTORIA!</h2>
+          <p class="victory-score">
+            Il tuo punteggio: <span id="victory-score">0</span>
+          </p>
+          <p class="victory-message">
+            <span class="pacman-icon">V</span>
+            Congratulazioni!
+            <span class="pacman-icon">V</span>
+          </p>
+          <div class="next-level-info">
+            <p>Livello completato: <span id="completed-level">Facile</span></p>
+            <p>Prossimo livello: <span id="next-level">Medio</span></p>
+          </div>
+          <button id="continue-button" class="victory-button">
+            Continua al Prossimo Livello
+          </button>
         </div>
+      </div>
 
-        <!-- Pause/Resume Button -->
-        <div class="pause-container">
-            <button id="pause-resume-btn" class="pause-resume-button" style="display: none;">
-                <span class="pause-icon">⏸️</span>
-                <span class="pause-text">Pausa</span>
+      <!-- Custom Game Over Alert -->
+      <div id="game-over-alert" class="custom-alert">
+        <div class="alert-backdrop"></div>
+        <div class="alert-container">
+          <div class="alert-header">
+            <div class="skull-icon">💀</div>
+            <h2 class="alert-title">GAME OVER</h2>
+            <div class="skull-icon">💀</div>
+          </div>
+          <div class="alert-body">
+            <div class="score-display">
+              <span class="score-label">Punteggio Finale</span>
+              <span id="final-score" class="score-value">0</span>
+            </div>
+            <div class="game-over-message">
+              <p>Hai perso tutte le vite!</p>
+              <p class="encouragement">Riprova per battere il tuo record!</p>
+            </div>
+          </div>
+          <div class="alert-footer">
+            <button id="play-again-btn" class="alert-button primary">
+              <span class="button-icon">🎮</span>
+              Gioca Ancora
             </button>
+            <button id="change-level-btn" class="alert-button secondary">
+              <span class="button-icon">⚙️</span>
+              Cambia Livello
+            </button>
+          </div>
         </div>
-
-        <div id="game-board"></div>
-
-        <div class="controls-container">
-            <div class="touch-controls">
-                <button id="up-btn" aria-label="Su">↑</button>
-                <div class="horizontal-controls">
-                    <button id="left-btn" aria-label="Sinistra">←</button>
-                    <button id="right-btn" aria-label="Destra">→</button>
-                </div>
-                <button id="down-btn" aria-label="Giù">↓</button>
-            </div>
-        </div>
-
-        <!-- Pause Overlay -->
-        <div id="pause-overlay" class="pause-overlay">
-            <div class="pause-content">
-                <h2 class="pause-title">GIOCO IN PAUSA</h2>
-                <div class="pause-icon-large">⏸️</div>
-                <p class="pause-message">Il gioco è stato messo in pausa</p>
-                <button id="resume-from-overlay" class="resume-button">
-                    <span class="play-icon">▶️</span>
-                    Riprendi Gioco
-                </button>
-            </div>
-        </div>
-
-        <!-- Info Modal -->
-        <div id="info-modal" class="modal">
-            <div class="modal-content">
-                <span class="close-button">&times;</span>
-                <h2>Regole del Gioco</h2>
-                <div class="rules-content">
-                    <div class="rule-section">
-                        <h3>Obiettivo</h3>
-                        <p>Mangia tutti i puntini nel labirinto evitando i fantasmi per passare al livello successivo.
-                        </p>
-                    </div>
-                    <div class="rule-section">
-                        <h3>Controlli</h3>
-                        <p>Su dispositivi mobili e tablet: Usa i pulsanti freccia sullo schermo.</p>
-                        <p>Su PC: Usa i tasti freccia della tastiera.</p>
-                        <p><strong>Pausa:</strong> Clicca il pulsante pausa o premi la barra spaziatrice (PC).</p>
-                    </div>
-                    <div class="rule-section">
-                        <h3>Punteggio</h3>
-                        <ul>
-                            <li>Puntino piccolo: 10 punti</li>
-                            <li>Puntino grande (power pellet): 50 punti</li>
-                            <li>Mangiare un fantasma: 200 punti</li>
-                        </ul>
-                    </div>
-                    <div class="rule-section">
-                        <h3>Power Pellet</h3>
-                        <p>Mangiando un power pellet (puntino grande), i fantasmi diventano blu e possono essere
-                            mangiati per un breve periodo.</p>
-                    </div>
-                    <div class="rule-section">
-                        <h3>Livelli di Difficoltà</h3>
-                        <ul>
-                            <li><strong>Facile:</strong> 5 vite, fantasmi lenti</li>
-                            <li><strong>Medio:</strong> 3 vite, fantasmi più veloci</li>
-                            <li><strong>Difficile:</strong> 2 vite, fantasmi veloci e più intelligenti</li>
-                            <li><strong>Esperto:</strong> 1 vita, fantasmi molto veloci e molto intelligenti</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Victory Modal -->
-        <div id="victory-modal" class="victory-modal">
-            <div class="victory-content">
-                <h2 class="victory-title">VITTORIA!</h2>
-                <p class="victory-score">Il tuo punteggio: <span id="victory-score">0</span></p>
-                <p class="victory-message">
-                    <span class="pacman-icon">V</span>
-                    Congratulazioni!
-                    <span class="pacman-icon">V</span>
-                </p>
-                <div class="next-level-info">
-                    <p>Livello completato: <span id="completed-level">Facile</span></p>
-                    <p>Prossimo livello: <span id="next-level">Medio</span></p>
-                </div>
-                <button id="continue-button" class="victory-button">Continua al Prossimo Livello</button>
-            </div>
-        </div>
-
-        <!-- Custom Game Over Alert -->
-        <div id="game-over-alert" class="custom-alert">
-            <div class="alert-backdrop"></div>
-            <div class="alert-container">
-                <div class="alert-header">
-                    <div class="skull-icon">💀</div>
-                    <h2 class="alert-title">GAME OVER</h2>
-                    <div class="skull-icon">💀</div>
-                </div>
-                <div class="alert-body">
-                    <div class="score-display">
-                        <span class="score-label">Punteggio Finale</span>
-                        <span id="final-score" class="score-value">0</span>
-                    </div>
-                    <div class="game-over-message">
-                        <p>Hai perso tutte le vite!</p>
-                        <p class="encouragement">Riprova per battere il tuo record!</p>
-                    </div>
-                </div>
-                <div class="alert-footer">
-                    <button id="play-again-btn" class="alert-button primary">
-                        <span class="button-icon">🎮</span>
-                        Gioca Ancora
-                    </button>
-                    <button id="change-level-btn" class="alert-button secondary">
-                        <span class="button-icon">⚙️</span>
-                        Cambia Livello
-                    </button>
-                </div>
-            </div>
-        </div>
+      </div>
     </div>
     <script src="script.js"></script>
-</body>
-
+  </body>
 </html>

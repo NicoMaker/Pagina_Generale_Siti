@@ -287,5 +287,5 @@ document.head.insertAdjacentHTML(
   margin-bottom: 15px;
 }
 </style>
-`
+`,
 );

@@ -269,7 +269,7 @@ function loadStockData(symbol) {
       console.error("Errore nel caricamento dei dati del titolo:", error);
       searchButton.classList.remove("loading");
       alert(
-        `Errore nel caricamento dei dati per il titolo ${symbol}. Riprova più tardi.`
+        `Errore nel caricamento dei dati per il titolo ${symbol}. Riprova più tardi.`,
       );
     });
 }
@@ -380,7 +380,7 @@ function updateStockInfoFromOverview(symbol, overview) {
   getLatestQuote(symbol)
     .then((quote) => {
       document.getElementById("current-price").textContent = `$${parseFloat(
-        quote.price
+        quote.price,
       ).toFixed(2)}`;
 
       const priceChangeElement = document.getElementById("price-change");
@@ -395,13 +395,13 @@ function updateStockInfoFromOverview(symbol, overview) {
 
       // Aggiorna i dettagli
       document.getElementById("open-price").textContent = `$${parseFloat(
-        quote.open
+        quote.open,
       ).toFixed(2)}`;
       document.getElementById("high-price").textContent = `$${parseFloat(
-        quote.high
+        quote.high,
       ).toFixed(2)}`;
       document.getElementById("low-price").textContent = `$${parseFloat(
-        quote.low
+        quote.low,
       ).toFixed(2)}`;
 
       // Formatta il volume con separatori delle migliaia
@@ -545,11 +545,11 @@ function updateChart(symbol, timeRange) {
               label: `${symbol} Prezzo`,
               data: prices,
               borderColor: getComputedStyle(
-                document.documentElement
+                document.documentElement,
               ).getPropertyValue("--primary-color"),
               backgroundColor:
                 getComputedStyle(document.documentElement).getPropertyValue(
-                  "--primary-color"
+                  "--primary-color",
                 ) + "20",
               borderWidth: 2,
               pointRadius: 0,
@@ -608,7 +608,7 @@ function updateChart(symbol, timeRange) {
             y: {
               grid: {
                 color: getComputedStyle(
-                  document.documentElement
+                  document.documentElement,
                 ).getPropertyValue("--chart-grid"),
               },
               ticks: {
@@ -633,7 +633,7 @@ function updateChart(symbol, timeRange) {
       console.error("Errore nell'aggiornamento del grafico:", error);
       chartContainer.classList.remove("loading");
       alert(
-        `Errore nel caricamento dei dati del grafico per ${symbol}. Riprova più tardi.`
+        `Errore nel caricamento dei dati del grafico per ${symbol}. Riprova più tardi.`,
       );
     });
 }
@@ -699,7 +699,7 @@ function updateComparisonChart(symbol) {
       thirtyDaysAgo.setDate(today.getDate() - 30);
 
       const stockData30d = stockData.filter(
-        (item) => item.date >= thirtyDaysAgo
+        (item) => item.date >= thirtyDaysAgo,
       );
 
       // Ottieni i dati degli indici (qui usiamo dati di esempio per semplicità)
@@ -709,7 +709,7 @@ function updateComparisonChart(symbol) {
 
       // Normalizza i dati
       const stockNormalized = normalizeData(
-        stockData30d.map((item) => ({ date: item.date, price: item.close }))
+        stockData30d.map((item) => ({ date: item.date, price: item.close })),
       );
       const sp500Normalized = normalizeData(sp500Data30d);
       const nasdaqNormalized = normalizeData(nasdaqData30d);
@@ -776,7 +776,7 @@ function updateComparisonChart(symbol) {
               callbacks: {
                 label: function (context) {
                   return `${context.dataset.label}: ${context.parsed.y.toFixed(
-                    2
+                    2,
                   )}%`;
                 },
                 title: function (context) {
@@ -811,7 +811,7 @@ function updateComparisonChart(symbol) {
             y: {
               grid: {
                 color: getComputedStyle(
-                  document.documentElement
+                  document.documentElement,
                 ).getPropertyValue("--chart-grid"),
               },
               ticks: {
@@ -835,11 +835,11 @@ function updateComparisonChart(symbol) {
     .catch((error) => {
       console.error(
         "Errore nell'aggiornamento del grafico di confronto:",
-        error
+        error,
       );
       comparisonContainer.classList.remove("loading");
       alert(
-        `Errore nel caricamento dei dati di confronto per ${symbol}. Riprova più tardi.`
+        `Errore nel caricamento dei dati di confronto per ${symbol}. Riprova più tardi.`,
       );
     });
 }
@@ -882,21 +882,21 @@ function normalizeData(data) {
 function updateChartsTheme() {
   if (window.stockChart) {
     window.stockChart.options.scales.y.grid.color = getComputedStyle(
-      document.documentElement
+      document.documentElement,
     ).getPropertyValue("--chart-grid");
     window.stockChart.data.datasets[0].borderColor = getComputedStyle(
-      document.documentElement
+      document.documentElement,
     ).getPropertyValue("--primary-color");
     window.stockChart.data.datasets[0].backgroundColor =
       getComputedStyle(document.documentElement).getPropertyValue(
-        "--primary-color"
+        "--primary-color",
       ) + "20";
     window.stockChart.update();
   }
 
   if (window.comparisonChart) {
     window.comparisonChart.options.scales.y.grid.color = getComputedStyle(
-      document.documentElement
+      document.documentElement,
     ).getPropertyValue("--chart-grid");
     window.comparisonChart.update();
   }

@@ -1,56 +1,68 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="it">
-
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Moltiplicazioni in Colonna</title>
-    <link rel="icon" href="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/2716.png" />
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+    <link
+      rel="icon"
+      href="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/2716.png"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="style.css" />
-</head>
+  </head>
 
-<body>
+  <body>
     <div class="container">
-        <a href="../index.html" class="back-link" aria-label="Torna alla scelta esercizi">← Torna alla scelta
-            esercizi</a>
-        <h1>Moltiplicazioni in Colonna</h1>
-        <p>Impara come si fanno le moltiplicazioni in colonna, passo dopo passo!</p>
+      <a
+        href="../index.html"
+        class="back-link"
+        aria-label="Torna alla scelta esercizi"
+        >← Torna alla scelta esercizi</a
+      >
+      <h1>Moltiplicazioni in Colonna</h1>
+      <p>
+        Impara come si fanno le moltiplicazioni in colonna, passo dopo passo!
+      </p>
 
-        <section class="step-mult">
-            <h2>Passaggi</h2>
-            <ol>
-                <li>Allinea i due numeri a destra.</li>
-                <li>Moltiplica ogni cifra partendo da destra.</li>
-                <li>Sposta ogni riga a sinistra di una posizione.</li>
-                <li>Somma tutti i risultati parziali.</li>
-            </ol>
-        </section>
+      <section class="step-mult">
+        <h2>Passaggi</h2>
+        <ol>
+          <li>Allinea i due numeri a destra.</li>
+          <li>Moltiplica ogni cifra partendo da destra.</li>
+          <li>Sposta ogni riga a sinistra di una posizione.</li>
+          <li>Somma tutti i risultati parziali.</li>
+        </ol>
+      </section>
 
-        <section class="step-mult">
-            <h2>Esempio</h2>
-            <p><b>23 × 14</b></p>
-            <ul>
-                <li>4 × 3 = 12 (scrivo 2, riporto 1), 4 × 2 = 8 + 1 = 9 → <b>92</b></li>
-                <li>1 × 3 = 3, 1 × 2 = 2 → <b>230</b></li>
-                <li>92 + 230 = <b>322</b></li>
-            </ul>
-        </section>
+      <section class="step-mult">
+        <h2>Esempio</h2>
+        <p><b>23 × 14</b></p>
+        <ul>
+          <li>
+            4 × 3 = 12 (scrivo 2, riporto 1), 4 × 2 = 8 + 1 = 9 → <b>92</b>
+          </li>
+          <li>1 × 3 = 3, 1 × 2 = 2 → <b>230</b></li>
+          <li>92 + 230 = <b>322</b></li>
+        </ul>
+      </section>
 
-        <section class="interactive-mult">
-            <h2>Prova tu!</h2>
-            <form id="multForm">
-                <label for="num1">Primo numero</label>
-                <input type="number" id="num1" required placeholder="Es. 23" />
-                <label for="num2">Secondo numero</label>
-                <input type="number" id="num2" required placeholder="Es. 14" />
-                <button type="submit">Calcola</button>
-            </form>
-            <div id="multResult" class="result-output"></div>
-            <div id="multSteps" class="steps-output"></div>
-        </section>
+      <section class="interactive-mult">
+        <h2>Prova tu!</h2>
+        <form id="multForm">
+          <label for="num1">Primo numero</label>
+          <input type="number" id="num1" required placeholder="Es. 23" />
+          <label for="num2">Secondo numero</label>
+          <input type="number" id="num2" required placeholder="Es. 14" />
+          <button type="submit">Calcola</button>
+        </form>
+        <div id="multResult" class="result-output"></div>
+        <div id="multSteps" class="steps-output"></div>
+      </section>
     </div>
     <script src="script.js"></script>
-</body>
-
+  </body>
 </html>

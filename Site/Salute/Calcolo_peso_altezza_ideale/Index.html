@@ -1,187 +1,263 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calcolatore Peso e Altezza Ideali</title>
+    <link
+      rel="icon"
+      href="https://cdn-icons-png.flaticon.com/512/2382/2382461.png"
+      type="image/png"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Calcolatore Peso e Altezza Ideali</title>
-  <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/2382/2382461.png" type="image/png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="styles.css">
-</head>
-
-<body>
-  <div class="app-container">
-    <header>
-      <div class="logo">
-        <i class="fas fa-weight"></i>
-      </div>
-      <h1>Calcolatore Peso e Altezza Ideali</h1>
-      <p class="subtitle">Calcola il tuo peso o altezza ideale in base a formule scientifiche</p>
-    </header>
-
-    <main>
-      <div class="card calculator-card">
-        <div class="card-header">
-          <div class="tab-container">
-            <button class="tab-button active" data-type="weight">
-              <i class="fas fa-weight-scale"></i>
-              <span>Calcola Peso Ideale</span>
-            </button>
-            <button class="tab-button" data-type="height">
-              <i class="fas fa-ruler-vertical"></i>
-              <span>Calcola Altezza Ideale</span>
-            </button>
-          </div>
+  <body>
+    <div class="app-container">
+      <header>
+        <div class="logo">
+          <i class="fas fa-weight"></i>
         </div>
+        <h1>Calcolatore Peso e Altezza Ideali</h1>
+        <p class="subtitle">
+          Calcola il tuo peso o altezza ideale in base a formule scientifiche
+        </p>
+      </header>
 
-        <div class="card-body">
-          <form id="calculatorForm">
-            <input type="hidden" id="calculationType" value="weight">
-
-            <div class="form-group gender-group">
-              <label>Seleziona il tuo genere:</label>
-              <div class="gender-selector">
-                <label class="gender-option">
-                  <input type="radio" name="gender" id="genderMale" value="male" checked>
-                  <span class="gender-icon male">
-                    <i class="fas fa-mars"></i>
-                  </span>
-                  <span class="gender-label">Uomo</span>
-                </label>
-                <label class="gender-option">
-                  <input type="radio" name="gender" id="genderFemale" value="female">
-                  <span class="gender-icon female">
-                    <i class="fas fa-venus"></i>
-                  </span>
-                  <span class="gender-label">Donna</span>
-                </label>
-              </div>
-            </div>
-
-            <div class="form-group" id="heightInputGroup">
-              <label for="heightInput">
-                <i class="fas fa-ruler-vertical"></i>
-                Altezza (cm):
-              </label>
-              <div class="input-with-icon">
-                <input type="number" id="heightInput" min="50" max="250" placeholder="Inserisci la tua altezza"
-                  required>
-                <span class="input-unit">cm</span>
-              </div>
-              <div class="range-slider-container">
-                <input type="range" id="heightSlider" min="50" max="250" value="170" class="range-slider">
-                <div class="range-marks">
-                  <span>50</span>
-                  <span>150</span>
-                  <span>250</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="form-group" id="weightInputGroup" style="display: none;">
-              <label for="weightInput">
+      <main>
+        <div class="card calculator-card">
+          <div class="card-header">
+            <div class="tab-container">
+              <button class="tab-button active" data-type="weight">
                 <i class="fas fa-weight-scale"></i>
-                Peso (kg):
-              </label>
-              <div class="input-with-icon">
-                <input type="number" id="weightInput" min="10" max="300" placeholder="Inserisci il tuo peso" required>
-                <span class="input-unit">kg</span>
-              </div>
-              <div class="range-slider-container">
-                <input type="range" id="weightSlider" min="10" max="300" value="70" class="range-slider">
-                <div class="range-marks">
-                  <span>10</span>
-                  <span>150</span>
-                  <span>300</span>
+                <span>Calcola Peso Ideale</span>
+              </button>
+              <button class="tab-button" data-type="height">
+                <i class="fas fa-ruler-vertical"></i>
+                <span>Calcola Altezza Ideale</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="card-body">
+            <form id="calculatorForm">
+              <input type="hidden" id="calculationType" value="weight" />
+
+              <div class="form-group gender-group">
+                <label>Seleziona il tuo genere:</label>
+                <div class="gender-selector">
+                  <label class="gender-option">
+                    <input
+                      type="radio"
+                      name="gender"
+                      id="genderMale"
+                      value="male"
+                      checked
+                    />
+                    <span class="gender-icon male">
+                      <i class="fas fa-mars"></i>
+                    </span>
+                    <span class="gender-label">Uomo</span>
+                  </label>
+                  <label class="gender-option">
+                    <input
+                      type="radio"
+                      name="gender"
+                      id="genderFemale"
+                      value="female"
+                    />
+                    <span class="gender-icon female">
+                      <i class="fas fa-venus"></i>
+                    </span>
+                    <span class="gender-label">Donna</span>
+                  </label>
                 </div>
+              </div>
+
+              <div class="form-group" id="heightInputGroup">
+                <label for="heightInput">
+                  <i class="fas fa-ruler-vertical"></i>
+                  Altezza (cm):
+                </label>
+                <div class="input-with-icon">
+                  <input
+                    type="number"
+                    id="heightInput"
+                    min="50"
+                    max="250"
+                    placeholder="Inserisci la tua altezza"
+                    required
+                  />
+                  <span class="input-unit">cm</span>
+                </div>
+                <div class="range-slider-container">
+                  <input
+                    type="range"
+                    id="heightSlider"
+                    min="50"
+                    max="250"
+                    value="170"
+                    class="range-slider"
+                  />
+                  <div class="range-marks">
+                    <span>50</span>
+                    <span>150</span>
+                    <span>250</span>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="form-group"
+                id="weightInputGroup"
+                style="display: none"
+              >
+                <label for="weightInput">
+                  <i class="fas fa-weight-scale"></i>
+                  Peso (kg):
+                </label>
+                <div class="input-with-icon">
+                  <input
+                    type="number"
+                    id="weightInput"
+                    min="10"
+                    max="300"
+                    placeholder="Inserisci il tuo peso"
+                    required
+                  />
+                  <span class="input-unit">kg</span>
+                </div>
+                <div class="range-slider-container">
+                  <input
+                    type="range"
+                    id="weightSlider"
+                    min="10"
+                    max="300"
+                    value="70"
+                    class="range-slider"
+                  />
+                  <div class="range-marks">
+                    <span>10</span>
+                    <span>150</span>
+                    <span>300</span>
+                  </div>
+                </div>
+              </div>
+
+              <button
+                type="submit"
+                id="calculateButton"
+                class="calculate-button"
+              >
+                <i class="fas fa-calculator"></i>
+                <span>Calcola</span>
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <div class="card result-card">
+          <div class="result-container">
+            <div class="result-header">
+              <i class="fas fa-chart-simple"></i>
+              <h2>Risultato</h2>
+            </div>
+
+            <div id="resultDisplay" class="result-display">
+              <div class="placeholder-text">
+                I risultati appariranno qui dopo il calcolo
               </div>
             </div>
 
-            <button type="submit" id="calculateButton" class="calculate-button">
-              <i class="fas fa-calculator"></i>
-              <span>Calcola</span>
-            </button>
-          </form>
-        </div>
-      </div>
+            <div class="result-details" id="resultDetails">
+              <!-- I dettagli del risultato verranno inseriti qui -->
+            </div>
 
-      <div class="card result-card">
-        <div class="result-container">
-          <div class="result-header">
-            <i class="fas fa-chart-simple"></i>
-            <h2>Risultato</h2>
-          </div>
-
-          <div id="resultDisplay" class="result-display">
-            <div class="placeholder-text">I risultati appariranno qui dopo il calcolo</div>
-          </div>
-
-          <div class="result-details" id="resultDetails">
-            <!-- I dettagli del risultato verranno inseriti qui -->
-          </div>
-
-          <div class="result-actions">
-            <button id="shareButton" class="action-button" disabled>
-              <i class="fas fa-share-alt"></i>
-              <span>Condividi</span>
-            </button>
+            <div class="result-actions">
+              <button id="shareButton" class="action-button" disabled>
+                <i class="fas fa-share-alt"></i>
+                <span>Condividi</span>
+              </button>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="card info-card">
-        <div class="info-header">
-          <i class="fas fa-info-circle"></i>
-          <h2>Informazioni</h2>
-        </div>
-
-        <div class="info-content">
-          <div class="info-section">
-            <h3>Come funziona il calcolo?</h3>
-            <p>Questo calcolatore utilizza formule scientifiche per determinare il peso o l'altezza ideale in base al
-              genere:</p>
-            <ul>
-              <li><strong>Per gli uomini:</strong> Peso ideale = (Altezza - 100) × 0.9</li>
-              <li><strong>Per le donne:</strong> Peso ideale = (Altezza - 100) × 0.85</li>
-            </ul>
-            <p>Queste formule sono basate sulla formula di Broca modificata, ampiamente utilizzata per stimare il peso
-              ideale.</p>
+        <div class="card info-card">
+          <div class="info-header">
+            <i class="fas fa-info-circle"></i>
+            <h2>Informazioni</h2>
           </div>
 
-          <div class="info-section">
-            <h3>Limitazioni</h3>
-            <p>È importante notare che queste formule forniscono solo una stima generale e non tengono conto di fattori
-              individuali come:</p>
-            <ul>
-              <li>Struttura corporea</li>
-              <li>Massa muscolare</li>
-              <li>Età</li>
-              <li>Condizioni di salute specifiche</li>
-            </ul>
-            <p>Per una valutazione più accurata, consulta sempre un professionista della salute.</p>
+          <div class="info-content">
+            <div class="info-section">
+              <h3>Come funziona il calcolo?</h3>
+              <p>
+                Questo calcolatore utilizza formule scientifiche per determinare
+                il peso o l'altezza ideale in base al genere:
+              </p>
+              <ul>
+                <li>
+                  <strong>Per gli uomini:</strong> Peso ideale = (Altezza - 100)
+                  × 0.9
+                </li>
+                <li>
+                  <strong>Per le donne:</strong> Peso ideale = (Altezza - 100) ×
+                  0.85
+                </li>
+              </ul>
+              <p>
+                Queste formule sono basate sulla formula di Broca modificata,
+                ampiamente utilizzata per stimare il peso ideale.
+              </p>
+            </div>
+
+            <div class="info-section">
+              <h3>Limitazioni</h3>
+              <p>
+                È importante notare che queste formule forniscono solo una stima
+                generale e non tengono conto di fattori individuali come:
+              </p>
+              <ul>
+                <li>Struttura corporea</li>
+                <li>Massa muscolare</li>
+                <li>Età</li>
+                <li>Condizioni di salute specifiche</li>
+              </ul>
+              <p>
+                Per una valutazione più accurata, consulta sempre un
+                professionista della salute.
+              </p>
+            </div>
           </div>
         </div>
-      </div>
-    </main>
+      </main>
 
-    <footer>
-      <p>Creato con <i class="fas fa-heart"></i> per promuovere uno stile di vita sano</p>
-      <div class="footer-links">
-        <a href="#" class="footer-link">Privacy Policy</a>
-        <a href="#" class="footer-link">Termini di Servizio</a>
-        <a href="#" class="footer-link">Contatti</a>
-      </div>
-    </footer>
-  </div>
+      <footer>
+        <p>
+          Creato con <i class="fas fa-heart"></i> per promuovere uno stile di
+          vita sano
+        </p>
+        <div class="footer-links">
+          <a href="#" class="footer-link">Privacy Policy</a>
+          <a href="#" class="footer-link">Termini di Servizio</a>
+          <a href="#" class="footer-link">Contatti</a>
+        </div>
+      </footer>
+    </div>
 
-  <!-- Toast notifications -->
-  <div id="toastContainer" class="toast-container"></div>
+    <!-- Toast notifications -->
+    <div id="toastContainer" class="toast-container"></div>
 
-  <script src="script.js"></script>
-</body>
-
+    <script src="script.js"></script>
+  </body>
 </html>

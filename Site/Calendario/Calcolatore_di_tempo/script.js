@@ -93,7 +93,7 @@ function updateTimeDisplay(
   hours,
   minutes,
   seconds,
-  isInFuture
+  isInFuture,
 ) {
   // Aggiorna i valori nei rispettivi elementi con animazione
   updateValueWithAnimation("years", years);
@@ -122,9 +122,9 @@ function updateTimeDisplay(
         days,
         hours,
         minutes,
-        seconds
+        seconds,
       )} dalla data ${formatDateForDisplay(
-        data1
+        data1,
       )} alla data ${formatDateForDisplay(data2)}.`
     : `Sono passati ${formatTimeText(
         years,
@@ -132,9 +132,9 @@ function updateTimeDisplay(
         days,
         hours,
         minutes,
-        seconds
+        seconds,
       )} dalla data ${formatDateForDisplay(
-        data2
+        data2,
       )} alla data ${formatDateForDisplay(data1)}.`;
 
   document.getElementById("risultato").textContent = message;
@@ -234,7 +234,7 @@ function aggiornaConteggio() {
       differenzaTempo = Math.abs(differenzaTempo);
       updateTimeDisplay(
         ...calcolaUnitaTempo(differenzaTempo),
-        false // Ora è nel passato
+        false, // Ora è nel passato
       );
       return;
     }
@@ -250,21 +250,21 @@ function aggiornaConteggio() {
 // Funzione per calcolare le unità di tempo da una differenza in millisecondi
 function calcolaUnitaTempo(differenzaMillisecondi) {
   const anni = Math.floor(
-    differenzaMillisecondi / (365.25 * 24 * 60 * 60 * 1000)
+    differenzaMillisecondi / (365.25 * 24 * 60 * 60 * 1000),
   );
   const mesi = Math.floor(
     (differenzaMillisecondi % (365.25 * 24 * 60 * 60 * 1000)) /
-      (30.44 * 24 * 60 * 60 * 1000)
+      (30.44 * 24 * 60 * 60 * 1000),
   );
   const giorni = Math.floor(
     (differenzaMillisecondi % (30.44 * 24 * 60 * 60 * 1000)) /
-      (24 * 60 * 60 * 1000)
+      (24 * 60 * 60 * 1000),
   );
   const ore = Math.floor(
-    (differenzaMillisecondi % (24 * 60 * 60 * 1000)) / (60 * 60 * 1000)
+    (differenzaMillisecondi % (24 * 60 * 60 * 1000)) / (60 * 60 * 1000),
   );
   const minuti = Math.floor(
-    (differenzaMillisecondi % (60 * 60 * 1000)) / (60 * 1000)
+    (differenzaMillisecondi % (60 * 60 * 1000)) / (60 * 1000),
   );
   const secondi = Math.floor((differenzaMillisecondi % (60 * 1000)) / 1000);
 

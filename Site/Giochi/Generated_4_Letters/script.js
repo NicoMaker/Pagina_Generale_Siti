@@ -43,7 +43,7 @@ async function loadAlphabet() {
 // Inizializza le statistiche
 function initStats() {
   attempts = Number.parseInt(
-    localStorage.getItem("letterario_attempts") || "0"
+    localStorage.getItem("letterario_attempts") || "0",
   );
   wins = Number.parseInt(localStorage.getItem("letterario_wins") || "0");
   updateStatsDisplay();
@@ -245,8 +245,8 @@ function createConfetti() {
       @keyframes fall {
         to {
           transform: translateY(${window.innerHeight}px) rotate(${
-      Math.random() * 360 + 720
-    }deg);
+            Math.random() * 360 + 720
+          }deg);
           opacity: 0;
         }
       }

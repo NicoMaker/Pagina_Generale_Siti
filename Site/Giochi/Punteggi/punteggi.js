@@ -14,7 +14,7 @@ function aggiungiPartecipante() {
 function aggiungiPunti() {
   const punti = parseFloat(document.getElementById("points").value),
     selectedParticipantIndex = document.getElementById(
-      "selected-participant"
+      "selected-participant",
     ).value;
   if (!isNaN(punti)) {
     if (selectedParticipantIndex === "all")
@@ -30,7 +30,7 @@ function aggiungiPunti() {
 function togliPunti() {
   const punti = parseFloat(document.getElementById("points").value),
     selectedParticipantIndex = document.getElementById(
-      "selected-participant"
+      "selected-participant",
     ).value;
   if (!isNaN(punti)) {
     if (selectedParticipantIndex === "all")
@@ -65,8 +65,8 @@ function trovaVincitore() {
     vincitore === "Pareggio"
       ? `${vincitore}`
       : vincitore
-      ? `Il vincitore è: ${vincitore} 🏆🎉😊`
-      : "Nessun vincitore."
+        ? `Il vincitore è: ${vincitore} 🏆🎉😊`
+        : "Nessun vincitore.",
   );
 }
 
@@ -76,7 +76,7 @@ function aggiornaListaPartecipanti() {
 
   // Ordinamento dei partecipanti in base alla modalità di vittoria
   partecipantiOrdinati = [...partecipanti].sort((a, b) =>
-    modalitàVittoria === "max" ? b.punti - a.punti : a.punti - b.punti
+    modalitàVittoria === "max" ? b.punti - a.punti : a.punti - b.punti,
   );
 
   // Creazione degli elementi per ogni partecipante
@@ -185,7 +185,7 @@ function caricaDaFile() {
           // Valida e aggiorna i partecipanti
           if (
             datiCaricati.every(
-              (partecipante) => partecipante.nome && !isNaN(partecipante.punti)
+              (partecipante) => partecipante.nome && !isNaN(partecipante.punti),
             )
           ) {
             partecipanti.length = 0; // Resetta l'array attuale

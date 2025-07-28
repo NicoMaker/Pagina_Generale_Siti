@@ -34,9 +34,8 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("next-year").textContent = nextYear;
   document.getElementById("footer-year").textContent = nextYear;
   document.getElementById("celebration-year").textContent = nextYear;
-  document.getElementById(
-    "copyright-year"
-  ).textContent = `© ${currentYear} Countdown Capodanno. Tutti i diritti riservati.`;
+  document.getElementById("copyright-year").textContent =
+    `© ${currentYear} Countdown Capodanno. Tutti i diritti riservati.`;
 
   // Set countdown target
   const countdownDate = new Date(`Jan 1, ${nextYear} 00:00:00`).getTime();
@@ -52,7 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Add "Happy New Year" message to the celebration message
     const celebrationMessage = document.querySelector(
-      ".celebration-message h2"
+      ".celebration-message h2",
     );
     celebrationMessage.textContent = "Happy New Year!";
 
@@ -105,7 +104,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Calculate time units
     const days = Math.floor(distance / (1000 * 60 * 60 * 24));
     const hours = Math.floor(
-      (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+      (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
     );
     const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
     const seconds = Math.floor((distance % (1000 * 60)) / 1000);
@@ -307,7 +306,7 @@ document.head.insertAdjacentHTML(
       }
     }
   </style>
-`
+`,
 );
 
 // Main function to check prime numbers
@@ -576,5 +575,5 @@ document.head.insertAdjacentHTML(
   margin-bottom: 15px;
 }
 </style>
-`
+`,
 );

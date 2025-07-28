@@ -1,98 +1,143 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="it">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sistema Solare Interattivo</title>
-    <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="icon"
-        href="https://th.bing.com/th/id/R.33847bb370ea11c6ddb60d103a53339b?rik=cDmcXZcWL0DB7g&riu=http%3a%2f%2fgetwallpapers.com%2fwallpaper%2ffull%2fe%2f5%2f0%2f1428468-solar-system-backgrounds-1920x1080-for-mobile-hd.jpg&ehk=aYwBajSgQbRZERTo71vXob3fID47FhzJr50Ni4pHJvs%3d&risl=&pid=ImgRaw&r=0"
-        type="image/x-icon">
-</head>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="icon"
+      href="https://th.bing.com/th/id/R.33847bb370ea11c6ddb60d103a53339b?rik=cDmcXZcWL0DB7g&riu=http%3a%2f%2fgetwallpapers.com%2fwallpaper%2ffull%2fe%2f5%2f0%2f1428468-solar-system-backgrounds-1920x1080-for-mobile-hd.jpg&ehk=aYwBajSgQbRZERTo71vXob3fID47FhzJr50Ni4pHJvs%3d&risl=&pid=ImgRaw&r=0"
+      type="image/x-icon"
+    />
+  </head>
 
-<body>
+  <body>
     <div class="stars-container">
-        <div id="stars"></div>
-        <div id="stars2"></div>
-        <div id="stars3"></div>
+      <div id="stars"></div>
+      <div id="stars2"></div>
+      <div id="stars3"></div>
     </div>
 
     <div class="app-container">
-        <header>
-            <h1>Sistema Solare Interattivo</h1>
-            <p class="subtitle">Esplora i pianeti del nostro sistema solare</p>
-        </header>
+      <header>
+        <h1>Sistema Solare Interattivo</h1>
+        <p class="subtitle">Esplora i pianeti del nostro sistema solare</p>
+      </header>
 
-        <main>
-            <div class="controls">
-                <button id="zoomIn" class="control-btn" title="Zoom In">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="11" cy="11" r="8"></circle>
-                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                        <line x1="11" y1="8" x2="11" y2="14"></line>
-                        <line x1="8" y1="11" x2="14" y2="11"></line>
-                    </svg>
-                </button>
-                <button id="zoomOut" class="control-btn" title="Zoom Out">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="11" cy="11" r="8"></circle>
-                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                        <line x1="8" y1="11" x2="14" y2="11"></line>
-                    </svg>
-                </button>
-                <button id="resetView" class="control-btn" title="Reset View">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
-                        <path d="M3 3v5h5"></path>
-                    </svg>
-                </button>
-                <button id="showInfoBtn" class="control-btn info-btn" title="Mostra Informazioni">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="10"></circle>
-                        <line x1="12" y1="16" x2="12" y2="12"></line>
-                        <line x1="12" y1="8" x2="12.01" y2="8"></line>
-                    </svg>
-                </button>
-            </div>
+      <main>
+        <div class="controls">
+          <button id="zoomIn" class="control-btn" title="Zoom In">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              <line x1="11" y1="8" x2="11" y2="14"></line>
+              <line x1="8" y1="11" x2="14" y2="11"></line>
+            </svg>
+          </button>
+          <button id="zoomOut" class="control-btn" title="Zoom Out">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              <line x1="8" y1="11" x2="14" y2="11"></line>
+            </svg>
+          </button>
+          <button id="resetView" class="control-btn" title="Reset View">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"
+              ></path>
+              <path d="M3 3v5h5"></path>
+            </svg>
+          </button>
+          <button
+            id="showInfoBtn"
+            class="control-btn info-btn"
+            title="Mostra Informazioni"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="16" x2="12" y2="12"></line>
+              <line x1="12" y1="8" x2="12.01" y2="8"></line>
+            </svg>
+          </button>
+        </div>
 
-            <div class="solar-system-container">
-                <div class="solar-system" id="solarSystem">
-                    <!-- Il sole e i pianeti verranno aggiunti dinamicamente con JavaScript -->
-                </div>
-            </div>
+        <div class="solar-system-container">
+          <div class="solar-system" id="solarSystem">
+            <!-- Il sole e i pianeti verranno aggiunti dinamicamente con JavaScript -->
+          </div>
+        </div>
 
-            <div class="planet-name-display" id="planetNameDisplay"></div>
-        </main>
+        <div class="planet-name-display" id="planetNameDisplay"></div>
+      </main>
 
-        <footer>
-            <p>Sistema Solare Interattivo</p>
-        </footer>
+      <footer>
+        <p>Sistema Solare Interattivo</p>
+      </footer>
     </div>
 
     <!-- Modal per le informazioni di tutti i pianeti -->
     <div class="modal" id="infoModal">
-        <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <h2 class="modal-title">Informazioni sui Pianeti del Sistema Solare</h2>
+      <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <h2 class="modal-title">Informazioni sui Pianeti del Sistema Solare</h2>
 
-            <div class="planets-tabs">
-                <div class="tabs-header" id="tabsHeader">
-                    <!-- Le tab verranno aggiunte dinamicamente con JavaScript -->
-                </div>
-                <div class="tabs-content" id="tabsContent">
-                    <!-- Il contenuto delle tab verrà aggiunto dinamicamente con JavaScript -->
-                </div>
-            </div>
+        <div class="planets-tabs">
+          <div class="tabs-header" id="tabsHeader">
+            <!-- Le tab verranno aggiunte dinamicamente con JavaScript -->
+          </div>
+          <div class="tabs-content" id="tabsContent">
+            <!-- Il contenuto delle tab verrà aggiunto dinamicamente con JavaScript -->
+          </div>
         </div>
+      </div>
     </div>
 
     <script src="script.js"></script>
-</body>
-
+  </body>
 </html>

@@ -1,127 +1,140 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="it">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Lancio Monete</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon"
-        href="https://c8.alamy.com/compit/2f60rf4/icona-della-linea-vettoriale-relativa-al-lancio-di-monete-2f60rf4.jpg"
-        type="image/jpg">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="style.css" />
     <link
-        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@700;900&display=swap"
-        rel="stylesheet">
+      rel="icon"
+      href="https://c8.alamy.com/compit/2f60rf4/icona-della-linea-vettoriale-relativa-al-lancio-di-monete-2f60rf4.jpg"
+      type="image/jpg"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@700;900&display=swap"
+      rel="stylesheet"
+    />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-</head>
+  </head>
 
-<body>
+  <body>
     <div class="app-container">
-        <div class="card main-card">
-            <header>
-                <h1>Lancio Monete</h1>
-                <p class="subtitle">Testa o croce? Scopri la tua fortuna!</p>
-            </header>
+      <div class="card main-card">
+        <header>
+          <h1>Lancio Monete</h1>
+          <p class="subtitle">Testa o croce? Scopri la tua fortuna!</p>
+        </header>
 
-            <div class="winner-announcement" id="winner-announcement">
-                <div class="winner-icon">🏆</div>
-                <div class="winner-text" id="winner-text">Lancia le monete per iniziare!</div>
-            </div>
-
-            <div class="coin-display">
-                <!-- Coin container -->
-                <div class="coin-container">
-                    <!-- Actual coin that flips -->
-                    <div class="coin" id="coin">
-                        <div class="coin-inner">
-                            <div class="side heads">
-                                <div class="coin-text">T</div>
-                            </div>
-                            <div class="side tails">
-                                <div class="coin-text">C</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Result overlay that always stays upright -->
-                    <div class="result-overlay" id="result-overlay">
-                        <div class="result-text" id="result-text"></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="controls">
-                <div class="input-group">
-                    <label for="numCoins">Numero di monete</label>
-                    <div class="number-input">
-                        <button class="decrement" type="button">-</button>
-                        <input type="number" id="numCoins" min="1" max="100" value="1">
-                        <button class="increment" type="button">+</button>
-                    </div>
-                </div>
-
-                <button id="generateButton" class="toss-button">
-                    <span class="button-text">Lancia le monete</span>
-                    <span class="button-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="10"></circle>
-                            <path d="M12 6v6l4 2"></path>
-                        </svg>
-                    </span>
-                </button>
-            </div>
-
-            <div class="results-container">
-                <h2>Risultati</h2>
-
-                <div class="results-content">
-                    <div class="stats-container">
-                        <div class="stat-card heads-card">
-                            <div class="stat-icon">
-                                <div class="mini-coin heads">T</div>
-                            </div>
-                            <div class="stat-info">
-                                <h3>Teste</h3>
-                                <div class="stat-value" id="heads-count">0</div>
-                                <div class="stat-percentage" id="heads-percentage">0%</div>
-                            </div>
-                        </div>
-
-                        <div class="stat-card tails-card">
-                            <div class="stat-icon">
-                                <div class="mini-coin tails">C</div>
-                            </div>
-                            <div class="stat-info">
-                                <h3>Croci</h3>
-                                <div class="stat-value" id="tails-count">0</div>
-                                <div class="stat-percentage" id="tails-percentage">0%</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="chart-container">
-                        <canvas id="myChart"></canvas>
-                    </div>
-                </div>
-            </div>
-
-            <div class="history-section">
-                <h2>Lanci precedenti</h2>
-                <div class="history-list" id="history-list">
-                    <div class="empty-history">Nessun lancio precedente</div>
-                </div>
-            </div>
+        <div class="winner-announcement" id="winner-announcement">
+          <div class="winner-icon">🏆</div>
+          <div class="winner-text" id="winner-text">
+            Lancia le monete per iniziare!
+          </div>
         </div>
+
+        <div class="coin-display">
+          <!-- Coin container -->
+          <div class="coin-container">
+            <!-- Actual coin that flips -->
+            <div class="coin" id="coin">
+              <div class="coin-inner">
+                <div class="side heads">
+                  <div class="coin-text">T</div>
+                </div>
+                <div class="side tails">
+                  <div class="coin-text">C</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Result overlay that always stays upright -->
+            <div class="result-overlay" id="result-overlay">
+              <div class="result-text" id="result-text"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="controls">
+          <div class="input-group">
+            <label for="numCoins">Numero di monete</label>
+            <div class="number-input">
+              <button class="decrement" type="button">-</button>
+              <input type="number" id="numCoins" min="1" max="100" value="1" />
+              <button class="increment" type="button">+</button>
+            </div>
+          </div>
+
+          <button id="generateButton" class="toss-button">
+            <span class="button-text">Lancia le monete</span>
+            <span class="button-icon">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <circle cx="12" cy="12" r="10"></circle>
+                <path d="M12 6v6l4 2"></path>
+              </svg>
+            </span>
+          </button>
+        </div>
+
+        <div class="results-container">
+          <h2>Risultati</h2>
+
+          <div class="results-content">
+            <div class="stats-container">
+              <div class="stat-card heads-card">
+                <div class="stat-icon">
+                  <div class="mini-coin heads">T</div>
+                </div>
+                <div class="stat-info">
+                  <h3>Teste</h3>
+                  <div class="stat-value" id="heads-count">0</div>
+                  <div class="stat-percentage" id="heads-percentage">0%</div>
+                </div>
+              </div>
+
+              <div class="stat-card tails-card">
+                <div class="stat-icon">
+                  <div class="mini-coin tails">C</div>
+                </div>
+                <div class="stat-info">
+                  <h3>Croci</h3>
+                  <div class="stat-value" id="tails-count">0</div>
+                  <div class="stat-percentage" id="tails-percentage">0%</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="chart-container">
+              <canvas id="myChart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <div class="history-section">
+          <h2>Lanci precedenti</h2>
+          <div class="history-list" id="history-list">
+            <div class="empty-history">Nessun lancio precedente</div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <footer>
-        <p>Coin Toss &copy; 2023 | Creato per gli amanti della statistica e della fortuna</p>
+      <p>
+        Coin Toss &copy; 2023 | Creato per gli amanti della statistica e della
+        fortuna
+      </p>
     </footer>
 
     <script src="script.js"></script>
-</body>
-
+  </body>
 </html>

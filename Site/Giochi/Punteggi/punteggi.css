@@ -105,7 +105,9 @@ label {
   cursor: pointer;
   padding: 8px 16px;
   border: 2px solid #007bff;
-  transition: background-color 0.3s, color 0.3s;
+  transition:
+    background-color 0.3s,
+    color 0.3s;
   border-radius: 20px;
 }
 
@@ -157,7 +159,9 @@ button:focus {
   background-color: transparent;
   color: red;
   font-size: 30px;
-  transition: transform 0.2s ease, color 0.3s ease;
+  transition:
+    transform 0.2s ease,
+    color 0.3s ease;
 }
 
 button.trash-button:hover {
@@ -274,7 +278,9 @@ button.load:active {
 
 button span.material-icons {
   font-size: 30px;
-  transition: transform 0.3s ease, color 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    color 0.3s ease;
 }
 
 /* Animazioni per bottoni di Download e Upload */
@@ -293,7 +299,9 @@ button.load:active {
 
 button span.material-icons {
   font-size: 30px;
-  transition: transform 0.3s ease, color 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    color 0.3s ease;
 }
 
 button.save:hover span.material-icons,
@@ -341,7 +349,9 @@ button.load:active {
 /* Stile per l'icona */
 button span.material-icons {
   font-size: 30px;
-  transition: transform 0.3s ease, color 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    color 0.3s ease;
   margin-right: 8px; /* Distanza tra l'icona e il testo */
 }
 

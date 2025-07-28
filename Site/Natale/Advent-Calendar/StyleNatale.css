@@ -27,7 +27,9 @@ body {
 
 h1 {
   color: var(--snow-white);
-  text-shadow: 2px 2px 4px var(--christmas-green), 0 0 20px var(--gold);
+  text-shadow:
+    2px 2px 4px var(--christmas-green),
+    0 0 20px var(--gold);
   font-weight: 700;
   font-size: 3.5rem;
   font-family: "Mountains of Christmas", cursive;
@@ -586,7 +588,9 @@ p {
 body h1:first-of-type {
   font-size: 3.5rem;
   color: var(--gold);
-  text-shadow: 2px 2px 4px var(--christmas-green), 0 0 15px var(--primary-red);
+  text-shadow:
+    2px 2px 4px var(--christmas-green),
+    0 0 15px var(--primary-red);
   margin: 30px 0;
   position: relative;
   display: inline-block;
@@ -595,10 +599,14 @@ body h1:first-of-type {
 
 @keyframes glow {
   from {
-    text-shadow: 2px 2px 4px var(--christmas-green), 0 0 10px var(--primary-red);
+    text-shadow:
+      2px 2px 4px var(--christmas-green),
+      0 0 10px var(--primary-red);
   }
   to {
-    text-shadow: 2px 2px 4px var(--christmas-green), 0 0 20px var(--gold),
+    text-shadow:
+      2px 2px 4px var(--christmas-green),
+      0 0 20px var(--gold),
       0 0 30px var(--primary-red);
   }
 }

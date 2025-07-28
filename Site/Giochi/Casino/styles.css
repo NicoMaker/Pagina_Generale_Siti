@@ -208,7 +208,8 @@ main {
 }
 
 .stopped-reel {
-  box-shadow: inset 0 0 15px rgba(255, 193, 7, 0.7),
+  box-shadow:
+    inset 0 0 15px rgba(255, 193, 7, 0.7),
     0 0 15px rgba(255, 193, 7, 0.5);
 }
 
@@ -698,7 +699,9 @@ footer {
 }
 
 .winning-reel {
-  box-shadow: 0 0 15px var(--accent), inset 0 0 10px var(--accent);
+  box-shadow:
+    0 0 15px var(--accent),
+    inset 0 0 10px var(--accent);
 }
 
 /* Timer Styles */
@@ -721,7 +724,9 @@ footer {
   font-weight: bold;
   font-size: 1.4rem;
   opacity: 0;
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   transform: scale(0.8);
 }

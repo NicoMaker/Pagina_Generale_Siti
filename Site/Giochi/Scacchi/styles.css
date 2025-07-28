@@ -295,7 +295,9 @@ body.dark-theme .turn-text {
   border: 3px solid var(--dark-bg);
   border-radius: var(--border-radius-sm);
   overflow: hidden;
-  box-shadow: var(--shadow-light), 0 0 0 1px rgba(0, 0, 0, 0.05);
+  box-shadow:
+    var(--shadow-light),
+    0 0 0 1px rgba(0, 0, 0, 0.05);
   margin-bottom: 20px;
   transition: all var(--transition-fast);
   transform: perspective(1000px) rotateX(5deg);
@@ -307,7 +309,9 @@ body.dark-theme .chessboard {
 
 .chessboard:hover {
   transform: perspective(1000px) rotateX(0deg);
-  box-shadow: var(--shadow-medium), 0 0 0 1px rgba(0, 0, 0, 0.05);
+  box-shadow:
+    var(--shadow-medium),
+    0 0 0 1px rgba(0, 0, 0, 0.05);
 }
 
 .controls {
@@ -803,7 +807,10 @@ body.dark-theme .black-icon {
 /* Stili per i pezzi bianchi e neri */
 .chess-piece.white-piece {
   color: #ffffff;
-  text-shadow: 0 0 3px #000, 0 0 5px #000, 0 0 7px #000;
+  text-shadow:
+    0 0 3px #000,
+    0 0 5px #000,
+    0 0 7px #000;
   font-weight: bold;
 }
 
@@ -845,7 +852,8 @@ body.dark-theme .black-icon {
   z-index: 1000;
   opacity: 0;
   visibility: hidden;
-  transition: opacity var(--transition-medium),
+  transition:
+    opacity var(--transition-medium),
     visibility var(--transition-medium);
   backdrop-filter: blur(5px);
 }
@@ -867,7 +875,8 @@ body.dark-theme .black-icon {
   box-shadow: var(--shadow-dark);
   transform: translateY(50px) scale(0.9);
   opacity: 0;
-  transition: transform var(--transition-bounce),
+  transition:
+    transform var(--transition-bounce),
     opacity var(--transition-medium);
   border: 2px solid var(--primary-color);
   position: relative;
@@ -990,7 +999,8 @@ body.dark-theme .black-icon {
   font-size: 3rem;
   margin-bottom: 15px;
   color: var(--light-text);
-  text-shadow: 0 0 10px rgba(52, 152, 219, 0.5),
+  text-shadow:
+    0 0 10px rgba(52, 152, 219, 0.5),
     0 0 20px rgba(52, 152, 219, 0.3);
   font-weight: 700;
   letter-spacing: 2px;
@@ -999,11 +1009,13 @@ body.dark-theme .black-icon {
 
 @keyframes title-glow {
   0% {
-    text-shadow: 0 0 10px rgba(52, 152, 219, 0.5),
+    text-shadow:
+      0 0 10px rgba(52, 152, 219, 0.5),
       0 0 20px rgba(52, 152, 219, 0.3);
   }
   100% {
-    text-shadow: 0 0 15px rgba(52, 152, 219, 0.7),
+    text-shadow:
+      0 0 15px rgba(52, 152, 219, 0.7),
       0 0 30px rgba(52, 152, 219, 0.5);
   }
 }
@@ -1043,13 +1055,17 @@ body.dark-theme .black-icon {
 
 #victory-piece.white-piece {
   color: #ffffff;
-  text-shadow: 0 0 15px var(--primary-color), 0 0 30px var(--primary-color),
+  text-shadow:
+    0 0 15px var(--primary-color),
+    0 0 30px var(--primary-color),
     0 0 45px var(--primary-color);
 }
 
 #victory-piece.black-piece {
   color: #000000;
-  text-shadow: 0 0 15px var(--primary-color), 0 0 30px var(--primary-color),
+  text-shadow:
+    0 0 15px var(--primary-color),
+    0 0 30px var(--primary-color),
     0 0 45px var(--primary-color);
 }
 

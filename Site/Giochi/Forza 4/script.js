@@ -61,7 +61,7 @@ function createBoard() {
       cell.setAttribute("tabindex", "0");
       cell.setAttribute(
         "aria-label",
-        `Cella vuota, riga ${i + 1}, colonna ${j + 1}`
+        `Cella vuota, riga ${i + 1}, colonna ${j + 1}`,
       );
 
       // Aggiungi gestione tastiera per accessibilità
@@ -137,7 +137,7 @@ function checkWin(row, col) {
 function highlightWinningCells(cells) {
   cells.forEach(([row, col]) => {
     const cell = document.querySelector(
-      `[data-row="${row}"][data-col="${col}"]`
+      `[data-row="${row}"][data-col="${col}"]`,
     );
     cell.classList.add("winning");
   });
@@ -186,7 +186,7 @@ function updateBoardUI() {
         "giallo",
         "winning",
         "rossoWin",
-        "gialloWin"
+        "gialloWin",
       );
 
       // Aggiungi la classe appropriata in base allo stato della cella
@@ -194,13 +194,14 @@ function updateBoardUI() {
         cell.classList.add(gameBoard[i][j]);
         cell.setAttribute(
           "aria-label",
-          `Cella con gettone ${gameBoard[i][j]}, riga ${i + 1}, colonna ${j + 1
-          }`
+          `Cella con gettone ${gameBoard[i][j]}, riga ${i + 1}, colonna ${
+            j + 1
+          }`,
         );
       } else {
         cell.setAttribute(
           "aria-label",
-          `Cella vuota, riga ${i + 1}, colonna ${j + 1}`
+          `Cella vuota, riga ${i + 1}, colonna ${j + 1}`,
         );
       }
     }
@@ -214,22 +215,23 @@ function dropPiece(col) {
   if (row !== -1) {
     gameBoard[row][col] = currentPlayer;
     const cell = document.querySelector(
-      `[data-row="${row}"][data-col="${col}"]`
+      `[data-row="${row}"][data-col="${col}"]`,
     );
     cell.classList.add(currentPlayer);
 
     // Aggiorna l'attributo aria-label per l'accessibilità
     cell.setAttribute(
       "aria-label",
-      `Cella con gettone ${currentPlayer}, riga ${row + 1}, colonna ${col + 1}`
+      `Cella con gettone ${currentPlayer}, riga ${row + 1}, colonna ${col + 1}`,
     );
 
     // Aggiungi evento alla timeline con il pallino colorato
     addTimelineEvent(
-      `Giocatore ${currentPlayer} ha inserito un gettone nella colonna ${col + 1
+      `Giocatore ${currentPlayer} ha inserito un gettone nella colonna ${
+        col + 1
       }`,
       false,
-      currentPlayer
+      currentPlayer,
     );
 
     // Aggiungi feedback sonoro (opzionale)
@@ -249,11 +251,11 @@ function dropPiece(col) {
       addTimelineEvent(
         `Giocatore ${currentPlayer} ha vinto la partita!`,
         true,
-        currentPlayer
+        currentPlayer,
       );
 
       updateWinnerMessage(
-        `Il ${currentPlayer === "rosso" ? "Rosso" : "Giallo"} ha vinto! 🏆🎉`
+        `Il ${currentPlayer === "rosso" ? "Rosso" : "Giallo"} ha vinto! 🏆🎉`,
       );
 
       // Disabilita i pulsanti dei cartellini
@@ -265,7 +267,7 @@ function dropPiece(col) {
       const nextPlayer = gameCount % 2 === 0 ? "giallo" : "rosso";
       addTimelineEvent(
         `Partita terminata in pareggio! La prossima partita inizierà il giocatore ${nextPlayer}.`,
-        true
+        true,
       );
 
       updateWinnerMessage("Pareggio! 😲 Nessuno ha vinto.");
@@ -341,7 +343,7 @@ function resetGame() {
       "giallo",
       "winning",
       "rossoWin",
-      "gialloWin"
+      "gialloWin",
     );
 
     // Reimposta gli attributi ARIA
@@ -349,8 +351,9 @@ function resetGame() {
     const col = cell.dataset.col;
     cell.setAttribute(
       "aria-label",
-      `Cella vuota, riga ${Number.parseInt(row) + 1}, colonna ${Number.parseInt(col) + 1
-      }`
+      `Cella vuota, riga ${Number.parseInt(row) + 1}, colonna ${
+        Number.parseInt(col) + 1
+      }`,
     );
   });
 
@@ -373,12 +376,12 @@ function resetGame() {
   addTimelineEvent(
     `Nuova partita iniziata. Inizia il giocatore ${currentPlayer}.`,
     false,
-    currentPlayer
+    currentPlayer,
   );
 
   // Annuncia il reset del gioco per screen reader
   announceForScreenReader(
-    `Nuova partita iniziata. Turno del giocatore ${currentPlayer}.`
+    `Nuova partita iniziata. Turno del giocatore ${currentPlayer}.`,
   );
 }
 
@@ -402,7 +405,7 @@ function resetCurrentGame() {
       "giallo",
       "winning",
       "rossoWin",
-      "gialloWin"
+      "gialloWin",
     );
 
     // Reimposta gli attributi ARIA
@@ -410,8 +413,9 @@ function resetCurrentGame() {
     const col = cell.dataset.col;
     cell.setAttribute(
       "aria-label",
-      `Cella vuota, riga ${Number.parseInt(row) + 1}, colonna ${Number.parseInt(col) + 1
-      }`
+      `Cella vuota, riga ${Number.parseInt(row) + 1}, colonna ${
+        Number.parseInt(col) + 1
+      }`,
     );
   });
 
@@ -427,12 +431,12 @@ function resetCurrentGame() {
   addTimelineEvent(
     `Partita corrente resettata. Continua il giocatore ${currentPlayer}.`,
     false,
-    currentPlayer
+    currentPlayer,
   );
 
   // Annuncia il reset della partita corrente per screen reader
   announceForScreenReader(
-    `Partita corrente resettata. Turno del giocatore ${currentPlayer}.`
+    `Partita corrente resettata. Turno del giocatore ${currentPlayer}.`,
   );
 }
 
@@ -530,7 +534,7 @@ function addCard(player, cardType) {
   if (gameOver) {
     // Mostra un messaggio di errore o feedback
     announceForScreenReader(
-      "Non puoi assegnare cartellini a partita terminata"
+      "Non puoi assegnare cartellini a partita terminata",
     );
     return;
   }
@@ -542,7 +546,7 @@ function addCard(player, cardType) {
     addTimelineEvent(
       `Cartellino GIALLO assegnato al giocatore ${player}`,
       false,
-      player
+      player,
     );
 
     // Verifica se il giocatore ha raggiunto 3 cartellini gialli
@@ -555,7 +559,7 @@ function addCard(player, cardType) {
     addTimelineEvent(
       `Cartellino ROSSO assegnato al giocatore ${player}`,
       false,
-      player
+      player,
     );
 
     // Verifica se il giocatore ha ricevuto un cartellino rosso
@@ -591,12 +595,12 @@ function handleDisqualification(player, opponent, reason) {
   addTimelineEvent(
     `Giocatore ${player} squalificato per ${reason}!`,
     true,
-    player
+    player,
   );
   addTimelineEvent(
     `Giocatore ${opponent} ha vinto la partita per squalifica!`,
     true,
-    opponent
+    opponent,
   );
 
   // Mostra il messaggio di squalifica
@@ -616,7 +620,7 @@ function handleDisqualification(player, opponent, reason) {
 
   // Annuncia la squalifica per screen reader
   announceForScreenReader(
-    `Giocatore ${player} squalificato per ${reason}. Vittoria assegnata al giocatore ${opponent}.`
+    `Giocatore ${player} squalificato per ${reason}. Vittoria assegnata al giocatore ${opponent}.`,
   );
 }
 

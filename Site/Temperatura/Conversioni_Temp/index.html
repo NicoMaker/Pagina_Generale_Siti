@@ -1,81 +1,107 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Convertitore di Temperatura</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="script.js" defer></script>
+    <link
+      rel="icon"
+      href="https://icons.veryicon.com/png/System/Android%201/Measurement%20Units%20temperature.png"
+      type="image/jpg"
+    />
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Convertitore di Temperatura</title>
-  <link rel="stylesheet" href="style.css" />
-  <script src="script.js" defer></script>
-  <link rel="icon" href="https://icons.veryicon.com/png/System/Android%201/Measurement%20Units%20temperature.png"
-    type="image/jpg" />
-</head>
-
-<body>
-  <div class="container">
-    <div class="card">
-      <div class="card-header">
-        <h1>Convertitore di Temperatura</h1>
-        <div class="theme-toggle">
-          <input type="checkbox" id="theme-switch" class="theme-switch">
-          <label for="theme-switch" class="theme-switch-label">
-            <span class="theme-switch-icon"></span>
-          </label>
-        </div>
-      </div>
-
-      <form id="temperatureForm">
-        <div class="input-group">
-          <label for="temperatureInput">Inserisci la temperatura:</label>
-          <input type="number" id="temperatureInput" placeholder="Inserisci Temperatura" required />
+  <body>
+    <div class="container">
+      <div class="card">
+        <div class="card-header">
+          <h1>Convertitore di Temperatura</h1>
+          <div class="theme-toggle">
+            <input type="checkbox" id="theme-switch" class="theme-switch" />
+            <label for="theme-switch" class="theme-switch-label">
+              <span class="theme-switch-icon"></span>
+            </label>
+          </div>
         </div>
 
-        <div class="conversion-container">
-          <div class="unit-selector from-unit">
-            <label for="fromUnit" class="rosso">Da:</label>
-            <select id="fromUnit">
-              <option value="celsius">Celsius (°C)</option>
-              <option value="fahrenheit">Fahrenheit (°F)</option>
-              <option value="kelvin">Kelvin (K)</option>
-            </select>
+        <form id="temperatureForm">
+          <div class="input-group">
+            <label for="temperatureInput">Inserisci la temperatura:</label>
+            <input
+              type="number"
+              id="temperatureInput"
+              placeholder="Inserisci Temperatura"
+              required
+            />
           </div>
 
-          <div class="swap-button" id="swapUnits">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M7 16V4m0 0L3 8m4-4l4 4M17 8v12m0 0l4-4m-4 4l-4-4" />
+          <div class="conversion-container">
+            <div class="unit-selector from-unit">
+              <label for="fromUnit" class="rosso">Da:</label>
+              <select id="fromUnit">
+                <option value="celsius">Celsius (°C)</option>
+                <option value="fahrenheit">Fahrenheit (°F)</option>
+                <option value="kelvin">Kelvin (K)</option>
+              </select>
+            </div>
+
+            <div class="swap-button" id="swapUnits">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M7 16V4m0 0L3 8m4-4l4 4M17 8v12m0 0l4-4m-4 4l-4-4" />
+              </svg>
+            </div>
+
+            <div class="unit-selector to-unit">
+              <label for="toUnit" class="blu">A:</label>
+              <select id="toUnit">
+                <option value="fahrenheit">Fahrenheit (°F)</option>
+                <option value="celsius">Celsius (°C)</option>
+                <option value="kelvin">Kelvin (K)</option>
+              </select>
+            </div>
+          </div>
+
+          <button type="submit" class="convert-button">
+            <span>Converti</span>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"
+              />
             </svg>
-          </div>
+          </button>
+        </form>
 
-          <div class="unit-selector to-unit">
-            <label for="toUnit" class="blu">A:</label>
-            <select id="toUnit">
-              <option value="fahrenheit">Fahrenheit (°F)</option>
-              <option value="celsius">Celsius (°C)</option>
-              <option value="kelvin">Kelvin (K)</option>
-            </select>
-          </div>
+        <div class="result-container">
+          <div id="result" class="result"></div>
         </div>
 
-        <button type="submit" class="convert-button">
-          <span>Converti</span>
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3" />
-          </svg>
-        </button>
-      </form>
-
-      <div class="result-container">
-        <div id="result" class="result"></div>
-      </div>
-
-      <div class="history-container">
-        <h3>Conversioni recenti</h3>
-        <ul id="history-list" class="history-list"></ul>
+        <div class="history-container">
+          <h3>Conversioni recenti</h3>
+          <ul id="history-list" class="history-list"></ul>
+        </div>
       </div>
     </div>
-  </div>
-</body>
-
+  </body>
 </html>

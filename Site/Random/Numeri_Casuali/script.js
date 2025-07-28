@@ -130,7 +130,7 @@ function updateGenerateButtonState() {
     showToast(
       "Attenzione",
       "Tutti i numeri nell'intervallo sono stati generati",
-      "warning"
+      "warning",
     );
   } else {
     generateButton.disabled = false;
@@ -171,7 +171,7 @@ function generateRandomNumber() {
     showToast(
       "Attenzione",
       "Tutti i numeri nell'intervallo sono stati generati",
-      "warning"
+      "warning",
     );
     return;
   }
@@ -404,7 +404,7 @@ function formatDate(date) {
 function saveHistoryToStorage() {
   localStorage.setItem(
     "randomNumberGenerator_history",
-    JSON.stringify(history)
+    JSON.stringify(history),
   );
 }
 
@@ -502,10 +502,13 @@ function createConfetti() {
     confettiContainer.appendChild(confetti);
 
     // Rimuovi il confetto dopo l'animazione
-    setTimeout(() => {
-      if (confettiContainer.contains(confetti)) {
-        confettiContainer.removeChild(confetti);
-      }
-    }, (duration + delay) * 1000);
+    setTimeout(
+      () => {
+        if (confettiContainer.contains(confetti)) {
+          confettiContainer.removeChild(confetti);
+        }
+      },
+      (duration + delay) * 1000,
+    );
   }
 }

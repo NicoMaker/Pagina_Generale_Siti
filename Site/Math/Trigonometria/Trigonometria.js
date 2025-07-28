@@ -97,8 +97,8 @@ function displayResult(info, gradi, result) {
       <div class="trig-result">
         <div class="trig-name">${name}</div>
         <div class="trig-value ${isError ? "error" : ""}">${
-      isError ? "Non definito" : formatNumber(value)
-    }</div>
+          isError ? "Non definito" : formatNumber(value)
+        }</div>
       </div>
     `;
   }
@@ -152,5 +152,5 @@ document.head.insertAdjacentHTML(
   }
 }
 </style>
-`
+`,
 );

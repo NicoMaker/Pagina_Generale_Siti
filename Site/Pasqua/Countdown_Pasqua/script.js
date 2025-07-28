@@ -117,7 +117,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // If it's Pasquetta day, show celebration message with "Buona Pasquetta"
   else if (isPasquettaDay) {
     const celebrationTitle = document.getElementById(
-      "pasquetta-celebration-title"
+      "pasquetta-celebration-title",
     );
     celebrationTitle.textContent = "Buona Pasquetta!";
     celebrationTitle.classList.add("buona-pasquetta");
@@ -150,7 +150,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   const pasquettaCelebrateBtn = document.getElementById(
-    "pasquetta-celebrate-btn"
+    "pasquetta-celebrate-btn",
   );
   if (pasquettaCelebrateBtn) {
     pasquettaCelebrateBtn.addEventListener("click", celebrate);
@@ -173,7 +173,7 @@ document.addEventListener("DOMContentLoaded", () => {
         "days",
         "hours",
         "minutes",
-        "seconds"
+        "seconds",
       );
     } else if (!isEasterDay && !isPasquettaDay) {
       document.getElementById("days").textContent = "00";
@@ -193,7 +193,7 @@ document.addEventListener("DOMContentLoaded", () => {
         "pasquetta-days",
         "pasquetta-hours",
         "pasquetta-minutes",
-        "pasquetta-seconds"
+        "pasquetta-seconds",
       );
     } else if (!isPasquettaDay) {
       document.getElementById("pasquetta-days").textContent = "00";
@@ -232,12 +232,12 @@ document.addEventListener("DOMContentLoaded", () => {
     daysId,
     hoursId,
     minutesId,
-    secondsId
+    secondsId,
   ) {
     // Calculate time units
     const days = Math.floor(distance / (1000 * 60 * 60 * 24));
     const hours = Math.floor(
-      (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+      (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
     );
     const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
     const seconds = Math.floor((distance % (1000 * 60)) / 1000);
@@ -363,7 +363,7 @@ document.head.insertAdjacentHTML(
       }
     }
   </style>
-`
+`,
 );
 
 // Main function to check prime numbers
@@ -632,7 +632,7 @@ document.head.insertAdjacentHTML(
   margin-bottom: 15px;
 }
 </style>
-`
+`,
 );
 
 document.head.insertAdjacentHTML(
@@ -658,5 +658,5 @@ document.head.insertAdjacentHTML(
       }
     }
   </style>
-`
+`,
 );

@@ -126,7 +126,7 @@ function updateResults(numeriParziali, sommaTotale) {
 
   setTimeout(() => {
     numeriParzialiElement.textContent = `Numeri parziali: ${numeriParziali.join(
-      ", "
+      ", ",
     )}`;
     sommaTotaleElement.textContent = `Somma totale: ${sommaTotale}`;
 
@@ -224,7 +224,7 @@ function updateChart(conteggioOccorrenze, n) {
 
   for (let i = 0; i < n; i++) {
     extendedBackgroundColors.push(
-      backgroundColors[i % backgroundColors.length]
+      backgroundColors[i % backgroundColors.length],
     );
     extendedBorderColors.push(borderColors[i % borderColors.length]);
   }

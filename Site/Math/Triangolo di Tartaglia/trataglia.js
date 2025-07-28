@@ -266,5 +266,5 @@ document.head.insertAdjacentHTML(
   background-color: rgba(212, 175, 55, 0.2);
 }
 </style>
-`
+`,
 );

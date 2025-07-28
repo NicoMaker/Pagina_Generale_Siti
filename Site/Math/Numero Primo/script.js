@@ -77,7 +77,7 @@ function checkPrime() {
       resultBadge.className = "";
       resultBadge.classList.add("prime");
       result.textContent = `${formatNumber(
-        number
+        number,
       )} è un numero primo! È divisibile solo per 1 e per se stesso.`;
     } else {
       resultBadge.textContent = "COMPOSTO";

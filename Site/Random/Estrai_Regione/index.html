@@ -1,96 +1,98 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Esploratore Regioni Italiane</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="icon"
+      href="https://citynews-chietitoday.stgy.ovh/~media/original-hi/6889117455225/riduzione-delle-regioni-mappa-proposta-pd-2-3.jpg"
+      type="image/jpg"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Esploratore Regioni Italiane</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="icon"
-    href="https://citynews-chietitoday.stgy.ovh/~media/original-hi/6889117455225/riduzione-delle-regioni-mappa-proposta-pd-2-3.jpg"
-    type="image/jpg">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap"
-    rel="stylesheet">
-</head>
+  <body>
+    <div class="app-container">
+      <header>
+        <div class="logo">
+          <img
+            src="https://citynews-chietitoday.stgy.ovh/~media/original-hi/6889117455225/riduzione-delle-regioni-mappa-proposta-pd-2-3.jpg"
+            alt="Logo Italia"
+          />
+        </div>
+        <h1>Esploratore Regioni Italiane</h1>
+        <div class="italian-flag-gradient"></div>
+        <p class="subtitle">Scopri le meraviglie delle regioni d'Italia</p>
+      </header>
 
-<body>
-  <div class="app-container">
-    <header>
-      <div class="logo">
-        <img
-          src="https://citynews-chietitoday.stgy.ovh/~media/original-hi/6889117455225/riduzione-delle-regioni-mappa-proposta-pd-2-3.jpg"
-          alt="Logo Italia">
+      <div class="controls">
+        <button id="generateButton" class="generate-btn">
+          <span class="btn-text">Estrai Regione</span>
+          <span class="btn-icon">🇮🇹</span>
+        </button>
       </div>
-      <h1>Esploratore Regioni Italiane</h1>
-      <div class="italian-flag-gradient"></div>
-      <p class="subtitle">Scopri le meraviglie delle regioni d'Italia</p>
-    </header>
 
-    <div class="controls">
-      <button id="generateButton" class="generate-btn">
-        <span class="btn-text">Estrai Regione</span>
-        <span class="btn-icon">🇮🇹</span>
-      </button>
+      <main>
+        <div id="output" class="region-card">
+          <div class="placeholder-content">
+            <div class="placeholder-icon">🇮🇹</div>
+            <p>Clicca il pulsante per estrarre una regione italiana</p>
+          </div>
+        </div>
+      </main>
+
+      <div class="stats-container">
+        <h2>Statistiche Nazionali</h2>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon">👥</div>
+            <div class="stat-content">
+              <h3>Popolazione</h3>
+              <p id="total-population">Caricamento...</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">📏</div>
+            <div class="stat-content">
+              <h3>Superficie</h3>
+              <p id="total-area">Caricamento...</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">🏙️</div>
+            <div class="stat-content">
+              <h3>Regioni</h3>
+              <p id="total-regions">Caricamento...</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">🏛️</div>
+            <div class="stat-content">
+              <h3>Province</h3>
+              <p id="total-provinces">Caricamento...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="history-container">
+        <h2>Regioni Estratte</h2>
+        <div id="history" class="history-grid"></div>
+      </div>
+
+      <footer>
+        <p>Esploratore Regioni Italiane &copy; 2023</p>
+        <p class="credits">Dati aggiornati al 2023</p>
+      </footer>
     </div>
 
-    <main>
-      <div id="output" class="region-card">
-        <div class="placeholder-content">
-          <div class="placeholder-icon">🇮🇹</div>
-          <p>Clicca il pulsante per estrarre una regione italiana</p>
-        </div>
-      </div>
-    </main>
-
-    <div class="stats-container">
-      <h2>Statistiche Nazionali</h2>
-      <div class="stats-grid">
-        <div class="stat-card">
-          <div class="stat-icon">👥</div>
-          <div class="stat-content">
-            <h3>Popolazione</h3>
-            <p id="total-population">Caricamento...</p>
-          </div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-icon">📏</div>
-          <div class="stat-content">
-            <h3>Superficie</h3>
-            <p id="total-area">Caricamento...</p>
-          </div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-icon">🏙️</div>
-          <div class="stat-content">
-            <h3>Regioni</h3>
-            <p id="total-regions">Caricamento...</p>
-          </div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-icon">🏛️</div>
-          <div class="stat-content">
-            <h3>Province</h3>
-            <p id="total-provinces">Caricamento...</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="history-container">
-      <h2>Regioni Estratte</h2>
-      <div id="history" class="history-grid"></div>
-    </div>
-
-    <footer>
-      <p>Esploratore Regioni Italiane &copy; 2023</p>
-      <p class="credits">Dati aggiornati al 2023</p>
-    </footer>
-  </div>
-
-  <script src="script.js"></script>
-</body>
-
+    <script src="script.js"></script>
+  </body>
 </html>

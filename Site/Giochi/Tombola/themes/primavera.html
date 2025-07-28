@@ -1,59 +1,71 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tombola di Pasqua</title>
+    <link rel="stylesheet" href="../css/main.css" />
+    <link rel="stylesheet" href="../css/themes.css" />
+    <link rel="icon" href="../assets/images/Conigletto.jpg" type="image/png" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <script src="../js/game.js" defer></script>
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tombola di Pasqua</title>
-  <link rel="stylesheet" href="../css/main.css" />
-  <link rel="stylesheet" href="../css/themes.css" />
-  <link rel="icon" href="../assets/images/Conigletto.jpg" type="image/png" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-  <script src="../js/game.js" defer></script>
-</head>
+  <body class="game-page spring-theme">
+    <div class="game-container">
+      <header class="game-header">
+        <a href="../index.html" class="back-btn"
+          ><i class="fas fa-arrow-left"></i> Indietro</a
+        >
+        <h1 class="game-title">Tombola di Pasqua</h1>
+      </header>
 
-<body class="game-page spring-theme">
-  <div class="game-container">
-    <header class="game-header">
-      <a href="../index.html" class="back-btn"><i class="fas fa-arrow-left"></i> Indietro</a>
-      <h1 class="game-title">Tombola di Pasqua</h1>
-    </header>
-
-    <div class="game-controls">
-      <button id="extractBtn" class="game-btn primary">
-        <i class="fas fa-random"></i> <span>Estrai Numero</span>
-      </button>
-      <button id="resetBtn" class="game-btn secondary">
-        <i class="fas fa-redo"></i> <span>Resetta Tabellone</span>
-      </button>
-    </div>
-
-    <div class="auto-controls">
-      <div class="interval-control">
-        <label for="intervalInput">Intervallo (secondi):</label>
-        <input type="number" id="intervalInput" min="1" max="60" value="3" aria-label="Intervallo in secondi">
+      <div class="game-controls">
+        <button id="extractBtn" class="game-btn primary">
+          <i class="fas fa-random"></i> <span>Estrai Numero</span>
+        </button>
+        <button id="resetBtn" class="game-btn secondary">
+          <i class="fas fa-redo"></i> <span>Resetta Tabellone</span>
+        </button>
       </div>
-      <button id="autoBtn" class="game-btn success"><i class="fas fa-play"></i> <span>Avvia Automatico</span></button>
-    </div>
 
-    <div class="current-number-display">
-      <div class="number-circle" id="currentNumber">
-        <span>?</span>
+      <div class="auto-controls">
+        <div class="interval-control">
+          <label for="intervalInput">Intervallo (secondi):</label>
+          <input
+            type="number"
+            id="intervalInput"
+            min="1"
+            max="60"
+            value="3"
+            aria-label="Intervallo in secondi"
+          />
+        </div>
+        <button id="autoBtn" class="game-btn success">
+          <i class="fas fa-play"></i> <span>Avvia Automatico</span>
+        </button>
       </div>
-      <p>Ultimo numero estratto</p>
+
+      <div class="current-number-display">
+        <div class="number-circle" id="currentNumber">
+          <span>?</span>
+        </div>
+        <p>Ultimo numero estratto</p>
+      </div>
+
+      <div class="extracted-numbers">
+        <h3>Numeri Estratti (0/90)</h3>
+        <div id="extractedNumbersList" class="numbers-list"></div>
+      </div>
+
+      <div id="tombola-container" class="tombola-board">
+        <!-- La tombola verrà generata qui -->
+      </div>
     </div>
 
-    <div class="extracted-numbers">
-      <h3>Numeri Estratti (0/90)</h3>
-      <div id="extractedNumbersList" class="numbers-list"></div>
-    </div>
-
-    <div id="tombola-container" class="tombola-board">
-      <!-- La tombola verrà generata qui -->
-    </div>
-  </div>
-
-  <div class="confetti-container" id="confettiContainer"></div>
-</body>
-
+    <div class="confetti-container" id="confettiContainer"></div>
+  </body>
 </html>

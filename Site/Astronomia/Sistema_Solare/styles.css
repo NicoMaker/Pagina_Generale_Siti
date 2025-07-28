@@ -46,21 +46,64 @@ body {
   width: 1px;
   height: 1px;
   background: transparent;
-  box-shadow: 1907px 1575px #fff, 893px 268px #fff, 1819px 666px #fff,
-    366px 1985px #fff, 1736px 1062px #fff, 1124px 45px #fff, 905px 1674px #fff,
-    1570px 711px #fff, 255px 1747px #fff, 147px 1032px #fff, 865px 1813px #fff,
-    1721px 1461px #fff, 202px 724px #fff, 1860px 812px #fff, 634px 1410px #fff,
-    927px 1264px #fff, 1648px 620px #fff, 1915px 1309px #fff, 731px 778px #fff,
-    91px 1185px #fff, 829px 1003px #fff, 174px 1784px #fff, 1094px 1874px #fff,
-    1464px 484px #fff, 1639px 1717px #fff, 959px 573px #fff, 1686px 1287px #fff,
-    906px 356px #fff, 970px 499px #fff, 626px 890px #fff, 1344px 1070px #fff,
-    1351px 544px #fff, 708px 68px #fff, 1870px 130px #fff, 556px 1270px #fff,
-    1432px 618px #fff, 769px 673px #fff, 1289px 1410px #fff, 1499px 1969px #fff,
-    749px 1163px #fff, 1198px 198px #fff, 399px 133px #fff, 1856px 1280px #fff,
-    904px 194px #fff, 973px 1107px #fff, 1371px 1785px #fff, 989px 1835px #fff,
-    1043px 1517px #fff, 787px 916px #fff, 1635px 1155px #fff, 752px 524px #fff,
-    1926px 1279px #fff, 487px 1378px #fff, 1198px 1731px #fff, 1658px 108px #fff,
-    1324px 1759px #fff, 1142px 1097px #fff;
+  box-shadow:
+    1907px 1575px #fff,
+    893px 268px #fff,
+    1819px 666px #fff,
+    366px 1985px #fff,
+    1736px 1062px #fff,
+    1124px 45px #fff,
+    905px 1674px #fff,
+    1570px 711px #fff,
+    255px 1747px #fff,
+    147px 1032px #fff,
+    865px 1813px #fff,
+    1721px 1461px #fff,
+    202px 724px #fff,
+    1860px 812px #fff,
+    634px 1410px #fff,
+    927px 1264px #fff,
+    1648px 620px #fff,
+    1915px 1309px #fff,
+    731px 778px #fff,
+    91px 1185px #fff,
+    829px 1003px #fff,
+    174px 1784px #fff,
+    1094px 1874px #fff,
+    1464px 484px #fff,
+    1639px 1717px #fff,
+    959px 573px #fff,
+    1686px 1287px #fff,
+    906px 356px #fff,
+    970px 499px #fff,
+    626px 890px #fff,
+    1344px 1070px #fff,
+    1351px 544px #fff,
+    708px 68px #fff,
+    1870px 130px #fff,
+    556px 1270px #fff,
+    1432px 618px #fff,
+    769px 673px #fff,
+    1289px 1410px #fff,
+    1499px 1969px #fff,
+    749px 1163px #fff,
+    1198px 198px #fff,
+    399px 133px #fff,
+    1856px 1280px #fff,
+    904px 194px #fff,
+    973px 1107px #fff,
+    1371px 1785px #fff,
+    989px 1835px #fff,
+    1043px 1517px #fff,
+    787px 916px #fff,
+    1635px 1155px #fff,
+    752px 524px #fff,
+    1926px 1279px #fff,
+    487px 1378px #fff,
+    1198px 1731px #fff,
+    1658px 108px #fff,
+    1324px 1759px #fff,
+    1142px 1097px #fff;
   animation: animateStars 50s linear infinite;
 }
 
@@ -68,19 +111,47 @@ body {
   width: 2px;
   height: 2px;
   background: transparent;
-  box-shadow: 1439px 989px #fff, 1911px 1428px #fff, 1558px 1220px #fff,
-    1627px 1492px #fff, 1535px 218px #fff, 1732px 1617px #fff, 1690px 521px #fff,
-    1801px 394px #fff, 1468px 1967px #fff, 1553px 1075px #fff,
-    1574px 1008px #fff, 1871px 306px #fff, 1262px 1034px #fff,
-    1448px 1605px #fff, 1384px 1498px #fff, 1938px 1156px #fff,
-    1796px 1428px #fff, 1896px 1810px #fff, 1481px 1670px #fff,
-    1446px 1918px #fff, 1929px 1810px #fff, 1782px 1811px #fff,
-    1462px 1751px #fff, 1368px 1960px #fff, 1799px 1534px #fff,
-    1571px 1831px #fff, 1077px 1775px #fff, 1940px 1333px #fff,
-    1923px 1500px #fff, 1621px 1442px #fff, 1928px 1985px #fff,
-    1498px 1771px #fff, 1292px 1508px #fff, 1423px 1107px #fff,
-    1131px 1442px #fff, 1565px 1590px #fff, 1345px 1584px #fff,
-    1520px 1896px #fff, 1335px 1658px #fff, 1372px 1039px #fff;
+  box-shadow:
+    1439px 989px #fff,
+    1911px 1428px #fff,
+    1558px 1220px #fff,
+    1627px 1492px #fff,
+    1535px 218px #fff,
+    1732px 1617px #fff,
+    1690px 521px #fff,
+    1801px 394px #fff,
+    1468px 1967px #fff,
+    1553px 1075px #fff,
+    1574px 1008px #fff,
+    1871px 306px #fff,
+    1262px 1034px #fff,
+    1448px 1605px #fff,
+    1384px 1498px #fff,
+    1938px 1156px #fff,
+    1796px 1428px #fff,
+    1896px 1810px #fff,
+    1481px 1670px #fff,
+    1446px 1918px #fff,
+    1929px 1810px #fff,
+    1782px 1811px #fff,
+    1462px 1751px #fff,
+    1368px 1960px #fff,
+    1799px 1534px #fff,
+    1571px 1831px #fff,
+    1077px 1775px #fff,
+    1940px 1333px #fff,
+    1923px 1500px #fff,
+    1621px 1442px #fff,
+    1928px 1985px #fff,
+    1498px 1771px #fff,
+    1292px 1508px #fff,
+    1423px 1107px #fff,
+    1131px 1442px #fff,
+    1565px 1590px #fff,
+    1345px 1584px #fff,
+    1520px 1896px #fff,
+    1335px 1658px #fff,
+    1372px 1039px #fff;
   animation: animateStars 100s linear infinite;
 }
 
@@ -88,12 +159,27 @@ body {
   width: 3px;
   height: 3px;
   background: transparent;
-  box-shadow: 222px 946px #fff, 408px 926px #fff, 1608px 224px #fff,
-    1045px 1553px #fff, 1641px 1064px #fff, 1460px 1910px #fff,
-    1956px 322px #fff, 1270px 801px #fff, 1183px 1145px #fff, 1741px 1352px #fff,
-    1663px 1195px #fff, 1643px 1635px #fff, 1588px 1375px #fff,
-    1330px 1968px #fff, 1863px 456px #fff, 1943px 950px #fff, 1639px 1862px #fff,
-    1546px 1238px #fff, 1133px 1943px #fff, 1259px 1195px #fff;
+  box-shadow:
+    222px 946px #fff,
+    408px 926px #fff,
+    1608px 224px #fff,
+    1045px 1553px #fff,
+    1641px 1064px #fff,
+    1460px 1910px #fff,
+    1956px 322px #fff,
+    1270px 801px #fff,
+    1183px 1145px #fff,
+    1741px 1352px #fff,
+    1663px 1195px #fff,
+    1643px 1635px #fff,
+    1588px 1375px #fff,
+    1330px 1968px #fff,
+    1863px 456px #fff,
+    1943px 950px #fff,
+    1639px 1862px #fff,
+    1546px 1238px #fff,
+    1133px 1943px #fff,
+    1259px 1195px #fff;
   animation: animateStars 150s linear infinite;
 }
 
@@ -562,7 +648,9 @@ main {
   background: rgba(255, 255, 255, 0.05);
   padding: 15px;
   border-radius: 10px;
-  transition: transform 0.3s ease, background 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    background 0.3s ease;
 }
 
 .fact:hover {
@@ -642,7 +730,9 @@ main {
   background: rgba(255, 255, 255, 0.05);
   border-radius: 10px;
   padding: 15px;
-  transition: transform 0.3s ease, background 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    background 0.3s ease;
 }
 
 .satellite-item:hover {

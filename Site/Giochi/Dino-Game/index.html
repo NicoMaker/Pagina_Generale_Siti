@@ -1,121 +1,204 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="it">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
     <title>Indovina il Dinosauro</title>
-    <link rel="icon" href="https://v0.blob.com/orario.jpg-XSpUx2YcNQYMKnSox3FGgZCMWLrzk9.png" type="image/png">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Fredoka:wght@400;500;600;700&display=swap"
-        rel="stylesheet">
+      rel="icon"
+      href="https://v0.blob.com/orario.jpg-XSpUx2YcNQYMKnSox3FGgZCMWLrzk9.png"
+      type="image/png"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Fredoka:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
     <script src="script.js" defer></script>
 
-    <link rel="icon" href="Img/ico.jpg" type="image/jpg">
-</head>
+    <link rel="icon" href="Img/ico.jpg" type="image/jpg" />
+  </head>
 
-<body>
+  <body>
     <div class="app-container">
-        <div class="background-shapes">
-            <div class="shape shape-1"></div>
-            <div class="shape shape-2"></div>
-            <div class="shape shape-3"></div>
+      <div class="background-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+      </div>
+
+      <header>
+        <div class="logo">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="32"
+            height="32"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path
+              d="M12 22c-4.2 0-8-3.22-8-8.2 0-4.98 3.8-9 8-9s8 4.02 8 9c0 4.98-3.8 8.2-8 8.2z"
+            ></path>
+            <path d="M12 22V8"></path>
+            <path d="m17 13-5-1-5 1"></path>
+            <path d="M8 22c0-3.5 2-6 4-6s4 2.5 4 6"></path>
+          </svg>
+          <h1>Indovina il Dinosauro</h1>
+        </div>
+        <p class="subtitle">
+          Metti alla prova le tue conoscenze sui dinosauri!
+        </p>
+      </header>
+
+      <main>
+        <div class="card hint-card">
+          <div class="card-header">
+            <h2>Indizio</h2>
+            <div class="hint-counter">
+              <span id="currentHintIndex">1</span>/<span id="totalHints"
+                >3</span
+              >
+            </div>
+          </div>
+          <div class="hint-content">
+            <p id="hint" class="hint-text"></p>
+            <button
+              id="nextHintBtn"
+              class="hint-button"
+              onclick="mostraProssimoIndizio()"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+              Prossimo indizio
+            </button>
+          </div>
         </div>
 
-        <header>
-            <div class="logo">
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M12 22c-4.2 0-8-3.22-8-8.2 0-4.98 3.8-9 8-9s8 4.02 8 9c0 4.98-3.8 8.2-8 8.2z"></path>
-                    <path d="M12 22V8"></path>
-                    <path d="m17 13-5-1-5 1"></path>
-                    <path d="M8 22c0-3.5 2-6 4-6s4 2.5 4 6"></path>
-                </svg>
-                <h1>Indovina il Dinosauro</h1>
-            </div>
-            <p class="subtitle">Metti alla prova le tue conoscenze sui dinosauri!</p>
-        </header>
+        <div class="selector-container">
+          <h2>Scegli un dinosauro</h2>
+          <div class="search-container">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input
+              type="text"
+              id="searchInput"
+              placeholder="Cerca un dinosauro..."
+              oninput="filtraDinosauri()"
+            />
+          </div>
 
-        <main>
-            <div class="card hint-card">
-                <div class="card-header">
-                    <h2>Indizio</h2>
-                    <div class="hint-counter">
-                        <span id="currentHintIndex">1</span>/<span id="totalHints">3</span>
-                    </div>
-                </div>
-                <div class="hint-content">
-                    <p id="hint" class="hint-text"></p>
-                    <button id="nextHintBtn" class="hint-button" onclick="mostraProssimoIndizio()">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="9 18 15 12 9 6"></polyline>
-                        </svg>
-                        Prossimo indizio
-                    </button>
-                </div>
-            </div>
+          <div class="dino-grid" id="dinoGrid">
+            <!-- Le card dei dinosauri verranno generate dinamicamente qui -->
+          </div>
 
-            <div class="selector-container">
-                <h2>Scegli un dinosauro</h2>
-                <div class="search-container">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="11" cy="11" r="8"></circle>
-                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                    </svg>
-                    <input type="text" id="searchInput" placeholder="Cerca un dinosauro..." oninput="filtraDinosauri()">
-                </div>
+          <div class="classic-selector">
+            <label for="dinosaurSelector">Selettore classico:</label>
+            <select
+              id="dinosaurSelector"
+              onchange="selezionaDinosauro()"
+            ></select>
+          </div>
+        </div>
 
-                <div class="dino-grid" id="dinoGrid">
-                    <!-- Le card dei dinosauri verranno generate dinamicamente qui -->
-                </div>
+        <div class="actions">
+          <button
+            id="checkBtn"
+            class="primary-button"
+            onclick="controllaIndovinello()"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            Controlla
+          </button>
+          <button
+            id="nextBtn"
+            class="secondary-button"
+            onclick="nuovoDinosauro()"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+            Prossimo dinosauro
+          </button>
+        </div>
 
-                <div class="classic-selector">
-                    <label for="dinosaurSelector">Selettore classico:</label>
-                    <select id="dinosaurSelector" onchange="selezionaDinosauro()"></select>
-                </div>
-            </div>
+        <div id="risultatoContainer" class="risultato-container hidden">
+          <div class="risultato-content">
+            <div id="risultato"></div>
+            <p id="risultatoTesto" class="risultato-testo"></p>
+            <button class="close-button" onclick="chiudiRisultato()">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </main>
 
-            <div class="actions">
-                <button id="checkBtn" class="primary-button" onclick="controllaIndovinello()">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="20 6 9 17 4 12"></polyline>
-                    </svg>
-                    Controlla
-                </button>
-                <button id="nextBtn" class="secondary-button" onclick="nuovoDinosauro()">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="9 18 15 12 9 6"></polyline>
-                    </svg>
-                    Prossimo dinosauro
-                </button>
-            </div>
-
-            <div id="risultatoContainer" class="risultato-container hidden">
-                <div class="risultato-content">
-                    <div id="risultato"></div>
-                    <p id="risultatoTesto" class="risultato-testo"></p>
-                    <button class="close-button" onclick="chiudiRisultato()">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="18" y1="6" x2="6" y2="18"></line>
-                            <line x1="6" y1="6" x2="18" y2="18"></line>
-                        </svg>
-                    </button>
-                </div>
-            </div>
-        </main>
-
-        <footer>
-            <p>© 2025 Indovina il Dinosauro | Tutti i diritti riservati</p>
-        </footer>
+      <footer>
+        <p>© 2025 Indovina il Dinosauro | Tutti i diritti riservati</p>
+      </footer>
     </div>
-</body>
-
+  </body>
 </html>

@@ -109,7 +109,7 @@ function resetStats() {
   showResult(
     false,
     ["0", "0", "0", "0"],
-    "Statistiche resettate con successo!"
+    "Statistiche resettate con successo!",
   );
 }
 
@@ -329,8 +329,8 @@ function createConfetti() {
       @keyframes fall {
         to {
           transform: translateY(${window.innerHeight}px) rotate(${
-      Math.random() * 360 + 720
-    }deg);
+            Math.random() * 360 + 720
+          }deg);
           opacity: 0;
         }
       }

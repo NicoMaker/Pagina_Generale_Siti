@@ -1152,7 +1152,9 @@ textarea:focus {
   width: 100%;
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.5s ease, visibility 0.5s ease;
+  transition:
+    opacity 0.5s ease,
+    visibility 0.5s ease;
   text-align: center;
 }
 
@@ -1479,8 +1481,7 @@ footer {
   animation: highlight 1.5s ease;
 }
 
-.main-nav ul li a
-{
+.main-nav ul li a {
   color: white;
 }
 
@@ -1488,6 +1489,6 @@ footer p {
   color: white;
 }
 
-svg{
+svg {
   color: white;
 }

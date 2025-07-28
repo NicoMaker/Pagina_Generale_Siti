@@ -328,7 +328,9 @@ label i {
   font-size: 1.1rem;
   color: var(--text-light);
   margin-bottom: 10px;
-  transition: opacity 0.3s ease, color 0.3s ease;
+  transition:
+    opacity 0.3s ease,
+    color 0.3s ease;
 }
 
 .total-sum {

@@ -1,14 +1,17 @@
-document.getElementById('divisionForm').addEventListener('submit', function(event) {
+document
+  .getElementById("divisionForm")
+  .addEventListener("submit", function (event) {
     event.preventDefault();
-    const dividendo = parseInt(document.getElementById('dividendo').value, 10);
-    const divisore = parseInt(document.getElementById('divisore').value, 10);
-    const resultDiv = document.getElementById('result');
-    const stepsDiv = document.getElementById('steps');
-    stepsDiv.innerHTML = '';
+    const dividendo = parseInt(document.getElementById("dividendo").value, 10);
+    const divisore = parseInt(document.getElementById("divisore").value, 10);
+    const resultDiv = document.getElementById("result");
+    const stepsDiv = document.getElementById("steps");
+    stepsDiv.innerHTML = "";
 
     if (isNaN(dividendo) || isNaN(divisore) || divisore === 0) {
-        resultDiv.textContent = 'Inserisci numeri validi e un divisore diverso da zero!';
-        return;
+      resultDiv.textContent =
+        "Inserisci numeri validi e un divisore diverso da zero!";
+      return;
     }
 
     const quoziente = Math.floor(dividendo / divisore);
@@ -25,4 +28,4 @@ document.getElementById('divisionForm').addEventListener('submit', function(even
     stepsHtml += `<li>Quindi il <b>resto</b> è ${resto}.</li>`;
     stepsHtml += `</ol>`;
     stepsDiv.innerHTML = stepsHtml;
-}); 
+  });

@@ -41,7 +41,7 @@ class Calculator {
       this.updateDisplay();
       return;
     }
-  
+
     // If waiting for root or log value, complete the operation first
     if (this.waitingForRootValue && this.currentNumber !== "") {
       this.completeCustomRoot();
@@ -49,20 +49,25 @@ class Calculator {
     if (this.waitingForLogValue && this.currentNumber !== "") {
       this.completeCustomLog();
     }
-  
-    if (this.currentNumber !== "" || operator === "(" || operator === "Math.PI") {
+
+    if (
+      this.currentNumber !== "" ||
+      operator === "(" ||
+      operator === "Math.PI"
+    ) {
       if (this.currentNumber !== "") {
         this.expression += this.currentNumber;
         this.displayExpression += this.currentNumber;
         this.currentNumber = "";
       }
-  
+
       if (operator === "!") {
         this.expression += operator;
         this.displayExpression += "!";
       } else if (operator.includes("Math.")) {
         this.expression += operator;
-        this.displayExpression += operator === "Math.PI" ? "π" : operator.replace("Math.", "");
+        this.displayExpression +=
+          operator === "Math.PI" ? "π" : operator.replace("Math.", "");
       } else {
         this.expression += operator;
         this.displayExpression += operator;
@@ -70,7 +75,6 @@ class Calculator {
     }
     this.updateDisplay();
   }
-  
 
   appendFunction(func) {
     // Se stiamo aspettando un valore per la radice, completa l'operazione di radice
@@ -291,7 +295,7 @@ class Calculator {
         this.expression.lastIndexOf("*"),
         this.expression.lastIndexOf("/"),
         this.expression.lastIndexOf("("),
-        this.expression.lastIndexOf(")")
+        this.expression.lastIndexOf(")"),
       );
 
       if (lastOperatorIndex !== -1) {
@@ -382,7 +386,6 @@ class Calculator {
     this.resultElement.value = this.currentNumber || this.lastResult || "0";
     this.operationElement.value = this.displayExpression;
   }
-  
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -390,6 +393,6 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("result"),
     document.getElementById("operation"),
     document.getElementById("toggleRadians"),
-    document.getElementById("backspace")
+    document.getElementById("backspace"),
   );
 });

@@ -93,27 +93,27 @@ class Calculator {
       let expr = this.expression
         .replace(
           /Math\.sin\(/g,
-          `Math.sin(${this.isRadians ? "" : "Math.PI/180*"} `
+          `Math.sin(${this.isRadians ? "" : "Math.PI/180*"} `,
         )
         .replace(
           /Math\.cos\(/g,
-          `Math.cos(${this.isRadians ? "" : "Math.PI/180*"} `
+          `Math.cos(${this.isRadians ? "" : "Math.PI/180*"} `,
         )
         .replace(
           /Math\.tan\(/g,
-          `Math.tan(${this.isRadians ? "" : "Math.PI/180*"} `
+          `Math.tan(${this.isRadians ? "" : "Math.PI/180*"} `,
         )
         .replace(
           /Math\.asin\(/g,
-          `Math.asin(${this.isRadians ? "" : "Math.PI/180*"} `
+          `Math.asin(${this.isRadians ? "" : "Math.PI/180*"} `,
         )
         .replace(
           /Math\.acos\(/g,
-          `Math.acos(${this.isRadians ? "" : "Math.PI/180*"} `
+          `Math.acos(${this.isRadians ? "" : "Math.PI/180*"} `,
         )
         .replace(
           /Math\.atan\(/g,
-          `Math.atan(${this.isRadians ? "" : "Math.PI/180*"} `
+          `Math.atan(${this.isRadians ? "" : "Math.PI/180*"} `,
         )
         .replace(/Math\.log10\(/g, `Math.log10(`)
         .replace(/Math\.log\(/g, `Math.log(`)
@@ -123,15 +123,15 @@ class Calculator {
         // Supporto per le radici
         .replace(
           /sqrt\((\d+(\.\d+)?)\)/g,
-          (match, n) => `${this.sqrt(Number(n))}`
+          (match, n) => `${this.sqrt(Number(n))}`,
         )
         .replace(
           /cbrt\((\d+(\.\d+)?)\)/g,
-          (match, n) => `${this.cbrt(Number(n))}`
+          (match, n) => `${this.cbrt(Number(n))}`,
         )
         .replace(
           /root\((\d+(\.\d+)?),(\d+(\.\d+)?)\)/g,
-          (match, base, _, n) => `${this.root(Number(base), Number(n))}`
+          (match, base, _, n) => `${this.root(Number(base), Number(n))}`,
         );
 
       if (this.expression.includes("log")) {
@@ -163,6 +163,6 @@ document.addEventListener("DOMContentLoaded", () => {
   window.calculator = new Calculator(
     document.getElementById("result"),
     document.getElementById("toggleRadians"),
-    document.getElementById("backspace")
+    document.getElementById("backspace"),
   );
 });

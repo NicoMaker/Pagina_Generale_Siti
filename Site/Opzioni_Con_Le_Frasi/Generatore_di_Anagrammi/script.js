@@ -112,7 +112,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (word.length > 15) {
-      showError("Per prestazioni ottimali, usa parole con massimo 15 caratteri");
+      showError(
+        "Per prestazioni ottimali, usa parole con massimo 15 caratteri",
+      );
       return;
     }
 
@@ -143,7 +145,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Update visible count
     const visibleCount = Array.from(anagramItems).filter(
-      (item) => item.style.display !== "none"
+      (item) => item.style.display !== "none",
     ).length;
     updateSummary(visibleCount, anagramItems.length);
   });
@@ -154,7 +156,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (anagramItems.length === 0) return;
 
     const anagramTexts = Array.from(anagramItems).map(
-      (item) => item.textContent
+      (item) => item.textContent,
     );
     const textToCopy = anagramTexts.join(", ");
 
@@ -273,11 +275,15 @@ document.addEventListener("DOMContentLoaded", () => {
       anagramsGrid.appendChild(anagramItem);
 
       // Staggered animation (limit to improve performance)
-      setTimeout(() => {
-        anagramItem.style.transition = "opacity 0.3s ease, transform 0.3s ease";
-        anagramItem.style.opacity = "1";
-        anagramItem.style.transform = "translateY(0)";
-      }, Math.min(index, 100) * 10);
+      setTimeout(
+        () => {
+          anagramItem.style.transition =
+            "opacity 0.3s ease, transform 0.3s ease";
+          anagramItem.style.opacity = "1";
+          anagramItem.style.transform = "translateY(0)";
+        },
+        Math.min(index, 100) * 10,
+      );
     });
 
     // Reset filter
@@ -289,8 +295,8 @@ document.addEventListener("DOMContentLoaded", () => {
     resultsSummary.innerHTML = `
       <div class="summary-content">
         <strong>${visibleCount}</strong> anagrammi ${
-      visibleCount !== totalCount ? `(su ${totalCount} totali)` : ""
-    } 
+          visibleCount !== totalCount ? `(su ${totalCount} totali)` : ""
+        } 
         ${visibleCount === 1 ? "trovato" : "trovati"}
       </div>
     `;
@@ -349,9 +355,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Set current year in all relevant elements
   document.getElementById("current-year").textContent = currentYear;
-  document.getElementById(
-    "copyright-year"
-  ).textContent = `© ${currentYear} Countdown di Natale. Tutti i diritti riservati.`;
+  document.getElementById("copyright-year").textContent =
+    `© ${currentYear} Countdown di Natale. Tutti i diritti riservati.`;
 
   // Set countdown target
   const countdownDate = new Date(`Dec 25, ${christmasYear} 00:00:00`).getTime();
@@ -408,7 +413,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Calculate time units
     const days = Math.floor(distance / (1000 * 60 * 60 * 24));
     const hours = Math.floor(
-      (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+      (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
     );
     const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
     const seconds = Math.floor((distance % (1000 * 60)) / 1000);
@@ -602,7 +607,7 @@ document.head.insertAdjacentHTML(
       }
     }
   </style>
-`
+`,
 );
 
 // Main function to check prime numbers
@@ -871,7 +876,7 @@ document.head.insertAdjacentHTML(
   margin-bottom: 15px;
 }
 </style>
-`
+`,
 );
 
 document.head.insertAdjacentHTML(
@@ -897,5 +902,5 @@ document.head.insertAdjacentHTML(
       }
     }
   </style>
-`
+`,
 );

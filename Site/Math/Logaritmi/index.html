@@ -1,88 +1,109 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calcolatore Logaritmo</title>
+    <link rel="stylesheet" href="StyleLog.css" />
+    <link rel="icon" href="image.jpg" type="image/png" />
+    <script src="ScriptLog.js" defer></script>
+  </head>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Calcolatore Logaritmo</title>
-  <link rel="stylesheet" href="StyleLog.css">
-  <link rel="icon" href="image.jpg" type="image/png">
-  <script src="ScriptLog.js" defer></script>
-</head>
+  <body>
+    <div class="app-container">
+      <header class="app-header">
+        <div class="logo-container">
+          <img
+            src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image.jpg-V1TTcsQf13LCF9v8OeQFa6WkbNeEE9.jpeg"
+            alt="Logarithm Graph"
+            class="logo"
+          />
+        </div>
+        <h1>Calcolatore Logaritmo</h1>
+        <p class="tagline">
+          Esplora la relazione tra numeri attraverso i logaritmi
+        </p>
+      </header>
 
-<body>
-  <div class="app-container">
-    <header class="app-header">
-      <div class="logo-container">
-        <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image.jpg-V1TTcsQf13LCF9v8OeQFa6WkbNeEE9.jpeg"
-          alt="Logarithm Graph" class="logo">
-      </div>
-      <h1>Calcolatore Logaritmo</h1>
-      <p class="tagline">Esplora la relazione tra numeri attraverso i logaritmi</p>
-    </header>
+      <div class="calculator-container">
+        <div class="input-section">
+          <div class="input-group">
+            <label for="number">Numero:</label>
+            <input
+              type="number"
+              id="number"
+              placeholder="Inserisci il numero"
+              required
+              min="0.1"
+              step="any"
+            />
+          </div>
 
-    <div class="calculator-container">
-      <div class="input-section">
-        <div class="input-group">
-          <label for="number">Numero:</label>
-          <input type="number" id="number" placeholder="Inserisci il numero" required min="0.1" step="any">
+          <div class="input-group">
+            <label for="base">Base:</label>
+            <input
+              type="number"
+              id="base"
+              placeholder="Inserisci la base"
+              required
+              min="0.1"
+              step="any"
+            />
+          </div>
+
+          <button id="calculate-btn" onclick="calcolaLogaritmo()">
+            Calcola
+          </button>
         </div>
 
-        <div class="input-group">
-          <label for="base">Base:</label>
-          <input type="number" id="base" placeholder="Inserisci la base" required min="0.1" step="any">
-        </div>
-
-        <button id="calculate-btn" onclick="calcolaLogaritmo()">Calcola</button>
-      </div>
-
-      <div class="result-container">
-        <div id="result" class="result"></div>
-        <div id="loading-indicator" class="loading-indicator hidden">
-          <div class="spinner"></div>
-          <span>Calcolando...</span>
+        <div class="result-container">
+          <div id="result" class="result"></div>
+          <div id="loading-indicator" class="loading-indicator hidden">
+            <div class="spinner"></div>
+            <span>Calcolando...</span>
+          </div>
         </div>
       </div>
+
+      <div class="visualization-section">
+        <h2>Visualizzazione Logaritmica</h2>
+        <div class="timeline">
+          <div class="timeline-track">
+            <div class="timeline-progress" id="timeline-progress"></div>
+          </div>
+          <div class="timeline-markers" id="timeline-markers"></div>
+        </div>
+        <div id="fibonacci-grid" class="fibonacci-grid"></div>
+      </div>
+
+      <div class="info-section">
+        <div class="info-card">
+          <h3>Cos'è un Logaritmo?</h3>
+          <p>
+            Il logaritmo di un numero in una data base è l'esponente a cui la
+            base deve essere elevata per ottenere quel numero.
+          </p>
+          <p>Formula: log<sub>b</sub>(x) = y significa b<sup>y</sup> = x</p>
+        </div>
+
+        <div class="info-card">
+          <h3>Esempi Comuni</h3>
+          <ul>
+            <li>log<sub>10</sub>(100) = 2 perché 10<sup>2</sup> = 100</li>
+            <li>log<sub>2</sub>(8) = 3 perché 2<sup>3</sup> = 8</li>
+            <li>log<sub>e</sub>(x) = ln(x) (logaritmo naturale)</li>
+          </ul>
+        </div>
+      </div>
+
+      <footer class="app-footer">
+        <p>Creato con <span class="heart">♥</span> per la matematica</p>
+        <div class="footer-links">
+          <a href="#" class="footer-link">Informazioni</a>
+          <a href="#" class="footer-link">Contatti</a>
+          <a href="#" class="footer-link">Altre Calcolatrici</a>
+        </div>
+      </footer>
     </div>
-
-    <div class="visualization-section">
-      <h2>Visualizzazione Logaritmica</h2>
-      <div class="timeline">
-        <div class="timeline-track">
-          <div class="timeline-progress" id="timeline-progress"></div>
-        </div>
-        <div class="timeline-markers" id="timeline-markers"></div>
-      </div>
-      <div id="fibonacci-grid" class="fibonacci-grid"></div>
-    </div>
-
-    <div class="info-section">
-      <div class="info-card">
-        <h3>Cos'è un Logaritmo?</h3>
-        <p>Il logaritmo di un numero in una data base è l'esponente a cui la base deve essere elevata per ottenere quel
-          numero.</p>
-        <p>Formula: log<sub>b</sub>(x) = y significa b<sup>y</sup> = x</p>
-      </div>
-
-      <div class="info-card">
-        <h3>Esempi Comuni</h3>
-        <ul>
-          <li>log<sub>10</sub>(100) = 2 perché 10<sup>2</sup> = 100</li>
-          <li>log<sub>2</sub>(8) = 3 perché 2<sup>3</sup> = 8</li>
-          <li>log<sub>e</sub>(x) = ln(x) (logaritmo naturale)</li>
-        </ul>
-      </div>
-    </div>
-
-    <footer class="app-footer">
-      <p>Creato con <span class="heart">♥</span> per la matematica</p>
-      <div class="footer-links">
-        <a href="#" class="footer-link">Informazioni</a>
-        <a href="#" class="footer-link">Contatti</a>
-        <a href="#" class="footer-link">Altre Calcolatrici</a>
-      </div>
-    </footer>
-  </div>
-</body>
-
+  </body>
 </html>

@@ -173,7 +173,7 @@ function updateGameType() {
     All: () =>
       gameState.cardsData.briscola.concat(
         gameState.cardsData.scala40,
-        gameState.cardsData.regioni
+        gameState.cardsData.regioni,
       ),
   };
 
@@ -326,14 +326,17 @@ function scheduleAutoStop() {
 
   reels.forEach((reel, index) => {
     // Set a timeout to automatically stop each reel
-    setTimeout(() => {
-      if (
-        gameState.isSpinning &&
-        !reelStrips[index].classList.contains("stopped")
-      ) {
-        stopReel(index);
-      }
-    }, baseDelay + index * 1000); // Stagger the stopping of reels
+    setTimeout(
+      () => {
+        if (
+          gameState.isSpinning &&
+          !reelStrips[index].classList.contains("stopped")
+        ) {
+          stopReel(index);
+        }
+      },
+      baseDelay + index * 1000,
+    ); // Stagger the stopping of reels
   });
 }
 
@@ -351,7 +354,7 @@ function stopReel(index) {
   // Calculate a stopping position that ensures a complete image is shown
   const itemHeight = strip.children[0].offsetHeight;
   const totalItems = strip.children.length;
-  
+
   // Always choose a position that aligns perfectly with an item
   const randomPosition = Math.floor(Math.random() * (totalItems - 4)) + 2;
   const stopPosition = -(randomPosition * itemHeight);
@@ -361,15 +364,15 @@ function stopReel(index) {
   strip.style.transform = `translateY(${stopPosition}px)`;
 
   // Add a visual feedback for the stopped reel
-  const reelWindow = reels[index].closest('.reel-window');
-  reelWindow.classList.add('stopped-reel');
+  const reelWindow = reels[index].closest(".reel-window");
+  reelWindow.classList.add("stopped-reel");
   setTimeout(() => {
-    reelWindow.classList.remove('stopped-reel');
+    reelWindow.classList.remove("stopped-reel");
   }, 500);
 
   // Hide stop button with animation
   stopButtons[index].classList.remove("active");
-  
+
   // Play a more satisfying stop sound
   playSound("stop");
 
@@ -402,7 +405,7 @@ function checkResult() {
   // Check if all reels show the same image
   const firstImageSrc = gameState.reelsData[0].imageSrc;
   const allMatch = gameState.reelsData.every(
-    (data) => data.imageSrc === firstImageSrc
+    (data) => data.imageSrc === firstImageSrc,
   );
 
   if (allMatch) {
@@ -612,7 +615,7 @@ function playSound(type) {
       oscillator.frequency.setValueAtTime(220, audioContext.currentTime);
       oscillator.frequency.linearRampToValueAtTime(
         440,
-        audioContext.currentTime + 0.2
+        audioContext.currentTime + 0.2,
       );
       gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
       gainNode.gain.linearRampToValueAtTime(0, audioContext.currentTime + 0.3);
@@ -625,7 +628,7 @@ function playSound(type) {
       oscillator.frequency.setValueAtTime(660, audioContext.currentTime);
       oscillator.frequency.linearRampToValueAtTime(
         440,
-        audioContext.currentTime + 0.1
+        audioContext.currentTime + 0.1,
       );
       gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
       gainNode.gain.linearRampToValueAtTime(0, audioContext.currentTime + 0.1);
@@ -645,17 +648,17 @@ function playSound(type) {
         noteOsc.type = "sine";
         noteOsc.frequency.setValueAtTime(
           440 + i * 100,
-          audioContext.currentTime + i * 0.1
+          audioContext.currentTime + i * 0.1,
         );
 
         noteGain.gain.setValueAtTime(0, audioContext.currentTime + i * 0.1);
         noteGain.gain.linearRampToValueAtTime(
           0.3,
-          audioContext.currentTime + i * 0.1 + 0.01
+          audioContext.currentTime + i * 0.1 + 0.01,
         );
         noteGain.gain.linearRampToValueAtTime(
           0,
-          audioContext.currentTime + i * 0.1 + 0.1
+          audioContext.currentTime + i * 0.1 + 0.1,
         );
 
         noteOsc.start(audioContext.currentTime + i * 0.1);
@@ -675,17 +678,17 @@ function playSound(type) {
         noteOsc.type = i % 2 === 0 ? "sine" : "triangle";
         noteOsc.frequency.setValueAtTime(
           330 + i * 50,
-          audioContext.currentTime + i * 0.08
+          audioContext.currentTime + i * 0.08,
         );
 
         noteGain.gain.setValueAtTime(0, audioContext.currentTime + i * 0.08);
         noteGain.gain.linearRampToValueAtTime(
           0.3,
-          audioContext.currentTime + i * 0.08 + 0.01
+          audioContext.currentTime + i * 0.08 + 0.01,
         );
         noteGain.gain.linearRampToValueAtTime(
           0,
-          audioContext.currentTime + i * 0.08 + 0.2
+          audioContext.currentTime + i * 0.08 + 0.2,
         );
 
         noteOsc.start(audioContext.currentTime + i * 0.08);

@@ -99,7 +99,7 @@ function selezionaDinoCard(index) {
 
   // Aggiungi la classe selected alla card selezionata
   const selectedCard = document.querySelector(
-    `.dino-card[data-index="${index}"]`
+    `.dino-card[data-index="${index}"]`,
   );
   if (selectedCard) {
     selectedCard.classList.add("selected");
@@ -155,12 +155,12 @@ function controllaIndovinello() {
   if (corretto) {
     mostraRisultato(
       true,
-      `Corretto! Hai indovinato ${dinosauroCorrente.nome}!`
+      `Corretto! Hai indovinato ${dinosauroCorrente.nome}!`,
     );
   } else {
     mostraRisultato(
       false,
-      `Sbagliato! La risposta corretta era ${dinosauroCorrente.nome}.`
+      `Sbagliato! La risposta corretta era ${dinosauroCorrente.nome}.`,
     );
   }
 }

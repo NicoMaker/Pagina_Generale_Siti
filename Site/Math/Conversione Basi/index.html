@@ -1,130 +1,183 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="it">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Convertitore di Base Numeri</title>
-    <link rel="stylesheet" href="basi.css">
-    <link rel="icon"
-        href="https://play-lh.googleusercontent.com/MfHE_Q2H33_bFPJFCtViLshDG87iiW3C1HKNMkKOQq6Zbyy_dmZ9UUVqMG63_PsRk3M"
-        type="image/jpg">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="basi.css" />
+    <link
+      rel="icon"
+      href="https://play-lh.googleusercontent.com/MfHE_Q2H33_bFPJFCtViLshDG87iiW3C1HKNMkKOQq6Zbyy_dmZ9UUVqMG63_PsRk3M"
+      type="image/jpg"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
     <script src="basi.js" defer></script>
-</head>
+  </head>
 
-<body>
+  <body>
     <div class="app-container">
-        <div class="card">
-            <div class="card-header">
-                <div class="logo">
-                    <div class="logo-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="16 18 22 12 16 6"></polyline>
-                            <polyline points="8 6 2 12 8 18"></polyline>
-                        </svg>
-                    </div>
-                    <h1>Convertitore di Base</h1>
-                </div>
-                <p class="subtitle">Converti facilmente tra sistemi numerici diversi</p>
+      <div class="card">
+        <div class="card-header">
+          <div class="logo">
+            <div class="logo-icon">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <polyline points="16 18 22 12 16 6"></polyline>
+                <polyline points="8 6 2 12 8 18"></polyline>
+              </svg>
             </div>
-
-            <div class="card-body">
-                <div class="input-group">
-                    <label for="inputNumber">Numero da convertire</label>
-                    <div class="input-with-icon">
-                        <input type="text" id="inputNumber" placeholder="Inserisci il numero" autocomplete="off">
-                        <div class="input-icon">123</div>
-                    </div>
-                    <p class="input-hint">Inserisci un numero valido nella base selezionata</p>
-                </div>
-
-                <div class="conversion-controls">
-                    <div class="base-selector">
-                        <label for="selectFromBase">Base di origine</label>
-                        <select id="selectFromBase">
-                            <option value="2">Binario (BIN)</option>
-                            <option value="8">Ottale (OCT)</option>
-                            <option value="10" selected>Decimale (DEC)</option>
-                            <option value="16">Esadecimale (HEX)</option>
-                        </select>
-                    </div>
-
-                    <div class="swap-button" onclick="swapBases()">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="12" y1="5" x2="12" y2="19"></line>
-                            <polyline points="19 12 12 19 5 12"></polyline>
-                        </svg>
-                    </div>
-
-                    <div class="base-selector">
-                        <label for="selectToBase">Base di destinazione</label>
-                        <select id="selectToBase">
-                            <option value="2" selected>Binario (BIN)</option>
-                            <option value="8">Ottale (OCT)</option>
-                            <option value="10">Decimale (DEC)</option>
-                            <option value="16">Esadecimale (HEX)</option>
-                        </select>
-                    </div>
-                </div>
-
-                <button id="convertButton" onclick="convert()">
-                    <span>Converti</span>
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="9 18 15 12 9 6"></polyline>
-                    </svg>
-                </button>
-
-                <div class="result-container">
-                    <label for="outputNumber">Risultato</label>
-                    <div class="result-display">
-                        <input type="text" id="outputNumber" readonly>
-                        <button class="copy-button" onclick="copyResult()" title="Copia negli appunti">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card-footer">
-                <div class="base-info">
-                    <div class="base-chip">
-                        <span class="base-name">BIN</span>
-                        <span class="base-example">01001</span>
-                    </div>
-                    <div class="base-chip">
-                        <span class="base-name">OCT</span>
-                        <span class="base-example">725</span>
-                    </div>
-                    <div class="base-chip">
-                        <span class="base-name">DEC</span>
-                        <span class="base-example">485</span>
-                    </div>
-                    <div class="base-chip">
-                        <span class="base-name">HEX</span>
-                        <span class="base-example">1E5</span>
-                    </div>
-                </div>
-            </div>
+            <h1>Convertitore di Base</h1>
+          </div>
+          <p class="subtitle">
+            Converti facilmente tra sistemi numerici diversi
+          </p>
         </div>
 
-        <div class="toast" id="copyToast">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="20 6 9 17 4 12"></polyline>
+        <div class="card-body">
+          <div class="input-group">
+            <label for="inputNumber">Numero da convertire</label>
+            <div class="input-with-icon">
+              <input
+                type="text"
+                id="inputNumber"
+                placeholder="Inserisci il numero"
+                autocomplete="off"
+              />
+              <div class="input-icon">123</div>
+            </div>
+            <p class="input-hint">
+              Inserisci un numero valido nella base selezionata
+            </p>
+          </div>
+
+          <div class="conversion-controls">
+            <div class="base-selector">
+              <label for="selectFromBase">Base di origine</label>
+              <select id="selectFromBase">
+                <option value="2">Binario (BIN)</option>
+                <option value="8">Ottale (OCT)</option>
+                <option value="10" selected>Decimale (DEC)</option>
+                <option value="16">Esadecimale (HEX)</option>
+              </select>
+            </div>
+
+            <div class="swap-button" onclick="swapBases()">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <polyline points="19 12 12 19 5 12"></polyline>
+              </svg>
+            </div>
+
+            <div class="base-selector">
+              <label for="selectToBase">Base di destinazione</label>
+              <select id="selectToBase">
+                <option value="2" selected>Binario (BIN)</option>
+                <option value="8">Ottale (OCT)</option>
+                <option value="10">Decimale (DEC)</option>
+                <option value="16">Esadecimale (HEX)</option>
+              </select>
+            </div>
+          </div>
+
+          <button id="convertButton" onclick="convert()">
+            <span>Converti</span>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="9 18 15 12 9 6"></polyline>
             </svg>
-            <span>Copiato negli appunti!</span>
-        </div>
-    </div>
-</body>
+          </button>
 
+          <div class="result-container">
+            <label for="outputNumber">Risultato</label>
+            <div class="result-display">
+              <input type="text" id="outputNumber" readonly />
+              <button
+                class="copy-button"
+                onclick="copyResult()"
+                title="Copia negli appunti"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                  <path
+                    d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"
+                  ></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-footer">
+          <div class="base-info">
+            <div class="base-chip">
+              <span class="base-name">BIN</span>
+              <span class="base-example">01001</span>
+            </div>
+            <div class="base-chip">
+              <span class="base-name">OCT</span>
+              <span class="base-example">725</span>
+            </div>
+            <div class="base-chip">
+              <span class="base-name">DEC</span>
+              <span class="base-example">485</span>
+            </div>
+            <div class="base-chip">
+              <span class="base-name">HEX</span>
+              <span class="base-example">1E5</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="toast" id="copyToast">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+        <span>Copiato negli appunti!</span>
+      </div>
+    </div>
+  </body>
 </html>

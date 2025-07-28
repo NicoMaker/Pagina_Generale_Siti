@@ -1,112 +1,167 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="it">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Password Analyzer</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+    />
 
-    <link rel="icon"
-        href="https://play-lh.googleusercontent.com/ifyEw7LSQtaWFN8rvvpCC-Bzdu9GF60O4PMQyJs6P3f83ArZuhD92cP8tVO_gdLYQUo"
-        type="image/jpg">
-</head>
+    <link
+      rel="icon"
+      href="https://play-lh.googleusercontent.com/ifyEw7LSQtaWFN8rvvpCC-Bzdu9GF60O4PMQyJs6P3f83ArZuhD92cP8tVO_gdLYQUo"
+      type="image/jpg"
+    />
+  </head>
 
-<body>
+  <body>
     <div class="app-container">
-        <div class="card">
-            <div class="header">
-                <h1>Password Analyzer</h1>
-                <p class="subtitle">Verifica la sicurezza della tua password</p>
-            </div>
-
-            <div class="password-input-container">
-                <div class="input-wrapper">
-                    <input type="password" id="password" placeholder="Inserisci la tua password" autocomplete="off">
-                    <button type="button" class="toggle-password" id="togglePassword">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="eye-icon">
-                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                            <circle cx="12" cy="12" r="3"></circle>
-                        </svg>
-                    </button>
-                </div>
-
-                <button id="generatePassword" class="generate-btn">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M20 16.2A4.5 4.5 0 0 0 17.5 8h-1.8A7 7 0 1 0 4 14.9"></path>
-                        <path d="M12 16v4"></path>
-                        <path d="m8 16 4 4 4-4"></path>
-                    </svg>
-                    Genera Password
-                </button>
-            </div>
-
-            <div class="strength-container">
-                <div class="strength-label">
-                    <span>Forza:</span>
-                    <span id="strengthText">Nessuna password</span>
-                </div>
-
-                <div class="strength-meter">
-                    <div class="strength-segments">
-                        <div class="segment" id="segment1"></div>
-                        <div class="segment" id="segment2"></div>
-                        <div class="segment" id="segment3"></div>
-                        <div class="segment" id="segment4"></div>
-                    </div>
-                </div>
-
-                <div id="ultraSecureBadge" class="ultra-secure-badge hidden">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-                        <path d="m9 12 2 2 4-4"></path>
-                    </svg>
-                    Ultra Sicura
-                </div>
-            </div>
-
-            <div class="info-container">
-                <div class="info-box">
-                    <h3>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="10"></circle>
-                            <polyline points="12 6 12 12 16 14"></polyline>
-                        </svg>
-                        Tempo per violarla
-                    </h3>
-                    <p id="crackTime">Inserisci una password</p>
-                </div>
-
-                <div class="info-box">
-                    <h3>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-                        </svg>
-                        Suggerimenti
-                    </h3>
-                    <ul id="suggestions">
-                        <li>Usa almeno 12 caratteri</li>
-                        <li>Combina lettere maiuscole e minuscole</li>
-                        <li>Includi numeri e simboli</li>
-                        <li>Evita sequenze comuni (123, abc)</li>
-                    </ul>
-                </div>
-            </div>
+      <div class="card">
+        <div class="header">
+          <h1>Password Analyzer</h1>
+          <p class="subtitle">Verifica la sicurezza della tua password</p>
         </div>
 
-        <div class="footer">
-            <p>Proteggi le tue informazioni con password sicure</p>
+        <div class="password-input-container">
+          <div class="input-wrapper">
+            <input
+              type="password"
+              id="password"
+              placeholder="Inserisci la tua password"
+              autocomplete="off"
+            />
+            <button type="button" class="toggle-password" id="togglePassword">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="eye-icon"
+              >
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+            </button>
+          </div>
+
+          <button id="generatePassword" class="generate-btn">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                d="M20 16.2A4.5 4.5 0 0 0 17.5 8h-1.8A7 7 0 1 0 4 14.9"
+              ></path>
+              <path d="M12 16v4"></path>
+              <path d="m8 16 4 4 4-4"></path>
+            </svg>
+            Genera Password
+          </button>
         </div>
+
+        <div class="strength-container">
+          <div class="strength-label">
+            <span>Forza:</span>
+            <span id="strengthText">Nessuna password</span>
+          </div>
+
+          <div class="strength-meter">
+            <div class="strength-segments">
+              <div class="segment" id="segment1"></div>
+              <div class="segment" id="segment2"></div>
+              <div class="segment" id="segment3"></div>
+              <div class="segment" id="segment4"></div>
+            </div>
+          </div>
+
+          <div id="ultraSecureBadge" class="ultra-secure-badge hidden">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+              <path d="m9 12 2 2 4-4"></path>
+            </svg>
+            Ultra Sicura
+          </div>
+        </div>
+
+        <div class="info-container">
+          <div class="info-box">
+            <h3>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+              Tempo per violarla
+            </h3>
+            <p id="crackTime">Inserisci una password</p>
+          </div>
+
+          <div class="info-box">
+            <h3>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+              </svg>
+              Suggerimenti
+            </h3>
+            <ul id="suggestions">
+              <li>Usa almeno 12 caratteri</li>
+              <li>Combina lettere maiuscole e minuscole</li>
+              <li>Includi numeri e simboli</li>
+              <li>Evita sequenze comuni (123, abc)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer">
+        <p>Proteggi le tue informazioni con password sicure</p>
+      </div>
     </div>
 
     <script src="script.js"></script>
-</body>
-
+  </body>
 </html>

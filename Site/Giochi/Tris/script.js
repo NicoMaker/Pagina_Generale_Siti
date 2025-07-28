@@ -63,9 +63,8 @@ function updateUI(index) {
 
 // Aggiorna il turno visualizzato
 function updateTurnIndicator() {
-  document.getElementById(
-    "turn-indicator"
-  ).textContent = `Turno del giocatore: ${currentPlayer}`;
+  document.getElementById("turn-indicator").textContent =
+    `Turno del giocatore: ${currentPlayer}`;
 }
 
 // Controlla se c'è un vincitore o un pareggio
@@ -97,8 +96,8 @@ function endGame(winner) {
     alert(
       winner === "draw"
         ? "È un pareggio! 😐"
-        : `Giocatore ${winner} vince! 🏆🎉`
-    )
+        : `Giocatore ${winner} vince! 🏆🎉`,
+    ),
   );
 }
 

@@ -1,66 +1,79 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="it">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon"
-        href="https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Fibonacci_spiral_34.svg/1200px-Fibonacci_spiral_34.svg.png"
-        type="image/png">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="icon"
+      href="https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Fibonacci_spiral_34.svg/1200px-Fibonacci_spiral_34.svg.png"
+      type="image/png"
+    />
     <title>Calcolatore Fibonacci</title>
-    <link rel="stylesheet" href="StyleFib.css">
+    <link rel="stylesheet" href="StyleFib.css" />
     <script src="ScriptFib.js" defer></script>
-</head>
+  </head>
 
-<body>
+  <body>
     <div class="container">
-        <header>
-            <h1>Calcolatore Fibonacci</h1>
-            <p class="subtitle">Esplora la sequenza di Fibonacci attraverso un'interfaccia visiva</p>
-        </header>
+      <header>
+        <h1>Calcolatore Fibonacci</h1>
+        <p class="subtitle">
+          Esplora la sequenza di Fibonacci attraverso un'interfaccia visiva
+        </p>
+      </header>
 
-        <div class="calculator-section">
-            <div class="input-container">
-                <label for="num-input">Inserisci il numero di termini:</label>
-                <div class="input-group">
-                    <input id="num-input" type="number" min="1" max="20" value="8">
-                    <button id="calculate-btn" onclick="calculateFibonacci()">Calcola</button>
-                </div>
-            </div>
-
-            <div class="timeline">
-                <div class="timeline-track">
-                    <div class="timeline-progress" id="timeline-progress"></div>
-                </div>
-                <div class="timeline-markers" id="timeline-markers"></div>
-            </div>
+      <div class="calculator-section">
+        <div class="input-container">
+          <label for="num-input">Inserisci il numero di termini:</label>
+          <div class="input-group">
+            <input id="num-input" type="number" min="1" max="20" value="8" />
+            <button id="calculate-btn" onclick="calculateFibonacci()">
+              Calcola
+            </button>
+          </div>
         </div>
 
-        <div class="fibonacci-grid" id="fibonacci-grid">
-            <!-- Fibonacci tiles will be generated here -->
+        <div class="timeline">
+          <div class="timeline-track">
+            <div class="timeline-progress" id="timeline-progress"></div>
+          </div>
+          <div class="timeline-markers" id="timeline-markers"></div>
         </div>
+      </div>
 
-        <div class="info-section">
-            <div class="spiral-container">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Fibonacci_spiral_34.svg/1200px-Fibonacci_spiral_34.svg.png"
-                    alt="Fibonacci Spiral" class="spiral-image">
-                <div class="info-overlay">
-                    <h3>La Spirale di Fibonacci</h3>
-                    <p>La sequenza di Fibonacci crea una spirale che si trova spesso in natura.</p>
-                </div>
-            </div>
-            <div class="sequence-info">
-                <h3>Sequenza di Fibonacci</h3>
-                <div id="output" class="sequence-output"></div>
-                <div id="sum-output" class="sum-output"></div>
-            </div>
+      <div class="fibonacci-grid" id="fibonacci-grid">
+        <!-- Fibonacci tiles will be generated here -->
+      </div>
+
+      <div class="info-section">
+        <div class="spiral-container">
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Fibonacci_spiral_34.svg/1200px-Fibonacci_spiral_34.svg.png"
+            alt="Fibonacci Spiral"
+            class="spiral-image"
+          />
+          <div class="info-overlay">
+            <h3>La Spirale di Fibonacci</h3>
+            <p>
+              La sequenza di Fibonacci crea una spirale che si trova spesso in
+              natura.
+            </p>
+          </div>
         </div>
+        <div class="sequence-info">
+          <h3>Sequenza di Fibonacci</h3>
+          <div id="output" class="sequence-output"></div>
+          <div id="sum-output" class="sum-output"></div>
+        </div>
+      </div>
 
-        <footer>
-            <p>La sequenza di Fibonacci è una serie di numeri in cui ogni numero è la somma dei due precedenti.</p>
-            <p>Esempio: 1, 1, 2, 3, 5, 8, 13, 21, ...</p>
-        </footer>
+      <footer>
+        <p>
+          La sequenza di Fibonacci è una serie di numeri in cui ogni numero è la
+          somma dei due precedenti.
+        </p>
+        <p>Esempio: 1, 1, 2, 3, 5, 8, 13, 21, ...</p>
+      </footer>
     </div>
-</body>
-
+  </body>
 </html>

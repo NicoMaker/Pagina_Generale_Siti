@@ -1,289 +1,327 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="it">
-
-<head>
-    <link rel="icon"
-        href="https://th.bing.com/th/id/R.1ae9a335b1da46f9e9e4c03e698ded2f?rik=6yWx4JD8wm0%2fPA&pid=ImgRaw&r=0"
-        type="image/jpg" />
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <link
+      rel="icon"
+      href="https://th.bing.com/th/id/R.1ae9a335b1da46f9e9e4c03e698ded2f?rik=6yWx4JD8wm0%2fPA&pid=ImgRaw&r=0"
+      type="image/jpg"
+    />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TextTools - Suite Linguistica Moderna</title>
-    <link rel="stylesheet" href="style.css">
-</head>
+    <link rel="stylesheet" href="style.css" />
+  </head>
 
-<body>
+  <body>
     <!-- Navigazione -->
     <nav class="navbar">
-        <div class="nav-container">
-            <div class="nav-logo">
-                <span class="logo-icon">✨</span>
-                <span class="logo-text">TextTools</span>
-            </div>
-
-            <div class="nav-menu" id="navMenu">
-                <a href="#home" class="nav-link" data-section="home">Home</a>
-                <a href="#tools" class="nav-link" data-section="tools">Strumenti</a>
-                <a href="#about" class="nav-link" data-section="about">Chi Siamo</a>
-            </div>
-
-            <div class="hamburger" id="hamburger">
-                <span class="bar"></span>
-                <span class="bar"></span>
-                <span class="bar"></span>
-            </div>
+      <div class="nav-container">
+        <div class="nav-logo">
+          <span class="logo-icon">✨</span>
+          <span class="logo-text">TextTools</span>
         </div>
+
+        <div class="nav-menu" id="navMenu">
+          <a href="#home" class="nav-link" data-section="home">Home</a>
+          <a href="#tools" class="nav-link" data-section="tools">Strumenti</a>
+          <a href="#about" class="nav-link" data-section="about">Chi Siamo</a>
+        </div>
+
+        <div class="hamburger" id="hamburger">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </div>
+      </div>
     </nav>
 
     <!-- Sezione Hero -->
     <section id="home" class="hero">
-        <div class="hero-content">
-            <h1 class="hero-title">
-                <span class="hero-icon">🚀</span>
-                TextTools
-            </h1>
-            <p class="hero-subtitle">Suite linguistica avanzata con design moderno e interfaccia intuitiva</p>
-            <button class="cta-button" onclick="scrollToTools()">
-                <span>Esplora Strumenti</span>
-                <span class="arrow">→</span>
-            </button>
-        </div>
-        <div class="hero-background">
-            <div class="floating-shape shape-1"></div>
-            <div class="floating-shape shape-2"></div>
-            <div class="floating-shape shape-3"></div>
-            <div class="floating-shape shape-4"></div>
-            <div class="floating-shape shape-5"></div>
-        </div>
+      <div class="hero-content">
+        <h1 class="hero-title">
+          <span class="hero-icon">🚀</span>
+          TextTools
+        </h1>
+        <p class="hero-subtitle">
+          Suite linguistica avanzata con design moderno e interfaccia intuitiva
+        </p>
+        <button class="cta-button" onclick="scrollToTools()">
+          <span>Esplora Strumenti</span>
+          <span class="arrow">→</span>
+        </button>
+      </div>
+      <div class="hero-background">
+        <div class="floating-shape shape-1"></div>
+        <div class="floating-shape shape-2"></div>
+        <div class="floating-shape shape-3"></div>
+        <div class="floating-shape shape-4"></div>
+        <div class="floating-shape shape-5"></div>
+      </div>
     </section>
 
     <!-- Sezione Strumenti -->
     <section id="tools" class="tools-section">
-        <div class="container">
-            <h2 class="section-title">Strumenti Linguistici</h2>
+      <div class="container">
+        <h2 class="section-title">Strumenti Linguistici</h2>
 
-            <div class="tools-grid">
-                <!-- Contatore Intelligente -->
-                <div class="tool-card" data-tool="counter">
-                    <div class="tool-header">
-                        <span class="tool-icon">📊</span>
-                        <h3>Contatore Intelligente</h3>
-                    </div>
-                    <textarea id="textInput"
-                        placeholder="Inizia a scrivere per vedere le statistiche in tempo reale..."></textarea>
-                    <div class="stats-grid">
-                        <div class="stat-item">
-                            <span class="stat-number" id="wordCount">0</span>
-                            <span class="stat-label">Parole</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-number" id="sentenceCount">0</span>
-                            <span class="stat-label">Frasi</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-number" id="charCount">0</span>
-                            <span class="stat-label">Caratteri</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Rimuovi Duplicati -->
-                <div class="tool-card" data-tool="duplicates">
-                    <div class="tool-header">
-                        <span class="tool-icon">🧹</span>
-                        <h3>Rimuovi Duplicati</h3>
-                    </div>
-                    <textarea id="dupInput" placeholder="Incolla il testo con parole ripetute qui..."></textarea>
-                    <button class="tool-button" onclick="removeDuplicates()">
-                        <span>Pulisci Testo</span>
-                    </button>
-                    <div class="result-box" id="dupResult">Il testo pulito apparirà qui...</div>
-                </div>
-
-                <!-- Analizzatore Grammaticale -->
-                <div class="tool-card" data-tool="grammar">
-                    <div class="tool-header">
-                        <span class="tool-icon">🧠</span>
-                        <h3>Analizzatore Grammaticale</h3>
-                    </div>
-                    <textarea id="posInput" placeholder="Scrivi una frase per l'analisi grammaticale..."></textarea>
-                    <button class="tool-button" onclick="analyzeGrammar()">
-                        <span>Analizza</span>
-                    </button>
-                    <div class="result-box" id="posResult">L'analisi grammaticale apparirà qui...</div>
-                </div>
-
-                <!-- Dizionario Sinonimi -->
-                <div class="tool-card" data-tool="synonyms">
-                    <div class="tool-header">
-                        <span class="tool-icon">📚</span>
-                        <h3>Dizionario Sinonimi</h3>
-                    </div>
-                    <textarea id="synInput" placeholder="Inserisci una parola per trovare sinonimi..."></textarea>
-                    <button class="tool-button" onclick="findSynonyms()">
-                        <span>Trova Sinonimi</span>
-                    </button>
-                    <div class="result-box" id="synResult">I sinonimi suggeriti appariranno qui...</div>
-                </div>
-
-                <!-- Generatore Scioglilingua -->
-                <div class="tool-card" data-tool="twister">
-                    <div class="tool-header">
-                        <span class="tool-icon">🗣️</span>
-                        <h3>Generatore Scioglilingua</h3>
-                    </div>
-                    <button class="tool-button" onclick="generateTongueTwister()">
-                        <span>Genera Scioglilingua</span>
-                    </button>
-                    <div class="result-box" id="twisterResult">Clicca per generare uno scioglilingua casuale!</div>
-                </div>
-
-                <!-- Creatore di Parole -->
-                <div class="tool-card" data-tool="wordgen">
-                    <div class="tool-header">
-                        <span class="tool-icon">⭐</span>
-                        <h3>Creatore di Parole</h3>
-                    </div>
-                    <button class="tool-button" onclick="generateWord()">
-                        <span>Crea Parola</span>
-                    </button>
-                    <div class="result-box" id="inventedWord">Genera una parola completamente inventata!</div>
-                </div>
-
-                <!-- Test Velocità Scrittura - AGGIORNATO A 10 SECONDI -->
-                <div class="tool-card speed-test-card" data-tool="speed">
-                    <div class="tool-header">
-                        <span class="tool-icon">⏱️</span>
-                        <h3>Test Velocità Scrittura (10 secondi)</h3>
-                    </div>
-                    <textarea id="speedInput"
-                        placeholder="Clicca 'Inizia' e scrivi il più velocemente possibile per 10 secondi..."
-                        disabled></textarea>
-                    <div class="stats-grid">
-                        <div class="stat-item">
-                            <span class="stat-number" id="timeDisplay">0</span>
-                            <span class="stat-label">Secondi</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-number" id="wordDisplay">0</span>
-                            <span class="stat-label">Parole</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-number" id="charDisplay">0</span>
-                            <span class="stat-label">Caratteri</span>
-                        </div>
-                    </div>
-
-                    <!-- Righe colorate decorative animate -->
-                    <div class="decorative-lines">
-                        <div class="line line-1"></div>
-                        <div class="line line-2"></div>
-                        <div class="line line-3"></div>
-                        <div class="line line-4"></div>
-                    </div>
-
-                    <!-- Progress bar per il countdown -->
-                    <div class="progress-container" id="progressContainer" style="display: none;">
-                        <div class="progress-bar" id="progressBar"></div>
-                        <div class="progress-text" id="progressText">10</div>
-                    </div>
-
-                    <div class="button-spacer"></div>
-
-                    <button class="tool-button speed-button" onclick="startTypingTest()">
-                        <span>Inizia Test</span>
-                    </button>
-                </div>
+        <div class="tools-grid">
+          <!-- Contatore Intelligente -->
+          <div class="tool-card" data-tool="counter">
+            <div class="tool-header">
+              <span class="tool-icon">📊</span>
+              <h3>Contatore Intelligente</h3>
             </div>
+            <textarea
+              id="textInput"
+              placeholder="Inizia a scrivere per vedere le statistiche in tempo reale..."
+            ></textarea>
+            <div class="stats-grid">
+              <div class="stat-item">
+                <span class="stat-number" id="wordCount">0</span>
+                <span class="stat-label">Parole</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-number" id="sentenceCount">0</span>
+                <span class="stat-label">Frasi</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-number" id="charCount">0</span>
+                <span class="stat-label">Caratteri</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Rimuovi Duplicati -->
+          <div class="tool-card" data-tool="duplicates">
+            <div class="tool-header">
+              <span class="tool-icon">🧹</span>
+              <h3>Rimuovi Duplicati</h3>
+            </div>
+            <textarea
+              id="dupInput"
+              placeholder="Incolla il testo con parole ripetute qui..."
+            ></textarea>
+            <button class="tool-button" onclick="removeDuplicates()">
+              <span>Pulisci Testo</span>
+            </button>
+            <div class="result-box" id="dupResult">
+              Il testo pulito apparirà qui...
+            </div>
+          </div>
+
+          <!-- Analizzatore Grammaticale -->
+          <div class="tool-card" data-tool="grammar">
+            <div class="tool-header">
+              <span class="tool-icon">🧠</span>
+              <h3>Analizzatore Grammaticale</h3>
+            </div>
+            <textarea
+              id="posInput"
+              placeholder="Scrivi una frase per l'analisi grammaticale..."
+            ></textarea>
+            <button class="tool-button" onclick="analyzeGrammar()">
+              <span>Analizza</span>
+            </button>
+            <div class="result-box" id="posResult">
+              L'analisi grammaticale apparirà qui...
+            </div>
+          </div>
+
+          <!-- Dizionario Sinonimi -->
+          <div class="tool-card" data-tool="synonyms">
+            <div class="tool-header">
+              <span class="tool-icon">📚</span>
+              <h3>Dizionario Sinonimi</h3>
+            </div>
+            <textarea
+              id="synInput"
+              placeholder="Inserisci una parola per trovare sinonimi..."
+            ></textarea>
+            <button class="tool-button" onclick="findSynonyms()">
+              <span>Trova Sinonimi</span>
+            </button>
+            <div class="result-box" id="synResult">
+              I sinonimi suggeriti appariranno qui...
+            </div>
+          </div>
+
+          <!-- Generatore Scioglilingua -->
+          <div class="tool-card" data-tool="twister">
+            <div class="tool-header">
+              <span class="tool-icon">🗣️</span>
+              <h3>Generatore Scioglilingua</h3>
+            </div>
+            <button class="tool-button" onclick="generateTongueTwister()">
+              <span>Genera Scioglilingua</span>
+            </button>
+            <div class="result-box" id="twisterResult">
+              Clicca per generare uno scioglilingua casuale!
+            </div>
+          </div>
+
+          <!-- Creatore di Parole -->
+          <div class="tool-card" data-tool="wordgen">
+            <div class="tool-header">
+              <span class="tool-icon">⭐</span>
+              <h3>Creatore di Parole</h3>
+            </div>
+            <button class="tool-button" onclick="generateWord()">
+              <span>Crea Parola</span>
+            </button>
+            <div class="result-box" id="inventedWord">
+              Genera una parola completamente inventata!
+            </div>
+          </div>
+
+          <!-- Test Velocità Scrittura - AGGIORNATO A 10 SECONDI -->
+          <div class="tool-card speed-test-card" data-tool="speed">
+            <div class="tool-header">
+              <span class="tool-icon">⏱️</span>
+              <h3>Test Velocità Scrittura (10 secondi)</h3>
+            </div>
+            <textarea
+              id="speedInput"
+              placeholder="Clicca 'Inizia' e scrivi il più velocemente possibile per 10 secondi..."
+              disabled
+            ></textarea>
+            <div class="stats-grid">
+              <div class="stat-item">
+                <span class="stat-number" id="timeDisplay">0</span>
+                <span class="stat-label">Secondi</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-number" id="wordDisplay">0</span>
+                <span class="stat-label">Parole</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-number" id="charDisplay">0</span>
+                <span class="stat-label">Caratteri</span>
+              </div>
+            </div>
+
+            <!-- Righe colorate decorative animate -->
+            <div class="decorative-lines">
+              <div class="line line-1"></div>
+              <div class="line line-2"></div>
+              <div class="line line-3"></div>
+              <div class="line line-4"></div>
+            </div>
+
+            <!-- Progress bar per il countdown -->
+            <div
+              class="progress-container"
+              id="progressContainer"
+              style="display: none"
+            >
+              <div class="progress-bar" id="progressBar"></div>
+              <div class="progress-text" id="progressText">10</div>
+            </div>
+
+            <div class="button-spacer"></div>
+
+            <button
+              class="tool-button speed-button"
+              onclick="startTypingTest()"
+            >
+              <span>Inizia Test</span>
+            </button>
+          </div>
         </div>
+      </div>
     </section>
 
     <!-- Sezione Chi Siamo -->
     <section id="about" class="about-section">
-        <div class="container">
-            <h2 class="section-title">Chi Siamo</h2>
-            <div class="about-content">
-                <p>TextTools è una suite linguistica completa progettata per aiutare scrittori, studenti e appassionati
-                    di lingue ad analizzare e migliorare i loro testi. La nostra interfaccia moderna combina
-                    funzionalità potenti con un design intuitivo.</p>
-                <div class="features-grid">
-                    <div class="feature-item">
-                        <span class="feature-icon">⚡</span>
-                        <h4>Analisi in Tempo Reale</h4>
-                        <p>Ottieni feedback istantaneo mentre scrivi</p>
-                    </div>
-                    <div class="feature-item">
-                        <span class="feature-icon">📱</span>
-                        <h4>Mobile Friendly</h4>
-                        <p>Funziona perfettamente su tutti i dispositivi</p>
-                    </div>
-                    <div class="feature-item">
-                        <span class="feature-icon">🎨</span>
-                        <h4>Design Moderno</h4>
-                        <p>Interfaccia bella e intuitiva</p>
-                    </div>
-                </div>
+      <div class="container">
+        <h2 class="section-title">Chi Siamo</h2>
+        <div class="about-content">
+          <p>
+            TextTools è una suite linguistica completa progettata per aiutare
+            scrittori, studenti e appassionati di lingue ad analizzare e
+            migliorare i loro testi. La nostra interfaccia moderna combina
+            funzionalità potenti con un design intuitivo.
+          </p>
+          <div class="features-grid">
+            <div class="feature-item">
+              <span class="feature-icon">⚡</span>
+              <h4>Analisi in Tempo Reale</h4>
+              <p>Ottieni feedback istantaneo mentre scrivi</p>
             </div>
+            <div class="feature-item">
+              <span class="feature-icon">📱</span>
+              <h4>Mobile Friendly</h4>
+              <p>Funziona perfettamente su tutti i dispositivi</p>
+            </div>
+            <div class="feature-item">
+              <span class="feature-icon">🎨</span>
+              <h4>Design Moderno</h4>
+              <p>Interfaccia bella e intuitiva</p>
+            </div>
+          </div>
         </div>
+      </div>
     </section>
 
     <!-- Footer -->
     <footer class="footer">
-        <div class="container">
-            <p>&copy; 2024 TextTools. Tutti i diritti riservati.</p>
-        </div>
+      <div class="container">
+        <p>&copy; 2024 TextTools. Tutti i diritti riservati.</p>
+      </div>
     </footer>
 
     <!-- Modal Risultati Test Velocità -->
     <div id="resultsModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>🎯 Test Completato!</h2>
-                <span class="close" onclick="closeModal()">&times;</span>
-            </div>
-            <div class="modal-body">
-                <div class="results-container">
-                    <div class="result-item">
-                        <div class="result-icon">📝</div>
-                        <div class="result-info">
-                            <span class="result-number" id="modalWords">0</span>
-                            <span class="result-label">Parole Scritte</span>
-                        </div>
-                    </div>
-                    <div class="result-item">
-                        <div class="result-icon">⚡</div>
-                        <div class="result-info">
-                            <span class="result-number" id="modalWPM">0</span>
-                            <span class="result-label">Parole al Minuto</span>
-                        </div>
-                    </div>
-                    <div class="result-item">
-                        <div class="result-icon">🔤</div>
-                        <div class="result-info">
-                            <span class="result-number" id="modalChars">0</span>
-                            <span class="result-label">Caratteri Totali</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="performance-badge" id="performanceBadge">
-                    <span class="badge-icon">🏆</span>
-                    <span class="badge-text" id="performanceText">Eccellente!</span>
-                </div>
-                <div class="modal-actions">
-                    <button class="modal-button primary" onclick="startTypingTest(); closeModal();">
-                        🔄 Riprova
-                    </button>
-                    <button class="modal-button secondary" onclick="closeModal();">
-                        ✅ Chiudi
-                    </button>
-                </div>
-            </div>
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>🎯 Test Completato!</h2>
+          <span class="close" onclick="closeModal()">&times;</span>
         </div>
+        <div class="modal-body">
+          <div class="results-container">
+            <div class="result-item">
+              <div class="result-icon">📝</div>
+              <div class="result-info">
+                <span class="result-number" id="modalWords">0</span>
+                <span class="result-label">Parole Scritte</span>
+              </div>
+            </div>
+            <div class="result-item">
+              <div class="result-icon">⚡</div>
+              <div class="result-info">
+                <span class="result-number" id="modalWPM">0</span>
+                <span class="result-label">Parole al Minuto</span>
+              </div>
+            </div>
+            <div class="result-item">
+              <div class="result-icon">🔤</div>
+              <div class="result-info">
+                <span class="result-number" id="modalChars">0</span>
+                <span class="result-label">Caratteri Totali</span>
+              </div>
+            </div>
+          </div>
+          <div class="performance-badge" id="performanceBadge">
+            <span class="badge-icon">🏆</span>
+            <span class="badge-text" id="performanceText">Eccellente!</span>
+          </div>
+          <div class="modal-actions">
+            <button
+              class="modal-button primary"
+              onclick="startTypingTest(); closeModal();"
+            >
+              🔄 Riprova
+            </button>
+            <button class="modal-button secondary" onclick="closeModal();">
+              ✅ Chiudi
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- Particelle di sfondo animate -->
     <div class="particles-container" id="particles"></div>
 
     <script src="script.js"></script>
-</body>
-
+  </body>
 </html>

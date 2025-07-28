@@ -1,405 +1,529 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="it">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>L'Antico Egitto - Viaggio nella Storia</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Raleway:wght@300;400;600&display=swap">
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Raleway:wght@300;400;600&display=swap"
+    />
 
-    <link rel="icon" href="ankh.svg" type="image/svg">
-</head>
+    <link rel="icon" href="ankh.svg" type="image/svg" />
+  </head>
 
-<body>
+  <body>
     <div class="sand-particles"></div>
 
     <!-- Header con navigazione -->
     <header>
-        <div class="logo">
-            <img src="ankh.svg" alt="Simbolo Ankh" class="ankh-symbol">
-            <h1>Antico Egitto</h1>
+      <div class="logo">
+        <img src="ankh.svg" alt="Simbolo Ankh" class="ankh-symbol" />
+        <h1>Antico Egitto</h1>
+      </div>
+      <nav>
+        <div class="menu-toggle">
+          <div class="bar"></div>
+          <div class="bar"></div>
+          <div class="bar"></div>
         </div>
-        <nav>
-            <div class="menu-toggle">
-                <div class="bar"></div>
-                <div class="bar"></div>
-                <div class="bar"></div>
-            </div>
-            <ul class="nav-links">
-                <li><a href="#home">Home</a></li>
-                <li><a href="#storia">Storia</a></li>
-                <li><a href="#faraoni">Faraoni</a></li>
-                <li><a href="#divinita">Divinità</a></li>
-                <li><a href="#monumenti">Monumenti</a></li>
-                <li><a href="#galleria">Galleria</a></li>
-            </ul>
-        </nav>
+        <ul class="nav-links">
+          <li><a href="#home">Home</a></li>
+          <li><a href="#storia">Storia</a></li>
+          <li><a href="#faraoni">Faraoni</a></li>
+          <li><a href="#divinita">Divinità</a></li>
+          <li><a href="#monumenti">Monumenti</a></li>
+          <li><a href="#galleria">Galleria</a></li>
+        </ul>
+      </nav>
     </header>
 
     <!-- Hero Section -->
     <section id="home" class="hero">
-        <div class="hero-overlay"></div>
-        <div class="hero-content">
-            <h2 class="arabic-title">الحضارة المصرية القديمة</h2>
-            <br>
-            <p class="translation">"L'antica civiltà egizia"</p>
-            <h3>Un viaggio attraverso millenni di storia</h3>
-            <p>Scopri i misteri e le meraviglie di una delle più grandi civiltà del mondo antico</p>
-            <a href="#storia" class="cta-button">Inizia il Viaggio</a>
-        </div>
+      <div class="hero-overlay"></div>
+      <div class="hero-content">
+        <h2 class="arabic-title">الحضارة المصرية القديمة</h2>
+        <br />
+        <p class="translation">"L'antica civiltà egizia"</p>
+        <h3>Un viaggio attraverso millenni di storia</h3>
+        <p>
+          Scopri i misteri e le meraviglie di una delle più grandi civiltà del
+          mondo antico
+        </p>
+        <a href="#storia" class="cta-button">Inizia il Viaggio</a>
+      </div>
     </section>
 
     <!-- Introduzione -->
     <section id="introduzione" class="intro">
-        <div class="papyrus-container reveal-on-scroll">
-            <h2>Benvenuti nella Terra dei Faraoni</h2>
-            <div class="separator"></div>
-            <p>L'antico Egitto è stato una civiltà dell'Africa nord-orientale concentrata lungo il corso inferiore del
-                fiume Nilo. La civiltà egizia seguì le culture preistoriche dell'Africa nord-orientale e fiorì dal 3100
-                a.C. circa fino al 332 a.C., quando l'Egitto fu conquistato da Alessandro Magno.</p>
-            <p>In questo sito esploreremo la ricca storia, la cultura affascinante e i monumenti straordinari che hanno
-                reso l'antico Egitto una delle civiltà più influenti e durature della storia umana.</p>
-        </div>
+      <div class="papyrus-container reveal-on-scroll">
+        <h2>Benvenuti nella Terra dei Faraoni</h2>
+        <div class="separator"></div>
+        <p>
+          L'antico Egitto è stato una civiltà dell'Africa nord-orientale
+          concentrata lungo il corso inferiore del fiume Nilo. La civiltà egizia
+          seguì le culture preistoriche dell'Africa nord-orientale e fiorì dal
+          3100 a.C. circa fino al 332 a.C., quando l'Egitto fu conquistato da
+          Alessandro Magno.
+        </p>
+        <p>
+          In questo sito esploreremo la ricca storia, la cultura affascinante e
+          i monumenti straordinari che hanno reso l'antico Egitto una delle
+          civiltà più influenti e durature della storia umana.
+        </p>
+      </div>
     </section>
 
     <!-- Storia Timeline -->
     <section id="storia" class="timeline-section">
-        <h2 class="section-title">
-            <span class="arabic-title">تاريخ مصر القديمة</span>
-            <span class="translation">La Storia dell'Antico Egitto</span>
-        </h2>
-        <div class="timeline">
-            <div class="timeline-item reveal-on-scroll">
-                <div class="timeline-dot"></div>
-                <div class="timeline-date">3100 a.C.</div>
-                <div class="timeline-content">
-                    <h3>Periodo Protodinastico</h3>
-                    <p>Unificazione dell'Alto e Basso Egitto sotto il faraone Narmer (Menes).</p>
-                </div>
-            </div>
-            <div class="timeline-item reveal-on-scroll">
-                <div class="timeline-dot"></div>
-                <div class="timeline-date">2686-2181 a.C.</div>
-                <div class="timeline-content">
-                    <h3>Antico Regno</h3>
-                    <p>L'era delle piramidi. Costruzione della Grande Piramide di Giza.</p>
-                </div>
-            </div>
-            <div class="timeline-item reveal-on-scroll">
-                <div class="timeline-dot"></div>
-                <div class="timeline-date">2055-1650 a.C.</div>
-                <div class="timeline-content">
-                    <h3>Medio Regno</h3>
-                    <p>Periodo di rinascita culturale e artistica dopo il Primo Periodo Intermedio.</p>
-                </div>
-            </div>
-            <div class="timeline-item reveal-on-scroll">
-                <div class="timeline-dot"></div>
-                <div class="timeline-date">1550-1069 a.C.</div>
-                <div class="timeline-content">
-                    <h3>Nuovo Regno</h3>
-                    <p>L'apice del potere egizio. Regno di Tutankhamon, Hatshepsut e Ramses II.</p>
-                </div>
-            </div>
-            <div class="timeline-item reveal-on-scroll">
-                <div class="timeline-dot"></div>
-                <div class="timeline-date">332 a.C.</div>
-                <div class="timeline-content">
-                    <h3>Conquista di Alessandro Magno</h3>
-                    <p>Fine dell'Egitto indipendente e inizio del periodo tolemaico.</p>
-                </div>
-            </div>
-            <div class="timeline-item reveal-on-scroll">
-                <div class="timeline-dot"></div>
-                <div class="timeline-date">30 a.C.</div>
-                <div class="timeline-content">
-                    <h3>Conquista Romana</h3>
-                    <p>L'Egitto diventa una provincia dell'Impero Romano dopo la morte di Cleopatra VII.</p>
-                </div>
-            </div>
+      <h2 class="section-title">
+        <span class="arabic-title">تاريخ مصر القديمة</span>
+        <span class="translation">La Storia dell'Antico Egitto</span>
+      </h2>
+      <div class="timeline">
+        <div class="timeline-item reveal-on-scroll">
+          <div class="timeline-dot"></div>
+          <div class="timeline-date">3100 a.C.</div>
+          <div class="timeline-content">
+            <h3>Periodo Protodinastico</h3>
+            <p>
+              Unificazione dell'Alto e Basso Egitto sotto il faraone Narmer
+              (Menes).
+            </p>
+          </div>
         </div>
+        <div class="timeline-item reveal-on-scroll">
+          <div class="timeline-dot"></div>
+          <div class="timeline-date">2686-2181 a.C.</div>
+          <div class="timeline-content">
+            <h3>Antico Regno</h3>
+            <p>
+              L'era delle piramidi. Costruzione della Grande Piramide di Giza.
+            </p>
+          </div>
+        </div>
+        <div class="timeline-item reveal-on-scroll">
+          <div class="timeline-dot"></div>
+          <div class="timeline-date">2055-1650 a.C.</div>
+          <div class="timeline-content">
+            <h3>Medio Regno</h3>
+            <p>
+              Periodo di rinascita culturale e artistica dopo il Primo Periodo
+              Intermedio.
+            </p>
+          </div>
+        </div>
+        <div class="timeline-item reveal-on-scroll">
+          <div class="timeline-dot"></div>
+          <div class="timeline-date">1550-1069 a.C.</div>
+          <div class="timeline-content">
+            <h3>Nuovo Regno</h3>
+            <p>
+              L'apice del potere egizio. Regno di Tutankhamon, Hatshepsut e
+              Ramses II.
+            </p>
+          </div>
+        </div>
+        <div class="timeline-item reveal-on-scroll">
+          <div class="timeline-dot"></div>
+          <div class="timeline-date">332 a.C.</div>
+          <div class="timeline-content">
+            <h3>Conquista di Alessandro Magno</h3>
+            <p>Fine dell'Egitto indipendente e inizio del periodo tolemaico.</p>
+          </div>
+        </div>
+        <div class="timeline-item reveal-on-scroll">
+          <div class="timeline-dot"></div>
+          <div class="timeline-date">30 a.C.</div>
+          <div class="timeline-content">
+            <h3>Conquista Romana</h3>
+            <p>
+              L'Egitto diventa una provincia dell'Impero Romano dopo la morte di
+              Cleopatra VII.
+            </p>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- Faraoni -->
     <section id="faraoni" class="faraoni-section">
-        <h2 class="section-title">
-            <span class="arabic-title">الفراعنة</span>
-            <span class="translation">I Faraoni</span>
-        </h2>
-        <div class="cards-container">
-            <div class="card reveal-on-scroll">
-                <div class="card-image"
-                    style="background-image: url('https://th.bing.com/th/id/R.7d41f4fa15e3cc0eca226ea5d4eb1aa3?rik=VBQqhrN74R%2fwuA&pid=ImgRaw&r=0')">
-                </div>
-                <div class="card-content">
-                    <h3>Tutankhamon</h3>
-                    <p>Faraone della XVIII dinastia, salito al trono all'età di 9 anni. Famoso per la scoperta della sua
-                        tomba intatta nel 1922.</p>
-                </div>
-            </div>
-            <div class="card reveal-on-scroll">
-                <div class="card-image"
-                    style="background-image: url('data:image/jpeg;base64,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')">
-                </div>
-                <div class="card-content">
-                    <h3>Ramses II</h3>
-                    <p>Uno dei più grandi faraoni del Nuovo Regno, regnò per 66 anni. Costruì numerosi monumenti e
-                        templi in tutto l'Egitto.</p>
-                </div>
-            </div>
-            <div class="card reveal-on-scroll">
-                <div class="card-image"
-                    style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Kleopatra-VII.-Altes-Museum-Berlin1.jpg/800px-Kleopatra-VII.-Altes-Museum-Berlin1.jpg')">
-                </div>
-                <div class="card-content">
-                    <h3>Cleopatra VII</h3>
-                    <p>Ultima regina della dinastia tolemaica e ultima faraona d'Egitto. Alleata di Giulio Cesare e
-                        Marco Antonio.</p>
-                </div>
-            </div>
-            <div class="card reveal-on-scroll">
-                <div class="card-image"
-                    style="background-image: url('https://www.worldhistory.org/img/r/p/1500x1500/178.jpg')">
-                </div>
-                <div class="card-content">
-                    <h3>Hatshepsut</h3>
-                    <p>Una delle poche donne faraone. Regnò per oltre 20 anni durante la XVIII dinastia, periodo di
-                        grande prosperità.</p>
-                </div>
-            </div>
+      <h2 class="section-title">
+        <span class="arabic-title">الفراعنة</span>
+        <span class="translation">I Faraoni</span>
+      </h2>
+      <div class="cards-container">
+        <div class="card reveal-on-scroll">
+          <div
+            class="card-image"
+            style="
+              background-image: url(&quot;https://th.bing.com/th/id/R.7d41f4fa15e3cc0eca226ea5d4eb1aa3?rik=VBQqhrN74R%2fwuA&pid=ImgRaw&r=0&quot;);
+            "
+          ></div>
+          <div class="card-content">
+            <h3>Tutankhamon</h3>
+            <p>
+              Faraone della XVIII dinastia, salito al trono all'età di 9 anni.
+              Famoso per la scoperta della sua tomba intatta nel 1922.
+            </p>
+          </div>
         </div>
+        <div class="card reveal-on-scroll">
+          <div
+            class="card-image"
+            style="
+              background-image: url(&quot;data:image/jpeg;base64,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&quot;);
+            "
+          ></div>
+          <div class="card-content">
+            <h3>Ramses II</h3>
+            <p>
+              Uno dei più grandi faraoni del Nuovo Regno, regnò per 66 anni.
+              Costruì numerosi monumenti e templi in tutto l'Egitto.
+            </p>
+          </div>
+        </div>
+        <div class="card reveal-on-scroll">
+          <div
+            class="card-image"
+            style="
+              background-image: url(&quot;https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Kleopatra-VII.-Altes-Museum-Berlin1.jpg/800px-Kleopatra-VII.-Altes-Museum-Berlin1.jpg&quot;);
+            "
+          ></div>
+          <div class="card-content">
+            <h3>Cleopatra VII</h3>
+            <p>
+              Ultima regina della dinastia tolemaica e ultima faraona d'Egitto.
+              Alleata di Giulio Cesare e Marco Antonio.
+            </p>
+          </div>
+        </div>
+        <div class="card reveal-on-scroll">
+          <div
+            class="card-image"
+            style="
+              background-image: url(&quot;https://www.worldhistory.org/img/r/p/1500x1500/178.jpg&quot;);
+            "
+          ></div>
+          <div class="card-content">
+            <h3>Hatshepsut</h3>
+            <p>
+              Una delle poche donne faraone. Regnò per oltre 20 anni durante la
+              XVIII dinastia, periodo di grande prosperità.
+            </p>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- Divinità -->
     <section id="divinita" class="divinita-section">
-        <h2 class="section-title">
-            <span class="arabic-title">آلهة مصر القديمة</span>
-            <span class="translation">Le Divinità dell'Antico Egitto</span>
-        </h2>
-        <div class="gods-container">
-            <div class="god-card reveal-on-scroll">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Re-Horakhty.svg/800px-Re-Horakhty.svg.png"
-                    alt="Ra" class="god-image">
-                <h3>Ra</h3>
-                <p>Dio del sole e creatore del mondo</p>
-            </div>
-            <div class="god-card reveal-on-scroll">
-                <img src="https://th.bing.com/th/id/R.13bc9f40c86801d0c965d79c78739d33?rik=ujUEhB8JDO5FrA&pid=ImgRaw&r=0"
-                    alt="Osiride" class="god-image">
-                <h3>Osiride</h3>
-                <p>Dio dell'oltretomba e della resurrezione</p>
-            </div>
-            <div class="god-card reveal-on-scroll">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Isis.svg/800px-Isis.svg.png"
-                    alt="Iside" class="god-image">
-                <h3>Iside</h3>
-                <p>Dea della magia, della fertilità e della maternità</p>
-            </div>
-            <div class="god-card reveal-on-scroll">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Anubis_standing.svg/800px-Anubis_standing.svg.png"
-                    alt="Anubi" class="god-image">
-                <h3>Anubi</h3>
-                <p>Dio dell'imbalsamazione e protettore delle tombe</p>
-            </div>
-            <div class="god-card reveal-on-scroll">
-                <img src="https://img.freepik.com/vettori-premium/occhio-bianco-stilizzato-di-horus-su-sfondo-nero-illustrazione-monocromatica-vettoriale-elemento-per-il-design_643070-228.jpg"
-                    alt="Horus" class="god-image">
-                <h3>Horus</h3>
-                <p>Dio del cielo, figlio di Osiride e Iside</p>
-            </div>
-            <div class="god-card reveal-on-scroll">
-                <img src="https://m.media-amazon.com/images/I/91Jkdjf2acL._UF1000,1000_QL80_.jpg" alt="Thoth"
-                    class="god-image">
-                <h3>Thoth</h3>
-                <p>Dio della saggezza, della scrittura e della magia</p>
-            </div>
+      <h2 class="section-title">
+        <span class="arabic-title">آلهة مصر القديمة</span>
+        <span class="translation">Le Divinità dell'Antico Egitto</span>
+      </h2>
+      <div class="gods-container">
+        <div class="god-card reveal-on-scroll">
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Re-Horakhty.svg/800px-Re-Horakhty.svg.png"
+            alt="Ra"
+            class="god-image"
+          />
+          <h3>Ra</h3>
+          <p>Dio del sole e creatore del mondo</p>
         </div>
+        <div class="god-card reveal-on-scroll">
+          <img
+            src="https://th.bing.com/th/id/R.13bc9f40c86801d0c965d79c78739d33?rik=ujUEhB8JDO5FrA&pid=ImgRaw&r=0"
+            alt="Osiride"
+            class="god-image"
+          />
+          <h3>Osiride</h3>
+          <p>Dio dell'oltretomba e della resurrezione</p>
+        </div>
+        <div class="god-card reveal-on-scroll">
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Isis.svg/800px-Isis.svg.png"
+            alt="Iside"
+            class="god-image"
+          />
+          <h3>Iside</h3>
+          <p>Dea della magia, della fertilità e della maternità</p>
+        </div>
+        <div class="god-card reveal-on-scroll">
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Anubis_standing.svg/800px-Anubis_standing.svg.png"
+            alt="Anubi"
+            class="god-image"
+          />
+          <h3>Anubi</h3>
+          <p>Dio dell'imbalsamazione e protettore delle tombe</p>
+        </div>
+        <div class="god-card reveal-on-scroll">
+          <img
+            src="https://img.freepik.com/vettori-premium/occhio-bianco-stilizzato-di-horus-su-sfondo-nero-illustrazione-monocromatica-vettoriale-elemento-per-il-design_643070-228.jpg"
+            alt="Horus"
+            class="god-image"
+          />
+          <h3>Horus</h3>
+          <p>Dio del cielo, figlio di Osiride e Iside</p>
+        </div>
+        <div class="god-card reveal-on-scroll">
+          <img
+            src="https://m.media-amazon.com/images/I/91Jkdjf2acL._UF1000,1000_QL80_.jpg"
+            alt="Thoth"
+            class="god-image"
+          />
+          <h3>Thoth</h3>
+          <p>Dio della saggezza, della scrittura e della magia</p>
+        </div>
+      </div>
     </section>
 
     <!-- Monumenti -->
     <section id="monumenti" class="monumenti-section">
-        <h2 class="section-title">
-            <span class="arabic-title">الآثار المصرية</span>
-            <span class="translation">I Monumenti Egizi</span>
-        </h2>
-        <div class="monuments-slider">
-            <div class="slider-container">
-                <div class="slide active">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Kheops-Pyramid.jpg/1280px-Kheops-Pyramid.jpg"
-                        alt="Piramidi di Giza">
-                    <div class="slide-info">
-                        <h3>La Grande Piramide di Cheope</h3>
-                        <p>L'unica delle sette meraviglie del mondo antico ancora esistente.</p>
-                    </div>
-                </div>
-                <div class="slide">
-                    <img src="https://images.memphistours.com/large/140ab0addd5115638b9537c8b5312498.jpg"
-                        alt="La Sfinge">
-                    <div class="slide-info">
-                        <h3>La Grande Sfinge</h3>
-                        <p>Statua con corpo di leone e testa umana, risalente al regno di Khafre.</p>
-                    </div>
-                </div>
-                <div class="slide">
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTE8Pj-mbdk9fvpo634eKfbUAxEvdrz6ofIkQ&s"
-                        alt="Tempio di Karnak">
-                    <div class="slide-info">
-                        <h3>Tempio di Karnak</h3>
-                        <p>Uno dei più grandi complessi religiosi mai costruiti.</p>
-                    </div>
-                </div>
-                <div class="slide">
-                    <img src="https://s3-eu-central-1.amazonaws.com/cercarte/wp-media-folder-cercarte-it/wp-content/uploads/2024/02/Valle-dei-Re-Egitto.jpg"
-                        alt="Valle dei Re">
-                    <div class="slide-info">
-                        <h3>Valle dei Re</h3>
-                        <p>Luogo di sepoltura dei faraoni del Nuovo Regno.</p>
-                    </div>
-                </div>
+      <h2 class="section-title">
+        <span class="arabic-title">الآثار المصرية</span>
+        <span class="translation">I Monumenti Egizi</span>
+      </h2>
+      <div class="monuments-slider">
+        <div class="slider-container">
+          <div class="slide active">
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Kheops-Pyramid.jpg/1280px-Kheops-Pyramid.jpg"
+              alt="Piramidi di Giza"
+            />
+            <div class="slide-info">
+              <h3>La Grande Piramide di Cheope</h3>
+              <p>
+                L'unica delle sette meraviglie del mondo antico ancora
+                esistente.
+              </p>
             </div>
-            <div class="slider-controls">
-                <button class="prev-btn">&#10094;</button>
-                <div class="slider-dots"></div>
-                <button class="next-btn">&#10095;</button>
+          </div>
+          <div class="slide">
+            <img
+              src="https://images.memphistours.com/large/140ab0addd5115638b9537c8b5312498.jpg"
+              alt="La Sfinge"
+            />
+            <div class="slide-info">
+              <h3>La Grande Sfinge</h3>
+              <p>
+                Statua con corpo di leone e testa umana, risalente al regno di
+                Khafre.
+              </p>
             </div>
+          </div>
+          <div class="slide">
+            <img
+              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTE8Pj-mbdk9fvpo634eKfbUAxEvdrz6ofIkQ&s"
+              alt="Tempio di Karnak"
+            />
+            <div class="slide-info">
+              <h3>Tempio di Karnak</h3>
+              <p>Uno dei più grandi complessi religiosi mai costruiti.</p>
+            </div>
+          </div>
+          <div class="slide">
+            <img
+              src="https://s3-eu-central-1.amazonaws.com/cercarte/wp-media-folder-cercarte-it/wp-content/uploads/2024/02/Valle-dei-Re-Egitto.jpg"
+              alt="Valle dei Re"
+            />
+            <div class="slide-info">
+              <h3>Valle dei Re</h3>
+              <p>Luogo di sepoltura dei faraoni del Nuovo Regno.</p>
+            </div>
+          </div>
         </div>
+        <div class="slider-controls">
+          <button class="prev-btn">&#10094;</button>
+          <div class="slider-dots"></div>
+          <button class="next-btn">&#10095;</button>
+        </div>
+      </div>
     </section>
 
     <!-- Galleria -->
     <section id="galleria" class="gallery-section">
-        <h2 class="section-title">
-            <span class="arabic-title">معرض الصور</span>
-            <span class="translation">Galleria</span>
-        </h2>
-        <div class="gallery-container">
-            <div class="gallery-item reveal-on-scroll" data-category="arte">
-                <img src="https://www.storicang.it/medio/2019/12/20/libro-dei-morti-a-partire-dal-nuovo-regno-vengono-prodotti-migliaia-di-papiri-funerari-sempre-piu-raffinati-nella-foto-esemplare-del-periodo-tardo-di-nome-tsekhons_d0dd32d1_1200x630.jpg"
-                    alt="Papiro egizio">
-                <div class="gallery-overlay">
-                    <h3>Arte su Papiro</h3>
-                    <p>Il Libro dei Morti di Ani, un antico scriba egizio</p>
-                </div>
-            </div>
-            <div class="gallery-item reveal-on-scroll" data-category="tesori">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/CairoEgMuseumTaaMaskMostlyPhotographed.jpg/800px-CairoEgMuseumTaaMaskMostlyPhotographed.jpg"
-                    alt="Maschera di Tutankhamon">
-                <div class="gallery-overlay">
-                    <h3>Maschera di Tutankhamon</h3>
-                    <p>Maschera funeraria in oro massiccio del faraone Tutankhamon</p>
-                </div>
-            </div>
-            <div class="gallery-item reveal-on-scroll" data-category="architettura">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTmBY037LqWlI3fLW59NB-bksShcqPsKWNYww&s"
-                    alt="Tempio di Abu Simbel">
-                <div class="gallery-overlay">
-                    <h3>Tempio di Abu Simbel</h3>
-                    <p>Tempio costruito da Ramses II e spostato negli anni '60 per salvarlo dalle acque del Lago Nasser
-                    </p>
-                </div>
-            </div>
-            <div class="gallery-item reveal-on-scroll" data-category="vita">
-                <img src="https://ilmondodiaura.altervista.org/EGIZI/vitaquotidiana/abitazione.jpg"
-                    alt="Vita quotidiana">
-                <div class="gallery-overlay">
-                    <h3>Vita Quotidiana</h3>
-                    <p>Dipinto dalla tomba di Sennedjem che mostra scene di agricoltura</p>
-                </div>
-            </div>
-            <div class="gallery-item reveal-on-scroll" data-category="tesori">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWh244Czyr6Dy9NujFuOc2yLZVxeo_gDUYrw&s"
-                    alt="Gioielli egizi">
-                <div class="gallery-overlay">
-                    <h3>Gioielli Egizi</h3>
-                    <p>Preziosi ornamenti in oro e pietre preziose dal Museo Egizio del Cairo</p>
-                </div>
-            </div>
-            <div class="gallery-item reveal-on-scroll" data-category="arte">
-                <img src="https://www.studiarapido.it/wp-content/uploads/2020/08/geroglifici.jpg" alt="Geroglifici">
-                <div class="gallery-overlay">
-                    <h3>Geroglifici</h3>
-                    <p>Iscrizioni geroglifiche dalla tomba del faraone Seti I</p>
-                </div>
-            </div>
-            <div class="gallery-item reveal-on-scroll" data-category="architettura">
-                <img src="https://images.memphistours.com/large/718118473_Tempio%20di%20Horus.jpg" alt="Tempio di Edfu">
-                <div class="gallery-overlay">
-                    <h3>Tempio di Edfu</h3>
-                    <p>Uno dei templi meglio conservati dell'antico Egitto, dedicato al dio Horus</p>
-                </div>
-            </div>
-            <div class="gallery-item reveal-on-scroll" data-category="vita">
-                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjB8xkidEf-A2F_AQerlayVPl1pddNggckfceTvUrPNF7QJLC5kK210RK3LzJfsknVq_Biwcl2Qj-5ve96fp9zx0Ft4Il8ij2pU_gfmT6lMcCOeskiW7YGceFkbOSNGnGMav9oy6cptAbe8/s1600/26_mummy_boy_fayum_gdm.jpg"
-                    alt="Scena di caccia">
-                <div class="gallery-overlay">
-                    <h3>Scena di Caccia</h3>
-                    <p>Frammento di parete con scena di caccia agli uccelli nelle paludi</p>
-                </div>
-            </div>
-            <div class="gallery-item reveal-on-scroll" data-category="tesori">
-                <img src="https://laciviltaegizia.org/wp-content/uploads/2021/02/narmer.jpeg" alt="Tavolozza di Narmer">
-                <div class="gallery-overlay">
-                    <h3>Tavolozza di Narmer</h3>
-                    <p>Antico manufatto che celebra l'unificazione dell'Alto e Basso Egitto</p>
-                </div>
-            </div>
-            <div class="gallery-item reveal-on-scroll" data-category="arte">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTAJUrSc49QyxeLUd-F8HgrGWajHkUsnQuV8Q&s"
-                    alt="Musicisti egizi">
-                <div class="gallery-overlay">
-                    <h3>Musicisti Egizi</h3>
-                    <p>Dipinto dalla tomba di Nakht che mostra musicisti e danzatori</p>
-                </div>
-            </div>
-            <div class="gallery-item reveal-on-scroll" data-category="architettura">
-                <img src="https://s3.eu-central-1.amazonaws.com/other.projects.storage/multitenacy/wikis/2025-03-22-05-34-43-067def4b3c803b.webp"
-                    alt="Tempio di File">
-                <div class="gallery-overlay">
-                    <h3>Tempio di File</h3>
-                    <p>Complesso templare dedicato alla dea Iside, spostato per salvarlo dalle acque del Nilo</p>
-                </div>
-            </div>
-            <div class="gallery-item reveal-on-scroll" data-category="vita">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Modello_di_imbarcazione_con_rematori_e_baldacchino_BEG0104.tif/lossy-page1-220px-Modello_di_imbarcazione_con_rematori_e_baldacchino_BEG0104.tif.jpg"
-                    alt="Barca funeraria">
-                <div class="gallery-overlay">
-                    <h3>Barca Funeraria</h3>
-                    <p>Modello di barca funeraria per il viaggio nell'aldilà</p>
-                </div>
-            </div>
+      <h2 class="section-title">
+        <span class="arabic-title">معرض الصور</span>
+        <span class="translation">Galleria</span>
+      </h2>
+      <div class="gallery-container">
+        <div class="gallery-item reveal-on-scroll" data-category="arte">
+          <img
+            src="https://www.storicang.it/medio/2019/12/20/libro-dei-morti-a-partire-dal-nuovo-regno-vengono-prodotti-migliaia-di-papiri-funerari-sempre-piu-raffinati-nella-foto-esemplare-del-periodo-tardo-di-nome-tsekhons_d0dd32d1_1200x630.jpg"
+            alt="Papiro egizio"
+          />
+          <div class="gallery-overlay">
+            <h3>Arte su Papiro</h3>
+            <p>Il Libro dei Morti di Ani, un antico scriba egizio</p>
+          </div>
         </div>
+        <div class="gallery-item reveal-on-scroll" data-category="tesori">
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/CairoEgMuseumTaaMaskMostlyPhotographed.jpg/800px-CairoEgMuseumTaaMaskMostlyPhotographed.jpg"
+            alt="Maschera di Tutankhamon"
+          />
+          <div class="gallery-overlay">
+            <h3>Maschera di Tutankhamon</h3>
+            <p>Maschera funeraria in oro massiccio del faraone Tutankhamon</p>
+          </div>
+        </div>
+        <div class="gallery-item reveal-on-scroll" data-category="architettura">
+          <img
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTmBY037LqWlI3fLW59NB-bksShcqPsKWNYww&s"
+            alt="Tempio di Abu Simbel"
+          />
+          <div class="gallery-overlay">
+            <h3>Tempio di Abu Simbel</h3>
+            <p>
+              Tempio costruito da Ramses II e spostato negli anni '60 per
+              salvarlo dalle acque del Lago Nasser
+            </p>
+          </div>
+        </div>
+        <div class="gallery-item reveal-on-scroll" data-category="vita">
+          <img
+            src="https://ilmondodiaura.altervista.org/EGIZI/vitaquotidiana/abitazione.jpg"
+            alt="Vita quotidiana"
+          />
+          <div class="gallery-overlay">
+            <h3>Vita Quotidiana</h3>
+            <p>
+              Dipinto dalla tomba di Sennedjem che mostra scene di agricoltura
+            </p>
+          </div>
+        </div>
+        <div class="gallery-item reveal-on-scroll" data-category="tesori">
+          <img
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWh244Czyr6Dy9NujFuOc2yLZVxeo_gDUYrw&s"
+            alt="Gioielli egizi"
+          />
+          <div class="gallery-overlay">
+            <h3>Gioielli Egizi</h3>
+            <p>
+              Preziosi ornamenti in oro e pietre preziose dal Museo Egizio del
+              Cairo
+            </p>
+          </div>
+        </div>
+        <div class="gallery-item reveal-on-scroll" data-category="arte">
+          <img
+            src="https://www.studiarapido.it/wp-content/uploads/2020/08/geroglifici.jpg"
+            alt="Geroglifici"
+          />
+          <div class="gallery-overlay">
+            <h3>Geroglifici</h3>
+            <p>Iscrizioni geroglifiche dalla tomba del faraone Seti I</p>
+          </div>
+        </div>
+        <div class="gallery-item reveal-on-scroll" data-category="architettura">
+          <img
+            src="https://images.memphistours.com/large/718118473_Tempio%20di%20Horus.jpg"
+            alt="Tempio di Edfu"
+          />
+          <div class="gallery-overlay">
+            <h3>Tempio di Edfu</h3>
+            <p>
+              Uno dei templi meglio conservati dell'antico Egitto, dedicato al
+              dio Horus
+            </p>
+          </div>
+        </div>
+        <div class="gallery-item reveal-on-scroll" data-category="vita">
+          <img
+            src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjB8xkidEf-A2F_AQerlayVPl1pddNggckfceTvUrPNF7QJLC5kK210RK3LzJfsknVq_Biwcl2Qj-5ve96fp9zx0Ft4Il8ij2pU_gfmT6lMcCOeskiW7YGceFkbOSNGnGMav9oy6cptAbe8/s1600/26_mummy_boy_fayum_gdm.jpg"
+            alt="Scena di caccia"
+          />
+          <div class="gallery-overlay">
+            <h3>Scena di Caccia</h3>
+            <p>
+              Frammento di parete con scena di caccia agli uccelli nelle paludi
+            </p>
+          </div>
+        </div>
+        <div class="gallery-item reveal-on-scroll" data-category="tesori">
+          <img
+            src="https://laciviltaegizia.org/wp-content/uploads/2021/02/narmer.jpeg"
+            alt="Tavolozza di Narmer"
+          />
+          <div class="gallery-overlay">
+            <h3>Tavolozza di Narmer</h3>
+            <p>
+              Antico manufatto che celebra l'unificazione dell'Alto e Basso
+              Egitto
+            </p>
+          </div>
+        </div>
+        <div class="gallery-item reveal-on-scroll" data-category="arte">
+          <img
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTAJUrSc49QyxeLUd-F8HgrGWajHkUsnQuV8Q&s"
+            alt="Musicisti egizi"
+          />
+          <div class="gallery-overlay">
+            <h3>Musicisti Egizi</h3>
+            <p>Dipinto dalla tomba di Nakht che mostra musicisti e danzatori</p>
+          </div>
+        </div>
+        <div class="gallery-item reveal-on-scroll" data-category="architettura">
+          <img
+            src="https://s3.eu-central-1.amazonaws.com/other.projects.storage/multitenacy/wikis/2025-03-22-05-34-43-067def4b3c803b.webp"
+            alt="Tempio di File"
+          />
+          <div class="gallery-overlay">
+            <h3>Tempio di File</h3>
+            <p>
+              Complesso templare dedicato alla dea Iside, spostato per salvarlo
+              dalle acque del Nilo
+            </p>
+          </div>
+        </div>
+        <div class="gallery-item reveal-on-scroll" data-category="vita">
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Modello_di_imbarcazione_con_rematori_e_baldacchino_BEG0104.tif/lossy-page1-220px-Modello_di_imbarcazione_con_rematori_e_baldacchino_BEG0104.tif.jpg"
+            alt="Barca funeraria"
+          />
+          <div class="gallery-overlay">
+            <h3>Barca Funeraria</h3>
+            <p>Modello di barca funeraria per il viaggio nell'aldilà</p>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- Footer -->
     <footer>
-        <div class="footer-content">
-            <div class="footer-logo">
-                <img src="ankh.svg" alt="Simbolo Ankh" class="ankh-symbol">
-                <h2>Antico Egitto</h2>
-            </div>
-            <div class="footer-quote">
-                <p class="arabic-text">الحكمة هي معرفة ما يجب أن تفعله</p>
-                <p class="translation">"La saggezza è sapere cosa fare"</p>
-            </div>
-            <div class="footer-nav">
-                <h3>Esplora</h3>
-                <ul>
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="#storia">Storia</a></li>
-                    <li><a href="#faraoni">Faraoni</a></li>
-                    <li><a href="#divinita">Divinità</a></li>
-                    <li><a href="#monumenti">Monumenti</a></li>
-                    <li><a href="#galleria">Galleria</a></li>
-                </ul>
-            </div>
+      <div class="footer-content">
+        <div class="footer-logo">
+          <img src="ankh.svg" alt="Simbolo Ankh" class="ankh-symbol" />
+          <h2>Antico Egitto</h2>
         </div>
-        <div class="footer-bottom">
-            <p>&copy; 2025 L'Antico Egitto - Viaggio nella Storia. Tutti i diritti riservati.</p>
+        <div class="footer-quote">
+          <p class="arabic-text">الحكمة هي معرفة ما يجب أن تفعله</p>
+          <p class="translation">"La saggezza è sapere cosa fare"</p>
         </div>
+        <div class="footer-nav">
+          <h3>Esplora</h3>
+          <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#storia">Storia</a></li>
+            <li><a href="#faraoni">Faraoni</a></li>
+            <li><a href="#divinita">Divinità</a></li>
+            <li><a href="#monumenti">Monumenti</a></li>
+            <li><a href="#galleria">Galleria</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>
+          &copy; 2025 L'Antico Egitto - Viaggio nella Storia. Tutti i diritti
+          riservati.
+        </p>
+      </div>
     </footer>
 
     <script src="script.js"></script>
-</body>
-
+  </body>
 </html>

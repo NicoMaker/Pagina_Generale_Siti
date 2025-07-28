@@ -1,156 +1,203 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="it">
-
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>QR Code Generator</title>
     <link rel="stylesheet" href="style.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    <link rel="icon"
-        href="https://th.bing.com/th/id/OIP.ZZa-0kOA5nqcG3DtZUSbOwAAAA?o=7rm=3&rs=1&pid=ImgDetMain&cb=idpwebp1&o=7&rm=3"
-        type="image/jpg" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      rel="icon"
+      href="https://th.bing.com/th/id/OIP.ZZa-0kOA5nqcG3DtZUSbOwAAAA?o=7rm=3&rs=1&pid=ImgDetMain&cb=idpwebp1&o=7&rm=3"
+      type="image/jpg"
+    />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
-</head>
+  </head>
 
-<body>
+  <body>
     <div class="container">
-        <header class="header">
-            <div class="logo">
-                <i class="fas fa-qrcode"></i>
-                <h1>QR Generator</h1>
+      <header class="header">
+        <div class="logo">
+          <i class="fas fa-qrcode"></i>
+          <h1>QR Generator</h1>
+        </div>
+        <p class="subtitle">Genera codici QR personalizzati in pochi secondi</p>
+      </header>
+
+      <main class="main-content">
+        <div class="input-section">
+          <div class="input-group">
+            <label for="qr-type">Tipo di contenuto</label>
+            <select id="qr-type" class="input-field">
+              <option value="text">Testo</option>
+              <option value="url">URL/Link</option>
+              <option value="email">Email</option>
+              <option value="phone">Telefono</option>
+              <option value="wifi">WiFi</option>
+            </select>
+          </div>
+
+          <div class="input-group" id="text-input">
+            <label for="qr-text">Inserisci il testo</label>
+            <textarea
+              id="qr-text"
+              class="input-field"
+              placeholder="Scrivi qui il tuo testo..."
+              rows="3"
+            ></textarea>
+          </div>
+
+          <div class="input-group hidden" id="url-input">
+            <label for="qr-url">URL</label>
+            <input
+              type="url"
+              id="qr-url"
+              class="input-field"
+              placeholder="https://esempio.com"
+            />
+          </div>
+
+          <div class="email-inputs hidden" id="email-input">
+            <div class="input-group">
+              <label for="qr-email">Email destinatario</label>
+              <input
+                type="email"
+                id="qr-email"
+                class="input-field"
+                placeholder="esempio@email.com"
+              />
             </div>
-            <p class="subtitle">Genera codici QR personalizzati in pochi secondi</p>
-        </header>
+            <div class="input-group">
+              <label for="qr-email-subject">Oggetto (opzionale)</label>
+              <input
+                type="text"
+                id="qr-email-subject"
+                class="input-field"
+                placeholder="Oggetto dell'email"
+              />
+            </div>
+            <div class="input-group">
+              <label for="qr-email-body">Messaggio (opzionale)</label>
+              <textarea
+                id="qr-email-body"
+                class="input-field"
+                placeholder="Corpo del messaggio..."
+                rows="3"
+              ></textarea>
+            </div>
+          </div>
 
-        <main class="main-content">
-            <div class="input-section">
-                <div class="input-group">
-                    <label for="qr-type">Tipo di contenuto</label>
-                    <select id="qr-type" class="input-field">
-                        <option value="text">Testo</option>
-                        <option value="url">URL/Link</option>
-                        <option value="email">Email</option>
-                        <option value="phone">Telefono</option>
-                        <option value="wifi">WiFi</option>
-                    </select>
-                </div>
+          <div class="input-group hidden" id="phone-input">
+            <label for="qr-phone">Numero di telefono</label>
+            <input
+              type="tel"
+              id="qr-phone"
+              class="input-field"
+              placeholder="+39 123 456 7890"
+            />
+          </div>
 
-                <div class="input-group" id="text-input">
-                    <label for="qr-text">Inserisci il testo</label>
-                    <textarea id="qr-text" class="input-field" placeholder="Scrivi qui il tuo testo..."
-                        rows="3"></textarea>
-                </div>
+          <div class="wifi-inputs hidden" id="wifi-input">
+            <div class="input-group">
+              <label for="wifi-ssid">Nome rete (SSID)</label>
+              <input
+                type="text"
+                id="wifi-ssid"
+                class="input-field"
+                placeholder="Nome WiFi"
+              />
+            </div>
+            <div class="input-group">
+              <label for="wifi-password">Password</label>
+              <input
+                type="password"
+                id="wifi-password"
+                class="input-field"
+                placeholder="Password WiFi"
+              />
+            </div>
+            <div class="input-group">
+              <label for="wifi-security">Sicurezza</label>
+              <select id="wifi-security" class="input-field">
+                <option value="WPA">WPA/WPA2</option>
+                <option value="WEP">WEP</option>
+                <option value="nopass">Nessuna</option>
+              </select>
+            </div>
+          </div>
 
-                <div class="input-group hidden" id="url-input">
-                    <label for="qr-url">URL</label>
-                    <input type="url" id="qr-url" class="input-field" placeholder="https://esempio.com" />
-                </div>
-
-                <div class="email-inputs hidden" id="email-input">
-                    <div class="input-group">
-                        <label for="qr-email">Email destinatario</label>
-                        <input type="email" id="qr-email" class="input-field" placeholder="esempio@email.com" />
-                    </div>
-                    <div class="input-group">
-                        <label for="qr-email-subject">Oggetto (opzionale)</label>
-                        <input type="text" id="qr-email-subject" class="input-field" placeholder="Oggetto dell'email" />
-                    </div>
-                    <div class="input-group">
-                        <label for="qr-email-body">Messaggio (opzionale)</label>
-                        <textarea id="qr-email-body" class="input-field" placeholder="Corpo del messaggio..."
-                            rows="3"></textarea>
-                    </div>
-                </div>
-
-                <div class="input-group hidden" id="phone-input">
-                    <label for="qr-phone">Numero di telefono</label>
-                    <input type="tel" id="qr-phone" class="input-field" placeholder="+39 123 456 7890" />
-                </div>
-
-                <div class="wifi-inputs hidden" id="wifi-input">
-                    <div class="input-group">
-                        <label for="wifi-ssid">Nome rete (SSID)</label>
-                        <input type="text" id="wifi-ssid" class="input-field" placeholder="Nome WiFi" />
-                    </div>
-                    <div class="input-group">
-                        <label for="wifi-password">Password</label>
-                        <input type="password" id="wifi-password" class="input-field" placeholder="Password WiFi" />
-                    </div>
-                    <div class="input-group">
-                        <label for="wifi-security">Sicurezza</label>
-                        <select id="wifi-security" class="input-field">
-                            <option value="WPA">WPA/WPA2</option>
-                            <option value="WEP">WEP</option>
-                            <option value="nopass">Nessuna</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="customization-section">
-                    <h3>Personalizzazione</h3>
-                    <div class="custom-row">
-                        <div class="input-group">
-                            <label for="qr-size">Dimensione</label>
-                            <select id="qr-size" class="input-field">
-                                <option value="200">200px</option>
-                                <option value="300" selected>300px</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <button id="generate-btn" class="generate-btn">
-                        <i class="fas fa-magic"></i>
-                        Genera QR Code
-                    </button>
-                </div>
+          <div class="customization-section">
+            <h3>Personalizzazione</h3>
+            <div class="custom-row">
+              <div class="input-group">
+                <label for="qr-size">Dimensione</label>
+                <select id="qr-size" class="input-field">
+                  <option value="200">200px</option>
+                  <option value="300" selected>300px</option>
+                </select>
+              </div>
             </div>
 
-            <div class="output-section">
-                <div class="qr-container" id="qr-container">
-                    <div class="placeholder">
-                        <i class="fas fa-qrcode"></i>
-                        <p>Il tuo QR Code apparirà qui</p>
-                    </div>
-                </div>
+            <button id="generate-btn" class="generate-btn">
+              <i class="fas fa-magic"></i>
+              Genera QR Code
+            </button>
+          </div>
+        </div>
 
-                <div class="download-section hidden" id="download-section">
-                    <button id="download-btn" class="download-btn">
-                        <i class="fas fa-download"></i>
-                        Scarica QR Code
-                    </button>
-                    <button id="copy-btn" class="copy-btn">
-                        <i class="fas fa-copy"></i>
-                        Copia negli appunti
-                    </button>
-                </div>
-
-                <div class="info-section" id="info-section">
-                    <div class="info-card">
-                        <h4>Informazioni QR Code</h4>
-                        <div class="info-content">
-                            <p><strong>Tipo:</strong> <span id="info-type">-</span></p>
-                            <p><strong>Dimensione:</strong> <span id="info-size">-</span></p>
-                            <p><strong>Contenuto:</strong> <span id="info-content">-</span></p>
-                        </div>
-                    </div>
-                </div>
+        <div class="output-section">
+          <div class="qr-container" id="qr-container">
+            <div class="placeholder">
+              <i class="fas fa-qrcode"></i>
+              <p>Il tuo QR Code apparirà qui</p>
             </div>
-        </main>
+          </div>
 
-        <footer class="footer">
-            <p>&copy; 2024 QR Generator. Creato con ❤️</p>
-        </footer>
+          <div class="download-section hidden" id="download-section">
+            <button id="download-btn" class="download-btn">
+              <i class="fas fa-download"></i>
+              Scarica QR Code
+            </button>
+            <button id="copy-btn" class="copy-btn">
+              <i class="fas fa-copy"></i>
+              Copia negli appunti
+            </button>
+          </div>
+
+          <div class="info-section" id="info-section">
+            <div class="info-card">
+              <h4>Informazioni QR Code</h4>
+              <div class="info-content">
+                <p><strong>Tipo:</strong> <span id="info-type">-</span></p>
+                <p>
+                  <strong>Dimensione:</strong> <span id="info-size">-</span>
+                </p>
+                <p>
+                  <strong>Contenuto:</strong> <span id="info-content">-</span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <footer class="footer">
+        <p>&copy; 2024 QR Generator. Creato con ❤️</p>
+      </footer>
     </div>
 
     <div class="toast" id="toast">
-        <i class="fas fa-check-circle"></i>
-        <span id="toast-message">QR Code generato!</span>
+      <i class="fas fa-check-circle"></i>
+      <span id="toast-message">QR Code generato!</span>
     </div>
 
     <script src="script.js"></script>
-</body>
-
+  </body>
 </html>

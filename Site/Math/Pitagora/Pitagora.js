@@ -88,7 +88,7 @@ function calcolaIpotenusa(risultatoElement) {
 
   const ipotenusa = Math.sqrt(cateto1 * cateto1 + cateto2 * cateto2);
   risultatoElement.innerHTML = `L'ipotenusa è: <strong>${ipotenusa.toFixed(
-    3
+    3,
   )}</strong>`;
 
   // Update the triangle visualization
@@ -118,7 +118,7 @@ function calcolaCateto(risultatoElement) {
 
   const altroCateto = Math.sqrt(ipotenusa * ipotenusa - cateto * cateto);
   risultatoElement.innerHTML = `L'altro cateto è: <strong>${altroCateto.toFixed(
-    3
+    3,
   )}</strong>`;
 
   // Update the triangle visualization
@@ -138,7 +138,7 @@ function updateTriangleVisualization(a, b, c) {
   const triangle = document.querySelector(".triangle-diagram svg polygon");
   triangle.setAttribute(
     "points",
-    `20,180 ${20 + scaledA},180 20,${180 - scaledB}`
+    `20,180 ${20 + scaledA},180 20,${180 - scaledB}`,
   );
 
   // Update the labels
@@ -150,6 +150,6 @@ function updateTriangleVisualization(a, b, c) {
   // Position the formula
   const formula = document.querySelector('.triangle-diagram svg text[x="60"]');
   formula.textContent = `${a.toFixed(1)}² + ${b.toFixed(1)}² = ${c.toFixed(
-    1
+    1,
   )}²`;
 }

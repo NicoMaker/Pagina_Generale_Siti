@@ -75,7 +75,7 @@ function showLoadingSkeletons() {
         <div class="skeleton" style="width: 40%;"></div>
         <div class="skeleton" style="width: 70%;"></div>
       </div>
-    `
+    `,
     )
     .join("");
 
@@ -88,7 +88,7 @@ function showLoadingSkeletons() {
         <div class="skeleton" style="width: 80%;"></div>
         <div class="skeleton" style="width: 60%;"></div>
       </div>
-    `
+    `,
     )
     .join("");
 }
@@ -189,8 +189,8 @@ function getCountryInfo() {
         <div class="info-item">
           <span class="info-label">Regione</span>
           <span class="info-value">${country.region} ${
-        country.subregion ? `(${country.subregion})` : ""
-      }</span>
+            country.subregion ? `(${country.subregion})` : ""
+          }</span>
         </div>
         <div class="info-item">
           <span class="info-label">Latitudine</span>
@@ -233,7 +233,7 @@ function getCountryInfo() {
             <span class="currency-symbol">${currency.symbol || "?"}</span>
             ${currency.name}
           </div>
-        `
+        `,
           )
           .join("");
       }
@@ -284,7 +284,7 @@ function getCountryInfo() {
       // Show success notification
       showNotification(
         `Informazioni su ${country.name.common} caricate con successo!`,
-        "success"
+        "success",
       );
 
       // Scroll to results
@@ -298,7 +298,7 @@ function getCountryInfo() {
 
       if (error.name === "AbortError") {
         showNotification(
-          "La richiesta è scaduta. Verifica la tua connessione e riprova."
+          "La richiesta è scaduta. Verifica la tua connessione e riprova.",
         );
       } else {
         showNotification("Stato non trovato. Controlla il nome e riprova.");
@@ -319,6 +319,6 @@ window.addEventListener("online", () => {
 window.addEventListener("offline", () => {
   showNotification(
     "Sei offline. Alcune funzionalità potrebbero non essere disponibili.",
-    "error"
+    "error",
   );
 });

@@ -43,7 +43,7 @@ async function loadEgyptianData() {
     MAX_NUMBER_SYMBOLS = EGYPTIAN_DATA.maxNumberSymbols || MAX_NUMBER;
 
     console.log(
-      `Valori massimi caricati dal JSON: maxNumber=${MAX_NUMBER}, maxNumberSymbols=${MAX_NUMBER_SYMBOLS}`
+      `Valori massimi caricati dal JSON: maxNumber=${MAX_NUMBER}, maxNumberSymbols=${MAX_NUMBER_SYMBOLS}`,
     );
 
     // Initialize the page after data is loaded
@@ -95,9 +95,8 @@ function initializeWithFallbackData() {
     KNOWLEDGE: "𓂋𓐍𓏏",
   };
 
-
   console.warn(
-    `Utilizzando valori di fallback: maxNumber=${MAX_NUMBER}, maxNumberSymbols=${MAX_NUMBER_SYMBOLS}`
+    `Utilizzando valori di fallback: maxNumber=${MAX_NUMBER}, maxNumberSymbols=${MAX_NUMBER_SYMBOLS}`,
   );
 
   initializePage();

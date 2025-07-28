@@ -122,7 +122,7 @@ document.addEventListener("DOMContentLoaded", () => {
         `<div class="step">
           <div class="step-number">!</div>
           <div class="step-content">Scambio i numeri per avere il maggiore come primo: ${numero2} e ${numero1}</div>
-        </div>`
+        </div>`,
       );
     }
 
@@ -135,7 +135,7 @@ document.addEventListener("DOMContentLoaded", () => {
         `<div class="step">
           <div class="step-number">${passaggio}</div>
           <div class="step-content">${a} = ${b} × ${quoziente} + ${resto}</div>
-        </div>`
+        </div>`,
       );
 
       a = b;
@@ -150,16 +150,16 @@ document.addEventListener("DOMContentLoaded", () => {
       `<div class="step">
         <div class="step-number">${passaggio}</div>
         <div class="step-content">${a} = ${b} × ${quoziente} + ${resto}</div>
-      </div>`
+      </div>`,
     );
 
     // Add summary
     passaggi.push(
       `<div class="step-summary">
         Per calcolare l'MCD sono stati necessari ${passaggio} ${
-        passaggio === 1 ? "passaggio" : "passaggi"
-      }.
-      </div>`
+          passaggio === 1 ? "passaggio" : "passaggi"
+        }.
+      </div>`,
     );
 
     // Update UI

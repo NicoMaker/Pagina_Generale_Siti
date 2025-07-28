@@ -2,7 +2,7 @@
 function validateInput() {
   const inputNumber = document.getElementById("inputNumber").value;
   const fromBase = Number.parseInt(
-    document.getElementById("selectFromBase").value
+    document.getElementById("selectFromBase").value,
   );
   const inputGroup = document.querySelector(".input-group");
   const inputHint = document.querySelector(".input-hint");
@@ -38,7 +38,7 @@ function convert() {
 
   const inputNumber = document.getElementById("inputNumber").value;
   const fromBase = Number.parseInt(
-    document.getElementById("selectFromBase").value
+    document.getElementById("selectFromBase").value,
   );
   const toBase = Number.parseInt(document.getElementById("selectToBase").value);
 

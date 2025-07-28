@@ -397,10 +397,13 @@ function createConfetti() {
     confettiContainer.appendChild(confetti);
 
     // Rimuovi il confetto dopo l'animazione
-    setTimeout(() => {
-      if (confettiContainer.contains(confetti)) {
-        confettiContainer.removeChild(confetti);
-      }
-    }, (duration + delay) * 1000);
+    setTimeout(
+      () => {
+        if (confettiContainer.contains(confetti)) {
+          confettiContainer.removeChild(confetti);
+        }
+      },
+      (duration + delay) * 1000,
+    );
   }
 }

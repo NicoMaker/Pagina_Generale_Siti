@@ -1,54 +1,53 @@
-@import url('https://fonts.cdnfonts.com/css/seven-segment');
+@import url("https://fonts.cdnfonts.com/css/seven-segment");
 
 .btn {
-    width: 100px;
-    height: 100px;
-    font-size: 45px;
-    background-color: white;
-    border-radius: 50px;
+  width: 100px;
+  height: 100px;
+  font-size: 45px;
+  background-color: white;
+  border-radius: 50px;
 }
 
 .Contenitore {
-    width: 100px;
-    height: 100px;
-    font-size: 45px;
-    background-color: yellow;
-    color: green;
-    border-radius: 50px;
+  width: 100px;
+  height: 100px;
+  font-size: 45px;
+  background-color: yellow;
+  color: green;
+  border-radius: 50px;
 }
 
 h1 {
-    color: red;
-    font-weight: bold;
-    font-size: 50px;
+  color: red;
+  font-weight: bold;
+  font-size: 50px;
 }
 
 .Cancella {
-    width: 425px;
-    height: 100px;
-    font-size: 45px;
-    background-color: cyan;
-    color: green;
-    border-radius: 50px;
+  width: 425px;
+  height: 100px;
+  font-size: 45px;
+  background-color: cyan;
+  color: green;
+  border-radius: 50px;
 }
 
 .centrato {
-    text-align: center;
-    position: relative;
-    display: block;
-    margin: auto;
+  text-align: center;
+  position: relative;
+  display: block;
+  margin: auto;
 }
 
-input{
-    width: 425px;
-    height: 100px;
-    text-align: center;
-    font-size: 45px;
-    border: solid cyan 10px;
-    border-radius: 80px;
+input {
+  width: 425px;
+  height: 100px;
+  text-align: center;
+  font-size: 45px;
+  border: solid cyan 10px;
+  border-radius: 80px;
 }
 
-#result
-{
-    font-family: 'Seven Segment', sans-serif;
+#result {
+  font-family: "Seven Segment", sans-serif;
 }

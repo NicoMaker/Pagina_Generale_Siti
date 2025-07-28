@@ -1,146 +1,173 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Generatore di Numeri Casuali</title>
+    <link
+      rel="icon"
+      href="https://play-lh.googleusercontent.com/rrwJGus_vdSfxkDynUqA-VRvmhjLOWKsCc7MONdBtcxLRAviEDFtAJK0sr8OWGl1aQ"
+      type="image/jpg"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Generatore di Numeri Casuali</title>
-  <link rel="icon"
-    href="https://play-lh.googleusercontent.com/rrwJGus_vdSfxkDynUqA-VRvmhjLOWKsCc7MONdBtcxLRAviEDFtAJK0sr8OWGl1aQ"
-    type="image/jpg">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="styles.css">
-</head>
+  <body>
+    <div class="app-container">
+      <header>
+        <div class="logo">
+          <i class="fas fa-dice"></i>
+        </div>
+        <h1>Generatore di Numeri Casuali</h1>
+        <p class="subtitle">
+          Genera numeri casuali in un intervallo personalizzato
+        </p>
+      </header>
 
-<body>
-  <div class="app-container">
-    <header>
-      <div class="logo">
-        <i class="fas fa-dice"></i>
-      </div>
-      <h1>Generatore di Numeri Casuali</h1>
-      <p class="subtitle">Genera numeri casuali in un intervallo personalizzato</p>
-    </header>
+      <main>
+        <div class="card">
+          <div class="input-section">
+            <div class="range-container">
+              <div class="range-input">
+                <label for="min">
+                  <i class="fas fa-arrow-down"></i>
+                  Valore minimo
+                </label>
+                <div class="number-input">
+                  <button class="decrement" id="decrementMin">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                  <input
+                    type="number"
+                    id="min"
+                    name="min"
+                    min="-9999"
+                    max="9999"
+                    value="1"
+                  />
+                  <button class="increment" id="incrementMin">
+                    <i class="fas fa-plus"></i>
+                  </button>
+                </div>
+              </div>
 
-    <main>
-      <div class="card">
-        <div class="input-section">
-          <div class="range-container">
-            <div class="range-input">
-              <label for="min">
-                <i class="fas fa-arrow-down"></i>
-                Valore minimo
-              </label>
-              <div class="number-input">
-                <button class="decrement" id="decrementMin">
-                  <i class="fas fa-minus"></i>
-                </button>
-                <input type="number" id="min" name="min" min="-9999" max="9999" value="1">
-                <button class="increment" id="incrementMin">
-                  <i class="fas fa-plus"></i>
-                </button>
+              <div class="range-input">
+                <label for="max">
+                  <i class="fas fa-arrow-up"></i>
+                  Valore massimo
+                </label>
+                <div class="number-input">
+                  <button class="decrement" id="decrementMax">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                  <input
+                    type="number"
+                    id="max"
+                    name="max"
+                    min="-9999"
+                    max="9999"
+                    value="100"
+                  />
+                  <button class="increment" id="incrementMax">
+                    <i class="fas fa-plus"></i>
+                  </button>
+                </div>
               </div>
             </div>
 
-            <div class="range-input">
-              <label for="max">
-                <i class="fas fa-arrow-up"></i>
-                Valore massimo
-              </label>
-              <div class="number-input">
-                <button class="decrement" id="decrementMax">
-                  <i class="fas fa-minus"></i>
-                </button>
-                <input type="number" id="max" name="max" min="-9999" max="9999" value="100">
-                <button class="increment" id="incrementMax">
-                  <i class="fas fa-plus"></i>
-                </button>
+            <div class="options-container">
+              <div class="option">
+                <label class="toggle">
+                  <input type="checkbox" id="uniqueNumbers" />
+                  <span class="toggle-slider"></span>
+                  <span class="toggle-label">Numeri unici</span>
+                </label>
+              </div>
+
+              <div class="option">
+                <label class="toggle">
+                  <input type="checkbox" id="includeZero" checked />
+                  <span class="toggle-slider"></span>
+                  <span class="toggle-label">Includi zero</span>
+                </label>
               </div>
             </div>
-          </div>
 
-          <div class="options-container">
-            <div class="option">
-              <label class="toggle">
-                <input type="checkbox" id="uniqueNumbers">
-                <span class="toggle-slider"></span>
-                <span class="toggle-label">Numeri unici</span>
-              </label>
-            </div>
-
-            <div class="option">
-              <label class="toggle">
-                <input type="checkbox" id="includeZero" checked>
-                <span class="toggle-slider"></span>
-                <span class="toggle-label">Includi zero</span>
-              </label>
-            </div>
-          </div>
-
-          <button id="generateButton" class="generate-button">
-            <i class="fas fa-random"></i>
-            <span>Genera Numero</span>
-          </button>
-        </div>
-
-        <div class="result-section">
-          <div class="result-container">
-            <div id="resultDisplay" class="result-display">
-              <div class="number-placeholder">?</div>
-            </div>
-            <div id="resultInfo" class="result-info">Premi il pulsante per generare un numero</div>
-          </div>
-
-          <div class="actions">
-            <button id="copyButton" class="action-button" disabled>
-              <i class="fas fa-copy"></i>
-              <span>Copia</span>
-            </button>
-            <button id="saveButton" class="action-button" disabled>
-              <i class="fas fa-save"></i>
-              <span>Salva</span>
+            <button id="generateButton" class="generate-button">
+              <i class="fas fa-random"></i>
+              <span>Genera Numero</span>
             </button>
           </div>
-        </div>
-      </div>
 
-      <div class="history-section">
-        <div class="history-header">
-          <h2>
-            <i class="fas fa-history"></i>
-            Cronologia
-          </h2>
-          <button id="clearHistoryButton" class="clear-button">
-            <i class="fas fa-trash"></i>
-            <span>Cancella</span>
-          </button>
-        </div>
+          <div class="result-section">
+            <div class="result-container">
+              <div id="resultDisplay" class="result-display">
+                <div class="number-placeholder">?</div>
+              </div>
+              <div id="resultInfo" class="result-info">
+                Premi il pulsante per generare un numero
+              </div>
+            </div>
 
-        <div class="history-container">
-          <ul id="historyList" class="history-list"></ul>
-          <div id="emptyHistory" class="empty-history">
-            <i class="fas fa-list-alt"></i>
-            <p>La cronologia è vuota</p>
+            <div class="actions">
+              <button id="copyButton" class="action-button" disabled>
+                <i class="fas fa-copy"></i>
+                <span>Copia</span>
+              </button>
+              <button id="saveButton" class="action-button" disabled>
+                <i class="fas fa-save"></i>
+                <span>Salva</span>
+              </button>
+            </div>
           </div>
         </div>
-      </div>
-    </main>
 
-    <footer>
-      <p>Creato con <i class="fas fa-heart"></i> per semplificare la generazione di numeri casuali</p>
-    </footer>
-  </div>
+        <div class="history-section">
+          <div class="history-header">
+            <h2>
+              <i class="fas fa-history"></i>
+              Cronologia
+            </h2>
+            <button id="clearHistoryButton" class="clear-button">
+              <i class="fas fa-trash"></i>
+              <span>Cancella</span>
+            </button>
+          </div>
 
-  <!-- Toast notifications -->
-  <div id="toastContainer" class="toast-container"></div>
+          <div class="history-container">
+            <ul id="historyList" class="history-list"></ul>
+            <div id="emptyHistory" class="empty-history">
+              <i class="fas fa-list-alt"></i>
+              <p>La cronologia è vuota</p>
+            </div>
+          </div>
+        </div>
+      </main>
 
-  <!-- Confetti container -->
-  <div id="confettiContainer" class="confetti-container"></div>
+      <footer>
+        <p>
+          Creato con <i class="fas fa-heart"></i> per semplificare la
+          generazione di numeri casuali
+        </p>
+      </footer>
+    </div>
 
-  <script src="script.js"></script>
-</body>
+    <!-- Toast notifications -->
+    <div id="toastContainer" class="toast-container"></div>
 
+    <!-- Confetti container -->
+    <div id="confettiContainer" class="confetti-container"></div>
+
+    <script src="script.js"></script>
+  </body>
 </html>

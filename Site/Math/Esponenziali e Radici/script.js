@@ -88,7 +88,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (isNaN(result) || !isFinite(result)) {
         showToast(
           "Risultato non valido. Controlla i valori inseriti.",
-          "error"
+          "error",
         );
         return;
       }
@@ -171,7 +171,7 @@ document.addEventListener("DOMContentLoaded", () => {
           "Non è possibile calcolare una radice di indice pari di un numero negativo.";
         showToast(
           "Non è possibile calcolare una radice di indice pari di un numero negativo.",
-          "error"
+          "error",
         );
         isValid = false;
       }
@@ -280,7 +280,7 @@ document.addEventListener("DOMContentLoaded", () => {
   operationSelect.addEventListener("change", () => {
     const operation = operationSelect.value;
     const exponentLabel = document.querySelector(
-      'label[for="exponent"] .label-text'
+      'label[for="exponent"] .label-text',
     );
 
     if (operation === "power") {

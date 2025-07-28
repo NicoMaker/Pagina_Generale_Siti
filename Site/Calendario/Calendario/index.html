@@ -1,163 +1,275 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="it">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Pacifico&display=swap"
-        rel="stylesheet">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Pacifico&display=swap"
+      rel="stylesheet"
+    />
     <title>Calendario Impegni</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css" />
     <script src="app.js" defer></script>
-</head>
+  </head>
 
-<body>
+  <body>
     <div class="app-container">
-        <header class="app-header">
-            <h1 class="app-title">Calendario Impegni</h1>
-            <div class="header-actions">
-                <button id="todayBtn" class="today-btn" aria-label="Vai a oggi">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                        <line x1="16" y1="2" x2="16" y2="6"></line>
-                        <line x1="8" y1="2" x2="8" y2="6"></line>
-                        <line x1="3" y1="10" x2="21" y2="10"></line>
+      <header class="app-header">
+        <h1 class="app-title">Calendario Impegni</h1>
+        <div class="header-actions">
+          <button id="todayBtn" class="today-btn" aria-label="Vai a oggi">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+              <line x1="16" y1="2" x2="16" y2="6"></line>
+              <line x1="8" y1="2" x2="8" y2="6"></line>
+              <line x1="3" y1="10" x2="21" y2="10"></line>
+            </svg>
+            <span>Oggi</span>
+          </button>
+          <div class="links-container">
+            <button class="link-button bottoneuniversitaTS">
+              <a
+                href="https://www.units.it/"
+                target="_blank"
+                aria-label="Università di Trieste"
+              >
+                <img
+                  class="universitaTS"
+                  src="img/units.jpg"
+                  alt="Università di Trieste"
+                />
+              </a>
+            </button>
+            <button class="link-button bottoneItsAltoAdriatico">
+              <a
+                href="https://www.itsaltoadriatico.it/"
+                target="_blank"
+                aria-label="ITS Alto Adriatico"
+              >
+                <img
+                  class="ItsAltoAdriatico"
+                  src="img/ItsAltoAdriatico.jpg"
+                  alt="ITS Alto Adriatico"
+                />
+              </a>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <main class="app-main">
+        <div class="calendar-container">
+          <div class="month-navigation">
+            <button
+              id="prevMonthBtn"
+              class="nav-button"
+              aria-label="Mese precedente"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <polyline points="15 18 9 12 15 6"></polyline>
+              </svg>
+            </button>
+            <h2 id="currentMonth" class="current-month">Mese/Anno</h2>
+            <button
+              id="nextMonthBtn"
+              class="nav-button"
+              aria-label="Mese successivo"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </button>
+          </div>
+
+          <div class="calendar-grid">
+            <div class="weekday-header">
+              <div class="weekday">Dom</div>
+              <div class="weekday">Lun</div>
+              <div class="weekday">Mar</div>
+              <div class="weekday">Mer</div>
+              <div class="weekday">Gio</div>
+              <div class="weekday">Ven</div>
+              <div class="weekday">Sab</div>
+            </div>
+            <div id="calendarDays" class="calendar-days">
+              <!-- I giorni del calendario saranno generati da JavaScript -->
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <!-- Modal per gestire gli eventi -->
+      <div id="eventModal" class="modal">
+        <div class="modal-backdrop"></div>
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 class="modal-title" id="modalTitle">Impegni per il giorno</h3>
+            <button class="close-button" id="closeModal" aria-label="Chiudi">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div id="eventsList" class="events-list">
+              <!-- Gli eventi saranno generati dinamicamente -->
+            </div>
+            <div class="add-event-form">
+              <div class="form-group">
+                <label for="newEventInput" class="form-label"
+                  >Nuovo impegno</label
+                >
+                <div class="input-group">
+                  <input
+                    type="time"
+                    id="eventTimeInput"
+                    class="form-input time-input"
+                    placeholder="Ora"
+                  />
+                  <input
+                    type="text"
+                    id="newEventInput"
+                    class="form-input"
+                    placeholder="Descrizione impegno"
+                  />
+                  <button
+                    id="addEventBtn"
+                    class="add-btn"
+                    aria-label="Aggiungi impegno"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <line x1="12" y1="5" x2="12" y2="19"></line>
+                      <line x1="5" y1="12" x2="19" y2="12"></line>
                     </svg>
-                    <span>Oggi</span>
-                </button>
-                <div class="links-container">
-                    <button class="link-button bottoneuniversitaTS">
-                        <a href="https://www.units.it/" target="_blank" aria-label="Università di Trieste">
-                            <img class="universitaTS" src="img/units.jpg" alt="Università di Trieste">
-                        </a>
-                    </button>
-                    <button class="link-button bottoneItsAltoAdriatico">
-                        <a href="https://www.itsaltoadriatico.it/" target="_blank" aria-label="ITS Alto Adriatico">
-                            <img class="ItsAltoAdriatico" src="img/ItsAltoAdriatico.jpg" alt="ITS Alto Adriatico">
-                        </a>
-                    </button>
+                  </button>
                 </div>
+              </div>
             </div>
-        </header>
-
-        <main class="app-main">
-            <div class="calendar-container">
-                <div class="month-navigation">
-                    <button id="prevMonthBtn" class="nav-button" aria-label="Mese precedente">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="15 18 9 12 15 6"></polyline>
-                        </svg>
-                    </button>
-                    <h2 id="currentMonth" class="current-month">Mese/Anno</h2>
-                    <button id="nextMonthBtn" class="nav-button" aria-label="Mese successivo">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="9 18 15 12 9 6"></polyline>
-                        </svg>
-                    </button>
-                </div>
-
-                <div class="calendar-grid">
-                    <div class="weekday-header">
-                        <div class="weekday">Dom</div>
-                        <div class="weekday">Lun</div>
-                        <div class="weekday">Mar</div>
-                        <div class="weekday">Mer</div>
-                        <div class="weekday">Gio</div>
-                        <div class="weekday">Ven</div>
-                        <div class="weekday">Sab</div>
-                    </div>
-                    <div id="calendarDays" class="calendar-days">
-                        <!-- I giorni del calendario saranno generati da JavaScript -->
-                    </div>
-                </div>
-            </div>
-        </main>
-
-        <!-- Modal per gestire gli eventi -->
-        <div id="eventModal" class="modal">
-            <div class="modal-backdrop"></div>
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 class="modal-title" id="modalTitle">Impegni per il giorno</h3>
-                    <button class="close-button" id="closeModal" aria-label="Chiudi">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="18" y1="6" x2="6" y2="18"></line>
-                            <line x1="6" y1="6" x2="18" y2="18"></line>
-                        </svg>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div id="eventsList" class="events-list">
-                        <!-- Gli eventi saranno generati dinamicamente -->
-                    </div>
-                    <div class="add-event-form">
-                        <div class="form-group">
-                            <label for="newEventInput" class="form-label">Nuovo impegno</label>
-                            <div class="input-group">
-                                <input type="time" id="eventTimeInput" class="form-input time-input" placeholder="Ora">
-                                <input type="text" id="newEventInput" class="form-input"
-                                    placeholder="Descrizione impegno">
-                                <button id="addEventBtn" class="add-btn" aria-label="Aggiungi impegno">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round">
-                                        <line x1="12" y1="5" x2="12" y2="19"></line>
-                                        <line x1="5" y1="12" x2="19" y2="12"></line>
-                                    </svg>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button id="clearEventsBtn" class="btn btn-danger">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="3 6 5 6 21 6"></polyline>
-                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
-                            </path>
-                        </svg>
-                        <span>Elimina tutti</span>
-                    </button>
-                    <button id="cancelBtn" class="btn btn-secondary">Chiudi</button>
-                </div>
-            </div>
+          </div>
+          <div class="modal-footer">
+            <button id="clearEventsBtn" class="btn btn-danger">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <polyline points="3 6 5 6 21 6"></polyline>
+                <path
+                  d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
+                ></path>
+              </svg>
+              <span>Elimina tutti</span>
+            </button>
+            <button id="cancelBtn" class="btn btn-secondary">Chiudi</button>
+          </div>
         </div>
+      </div>
 
-        <!-- Modal di conferma per l'eliminazione -->
-        <div id="confirmModal" class="modal confirm-modal">
-            <div class="modal-backdrop"></div>
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 class="modal-title">Conferma eliminazione</h3>
-                    <button class="close-button" id="closeConfirmModal" aria-label="Chiudi">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="18" y1="6" x2="6" y2="18"></line>
-                            <line x1="6" y1="6" x2="18" y2="18"></line>
-                        </svg>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p id="confirmMessage">Sei sicuro di voler eliminare questo impegno?</p>
-                </div>
-                <div class="modal-footer">
-                    <button id="confirmDeleteBtn" class="btn btn-danger">Elimina</button>
-                    <button id="cancelDeleteBtn" class="btn btn-secondary">Annulla</button>
-                </div>
-            </div>
+      <!-- Modal di conferma per l'eliminazione -->
+      <div id="confirmModal" class="modal confirm-modal">
+        <div class="modal-backdrop"></div>
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 class="modal-title">Conferma eliminazione</h3>
+            <button
+              class="close-button"
+              id="closeConfirmModal"
+              aria-label="Chiudi"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p id="confirmMessage">
+              Sei sicuro di voler eliminare questo impegno?
+            </p>
+          </div>
+          <div class="modal-footer">
+            <button id="confirmDeleteBtn" class="btn btn-danger">
+              Elimina
+            </button>
+            <button id="cancelDeleteBtn" class="btn btn-secondary">
+              Annulla
+            </button>
+          </div>
         </div>
+      </div>
 
-        <footer class="app-footer">
-            <p class="footer-text">Realizzata da Nico Maker</p>
-        </footer>
+      <footer class="app-footer">
+        <p class="footer-text">Realizzata da Nico Maker</p>
+      </footer>
     </div>
-</body>
-
+  </body>
 </html>

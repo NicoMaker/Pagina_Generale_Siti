@@ -42,8 +42,9 @@
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-    Ubuntu, Cantarell, sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
+    Cantarell, sans-serif;
   background: var(--bg-primary);
   color: var(--text-primary);
   line-height: 1.6;
@@ -581,7 +582,9 @@ body {
 
 .speed-test-card:hover {
   border-color: rgba(6, 182, 212, 0.4);
-  box-shadow: var(--shadow-xl), 0 0 30px rgba(6, 182, 212, 0.3);
+  box-shadow:
+    var(--shadow-xl),
+    0 0 30px rgba(6, 182, 212, 0.3);
 }
 
 .tool-header {
@@ -659,7 +662,9 @@ textarea:focus {
   outline: none;
   border-color: var(--primary-color);
   background: rgba(255, 255, 255, 0.08);
-  box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1), 0 0 20px rgba(6, 182, 212, 0.2);
+  box-shadow:
+    0 0 0 3px rgba(6, 182, 212, 0.1),
+    0 0 20px rgba(6, 182, 212, 0.2);
   transform: scale(1.01);
 }
 

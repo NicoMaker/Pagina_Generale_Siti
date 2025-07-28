@@ -37,7 +37,7 @@ document.head.insertAdjacentHTML(
   margin-bottom: 15px;
 }
 </style>
-`
+`,
 );
 
 document.head.insertAdjacentHTML(
@@ -63,7 +63,7 @@ document.head.insertAdjacentHTML(
       }
     }
   </style>
-`
+`,
 );
 
 /*

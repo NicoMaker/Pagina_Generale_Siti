@@ -117,9 +117,8 @@ function animateNumbers() {
 
 // Funzione per mostrare un errore
 function showError(message) {
-  document.getElementById(
-    "risultato"
-  ).innerHTML = `<p class="error">${message}</p>`;
+  document.getElementById("risultato").innerHTML =
+    `<p class="error">${message}</p>`;
   document.getElementById("result-card").classList.remove("hidden");
   document.getElementById("result-card").classList.add("visible");
 

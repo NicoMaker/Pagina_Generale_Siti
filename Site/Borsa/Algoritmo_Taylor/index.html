@@ -1,278 +1,364 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="it">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Serie di Taylor - Applicazione Completa</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mathjs@11.8.0/lib/browser/math.min.js"></script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script
+      id="MathJax-script"
+      async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+    ></script>
 
-    <link rel="icon" href="taylor-concept.svg" type="image/svg">
-</head>
+    <link rel="icon" href="taylor-concept.svg" type="image/svg" />
+  </head>
 
-<body>
+  <body>
     <header>
-        <div class="container">
-            <h1>Serie di Taylor</h1>
-            <p class="subtitle">Applicazione Completa per Visualizzazione e Calcolo</p>
-        </div>
+      <div class="container">
+        <h1>Serie di Taylor</h1>
+        <p class="subtitle">
+          Applicazione Completa per Visualizzazione e Calcolo
+        </p>
+      </div>
     </header>
 
     <nav>
-        <div class="container">
-            <ul>
-                <li><a href="#visualizzazione" class="active">Visualizzazione</a></li>
-                <li><a href="#calcolatore">Calcolatore</a></li>
-                <li><a href="#teoria">Teoria</a></li>
-                <li><a href="#esempi">Esempi</a></li>
-            </ul>
-            <button id="theme-toggle" aria-label="Cambia tema">
-                <span class="icon-light">☀️</span>
-                <span class="icon-dark">🌙</span>
-            </button>
-        </div>
+      <div class="container">
+        <ul>
+          <li><a href="#visualizzazione" class="active">Visualizzazione</a></li>
+          <li><a href="#calcolatore">Calcolatore</a></li>
+          <li><a href="#teoria">Teoria</a></li>
+          <li><a href="#esempi">Esempi</a></li>
+        </ul>
+        <button id="theme-toggle" aria-label="Cambia tema">
+          <span class="icon-light">☀️</span>
+          <span class="icon-dark">🌙</span>
+        </button>
+      </div>
     </nav>
 
     <main>
-        <section id="visualizzazione" class="container">
-            <h2>Visualizzazione Interattiva</h2>
-            <div class="controls">
-                <div class="control-group">
-                    <label for="function-input">Funzione:</label>
-                    <div class="input-wrapper">
-                        <input type="text" id="function-input" value="sin(x)" placeholder="Es: sin(x), x^2, exp(x)">
-                        <div class="function-help">
-                            <button id="help-btn" type="button">?</button>
-                            <div class="tooltip">
-                                <strong>Esempi di funzioni:</strong>
-                                <ul>
-                                    <li>sin(x), cos(x), tan(x)</li>
-                                    <li>exp(x) o e^x</li>
-                                    <li>log(x) o ln(x)</li>
-                                    <li>x^2, sqrt(x), abs(x)</li>
-                                    <li>2*x+1, x^3-2*x</li>
-                                    <li>100/(1+x)^3+4/(1+x)^3+4 <br>/(1+x)^2+4/(1+x)</li>
-                                </ul>
-                                <strong>Operatori:</strong> +, -, *, /, ^
-                            </div>
-                        </div>
-                    </div>
-                    <div class="error-message" id="function-error"></div>
+      <section id="visualizzazione" class="container">
+        <h2>Visualizzazione Interattiva</h2>
+        <div class="controls">
+          <div class="control-group">
+            <label for="function-input">Funzione:</label>
+            <div class="input-wrapper">
+              <input
+                type="text"
+                id="function-input"
+                value="sin(x)"
+                placeholder="Es: sin(x), x^2, exp(x)"
+              />
+              <div class="function-help">
+                <button id="help-btn" type="button">?</button>
+                <div class="tooltip">
+                  <strong>Esempi di funzioni:</strong>
+                  <ul>
+                    <li>sin(x), cos(x), tan(x)</li>
+                    <li>exp(x) o e^x</li>
+                    <li>log(x) o ln(x)</li>
+                    <li>x^2, sqrt(x), abs(x)</li>
+                    <li>2*x+1, x^3-2*x</li>
+                    <li>100/(1+x)^3+4/(1+x)^3+4 <br />/(1+x)^2+4/(1+x)</li>
+                  </ul>
+                  <strong>Operatori:</strong> +, -, *, /, ^
                 </div>
-                <div class="control-group">
-                    <label for="center-point">Punto centrale (a):</label>
-                    <input type="number" id="center-point" value="0" step="0.1">
-                </div>
-                <div class="control-group">
-                    <label for="terms-slider">Numero di termini:</label>
-                    <div class="slider-container">
-                        <input type="range" id="terms-slider" min="1" max="10" value="3">
-                        <span id="terms-value">3</span>
-                    </div>
-                </div>
-                <div class="control-group">
-                    <label for="x-range">Range di visualizzazione:</label>
-                    <div class="range-inputs">
-                        <input type="number" id="x-min" value="-5" step="0.5" placeholder="Min">
-                        <span>a</span>
-                        <input type="number" id="x-max" value="5" step="0.5" placeholder="Max">
-                    </div>
-                </div>
-                <button id="update-chart-btn">Aggiorna Grafico</button>
+              </div>
             </div>
-            <div class="chart-container">
-                <canvas id="taylor-chart"></canvas>
+            <div class="error-message" id="function-error"></div>
+          </div>
+          <div class="control-group">
+            <label for="center-point">Punto centrale (a):</label>
+            <input type="number" id="center-point" value="0" step="0.1" />
+          </div>
+          <div class="control-group">
+            <label for="terms-slider">Numero di termini:</label>
+            <div class="slider-container">
+              <input
+                type="range"
+                id="terms-slider"
+                min="1"
+                max="10"
+                value="3"
+              />
+              <span id="terms-value">3</span>
             </div>
-            <div class="legend">
-                <div class="legend-item">
-                    <span class="color-box function-color"></span>
-                    <span>Funzione originale</span>
-                </div>
-                <div class="legend-item">
-                    <span class="color-box approximation-color"></span>
-                    <span>Approssimazione di Taylor</span>
-                </div>
+          </div>
+          <div class="control-group">
+            <label for="x-range">Range di visualizzazione:</label>
+            <div class="range-inputs">
+              <input
+                type="number"
+                id="x-min"
+                value="-5"
+                step="0.5"
+                placeholder="Min"
+              />
+              <span>a</span>
+              <input
+                type="number"
+                id="x-max"
+                value="5"
+                step="0.5"
+                placeholder="Max"
+              />
             </div>
-            <div class="expansion-display">
-                <h3>Espansione della Serie di Taylor:</h3>
-                <div id="expansion-formula" class="formula"></div>
+          </div>
+          <button id="update-chart-btn">Aggiorna Grafico</button>
+        </div>
+        <div class="chart-container">
+          <canvas id="taylor-chart"></canvas>
+        </div>
+        <div class="legend">
+          <div class="legend-item">
+            <span class="color-box function-color"></span>
+            <span>Funzione originale</span>
+          </div>
+          <div class="legend-item">
+            <span class="color-box approximation-color"></span>
+            <span>Approssimazione di Taylor</span>
+          </div>
+        </div>
+        <div class="expansion-display">
+          <h3>Espansione della Serie di Taylor:</h3>
+          <div id="expansion-formula" class="formula"></div>
+        </div>
+      </section>
+
+      <section id="calcolatore" class="container">
+        <h2>Calcolatore della Serie di Taylor</h2>
+        <div class="calculator">
+          <div class="input-group">
+            <label for="calc-function">Funzione:</label>
+            <input
+              type="text"
+              id="calc-function"
+              value="sin(x)"
+              placeholder="Es: sin(x), x^2, exp(x)"
+            />
+            <div class="error-message" id="calc-function-error"></div>
+          </div>
+          <div class="input-group">
+            <label for="calc-center">Punto centrale (a):</label>
+            <input type="number" id="calc-center" value="0" step="0.1" />
+          </div>
+          <div class="input-group">
+            <label for="calc-terms">Numero di termini:</label>
+            <input type="number" id="calc-terms" value="5" min="1" max="15" />
+          </div>
+          <div class="input-group">
+            <label for="calc-point">Valuta in x:</label>
+            <input type="number" id="calc-point" value="1" step="0.1" />
+          </div>
+          <button id="calculate-btn">Calcola</button>
+        </div>
+        <div class="results">
+          <div class="result-item">
+            <h3>Espansione della serie:</h3>
+            <div id="calc-expansion" class="formula-result"></div>
+          </div>
+          <div class="result-item">
+            <h3>Valore esatto:</h3>
+            <div id="exact-result" class="value-result">-</div>
+          </div>
+          <div class="result-item">
+            <h3>Approssimazione:</h3>
+            <div id="approximation-result" class="value-result">-</div>
+          </div>
+          <div class="result-item">
+            <h3>Errore assoluto:</h3>
+            <div id="error-result" class="value-result">-</div>
+          </div>
+          <div class="result-item">
+            <h3>Errore relativo:</h3>
+            <div id="relative-error-result" class="value-result">-</div>
+          </div>
+        </div>
+        <div class="coefficients">
+          <h3>Coefficienti della Serie:</h3>
+          <table id="coefficients-table">
+            <thead>
+              <tr>
+                <th>n</th>
+                <th>f<sup>(n)</sup>(a)</th>
+                <th>f<sup>(n)</sup>(a)/n!</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Coefficients will be added here -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="teoria" class="container">
+        <h2>Teoria della Serie di Taylor</h2>
+        <div class="theory-content">
+          <div class="theory-section">
+            <h3>Definizione</h3>
+            <p>
+              La serie di Taylor è un'espansione di una funzione in una somma
+              infinita di termini calcolati dalle derivate della funzione in un
+              singolo punto.
+            </p>
+            <p>
+              La formula generale della serie di Taylor per una funzione
+              $$f(x)$$ centrata in $$a$$ è:
+            </p>
+            <div class="formula">
+              \[ f(x) = f(a) + \frac{f'(a)}{1!}(x-a) + \frac{f''(a)}{2!}(x-a)^2
+              + \frac{f'''(a)}{3!}(x-a)^3 + \ldots \]
             </div>
-        </section>
-
-        <section id="calcolatore" class="container">
-            <h2>Calcolatore della Serie di Taylor</h2>
-            <div class="calculator">
-                <div class="input-group">
-                    <label for="calc-function">Funzione:</label>
-                    <input type="text" id="calc-function" value="sin(x)" placeholder="Es: sin(x), x^2, exp(x)">
-                    <div class="error-message" id="calc-function-error"></div>
-                </div>
-                <div class="input-group">
-                    <label for="calc-center">Punto centrale (a):</label>
-                    <input type="number" id="calc-center" value="0" step="0.1">
-                </div>
-                <div class="input-group">
-                    <label for="calc-terms">Numero di termini:</label>
-                    <input type="number" id="calc-terms" value="5" min="1" max="15">
-                </div>
-                <div class="input-group">
-                    <label for="calc-point">Valuta in x:</label>
-                    <input type="number" id="calc-point" value="1" step="0.1">
-                </div>
-                <button id="calculate-btn">Calcola</button>
+            <p>O in forma compatta:</p>
+            <div class="formula">
+              \[ f(x) = \sum_{n=0}^{\infty} \frac{f^{(n)}(a)}{n!}(x-a)^n \]
             </div>
-            <div class="results">
-                <div class="result-item">
-                    <h3>Espansione della serie:</h3>
-                    <div id="calc-expansion" class="formula-result"></div>
-                </div>
-                <div class="result-item">
-                    <h3>Valore esatto:</h3>
-                    <div id="exact-result" class="value-result">-</div>
-                </div>
-                <div class="result-item">
-                    <h3>Approssimazione:</h3>
-                    <div id="approximation-result" class="value-result">-</div>
-                </div>
-                <div class="result-item">
-                    <h3>Errore assoluto:</h3>
-                    <div id="error-result" class="value-result">-</div>
-                </div>
-                <div class="result-item">
-                    <h3>Errore relativo:</h3>
-                    <div id="relative-error-result" class="value-result">-</div>
-                </div>
+          </div>
+
+          <div class="theory-section">
+            <h3>Resto di Lagrange</h3>
+            <p>
+              L'errore di troncamento della serie di Taylor può essere espresso
+              attraverso il resto di Lagrange:
+            </p>
+            <div class="formula">
+              \[ R_n(x) = \frac{f^{(n+1)}(\xi)}{(n+1)!}(x-a)^{n+1} \]
             </div>
-            <div class="coefficients">
-                <h3>Coefficienti della Serie:</h3>
-                <table id="coefficients-table">
-                    <thead>
-                        <tr>
-                            <th>n</th>
-                            <th>f<sup>(n)</sup>(a)</th>
-                            <th>f<sup>(n)</sup>(a)/n!</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Coefficients will be added here -->
-                    </tbody>
-                </table>
+            <p>Dove $$\xi$$ è un punto tra $$a$$ e $$x$$.</p>
+          </div>
+
+          <div class="theory-section">
+            <h3>Convergenza</h3>
+            <p>
+              La serie di Taylor di una funzione converge alla funzione stessa
+              all'interno del suo raggio di convergenza. Il raggio di
+              convergenza $$R$$ può essere calcolato come:
+            </p>
+            <div class="formula">
+              \[ R = \lim_{n \to \infty} \left| \frac{a_n}{a_{n+1}} \right| \]
             </div>
-        </section>
+            <p>
+              Dove $$a_n$$ è il coefficiente dell'n-esimo termine della serie.
+            </p>
+          </div>
+        </div>
+      </section>
 
-        <section id="teoria" class="container">
-            <h2>Teoria della Serie di Taylor</h2>
-            <div class="theory-content">
-                <div class="theory-section">
-                    <h3>Definizione</h3>
-                    <p>La serie di Taylor è un'espansione di una funzione in una somma infinita di termini calcolati
-                        dalle derivate della funzione in un singolo punto.</p>
-                    <p>La formula generale della serie di Taylor per una funzione $$f(x)$$ centrata in $$a$$ è:</p>
-                    <div class="formula">
-                        \[ f(x) = f(a) + \frac{f'(a)}{1!}(x-a) + \frac{f''(a)}{2!}(x-a)^2 + \frac{f'''(a)}{3!}(x-a)^3 +
-                        \ldots \]
-                    </div>
-                    <p>O in forma compatta:</p>
-                    <div class="formula">
-                        \[ f(x) = \sum_{n=0}^{\infty} \frac{f^{(n)}(a)}{n!}(x-a)^n \]
-                    </div>
-                </div>
-
-                <div class="theory-section">
-                    <h3>Resto di Lagrange</h3>
-                    <p>L'errore di troncamento della serie di Taylor può essere espresso attraverso il resto di
-                        Lagrange:</p>
-                    <div class="formula">
-                        \[ R_n(x) = \frac{f^{(n+1)}(\xi)}{(n+1)!}(x-a)^{n+1} \]
-                    </div>
-                    <p>Dove $$\xi$$ è un punto tra $$a$$ e $$x$$.</p>
-                </div>
-
-                <div class="theory-section">
-                    <h3>Convergenza</h3>
-                    <p>La serie di Taylor di una funzione converge alla funzione stessa all'interno del suo raggio di
-                        convergenza. Il raggio di convergenza $$R$$ può essere calcolato come:</p>
-                    <div class="formula">
-                        \[ R = \lim_{n \to \infty} \left| \frac{a_n}{a_{n+1}} \right| \]
-                    </div>
-                    <p>Dove $$a_n$$ è il coefficiente dell'n-esimo termine della serie.</p>
-                </div>
+      <section id="esempi" class="container">
+        <h2>Esempi di Serie di Taylor</h2>
+        <div class="examples-grid">
+          <div
+            class="example-card"
+            data-function="sin(x)"
+            data-center="0"
+            data-terms="5"
+          >
+            <h3>sin(x)</h3>
+            <div class="example-formula">
+              \[ \sin(x) = x - \frac{x^3}{3!} + \frac{x^5}{5!} - \frac{x^7}{7!}
+              + \ldots \]
             </div>
-        </section>
+            <button class="try-example-btn">Prova questo esempio</button>
+          </div>
 
-        <section id="esempi" class="container">
-            <h2>Esempi di Serie di Taylor</h2>
-            <div class="examples-grid">
-                <div class="example-card" data-function="sin(x)" data-center="0" data-terms="5">
-                    <h3>sin(x)</h3>
-                    <div class="example-formula">
-                        \[ \sin(x) = x - \frac{x^3}{3!} + \frac{x^5}{5!} - \frac{x^7}{7!} + \ldots \]
-                    </div>
-                    <button class="try-example-btn">Prova questo esempio</button>
-                </div>
-
-                <div class="example-card" data-function="cos(x)" data-center="0" data-terms="5">
-                    <h3>cos(x)</h3>
-                    <div class="example-formula">
-                        \[ \cos(x) = 1 - \frac{x^2}{2!} + \frac{x^4}{4!} - \frac{x^6}{6!} + \ldots \]
-                    </div>
-                    <button class="try-example-btn">Prova questo esempio</button>
-                </div>
-
-                <div class="example-card" data-function="exp(x)" data-center="0" data-terms="5">
-                    <h3>e<sup>x</sup></h3>
-                    <div class="example-formula">
-                        \[ e^x = 1 + x + \frac{x^2}{2!} + \frac{x^3}{3!} + \frac{x^4}{4!} + \ldots \]
-                    </div>
-                    <button class="try-example-btn">Prova questo esempio</button>
-                </div>
-
-                <div class="example-card" data-function="log(x)" data-center="1" data-terms="5">
-                    <h3>ln(x)</h3>
-                    <div class="example-formula">
-                        \[ \ln(x) = (x-1) - \frac{(x-1)^2}{2} + \frac{(x-1)^3}{3} - \ldots \]
-                    </div>
-                    <button class="try-example-btn">Prova questo esempio</button>
-                </div>
-
-                <div class="example-card" data-function="1/(1-x)" data-center="0" data-terms="5">
-                    <h3>1/(1-x)</h3>
-                    <div class="example-formula">
-                        \[ \frac{1}{1-x} = 1 + x + x^2 + x^3 + x^4 + \ldots \]
-                    </div>
-                    <button class="try-example-btn">Prova questo esempio</button>
-                </div>
-
-                <div class="example-card" data-function="sqrt(1+x)" data-center="0" data-terms="4">
-                    <h3>√(1+x)</h3>
-                    <div class="example-formula">
-                        \[ \sqrt{1+x} = 1 + \frac{x}{2} - \frac{x^2}{8} + \frac{x^3}{16} - \ldots \]
-                    </div>
-                    <button class="try-example-btn">Prova questo esempio</button>
-                </div>
-
-                <div class="example-card" data-function="100/(1+x)^3+4/(1+x)^3+4/(1+x)^2+4/(1+x)" data-center="0"
-                    data-terms="5">
-                    <h3>Funzione Razionale Complessa</h3>
-                    <div class="example-formula">
-                        \[ \frac{100}{(1+x)^3}+\frac{4}{(1+x)^3}+\frac{4}{(1+x)^2}+\frac{4}{(1+x)} \]
-                    </div>
-                    <button class="try-example-btn">Prova questo esempio</button>
-                </div>
+          <div
+            class="example-card"
+            data-function="cos(x)"
+            data-center="0"
+            data-terms="5"
+          >
+            <h3>cos(x)</h3>
+            <div class="example-formula">
+              \[ \cos(x) = 1 - \frac{x^2}{2!} + \frac{x^4}{4!} - \frac{x^6}{6!}
+              + \ldots \]
             </div>
-        </section>
+            <button class="try-example-btn">Prova questo esempio</button>
+          </div>
+
+          <div
+            class="example-card"
+            data-function="exp(x)"
+            data-center="0"
+            data-terms="5"
+          >
+            <h3>e<sup>x</sup></h3>
+            <div class="example-formula">
+              \[ e^x = 1 + x + \frac{x^2}{2!} + \frac{x^3}{3!} + \frac{x^4}{4!}
+              + \ldots \]
+            </div>
+            <button class="try-example-btn">Prova questo esempio</button>
+          </div>
+
+          <div
+            class="example-card"
+            data-function="log(x)"
+            data-center="1"
+            data-terms="5"
+          >
+            <h3>ln(x)</h3>
+            <div class="example-formula">
+              \[ \ln(x) = (x-1) - \frac{(x-1)^2}{2} + \frac{(x-1)^3}{3} - \ldots
+              \]
+            </div>
+            <button class="try-example-btn">Prova questo esempio</button>
+          </div>
+
+          <div
+            class="example-card"
+            data-function="1/(1-x)"
+            data-center="0"
+            data-terms="5"
+          >
+            <h3>1/(1-x)</h3>
+            <div class="example-formula">
+              \[ \frac{1}{1-x} = 1 + x + x^2 + x^3 + x^4 + \ldots \]
+            </div>
+            <button class="try-example-btn">Prova questo esempio</button>
+          </div>
+
+          <div
+            class="example-card"
+            data-function="sqrt(1+x)"
+            data-center="0"
+            data-terms="4"
+          >
+            <h3>√(1+x)</h3>
+            <div class="example-formula">
+              \[ \sqrt{1+x} = 1 + \frac{x}{2} - \frac{x^2}{8} + \frac{x^3}{16} -
+              \ldots \]
+            </div>
+            <button class="try-example-btn">Prova questo esempio</button>
+          </div>
+
+          <div
+            class="example-card"
+            data-function="100/(1+x)^3+4/(1+x)^3+4/(1+x)^2+4/(1+x)"
+            data-center="0"
+            data-terms="5"
+          >
+            <h3>Funzione Razionale Complessa</h3>
+            <div class="example-formula">
+              \[
+              \frac{100}{(1+x)^3}+\frac{4}{(1+x)^3}+\frac{4}{(1+x)^2}+\frac{4}{(1+x)}
+              \]
+            </div>
+            <button class="try-example-btn">Prova questo esempio</button>
+          </div>
+        </div>
+      </section>
     </main>
 
     <footer>
-        <div class="container">
-            <p>© 2025 Serie di Taylor - Applicazione Educativa</p>
-        </div>
+      <div class="container">
+        <p>© 2025 Serie di Taylor - Applicazione Educativa</p>
+      </div>
     </footer>
 
     <script src="script.js"></script>
-</body>
-
+  </body>
 </html>

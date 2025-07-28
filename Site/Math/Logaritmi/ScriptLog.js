@@ -48,7 +48,7 @@ function calcolaLogaritmo() {
   // Validate inputs
   if (isNaN(numero) || isNaN(base) || numero <= 0 || base <= 0 || base === 1) {
     showError(
-      "Inserisci valori validi. Numero e base devono essere positivi, e la base non può essere 1."
+      "Inserisci valori validi. Numero e base devono essere positivi, e la base non può essere 1.",
     );
     return;
   }
@@ -234,7 +234,7 @@ function createProgressCircle(value, targetNumber) {
   // Create background circle
   const bgCircle = document.createElementNS(
     "http://www.w3.org/2000/svg",
-    "circle"
+    "circle",
   );
   bgCircle.setAttribute("cx", "50");
   bgCircle.setAttribute("cy", "50");
@@ -246,7 +246,7 @@ function createProgressCircle(value, targetNumber) {
   // Create progress circle
   const progressCircle = document.createElementNS(
     "http://www.w3.org/2000/svg",
-    "circle"
+    "circle",
   );
   progressCircle.setAttribute("cx", "50");
   progressCircle.setAttribute("cy", "50");

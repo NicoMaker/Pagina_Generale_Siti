@@ -130,7 +130,7 @@ generate.addEventListener("click", function () {
     setTimeout(() => {
       clearInterval(randomGenerator);
       const suitImages = outputs.map(
-          (output) => output.querySelector("img")?.src
+          (output) => output.querySelector("img")?.src,
         ),
         allEqual = suitImages.every((val, i, arr) => val === arr[0]);
 

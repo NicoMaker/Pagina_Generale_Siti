@@ -159,8 +159,8 @@
         { "name": "Scacchi", "link": "Site/Giochi/Scacchi/index.html" },
         { "name": "Solitario", "link": "Site/Giochi/Solitario/index.html" },
         {
-          "name":"Ruota della Fortuna",
-          "link":"Site/Giochi/Ruota_Fortuna/index.html"
+          "name": "Ruota della Fortuna",
+          "link": "Site/Giochi/Ruota_Fortuna/index.html"
         }
       ]
     },
@@ -263,8 +263,14 @@
           "link": "Site/Math/Teorema_Euclide/index.html"
         },
         { "name": "Cerchio", "link": "Site/Math/Cerchio/index.html" },
-        { "name": "Divisione con il resto", "link":"Site/Math/Divisione_con_il_Resto/index.html"},
-        {"name":"Esercizi Elementari", "link":"Site/Math/Esercizi_Elementari/index.html"}
+        {
+          "name": "Divisione con il resto",
+          "link": "Site/Math/Divisione_con_il_Resto/index.html"
+        },
+        {
+          "name": "Esercizi Elementari",
+          "link": "Site/Math/Esercizi_Elementari/index.html"
+        }
       ]
     },
     "Natale": {
@@ -436,8 +442,8 @@
         },
         { "name": "Meteo", "link": "Site/Temperatura/Meteo/index.html" },
         {
-          "name":"Thermolab",
-          "link":"Site/Temperatura/Thermolab/index.html"
+          "name": "Thermolab",
+          "link": "Site/Temperatura/Thermolab/index.html"
         }
       ]
     },

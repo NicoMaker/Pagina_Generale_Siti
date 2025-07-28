@@ -43,7 +43,7 @@ function calculateFibonacci() {
     num = 20;
     numInput.value = 20;
     alert(
-      "Per motivi di performance, il numero massimo è stato limitato a 20."
+      "Per motivi di performance, il numero massimo è stato limitato a 20.",
     );
   }
 
@@ -164,14 +164,14 @@ function calculateTileScale(value, maxValue) {
 function createProgressRing(index, total) {
   const progressRing = document.createElementNS(
     "http://www.w3.org/2000/svg",
-    "svg"
+    "svg",
   );
   progressRing.setAttribute("class", "progress-ring");
   progressRing.setAttribute("viewBox", "0 0 100 100");
 
   const circle = document.createElementNS(
     "http://www.w3.org/2000/svg",
-    "circle"
+    "circle",
   );
   circle.setAttribute("cx", "50");
   circle.setAttribute("cy", "50");
@@ -182,7 +182,7 @@ function createProgressRing(index, total) {
 
   const progressCircle = document.createElementNS(
     "http://www.w3.org/2000/svg",
-    "circle"
+    "circle",
   );
   progressCircle.setAttribute("cx", "50");
   progressCircle.setAttribute("cy", "50");

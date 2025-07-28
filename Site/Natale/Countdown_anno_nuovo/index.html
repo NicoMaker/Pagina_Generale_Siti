@@ -1,187 +1,294 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="it">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Countdown Capodanno</title>
-  <link rel="stylesheet" href="styles.css">
-  <link rel="icon" href="https://i.pinimg.com/originals/ee/2e/71/ee2e715277c51ca4387b20d24f1db66f.gif" type="image/gif">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
-  <script src="script.js" defer></script>
-</head>
-<body>
-  <div class="stars-container">
-    <div class="stars"></div>
-    <div class="twinkling"></div>
-  </div>
-
-  <div class="fireworks-container" id="fireworks-container"></div>
-  
-  <header>
-    <div class="nav-container">
-      <div class="logo">
-        <span class="year-text" id="next-year"></span>
-      </div>
-      <nav>
-        <ul>
-          <li><a href="#countdown-section">Countdown</a></li>
-          <li><a href="#traditions-section">Tradizioni</a></li>
-          <li><a href="#wishes-section">Auguri</a></li>
-        </ul>
-      </nav>
-      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark/light mode">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="moon">
-          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-        </svg>
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="sun">
-          <circle cx="12" cy="12" r="5"></circle>
-          <line x1="12" y1="1" x2="12" y2="3"></line>
-          <line x1="12" y1="21" x2="12" y2="23"></line>
-          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-          <line x1="1" y1="12" x2="3" y2="12"></line>
-          <line x1="21" y1="12" x2="23" y2="12"></line>
-          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-        </svg>
-      </button>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Countdown Capodanno</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      rel="icon"
+      href="https://i.pinimg.com/originals/ee/2e/71/ee2e715277c51ca4387b20d24f1db66f.gif"
+      type="image/gif"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Playfair+Display:wght@700;900&display=swap"
+      rel="stylesheet"
+    />
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <div class="stars-container">
+      <div class="stars"></div>
+      <div class="twinkling"></div>
     </div>
-  </header>
 
-  <main>
-    <section id="countdown-section" class="hero">
+    <div class="fireworks-container" id="fireworks-container"></div>
+
+    <header>
+      <div class="nav-container">
+        <div class="logo">
+          <span class="year-text" id="next-year"></span>
+        </div>
+        <nav>
+          <ul>
+            <li><a href="#countdown-section">Countdown</a></li>
+            <li><a href="#traditions-section">Tradizioni</a></li>
+            <li><a href="#wishes-section">Auguri</a></li>
+          </ul>
+        </nav>
+        <button
+          class="theme-toggle"
+          id="theme-toggle"
+          aria-label="Toggle dark/light mode"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="moon"
+          >
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="sun"
+          >
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <main>
+      <section id="countdown-section" class="hero">
+        <div class="container">
+          <h1>Countdown per il <span class="accent">Nuovo Anno</span></h1>
+          <p class="subtitle">Celebriamo insieme l'arrivo del nuovo anno</p>
+
+          <div class="countdown-container">
+            <div class="countdown-wrapper">
+              <div class="countdown-box">
+                <div class="countdown-value" id="days">00</div>
+                <div class="countdown-label">Giorni</div>
+              </div>
+              <div class="countdown-box">
+                <div class="countdown-value" id="hours">00</div>
+                <div class="countdown-label">Ore</div>
+              </div>
+              <div class="countdown-box">
+                <div class="countdown-value" id="minutes">00</div>
+                <div class="countdown-label">Minuti</div>
+              </div>
+              <div class="countdown-box">
+                <div class="countdown-value" id="seconds">00</div>
+                <div class="countdown-label">Secondi</div>
+              </div>
+            </div>
+
+            <div class="celebration-message" id="celebration-message">
+              <h2>Buon Anno Nuovo!</h2>
+              <p>
+                Che il <span id="celebration-year"></span> ti porti gioia,
+                salute e successo!
+              </p>
+              <button id="celebrate-btn" class="celebrate-btn">
+                Festeggia!
+              </button>
+            </div>
+          </div>
+
+          <div class="decoration">
+            <img
+              src="https://i.pinimg.com/originals/ee/2e/71/ee2e715277c51ca4387b20d24f1db66f.gif"
+              alt="New Year Celebration"
+              class="celebration-gif"
+            />
+          </div>
+        </div>
+      </section>
+
+      <section id="traditions-section" class="traditions">
+        <div class="container">
+          <h2>Tradizioni di Capodanno</h2>
+          <div class="traditions-grid">
+            <div class="tradition-card">
+              <div class="tradition-icon">🍇</div>
+              <h3>12 Chicchi d'Uva</h3>
+              <p>
+                In Spagna, si mangiano 12 chicchi d'uva a mezzanotte, uno per
+                ogni rintocco dell'orologio, per portare fortuna in ogni mese
+                dell'anno.
+              </p>
+            </div>
+            <div class="tradition-card">
+              <div class="tradition-icon">🍝</div>
+              <h3>Lenticchie</h3>
+              <p>
+                In Italia, mangiare lenticchie a Capodanno simboleggia
+                prosperità e ricchezza per l'anno nuovo.
+              </p>
+            </div>
+            <div class="tradition-card">
+              <div class="tradition-icon">🧹</div>
+              <h3>Pulizie</h3>
+              <p>
+                In molte culture, pulire la casa prima di Capodanno significa
+                spazzare via la sfortuna dell'anno passato.
+              </p>
+            </div>
+            <div class="tradition-card">
+              <div class="tradition-icon">🎆</div>
+              <h3>Fuochi d'Artificio</h3>
+              <p>
+                I fuochi d'artificio sono usati in tutto il mondo per scacciare
+                gli spiriti maligni e celebrare l'inizio del nuovo anno.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="wishes-section" class="wishes">
+        <div class="container">
+          <h2>Auguri per l'Anno Nuovo</h2>
+          <div class="wishes-form">
+            <p>
+              Scrivi il tuo augurio per il nuovo anno e condividilo con il
+              mondo!
+            </p>
+            <div class="form-group">
+              <input type="text" id="wish-name" placeholder="Il tuo nome" />
+              <textarea
+                id="wish-text"
+                placeholder="Il tuo augurio per il nuovo anno..."
+              ></textarea>
+              <button id="submit-wish" class="submit-btn">Invia Augurio</button>
+            </div>
+          </div>
+          <div class="wishes-wall" id="wishes-wall">
+            <div class="wish-card">
+              <p class="wish-text">
+                "Che il nuovo anno porti gioia, salute e successo a tutti!"
+              </p>
+              <p class="wish-author">- Marco</p>
+            </div>
+            <div class="wish-card">
+              <p class="wish-text">
+                "Auguro a tutti un anno pieno di nuove opportunità e momenti
+                felici."
+              </p>
+              <p class="wish-author">- Sofia</p>
+            </div>
+            <div class="wish-card">
+              <p class="wish-text">
+                "Che il nuovo anno sia migliore del precedente e porti pace nel
+                mondo."
+              </p>
+              <p class="wish-author">- Luca</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
       <div class="container">
-        <h1>Countdown per il <span class="accent">Nuovo Anno</span></h1>
-        <p class="subtitle">Celebriamo insieme l'arrivo del nuovo anno</p>
-        
-        <div class="countdown-container">
-          <div class="countdown-wrapper">
-            <div class="countdown-box">
-              <div class="countdown-value" id="days">00</div>
-              <div class="countdown-label">Giorni</div>
-            </div>
-            <div class="countdown-box">
-              <div class="countdown-value" id="hours">00</div>
-              <div class="countdown-label">Ore</div>
-            </div>
-            <div class="countdown-box">
-              <div class="countdown-value" id="minutes">00</div>
-              <div class="countdown-label">Minuti</div>
-            </div>
-            <div class="countdown-box">
-              <div class="countdown-value" id="seconds">00</div>
-              <div class="countdown-label">Secondi</div>
-            </div>
+        <div class="footer-content">
+          <div class="footer-logo">
+            <span class="year-text" id="footer-year">2026</span>
+            <p>Countdown Capodanno</p>
           </div>
-          
-          <div class="celebration-message" id="celebration-message">
-            <h2>Buon Anno Nuovo!</h2>
-            <p>Che il <span id="celebration-year"></span> ti porti gioia, salute e successo!</p>
-            <button id="celebrate-btn" class="celebrate-btn">Festeggia!</button>
+          <div class="footer-links">
+            <a href="#countdown-section">Countdown</a>
+            <a href="#traditions-section">Tradizioni</a>
+            <a href="#wishes-section">Auguri</a>
           </div>
-        </div>
-        
-        <div class="decoration">
-          <img src="https://i.pinimg.com/originals/ee/2e/71/ee2e715277c51ca4387b20d24f1db66f.gif" alt="New Year Celebration" class="celebration-gif">
-        </div>
-      </div>
-    </section>
-
-    <section id="traditions-section" class="traditions">
-      <div class="container">
-        <h2>Tradizioni di Capodanno</h2>
-        <div class="traditions-grid">
-          <div class="tradition-card">
-            <div class="tradition-icon">🍇</div>
-            <h3>12 Chicchi d'Uva</h3>
-            <p>In Spagna, si mangiano 12 chicchi d'uva a mezzanotte, uno per ogni rintocco dell'orologio, per portare fortuna in ogni mese dell'anno.</p>
-          </div>
-          <div class="tradition-card">
-            <div class="tradition-icon">🍝</div>
-            <h3>Lenticchie</h3>
-            <p>In Italia, mangiare lenticchie a Capodanno simboleggia prosperità e ricchezza per l'anno nuovo.</p>
-          </div>
-          <div class="tradition-card">
-            <div class="tradition-icon">🧹</div>
-            <h3>Pulizie</h3>
-            <p>In molte culture, pulire la casa prima di Capodanno significa spazzare via la sfortuna dell'anno passato.</p>
-          </div>
-          <div class="tradition-card">
-            <div class="tradition-icon">🎆</div>
-            <h3>Fuochi d'Artificio</h3>
-            <p>I fuochi d'artificio sono usati in tutto il mondo per scacciare gli spiriti maligni e celebrare l'inizio del nuovo anno.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="wishes-section" class="wishes">
-      <div class="container">
-        <h2>Auguri per l'Anno Nuovo</h2>
-        <div class="wishes-form">
-          <p>Scrivi il tuo augurio per il nuovo anno e condividilo con il mondo!</p>
-          <div class="form-group">
-            <input type="text" id="wish-name" placeholder="Il tuo nome">
-            <textarea id="wish-text" placeholder="Il tuo augurio per il nuovo anno..."></textarea>
-            <button id="submit-wish" class="submit-btn">Invia Augurio</button>
+          <div class="footer-social">
+            <a href="#" aria-label="Facebook">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"
+                ></path>
+              </svg>
+            </a>
+            <a href="#" aria-label="Twitter">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"
+                ></path>
+              </svg>
+            </a>
+            <a href="#" aria-label="Instagram">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                <path
+                  d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"
+                ></path>
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+              </svg>
+            </a>
           </div>
         </div>
-        <div class="wishes-wall" id="wishes-wall">
-          <div class="wish-card">
-            <p class="wish-text">"Che il nuovo anno porti gioia, salute e successo a tutti!"</p>
-            <p class="wish-author">- Marco</p>
-          </div>
-          <div class="wish-card">
-            <p class="wish-text">"Auguro a tutti un anno pieno di nuove opportunità e momenti felici."</p>
-            <p class="wish-author">- Sofia</p>
-          </div>
-          <div class="wish-card">
-            <p class="wish-text">"Che il nuovo anno sia migliore del precedente e porti pace nel mondo."</p>
-            <p class="wish-author">- Luca</p>
-          </div>
+        <div class="copyright">
+          <p id="copyright-year">
+            &copy; 2024 Countdown Capodanno. Tutti i diritti riservati.
+          </p>
         </div>
       </div>
-    </section>
-  </main>
-
-  <footer>
-    <div class="container">
-      <div class="footer-content">
-        <div class="footer-logo">
-          <span class="year-text" id="footer-year">2026</span>
-          <p>Countdown Capodanno</p>
-        </div>
-        <div class="footer-links">
-          <a href="#countdown-section">Countdown</a>
-          <a href="#traditions-section">Tradizioni</a>
-          <a href="#wishes-section">Auguri</a>
-        </div>
-        <div class="footer-social">
-          <a href="#" aria-label="Facebook">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
-            </svg>
-          </a>
-          <a href="#" aria-label="Twitter">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
-            </svg>
-          </a>
-          <a href="#" aria-label="Instagram">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-            </svg>
-          </a>
-        </div>
-      </div>
-      <div class="copyright">
-        <p id="copyright-year">&copy; 2024 Countdown Capodanno. Tutti i diritti riservati.</p>
-      </div>
-    </div>
-  </footer>
-</body>
+    </footer>
+  </body>
 </html>

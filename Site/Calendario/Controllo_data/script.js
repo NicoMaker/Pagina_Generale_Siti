@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // Giorno, mese e anno
         inputDate.value = `${value.substring(0, 2)}/${value.substring(
           2,
-          4
+          4,
         )}/${value.substring(4, 8)}`;
       }
     }

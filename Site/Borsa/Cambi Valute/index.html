@@ -1,87 +1,139 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Convertitore di Valuta</title>
+    <link
+      rel="icon"
+      href="https://media.istockphoto.com/id/1088060362/it/vettoriale/icona-del-convertitore-di-valuta.jpg?s=170667a&w=0&k=20&c=ov-7F8ZEIu3p3TLonZNcnL48mftxfgvVVfgLV54ktoE="
+      type="image/jpg"
+    />
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <script src="script.js" defer></script>
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Convertitore di Valuta</title>
-  <link rel="icon"
-    href="https://media.istockphoto.com/id/1088060362/it/vettoriale/icona-del-convertitore-di-valuta.jpg?s=170667a&w=0&k=20&c=ov-7F8ZEIu3p3TLonZNcnL48mftxfgvVVfgLV54ktoE="
-    type="image/jpg" />
-  <link rel="stylesheet" type="text/css" href="style.css" />
-  <script src="script.js" defer></script>
-</head>
+  <body>
+    <div class="app-container">
+      <header>
+        <h1>Convertitore di Valuta</h1>
+        <p class="subtitle">Converti facilmente tra diverse valute mondiali</p>
+        <div class="theme-switch-container">
+          <button
+            id="theme-toggle"
+            class="theme-toggle"
+            aria-label="Cambia tema"
+          >
+            <svg
+              class="sun-icon"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="12" cy="12" r="5"></circle>
+              <line x1="12" y1="1" x2="12" y2="3"></line>
+              <line x1="12" y1="21" x2="12" y2="23"></line>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+              <line x1="1" y1="12" x2="3" y2="12"></line>
+              <line x1="21" y1="12" x2="23" y2="12"></line>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+            <svg
+              class="moon-icon"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+          </button>
+        </div>
+      </header>
 
-<body>
-  <div class="app-container">
-    <header>
-      <h1>Convertitore di Valuta</h1>
-      <p class="subtitle">Converti facilmente tra diverse valute mondiali</p>
-      <div class="theme-switch-container">
-        <button id="theme-toggle" class="theme-toggle" aria-label="Cambia tema">
-          <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="5"></circle>
-            <line x1="12" y1="1" x2="12" y2="3"></line>
-            <line x1="12" y1="21" x2="12" y2="23"></line>
-            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-            <line x1="1" y1="12" x2="3" y2="12"></line>
-            <line x1="21" y1="12" x2="23" y2="12"></line>
-            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-          </svg>
-          <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-          </svg>
+      <main class="converter-card">
+        <div class="input-group">
+          <label for="amount">Importo</label>
+          <div class="amount-input-wrapper">
+            <input
+              type="number"
+              id="amount"
+              placeholder="Inserisci l'importo"
+              min="0"
+              step="0.01"
+            />
+          </div>
+        </div>
+
+        <div class="currency-container">
+          <div class="currency-group">
+            <label for="from-select">Da</label>
+            <select
+              id="from-select"
+              class="simple-select"
+              aria-label="Valuta di origine"
+            ></select>
+          </div>
+
+          <div class="swap-button" onclick="swapCurrencies()">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M7 16V4m0 0L3 8m4-4l4 4M17 8v12m0 0l4-4m-4 4l-4-4" />
+            </svg>
+          </div>
+
+          <div class="currency-group">
+            <label for="to-select">A</label>
+            <select
+              id="to-select"
+              class="simple-select"
+              aria-label="Valuta di destinazione"
+            ></select>
+          </div>
+        </div>
+
+        <button id="convert-button" onclick="convert()">
+          <span>Converti</span>
+          <div class="spinner"></div>
         </button>
-      </div>
-    </header>
 
-    <main class="converter-card">
-      <div class="input-group">
-        <label for="amount">Importo</label>
-        <div class="amount-input-wrapper">
-          <input type="number" id="amount" placeholder="Inserisci l'importo" min="0" step="0.01" />
+        <div id="result-container" class="hidden">
+          <div id="result"></div>
+          <div id="rate-info" class="rate-info"></div>
         </div>
-      </div>
+      </main>
 
-      <div class="currency-container">
-        <div class="currency-group">
-          <label for="from-select">Da</label>
-          <select id="from-select" class="simple-select" aria-label="Valuta di origine"></select>
-        </div>
-
-        <div class="swap-button" onclick="swapCurrencies()">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M7 16V4m0 0L3 8m4-4l4 4M17 8v12m0 0l4-4m-4 4l-4-4" />
-          </svg>
-        </div>
-
-        <div class="currency-group">
-          <label for="to-select">A</label>
-          <select id="to-select" class="simple-select" aria-label="Valuta di destinazione"></select>
-        </div>
-      </div>
-
-      <button id="convert-button" onclick="convert()">
-        <span>Converti</span>
-        <div class="spinner"></div>
-      </button>
-
-      <div id="result-container" class="hidden">
-        <div id="result"></div>
-        <div id="rate-info" class="rate-info"></div>
-      </div>
-    </main>
-
-    <footer>
-      <p>Tassi di cambio forniti da <a href="https://www.exchangerate-api.com" target="_blank">ExchangeRate-API</a></p>
-      <p>Ultimo aggiornamento: <span id="last-update"></span></p>
-    </footer>
-  </div>
-</body>
-
+      <footer>
+        <p>
+          Tassi di cambio forniti da
+          <a href="https://www.exchangerate-api.com" target="_blank"
+            >ExchangeRate-API</a
+          >
+        </p>
+        <p>Ultimo aggiornamento: <span id="last-update"></span></p>
+      </footer>
+    </div>
+  </body>
 </html>

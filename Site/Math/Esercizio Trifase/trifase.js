@@ -233,7 +233,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Style triangle
     ctx.strokeStyle = getComputedStyle(
-      document.documentElement
+      document.documentElement,
     ).getPropertyValue("--primary-color");
     ctx.lineWidth = 2;
     ctx.stroke();
@@ -241,7 +241,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Add labels
     ctx.font = "12px Inter";
     ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue(
-      "--text-primary"
+      "--text-primary",
     );
 
     // P label
@@ -257,7 +257,7 @@ document.addEventListener("DOMContentLoaded", () => {
     ctx.beginPath();
     ctx.arc(x1, y1, 20, 0, (-phi * Math.PI) / 180, true);
     ctx.strokeStyle = getComputedStyle(
-      document.documentElement
+      document.documentElement,
     ).getPropertyValue("--accent-color");
     ctx.stroke();
 

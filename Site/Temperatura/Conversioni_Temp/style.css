@@ -11,8 +11,8 @@
   --input-background: #f3f4f6;
   --error-color: #ef4444;
   --success-color: #10b981;
-  --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
-    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow:
+    0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
   --border-radius: 12px;
   --transition: all 0.3s ease;
 }
@@ -116,7 +116,7 @@ h1 {
   transition: var(--transition);
 }
 
-.theme-switch:checked+.theme-switch-label .theme-switch-icon {
+.theme-switch:checked + .theme-switch-label .theme-switch-icon {
   left: calc(100% - 24px);
 }
 
@@ -307,6 +307,6 @@ select:focus {
   display: none;
 }
 
-.theme-toggle{
+.theme-toggle {
   display: none;
 }

@@ -20,7 +20,11 @@
 }
 
 body {
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family:
+    "Inter",
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
   background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
   min-height: 100vh;
   color: white;
@@ -35,7 +39,8 @@ body::before {
   left: 0;
   right: 0;
   bottom: 0;
-  background: radial-gradient(
+  background:
+    radial-gradient(
       circle at 20% 20%,
       rgba(139, 92, 246, 0.15) 0%,
       transparent 50%
@@ -130,7 +135,8 @@ body::before {
   border-radius: 1rem;
   padding: 1.5rem 2rem;
   color: white;
-  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3),
+  box-shadow:
+    0 25px 50px rgba(0, 0, 0, 0.3),
     0 0 0 1px rgba(255, 255, 255, 0.1) inset;
   transform: translateX(400px);
   opacity: 0;
@@ -237,7 +243,8 @@ body::before {
   backdrop-filter: blur(30px);
   border: 1px solid var(--glass-border);
   border-radius: 2rem;
-  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5),
+  box-shadow:
+    0 25px 50px rgba(0, 0, 0, 0.5),
     0 0 0 1px rgba(255, 255, 255, 0.1) inset;
   max-width: 500px;
   width: 90%;
@@ -387,7 +394,8 @@ body::before {
   position: relative;
   overflow: hidden;
   animation: fadeInLeft 1s ease-out;
-  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3),
+  box-shadow:
+    0 25px 50px rgba(0, 0, 0, 0.3),
     0 0 0 1px rgba(255, 255, 255, 0.1) inset;
 }
 
@@ -464,7 +472,8 @@ body::before {
   cursor: pointer;
   margin-top: 2rem;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 15px 35px rgba(239, 68, 68, 0.4),
+  box-shadow:
+    0 15px 35px rgba(239, 68, 68, 0.4),
     0 0 0 1px rgba(255, 255, 255, 0.1) inset;
   letter-spacing: 1px;
   text-transform: uppercase;
@@ -494,7 +503,8 @@ body::before {
 
 .spin-button:hover {
   transform: translateY(-4px);
-  box-shadow: 0 20px 45px rgba(239, 68, 68, 0.6),
+  box-shadow:
+    0 20px 45px rgba(239, 68, 68, 0.6),
     0 0 0 1px rgba(255, 255, 255, 0.2) inset;
 }
 
@@ -517,7 +527,8 @@ body::before {
   position: sticky;
   top: 2rem;
   animation: fadeInRight 1s ease-out;
-  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3),
+  box-shadow:
+    0 25px 50px rgba(0, 0, 0, 0.3),
     0 0 0 1px rgba(255, 255, 255, 0.1) inset;
 }
 
@@ -736,7 +747,8 @@ body::before {
   text-align: center;
   transform: scale(0) rotate(10deg);
   transition: all 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-  box-shadow: 0 30px 60px rgba(16, 185, 129, 0.4),
+  box-shadow:
+    0 30px 60px rgba(16, 185, 129, 0.4),
     0 0 0 1px rgba(255, 255, 255, 0.1) inset;
 }
 
@@ -876,7 +888,8 @@ body::before {
     text-shadow: 0 0 30px rgba(255, 255, 255, 0.8);
   }
   100% {
-    text-shadow: 0 0 45px rgba(245, 158, 11, 0.8),
+    text-shadow:
+      0 0 45px rgba(245, 158, 11, 0.8),
       0 0 60px rgba(245, 158, 11, 0.6);
   }
 }

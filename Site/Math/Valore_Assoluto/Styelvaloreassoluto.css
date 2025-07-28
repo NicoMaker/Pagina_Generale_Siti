@@ -221,7 +221,10 @@ button:active {
   transform: translate(-50%, -50%);
   box-shadow: 0 0 0 3px rgba(3, 218, 198, 0.3);
   opacity: 0;
-  transition: opacity 0.3s ease, left 0.5s ease, top 0.5s ease;
+  transition:
+    opacity 0.3s ease,
+    left 0.5s ease,
+    top 0.5s ease;
 }
 
 .graph-explanation {

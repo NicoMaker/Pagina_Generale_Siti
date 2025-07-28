@@ -137,7 +137,7 @@ function generateRandomLetter() {
     const backgroundColor = generateRandomPastelColor();
     letterDisplay.style.background = `linear-gradient(135deg, ${backgroundColor} 0%, ${adjustColor(
       backgroundColor,
-      -30
+      -30,
     )} 100%)`;
 
     // Ferma l'animazione dopo un certo numero di iterazioni
@@ -356,11 +356,14 @@ function createConfetti() {
     confettiContainer.appendChild(confetti);
 
     // Rimuovi il confetto dopo l'animazione
-    setTimeout(() => {
-      if (confettiContainer.contains(confetti)) {
-        confettiContainer.removeChild(confetti);
-      }
-    }, (duration + delay) * 1000);
+    setTimeout(
+      () => {
+        if (confettiContainer.contains(confetti)) {
+          confettiContainer.removeChild(confetti);
+        }
+      },
+      (duration + delay) * 1000,
+    );
   }
 }
 

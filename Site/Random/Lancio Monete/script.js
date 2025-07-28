@@ -356,8 +356,8 @@ function updateHistoryDisplay() {
       <div class="history-info">
         <span class="history-time">${time}</span>
         <span class="history-type">${item.numCoins} ${
-      item.numCoins === 1 ? "moneta" : "monete"
-    }</span>
+          item.numCoins === 1 ? "moneta" : "monete"
+        }</span>
       </div>
       <div class="history-result">${resultHTML}</div>
     `;

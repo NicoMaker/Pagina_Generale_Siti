@@ -1,70 +1,90 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="it">
-
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Addizioni e Sottrazioni con il Riporto</title>
-    <link rel="icon" href="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/2795.png" />
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+    <link
+      rel="icon"
+      href="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/2795.png"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="style.css" />
-</head>
+  </head>
 
-<body>
+  <body>
     <div class="container">
-        <a href="../index.html" class="back-link" aria-label="Torna alla scelta esercizi">← Torna alla scelta
-            esercizi</a>
-        <h1>Addizioni e Sottrazioni con il Riporto</h1>
-        <p>Impara passo dopo passo come si fanno addizioni e sottrazioni con il riporto.</p>
+      <a
+        href="../index.html"
+        class="back-link"
+        aria-label="Torna alla scelta esercizi"
+        >← Torna alla scelta esercizi</a
+      >
+      <h1>Addizioni e Sottrazioni con il Riporto</h1>
+      <p>
+        Impara passo dopo passo come si fanno addizioni e sottrazioni con il
+        riporto.
+      </p>
 
-        <section class="step-addsot">
-            <h2>Addizione con Riporto</h2>
-            <ol>
-                <li>Allinea le cifre a destra.</li>
-                <li>Somma da destra a sinistra, riportando se > 9.</li>
-                <li>Aggiungi eventuali riporti alla colonna successiva.</li>
-            </ol>
-        </section>
+      <section class="step-addsot">
+        <h2>Addizione con Riporto</h2>
+        <ol>
+          <li>Allinea le cifre a destra.</li>
+          <li>Somma da destra a sinistra, riportando se > 9.</li>
+          <li>Aggiungi eventuali riporti alla colonna successiva.</li>
+        </ol>
+      </section>
 
-        <section class="step-addsot">
-            <h2>Sottrazione con Prestito</h2>
-            <ol>
-                <li>Allinea le cifre a destra.</li>
-                <li>Se la cifra sopra è minore, prendi in prestito dalla colonna a sinistra.</li>
-                <li>Procedi fino a sinistra.</li>
-            </ol>
-        </section>
+      <section class="step-addsot">
+        <h2>Sottrazione con Prestito</h2>
+        <ol>
+          <li>Allinea le cifre a destra.</li>
+          <li>
+            Se la cifra sopra è minore, prendi in prestito dalla colonna a
+            sinistra.
+          </li>
+          <li>Procedi fino a sinistra.</li>
+        </ol>
+      </section>
 
-        <section class="step-addsot">
-            <h2>Esempi</h2>
-            <ul>
-                <li><b>47 + 38</b>: 7 + 8 = 15 (scrivo 5, riporto 1), 4 + 3 + 1 = 8 → <strong>85</strong></li>
-                <li><b>52 - 38</b>: 2 - 8 non si può → prendo 1 prestito → <strong>14</strong></li>
-            </ul>
-        </section>
+      <section class="step-addsot">
+        <h2>Esempi</h2>
+        <ul>
+          <li>
+            <b>47 + 38</b>: 7 + 8 = 15 (scrivo 5, riporto 1), 4 + 3 + 1 = 8 →
+            <strong>85</strong>
+          </li>
+          <li>
+            <b>52 - 38</b>: 2 - 8 non si può → prendo 1 prestito →
+            <strong>14</strong>
+          </li>
+        </ul>
+      </section>
 
-        <section class="interactive-addsot">
-            <h2>Prova tu!</h2>
-            <form id="addSotForm">
-                <label for="numA">Primo numero</label>
-                <input type="number" id="numA" required placeholder="Es. 52" />
+      <section class="interactive-addsot">
+        <h2>Prova tu!</h2>
+        <form id="addSotForm">
+          <label for="numA">Primo numero</label>
+          <input type="number" id="numA" required placeholder="Es. 52" />
 
-                <label for="numB">Secondo numero</label>
-                <input type="number" id="numB" required placeholder="Es. 38" />
+          <label for="numB">Secondo numero</label>
+          <input type="number" id="numB" required placeholder="Es. 38" />
 
-                <label for="op">Operazione</label>
-                <select id="op">
-                    <option value="add">Addizione</option>
-                    <option value="sub">Sottrazione</option>
-                </select>
+          <label for="op">Operazione</label>
+          <select id="op">
+            <option value="add">Addizione</option>
+            <option value="sub">Sottrazione</option>
+          </select>
 
-                <button type="submit">Calcola</button>
-            </form>
-            <div id="addSotResult" class="result-output"></div>
-            <div id="addSotSteps" class="steps-output"></div>
-        </section>
+          <button type="submit">Calcola</button>
+        </form>
+        <div id="addSotResult" class="result-output"></div>
+        <div id="addSotSteps" class="steps-output"></div>
+      </section>
     </div>
     <script src="script.js"></script>
-</body>
-
+  </body>
 </html>

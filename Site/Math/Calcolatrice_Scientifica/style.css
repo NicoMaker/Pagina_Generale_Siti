@@ -71,7 +71,9 @@ input {
   border-radius: 50px;
   border: none;
   cursor: pointer;
-  transition: background-color 0.3s, transform 0.1s;
+  transition:
+    background-color 0.3s,
+    transform 0.1s;
 }
 
 .btn:hover {
@@ -294,4 +296,3 @@ h1 {
     font-size: 30px;
   }
 }
-

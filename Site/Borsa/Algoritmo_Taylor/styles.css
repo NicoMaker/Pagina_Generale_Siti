@@ -38,7 +38,9 @@ body {
   color: var(--text-color);
   background-color: var(--background-color);
   line-height: 1.6;
-  transition: background-color 0.3s, color 0.3s;
+  transition:
+    background-color 0.3s,
+    color 0.3s;
 }
 
 .container {
@@ -475,7 +477,9 @@ input[type="range"] {
   padding: 1.5rem;
   border-radius: 8px;
   box-shadow: 0 2px 5px var(--shadow-color);
-  transition: transform 0.3s, box-shadow 0.3s;
+  transition:
+    transform 0.3s,
+    box-shadow 0.3s;
 }
 
 .example-card:hover {

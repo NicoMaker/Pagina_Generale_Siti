@@ -32,9 +32,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Set current year in all relevant elements
   document.getElementById("current-year").textContent = currentYear;
-  document.getElementById(
-    "copyright-year"
-  ).textContent = `© ${currentYear} Countdown di Natale. Tutti i diritti riservati.`;
+  document.getElementById("copyright-year").textContent =
+    `© ${currentYear} Countdown di Natale. Tutti i diritti riservati.`;
 
   // Set countdown target
   const countdownDate = new Date(`Dec 25, ${christmasYear} 00:00:00`).getTime();
@@ -50,7 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Change the message to "Merry Christmas"
     const celebrationMessage = document.querySelector(
-      ".celebration-message h2"
+      ".celebration-message h2",
     );
     celebrationMessage.textContent = "Merry Christmas!";
 
@@ -104,7 +103,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Change the message to "Merry Christmas"
       const celebrationMessage = document.querySelector(
-        ".celebration-message h2"
+        ".celebration-message h2",
       );
       celebrationMessage.textContent = "Merry Christmas!";
 
@@ -125,7 +124,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Calculate time units
     const days = Math.floor(distance / (1000 * 60 * 60 * 24));
     const hours = Math.floor(
-      (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+      (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
     );
     const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
     const seconds = Math.floor((distance % (1000 * 60)) / 1000);
@@ -319,7 +318,7 @@ document.head.insertAdjacentHTML(
       }
     }
   </style>
-`
+`,
 );
 
 // Main function to check prime numbers
@@ -588,7 +587,7 @@ document.head.insertAdjacentHTML(
   margin-bottom: 15px;
 }
 </style>
-`
+`,
 );
 
 document.head.insertAdjacentHTML(
@@ -614,5 +613,5 @@ document.head.insertAdjacentHTML(
       }
     }
   </style>
-`
+`,
 );

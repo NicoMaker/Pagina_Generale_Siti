@@ -95,7 +95,7 @@ function validateCheckboxes() {
     showToast(
       "Attenzione",
       "Almeno un tipo di carattere deve essere selezionato",
-      "warning"
+      "warning",
     );
   }
 }
@@ -182,25 +182,25 @@ function generateRandomPassword(length) {
   // Assicurati che ci sia almeno un carattere di ogni tipo selezionato
   if (uppercaseCheck.checked) {
     password += passwordConfig.uppercaseChars.charAt(
-      Math.floor(Math.random() * passwordConfig.uppercaseChars.length)
+      Math.floor(Math.random() * passwordConfig.uppercaseChars.length),
     );
   }
 
   if (lowercaseCheck.checked) {
     password += passwordConfig.lowercaseChars.charAt(
-      Math.floor(Math.random() * passwordConfig.lowercaseChars.length)
+      Math.floor(Math.random() * passwordConfig.lowercaseChars.length),
     );
   }
 
   if (numbersCheck.checked) {
     password += passwordConfig.numericChars.charAt(
-      Math.floor(Math.random() * passwordConfig.numericChars.length)
+      Math.floor(Math.random() * passwordConfig.numericChars.length),
     );
   }
 
   if (symbolsCheck.checked) {
     password += passwordConfig.specialChars.charAt(
-      Math.floor(Math.random() * passwordConfig.specialChars.length)
+      Math.floor(Math.random() * passwordConfig.specialChars.length),
     );
   }
 
@@ -389,7 +389,7 @@ function updateInterface() {
       if (item.options.symbols) options.push("Simboli");
 
       detailsSpan.textContent = `${item.length} caratteri | ${options.join(
-        ", "
+        ", ",
       )}`;
 
       const timeSpan = document.createElement("span");
@@ -462,7 +462,7 @@ function formatDate(date) {
 function saveHistoryToStorage() {
   localStorage.setItem(
     "passwordGenerator_history",
-    JSON.stringify(passwordHistory)
+    JSON.stringify(passwordHistory),
   );
 }
 

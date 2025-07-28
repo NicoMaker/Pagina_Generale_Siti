@@ -109,15 +109,15 @@ function showError(inputElement, resultDiv, message) {
 function getExplanation(number, absoluteValue) {
   if (number < 0) {
     return `Poiché ${formatNumber(
-      number
+      number,
     )} è negativo, il suo valore assoluto è ${formatNumber(
-      number
+      number,
     )} × (−1) = ${formatNumber(absoluteValue)}`;
   } else if (number > 0) {
     return `Poiché ${formatNumber(
-      number
+      number,
     )} è positivo, il suo valore assoluto è lo stesso numero: ${formatNumber(
-      absoluteValue
+      absoluteValue,
     )}`;
   } else {
     return `Il valore assoluto di zero è sempre zero`;
@@ -200,5 +200,5 @@ document.head.insertAdjacentHTML(
   color: var(--text-light);
 }
 </style>
-`
+`,
 );

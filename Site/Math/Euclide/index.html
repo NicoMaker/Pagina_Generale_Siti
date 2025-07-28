@@ -1,208 +1,267 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="it">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Algoritmo di Euclide | Calcolo MCD</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="icon"
-        href="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Euclide.jpg-KvJ8Ij6kOF5aMbqrnq6gYmmPn4gAeN.jpeg"
-        type="image/jpeg">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="styles.css" />
     <link
-        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Roboto:wght@300;400;500;700&display=swap"
-        rel="stylesheet">
+      rel="icon"
+      href="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Euclide.jpg-KvJ8Ij6kOF5aMbqrnq6gYmmPn4gAeN.jpeg"
+      type="image/jpeg"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Roboto:wght@300;400;500;700&display=swap"
+      rel="stylesheet"
+    />
     <script src="script.js" defer></script>
-</head>
+  </head>
 
-<body>
+  <body>
     <div class="app-container">
-        <header class="header">
-            <div class="logo">
-                <div class="logo-icon">Ε</div>
-                <h1>Algoritmo di Euclide</h1>
-            </div>
-            <div class="theme-toggle" id="themeToggle">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="sun-icon">
-                    <circle cx="12" cy="12" r="5"></circle>
-                    <line x1="12" y1="1" x2="12" y2="3"></line>
-                    <line x1="12" y1="21" x2="12" y2="23"></line>
-                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                    <line x1="1" y1="12" x2="3" y2="12"></line>
-                    <line x1="21" y1="12" x2="23" y2="12"></line>
-                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                </svg>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="moon-icon">
-                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                </svg>
-            </div>
-        </header>
+      <header class="header">
+        <div class="logo">
+          <div class="logo-icon">Ε</div>
+          <h1>Algoritmo di Euclide</h1>
+        </div>
+        <div class="theme-toggle" id="themeToggle">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="sun-icon"
+          >
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="moon-icon"
+          >
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </div>
+      </header>
 
-        <main class="main">
-            <div class="content-wrapper">
-                <div class="left-column">
-                    <div class="card calculator-card">
-                        <div class="card-header">
-                            <h2>Calcolo del MCD</h2>
-                            <p class="subtitle">Massimo Comune Divisore</p>
-                        </div>
-                        <div class="card-body">
-                            <div class="input-group">
-                                <label for="numero1">Primo Numero</label>
-                                <div class="input-wrapper">
-                                    <input type="number" id="numero1" placeholder="Inserisci un numero" min="1">
-                                    <span class="greek-symbol">α</span>
-                                </div>
-                            </div>
-                            <div class="input-group">
-                                <label for="numero2">Secondo Numero</label>
-                                <div class="input-wrapper">
-                                    <input type="number" id="numero2" placeholder="Inserisci un numero" min="1">
-                                    <span class="greek-symbol">β</span>
-                                </div>
-                            </div>
-                            <button id="calcola" class="btn-primary">
-                                <span>Calcola MCD</span>
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round">
-                                    <polyline points="9 18 15 12 9 6"></polyline>
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
+      <main class="main">
+        <div class="content-wrapper">
+          <div class="left-column">
+            <div class="card calculator-card">
+              <div class="card-header">
+                <h2>Calcolo del MCD</h2>
+                <p class="subtitle">Massimo Comune Divisore</p>
+              </div>
+              <div class="card-body">
+                <div class="input-group">
+                  <label for="numero1">Primo Numero</label>
+                  <div class="input-wrapper">
+                    <input
+                      type="number"
+                      id="numero1"
+                      placeholder="Inserisci un numero"
+                      min="1"
+                    />
+                    <span class="greek-symbol">α</span>
+                  </div>
+                </div>
+                <div class="input-group">
+                  <label for="numero2">Secondo Numero</label>
+                  <div class="input-wrapper">
+                    <input
+                      type="number"
+                      id="numero2"
+                      placeholder="Inserisci un numero"
+                      min="1"
+                    />
+                    <span class="greek-symbol">β</span>
+                  </div>
+                </div>
+                <button id="calcola" class="btn-primary">
+                  <span>Calcola MCD</span>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                  </svg>
+                </button>
+              </div>
+            </div>
 
-                    <div class="card info-card">
-                        <div class="card-header">
-                            <h2>Euclide di Alessandria</h2>
-                            <p class="subtitle">Il padre della geometria</p>
-                        </div>
-                        <div class="card-body">
-                            <div class="euclid-portrait">
-                                <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Euclide.jpg-KvJ8Ij6kOF5aMbqrnq6gYmmPn4gAeN.jpeg"
-                                    alt="Euclide di Alessandria">
-                                <div class="portrait-overlay"></div>
-                            </div>
-                            <blockquote>
-                                "Non c'è via regia alla geometria."
-                                <cite>— Euclide</cite>
-                            </blockquote>
-                            <p>Euclide è stato un matematico greco antico, attivo ad Alessandria durante il regno di
-                                Tolomeo I (323-283 a.C.). È noto principalmente per gli <em>Elementi</em>, un'opera in
-                                tredici libri che raccoglie gran parte della matematica conosciuta al suo tempo.</p>
-                        </div>
-                    </div>
+            <div class="card info-card">
+              <div class="card-header">
+                <h2>Euclide di Alessandria</h2>
+                <p class="subtitle">Il padre della geometria</p>
+              </div>
+              <div class="card-body">
+                <div class="euclid-portrait">
+                  <img
+                    src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Euclide.jpg-KvJ8Ij6kOF5aMbqrnq6gYmmPn4gAeN.jpeg"
+                    alt="Euclide di Alessandria"
+                  />
+                  <div class="portrait-overlay"></div>
+                </div>
+                <blockquote>
+                  "Non c'è via regia alla geometria."
+                  <cite>— Euclide</cite>
+                </blockquote>
+                <p>
+                  Euclide è stato un matematico greco antico, attivo ad
+                  Alessandria durante il regno di Tolomeo I (323-283 a.C.). È
+                  noto principalmente per gli <em>Elementi</em>, un'opera in
+                  tredici libri che raccoglie gran parte della matematica
+                  conosciuta al suo tempo.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="right-column">
+            <div class="card result-card" id="result-card">
+              <div class="card-header">
+                <h2>Risultato</h2>
+                <p class="subtitle">Passaggi e soluzione</p>
+              </div>
+              <div class="card-body">
+                <div class="result-placeholder" id="result-placeholder">
+                  <div class="placeholder-icon">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <line x1="12" y1="8" x2="12" y2="16"></line>
+                      <line x1="8" y1="12" x2="16" y2="12"></line>
+                    </svg>
+                  </div>
+                  <p>
+                    Inserisci due numeri e premi "Calcola MCD" per vedere il
+                    risultato
+                  </p>
                 </div>
 
-                <div class="right-column">
-                    <div class="card result-card" id="result-card">
-                        <div class="card-header">
-                            <h2>Risultato</h2>
-                            <p class="subtitle">Passaggi e soluzione</p>
-                        </div>
-                        <div class="card-body">
-                            <div class="result-placeholder" id="result-placeholder">
-                                <div class="placeholder-icon">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round">
-                                        <circle cx="12" cy="12" r="10"></circle>
-                                        <line x1="12" y1="8" x2="12" y2="16"></line>
-                                        <line x1="8" y1="12" x2="16" y2="12"></line>
-                                    </svg>
-                                </div>
-                                <p>Inserisci due numeri e premi "Calcola MCD" per vedere il risultato</p>
-                            </div>
+                <div class="result-content" id="result-content">
+                  <div class="result-section">
+                    <h3>Massimo Comune Divisore</h3>
+                    <div id="risultato" class="result-value"></div>
+                  </div>
 
-                            <div class="result-content" id="result-content">
-                                <div class="result-section">
-                                    <h3>Massimo Comune Divisore</h3>
-                                    <div id="risultato" class="result-value"></div>
-                                </div>
-
-                                <div class="result-section">
-                                    <h3>Passaggi dell'algoritmo</h3>
-                                    <div id="passaggi" class="steps-container"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card explanation-card">
-                        <div class="card-header">
-                            <h2>L'Algoritmo</h2>
-                            <p class="subtitle">Come funziona</p>
-                        </div>
-                        <div class="card-body">
-                            <div class="explanation-content">
-                                <p>L'algoritmo di Euclide è un metodo efficiente per calcolare il massimo comune
-                                    divisore (MCD) di due numeri interi. È uno degli algoritmi più antichi conosciuti,
-                                    apparso negli <em>Elementi</em> di Euclide intorno al 300 a.C.</p>
-
-                                <div class="method-box">
-                                    <h4>Metodo</h4>
-                                    <ol>
-                                        <li>Dividi il numero maggiore per il minore</li>
-                                        <li>Sostituisci il numero maggiore con il resto della divisione</li>
-                                        <li>Ripeti finché il resto non diventa zero</li>
-                                        <li>L'ultimo divisore non nullo è il MCD</li>
-                                    </ol>
-                                </div>
-
-                                <div class="example-box">
-                                    <h4>Esempio: MCD di 48 e 18</h4>
-                                    <div class="example-steps">
-                                        <div class="example-step">
-                                            <span class="step-number">1</span>
-                                            <span class="step-content">48 = 18 × 2 + 12</span>
-                                        </div>
-                                        <div class="example-step">
-                                            <span class="step-number">2</span>
-                                            <span class="step-content">18 = 12 × 1 + 6</span>
-                                        </div>
-                                        <div class="example-step">
-                                            <span class="step-number">3</span>
-                                            <span class="step-content">12 = 6 × 2 + 0</span>
-                                        </div>
-                                        <div class="example-result">
-                                            MCD = 6
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                  <div class="result-section">
+                    <h3>Passaggi dell'algoritmo</h3>
+                    <div id="passaggi" class="steps-container"></div>
+                  </div>
                 </div>
+              </div>
             </div>
-        </main>
 
-        <footer class="footer">
-            <div class="greek-pattern"></div>
-            <div class="footer-content">
-                <p>© 2024 Algoritmo di Euclide</p>
-                <p>Progettato secondo i principi della matematica greca antica</p>
+            <div class="card explanation-card">
+              <div class="card-header">
+                <h2>L'Algoritmo</h2>
+                <p class="subtitle">Come funziona</p>
+              </div>
+              <div class="card-body">
+                <div class="explanation-content">
+                  <p>
+                    L'algoritmo di Euclide è un metodo efficiente per calcolare
+                    il massimo comune divisore (MCD) di due numeri interi. È uno
+                    degli algoritmi più antichi conosciuti, apparso negli
+                    <em>Elementi</em> di Euclide intorno al 300 a.C.
+                  </p>
+
+                  <div class="method-box">
+                    <h4>Metodo</h4>
+                    <ol>
+                      <li>Dividi il numero maggiore per il minore</li>
+                      <li>
+                        Sostituisci il numero maggiore con il resto della
+                        divisione
+                      </li>
+                      <li>Ripeti finché il resto non diventa zero</li>
+                      <li>L'ultimo divisore non nullo è il MCD</li>
+                    </ol>
+                  </div>
+
+                  <div class="example-box">
+                    <h4>Esempio: MCD di 48 e 18</h4>
+                    <div class="example-steps">
+                      <div class="example-step">
+                        <span class="step-number">1</span>
+                        <span class="step-content">48 = 18 × 2 + 12</span>
+                      </div>
+                      <div class="example-step">
+                        <span class="step-number">2</span>
+                        <span class="step-content">18 = 12 × 1 + 6</span>
+                      </div>
+                      <div class="example-step">
+                        <span class="step-number">3</span>
+                        <span class="step-content">12 = 6 × 2 + 0</span>
+                      </div>
+                      <div class="example-result">MCD = 6</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-        </footer>
+          </div>
+        </div>
+      </main>
+
+      <footer class="footer">
+        <div class="greek-pattern"></div>
+        <div class="footer-content">
+          <p>© 2024 Algoritmo di Euclide</p>
+          <p>Progettato secondo i principi della matematica greca antica</p>
+        </div>
+      </footer>
     </div>
 
     <div class="toast" id="toast">
-        <div class="toast-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="10"></circle>
-                <line x1="12" y1="8" x2="12" y2="16"></line>
-                <line x1="12" y1="12" x2="12" y2="12"></line>
-            </svg>
-        </div>
-        <div class="toast-message" id="toast-message"></div>
-        <button class="toast-close" id="toast-close">×</button>
+      <div class="toast-icon">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="8" x2="12" y2="16"></line>
+          <line x1="12" y1="12" x2="12" y2="12"></line>
+        </svg>
+      </div>
+      <div class="toast-message" id="toast-message"></div>
+      <button class="toast-close" id="toast-close">×</button>
     </div>
-</body>
-
+  </body>
 </html>

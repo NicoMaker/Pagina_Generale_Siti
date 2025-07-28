@@ -1,91 +1,106 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calcolatore Valore Assoluto</title>
+    <link rel="stylesheet" href="Styelvaloreassoluto.css" />
+    <link
+      rel="icon"
+      href="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Immagine-uHM66aNbgwkxqL0GjZB0n16C22jiPx.png"
+      type="image/png"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Roboto:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+  </head>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Calcolatore Valore Assoluto</title>
-  <link rel="stylesheet" href="Styelvaloreassoluto.css">
-  <link rel="icon"
-    href="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Immagine-uHM66aNbgwkxqL0GjZB0n16C22jiPx.png"
-    type="image/png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Roboto:wght@400;500&display=swap"
-    rel="stylesheet">
-</head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>Calcolatore Valore Assoluto</h1>
+        <p class="subtitle">Calcola il valore assoluto di qualsiasi numero</p>
+      </header>
 
-<body>
-  <div class="container">
-    <header>
-      <h1>Calcolatore Valore Assoluto</h1>
-      <p class="subtitle">Calcola il valore assoluto di qualsiasi numero</p>
-    </header>
-
-    <main>
-      <div class="card calculator">
-        <div class="input-section">
-          <label for="number">Inserisci un numero:</label>
-          <div class="input-wrapper">
-            <input type="text" id="number" placeholder="Es. -3.14" inputmode="decimal">
-            <button class="clear-btn" id="clear-btn" title="Cancella">×</button>
+      <main>
+        <div class="card calculator">
+          <div class="input-section">
+            <label for="number">Inserisci un numero:</label>
+            <div class="input-wrapper">
+              <input
+                type="text"
+                id="number"
+                placeholder="Es. -3.14"
+                inputmode="decimal"
+              />
+              <button class="clear-btn" id="clear-btn" title="Cancella">
+                ×
+              </button>
+            </div>
+            <p class="hint">Puoi inserire numeri negativi e decimali</p>
           </div>
-          <p class="hint">Puoi inserire numeri negativi e decimali</p>
-        </div>
 
-        <div class="button-group">
-          <button id="calculate-btn" onclick="calculateAbsoluteValue()">Calcola</button>
-        </div>
-
-        <div class="result-section" id="result-container">
-          <div id="result"></div>
-        </div>
-      </div>
-
-      <div class="card visualization">
-        <h2>Visualizzazione Grafica</h2>
-        <div class="graph-container">
-          <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Immagine-uHM66aNbgwkxqL0GjZB0n16C22jiPx.png"
-            alt="Grafico della funzione valore assoluto" class="graph-image">
-          <div class="point-marker" id="point-marker"></div>
-        </div>
-        <div class="graph-explanation">
-          <p>Il valore assoluto di un numero è la sua distanza dall'origine sulla retta numerica, indipendentemente
-            dalla direzione.</p>
-          <p>Matematicamente: |x| = x se x ≥ 0, e |x| = -x se x < 0</p>
-        </div>
-      </div>
-
-      <div class="card examples">
-        <h2>Esempi</h2>
-        <div class="examples-grid">
-          <div class="example-item" onclick="setExample('-5')">
-            <div class="example-input">-5</div>
-            <div class="example-result">|−5| = 5</div>
+          <div class="button-group">
+            <button id="calculate-btn" onclick="calculateAbsoluteValue()">
+              Calcola
+            </button>
           </div>
-          <div class="example-item" onclick="setExample('3.14')">
-            <div class="example-input">3.14</div>
-            <div class="example-result">|3.14| = 3.14</div>
-          </div>
-          <div class="example-item" onclick="setExample('-2.5')">
-            <div class="example-input">-2.5</div>
-            <div class="example-result">|−2.5| = 2.5</div>
-          </div>
-          <div class="example-item" onclick="setExample('0')">
-            <div class="example-input">0</div>
-            <div class="example-result">|0| = 0</div>
+
+          <div class="result-section" id="result-container">
+            <div id="result"></div>
           </div>
         </div>
-      </div>
-    </main>
 
-    <footer>
-      <p>Creato per l'apprendimento della matematica</p>
-    </footer>
-  </div>
+        <div class="card visualization">
+          <h2>Visualizzazione Grafica</h2>
+          <div class="graph-container">
+            <img
+              src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Immagine-uHM66aNbgwkxqL0GjZB0n16C22jiPx.png"
+              alt="Grafico della funzione valore assoluto"
+              class="graph-image"
+            />
+            <div class="point-marker" id="point-marker"></div>
+          </div>
+          <div class="graph-explanation">
+            <p>
+              Il valore assoluto di un numero è la sua distanza dall'origine
+              sulla retta numerica, indipendentemente dalla direzione.
+            </p>
+            <p>Matematicamente: |x| = x se x ≥ 0, e |x| = -x se x < 0</p>
+          </div>
+        </div>
 
-  <script src="Scriptassoluto.js"></script>
-</body>
+        <div class="card examples">
+          <h2>Esempi</h2>
+          <div class="examples-grid">
+            <div class="example-item" onclick="setExample('-5')">
+              <div class="example-input">-5</div>
+              <div class="example-result">|−5| = 5</div>
+            </div>
+            <div class="example-item" onclick="setExample('3.14')">
+              <div class="example-input">3.14</div>
+              <div class="example-result">|3.14| = 3.14</div>
+            </div>
+            <div class="example-item" onclick="setExample('-2.5')">
+              <div class="example-input">-2.5</div>
+              <div class="example-result">|−2.5| = 2.5</div>
+            </div>
+            <div class="example-item" onclick="setExample('0')">
+              <div class="example-input">0</div>
+              <div class="example-result">|0| = 0</div>
+            </div>
+          </div>
+        </div>
+      </main>
 
+      <footer>
+        <p>Creato per l'apprendimento della matematica</p>
+      </footer>
+    </div>
+
+    <script src="Scriptassoluto.js"></script>
+  </body>
 </html>

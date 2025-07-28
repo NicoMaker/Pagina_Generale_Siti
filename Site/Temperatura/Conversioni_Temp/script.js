@@ -48,7 +48,7 @@ function convertTemperature(event) {
       toSymbol = temperatureData.units[toUnit].symbol;
 
     const resultText = `${temperature.toFixed(
-      2
+      2,
     )} ${fromSymbol} = ${convertedTemperature.toFixed(2)} ${toSymbol}`;
     showResult(resultText);
 

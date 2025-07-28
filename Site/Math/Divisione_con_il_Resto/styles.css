@@ -130,7 +130,9 @@ button {
   width: 100%;
   cursor: pointer;
   box-shadow: 0 2px 8px rgba(60, 72, 100, 0.08);
-  transition: background 0.2s, transform 0.1s;
+  transition:
+    background 0.2s,
+    transform 0.1s;
   letter-spacing: 0.5px;
 }
 button:hover {
@@ -149,7 +151,9 @@ button:hover {
   font-weight: 600;
   width: 100%;
   cursor: pointer;
-  transition: background 0.2s, transform 0.1s;
+  transition:
+    background 0.2s,
+    transform 0.1s;
 }
 .secondary-btn:hover {
   background: #e9ecef;

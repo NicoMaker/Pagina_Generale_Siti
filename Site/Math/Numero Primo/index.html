@@ -1,111 +1,133 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="it">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Verifica Numero Primo</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="Numeri_primi.jpg" type="image/jpg">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" href="Numeri_primi.jpg" type="image/jpg" />
     <script src="script.js" defer></script>
-</head>
+  </head>
 
-<body>
+  <body>
     <div class="app-container">
-        <div class="card">
-            <header class="card-header">
-                <div class="logo-container">
-                    <div class="logo">
-                        <img src="Numeri_primi.jpg" alt="Logo" class="logo-image">
-                    </div>
-                </div>
-                <h1>Verifica Numero Primo</h1>
-                <p class="subtitle">Scopri se un numero è primo o composto</p>
-                <div class="separator"></div>
-            </header>
+      <div class="card">
+        <header class="card-header">
+          <div class="logo-container">
+            <div class="logo">
+              <img src="Numeri_primi.jpg" alt="Logo" class="logo-image" />
+            </div>
+          </div>
+          <h1>Verifica Numero Primo</h1>
+          <p class="subtitle">Scopri se un numero è primo o composto</p>
+          <div class="separator"></div>
+        </header>
 
-            <main class="card-body">
-                <section class="input-section">
-                    <div class="input-group">
-                        <label for="number">Inserisci un numero</label>
-                        <div class="input-wrapper">
-                            <input type="number" id="number" min="1" placeholder="Es. 17, 29, 101..."
-                                autocomplete="off">
-                            <div class="input-focus-indicator"></div>
-                        </div>
-                    </div>
+        <main class="card-body">
+          <section class="input-section">
+            <div class="input-group">
+              <label for="number">Inserisci un numero</label>
+              <div class="input-wrapper">
+                <input
+                  type="number"
+                  id="number"
+                  min="1"
+                  placeholder="Es. 17, 29, 101..."
+                  autocomplete="off"
+                />
+                <div class="input-focus-indicator"></div>
+              </div>
+            </div>
 
-                    <button id="check-button" onclick="checkPrime()">
-                        <span class="button-text">Verifica</span>
-                        <span class="button-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <path d="M5 12h14"></path>
-                                <path d="m12 5 7 7-7 7"></path>
-                            </svg>
-                        </span>
-                    </button>
-                </section>
+            <button id="check-button" onclick="checkPrime()">
+              <span class="button-text">Verifica</span>
+              <span class="button-icon">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M5 12h14"></path>
+                  <path d="m12 5 7 7-7 7"></path>
+                </svg>
+              </span>
+            </button>
+          </section>
 
-                <div class="separator"></div>
+          <div class="separator"></div>
 
-                <section id="result-container" class="result-section hidden">
-                    <div class="result-header">
-                        <div id="result-badge"></div>
-                        <div id="result-number"></div>
-                    </div>
-                    <div id="result" class="result-text"></div>
+          <section id="result-container" class="result-section hidden">
+            <div class="result-header">
+              <div id="result-badge"></div>
+              <div id="result-number"></div>
+            </div>
+            <div id="result" class="result-text"></div>
 
-                    <div id="divisors-container" class="hidden">
-                        <h3>Divisori del numero:</h3>
-                        <div id="divisors-list"></div>
-                        <div class="divisors-legend">
-                            <span class="legend-item">
-                                <span class="legend-dot"></span>
-                                <span>Divisore normale</span>
-                            </span>
-                            <span class="legend-item">
-                                <span class="legend-dot prime"></span>
-                                <span>Fattore primo</span>
-                            </span>
-                        </div>
-                    </div>
-                </section>
-            </main>
+            <div id="divisors-container" class="hidden">
+              <h3>Divisori del numero:</h3>
+              <div id="divisors-list"></div>
+              <div class="divisors-legend">
+                <span class="legend-item">
+                  <span class="legend-dot"></span>
+                  <span>Divisore normale</span>
+                </span>
+                <span class="legend-item">
+                  <span class="legend-dot prime"></span>
+                  <span>Fattore primo</span>
+                </span>
+              </div>
+            </div>
+          </section>
+        </main>
 
-            <div class="separator"></div>
+        <div class="separator"></div>
 
-            <section class="card-footer">
-                <div class="info-box">
-                    <h3>Cos'è un numero primo?</h3>
-                    <p>Un numero primo è un numero naturale maggiore di 1 che non può essere formato dal prodotto di due
-                        numeri naturali più piccoli.</p>
-                    <p>In altre parole, un numero primo ha esattamente due divisori: 1 e se stesso.</p>
-                </div>
+        <section class="card-footer">
+          <div class="info-box">
+            <h3>Cos'è un numero primo?</h3>
+            <p>
+              Un numero primo è un numero naturale maggiore di 1 che non può
+              essere formato dal prodotto di due numeri naturali più piccoli.
+            </p>
+            <p>
+              In altre parole, un numero primo ha esattamente due divisori: 1 e
+              se stesso.
+            </p>
+          </div>
 
-                <div class="separator light"></div>
+          <div class="separator light"></div>
 
-                <div class="examples-section">
-                    <h3>Esempi da provare:</h3>
-                    <div class="examples">
-                        <span class="example" onclick="setExample(2)">2</span>
-                        <span class="example" onclick="setExample(7)">7</span>
-                        <span class="example" onclick="setExample(23)">23</span>
-                        <span class="example" onclick="setExample(42)">42</span>
-                        <span class="example" onclick="setExample(97)">97</span>
-                    </div>
-                </div>
-            </section>
-        </div>
+          <div class="examples-section">
+            <h3>Esempi da provare:</h3>
+            <div class="examples">
+              <span class="example" onclick="setExample(2)">2</span>
+              <span class="example" onclick="setExample(7)">7</span>
+              <span class="example" onclick="setExample(23)">23</span>
+              <span class="example" onclick="setExample(42)">42</span>
+              <span class="example" onclick="setExample(97)">97</span>
+            </div>
+          </div>
+        </section>
+      </div>
 
-        <footer class="app-footer">
-            <p>© 2024 Verifica Numero Primo | Creato con <span class="heart">♥</span></p>
-        </footer>
+      <footer class="app-footer">
+        <p>
+          © 2024 Verifica Numero Primo | Creato con
+          <span class="heart">♥</span>
+        </p>
+      </footer>
     </div>
-</body>
-
+  </body>
 </html>

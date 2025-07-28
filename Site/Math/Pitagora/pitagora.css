@@ -111,7 +111,9 @@ input {
   background-color: rgba(255, 255, 255, 0.9);
   color: var(--color-dark);
   font-family: inherit;
-  transition: border-color 0.3s, box-shadow 0.3s;
+  transition:
+    border-color 0.3s,
+    box-shadow 0.3s;
 }
 
 select {
@@ -131,7 +133,9 @@ input:focus {
 
 .input-container {
   margin-bottom: 1rem;
-  transition: opacity 0.3s, transform 0.3s;
+  transition:
+    opacity 0.3s,
+    transform 0.3s;
 }
 
 button {
@@ -142,7 +146,9 @@ button {
   font-size: 1.1rem;
   border-radius: 4px;
   cursor: pointer;
-  transition: background-color 0.3s, transform 0.2s;
+  transition:
+    background-color 0.3s,
+    transform 0.2s;
   display: block;
   margin: 1.5rem auto;
   font-family: inherit;

@@ -132,7 +132,9 @@ body.dark .moon-icon {
   color: var(--text);
   margin-top: 0.2rem;
   margin-bottom: 0.2rem;
-  transition: border 0.2s, background 0.2s;
+  transition:
+    border 0.2s,
+    background 0.2s;
   box-shadow: 0 2px 8px rgba(79, 70, 229, 0.04);
   appearance: none;
 }
@@ -173,7 +175,9 @@ body.dark .moon-icon {
   margin-bottom: 1.2rem;
   box-shadow: 0 4px 16px rgba(79, 70, 229, 0.1);
   cursor: pointer;
-  transition: background 0.2s, box-shadow 0.2s;
+  transition:
+    background 0.2s,
+    box-shadow 0.2s;
   display: flex;
   align-items: center;
   justify-content: center;

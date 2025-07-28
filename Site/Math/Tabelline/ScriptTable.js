@@ -54,7 +54,7 @@ function generaTabellina() {
   // Limit range to prevent browser hanging
   if (max - min > 1000) {
     showError(
-      "Per favore, limita l'intervallo a 1000 numeri per prestazioni ottimali."
+      "Per favore, limita l'intervallo a 1000 numeri per prestazioni ottimali.",
     );
     return;
   }

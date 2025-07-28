@@ -70,8 +70,8 @@ document.addEventListener("DOMContentLoaded", () => {
       window.innerWidth <= 480
         ? "10px"
         : window.innerWidth <= 767
-        ? "15px"
-        : "20px";
+          ? "15px"
+          : "20px";
     wheel.style.border = `${borderWidth} ${settings.pattern} white`;
 
     // Salva le impostazioni

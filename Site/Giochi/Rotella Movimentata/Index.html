@@ -1,155 +1,215 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rotella Movimentata | Personalizza la tua rotella</title>
+    <link
+      rel="icon"
+      href="https://m.media-amazon.com/images/I/61NAVwZNuNL._AC_UF894,1000_QL80_.jpg"
+      type="image/jpg"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="script.js" defer></script>
+  </head>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Rotella Movimentata | Personalizza la tua rotella</title>
-  <link rel="icon" href="https://m.media-amazon.com/images/I/61NAVwZNuNL._AC_UF894,1000_QL80_.jpg" type="image/jpg">
-  <link rel="stylesheet" href="style.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap"
-    rel="stylesheet">
-  <script src="script.js" defer></script>
-</head>
-
-<body>
-  <div class="app-container">
-    <div class="background-shapes">
-      <div class="shape shape-1"></div>
-      <div class="shape shape-2"></div>
-      <div class="shape shape-3"></div>
-    </div>
-
-    <header>
-      <div class="logo">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-          stroke-linecap="round" stroke-linejoin="round" class="logo-icon">
-          <circle cx="12" cy="12" r="10"></circle>
-          <circle cx="12" cy="12" r="4"></circle>
-          <line x1="12" y1="2" x2="12" y2="4"></line>
-          <line x1="12" y1="20" x2="12" y2="22"></line>
-          <line x1="2" y1="12" x2="4" y2="12"></line>
-          <line x1="20" y1="12" x2="22" y2="12"></line>
-        </svg>
-        <h1>Rotella Movimentata</h1>
+  <body>
+    <div class="app-container">
+      <div class="background-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
       </div>
-      <p class="subtitle">Personalizza e anima la tua rotella</p>
-    </header>
 
-    <main>
-      <div class="content-wrapper">
-        <section class="controls-section">
-          <div class="controls-card">
-            <h2>Personalizzazione</h2>
+      <header>
+        <div class="logo">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="logo-icon"
+          >
+            <circle cx="12" cy="12" r="10"></circle>
+            <circle cx="12" cy="12" r="4"></circle>
+            <line x1="12" y1="2" x2="12" y2="4"></line>
+            <line x1="12" y1="20" x2="12" y2="22"></line>
+            <line x1="2" y1="12" x2="4" y2="12"></line>
+            <line x1="20" y1="12" x2="22" y2="12"></line>
+          </svg>
+          <h1>Rotella Movimentata</h1>
+        </div>
+        <p class="subtitle">Personalizza e anima la tua rotella</p>
+      </header>
 
-            <form id="settingsForm" class="settings-form">
-              <div class="form-group">
-                <label for="color">Colore della rotella</label>
-                <div class="color-selector">
-                  <select id="color" class="custom-select">
-                    <option value="red">Rosso</option>
-                    <option value="blue">Blu</option>
-                    <option value="green">Verde</option>
-                    <option value="yellow">Giallo</option>
-                    <option value="purple">Viola</option>
-                    <option value="orange">Arancione</option>
-                    <option value="pink">Rosa</option>
-                    <option value="teal">Turchese</option>
-                  </select>
-                  <div class="color-preview" id="colorPreview"></div>
-                </div>
-              </div>
+      <main>
+        <div class="content-wrapper">
+          <section class="controls-section">
+            <div class="controls-card">
+              <h2>Personalizzazione</h2>
 
-              <div class="form-group">
-                <label for="speed">Velocità di rotazione</label>
-                <div class="range-container">
-                  <input type="range" id="speed" name="speed" min="1" max="20" value="10" class="range-slider">
-                  <div class="range-value" id="speedValue">10s</div>
-                </div>
-                <div class="speed-labels">
-                  <span>Veloce</span>
-                  <span>Lento</span>
-                </div>
-              </div>
-
-              <div class="form-group">
-                <label for="pattern">Stile del bordo</label>
-                <div class="pattern-options">
-                  <div class="pattern-option">
-                    <input type="radio" id="dashed" name="pattern" value="dashed" checked>
-                    <label for="dashed" class="pattern-label">
-                      <div class="pattern-preview dashed"></div>
-                      <span>Tratteggiato</span>
-                    </label>
-                  </div>
-                  <div class="pattern-option">
-                    <input type="radio" id="solid" name="pattern" value="solid">
-                    <label for="solid" class="pattern-label">
-                      <div class="pattern-preview solid"></div>
-                      <span>Continuo</span>
-                    </label>
-                  </div>
-                  <div class="pattern-option">
-                    <input type="radio" id="dotted" name="pattern" value="dotted">
-                    <label for="dotted" class="pattern-label">
-                      <div class="pattern-preview dotted"></div>
-                      <span>Punteggiato</span>
-                    </label>
+              <form id="settingsForm" class="settings-form">
+                <div class="form-group">
+                  <label for="color">Colore della rotella</label>
+                  <div class="color-selector">
+                    <select id="color" class="custom-select">
+                      <option value="red">Rosso</option>
+                      <option value="blue">Blu</option>
+                      <option value="green">Verde</option>
+                      <option value="yellow">Giallo</option>
+                      <option value="purple">Viola</option>
+                      <option value="orange">Arancione</option>
+                      <option value="pink">Rosa</option>
+                      <option value="teal">Turchese</option>
+                    </select>
+                    <div class="color-preview" id="colorPreview"></div>
                   </div>
                 </div>
-              </div>
 
-              <button type="submit" class="apply-button">
-                <span>Applica modifiche</span>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                  stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="button-icon">
-                  <polyline points="20 6 9 17 4 12"></polyline>
-                </svg>
-              </button>
-            </form>
-          </div>
-        </section>
+                <div class="form-group">
+                  <label for="speed">Velocità di rotazione</label>
+                  <div class="range-container">
+                    <input
+                      type="range"
+                      id="speed"
+                      name="speed"
+                      min="1"
+                      max="20"
+                      value="10"
+                      class="range-slider"
+                    />
+                    <div class="range-value" id="speedValue">10s</div>
+                  </div>
+                  <div class="speed-labels">
+                    <span>Veloce</span>
+                    <span>Lento</span>
+                  </div>
+                </div>
 
-        <section class="wheel-section">
-          <div class="wheel-container">
-            <div class="wheel">
-              <div class="wheel-center"></div>
-              <div class="wheel-marker"></div>
+                <div class="form-group">
+                  <label for="pattern">Stile del bordo</label>
+                  <div class="pattern-options">
+                    <div class="pattern-option">
+                      <input
+                        type="radio"
+                        id="dashed"
+                        name="pattern"
+                        value="dashed"
+                        checked
+                      />
+                      <label for="dashed" class="pattern-label">
+                        <div class="pattern-preview dashed"></div>
+                        <span>Tratteggiato</span>
+                      </label>
+                    </div>
+                    <div class="pattern-option">
+                      <input
+                        type="radio"
+                        id="solid"
+                        name="pattern"
+                        value="solid"
+                      />
+                      <label for="solid" class="pattern-label">
+                        <div class="pattern-preview solid"></div>
+                        <span>Continuo</span>
+                      </label>
+                    </div>
+                    <div class="pattern-option">
+                      <input
+                        type="radio"
+                        id="dotted"
+                        name="pattern"
+                        value="dotted"
+                      />
+                      <label for="dotted" class="pattern-label">
+                        <div class="pattern-preview dotted"></div>
+                        <span>Punteggiato</span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                <button type="submit" class="apply-button">
+                  <span>Applica modifiche</span>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="button-icon"
+                  >
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                </button>
+              </form>
             </div>
-            <div class="wheel-shadow"></div>
-          </div>
+          </section>
 
-          <div class="wheel-controls">
-            <button id="pauseButton" class="control-button">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="6" y="4" width="4" height="16"></rect>
-                <rect x="14" y="4" width="4" height="16"></rect>
-              </svg>
-              <span>Pausa</span>
-            </button>
-            <button id="resetButton" class="control-button">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M3 2v6h6"></path>
-                <path d="M21 12A9 9 0 0 0 6 5.3L3 8"></path>
-                <path d="M21 22v-6h-6"></path>
-                <path d="M3 12a9 9 0 0 0 15 6.7l3-2.7"></path>
-              </svg>
-              <span>Reset</span>
-            </button>
-          </div>
-        </section>
-      </div>
-    </main>
+          <section class="wheel-section">
+            <div class="wheel-container">
+              <div class="wheel">
+                <div class="wheel-center"></div>
+                <div class="wheel-marker"></div>
+              </div>
+              <div class="wheel-shadow"></div>
+            </div>
 
-    <footer>
-      <p>© 2025 Rotella Movimentata | Creato con <span class="heart">♥</span> per il movimento</p>
-    </footer>
-  </div>
-</body>
+            <div class="wheel-controls">
+              <button id="pauseButton" class="control-button">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <rect x="6" y="4" width="4" height="16"></rect>
+                  <rect x="14" y="4" width="4" height="16"></rect>
+                </svg>
+                <span>Pausa</span>
+              </button>
+              <button id="resetButton" class="control-button">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M3 2v6h6"></path>
+                  <path d="M21 12A9 9 0 0 0 6 5.3L3 8"></path>
+                  <path d="M21 22v-6h-6"></path>
+                  <path d="M3 12a9 9 0 0 0 15 6.7l3-2.7"></path>
+                </svg>
+                <span>Reset</span>
+              </button>
+            </div>
+          </section>
+        </div>
+      </main>
 
+      <footer>
+        <p>
+          © 2025 Rotella Movimentata | Creato con
+          <span class="heart">♥</span> per il movimento
+        </p>
+      </footer>
+    </div>
+  </body>
 </html>

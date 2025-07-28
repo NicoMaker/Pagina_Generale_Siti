@@ -122,12 +122,16 @@ body {
   justify-content: center;
   cursor: pointer;
   transition: var(--transition);
-  box-shadow: 0 4px 20px var(--shadow), 0 0 0 2px rgba(255, 255, 255, 0.1);
+  box-shadow:
+    0 4px 20px var(--shadow),
+    0 0 0 2px rgba(255, 255, 255, 0.1);
 }
 
 .theme-toggle:hover {
   transform: translateY(-3px) scale(1.05);
-  box-shadow: 0 8px 25px var(--shadow-hover), 0 0 0 2px rgba(255, 255, 255, 0.2);
+  box-shadow:
+    0 8px 25px var(--shadow-hover),
+    0 0 0 2px rgba(255, 255, 255, 0.2);
 }
 
 .theme-toggle .moon {
@@ -223,7 +227,9 @@ main {
 .info-card {
   background-color: var(--card);
   border-radius: var(--radius);
-  box-shadow: 0 10px 30px var(--shadow), 0 0 0 1px rgba(255, 255, 255, 0.1);
+  box-shadow:
+    0 10px 30px var(--shadow),
+    0 0 0 1px rgba(255, 255, 255, 0.1);
   padding: 35px;
   transition: var(--transition);
   animation: fadeIn 0.8s ease-out;
@@ -261,7 +267,8 @@ main {
 .input-card:hover,
 .result-card:hover,
 .info-card:hover {
-  box-shadow: 0 20px 40px var(--shadow-hover),
+  box-shadow:
+    0 20px 40px var(--shadow-hover),
     0 0 0 1px rgba(255, 255, 255, 0.2);
   transform: translateY(-5px);
 }

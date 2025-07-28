@@ -105,8 +105,8 @@ function generaNumeri(facceDado) {
     // Create HTML for dice result
     let diceHTML = `
       <div class="dice-result ${diceClass} dice-roll" style="animation-delay: ${
-      i * 0.1
-    }s">
+        i * 0.1
+      }s">
         ${numeroCasuale}
       </div>
     `;
