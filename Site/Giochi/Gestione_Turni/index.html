@@ -4,7 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Gestione Turni</title>
-    <!-- Favicon aggiunta -->
     <link
       rel="icon"
       href="https://lh3.googleusercontent.com/GUsL9ujyLmP8jYqPofmjptJv2dG88PHzM1fj34-e2zwjfXXSpPFnehTVIRvq_tQED9FJ2ycdSX0fiM0XIi6D1A"
@@ -36,7 +35,6 @@
       </header>
 
       <main class="app-content">
-        <!-- Sezione inserimento persone -->
         <section id="input-section" class="card">
           <div class="card-header">
             <i class="fas fa-user-plus"></i>
@@ -81,7 +79,6 @@
           </div>
         </section>
 
-        <!-- Sezione gestione turni -->
         <section id="turn-section" class="card hidden">
           <div id="notification" class="notification">
             <i class="fas fa-info-circle"></i>
@@ -142,6 +139,26 @@
           gestione dei turni
         </p>
       </footer>
+    </div>
+
+    <div id="confirmation-modal" class="modal hidden">
+      <div class="modal-content">
+        <div class="modal-header">
+          <i class="fas fa-exclamation-triangle"></i>
+          <h2>Conferma Eliminazione</h2>
+        </div>
+        <div class="modal-body">
+          <p id="modal-message"></p>
+        </div>
+        <div class="modal-footer">
+          <button id="cancel-delete-btn" class="btn btn-secondary">
+            <i class="fas fa-times"></i> Annulla
+          </button>
+          <button id="confirm-delete-btn" class="btn btn-danger">
+            <i class="fas fa-trash-alt"></i> Elimina
+          </button>
+        </div>
+      </div>
     </div>
 
     <script src="script.js"></script>

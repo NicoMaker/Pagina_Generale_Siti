@@ -235,6 +235,16 @@ input:focus {
   transform: translateY(-1px);
 }
 
+.btn-secondary {
+  background-color: var(--text-muted);
+  color: var(--text-light);
+}
+
+.btn-secondary:hover {
+  background-color: #5a6268;
+  transform: translateY(-1px);
+}
+
 .btn-success {
   background-color: var(--success);
   color: var(--text-light);
@@ -720,5 +730,105 @@ input:focus {
   .legend-item {
     font-size: 0.8rem;
     padding: var(--spacing-1) var(--spacing-2);
+  }
+}
+
+/* Modal Styles */
+.modal {
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.3s ease,
+    visibility 0.3s ease;
+}
+
+.modal.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal-content {
+  background-color: var(--bg-card);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-lg);
+  width: 90%;
+  max-width: 500px;
+  animation: slideIn 0.3s ease-out;
+}
+
+.modal-header {
+  background: linear-gradient(135deg, var(--danger), var(--danger-dark));
+  color: var(--text-light);
+  padding: var(--spacing-5);
+  border-top-left-radius: var(--border-radius-lg);
+  border-top-right-radius: var(--border-radius-lg);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+}
+
+.modal-header i {
+  font-size: 1.8rem;
+}
+
+.modal-header h2 {
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+.modal-body {
+  padding: var(--spacing-6);
+  text-align: center;
+  font-size: 1.1rem;
+  color: var(--text-primary);
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--spacing-3);
+  padding: var(--spacing-5);
+  border-top: 1px solid var(--border-color);
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Responsive adjustments for modal */
+@media (max-width: 576px) {
+  .modal-header h2 {
+    font-size: 1.3rem;
+  }
+
+  .modal-body {
+    padding: var(--spacing-4);
+    font-size: 1rem;
+  }
+
+  .modal-footer {
+    flex-direction: column;
+    padding: var(--spacing-4);
+  }
+
+  .modal-footer .btn {
+    width: 100%;
   }
 }
