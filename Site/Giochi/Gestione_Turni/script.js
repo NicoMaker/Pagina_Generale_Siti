@@ -14,19 +14,12 @@ const errorMessage = document.getElementById("error-message");
 const notification = document.getElementById("notification");
 const peopleCountEl = document.getElementById("people-count");
 
-// Modal Elements
-const confirmationModal = document.getElementById("confirmation-modal");
-const modalMessage = document.getElementById("modal-message");
-const confirmDeleteBtn = document.getElementById("confirm-delete-btn");
-const cancelDeleteBtn = document.getElementById("cancel-delete-btn");
-
 // Stato dell'applicazione
 let people = [];
 let currentTurn = 1;
 let currentPersonIndex = 0;
 let editingIndex = -1;
 let isGameStarted = false;
-let personToDeleteIndex = -1; // New variable to store the index of the person to be deleted
 
 // Inizializzazione
 document.addEventListener("DOMContentLoaded", () => {
@@ -41,10 +34,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Crea l'interfaccia per aggiungere persone nella sezione turni
   createAddPersonInTurnSection();
-
-  // Add event listeners for the modal buttons
-  confirmDeleteBtn.addEventListener("click", confirmDeletion);
-  cancelDeleteBtn.addEventListener("click", cancelDeletion);
 });
 
 // Crea l'interfaccia per aggiungere persone nella sezione turni
@@ -330,13 +319,7 @@ function renderPeopleList() {
         deleteBtn.disabled = true;
         deleteBtn.title = "Servono almeno 2 persone";
       }
-      deleteBtn.onclick = () => {
-        // Store the index of the person to be deleted
-        personToDeleteIndex = index;
-        showConfirmationModal(
-          `Sei sicuro di voler eliminare "${person.name}"?`,
-        );
-      };
+      deleteBtn.onclick = () => deletePerson(index);
 
       // Pulsante sposta su
       const upBtn = document.createElement("button");
@@ -422,52 +405,16 @@ function cancelEdit() {
   renderPeopleList();
 }
 
-// Mostra il modale di conferma
-function showConfirmationModal(message) {
-  modalMessage.textContent = message;
-  confirmationModal.classList.add("active");
-}
-
-// Nasconde il modale di conferma
-function hideConfirmationModal() {
-  confirmationModal.classList.remove("active");
-  personToDeleteIndex = -1; // Reset the index
-}
-
-// Funzione richiamata quando l'utente conferma l'eliminazione
-function confirmDeletion() {
-  if (personToDeleteIndex !== -1) {
-    deletePerson(personToDeleteIndex, true); // Pass a flag to indicate confirmed deletion
-    hideConfirmationModal();
-  }
-}
-
-// Funzione richiamata quando l'utente annulla l'eliminazione
-function cancelDeletion() {
-  hideConfirmationModal();
-  playSound("error"); // Play an error sound when cancellation
-}
-
 // Elimina una persona dalla lista
-function deletePerson(index, confirmed = false) {
-  // If not confirmed and conditions are met, show modal
-  if (!confirmed && isGameStarted && people.length <= 2) {
+function deletePerson(index) {
+  // Verifica che ci siano almeno 3 persone se siamo in gioco (così ne rimarranno almeno 2)
+  if (isGameStarted && people.length <= 2) {
+    // Mostra notifica di errore
     showNotification("Servono almeno 2 persone per continuare!");
     playSound("error");
     return;
   }
 
-  // If not confirmed, and game is not started, or more than 2 people
-  if (!confirmed) {
-    personToDeleteIndex = index; // Store the index before showing modal
-    showConfirmationModal(
-      `Sei sicuro di voler eliminare "${people[index].name}"?`,
-    );
-    return;
-  }
-
-  // Actual deletion logic
-  const deletedPersonName = people[index].name;
   people.splice(index, 1);
 
   // Riproduci suono
@@ -476,7 +423,6 @@ function deletePerson(index, confirmed = false) {
   // Se non ci sono più persone, torna alla schermata iniziale
   if (people.length === 0) {
     resetAll();
-    showNotification(`${deletedPersonName} è stato eliminato.`);
     return;
   }
 
@@ -485,23 +431,13 @@ function deletePerson(index, confirmed = false) {
     // Aggiusta l'indice corrente se necessario
     if (currentPersonIndex >= people.length) {
       currentPersonIndex = 0;
-    } else if (index < currentPersonIndex) {
-      // If the deleted person was before the current person, adjust currentPersonIndex
-      currentPersonIndex--;
-    } else if (index === currentPersonIndex && people.length > 0) {
-      // If the current person was deleted, and there are still people, move to the next
-      currentPersonIndex = currentPersonIndex % people.length;
     }
 
     // Resetta lo stato di completamento per tutte le persone
     people.forEach((person) => (person.completed = false));
 
     // Mostra notifica
-    showNotification(
-      `${deletedPersonName} è stato eliminato! Si ricomincia dalla prima persona.`,
-    );
-  } else {
-    showNotification(`${deletedPersonName} è stato eliminato.`);
+    showNotification("Persona eliminata! Si ricomincia dalla prima persona");
   }
 
   // Aggiorna la lista e il pulsante di avvio
@@ -603,7 +539,7 @@ function completeTurn() {
       // Inizia un nuovo turno
       currentTurn++;
       currentPersonIndex = 0;
-      // Resetta lo stato di completazione
+      // Resetta lo stato di completamento
       people.forEach((person) => (person.completed = false));
 
       // Mostra notifica per nuovo turno
