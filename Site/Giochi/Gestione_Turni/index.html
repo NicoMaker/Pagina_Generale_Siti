@@ -1,156 +1,137 @@
 <!doctype html>
 <html lang="it">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Gestione Turni</title>
-    <link
-      rel="icon"
-      href="https://lh3.googleusercontent.com/GUsL9ujyLmP8jYqPofmjptJv2dG88PHzM1fj34-e2zwjfXXSpPFnehTVIRvq_tQED9FJ2ycdSX0fiM0XIi6D1A"
-      type="image/png"
-    />
-    <link
-      rel="shortcut icon"
-      href="https://lh3.googleusercontent.com/GUsL9ujyLmP8jYqPofmjptJv2dG88PHzM1fj34-e2zwjfXXSpPFnehTVIRvq_tQED9FJ2ycdSX0fiM0XIi6D1A"
-      type="image/png"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-    />
-    <link rel="stylesheet" href="styles.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    />
-  </head>
 
-  <body>
-    <div class="app-container">
-      <header class="app-header">
-        <div class="logo">
-          <i class="fas fa-users-gear"></i>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gestione Turni</title>
+  <link rel="icon"
+    href="https://lh3.googleusercontent.com/GUsL9ujyLmP8jYqPofmjptJv2dG88PHzM1fj34-e2zwjfXXSpPFnehTVIRvq_tQED9FJ2ycdSX0fiM0XIi6D1A"
+    type="image/png" />
+  <link rel="shortcut icon"
+    href="https://lh3.googleusercontent.com/GUsL9ujyLmP8jYqPofmjptJv2dG88PHzM1fj34-e2zwjfXXSpPFnehTVIRvq_tQED9FJ2ycdSX0fiM0XIi6D1A"
+    type="image/png" />
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+
+<body>
+  <div class="app-container">
+    <header class="app-header">
+      <div class="logo">
+        <i class="fas fa-users-gear"></i>
+      </div>
+      <h1>Gestione Turni</h1>
+    </header>
+
+    <main class="app-content">
+      <section id="input-section" class="card">
+        <div class="card-header">
+          <i class="fas fa-user-plus"></i>
+          <h2>Inserisci i nomi delle persone</h2>
         </div>
-        <h1>Gestione Turni</h1>
-      </header>
-
-      <main class="app-content">
-        <section id="input-section" class="card">
-          <div class="card-header">
-            <i class="fas fa-user-plus"></i>
-            <h2>Inserisci i nomi delle persone</h2>
-          </div>
-          <div class="card-body">
-            <div class="input-group">
-              <div class="input-wrapper">
-                <i class="fas fa-user input-icon"></i>
-                <input
-                  type="text"
-                  id="name-input"
-                  placeholder="Nome della persona"
-                />
-              </div>
-              <button id="add-person-btn" class="btn btn-primary">
-                <i class="fas fa-plus"></i>
-                <span>Aggiungi</span>
-              </button>
+        <div class="card-body">
+          <div class="input-group">
+            <div class="input-wrapper">
+              <i class="fas fa-user input-icon"></i>
+              <input type="text" id="name-input" placeholder="Nome della persona" />
             </div>
-            <div id="error-message" class="alert alert-danger hidden">
-              <i class="fas fa-exclamation-circle"></i>
-              <span>Servono almeno 2 persone per iniziare!</span>
-            </div>
-
-            <div class="people-container">
-              <div class="people-header">
-                <h3><i class="fas fa-list"></i> Elenco Persone</h3>
-                <span id="people-count" class="badge">0</span>
-              </div>
-              <ul id="people-list" class="people-list"></ul>
-            </div>
-
-            <button
-              id="start-btn"
-              class="btn btn-success btn-lg btn-block"
-              disabled
-            >
-              <i class="fas fa-play"></i>
-              <span>Inizia i Turni</span>
+            <button id="add-person-btn" class="btn btn-primary">
+              <i class="fas fa-plus"></i>
+              <span>Aggiungi</span>
             </button>
           </div>
-        </section>
-
-        <section id="turn-section" class="card hidden">
-          <div id="notification" class="notification">
-            <i class="fas fa-info-circle"></i>
-            <span>Ordine aggiornato! Tocca ora alla prima persona</span>
+          <div id="error-message" class="alert alert-danger hidden">
+            <i class="fas fa-exclamation-circle"></i>
+            <span>Servono almeno 2 persone per iniziare!</span>
           </div>
 
-          <div class="turn-info-container">
-            <div class="turn-badge">
-              <i class="fas fa-sync-alt"></i>
-              <span>Turno</span>
-              <span id="turn-number" class="turn-number">1</span>
+          <div class="people-container">
+            <div class="people-header">
+              <h3><i class="fas fa-list"></i> Elenco Persone</h3>
+              <span id="people-count" class="badge">0</span>
             </div>
-
-            <div class="current-person-container">
-              <div class="avatar">
-                <i class="fas fa-user-circle"></i>
-              </div>
-              <div class="person-info">
-                <span class="label">Tocca a:</span>
-                <span id="current-person" class="current-person-name"></span>
-              </div>
-            </div>
+            <ul id="people-list" class="people-list"></ul>
           </div>
 
-          <div class="card-body">
-            <div class="people-container">
-              <div class="people-header">
-                <h3><i class="fas fa-users"></i> Partecipanti</h3>
-                <div class="legend">
-                  <span class="legend-item"
-                    ><i class="fas fa-circle current"></i> Corrente</span
-                  >
-                  <span class="legend-item"
-                    ><i class="fas fa-circle completed"></i> Completato</span
-                  >
-                </div>
-              </div>
-              <ul id="turn-list" class="people-list"></ul>
-            </div>
-
-            <div class="action-buttons">
-              <button id="reset-turn-btn" class="btn btn-warning">
-                <i class="fas fa-redo"></i>
-                <span>Ricomincia dal Turno 1</span>
-              </button>
-              <button id="reset-all-btn" class="btn btn-danger">
-                <i class="fas fa-trash-alt"></i>
-                <span>Reset Completo</span>
-              </button>
-            </div>
-          </div>
-        </section>
-      </main>
-
-      <footer class="app-footer">
-        <p>
-          <i class="fas fa-code"></i> con <i class="fas fa-heart"></i> per la
-          gestione dei turni
-        </p>
-      </footer>
-    </div>
-
-    <div id="confirmation-modal" class="modal hidden">
-      <div class="modal-content">
-        <p id="modal-message"></p>
-        <div class="modal-actions">
-          <button id="modal-cancel-btn" class="btn btn-warning">Annulla</button>
-          <button id="modal-ok-btn" class="btn btn-danger">OK</button>
+          <button id="start-btn" class="btn btn-success btn-lg btn-block" disabled>
+            <i class="fas fa-play"></i>
+            <span>Inizia i Turni</span>
+          </button>
         </div>
+      </section>
+
+      <section id="turn-section" class="card hidden">
+        <div id="notification" class="notification">
+          <i class="fas fa-info-circle"></i>
+          <span>Ordine aggiornato! Tocca ora alla prima persona</span>
+        </div>
+
+        <div class="turn-info-container">
+          <div class="turn-badge">
+            <i class="fas fa-sync-alt"></i>
+            <span>Turno</span>
+            <span id="turn-number" class="turn-number">1</span>
+          </div>
+
+          <div class="current-person-container">
+            <div class="avatar">
+              <i class="fas fa-user-circle"></i>
+            </div>
+            <div class="person-info">
+              <span class="label">Tocca a:</span>
+              <span id="current-person" class="current-person-name"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-body">
+          <div class="people-container">
+            <div class="people-header">
+              <h3><i class="fas fa-users"></i> Partecipanti</h3>
+              <div class="legend">
+                <span class="legend-item"><i class="fas fa-circle current"></i> Corrente</span>
+                <span class="legend-item"><i class="fas fa-circle completed"></i> Completato</span>
+              </div>
+            </div>
+            <ul id="turn-list" class="people-list"></ul>
+          </div>
+
+          <div class="action-buttons">
+            <button id="reset-turn-btn" class="btn btn-warning">
+              <i class="fas fa-redo"></i>
+              <span>Ricomincia dal Turno 1</span>
+            </button>
+            <button id="reset-all-btn" class="btn btn-danger">
+              <i class="fas fa-trash-alt"></i>
+              <span>Reset Completo</span>
+            </button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="app-footer">
+      <p>
+        <i class="fas fa-code"></i> con <i class="fas fa-heart"></i> per la
+        gestione dei turni
+      </p>
+    </footer>
+  </div>
+
+  <div id="confirmation-modal" class="modal hidden">
+    <div class="modal-content">
+      <p id="modal-message"></p>
+      <div class="modal-actions">
+        <button id="modal-cancel-btn" class="btn btn-warning">Annulla</button>
+        <button id="modal-ok-btn" class="btn btn-danger">OK</button>
       </div>
     </div>
+  </div>
 
-    <script src="script.js"></script>
-  </body>
+  <script src="script.js"></script>
+</body>
+
 </html>
