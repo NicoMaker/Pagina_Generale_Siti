@@ -14,22 +14,21 @@ const errorMessage = document.getElementById("error-message");
 const notification = document.getElementById("notification");
 const peopleCountEl = document.getElementById("people-count");
 
-// Modal Elements
-const confirmationModal = document.getElementById("confirmation-modal");
-const modalMessage = document.getElementById("modal-message");
-const modalOkBtn = document.getElementById("modal-ok-btn");
-const modalCancelBtn = document.getElementById("modal-cancel-btn");
-
 // Stato dell'applicazione
 let people = [];
 let currentTurn = 1;
 let currentPersonIndex = 0;
 let editingIndex = -1;
 let isGameStarted = false;
-let pendingAction = null; // To store the action to be confirmed
+
+// Nuovo: Variabile per il container di aggiunta persona nella sezione turni
+let turnAddPersonContainer;
 
 // Inizializzazione
 document.addEventListener("DOMContentLoaded", () => {
+  // Crea l'interfaccia per aggiungere persone nella sezione turni PRIMA di caricare i dati
+  createAddPersonInTurnSection();
+
   // Carica i dati salvati
   loadFromLocalStorage();
 
@@ -38,9 +37,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Aggiungi effetti sonori
   initSounds();
-
-  // Crea l'interfaccia per aggiungere persone nella sezione turni
-  createAddPersonInTurnSection();
 });
 
 // Crea l'interfaccia per aggiungere persone nella sezione turni
@@ -50,6 +46,10 @@ function createAddPersonInTurnSection() {
   addPersonContainer.className = "input-group";
   addPersonContainer.style.marginTop = "var(--spacing-6)";
   addPersonContainer.style.marginBottom = "var(--spacing-4)";
+  addPersonContainer.id = "turn-add-person-container"; // Aggiunto ID per facile riferimento
+
+  // Salva il riferimento al container
+  turnAddPersonContainer = addPersonContainer;
 
   // Crea il wrapper per l'input
   const inputWrapper = document.createElement("div");
@@ -97,6 +97,16 @@ function createAddPersonInTurnSection() {
 function addPersonInTurnSection() {
   const turnNameInput = document.getElementById("turn-name-input");
   const name = turnNameInput.value.trim();
+
+  // Permetti di aggiungere persone solo se il turno è 1
+  if (currentTurn !== 1) {
+    showNotification(
+      "Puoi aggiungere persone solo all'inizio del gioco o resettando il turno a 1.",
+    );
+    playSound("error");
+    turnNameInput.value = ""; // Pulisci l'input
+    return;
+  }
 
   if (name) {
     // Aggiungi la nuova persona
@@ -149,12 +159,6 @@ function initSounds() {
     error: new Audio(
       "https://assets.mixkit.co/active_storage/sfx/2572/2572-preview.mp3",
     ),
-    confirm: new Audio(
-      "https://assets.mixkit.co/active_storage/sfx/2569/2569-preview.mp3",
-    ), // Example confirm sound
-    cancel: new Audio(
-      "https://assets.mixkit.co/active_storage/sfx/2574/2574-preview.mp3",
-    ), // Example cancel sound
   };
 
   // Precarica i suoni
@@ -196,7 +200,7 @@ function loadFromLocalStorage() {
       updatePeopleCount();
     } catch (e) {
       console.error("Errore nel caricamento dei dati:", e);
-      resetAllConfirmed(); // Reset if data is corrupted
+      resetAll();
     }
   }
 }
@@ -273,6 +277,16 @@ function renderPeopleList() {
   const list = isGameStarted ? turnList : peopleList;
   list.innerHTML = "";
 
+  // Gestisci la visibilità del container di aggiunta persona nella sezione turni
+  if (turnAddPersonContainer) {
+    // Assicurati che l'elemento esista
+    if (isGameStarted && currentTurn === 1) {
+      turnAddPersonContainer.classList.remove("hidden");
+    } else {
+      turnAddPersonContainer.classList.add("hidden");
+    }
+  }
+
   people.forEach((person, index) => {
     const li = document.createElement("li");
 
@@ -332,7 +346,7 @@ function renderPeopleList() {
         deleteBtn.disabled = true;
         deleteBtn.title = "Servono almeno 2 persone";
       }
-      deleteBtn.onclick = () => confirmAction("deletePerson", index); // Use confirmAction
+      deleteBtn.onclick = () => deletePerson(index);
 
       // Pulsante sposta su
       const upBtn = document.createElement("button");
@@ -418,53 +432,8 @@ function cancelEdit() {
   renderPeopleList();
 }
 
-// Funzione per mostrare il modale di conferma
-function showConfirmationModal(message, actionType, actionParam = null) {
-  modalMessage.textContent = message;
-  confirmationModal.classList.add("visible");
-  pendingAction = { type: actionType, param: actionParam };
-}
-
-// Gestore per il pulsante OK del modale
-modalOkBtn.addEventListener("click", () => {
-  confirmationModal.classList.remove("visible");
-  if (pendingAction) {
-    playSound("confirm"); // Play confirm sound
-    if (pendingAction.type === "deletePerson") {
-      deletePersonConfirmed(pendingAction.param);
-    } else if (pendingAction.type === "resetToTurnOne") {
-      resetToTurnOneConfirmed();
-    } else if (pendingAction.type === "resetAll") {
-      resetAllConfirmed();
-    }
-    pendingAction = null;
-  }
-});
-
-// Gestore per il pulsante Annulla del modale
-modalCancelBtn.addEventListener("click", () => {
-  confirmationModal.classList.remove("visible");
-  playSound("cancel"); // Play cancel sound
-  pendingAction = null;
-});
-
-// Funzione wrapper per richiamare il modale di conferma
-function confirmAction(actionType, param = null) {
-  let message = "";
-  if (actionType === "deletePerson") {
-    const personName = people[param] ? people[param].name : "questa persona";
-    message = `Sei sicuro di voler eliminare ${personName}?`;
-  } else if (actionType === "resetToTurnOne") {
-    message = "Sei sicuro di voler ricominciare dal Turno 1?";
-  } else if (actionType === "resetAll") {
-    message =
-      "Sei sicuro di voler fare un reset completo? Tutti i dati verranno cancellati!";
-  }
-  showConfirmationModal(message, actionType, param);
-}
-
-// Elimina una persona dalla lista (logica effettiva dopo conferma)
-function deletePersonConfirmed(index) {
+// Elimina una persona dalla lista
+function deletePerson(index) {
   // Verifica che ci siano almeno 3 persone se siamo in gioco (così ne rimarranno almeno 2)
   if (isGameStarted && people.length <= 2) {
     // Mostra notifica di errore
@@ -475,9 +444,12 @@ function deletePersonConfirmed(index) {
 
   people.splice(index, 1);
 
+  // Riproduci suono
+  playSound("delete");
+
   // Se non ci sono più persone, torna alla schermata iniziale
   if (people.length === 0) {
-    resetAllConfirmed(); // Chiamo la versione confermata
+    resetAll();
     return;
   }
 
@@ -631,8 +603,8 @@ function completeTurn() {
   }, 1000);
 }
 
-// Resetta al turno 1 mantenendo le stesse persone (logica effettiva dopo conferma)
-function resetToTurnOneConfirmed() {
+// Resetta al turno 1 mantenendo le stesse persone
+function resetToTurnOne() {
   currentTurn = 1;
   currentPersonIndex = 0;
 
@@ -646,8 +618,8 @@ function resetToTurnOneConfirmed() {
   showNotification("Turno resettato! Si ricomincia dal turno 1");
 }
 
-// Reset completo - torna alla schermata iniziale (logica effettiva dopo conferma)
-function resetAllConfirmed() {
+// Reset completo - torna alla schermata iniziale
+function resetAll() {
   // Resetta tutti i valori
   people = [];
   currentTurn = 1;
@@ -678,9 +650,6 @@ function resetAllConfirmed() {
 
   // Salva lo stato vuoto
   saveToLocalStorage();
-
-  // Mostra notifica
-  showNotification("Reset completo effettuato!");
 }
 
 // Event listeners
@@ -691,8 +660,8 @@ nameInput.addEventListener("keypress", (e) => {
   }
 });
 startBtn.addEventListener("click", startTurns);
-resetTurnBtn.addEventListener("click", () => confirmAction("resetToTurnOne")); // Use confirmAction
-resetAllBtn.addEventListener("click", () => confirmAction("resetAll")); // Use confirmAction
+resetTurnBtn.addEventListener("click", resetToTurnOne);
+resetAllBtn.addEventListener("click", resetAll);
 
 // Aggiungi animazioni al caricamento della pagina
 document.addEventListener("DOMContentLoaded", () => {
