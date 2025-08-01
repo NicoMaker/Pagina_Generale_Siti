@@ -2428,3 +2428,85 @@ function setupRicercaCheckbox() {
     });
   }
 }
+
+
+function aggiornaSelezionePartecipante() {
+  const lista = document.getElementById("participants-checkbox-list");
+  if (!lista) return;
+
+  lista.innerHTML = ""; // Pulisci la lista esistente
+
+  // Ottieni il valore di ricerca
+  const searchTerm = document
+    .getElementById("participant-search")
+    .value.toLowerCase();
+
+  // Filtra i partecipanti in base al termine di ricerca
+  let partecipantiFiltrati = partecipanti.filter((p) =>
+    p.nome.toLowerCase().includes(searchTerm),
+  );
+
+  // ********** MODIFICA QUI: Ordina i partecipanti alfabeticamente per nome **********
+  partecipantiFiltrati.sort((a, b) => a.nome.localeCompare(b.nome));
+  // ***********************************************************************************
+
+  // Aggiungi l'opzione "Seleziona tutti"
+  const allDiv = document.createElement("div");
+  allDiv.classList.add("checkbox-participant");
+
+  const allCheckbox = document.createElement("input");
+  allCheckbox.type = "checkbox";
+  allCheckbox.id = "select-all";
+  allCheckbox.checked =
+    selectedParticipantIds.length > 0 &&
+    selectedParticipantIds.length === partecipantiFiltrati.length;
+  allCheckbox.addEventListener("change", () => {
+    if (allCheckbox.checked) {
+      selectedParticipantIds = partecipantiFiltrati.map((p) => p.id);
+    } else {
+      selectedParticipantIds = [];
+    }
+    aggiornaSelezionePartecipante();
+  });
+
+  const allLabel = document.createElement("label");
+  allLabel.textContent = "Tutti";
+  allLabel.setAttribute("for", "select-all");
+  allLabel.style.marginLeft = "0.5rem";
+
+  allDiv.appendChild(allCheckbox);
+  allDiv.appendChild(allLabel);
+  allDiv.style.marginBottom = "0.5rem";
+  lista.appendChild(allDiv);
+
+  // Crea checkbox per ogni partecipante filtrato
+  partecipantiFiltrati.forEach((p) => {
+    const div = document.createElement("div");
+    div.classList.add("checkbox-participant");
+
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.value = p.id;
+    checkbox.checked = selectedParticipantIds.includes(p.id);
+    checkbox.addEventListener("change", () => {
+      if (checkbox.checked) {
+        if (!selectedParticipantIds.includes(p.id)) {
+          selectedParticipantIds.push(p.id);
+        }
+      } else {
+        selectedParticipantIds = selectedParticipantIds.filter(
+          (id) => id !== p.id,
+        );
+      }
+      aggiornaSelezionePartecipante();
+    });
+
+    const label = document.createElement("label");
+    label.textContent = `${p.nome} (#${p.id})`;
+    label.style.marginLeft = "0.5rem";
+
+    div.appendChild(checkbox);
+    div.appendChild(label);
+    lista.appendChild(div);
+  });
+}
