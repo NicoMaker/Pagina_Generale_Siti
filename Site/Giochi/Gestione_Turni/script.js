@@ -14,12 +14,19 @@ const errorMessage = document.getElementById("error-message");
 const notification = document.getElementById("notification");
 const peopleCountEl = document.getElementById("people-count");
 
+// Modal Elements
+const confirmationModal = document.getElementById("confirmation-modal");
+const modalMessage = document.getElementById("modal-message");
+const modalOkBtn = document.getElementById("modal-ok-btn");
+const modalCancelBtn = document.getElementById("modal-cancel-btn");
+
 // Stato dell'applicazione
 let people = [];
 let currentTurn = 1;
 let currentPersonIndex = 0;
 let editingIndex = -1;
 let isGameStarted = false;
+let pendingAction = null; // To store the action to be confirmed
 
 // Inizializzazione
 document.addEventListener("DOMContentLoaded", () => {
@@ -142,6 +149,12 @@ function initSounds() {
     error: new Audio(
       "https://assets.mixkit.co/active_storage/sfx/2572/2572-preview.mp3",
     ),
+    confirm: new Audio(
+      "https://assets.mixkit.co/active_storage/sfx/2569/2569-preview.mp3",
+    ), // Example confirm sound
+    cancel: new Audio(
+      "https://assets.mixkit.co/active_storage/sfx/2574/2574-preview.mp3",
+    ), // Example cancel sound
   };
 
   // Precarica i suoni
@@ -183,7 +196,7 @@ function loadFromLocalStorage() {
       updatePeopleCount();
     } catch (e) {
       console.error("Errore nel caricamento dei dati:", e);
-      resetAll();
+      resetAllConfirmed(); // Reset if data is corrupted
     }
   }
 }
@@ -319,7 +332,7 @@ function renderPeopleList() {
         deleteBtn.disabled = true;
         deleteBtn.title = "Servono almeno 2 persone";
       }
-      deleteBtn.onclick = () => deletePerson(index);
+      deleteBtn.onclick = () => confirmAction("deletePerson", index); // Use confirmAction
 
       // Pulsante sposta su
       const upBtn = document.createElement("button");
@@ -405,8 +418,53 @@ function cancelEdit() {
   renderPeopleList();
 }
 
-// Elimina una persona dalla lista
-function deletePerson(index) {
+// Funzione per mostrare il modale di conferma
+function showConfirmationModal(message, actionType, actionParam = null) {
+  modalMessage.textContent = message;
+  confirmationModal.classList.add("visible");
+  pendingAction = { type: actionType, param: actionParam };
+}
+
+// Gestore per il pulsante OK del modale
+modalOkBtn.addEventListener("click", () => {
+  confirmationModal.classList.remove("visible");
+  if (pendingAction) {
+    playSound("confirm"); // Play confirm sound
+    if (pendingAction.type === "deletePerson") {
+      deletePersonConfirmed(pendingAction.param);
+    } else if (pendingAction.type === "resetToTurnOne") {
+      resetToTurnOneConfirmed();
+    } else if (pendingAction.type === "resetAll") {
+      resetAllConfirmed();
+    }
+    pendingAction = null;
+  }
+});
+
+// Gestore per il pulsante Annulla del modale
+modalCancelBtn.addEventListener("click", () => {
+  confirmationModal.classList.remove("visible");
+  playSound("cancel"); // Play cancel sound
+  pendingAction = null;
+});
+
+// Funzione wrapper per richiamare il modale di conferma
+function confirmAction(actionType, param = null) {
+  let message = "";
+  if (actionType === "deletePerson") {
+    const personName = people[param] ? people[param].name : "questa persona";
+    message = `Sei sicuro di voler eliminare ${personName}?`;
+  } else if (actionType === "resetToTurnOne") {
+    message = "Sei sicuro di voler ricominciare dal Turno 1?";
+  } else if (actionType === "resetAll") {
+    message =
+      "Sei sicuro di voler fare un reset completo? Tutti i dati verranno cancellati!";
+  }
+  showConfirmationModal(message, actionType, param);
+}
+
+// Elimina una persona dalla lista (logica effettiva dopo conferma)
+function deletePersonConfirmed(index) {
   // Verifica che ci siano almeno 3 persone se siamo in gioco (così ne rimarranno almeno 2)
   if (isGameStarted && people.length <= 2) {
     // Mostra notifica di errore
@@ -417,12 +475,9 @@ function deletePerson(index) {
 
   people.splice(index, 1);
 
-  // Riproduci suono
-  playSound("delete");
-
   // Se non ci sono più persone, torna alla schermata iniziale
   if (people.length === 0) {
-    resetAll();
+    resetAllConfirmed(); // Chiamo la versione confermata
     return;
   }
 
@@ -576,8 +631,8 @@ function completeTurn() {
   }, 1000);
 }
 
-// Resetta al turno 1 mantenendo le stesse persone
-function resetToTurnOne() {
+// Resetta al turno 1 mantenendo le stesse persone (logica effettiva dopo conferma)
+function resetToTurnOneConfirmed() {
   currentTurn = 1;
   currentPersonIndex = 0;
 
@@ -591,8 +646,8 @@ function resetToTurnOne() {
   showNotification("Turno resettato! Si ricomincia dal turno 1");
 }
 
-// Reset completo - torna alla schermata iniziale
-function resetAll() {
+// Reset completo - torna alla schermata iniziale (logica effettiva dopo conferma)
+function resetAllConfirmed() {
   // Resetta tutti i valori
   people = [];
   currentTurn = 1;
@@ -623,6 +678,9 @@ function resetAll() {
 
   // Salva lo stato vuoto
   saveToLocalStorage();
+
+  // Mostra notifica
+  showNotification("Reset completo effettuato!");
 }
 
 // Event listeners
@@ -633,8 +691,8 @@ nameInput.addEventListener("keypress", (e) => {
   }
 });
 startBtn.addEventListener("click", startTurns);
-resetTurnBtn.addEventListener("click", resetToTurnOne);
-resetAllBtn.addEventListener("click", resetAll);
+resetTurnBtn.addEventListener("click", () => confirmAction("resetToTurnOne")); // Use confirmAction
+resetAllBtn.addEventListener("click", () => confirmAction("resetAll")); // Use confirmAction
 
 // Aggiungi animazioni al caricamento della pagina
 document.addEventListener("DOMContentLoaded", () => {
