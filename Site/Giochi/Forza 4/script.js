@@ -501,32 +501,67 @@ function loadScores() {
   }
 }
 
-function resetStats() {
-  // Conferma prima di resettare
-  if (confirm("Sei sicuro di voler azzerare tutte le statistiche?")) {
-    scores = {
-      rosso: {
-        wins: 0,
-        yellowCards: 0,
-        redCards: 0,
-      },
-      giallo: {
-        wins: 0,
-        yellowCards: 0,
-        redCards: 0,
-      },
-    };
+// MODAL LOGIC START
+const resetStatsModal = document.getElementById("resetStatsModal");
+const confirmResetStatsButton = document.getElementById("confirmResetStatsButton");
+const cancelResetStatsButton = document.getElementById("cancelResetStatsButton");
 
-    saveScores();
-    updateScoreDisplay();
-
-    // Aggiorna la timeline
-    addTimelineEvent("Statistiche azzerate");
-
-    // Feedback per l'utente
-    announceForScreenReader("Statistiche azzerate con successo");
-  }
+function showResetStatsModal() {
+  resetStatsModal.classList.add("modal-active");
+  resetStatsModal.setAttribute('aria-hidden', 'false');
+  // Optionally, set focus to the confirm button for accessibility
+  confirmResetStatsButton.focus();
 }
+
+function hideResetStatsModal() {
+  resetStatsModal.classList.remove("modal-active");
+  resetStatsModal.setAttribute('aria-hidden', 'true');
+}
+
+function performResetStats() {
+  scores = {
+    rosso: {
+      wins: 0,
+      yellowCards: 0,
+      redCards: 0,
+    },
+    giallo: {
+      wins: 0,
+      yellowCards: 0,
+      redCards: 0,
+    },
+  };
+
+  saveScores();
+  updateScoreDisplay();
+
+  // Aggiorna la timeline
+  addTimelineEvent("Statistiche azzerate");
+
+  // Feedback per l'utente
+  announceForScreenReader("Statistiche azzerate con successo");
+  hideResetStatsModal(); // Hide modal after action
+}
+
+// Event Listeners for the modal buttons
+confirmResetStatsButton.addEventListener("click", performResetStats);
+cancelResetStatsButton.addEventListener("click", hideResetStatsModal);
+
+// Close modal if clicking outside (optional, but good for UX)
+resetStatsModal.addEventListener('click', (event) => {
+    if (event.target === resetStatsModal) {
+        hideResetStatsModal();
+    }
+});
+
+// Close modal with Escape key
+document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && resetStatsModal.classList.contains('modal-active')) {
+        hideResetStatsModal();
+    }
+});
+// MODAL LOGIC END
+
 
 // Funzione per aggiungere cartellini e verificare la squalifica
 function addCard(player, cardType) {

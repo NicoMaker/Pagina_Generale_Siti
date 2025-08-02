@@ -93,15 +93,12 @@
           ></div>
         </div>
 
-        <!-- Timeline Section -->
         <div class="timeline-container">
           <h2>Cronologia Partita</h2>
           <div id="timeline" class="timeline" aria-live="polite">
-            <!-- Timeline events will be added here -->
-          </div>
+            </div>
         </div>
 
-        <!-- Scoreboard Section -->
         <div class="scoreboard-container">
           <h2>Punteggio</h2>
           <div class="scoreboard">
@@ -189,7 +186,7 @@
           <div class="reset-stats-container">
             <button
               id="resetStatsButton"
-              onclick="resetStats()"
+              onclick="showResetStatsModal()"
               class="reset-stats-button"
             >
               <svg
@@ -238,6 +235,17 @@
           </details>
         </div>
       </footer>
+    </div>
+
+    <div id="resetStatsModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalDescription">
+      <div class="modal-content">
+        <h3 id="modalTitle">Conferma Azzeramento Statistiche</h3>
+        <p id="modalDescription">Sei sicuro di voler azzerare tutte le statistiche di gioco? Questa azione non può essere annullata.</p>
+        <div class="modal-buttons">
+          <button id="confirmResetStatsButton" class="modal-button confirm-button">Conferma</button>
+          <button id="cancelResetStatsButton" class="modal-button cancel-button">Annulla</button>
+        </div>
+      </div>
     </div>
   </body>
 </html>
