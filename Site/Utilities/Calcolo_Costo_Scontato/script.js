@@ -39,7 +39,7 @@ class DiscountCalculator {
 
       // Final price mode elements
       originalPriceInput: document.getElementById("original-price"),
-      discountSlider: document.getElementById("discount-slider"), // This ID is not directly used for the slider element, but for context
+      discountSlider: document.getElementById("discount-slider"),
       discountInput: document.getElementById("discount-input"),
       percentageDisplay: document.getElementById("percentage-display"),
       sliderFill: document.getElementById("slider-fill"),
@@ -120,7 +120,7 @@ class DiscountCalculator {
     this.elements.resetBtn.addEventListener("click", () =>
       this.resetCalculator(),
     );
-    this.elements.shareBtn.addEventListener("click", () => this.shareResult());
+    // this.elements.shareBtn.addEventListener("click", () => this.shareResult());
 
     // Keyboard events
     document.addEventListener("keydown", (e) =>
@@ -256,15 +256,19 @@ class DiscountCalculator {
     updateSliderPosition(0);
   }
 
+  // Correzione: Resetta lo stile 'display' prima di applicare la classe 'active'
   switchMode(mode) {
     this.currentMode = mode;
 
-    // Hide results when switching modes
     this.hideResults();
     this.clearErrors();
     this.resetFormFields();
 
-    // Ensure only the selected mode is active and visible
+    // Reset inline display styles to let CSS take over
+    this.elements.finalPriceMode.style.display = "";
+    this.elements.percentageMode.style.display = "";
+
+    // Now, toggle the active class
     if (mode === "final") {
       this.elements.finalPriceMode.classList.add("active");
       this.elements.percentageMode.classList.remove("active");
@@ -300,10 +304,9 @@ class DiscountCalculator {
     const isValid = !isNaN(value) && value > 0;
 
     if (input.value.trim() === "") {
-      // Allow empty input on blur if not calculating
-      this.hideError(errorElement);
-      input.classList.remove("error");
-      return true;
+      this.showError(errorElement, "Il campo non può essere vuoto.");
+      input.classList.add("error");
+      return false;
     } else if (!isValid) {
       this.showError(
         errorElement,
@@ -345,17 +348,20 @@ class DiscountCalculator {
     const priceAfter = parseFloat(this.elements.priceAfterInput.value);
 
     if (this.elements.priceAfterInput.value.trim() === "") {
-      this.hideError(this.elements.priceAfterError);
-      this.elements.priceAfterInput.classList.remove("error");
-      return true;
+      this.showError(
+        this.elements.priceAfterError,
+        "Il campo non può essere vuoto.",
+      );
+      this.elements.priceAfterInput.classList.add("error");
+      return false;
     }
 
-    const isValidPriceAfter = !isNaN(priceAfter) && priceAfter >= 0;
+    const isValidPriceAfter = !isNaN(priceAfter) && priceAfter > 0;
 
     if (!isValidPriceAfter) {
       this.showError(
         this.elements.priceAfterError,
-        "Inserisci un prezzo valido.",
+        "Inserisci un prezzo valido e maggiore di zero.",
       );
       this.elements.priceAfterInput.classList.add("error");
       return false;
@@ -378,12 +384,11 @@ class DiscountCalculator {
   async calculateFinalPrice() {
     if (this.isCalculating) return;
 
-    // Ensure validation happens on click
     const isPriceValid = this.validatePrice(
       this.elements.originalPriceInput,
       this.elements.priceError,
     );
-    const isDiscountValid = this.validateDiscount(); // Ensure discount is also valid
+    const isDiscountValid = this.validateDiscount();
 
     if (!isPriceValid || !isDiscountValid) {
       if (!isPriceValid) this.shakeElement(this.elements.originalPriceInput);
@@ -393,11 +398,10 @@ class DiscountCalculator {
     this.isCalculating = true;
     this.elements.calculateFinalBtn.classList.add("loading");
 
-    // Simulate calculation delay for better UX
     await this.delay(800);
 
     const originalPrice = parseFloat(this.elements.originalPriceInput.value);
-    const discountPercentage = parseFloat(this.elements.discountInput.value); // Use the formatted value
+    const discountPercentage = parseFloat(this.elements.discountInput.value);
 
     const discountAmount = originalPrice * (discountPercentage / 100);
     const finalPrice = originalPrice - discountAmount;
@@ -410,7 +414,7 @@ class DiscountCalculator {
           label: "Prezzo Originale",
           value: this.formatCurrency(originalPrice),
         },
-        { label: "Sconto", value: `${discountPercentage.toFixed(2)}%` }, // Display with 2 decimal places
+        { label: "Sconto", value: `${discountPercentage.toFixed(2)}%` },
         {
           label: "Importo Risparmiato",
           value: this.formatCurrency(discountAmount),
@@ -425,7 +429,6 @@ class DiscountCalculator {
   async calculatePercentage() {
     if (this.isCalculating) return;
 
-    // Validate inputs
     const isPriceBeforeValid = this.validatePriceBefore();
     const isPriceAfterValid = this.validatePriceAfter();
 
@@ -439,7 +442,6 @@ class DiscountCalculator {
     const priceBefore = parseFloat(this.elements.priceBeforeInput.value);
     const priceAfter = parseFloat(this.elements.priceAfterInput.value);
 
-    // Additional check for priceAfter >= priceBefore specifically for percentage calculation
     if (priceAfter >= priceBefore) {
       this.showError(
         this.elements.priceAfterError,
@@ -453,7 +455,6 @@ class DiscountCalculator {
     this.isCalculating = true;
     this.elements.calculatePercentageBtn.classList.add("loading");
 
-    // Simulate calculation delay for better UX
     await this.delay(800);
 
     const discountAmount = priceBefore - priceAfter;
@@ -461,7 +462,7 @@ class DiscountCalculator {
 
     this.showResult({
       title: "Percentuale di Sconto",
-      mainValue: `${discountPercentage.toFixed(2)}%`, // Display with 2 decimal places
+      mainValue: `${discountPercentage.toFixed(2)}%`,
       details: [
         { label: "Prezzo Originale", value: this.formatCurrency(priceBefore) },
         { label: "Prezzo Scontato", value: this.formatCurrency(priceAfter) },
@@ -480,7 +481,7 @@ class DiscountCalculator {
     this.elements.resultTitle.textContent = data.title;
     this.elements.mainResult.textContent = data.mainValue;
 
-    this.elements.resultDetails.innerHTML = ""; // Clear previous details
+    this.elements.resultDetails.innerHTML = "";
     data.details.forEach((detail) => {
       const row = document.createElement("div");
       row.classList.add("detail-row");
@@ -489,39 +490,32 @@ class DiscountCalculator {
     });
 
     this.elements.resultContainer.classList.add("show");
-    this.elements.finalPriceMode.style.display = "none"; // Hide current mode
-    this.elements.percentageMode.style.display = "none"; // Hide other mode (ensure both are hidden)
+    this.elements.finalPriceMode.style.display = "none";
+    this.elements.percentageMode.style.display = "none";
   }
 
   hideResults() {
     this.elements.resultContainer.classList.remove("show");
-    // The visibility of the modes is now handled by switchMode or init
-    // No need to explicitly set display: 'block' here.
-    // The 'active' class handled by CSS will control display.
   }
 
   resetFormFields() {
-    // Reset final price mode inputs
     this.elements.originalPriceInput.value = "";
-    this.elements.discountInput.value = "0.00"; // Reset to 0 with 2 decimal places
-    this.updateDiscountFromInput(0); // Reset slider and preview to 0%
+    this.elements.discountInput.value = "0.00";
+    this.updateDiscountFromInput(0);
     this.elements.livePreview.classList.remove("show");
 
-    // Reset percentage mode inputs
     this.elements.priceBeforeInput.value = "";
     this.elements.priceAfterInput.value = "";
   }
 
   resetCalculator() {
-    this.resetFormFields(); // Clears input values and resets slider to 0%
-    this.clearErrors(); // Hides any error messages
-    this.hideResults(); // Hides the result display
+    this.resetFormFields();
+    this.clearErrors();
+    this.hideResults();
 
-    // Explicitly reset display property to allow CSS 'active' class to take effect
     this.elements.finalPriceMode.style.display = "";
     this.elements.percentageMode.style.display = "";
 
-    // After reset, ensure the current mode is visible.
     if (this.currentMode === "final") {
       this.elements.finalPriceMode.classList.add("active");
       this.elements.percentageMode.classList.remove("active");
@@ -554,8 +548,6 @@ class DiscountCalculator {
         .then(() => console.log("Content shared successfully"))
         .catch((error) => console.error("Error sharing", error));
     } else {
-      // Fallback for browsers that do not support the Web Share API
-      // Use a simpler alert and copy to clipboard if supported
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard
           .writeText(fullText)
@@ -585,21 +577,19 @@ class DiscountCalculator {
   delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
   showError(element, message = "") {
-    element.textContent = message; // Set custom error message
+    element.textContent = message;
     element.classList.add("show");
   }
 
   hideError(element) {
     element.classList.remove("show");
-    element.textContent = ""; // Clear message when hiding
+    element.textContent = "";
   }
 
   clearErrors() {
-    // Get all error messages elements and hide them
     document
       .querySelectorAll(".error-message")
       .forEach((errorEl) => this.hideError(errorEl));
-    // Remove error class from all input fields
     document
       .querySelectorAll('input[type="number"]')
       .forEach((inputEl) => inputEl.classList.remove("error"));
@@ -617,43 +607,17 @@ class DiscountCalculator {
   }
 
   handleKeyboardShortcuts(e) {
-    // Ctrl+R or Cmd+R to reset
     if ((e.ctrlKey || e.metaKey) && e.key === "r") {
       e.preventDefault();
       this.resetCalculator();
     }
-    // Ctrl+S or Cmd+S to share
     if ((e.ctrlKey || e.metaKey) && e.key === "s") {
       e.preventDefault();
       this.shareResult();
     }
   }
-
-  updateDiscountFromInput(value) {
-    let numValue = parseFloat(value);
-    if (isNaN(numValue)) {
-      numValue = 0;
-    }
-    numValue = Math.min(Math.max(numValue, 0), 100); // This line clamps the value between 0 and 100
-
-    const formattedValue = numValue.toFixed(2);
-
-    // Update slider position
-    this.elements.sliderFill.style.width = `${formattedValue}%`;
-    this.elements.sliderThumb.style.left = `${formattedValue}%`;
-    this.elements.thumbValue.textContent = `${formattedValue}%`;
-    this.elements.percentageDisplay.textContent = `${formattedValue}%`;
-
-    // ✅ Solo se l'input non è attivo (cioè l'utente non ci sta scrivendo)
-    if (document.activeElement !== this.elements.discountInput) {
-      this.elements.discountInput.value = formattedValue;
-    }
-
-    this.updateLivePreview();
-  }
 }
 
-// Initialize the calculator when the DOM is fully loaded
 document.addEventListener("DOMContentLoaded", () => {
   new DiscountCalculator();
 });
