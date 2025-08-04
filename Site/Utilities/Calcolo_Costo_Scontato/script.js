@@ -1,5 +1,29 @@
 // Modern Discount Calculator JavaScript
 class DiscountCalculator {
+
+  updateDiscountFromInput(value) {
+    let numValue = parseFloat(value);
+    if (isNaN(numValue)) {
+        numValue = 0;
+    }
+    numValue = Math.min(Math.max(numValue, 0), 100);
+    
+    const formattedValue = numValue.toFixed(2);
+
+    // Update slider position
+    this.elements.sliderFill.style.width = `${formattedValue}%`;
+    this.elements.sliderThumb.style.left = `${formattedValue}%`;
+    this.elements.thumbValue.textContent = `${formattedValue}%`;
+    this.elements.percentageDisplay.textContent = `${formattedValue}%`;
+
+    // ✅ Solo se l'input non è attivo (cioè l'utente non ci sta scrivendo)
+    if (document.activeElement !== this.elements.discountInput) {
+        this.elements.discountInput.value = formattedValue;
+    }
+
+    this.updateLivePreview();
+}
+
     constructor() {
         this.init();
         this.bindEvents();
@@ -211,30 +235,6 @@ class DiscountCalculator {
         this.hideResults();
         this.clearErrors();
         this.resetFormFields(); // Reset all form fields when switching modes
-    }
-
-    updateDiscountFromInput(value) {
-        let numValue = parseFloat(value);
-        if (isNaN(numValue)) {
-            numValue = 0; // Default to 0 if input is not a number
-        }
-        numValue = Math.min(Math.max(numValue, 0), 100); // Clamp between 0 and 100
-        
-        // Format to 2 decimal places for consistency
-        const formattedValue = numValue.toFixed(2);
-
-        // Update slider position
-        this.elements.sliderFill.style.width = `${formattedValue}%`;
-        this.elements.sliderThumb.style.left = `${formattedValue}%`;
-        this.elements.thumbValue.textContent = `${formattedValue}%`;
-        this.elements.percentageDisplay.textContent = `${formattedValue}%`;
-        
-        // Sync input value, only if it's different to prevent cursor jump
-        if (this.elements.discountInput.value !== formattedValue) {
-            this.elements.discountInput.value = formattedValue;
-        }
-        
-        this.updateLivePreview();
     }
 
     updateLivePreview() {
@@ -529,6 +529,32 @@ class DiscountCalculator {
             this.shareResult();
         }
     }
+
+    updateDiscountFromInput(value) {
+    let numValue = parseFloat(value);
+
+    // Non bloccare l'inserimento: lascia scrivere liberamente
+    const isValid = !isNaN(numValue) && numValue >= 0 && numValue <= 100;
+
+    if (isValid) {
+        const formattedValue = numValue.toFixed(2);
+
+        this.elements.sliderFill.style.width = `${formattedValue}%`;
+        this.elements.sliderThumb.style.left = `${formattedValue}%`;
+        this.elements.thumbValue.textContent = `${formattedValue}%`;
+        this.elements.percentageDisplay.textContent = `${formattedValue}%`;
+
+        if (document.activeElement !== this.elements.discountInput) {
+            this.elements.discountInput.value = formattedValue;
+        }
+
+        this.updateLivePreview();
+    } else {
+        // Se non valido, nascondi l'anteprima
+        this.elements.livePreview.classList.remove('show');
+    }
+}
+
 }
 
 // Initialize the calculator when the DOM is fully loaded
