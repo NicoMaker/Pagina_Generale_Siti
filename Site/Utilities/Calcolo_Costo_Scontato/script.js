@@ -513,14 +513,15 @@ class DiscountCalculator {
   }
 
   resetCalculator() {
-    this.resetFormFields();
-    this.clearErrors();
-    this.hideResults();
+    this.resetFormFields(); // Clears input values and resets slider to 0%
+    this.clearErrors(); // Hides any error messages
+    this.hideResults(); // Hides the result display
+
+    // Explicitly reset display property to allow CSS 'active' class to take effect
+    this.elements.finalPriceMode.style.display = '';
+    this.elements.percentageMode.style.display = '';
+
     // After reset, ensure the current mode is visible.
-    // This is implicitly handled by `switchMode` when a mode is initially selected
-    // or if `resetCalculator` is called, it just cleans up.
-    // We need to ensure the correct mode is displayed after reset if not triggered by switchMode.
-    // A simple way is to re-trigger the display based on currentMode.
     if (this.currentMode === "final") {
       this.elements.finalPriceMode.classList.add("active");
       this.elements.percentageMode.classList.remove("active");
@@ -630,27 +631,25 @@ class DiscountCalculator {
 
   updateDiscountFromInput(value) {
     let numValue = parseFloat(value);
-
-    // Non bloccare l'inserimento: lascia scrivere liberamente
-    const isValid = !isNaN(numValue) && numValue >= 0 && numValue <= 100;
-
-    if (isValid) {
-      const formattedValue = numValue.toFixed(2);
-
-      this.elements.sliderFill.style.width = `${formattedValue}%`;
-      this.elements.sliderThumb.style.left = `${formattedValue}%`;
-      this.elements.thumbValue.textContent = `${formattedValue}%`;
-      this.elements.percentageDisplay.textContent = `${formattedValue}%`;
-
-      if (document.activeElement !== this.elements.discountInput) {
-        this.elements.discountInput.value = formattedValue;
-      }
-
-      this.updateLivePreview();
-    } else {
-      // Se non valido, nascondi l'anteprima
-      this.elements.livePreview.classList.remove("show");
+    if (isNaN(numValue)) {
+      numValue = 0;
     }
+    numValue = Math.min(Math.max(numValue, 0), 100); // This line clamps the value between 0 and 100
+
+    const formattedValue = numValue.toFixed(2);
+
+    // Update slider position
+    this.elements.sliderFill.style.width = `${formattedValue}%`;
+    this.elements.sliderThumb.style.left = `${formattedValue}%`;
+    this.elements.thumbValue.textContent = `${formattedValue}%`;
+    this.elements.percentageDisplay.textContent = `${formattedValue}%`;
+
+    // ✅ Solo se l'input non è attivo (cioè l'utente non ci sta scrivendo)
+    if (document.activeElement !== this.elements.discountInput) {
+      this.elements.discountInput.value = formattedValue;
+    }
+
+    this.updateLivePreview();
   }
 }
 
