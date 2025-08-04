@@ -18,22 +18,38 @@ document.addEventListener("DOMContentLoaded", () => {
   );
 
   // New elements for percentage calculation
-  const priceBeforeDiscountInput = document.getElementById("priceBeforeDiscount");
+  const priceBeforeDiscountInput = document.getElementById(
+    "priceBeforeDiscount",
+  );
   const priceAfterDiscountInput = document.getElementById("priceAfterDiscount");
-  const calculatePercentageBtn = document.getElementById("calculatePercentageBtn");
-  const priceBeforeDiscountError = document.getElementById("priceBeforeDiscountError");
-  const priceAfterDiscountError = document.getElementById("priceAfterDiscountError");
+  const calculatePercentageBtn = document.getElementById(
+    "calculatePercentageBtn",
+  );
+  const priceBeforeDiscountError = document.getElementById(
+    "priceBeforeDiscountError",
+  );
+  const priceAfterDiscountError = document.getElementById(
+    "priceAfterDiscountError",
+  );
   const percentageResultDiv = document.getElementById("percentageResult");
-  const calculatedPercentageDisplay = document.getElementById("calculatedPercentage");
-  const initialPricePercentageDisplay = document.getElementById("initialPricePercentageDisplay");
-  const discountedPricePercentageDisplay = document.getElementById("discountedPricePercentageDisplay");
-
+  const calculatedPercentageDisplay = document.getElementById(
+    "calculatedPercentage",
+  );
+  const initialPricePercentageDisplay = document.getElementById(
+    "initialPricePercentageDisplay",
+  );
+  const discountedPricePercentageDisplay = document.getElementById(
+    "discountedPricePercentageDisplay",
+  );
 
   // Mode Selector elements
   const calculationModeSelector = document.getElementById("calculationMode");
-  const calculateFinalPriceSection = document.getElementById("calculateFinalPriceSection");
-  const calculatePercentageSection = document.getElementById("calculatePercentageSection");
-
+  const calculateFinalPriceSection = document.getElementById(
+    "calculateFinalPriceSection",
+  );
+  const calculatePercentageSection = document.getElementById(
+    "calculatePercentageSection",
+  );
 
   // Function to switch calculation mode
   function switchCalculationMode() {
@@ -65,7 +81,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Event listener for mode selector
   calculationModeSelector.addEventListener("change", switchCalculationMode);
-
 
   // Update percentage display
   function updatePercentageDisplay(value) {
@@ -205,7 +220,8 @@ document.addEventListener("DOMContentLoaded", () => {
       priceBeforeDiscountInput.classList.remove("border-red-500");
     }
 
-    if (isNaN(priceAfter) || priceAfter < 0 || priceAfter > priceBefore) { // Changed priceAfter >= priceBefore to priceAfter > priceBefore
+    if (isNaN(priceAfter) || priceAfter < 0 || priceAfter > priceBefore) {
+      // Changed priceAfter >= priceBefore to priceAfter > priceBefore
       priceAfterDiscountError.classList.remove("hidden");
       priceAfterDiscountInput.classList.add("border-red-500");
       isValid = false;
@@ -265,11 +281,18 @@ document.addEventListener("DOMContentLoaded", () => {
     if (e.key === "Enter") {
       const selectedMode = calculationModeSelector.value;
       if (selectedMode === "calculateFinalPrice") {
-        if (document.activeElement === originalPriceInput || document.activeElement === discountPercentageInput) {
+        if (
+          document.activeElement === originalPriceInput ||
+          document.activeElement === discountPercentageInput
+        ) {
           calculateBtn.click();
         }
-      } else { // calculatePercentage
-        if (document.activeElement === priceBeforeDiscountInput || document.activeElement === priceAfterDiscountInput) {
+      } else {
+        // calculatePercentage
+        if (
+          document.activeElement === priceBeforeDiscountInput ||
+          document.activeElement === priceAfterDiscountInput
+        ) {
           calculatePercentageBtn.click();
         }
       }
