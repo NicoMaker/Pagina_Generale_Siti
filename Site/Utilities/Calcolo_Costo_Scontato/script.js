@@ -518,8 +518,8 @@ class DiscountCalculator {
     this.hideResults(); // Hides the result display
 
     // Explicitly reset display property to allow CSS 'active' class to take effect
-    this.elements.finalPriceMode.style.display = '';
-    this.elements.percentageMode.style.display = '';
+    this.elements.finalPriceMode.style.display = "";
+    this.elements.percentageMode.style.display = "";
 
     // After reset, ensure the current mode is visible.
     if (this.currentMode === "final") {
