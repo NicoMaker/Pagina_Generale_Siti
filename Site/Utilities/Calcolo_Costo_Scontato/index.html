@@ -34,7 +34,6 @@
       <div
         class="glass-effect rounded-3xl shadow-2xl w-full max-w-md p-8 transform transition-all duration-500 hover:scale-105"
       >
-        <!-- Header -->
         <div class="text-center mb-8">
           <div
             class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-purple-500 to-blue-500 rounded-2xl mb-4 animate-pulse-soft"
@@ -59,153 +58,124 @@
             Calcolatore di Sconto
           </h1>
           <p class="text-gray-600 text-sm">
-            Calcola il prezzo finale con sconto in tempo reale
+            Calcola il prezzo finale con sconto in tempo reale o la percentuale di sconto.
           </p>
         </div>
 
-        <!-- Price Input -->
         <div class="mb-6">
-          <label
-            for="originalPrice"
-            class="block text-gray-700 text-sm font-semibold mb-3"
-          >
-            Prezzo Originale
-          </label>
-          <div class="relative">
-            <span
-              class="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500 font-medium"
-              >€</span
-            >
-            <input
-              type="number"
-              id="originalPrice"
-              placeholder="100.00"
-              class="input-focus w-full pl-8 pr-4 py-4 border-2 border-gray-200 rounded-2xl focus:outline-none focus:border-blue-500 text-lg font-medium bg-white"
-              min="0"
-              step="0.01"
-            />
-          </div>
-          <p
-            id="priceError"
-            class="text-red-500 text-sm mt-2 hidden flex items-center"
-          >
-            <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-              <path
-                fill-rule="evenodd"
-                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
-                clip-rule="evenodd"
-              ></path>
-            </svg>
-            Inserisci un prezzo valido e positivo
-          </p>
+            <label for="calculationMode" class="block text-gray-700 text-sm font-semibold mb-3">
+                Seleziona Modalità di Calcolo
+            </label>
+            <select id="calculationMode" class="input-focus w-full px-4 py-3 border-2 border-gray-200 rounded-2xl focus:outline-none focus:border-blue-500 text-lg font-medium bg-white">
+                <option value="calculateFinalPrice">Calcola Prezzo Finale con Sconto</option>
+                <option value="calculatePercentage">Calcola Percentuale di Sconto</option>
+            </select>
         </div>
 
-        <!-- Discount Percentage -->
-        <div class="mb-8">
-          <label
-            for="discountPercentage"
-            class="block text-gray-700 text-sm font-semibold mb-3"
-          >
-            Percentuale di Sconto
-          </label>
-
-          <div class="bg-gray-50 rounded-2xl p-6">
-            <div class="flex items-center justify-between mb-4">
-              <span class="text-2xl percentage-display" id="percentageDisplay"
-                >0%</span
+        <div id="calculateFinalPriceSection">
+            <div class="mb-6">
+              <label
+                for="originalPrice"
+                class="block text-gray-700 text-sm font-semibold mb-3"
               >
-              <div class="text-right">
+                Prezzo Originale
+              </label>
+              <div class="relative">
+                <span
+                  class="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500 font-medium"
+                  >€</span
+                >
                 <input
                   type="number"
-                  id="discountPercentage"
-                  class="w-20 px-3 py-2 border border-gray-300 rounded-lg text-center font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  id="originalPrice"
+                  placeholder="100.00"
+                  class="input-focus w-full pl-8 pr-4 py-4 border-2 border-gray-200 rounded-2xl focus:outline-none focus:border-blue-500 text-lg font-medium bg-white"
                   min="0"
-                  max="100"
                   step="0.01"
-                  value="0"
                 />
               </div>
-            </div>
-
-            <input
-              type="range"
-              id="discountPercentageSlider"
-              min="0"
-              max="100"
-              step="1"
-              value="0"
-              class="slider-modern w-full"
-            />
-
-            <div class="flex justify-between text-xs text-gray-500 mt-2">
-              <span>0%</span>
-              <span>25%</span>
-              <span>50%</span>
-              <span>75%</span>
-              <span>100%</span>
-            </div>
-          </div>
-
-          <p
-            id="discountError"
-            class="text-red-500 text-sm mt-2 hidden flex items-center"
-          >
-            <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-              <path
-                fill-rule="evenodd"
-                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
-                clip-rule="evenodd"
-              ></path>
-            </svg>
-            Inserisci una percentuale valida (0-100)
-          </p>
-        </div>
-
-        <!-- Calculate Button -->
-        <button
-          id="calculateBtn"
-          class="button-hover w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-4 rounded-2xl font-semibold text-lg shadow-lg hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-blue-300 transition-all duration-300 transform hover:scale-105 active:scale-95"
-        >
-          <span class="flex items-center justify-center">
-            <svg
-              class="w-5 h-5 mr-2"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"
-              ></path>
-            </svg>
-            Calcola Sconto
-          </span>
-        </button>
-
-        <!-- Live Preview -->
-        <div
-          id="livePreview"
-          class="mt-6 p-4 bg-blue-50 rounded-2xl border border-blue-200 hidden"
-        >
-          <div class="flex items-center justify-between text-sm">
-            <span class="text-gray-600">Anteprima:</span>
-            <span class="font-semibold text-blue-700" id="previewText"
-              >€0.00</span
-            >
-          </div>
-        </div>
-
-        <!-- Result -->
-        <div id="result" class="mt-6 hidden">
-          <div class="result-card text-white p-6 rounded-2xl shadow-lg">
-            <div class="flex items-center justify-center mb-3">
-              <div
-                class="success-checkmark w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center"
+              <p
+                id="priceError"
+                class="text-red-500 text-sm mt-2 hidden flex items-center"
               >
+                <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                  <path
+                    fill-rule="evenodd"
+                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
+                Inserisci un prezzo valido e positivo
+              </p>
+            </div>
+
+            <div class="mb-8">
+              <label
+                for="discountPercentage"
+                class="block text-gray-700 text-sm font-semibold mb-3"
+              >
+                Percentuale di Sconto
+              </label>
+
+              <div class="bg-gray-50 rounded-2xl p-6">
+                <div class="flex items-center justify-between mb-4">
+                  <span class="text-2xl percentage-display" id="percentageDisplay"
+                    >0%</span
+                  >
+                  <div class="text-right">
+                    <input
+                      type="number"
+                      id="discountPercentage"
+                      class="w-20 px-3 py-2 border border-gray-300 rounded-lg text-center font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      min="0"
+                      max="100"
+                      step="0.01"
+                      value="0"
+                    />
+                  </div>
+                </div>
+
+                <input
+                  type="range"
+                  id="discountPercentageSlider"
+                  min="0"
+                  max="100"
+                  step="1"
+                  value="0"
+                  class="slider-modern w-full"
+                />
+
+                <div class="flex justify-between text-xs text-gray-500 mt-2">
+                  <span>0%</span>
+                  <span>25%</span>
+                  <span>50%</span>
+                  <span>75%</span>
+                  <span>100%</span>
+                </div>
+              </div>
+
+              <p
+                id="discountError"
+                class="text-red-500 text-sm mt-2 hidden flex items-center"
+              >
+                <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                  <path
+                    fill-rule="evenodd"
+                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
+                Inserisci una percentuale valida (0-100)
+              </p>
+            </div>
+
+            <button
+              id="calculateBtn"
+              class="button-hover w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-4 rounded-2xl font-semibold text-lg shadow-lg hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-blue-300 transition-all duration-300 transform hover:scale-105 active:scale-95"
+            >
+              <span class="flex items-center justify-center">
                 <svg
-                  class="w-6 h-6 text-white"
+                  class="w-5 h-5 mr-2"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -213,27 +183,194 @@
                   <path
                     stroke-linecap="round"
                     stroke-linejoin="round"
-                    stroke-width="3"
-                    d="M5 13l4 4L19 7"
+                    stroke-width="2"
+                    d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"
                   ></path>
                 </svg>
+                Calcola Sconto
+              </span>
+            </button>
+
+            <div
+              id="livePreview"
+              class="mt-6 p-4 bg-blue-50 rounded-2xl border border-blue-200 hidden"
+            >
+              <div class="flex items-center justify-between text-sm">
+                <span class="text-gray-600">Anteprima:</span>
+                <span class="font-semibold text-blue-700" id="previewText"
+                  >€0.00</span
+                >
               </div>
             </div>
-            <div class="text-center">
-              <p class="text-lg font-medium mb-2">Prezzo Finale</p>
-              <p class="text-3xl font-bold" id="finalPrice">€0.00</p>
-              <div class="mt-4 pt-4 border-t border-white border-opacity-20">
-                <div class="flex justify-between text-sm opacity-90">
-                  <span>Prezzo originale:</span>
-                  <span id="originalPriceDisplay">€0.00</span>
+
+            <div id="result" class="mt-6 hidden">
+              <div class="result-card text-white p-6 rounded-2xl shadow-lg">
+                <div class="flex items-center justify-center mb-3">
+                  <div
+                    class="success-checkmark w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center"
+                  >
+                    <svg
+                      class="w-6 h-6 text-white"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="3"
+                        d="M5 13l4 4L19 7"
+                      ></path>
+                    </svg>
+                  </div>
                 </div>
-                <div class="flex justify-between text-sm opacity-90 mt-1">
-                  <span>Sconto:</span>
-                  <span id="discountAmountDisplay">-€0.00</span>
+                <div class="text-center">
+                  <p class="text-lg font-medium mb-2">Prezzo Finale</p>
+                  <p class="text-3xl font-bold" id="finalPrice">€0.00</p>
+                  <div class="mt-4 pt-4 border-t border-white border-opacity-20">
+                    <div class="flex justify-between text-sm opacity-90">
+                      <span>Prezzo originale:</span>
+                      <span id="originalPriceDisplay">€0.00</span>
+                    </div>
+                    <div class="flex justify-between text-sm opacity-90 mt-1">
+                      <span>Sconto:</span>
+                      <span id="discountAmountDisplay">-€0.00</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+        </div>
+
+
+        <div id="calculatePercentageSection" class="hidden">
+            <div class="mb-8 p-6 bg-gray-50 rounded-2xl">
+              <h3 class="text-xl font-semibold text-gray-800 mb-4">
+                Calcola Percentuale di Sconto
+              </h3>
+              <div class="mb-4">
+                <label
+                  for="priceBeforeDiscount"
+                  class="block text-gray-700 text-sm font-semibold mb-2"
+                  >Prezzo Prima Sconto</label
+                >
+                <div class="relative">
+                  <span
+                    class="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500 font-medium"
+                    >€</span
+                  >
+                  <input
+                    type="number"
+                    id="priceBeforeDiscount"
+                    placeholder="100.00"
+                    class="input-focus w-full pl-8 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-blue-500 text-lg font-medium bg-white"
+                    min="0"
+                    step="0.01"
+                  />
+                </div>
+                <p
+                  id="priceBeforeDiscountError"
+                  class="text-red-500 text-sm mt-2 hidden flex items-center"
+                >
+                  <svg
+                    class="w-4 h-4 mr-1"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                      clip-rule="evenodd"
+                    ></path>
+                  </svg>
+                  Inserisci un prezzo valido e positivo
+                </p>
+              </div>
+              <div class="mb-6">
+                <label
+                  for="priceAfterDiscount"
+                  class="block text-gray-700 text-sm font-semibold mb-2"
+                  >Prezzo Dopo Sconto</label
+                >
+                <div class="relative">
+                  <span
+                    class="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500 font-medium"
+                    >€</span
+                  >
+                  <input
+                    type="number"
+                    id="priceAfterDiscount"
+                    placeholder="80.00"
+                    class="input-focus w-full pl-8 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-blue-500 text-lg font-medium bg-white"
+                    min="0"
+                    step="0.01"
+                  />
+                </div>
+                <p
+                  id="priceAfterDiscountError"
+                  class="text-red-500 text-sm mt-2 hidden flex items-center"
+                >
+                  <svg
+                    class="w-4 h-4 mr-1"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                    clip-rule="evenodd"
+                    ></path>
+                  </svg>
+                  Inserisci un prezzo valido, positivo e inferiore al prezzo prima dello sconto
+                </p>
+              </div>
+              <button
+                id="calculatePercentageBtn"
+                class="button-hover w-full bg-gradient-to-r from-green-600 to-teal-600 text-white py-3 rounded-2xl font-semibold text-lg shadow-lg hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-green-300 transition-all duration-300 transform hover:scale-105 active:scale-95"
+              >
+                <span class="flex items-center justify-center">
+                  <svg
+                    class="w-5 h-5 mr-2"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7.071 7.071c.391.391.391 1.023 0 1.414l-4.071 4.071c-.391.391-1.023.391-1.414 0L3.586 12.586A2 2 0 013 11.172V7a2 2 0 012-2h2zm0 0v-2a2 2 0 012-2h2m-2 16h2a2 2 0 002-2v-2a2 2 0 00-2-2H9a2 2 0 00-2 2v2a2 2 0 002 2z"
+                    ></path>
+                  </svg>
+                  Calcola Percentuale
+                </span>
+              </button>
+            </div>
+            <div id="percentageResult" class="mt-6 hidden">
+                <div class="result-card text-white p-6 rounded-2xl shadow-lg">
+                    <div class="flex items-center justify-center mb-3">
+                        <div class="success-checkmark w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <p class="text-lg font-medium mb-2">Percentuale di Sconto</p>
+                        <p class="text-3xl font-bold" id="calculatedPercentage">0.00%</p>
+                        <div class="mt-4 pt-4 border-t border-white border-opacity-20">
+                            <div class="flex justify-between text-sm opacity-90">
+                                <span>Prezzo Iniziale:</span>
+                                <span id="initialPricePercentageDisplay">€0.00</span>
+                            </div>
+                            <div class="flex justify-between text-sm opacity-90 mt-1">
+                                <span>Prezzo Scontato:</span>
+                                <span id="discountedPricePercentageDisplay">€0.00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
       </div>
     </div>
