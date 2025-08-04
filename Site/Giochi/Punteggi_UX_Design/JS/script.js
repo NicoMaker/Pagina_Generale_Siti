@@ -2429,7 +2429,6 @@ function setupRicercaCheckbox() {
   }
 }
 
-
 function aggiornaSelezionePartecipante() {
   const lista = document.getElementById("participants-checkbox-list");
   if (!lista) return;

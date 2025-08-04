@@ -503,19 +503,23 @@ function loadScores() {
 
 // MODAL LOGIC START
 const resetStatsModal = document.getElementById("resetStatsModal");
-const confirmResetStatsButton = document.getElementById("confirmResetStatsButton");
-const cancelResetStatsButton = document.getElementById("cancelResetStatsButton");
+const confirmResetStatsButton = document.getElementById(
+  "confirmResetStatsButton",
+);
+const cancelResetStatsButton = document.getElementById(
+  "cancelResetStatsButton",
+);
 
 function showResetStatsModal() {
   resetStatsModal.classList.add("modal-active");
-  resetStatsModal.setAttribute('aria-hidden', 'false');
+  resetStatsModal.setAttribute("aria-hidden", "false");
   // Optionally, set focus to the confirm button for accessibility
   confirmResetStatsButton.focus();
 }
 
 function hideResetStatsModal() {
   resetStatsModal.classList.remove("modal-active");
-  resetStatsModal.setAttribute('aria-hidden', 'true');
+  resetStatsModal.setAttribute("aria-hidden", "true");
 }
 
 function performResetStats() {
@@ -548,20 +552,22 @@ confirmResetStatsButton.addEventListener("click", performResetStats);
 cancelResetStatsButton.addEventListener("click", hideResetStatsModal);
 
 // Close modal if clicking outside (optional, but good for UX)
-resetStatsModal.addEventListener('click', (event) => {
-    if (event.target === resetStatsModal) {
-        hideResetStatsModal();
-    }
+resetStatsModal.addEventListener("click", (event) => {
+  if (event.target === resetStatsModal) {
+    hideResetStatsModal();
+  }
 });
 
 // Close modal with Escape key
-document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape' && resetStatsModal.classList.contains('modal-active')) {
-        hideResetStatsModal();
-    }
+document.addEventListener("keydown", (event) => {
+  if (
+    event.key === "Escape" &&
+    resetStatsModal.classList.contains("modal-active")
+  ) {
+    hideResetStatsModal();
+  }
 });
 // MODAL LOGIC END
-
 
 // Funzione per aggiungere cartellini e verificare la squalifica
 function addCard(player, cardType) {
