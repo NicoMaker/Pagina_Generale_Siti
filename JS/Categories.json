@@ -465,6 +465,14 @@
         {
           "name": "QR Code Generator",
           "link": "Site/Utilities/QR_Code_Generator/index.html"
+        },
+        {
+          "name":"Calcolatore Costo Scontato",
+          "link": "Site/Utilities/Calcolo_Costo_Scontato/index.html"
+        },
+        {
+          "name": "Convertitore unità di Misura",
+          "link": "Site/Utilities/Convertitore_unità_di_Misura/index.html"
         }
       ]
     }
