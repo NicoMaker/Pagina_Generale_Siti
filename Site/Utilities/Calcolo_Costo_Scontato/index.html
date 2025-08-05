@@ -25,18 +25,23 @@
         <label class="mode-radio">
           <input type="radio" name="calculation-mode" value="final" checked />
           <span class="radio-custom"></span>
+          <i class="fas fa-calculator"></i>
           Calcola Prezzo Finale
         </label>
         <label class="mode-radio">
           <input type="radio" name="calculation-mode" value="percentage" />
           <span class="radio-custom"></span>
+          <i class="fas fa-percentage"></i>
           Calcola Percentuale
         </label>
       </div>
 
       <div id="final-price-mode" class="calculation-mode active">
         <div class="input-group">
-          <label for="original-price">Prezzo Originale (€)</label>
+          <label for="original-price">
+            <i class="fas fa-tag"></i>
+            Prezzo Originale (€)
+          </label>
           <div class="input-wrapper">
             <input
               type="number"
@@ -53,10 +58,10 @@
         </div>
 
         <div class="input-group slider-group">
-          <label for="discount-slider"
-            >Percentuale di Sconto (<span id="percentage-display">0%</span
-            >)</label
-          >
+          <label for="discount-slider">
+            <i class="fas fa-percent"></i>
+            Percentuale di Sconto (<span id="percentage-display">0%</span>)
+          </label>
           <div class="slider-wrapper">
             <div class="slider-track">
               <div class="slider-fill" id="slider-fill"></div>
@@ -77,19 +82,26 @@
         </div>
 
         <div class="live-preview" id="live-preview">
+          <i class="fas fa-eye"></i>
           <p>Prezzo dopo sconto: <span id="preview-price">€0.00</span></p>
           <p id="preview-savings"></p>
         </div>
 
         <button id="calculate-final-btn" class="calculate-btn">
-          <span class="btn-text">Calcola Prezzo Finale</span>
+          <span class="btn-text">
+            <i class="fas fa-calculator"></i>
+            Calcola Prezzo Finale
+          </span>
           <span class="loader"></span>
         </button>
       </div>
 
       <div id="percentage-mode" class="calculation-mode">
         <div class="input-group">
-          <label for="price-before">Prezzo Prima dello Sconto (€)</label>
+          <label for="price-before">
+            <i class="fas fa-tag"></i>
+            Prezzo Prima dello Sconto (€)
+          </label>
           <div class="input-wrapper">
             <input
               type="number"
@@ -106,7 +118,10 @@
         </div>
 
         <div class="input-group">
-          <label for="price-after">Prezzo Dopo lo Sconto (€)</label>
+          <label for="price-after">
+            <i class="fas fa-tags"></i>
+            Prezzo Dopo lo Sconto (€)
+          </label>
           <div class="input-wrapper">
             <input
               type="number"
@@ -123,18 +138,27 @@
         </div>
 
         <button id="calculate-percentage-btn" class="calculate-btn">
-          <span class="btn-text">Calcola Percentuale</span>
+          <span class="btn-text">
+            <i class="fas fa-percentage"></i>
+            Calcola Percentuale
+          </span>
           <span class="loader"></span>
         </button>
       </div>
 
       <div id="result-container" class="result-container">
+        <div class="result-icon">
+          <i class="fas fa-check-circle"></i>
+        </div>
         <h2 id="result-title"></h2>
         <p class="main-result" id="main-result"></p>
         <div class="result-details" id="result-details"></div>
         <div class="result-actions">
           <button id="reset-btn" class="action-btn">
             <i class="fas fa-redo"></i> Nuova Calcolatrice
+          </button>
+          <button id="share-btn" class="action-btn">
+            <i class="fas fa-share-alt"></i> Condividi
           </button>
         </div>
       </div>

@@ -120,7 +120,7 @@ class DiscountCalculator {
     this.elements.resetBtn.addEventListener("click", () =>
       this.resetCalculator(),
     );
-    // this.elements.shareBtn.addEventListener("click", () => this.shareResult());
+    this.elements.shareBtn.addEventListener("click", () => this.shareResult());
 
     // Keyboard events
     document.addEventListener("keydown", (e) =>
