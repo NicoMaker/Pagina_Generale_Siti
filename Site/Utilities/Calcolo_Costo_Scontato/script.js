@@ -299,10 +299,10 @@ class DiscountCalculator {
     }
   }
 
-validatePrice(input, errorElement) {
+  validatePrice(input, errorElement) {
     const value = parseFloat(input.value);
     // Modified: Allow 0 as a valid price
-    const isValid = !isNaN(value) && value >= 0; 
+    const isValid = !isNaN(value) && value >= 0;
 
     if (input.value.trim() === "") {
       this.showError(errorElement, "Il campo non può essere vuoto.");
@@ -310,10 +310,7 @@ validatePrice(input, errorElement) {
       return false;
     } else if (!isValid) {
       // Modified: Update error message
-      this.showError(
-        errorElement,
-        "Inserisci un prezzo valido.", 
-      );
+      this.showError(errorElement, "Inserisci un prezzo valido.");
       input.classList.add("error");
       return false;
     } else {
@@ -461,7 +458,7 @@ validatePrice(input, errorElement) {
 
     let discountAmount = priceBefore - priceAfter;
     let discountPercentage = (discountAmount / priceBefore) * 100;
-    
+
     // Handle division by zero case when priceBefore is 0
     if (priceBefore === 0) {
       discountAmount = 0;
