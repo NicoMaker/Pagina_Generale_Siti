@@ -97,12 +97,24 @@ function convert() {
   // Ensure that unit names are always available
   const toUnitName =
     conversions[currentCategory]?.units[toUnitVal]?.name || toUnitVal;
-  result.textContent = `${formatted} ${toUnitName.includes("(") ? toUnitName.split("(")[1].replace(")", "") : toUnitName}`;
+  result.textContent = `${formatted} ${
+    toUnitName.includes("(")
+      ? toUnitName.split("(")[1].replace(")", "")
+      : toUnitName
+  }`;
 
   // Show conversion path
   const fromUnitName =
     conversions[currentCategory]?.units[fromUnitVal]?.name || fromUnitVal;
-  pathText.textContent = `${fromVal} ${fromUnitName.includes("(") ? fromUnitName.split("(")[1].replace(")", "") : fromUnitName} = ${formatted} ${toUnitName.includes("(") ? toUnitName.split("(")[1].replace(")", "") : toUnitName}`;
+  pathText.textContent = `${fromVal} ${
+    fromUnitName.includes("(")
+      ? fromUnitName.split("(")[1].replace(")", "")
+      : fromUnitName
+  } = ${formatted} ${
+    toUnitName.includes("(")
+      ? toUnitName.split("(")[1].replace(")", "")
+      : toUnitName
+  }`;
   conversionPath.classList.remove("hidden");
 
   // Add to history
@@ -204,19 +216,27 @@ function renderHistory() {
     .map(
       (item) => `
                 <div class="history-item p-4 rounded-2xl border border-gray-200 hover:shadow-lg transition-all duration-300 cursor-pointer"
-                     onclick="loadFromHistory('${item.from.value}', '${item.from.unit}', '${item.to.unit}', '${item.category}')">
+                     onclick="loadFromHistory('${item.from.value}', '${
+        item.from.unit
+      }', '${item.to.unit}', '${item.category}')">
                     <div class="flex items-center justify-between">
                         <div class="flex-1">
                             <div class="flex items-center space-x-2">
                                 <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-lg font-medium">
                                     ${item.category.toUpperCase()}
                                 </span>
-                                <span class="text-gray-600 text-sm">${item.timestamp}</span>
+                                <span class="text-gray-600 text-sm">${
+                                  item.timestamp
+                                }</span>
                             </div>
                             <div class="mt-2 font-semibold text-gray-800">
-                                ${formatNumber(item.from.value)} ${item.from.name.split("(")[1]?.replace(")", "") || item.from.unit}
+                                ${formatNumber(item.from.value)} ${
+        item.from.name.split("(")[1]?.replace(")", "") || item.from.unit
+      }
                                 →
-                                ${formatNumber(item.to.value)} ${item.to.name.split("(")[1]?.replace(")", "") || item.to.unit}
+                                ${formatNumber(item.to.value)} ${
+        item.to.name.split("(")[1]?.replace(")", "") || item.to.unit
+      }
                             </div>
                         </div>
                         <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -224,7 +244,7 @@ function renderHistory() {
                         </svg>
                     </div>
                 </div>
-            `,
+            `
     )
     .join("");
 }
@@ -323,8 +343,18 @@ function updateQuickConversions() {
       return `
                     <div class="bg-gradient-to-r from-indigo-500 to-purple-600 text-white p-4 rounded-2xl text-center cursor-pointer hover:scale-105 transition-transform"
                          onclick="loadQuickConversion(${value}, '${baseUnit}', '${targetUnit}')">
-                        <div class="text-2xl font-bold">${value} ${baseUnitName.includes("(") ? baseUnitName.split("(")[1]?.replace(")", "") : baseUnitName}</div>
-                        <div class="text-sm opacity-90">${formatNumber(converted)} ${targetUnitName.includes("(") ? targetUnitName.split("(")[1]?.replace(")", "") : targetUnitName}</div>
+                        <div class="text-2xl font-bold">${value} ${
+        baseUnitName.includes("(")
+          ? baseUnitName.split("(")[1]?.replace(")", "")
+          : baseUnitName
+      }</div>
+                        <div class="text-sm opacity-90">${formatNumber(
+                          converted
+                        )} ${
+        targetUnitName.includes("(")
+          ? targetUnitName.split("(")[1]?.replace(")", "")
+          : targetUnitName
+      }</div>
                         <div class="text-xs mt-1">Conversione comune</div>
                     </div>
                 `;
@@ -367,10 +397,31 @@ document.addEventListener("keydown", (e) => {
   }
 });
 
-// Auto-focus input on page load
-setTimeout(() => {
-  fromValue.focus();
-}, 500);
+// Focus automatico su input all'avvio
+window.addEventListener("DOMContentLoaded", () => {
+  if (fromValue) fromValue.focus();
+});
+
+// Bottone copia risultato
+const copyBtn = document.getElementById("copyResult");
+if (copyBtn && result) {
+  copyBtn.addEventListener("click", () => {
+    if (!result.textContent) return;
+    navigator.clipboard.writeText(result.textContent.trim());
+    copyBtn.classList.add("copied");
+    copyBtn.setAttribute("aria-label", "Risultato copiato!");
+    setTimeout(() => {
+      copyBtn.classList.remove("copied");
+      copyBtn.setAttribute("aria-label", "Copia risultato");
+    }, 1200);
+  });
+}
+
+// Miglioro accessibilità: aria-label su input/select
+if (fromValue) fromValue.setAttribute("aria-label", "Valore da convertire");
+if (fromUnit) fromUnit.setAttribute("aria-label", "Unità di partenza");
+if (toUnit) toUnit.setAttribute("aria-label", "Unità di arrivo");
+if (swapBtn) swapBtn.setAttribute("aria-label", "Scambia unità");
 
 // Animate elements on scroll
 const observerOptions = {

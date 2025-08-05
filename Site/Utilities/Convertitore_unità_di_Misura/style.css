@@ -238,3 +238,69 @@
     opacity: 0.8;
   }
 }
+
+/* Header logo bounce */
+header img {
+  animation: bounceIn 1.2s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+
+/* Sottotitolo animato */
+header p {
+  animation: slideIn 1.2s 0.2s both;
+}
+
+/* Card categoria focus/active */
+.category-card:focus {
+  outline: 3px solid #6366f1;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px #a5b4fc55;
+}
+
+.category-card.active {
+  border: 2px solid #6366f1;
+  color: #fff;
+  background: linear-gradient(135deg, #6366f1 60%, #a5b4fc 100%);
+  box-shadow: 0 8px 32px #6366f155;
+}
+
+/* Bottone copia risultato */
+#copyResult {
+  transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
+  cursor: pointer;
+}
+#copyResult.copied {
+  background: #10b981 !important;
+  color: #fff !important;
+  box-shadow: 0 0 0 4px #10b98155;
+  transform: scale(1.15) rotate(-8deg);
+}
+
+/* Responsive migliorato */
+@media (max-width: 600px) {
+  header h1 {
+    font-size: 2.2rem;
+  }
+  .category-card {
+    padding: 1.2rem 0.5rem;
+  }
+  .glass-card,
+  .result-card {
+    padding: 1.2rem 0.5rem;
+  }
+  .result-card p#result {
+    font-size: 2.2rem;
+  }
+}
+
+/* Input focus visivo */
+.input-modern:focus,
+.select-modern:focus {
+  outline: 2px solid #6366f1;
+  box-shadow: 0 0 0 4px #a5b4fc55;
+}
+
+/* Swap button focus */
+.swap-button:focus {
+  outline: 2px solid #f59e0b;
+  box-shadow: 0 0 0 4px #fde68a99;
+}
