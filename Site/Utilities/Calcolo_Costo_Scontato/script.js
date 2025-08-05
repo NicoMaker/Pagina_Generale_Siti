@@ -282,10 +282,10 @@ class DiscountCalculator {
     const originalPrice = parseFloat(this.elements.originalPriceInput.value);
     const discountPercentage = parseFloat(this.elements.discountInput.value);
 
-    // Check for valid numbers and positive price
+    // Check for valid numbers and allow 0 for the original price
     if (
       !isNaN(originalPrice) &&
-      originalPrice > 0 &&
+      originalPrice >= 0 &&
       !isNaN(discountPercentage)
     ) {
       const discountAmount = originalPrice * (discountPercentage / 100);
@@ -299,18 +299,20 @@ class DiscountCalculator {
     }
   }
 
-  validatePrice(input, errorElement) {
+validatePrice(input, errorElement) {
     const value = parseFloat(input.value);
-    const isValid = !isNaN(value) && value > 0;
+    // Modified: Allow 0 as a valid price
+    const isValid = !isNaN(value) && value >= 0; 
 
     if (input.value.trim() === "") {
       this.showError(errorElement, "Il campo non può essere vuoto.");
       input.classList.add("error");
       return false;
     } else if (!isValid) {
+      // Modified: Update error message
       this.showError(
         errorElement,
-        "Inserisci un prezzo valido e maggiore di zero.",
+        "Inserisci un prezzo valido.", 
       );
       input.classList.add("error");
       return false;
@@ -356,21 +358,21 @@ class DiscountCalculator {
       return false;
     }
 
-    const isValidPriceAfter = !isNaN(priceAfter) && priceAfter > 0;
+    const isValidPriceAfter = !isNaN(priceAfter) && priceAfter >= 0;
 
     if (!isValidPriceAfter) {
       this.showError(
         this.elements.priceAfterError,
-        "Inserisci un prezzo valido e maggiore di zero.",
+        "Inserisci un prezzo valido.",
       );
       this.elements.priceAfterInput.classList.add("error");
       return false;
     }
 
-    if (!isNaN(priceBefore) && priceBefore > 0 && priceAfter >= priceBefore) {
+    if (!isNaN(priceBefore) && priceAfter > priceBefore) {
       this.showError(
         this.elements.priceAfterError,
-        "Il prezzo scontato deve essere inferiore al prezzo originale.",
+        "Il prezzo scontato deve essere inferiore o uguale al prezzo originale.",
       );
       this.elements.priceAfterInput.classList.add("error");
       return false;
@@ -442,10 +444,10 @@ class DiscountCalculator {
     const priceBefore = parseFloat(this.elements.priceBeforeInput.value);
     const priceAfter = parseFloat(this.elements.priceAfterInput.value);
 
-    if (priceAfter >= priceBefore) {
+    if (priceAfter > priceBefore) {
       this.showError(
         this.elements.priceAfterError,
-        "Il prezzo scontato deve essere inferiore al prezzo originale.",
+        "Il prezzo scontato deve essere inferiore o uguale al prezzo originale.",
       );
       this.elements.priceAfterInput.classList.add("error");
       this.shakeElement(this.elements.priceAfterInput);
@@ -457,8 +459,14 @@ class DiscountCalculator {
 
     await this.delay(800);
 
-    const discountAmount = priceBefore - priceAfter;
-    const discountPercentage = (discountAmount / priceBefore) * 100;
+    let discountAmount = priceBefore - priceAfter;
+    let discountPercentage = (discountAmount / priceBefore) * 100;
+    
+    // Handle division by zero case when priceBefore is 0
+    if (priceBefore === 0) {
+      discountAmount = 0;
+      discountPercentage = 0;
+    }
 
     this.showResult({
       title: "Percentuale di Sconto",
