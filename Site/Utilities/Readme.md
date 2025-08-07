@@ -2,7 +2,7 @@
 
 # Utilità
 
-- **[Calcolatore di Sconto e Aumento](Calcolatore_Sconto_Aumento)**
+- **[Calcolatore di Prezzi con Sconto e Aumento](Calcolatore_Sconto_Aumento)**
 - **[Conversioni unità di misura](Convertitore_unità_di_Misura)**
 - **[Cronometro timer](Cronometro_timer)**
 - **[Organizzazione Note](Organizzazione_Note)**
