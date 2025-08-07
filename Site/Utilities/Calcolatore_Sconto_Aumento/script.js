@@ -5,6 +5,7 @@ class ModernCalculator {
     this.setupSlider();
     this.updateUI();
     this.isCalculating = false;
+    this.percentageFieldCleared = false; // Flag per tracciare se abbiamo già cancellato lo 0
   }
 
   initElements() {
@@ -66,16 +67,44 @@ class ModernCalculator {
       input.addEventListener("change", () => this.updateUI());
     });
 
+    // Eventi migliorati per il campo percentuale
+    this.percentageInput.addEventListener("focus", (e) => {
+      // Quando l'utente clicca nel campo, se c'è solo "0.00", lo selezioniamo tutto
+      if (e.target.value === "0.00" || e.target.value === "0") {
+        e.target.select();
+        this.percentageFieldCleared = false; // Reset del flag
+      }
+    });
+
+    this.percentageInput.addEventListener("keydown", (e) => {
+      // Se l'utente digita un numero e il campo contiene solo "0.00" o "0", cancelliamo il contenuto
+      if (
+        !this.percentageFieldCleared &&
+        (e.target.value === "0.00" || e.target.value === "0")
+      ) {
+        if (e.key >= "0" && e.key <= "9") {
+          e.target.value = "";
+          this.percentageFieldCleared = true;
+        }
+      }
+    });
+
     this.percentageInput.addEventListener("input", (e) => {
       this.updatePercentageFromInput(e.target.value);
     });
+
     this.percentageInput.addEventListener("blur", (e) => {
       // Format the input when user stops typing
       const value = parseFloat(e.target.value);
-      if (!isNaN(value)) {
+      if (isNaN(value) || e.target.value === "") {
+        e.target.value = "0.00";
+        this.percentageFieldCleared = false; // Reset del flag quando torniamo a 0
+      } else {
         e.target.value = value.toFixed(2);
       }
+      this.updatePercentageFromInput(e.target.value);
     });
+
     this.percentageInput.addEventListener("keypress", (e) => {
       if (e.key === "Enter") this.calculateFinalPrice();
     });
@@ -196,28 +225,16 @@ class ModernCalculator {
     if (isNaN(numValue)) numValue = 0;
     numValue = Math.max(0, Math.min(100, numValue));
 
-    // Auto-remove leading zero when typing, but keep decimal format
-    if (
-      value === "0" ||
-      value === "0." ||
-      value === "0.0" ||
-      value === "0.00"
-    ) {
-      if (
-        document.activeElement === this.percentageInput &&
-        (value === "0" || value.length <= 2)
-      ) {
-        this.percentageInput.value = "";
-        numValue = 0;
-      }
-    } else {
-      // Only update input if it's not currently focused to avoid interfering with typing
-      if (document.activeElement !== this.percentageInput) {
-        // Format to 2 decimal places max
-        const formattedValue = parseFloat(numValue.toFixed(2));
-        this.percentageInput.value = formattedValue;
-        numValue = formattedValue;
-      }
+    // Se il valore è maggiore di 0, significa che l'utente ha iniziato a digitare
+    if (numValue > 0) {
+      this.percentageFieldCleared = true;
+    }
+
+    // Solo aggiorna l'input se non è attualmente in focus per evitare interferenze con la digitazione
+    if (document.activeElement !== this.percentageInput) {
+      const formattedValue = parseFloat(numValue.toFixed(2));
+      this.percentageInput.value = formattedValue;
+      numValue = formattedValue;
     }
 
     // Display with exactly 2 decimal places
@@ -496,6 +513,8 @@ class ModernCalculator {
       this.livePreview.classList.remove("show");
       // Reset slider to 0
       this.updatePercentageFromInput(0);
+      // Reset del flag quando iniziamo una nuova calcolazione
+      this.percentageFieldCleared = false;
       // Focus on first input of current mode
       this.focusFirstInput();
     }, 300);
@@ -505,6 +524,7 @@ class ModernCalculator {
     // Clear final price mode inputs
     this.basePriceInput.value = "";
     this.percentageInput.value = "0.00";
+    this.percentageFieldCleared = false; // Reset del flag
 
     // Clear percentage mode inputs
     this.priceBeforeInput.value = "";
