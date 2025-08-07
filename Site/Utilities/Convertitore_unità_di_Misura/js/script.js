@@ -217,8 +217,8 @@ function renderHistory() {
       (item) => `
                 <div class="history-item p-4 rounded-2xl border border-gray-200 hover:shadow-lg transition-all duration-300 cursor-pointer"
                      onclick="loadFromHistory('${item.from.value}', '${
-        item.from.unit
-      }', '${item.to.unit}', '${item.category}')">
+                       item.from.unit
+                     }', '${item.to.unit}', '${item.category}')">
                     <div class="flex items-center justify-between">
                         <div class="flex-1">
                             <div class="flex items-center space-x-2">
@@ -231,12 +231,16 @@ function renderHistory() {
                             </div>
                             <div class="mt-2 font-semibold text-gray-800">
                                 ${formatNumber(item.from.value)} ${
-        item.from.name.split("(")[1]?.replace(")", "") || item.from.unit
-      }
+                                  item.from.name
+                                    .split("(")[1]
+                                    ?.replace(")", "") || item.from.unit
+                                }
                                 →
                                 ${formatNumber(item.to.value)} ${
-        item.to.name.split("(")[1]?.replace(")", "") || item.to.unit
-      }
+                                  item.to.name
+                                    .split("(")[1]
+                                    ?.replace(")", "") || item.to.unit
+                                }
                             </div>
                         </div>
                         <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -244,7 +248,7 @@ function renderHistory() {
                         </svg>
                     </div>
                 </div>
-            `
+            `,
     )
     .join("");
 }
@@ -344,17 +348,17 @@ function updateQuickConversions() {
                     <div class="bg-gradient-to-r from-indigo-500 to-purple-600 text-white p-4 rounded-2xl text-center cursor-pointer hover:scale-105 transition-transform"
                          onclick="loadQuickConversion(${value}, '${baseUnit}', '${targetUnit}')">
                         <div class="text-2xl font-bold">${value} ${
-        baseUnitName.includes("(")
-          ? baseUnitName.split("(")[1]?.replace(")", "")
-          : baseUnitName
-      }</div>
+                          baseUnitName.includes("(")
+                            ? baseUnitName.split("(")[1]?.replace(")", "")
+                            : baseUnitName
+                        }</div>
                         <div class="text-sm opacity-90">${formatNumber(
-                          converted
+                          converted,
                         )} ${
-        targetUnitName.includes("(")
-          ? targetUnitName.split("(")[1]?.replace(")", "")
-          : targetUnitName
-      }</div>
+                          targetUnitName.includes("(")
+                            ? targetUnitName.split("(")[1]?.replace(")", "")
+                            : targetUnitName
+                        }</div>
                         <div class="text-xs mt-1">Conversione comune</div>
                     </div>
                 `;

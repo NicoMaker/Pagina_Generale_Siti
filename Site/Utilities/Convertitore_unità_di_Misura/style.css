@@ -265,7 +265,10 @@ header p {
 
 /* Bottone copia risultato */
 #copyResult {
-  transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
+  transition:
+    background 0.2s,
+    box-shadow 0.2s,
+    transform 0.2s;
   cursor: pointer;
 }
 #copyResult.copied {
