@@ -193,14 +193,16 @@ function toggleAutoGenerate() {
     autoBtn.classList.add("danger");
     intervalInput.disabled = true;
 
-    // Extract the first number immediately
-    extractRandom();
-
-    // Then announce the automatic extraction
+    // Announce the automatic extraction *before* the first number
     speak(`Estrazione automatica ogni ${secondsInterval} secondi`);
 
-    // Finally, start the interval for subsequent numbers
-    autoGenerateInterval = setInterval(extractRandom, secondsInterval * 1000);
+    // Use a slight delay to ensure the first speech is complete before extracting the number
+    setTimeout(() => {
+      // Extract the first number immediately after the announcement
+      extractRandom();
+      // Start the interval for subsequent numbers after the first number is extracted
+      autoGenerateInterval = setInterval(extractRandom, secondsInterval * 1000);
+    }, 1500); // A 1.5-second delay should be enough for the speech to start.
   }
 }
 
