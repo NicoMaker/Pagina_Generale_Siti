@@ -5,7 +5,7 @@ class ModernCalculator {
     this.setupSlider();
     this.updateUI();
     this.isCalculating = false;
-    this.percentageFieldCleared = false; // Flag per tracciare se abbiamo già cancellato lo 0
+    this.percentageFieldCleared = false;
   }
 
   initElements() {
@@ -24,9 +24,6 @@ class ModernCalculator {
     this.sliderWrapper = document.getElementById("slider-wrapper");
     this.sliderTrack = document.getElementById("slider-track");
     this.sliderThumb = document.getElementById("slider-thumb");
-    this.livePreview = document.getElementById("live-preview");
-    this.previewPrice = document.getElementById("preview-price");
-    this.previewAmount = document.getElementById("preview-amount");
     this.calculateFinalBtn = document.getElementById("calculate-final");
 
     // Percentage mode elements
@@ -56,9 +53,6 @@ class ModernCalculator {
     });
 
     // Final price mode events
-    this.basePriceInput.addEventListener("input", () =>
-      this.updateLivePreview(),
-    );
     this.basePriceInput.addEventListener("keypress", (e) => {
       if (e.key === "Enter") this.calculateFinalPrice();
     });
@@ -69,15 +63,13 @@ class ModernCalculator {
 
     // Eventi migliorati per il campo percentuale
     this.percentageInput.addEventListener("focus", (e) => {
-      // Quando l'utente clicca nel campo, se c'è solo "0.00", lo selezioniamo tutto
       if (e.target.value === "0.00" || e.target.value === "0") {
         e.target.select();
-        this.percentageFieldCleared = false; // Reset del flag
+        this.percentageFieldCleared = false;
       }
     });
 
     this.percentageInput.addEventListener("keydown", (e) => {
-      // Se l'utente digita un numero e il campo contiene solo "0.00" o "0", cancelliamo il contenuto
       if (
         !this.percentageFieldCleared &&
         (e.target.value === "0.00" || e.target.value === "0")
@@ -94,11 +86,10 @@ class ModernCalculator {
     });
 
     this.percentageInput.addEventListener("blur", (e) => {
-      // Format the input when user stops typing
       const value = parseFloat(e.target.value);
       if (isNaN(value) || e.target.value === "") {
         e.target.value = "0.00";
-        this.percentageFieldCleared = false; // Reset del flag quando torniamo a 0
+        this.percentageFieldCleared = false;
       } else {
         e.target.value = value.toFixed(2);
       }
@@ -202,8 +193,6 @@ class ModernCalculator {
     });
 
     updateSliderPosition(0);
-
-    // Initialize with 0.00 format
     this.updatePercentageFromInput(0);
   }
 
@@ -225,53 +214,19 @@ class ModernCalculator {
     if (isNaN(numValue)) numValue = 0;
     numValue = Math.max(0, Math.min(100, numValue));
 
-    // Se il valore è maggiore di 0, significa che l'utente ha iniziato a digitare
     if (numValue > 0) {
       this.percentageFieldCleared = true;
     }
 
-    // Solo aggiorna l'input se non è attualmente in focus per evitare interferenze con la digitazione
     if (document.activeElement !== this.percentageInput) {
       const formattedValue = parseFloat(numValue.toFixed(2));
       this.percentageInput.value = formattedValue;
       numValue = formattedValue;
     }
 
-    // Display with exactly 2 decimal places
     this.percentageDisplay.textContent = `${numValue.toFixed(2)}%`;
-
     this.sliderThumb.style.left = `${numValue}%`;
     this.sliderTrack.style.width = `${numValue}%`;
-
-    this.updateLivePreview();
-  }
-
-  updateLivePreview() {
-    const basePrice = parseFloat(this.basePriceInput.value);
-    const percentage = parseFloat(this.percentageInput.value) || 0;
-    const operation = document.querySelector(
-      'input[name="operation"]:checked',
-    ).value;
-
-    if (isNaN(basePrice) || basePrice <= 0) {
-      this.livePreview.classList.remove("show");
-      return;
-    }
-
-    const amount = basePrice * (percentage / 100);
-    let finalPrice, amountText;
-
-    if (operation === "subtract") {
-      finalPrice = basePrice - amount;
-      amountText = `Risparmio: €${amount.toFixed(2)}`;
-    } else {
-      finalPrice = basePrice + amount;
-      amountText = `Aumento: €${amount.toFixed(2)}`;
-    }
-
-    this.previewPrice.textContent = this.formatCurrency(finalPrice);
-    this.previewAmount.textContent = amountText;
-    this.livePreview.classList.add("show");
   }
 
   updateUI() {
@@ -288,13 +243,6 @@ class ModernCalculator {
       ? "var(--increase)"
       : "var(--discount)";
 
-    // Update live preview colors
-    if (isIncrease) {
-      this.livePreview.classList.add("increase");
-    } else {
-      this.livePreview.classList.remove("increase");
-    }
-
     // Update button colors
     if (isIncrease) {
       this.calculateFinalBtn.classList.add("increase");
@@ -307,8 +255,6 @@ class ModernCalculator {
     buttonText.innerHTML = isIncrease
       ? '<i class="fas fa-plus"></i> Calcola Aumento'
       : '<i class="fas fa-minus"></i> Calcola Sconto';
-
-    this.updateLivePreview();
   }
 
   async calculateFinalPrice() {
@@ -322,7 +268,6 @@ class ModernCalculator {
     this.isCalculating = true;
     this.calculateFinalBtn.classList.add("loading");
 
-    // Simulate calculation delay for better UX
     await this.delay(800);
 
     const basePrice = parseFloat(this.basePriceInput.value);
@@ -352,7 +297,6 @@ class ModernCalculator {
       ];
     }
 
-    // Hide form and show result
     this.hideCalculatorForm();
     this.showResult(title, this.formatCurrency(finalPrice), details);
 
@@ -396,7 +340,6 @@ class ModernCalculator {
       },
     ];
 
-    // Hide form and show result
     this.hideCalculatorForm();
     this.showResult(title, `${percentage.toFixed(2)}%`, details);
 
@@ -467,13 +410,12 @@ class ModernCalculator {
       const div = document.createElement("div");
       div.className = "result-detail";
       div.innerHTML = `
-                        <span>${detail.label}</span>
-                        <span class="result-detail-value">${detail.value}</span>
-                    `;
+              <span>${detail.label}</span>
+              <span class="result-detail-value">${detail.value}</span>
+            `;
       this.resultDetails.appendChild(div);
     });
 
-    // Show result in the same space as the form
     this.resultContainer.classList.add("show");
   }
 
@@ -483,10 +425,8 @@ class ModernCalculator {
 
   hideCalculatorForm() {
     this.calculatorForm.classList.add("hidden");
-    // Show result container after form starts hiding
     setTimeout(() => {
       this.resultContainer.style.display = "block";
-      // Small delay to ensure smooth transition
       setTimeout(() => {
         this.resultContainer.classList.add("show");
       }, 50);
@@ -499,38 +439,27 @@ class ModernCalculator {
   }
 
   newCalculation() {
-    // Hide result first
     this.resultContainer.classList.remove("show");
 
     setTimeout(() => {
       this.hideResult();
       this.showCalculatorForm();
-      // Clear inputs but maintain current mode
       this.clearInputs();
-      // Clear any errors
       this.clearErrors();
-      // Reset live preview
-      this.livePreview.classList.remove("show");
-      // Reset slider to 0
       this.updatePercentageFromInput(0);
-      // Reset del flag quando iniziamo una nuova calcolazione
       this.percentageFieldCleared = false;
-      // Focus on first input of current mode
       this.focusFirstInput();
     }, 300);
   }
 
   clearInputs() {
-    // Clear final price mode inputs
     this.basePriceInput.value = "";
     this.percentageInput.value = "0.00";
-    this.percentageFieldCleared = false; // Reset del flag
+    this.percentageFieldCleared = false;
 
-    // Clear percentage mode inputs
     this.priceBeforeInput.value = "";
     this.priceAfterInput.value = "";
 
-    // Reset to default operation (sconto)
     document.getElementById("op-subtract").checked = true;
     this.updateUI();
   }
@@ -588,11 +517,9 @@ class ModernCalculator {
         })
         .catch(console.error);
     } else {
-      // Fallback to clipboard
       navigator.clipboard
         .writeText(shareText)
         .then(() => {
-          // Show temporary feedback
           const originalText = this.shareBtn.innerHTML;
           this.shareBtn.innerHTML = '<i class="fas fa-check"></i> Copiato!';
           setTimeout(() => {

@@ -326,45 +326,6 @@ body {
   cursor: grabbing;
 }
 
-/* Live Preview */
-.live-preview {
-  background: linear-gradient(135deg, var(--discount), var(--discount-light));
-  color: white;
-  padding: 1.5rem;
-  border-radius: 16px;
-  text-align: center;
-  margin-bottom: 1.5rem;
-  box-shadow: 0 8px 25px rgba(239, 68, 68, 0.3);
-  display: none;
-  animation: slideUp 0.4s ease-out;
-}
-
-.live-preview.show {
-  display: block;
-}
-
-.live-preview.increase {
-  background: linear-gradient(135deg, var(--increase), var(--increase-light));
-  box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
-}
-
-.preview-icon {
-  font-size: 2rem;
-  margin-bottom: 0.5rem;
-  opacity: 0.9;
-}
-
-.preview-price {
-  font-size: 2rem;
-  font-weight: 700;
-  margin-bottom: 0.5rem;
-}
-
-.preview-amount {
-  font-size: 1rem;
-  opacity: 0.9;
-}
-
 /* Calculate Button */
 .calculate-button {
   width: 100%;
@@ -567,17 +528,6 @@ body {
   from {
     opacity: 0;
     transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
   }
   to {
     opacity: 1;
