@@ -741,3 +741,11 @@ setTimeout(() => {
     6000,
   );
 }, 1000);
+
+// Event listener per il bottone genera nomi (link al file locale)
+document
+  .getElementById("generateNamesBtn")
+  .addEventListener("click", function () {
+    // Apre il file locale per generare nomi in una nuova scheda
+    window.open("Generazione_Nomi_TXT/index.html", "_blank");
+  });
