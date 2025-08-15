@@ -7,7 +7,7 @@
 - **[Estrattore Regione Casuale](Estrai_Regione)**
 - **[Generatore di Carte](Generatore_di_Carte)**
 - **[Generatore di Palette di Colori](Generatore_Palette)**
-- **[Generazione Attivitò](Generazione_Attività)**
+- **[Generazione Attività](Generazione_Attività)**
 - **[Lancio dei Dadi con n Facce Grafico](Lancio%20Dadi%20N%20facce)**
 - **[Lancio di n Monete](Lancio%20Monete)**
 - **[Lancio Dadi](Lancio_Dadi)**
