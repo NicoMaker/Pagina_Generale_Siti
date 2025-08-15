@@ -80,6 +80,41 @@
         </footer>
     </div>
 
+    <!-- Added beautiful modal for deletion confirmation -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>🗑️ Conferma Eliminazione</h3>
+            </div>
+            <div class="modal-body">
+                <p>Sei sicuro di voler eliminare questa attività?</p>
+                <div class="modal-activity-preview" id="modalActivityPreview">
+                    <!-- Activity preview will be inserted here -->
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="modal-btn cancel-btn" id="modalCancelBtn">❌ Annulla</button>
+                <button class="modal-btn confirm-btn" id="modalConfirmBtn">✅ Elimina</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="clearAllModalOverlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>🗑️ Cancella Tutto</h3>
+            </div>
+            <div class="modal-body">
+                <p>Sei sicuro di voler cancellare <strong>tutte</strong> le attività generate?</p>
+                <p class="modal-warning">⚠️ Questa azione non può essere annullata!</p>
+            </div>
+            <div class="modal-actions">
+                <button class="modal-btn cancel-btn" id="clearAllCancelBtn">❌ Annulla</button>
+                <button class="modal-btn confirm-btn" id="clearAllConfirmBtn">🗑️ Cancella Tutto</button>
+            </div>
+        </div>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>

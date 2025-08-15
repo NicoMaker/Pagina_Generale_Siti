@@ -1,6 +1,7 @@
 class ActivityGenerator {
   constructor() {
     this.generatedActivities = []
+    this.pendingDeleteId = null
 
     this.activities = [
       // Creativo
@@ -271,9 +272,9 @@ class ActivityGenerator {
     this.loadStats()
     this.initializeElements()
     this.bindEvents()
-    this.updateStatsDisplay()
     this.loadGeneratedActivities()
-    this.generateActivity() // Generate only 1 activity at startup instead of 3
+    this.updateStatsDisplay()
+    // this.generateActivity() - commented out so no activity is generated automatically
   }
 
   initializeElements() {
@@ -290,29 +291,47 @@ class ActivityGenerator {
 
     this.activitiesList = document.getElementById("activitiesList")
     this.clearAllBtn = document.getElementById("clearAllBtn")
+
+    this.modalOverlay = document.getElementById("modalOverlay")
+    this.modalActivityPreview = document.getElementById("modalActivityPreview")
+    this.modalCancelBtn = document.getElementById("modalCancelBtn")
+    this.modalConfirmBtn = document.getElementById("modalConfirmBtn")
+
+    this.clearAllModalOverlay = document.getElementById("clearAllModalOverlay")
+    this.clearAllCancelBtn = document.getElementById("clearAllCancelBtn")
+    this.clearAllConfirmBtn = document.getElementById("clearAllConfirmBtn")
   }
 
   bindEvents() {
     this.generateBtn.addEventListener("click", () => this.generateActivity())
     this.categoryFilter.addEventListener("change", () => this.generateActivity())
 
-    this.clearAllBtn.addEventListener("click", () => this.clearAllActivities())
+    this.clearAllBtn.addEventListener("click", () => this.showClearAllModal())
 
     this.activitiesList.addEventListener("click", (e) => {
-      console.log("[v0] Click detected on:", e.target)
-      console.log("[v0] Target classes:", e.target.classList)
-
       if (e.target.classList.contains("delete-btn")) {
-        console.log("[v0] Delete button clicked")
         const activityId = e.target.getAttribute("data-activity-id")
-        console.log("[v0] Activity ID to delete:", activityId)
-        this.deleteActivity(activityId)
+        this.showDeleteModal(activityId)
       }
     })
 
-    // Genera attività con Enter
+    this.modalCancelBtn.addEventListener("click", () => this.hideDeleteModal())
+    this.modalConfirmBtn.addEventListener("click", () => this.confirmDelete())
+    this.modalOverlay.addEventListener("click", (e) => {
+      if (e.target === this.modalOverlay) this.hideDeleteModal()
+    })
+
+    this.clearAllCancelBtn.addEventListener("click", () => this.hideClearAllModal())
+    this.clearAllConfirmBtn.addEventListener("click", () => this.confirmClearAll())
+    this.clearAllModalOverlay.addEventListener("click", (e) => {
+      if (e.target === this.clearAllModalOverlay) this.hideClearAllModal()
+    })
+
     document.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") {
+      if (e.key === "Escape") {
+        this.hideDeleteModal()
+        this.hideClearAllModal()
+      } else if (e.key === "Enter") {
         this.generateActivity()
       }
     })
@@ -390,6 +409,63 @@ class ActivityGenerator {
     }
   }
 
+  showDeleteModal(activityId) {
+    this.pendingDeleteId = activityId
+    const activity = this.generatedActivities.find((a) => a.id == activityId)
+
+    if (activity) {
+      this.modalActivityPreview.innerHTML = `
+        <div class="preview-title">${activity.icon} ${activity.title}</div>
+        <div class="preview-description">${activity.description}</div>
+      `
+    }
+
+    this.modalOverlay.classList.add("show")
+    document.body.style.overflow = "hidden"
+  }
+
+  hideDeleteModal() {
+    this.modalOverlay.classList.remove("show")
+    this.pendingDeleteId = null
+    document.body.style.overflow = "auto"
+  }
+
+  confirmDelete() {
+    if (this.pendingDeleteId) {
+      this.deleteActivity(this.pendingDeleteId)
+    }
+    this.hideDeleteModal()
+  }
+
+  showClearAllModal() {
+    this.clearAllModalOverlay.classList.add("show")
+    document.body.style.overflow = "hidden"
+  }
+
+  hideClearAllModal() {
+    this.clearAllModalOverlay.classList.remove("show")
+    document.body.style.overflow = "auto"
+  }
+
+  confirmClearAll() {
+    this.generatedActivities = []
+    this.renderGeneratedActivities()
+    this.saveGeneratedActivities()
+    this.updateStatsDisplay()
+    this.hideClearAllModal()
+  }
+
+  deleteActivity(activityId) {
+    this.generatedActivities = this.generatedActivities.filter((activity) => activity.id != activityId)
+    this.renderGeneratedActivities()
+    this.saveGeneratedActivities()
+    this.updateStatsDisplay()
+  }
+
+  clearAllActivities() {
+    this.showClearAllModal()
+  }
+
   addToGeneratedList(activity) {
     const activityWithId = {
       ...activity,
@@ -435,24 +511,6 @@ class ActivityGenerator {
     `,
       )
       .join("")
-  }
-
-  deleteActivity(activityId) {
-    console.log("[v0] Deleting activity with ID:", activityId)
-    this.generatedActivities = this.generatedActivities.filter((activity) => activity.id != activityId)
-    console.log("[v0] Remaining activities:", this.generatedActivities.length)
-    this.renderGeneratedActivities()
-    this.saveGeneratedActivities()
-    this.updateStatsDisplay()
-  }
-
-  clearAllActivities() {
-    if (confirm("Sei sicuro di voler cancellare tutte le attività generate?")) {
-      this.generatedActivities = []
-      this.renderGeneratedActivities()
-      this.saveGeneratedActivities()
-      this.updateStatsDisplay()
-    }
   }
 
   saveGeneratedActivities() {
