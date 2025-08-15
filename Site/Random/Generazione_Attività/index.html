@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎯 Generatore di Attività Casuali</title>
+    <link rel="stylesheet" href="style.css">
+
+    <link
+      rel="icon"
+      href="https://www.ienonline.org/ien/wp-content/uploads/2019/02/Schermata-2019-02-06-a-08.37.27.png"
+      type="image/x-icon"
+    />
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🎯 Generatore di Attività Casuali</h1>
+            <p>Non sai cosa fare? Lascia che il caso decida per te!</p>
+        </header>
+
+        <main class="main">
+            <div class="activity-card" id="activityCard">
+                <div class="activity-icon" id="activityIcon">🎲</div>
+                <h2 class="activity-title" id="activityTitle">Clicca per generare un'attività!</h2>
+                <p class="activity-description" id="activityDescription">Scopri qualcosa di nuovo e divertente da fare</p>
+                <div class="activity-meta">
+                    <span class="activity-category" id="activityCategory">Inizia</span>
+                    <span class="activity-time" id="activityTime">⏱️ Vario</span>
+                </div>
+            </div>
+
+            <div class="controls">
+                <button class="generate-btn" id="generateBtn">
+                    <span class="btn-text">Genera Attività</span>
+                    <span class="btn-icon">✨</span>
+                </button>
+                
+                <div class="filters">
+                    <select id="categoryFilter" class="filter-select">
+                        <option value="all">Tutte le categorie</option>
+                        <option value="creativo">🎨 Creativo</option>
+                        <option value="fisico">💪 Fisico</option>
+                        <option value="mentale">🧠 Mentale</option>
+                        <option value="sociale">👥 Sociale</option>
+                        <option value="rilassante">😌 Rilassante</option>
+                        <option value="produttivo">⚡ Produttivo</option>
+                        <option value="avventura">🌟 Avventura</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="stats">
+                <div class="stat-item">
+                    <span class="stat-number" id="totalGenerated">0</span>
+                    <span class="stat-label">Attività generate</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" id="favoriteCategory">-</span>
+                    <span class="stat-label">Categoria preferita</span>
+                </div>
+            </div>
+
+            <!-- Added generated activities list section -->
+            <div class="generated-activities" id="generatedActivities">
+                <div class="activities-header">
+                    <h3>🗂️ Attività Generate</h3>
+                    <button class="clear-all-btn" id="clearAllBtn" style="display: none;">
+                        🗑️ Cancella Tutto
+                    </button>
+                </div>
+                <div class="activities-list" id="activitiesList">
+                    <p class="no-activities">Nessuna attività generata ancora</p>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>💡 Ogni attività è un'opportunità per crescere e divertirsi!</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+</merged_code>
