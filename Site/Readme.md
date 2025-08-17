@@ -18,6 +18,6 @@
 - **[Pokemon](https://github.com/NicoMaker/PokeApi)** [1 Progetto]
 - **[Random](Random/Readme.md)** [13 Progetti]
 - **[Salute](Salute/Readme.md)** [2 Progetti]
-- **[Storia](Storia/Readme.md)** [1 Progetto]
+- **[Storia](History/Readme.md)** [1 Progetto]
 - **[Temperatura](Temperatura/Readme.md)** [3 Progetti]]
 - **[Utilità](Utilities/Readme.md)** [6 Progetti]
