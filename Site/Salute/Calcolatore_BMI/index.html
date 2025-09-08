@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calcolatore BMI - Monitora la tua Salute</title>
+    <link rel="stylesheet" href="style.css">
+        <link
+      rel="icon"
+      href="https://www.my-personaltrainer.it/2022/10/12/peso-teorico-orig.jpeg"
+      type="image/png"
+    />
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>Calcolatore BMI</h1>
+            <p>Monitora il tuo Indice di Massa Corporea</p>
+        </header>
+
+        <main class="main-content">
+            <div class="calculator-card">
+                <div class="unit-toggle">
+                    <button id="metric-btn" class="unit-btn active">Metrico</button>
+                    <button id="imperial-btn" class="unit-btn">Imperiale</button>
+                </div>
+
+                <form id="bmi-form" class="form">
+                    <div class="input-group">
+                        <label for="height">Altezza</label>
+                        <div class="input-wrapper">
+                            <input type="number" id="height" placeholder="170" step="0.1" required>
+                            <span class="unit" id="height-unit">cm</span>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="weight">Peso</label>
+                        <div class="input-wrapper">
+                            <input type="number" id="weight" placeholder="70" step="0.1" required>
+                            <span class="unit" id="weight-unit">kg</span>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="calculate-btn">Calcola BMI</button>
+                </form>
+
+                <div id="result" class="result hidden">
+                    <div class="bmi-value">
+                        <span class="label">Il tuo BMI è:</span>
+                        <span id="bmi-number" class="number">0</span>
+                    </div>
+                    
+                    <div class="bmi-category">
+                        <span id="category-text" class="category">Normale</span>
+                    </div>
+
+                    <div class="bmi-scale">
+                        <div class="scale-bar">
+                            <div class="scale-segment underweight"></div>
+                            <div class="scale-segment normal"></div>
+                            <div class="scale-segment overweight"></div>
+                            <div class="scale-segment obese"></div>
+                        </div>
+                        <div id="bmi-indicator" class="indicator"></div>
+                    </div>
+
+                    <div class="bmi-ranges">
+                        <div class="range underweight">
+                            <span class="range-label">Sottopeso</span>
+                            <span class="range-value">&lt; 18.5</span>
+                        </div>
+                        <div class="range normal">
+                            <span class="range-label">Normale</span>
+                            <span class="range-value">18.5 - 24.9</span>
+                        </div>
+                        <div class="range overweight">
+                            <span class="range-label">Sovrappeso</span>
+                            <span class="range-value">25.0 - 29.9</span>
+                        </div>
+                        <div class="range obese">
+                            <span class="range-label">Obeso</span>
+                            <span class="range-value">&ge; 30.0</span>
+                        </div>
+                    </div>
+
+                    <div id="advice" class="advice">
+                        <h3>Consigli per la tua salute</h3>
+                        <p id="advice-text"></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-section">
+                <h2>Cos'è il BMI?</h2>
+                <p>L'Indice di Massa Corporea (BMI) è una misura che utilizza altezza e peso per determinare se il peso è nella norma. È uno strumento di screening utile ma non diagnostico per valutare il rischio di problemi di salute legati al peso.</p>
+                
+                <div class="disclaimer">
+                    <strong>Nota:</strong> Il BMI è solo un indicatore generale. Consulta sempre un professionista sanitario per una valutazione completa della tua salute.
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
