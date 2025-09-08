@@ -1,13 +1,14 @@
 class ActivityGenerator {
   constructor() {
-    this.generatedActivities = []
-    this.pendingDeleteId = null
+    this.generatedActivities = [];
+    this.pendingDeleteId = null;
 
     this.activities = [
       // Creativo
       {
         title: "Disegna un autoritratto",
-        description: "Prendi carta e matita e disegna te stesso guardandoti allo specchio",
+        description:
+          "Prendi carta e matita e disegna te stesso guardandoti allo specchio",
         category: "creativo",
         icon: "🎨",
         time: "30-60 min",
@@ -21,21 +22,24 @@ class ActivityGenerator {
       },
       {
         title: "Componi una canzone",
-        description: "Inventa una melodia e scrivi il testo di una canzone originale",
+        description:
+          "Inventa una melodia e scrivi il testo di una canzone originale",
         category: "creativo",
         icon: "🎵",
         time: "45-90 min",
       },
       {
         title: "Crea un collage",
-        description: "Usa riviste, giornali e materiali vari per creare un'opera d'arte",
+        description:
+          "Usa riviste, giornali e materiali vari per creare un'opera d'arte",
         category: "creativo",
         icon: "✂️",
         time: "40-60 min",
       },
       {
         title: "Fotografa 10 oggetti blu",
-        description: "Trova e fotografa 10 oggetti di colore blu nella tua casa",
+        description:
+          "Trova e fotografa 10 oggetti di colore blu nella tua casa",
         category: "creativo",
         icon: "📸",
         time: "15-25 min",
@@ -44,7 +48,8 @@ class ActivityGenerator {
       // Fisico
       {
         title: "Fai 50 jumping jacks",
-        description: "Esegui 50 saltelli a gambe divaricate per attivare il corpo",
+        description:
+          "Esegui 50 saltelli a gambe divaricate per attivare il corpo",
         category: "fisico",
         icon: "🤸",
         time: "5-10 min",
@@ -88,28 +93,32 @@ class ActivityGenerator {
       },
       {
         title: "Impara 5 parole in una lingua straniera",
-        description: "Scegli una lingua e impara 5 nuove parole con la pronuncia",
+        description:
+          "Scegli una lingua e impara 5 nuove parole con la pronuncia",
         category: "mentale",
         icon: "🌍",
         time: "20-30 min",
       },
       {
         title: "Medita per 10 minuti",
-        description: "Trova un posto tranquillo e medita concentrandoti sul respiro",
+        description:
+          "Trova un posto tranquillo e medita concentrandoti sul respiro",
         category: "mentale",
         icon: "🧠",
         time: "10 min",
       },
       {
         title: "Leggi un articolo interessante",
-        description: "Trova e leggi un articolo su un argomento che non conosci",
+        description:
+          "Trova e leggi un articolo su un argomento che non conosci",
         category: "mentale",
         icon: "📚",
         time: "15-25 min",
       },
       {
         title: "Calcola mentalmente 20 operazioni",
-        description: "Fai 20 calcoli matematici a mente senza usare calcolatrice",
+        description:
+          "Fai 20 calcoli matematici a mente senza usare calcolatrice",
         category: "mentale",
         icon: "🔢",
         time: "10-15 min",
@@ -118,14 +127,16 @@ class ActivityGenerator {
       // Sociale
       {
         title: "Chiama un vecchio amico",
-        description: "Contatta qualcuno che non senti da tempo per fare due chiacchiere",
+        description:
+          "Contatta qualcuno che non senti da tempo per fare due chiacchiere",
         category: "sociale",
         icon: "📞",
         time: "20-45 min",
       },
       {
         title: "Scrivi un messaggio di ringraziamento",
-        description: "Manda un messaggio di gratitudine a qualcuno che ti ha aiutato",
+        description:
+          "Manda un messaggio di gratitudine a qualcuno che ti ha aiutato",
         category: "sociale",
         icon: "💌",
         time: "10-15 min",
@@ -139,14 +150,16 @@ class ActivityGenerator {
       },
       {
         title: "Organizza un'uscita",
-        description: "Pianifica un'attività da fare con amici o famiglia nel weekend",
+        description:
+          "Pianifica un'attività da fare con amici o famiglia nel weekend",
         category: "sociale",
         icon: "🎉",
         time: "15-30 min",
       },
       {
         title: "Condividi una ricetta",
-        description: "Condividi la ricetta del tuo piatto preferito con qualcuno",
+        description:
+          "Condividi la ricetta del tuo piatto preferito con qualcuno",
         category: "sociale",
         icon: "👨‍🍳",
         time: "10-20 min",
@@ -169,14 +182,16 @@ class ActivityGenerator {
       },
       {
         title: "Annusa 5 profumi diversi",
-        description: "Trova 5 profumi o odori piacevoli e concentrati su ognuno",
+        description:
+          "Trova 5 profumi o odori piacevoli e concentrati su ognuno",
         category: "rilassante",
         icon: "🌸",
         time: "10-15 min",
       },
       {
         title: "Guarda le nuvole",
-        description: "Sdraiati all'aperto e osserva le forme delle nuvole per 15 minuti",
+        description:
+          "Sdraiati all'aperto e osserva le forme delle nuvole per 15 minuti",
         category: "rilassante",
         icon: "☁️",
         time: "15-20 min",
@@ -206,7 +221,8 @@ class ActivityGenerator {
       },
       {
         title: "Pianifica la settimana",
-        description: "Scrivi gli obiettivi e le attività per i prossimi 7 giorni",
+        description:
+          "Scrivi gli obiettivi e le attività per i prossimi 7 giorni",
         category: "produttivo",
         icon: "📅",
         time: "20-30 min",
@@ -220,7 +236,8 @@ class ActivityGenerator {
       },
       {
         title: "Cancella 50 email",
-        description: "Elimina almeno 50 email vecchie dalla tua casella di posta",
+        description:
+          "Elimina almeno 50 email vecchie dalla tua casella di posta",
         category: "produttivo",
         icon: "📧",
         time: "15-20 min",
@@ -243,7 +260,8 @@ class ActivityGenerator {
       },
       {
         title: "Parla con uno sconosciuto",
-        description: "Inizia una conversazione amichevole con qualcuno che non conosci",
+        description:
+          "Inizia una conversazione amichevole con qualcuno che non conosci",
         category: "avventura",
         icon: "🤝",
         time: "10-20 min",
@@ -257,119 +275,133 @@ class ActivityGenerator {
       },
       {
         title: "Visita un museo online",
-        description: "Esplora virtualmente un museo famoso che non hai mai visitato",
+        description:
+          "Esplora virtualmente un museo famoso che non hai mai visitato",
         category: "avventura",
         icon: "🏛️",
         time: "30-45 min",
       },
-    ]
+    ];
 
     this.stats = {
       totalGenerated: 0,
       categoryCount: {},
-    }
+    };
 
-    this.loadStats()
-    this.initializeElements()
-    this.bindEvents()
-    this.loadGeneratedActivities()
-    this.updateStatsDisplay()
+    this.loadStats();
+    this.initializeElements();
+    this.bindEvents();
+    this.loadGeneratedActivities();
+    this.updateStatsDisplay();
     // this.generateActivity() - commented out so no activity is generated automatically
   }
 
   initializeElements() {
-    this.activityCard = document.getElementById("activityCard")
-    this.activityIcon = document.getElementById("activityIcon")
-    this.activityTitle = document.getElementById("activityTitle")
-    this.activityDescription = document.getElementById("activityDescription")
-    this.activityCategory = document.getElementById("activityCategory")
-    this.activityTime = document.getElementById("activityTime")
-    this.generateBtn = document.getElementById("generateBtn")
-    this.categoryFilter = document.getElementById("categoryFilter")
-    this.totalGenerated = document.getElementById("totalGenerated")
-    this.favoriteCategory = document.getElementById("favoriteCategory")
+    this.activityCard = document.getElementById("activityCard");
+    this.activityIcon = document.getElementById("activityIcon");
+    this.activityTitle = document.getElementById("activityTitle");
+    this.activityDescription = document.getElementById("activityDescription");
+    this.activityCategory = document.getElementById("activityCategory");
+    this.activityTime = document.getElementById("activityTime");
+    this.generateBtn = document.getElementById("generateBtn");
+    this.categoryFilter = document.getElementById("categoryFilter");
+    this.totalGenerated = document.getElementById("totalGenerated");
+    this.favoriteCategory = document.getElementById("favoriteCategory");
 
-    this.activitiesList = document.getElementById("activitiesList")
-    this.clearAllBtn = document.getElementById("clearAllBtn")
+    this.activitiesList = document.getElementById("activitiesList");
+    this.clearAllBtn = document.getElementById("clearAllBtn");
 
-    this.modalOverlay = document.getElementById("modalOverlay")
-    this.modalActivityPreview = document.getElementById("modalActivityPreview")
-    this.modalCancelBtn = document.getElementById("modalCancelBtn")
-    this.modalConfirmBtn = document.getElementById("modalConfirmBtn")
+    this.modalOverlay = document.getElementById("modalOverlay");
+    this.modalActivityPreview = document.getElementById("modalActivityPreview");
+    this.modalCancelBtn = document.getElementById("modalCancelBtn");
+    this.modalConfirmBtn = document.getElementById("modalConfirmBtn");
 
-    this.clearAllModalOverlay = document.getElementById("clearAllModalOverlay")
-    this.clearAllCancelBtn = document.getElementById("clearAllCancelBtn")
-    this.clearAllConfirmBtn = document.getElementById("clearAllConfirmBtn")
+    this.clearAllModalOverlay = document.getElementById("clearAllModalOverlay");
+    this.clearAllCancelBtn = document.getElementById("clearAllCancelBtn");
+    this.clearAllConfirmBtn = document.getElementById("clearAllConfirmBtn");
   }
 
   bindEvents() {
-    this.generateBtn.addEventListener("click", () => this.generateActivity())
-    this.categoryFilter.addEventListener("change", () => this.generateActivity())
+    this.generateBtn.addEventListener("click", () => this.generateActivity());
+    this.categoryFilter.addEventListener("change", () =>
+      this.generateActivity(),
+    );
 
-    this.clearAllBtn.addEventListener("click", () => this.showClearAllModal())
+    this.clearAllBtn.addEventListener("click", () => this.showClearAllModal());
 
     this.activitiesList.addEventListener("click", (e) => {
       if (e.target.classList.contains("delete-btn")) {
-        const activityId = e.target.getAttribute("data-activity-id")
-        this.showDeleteModal(activityId)
+        const activityId = e.target.getAttribute("data-activity-id");
+        this.showDeleteModal(activityId);
       }
-    })
+    });
 
-    this.modalCancelBtn.addEventListener("click", () => this.hideDeleteModal())
-    this.modalConfirmBtn.addEventListener("click", () => this.confirmDelete())
+    this.modalCancelBtn.addEventListener("click", () => this.hideDeleteModal());
+    this.modalConfirmBtn.addEventListener("click", () => this.confirmDelete());
     this.modalOverlay.addEventListener("click", (e) => {
-      if (e.target === this.modalOverlay) this.hideDeleteModal()
-    })
+      if (e.target === this.modalOverlay) this.hideDeleteModal();
+    });
 
-    this.clearAllCancelBtn.addEventListener("click", () => this.hideClearAllModal())
-    this.clearAllConfirmBtn.addEventListener("click", () => this.confirmClearAll())
+    this.clearAllCancelBtn.addEventListener("click", () =>
+      this.hideClearAllModal(),
+    );
+    this.clearAllConfirmBtn.addEventListener("click", () =>
+      this.confirmClearAll(),
+    );
     this.clearAllModalOverlay.addEventListener("click", (e) => {
-      if (e.target === this.clearAllModalOverlay) this.hideClearAllModal()
-    })
+      if (e.target === this.clearAllModalOverlay) this.hideClearAllModal();
+    });
 
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape") {
-        this.hideDeleteModal()
-        this.hideClearAllModal()
+        this.hideDeleteModal();
+        this.hideClearAllModal();
       } else if (e.key === "Enter") {
-        this.generateActivity()
+        this.generateActivity();
       }
-    })
+    });
   }
 
   generateActivity() {
-    this.generateBtn.classList.add("loading")
-    this.activityCard.classList.add("pulse")
+    this.generateBtn.classList.add("loading");
+    this.activityCard.classList.add("pulse");
 
     setTimeout(() => {
-      const selectedCategory = this.categoryFilter.value
-      let availableActivities = this.activities
+      const selectedCategory = this.categoryFilter.value;
+      let availableActivities = this.activities;
 
       if (selectedCategory !== "all") {
-        availableActivities = this.activities.filter((activity) => activity.category === selectedCategory)
+        availableActivities = this.activities.filter(
+          (activity) => activity.category === selectedCategory,
+        );
       }
 
-      const randomActivity = availableActivities[Math.floor(Math.random() * availableActivities.length)]
+      const randomActivity =
+        availableActivities[
+          Math.floor(Math.random() * availableActivities.length)
+        ];
 
-      this.displayActivity(randomActivity)
-      this.addToGeneratedList(randomActivity)
-      this.updateStats(randomActivity.category)
-      this.saveStats()
+      this.displayActivity(randomActivity);
+      this.addToGeneratedList(randomActivity);
+      this.updateStats(randomActivity.category);
+      this.saveStats();
 
-      this.generateBtn.classList.remove("loading")
+      this.generateBtn.classList.remove("loading");
 
       setTimeout(() => {
-        this.activityCard.classList.remove("pulse")
-      }, 600)
-    }, 800)
+        this.activityCard.classList.remove("pulse");
+      }, 600);
+    }, 800);
   }
 
   displayActivity(activity) {
-    this.activityIcon.textContent = activity.icon
-    this.activityTitle.textContent = activity.title
-    this.activityDescription.textContent = activity.description
-    this.activityCategory.textContent = this.getCategoryLabel(activity.category)
-    this.activityTime.textContent = `⏱️ ${activity.time}`
+    this.activityIcon.textContent = activity.icon;
+    this.activityTitle.textContent = activity.title;
+    this.activityDescription.textContent = activity.description;
+    this.activityCategory.textContent = this.getCategoryLabel(
+      activity.category,
+    );
+    this.activityTime.textContent = `⏱️ ${activity.time}`;
   }
 
   getCategoryLabel(category) {
@@ -381,89 +413,94 @@ class ActivityGenerator {
       rilassante: "😌 Rilassante",
       produttivo: "⚡ Produttivo",
       avventura: "🌟 Avventura",
-    }
-    return labels[category] || category
+    };
+    return labels[category] || category;
   }
 
   updateStats(category) {
-    this.stats.totalGenerated++
-    this.stats.categoryCount[category] = (this.stats.categoryCount[category] || 0) + 1
-    this.updateStatsDisplay()
+    this.stats.totalGenerated++;
+    this.stats.categoryCount[category] =
+      (this.stats.categoryCount[category] || 0) + 1;
+    this.updateStatsDisplay();
   }
 
   updateStatsDisplay() {
-    this.totalGenerated.textContent = this.generatedActivities.length
+    this.totalGenerated.textContent = this.generatedActivities.length;
 
     if (this.generatedActivities.length > 0) {
-      const categoryCount = {}
+      const categoryCount = {};
       this.generatedActivities.forEach((activity) => {
-        categoryCount[activity.category] = (categoryCount[activity.category] || 0) + 1
-      })
+        categoryCount[activity.category] =
+          (categoryCount[activity.category] || 0) + 1;
+      });
 
       const favoriteCategory = Object.keys(categoryCount).reduce((a, b) =>
         categoryCount[a] > categoryCount[b] ? a : b,
-      )
-      this.favoriteCategory.textContent = this.getCategoryLabel(favoriteCategory)
+      );
+      this.favoriteCategory.textContent =
+        this.getCategoryLabel(favoriteCategory);
     } else {
-      this.favoriteCategory.textContent = "-"
+      this.favoriteCategory.textContent = "-";
     }
   }
 
   showDeleteModal(activityId) {
-    this.pendingDeleteId = activityId
-    const activity = this.generatedActivities.find((a) => a.id == activityId)
+    this.pendingDeleteId = activityId;
+    const activity = this.generatedActivities.find((a) => a.id == activityId);
 
     if (activity) {
       this.modalActivityPreview.innerHTML = `
         <div class="preview-title">${activity.icon} ${activity.title}</div>
         <div class="preview-description">${activity.description}</div>
-      `
+      `;
     }
 
-    this.modalOverlay.classList.add("show")
-    document.body.style.overflow = "hidden"
+    this.modalOverlay.classList.add("show");
+    document.body.style.overflow = "hidden";
   }
 
   hideDeleteModal() {
-    this.modalOverlay.classList.remove("show")
-    this.pendingDeleteId = null
-    document.body.style.overflow = "auto"
+    this.modalOverlay.classList.remove("show");
+    this.pendingDeleteId = null;
+    document.body.style.overflow = "auto";
   }
 
   confirmDelete() {
     if (this.pendingDeleteId) {
-      this.deleteActivity(this.pendingDeleteId)
+      this.deleteActivity(this.pendingDeleteId);
     }
-    this.hideDeleteModal()
+    this.hideDeleteModal();
   }
 
   showClearAllModal() {
-    this.clearAllModalOverlay.classList.add("show")
-    document.body.style.overflow = "hidden"
+    this.clearAllModalOverlay.classList.add("show");
+    document.body.style.overflow = "hidden";
   }
 
   hideClearAllModal() {
-    this.clearAllModalOverlay.classList.remove("show")
-    document.body.style.overflow = "auto"
+    this.clearAllModalOverlay.classList.remove("show");
+    document.body.style.overflow = "auto";
   }
 
   confirmClearAll() {
-    this.generatedActivities = []
-    this.renderGeneratedActivities()
-    this.saveGeneratedActivities()
-    this.updateStatsDisplay()
-    this.hideClearAllModal()
+    this.generatedActivities = [];
+    this.renderGeneratedActivities();
+    this.saveGeneratedActivities();
+    this.updateStatsDisplay();
+    this.hideClearAllModal();
   }
 
   deleteActivity(activityId) {
-    this.generatedActivities = this.generatedActivities.filter((activity) => activity.id != activityId)
-    this.renderGeneratedActivities()
-    this.saveGeneratedActivities()
-    this.updateStatsDisplay()
+    this.generatedActivities = this.generatedActivities.filter(
+      (activity) => activity.id != activityId,
+    );
+    this.renderGeneratedActivities();
+    this.saveGeneratedActivities();
+    this.updateStatsDisplay();
   }
 
   clearAllActivities() {
-    this.showClearAllModal()
+    this.showClearAllModal();
   }
 
   addToGeneratedList(activity) {
@@ -471,21 +508,22 @@ class ActivityGenerator {
       ...activity,
       id: Date.now() + Math.random(),
       timestamp: new Date().toLocaleTimeString(),
-    }
+    };
 
-    this.generatedActivities.unshift(activityWithId)
-    this.renderGeneratedActivities()
-    this.saveGeneratedActivities()
+    this.generatedActivities.unshift(activityWithId);
+    this.renderGeneratedActivities();
+    this.saveGeneratedActivities();
   }
 
   renderGeneratedActivities() {
     if (this.generatedActivities.length === 0) {
-      this.activitiesList.innerHTML = '<p class="no-activities">Nessuna attività generata ancora</p>'
-      this.clearAllBtn.style.display = "none"
-      return
+      this.activitiesList.innerHTML =
+        '<p class="no-activities">Nessuna attività generata ancora</p>';
+      this.clearAllBtn.style.display = "none";
+      return;
     }
 
-    this.clearAllBtn.style.display = "block"
+    this.clearAllBtn.style.display = "block";
 
     this.activitiesList.innerHTML = this.generatedActivities
       .map(
@@ -510,45 +548,48 @@ class ActivityGenerator {
       </div>
     `,
       )
-      .join("")
+      .join("");
   }
 
   saveGeneratedActivities() {
-    localStorage.setItem("generatedActivities", JSON.stringify(this.generatedActivities))
+    localStorage.setItem(
+      "generatedActivities",
+      JSON.stringify(this.generatedActivities),
+    );
   }
 
   loadGeneratedActivities() {
-    const saved = localStorage.getItem("generatedActivities")
+    const saved = localStorage.getItem("generatedActivities");
     if (saved) {
-      this.generatedActivities = JSON.parse(saved)
-      this.renderGeneratedActivities()
+      this.generatedActivities = JSON.parse(saved);
+      this.renderGeneratedActivities();
     }
   }
 
   saveStats() {
-    localStorage.setItem("activityGeneratorStats", JSON.stringify(this.stats))
+    localStorage.setItem("activityGeneratorStats", JSON.stringify(this.stats));
   }
 
   loadStats() {
-    const savedStats = localStorage.getItem("activityGeneratorStats")
+    const savedStats = localStorage.getItem("activityGeneratorStats");
     if (savedStats) {
-      this.stats = JSON.parse(savedStats)
+      this.stats = JSON.parse(savedStats);
     }
   }
 }
 
-let activityGenerator
+let activityGenerator;
 
 // Inizializza l'app quando la pagina è caricata
 document.addEventListener("DOMContentLoaded", () => {
-  activityGenerator = new ActivityGenerator()
-})
+  activityGenerator = new ActivityGenerator();
+});
 
 // Aggiungi alcuni effetti visivi extra
 document.addEventListener("DOMContentLoaded", () => {
   // Effetto particelle di sfondo
   const createParticle = () => {
-    const particle = document.createElement("div")
+    const particle = document.createElement("div");
     particle.style.cssText = `
             position: fixed;
             width: 4px;
@@ -560,20 +601,20 @@ document.addEventListener("DOMContentLoaded", () => {
             left: ${Math.random() * 100}vw;
             top: 100vh;
             animation: float ${3 + Math.random() * 4}s linear forwards;
-        `
+        `;
 
-    document.body.appendChild(particle)
+    document.body.appendChild(particle);
 
     setTimeout(() => {
-      particle.remove()
-    }, 7000)
-  }
+      particle.remove();
+    }, 7000);
+  };
 
   // Crea particelle ogni tanto
-  setInterval(createParticle, 2000)
+  setInterval(createParticle, 2000);
 
   // Aggiungi CSS per l'animazione delle particelle
-  const style = document.createElement("style")
+  const style = document.createElement("style");
   style.textContent = `
         @keyframes float {
             to {
@@ -581,6 +622,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 opacity: 0;
             }
         }
-    `
-  document.head.appendChild(style)
-})
+    `;
+  document.head.appendChild(style);
+});
