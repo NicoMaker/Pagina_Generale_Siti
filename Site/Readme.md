@@ -8,7 +8,7 @@
 - **[Borsa](Borsa/Readme.md)** [5 Progetti]
 - **[Calcio](Calcio/Readme.md)** [2 Progetti]
 - **[Calendario](Calendario/Readme.md)** [4 Progetti]
-- **[Giochi](Giochi/Readme.md)** [22 Progetti]
+- **[Giochi](Giochi/Readme.md)** [23 Progetti]
 - **[Info Paesi / Stati](Info_Paesi_Stati/Readme.md)** [4 Progetti]
 - **[Matematica](Math/Readme.md)** [26 Progetti]
 - **[Natale](Natale/Readme.md)** [3 Progetti]
