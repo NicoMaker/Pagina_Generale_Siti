@@ -217,7 +217,7 @@ class WheelOfFortune {
   }
 
   init() {
-    this.loadFromStorage();
+    this.loadFromLocalStorage();
     this.bindEvents();
     this.updateWheel();
     this.updateNamesList();
@@ -250,26 +250,27 @@ class WheelOfFortune {
       ?.addEventListener("click", () => this.exportJson());
   }
 
-  saveToStorage() {
+  saveToLocalStorage() {
     try {
       const data = JSON.stringify(this.names);
-      window.wheelData = data;
+      localStorage.setItem("wheelNames", data);
     } catch (e) {
-      console.error("Errore nel salvataggio:", e);
+      console.error("Errore nel salvataggio in local storage:", e);
       notifications.show("Errore nel salvataggio dei dati", "error");
     }
   }
 
-  loadFromStorage() {
+  loadFromLocalStorage() {
     try {
-      if (window.wheelData) {
-        const parsed = JSON.parse(window.wheelData);
+      const data = localStorage.getItem("wheelNames");
+      if (data) {
+        const parsed = JSON.parse(data);
         if (Array.isArray(parsed)) {
           this.names = parsed.slice(0, 100);
         }
       }
     } catch (e) {
-      console.error("Errore nel caricamento:", e);
+      console.error("Errore nel caricamento da local storage:", e);
       notifications.show("Errore nel caricamento dei dati salvati", "error");
     }
   }
@@ -306,7 +307,7 @@ class WheelOfFortune {
     input.value = "";
     this.updateWheel();
     this.updateNamesList();
-    this.saveToStorage();
+    this.saveToLocalStorage();
     this.hideResult();
 
     notifications.show(`"${name}" aggiunto con successo!`, "success");
@@ -343,7 +344,7 @@ class WheelOfFortune {
     this.names[index] = newName;
     this.updateWheel();
     this.updateNamesList();
-    this.saveToStorage();
+    this.saveToLocalStorage();
     this.hideResult();
 
     notifications.show(`Nome modificato in "${newName}"`, "success");
@@ -368,7 +369,7 @@ class WheelOfFortune {
       this.names.splice(index, 1);
       this.updateWheel();
       this.updateNamesList();
-      this.saveToStorage();
+      this.saveToLocalStorage();
       this.hideResult();
 
       notifications.show(`"${name}" eliminato dalla lista`, "success");
@@ -397,7 +398,7 @@ class WheelOfFortune {
     if (confirmed) {
       const count = this.names.length;
       this.names = [];
-      window.wheelData = null;
+      localStorage.removeItem("wheelNames");
       this.updateWheel();
       this.updateNamesList();
       this.hideResult();
@@ -647,7 +648,7 @@ class WheelOfFortune {
         this.names = [...this.names, ...namesToAdd];
         this.updateWheel();
         this.updateNamesList();
-        this.saveToStorage();
+        this.saveToLocalStorage();
         this.hideResult();
 
         let message = `${namesToAdd.length} nomi caricati con successo!`;
