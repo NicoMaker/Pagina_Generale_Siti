@@ -445,7 +445,7 @@ class DualWheelOfFortune {
         wheel1: this.wheel1Names,
         wheel2: this.wheel2Names,
       });
-      window.dualWheelData = data;
+      localStorage.setItem("dualWheelData", data);
     } catch (e) {
       console.error("Errore nel salvataggio:", e);
       notificationSystem.show("Errore nel salvataggio dei dati", "error");
@@ -454,8 +454,9 @@ class DualWheelOfFortune {
 
   loadFromStorage() {
     try {
-      if (window.dualWheelData) {
-        const parsed = JSON.parse(window.dualWheelData);
+      const data = localStorage.getItem("dualWheelData");
+      if (data) {
+        const parsed = JSON.parse(data);
         if (parsed.wheel1 && Array.isArray(parsed.wheel1)) {
           this.wheel1Names = parsed.wheel1.slice(0, 100);
         }
