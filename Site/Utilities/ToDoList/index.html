@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lista delle cose da fare - Moderna</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="script.js" defer></script>
+        <link
+      rel="icon"
+      href="https://th.bing.com/th/id/R.3bfe793664036fc4a9d32be9651b25c6?rik=Y7usFtvo%2b28iuQ&pid=ImgRaw&r=0"
+      type="image/jpg"
+    />
+  </head>
+  <body data-theme="light">
+    <div id="app">
+      <div class="header">
+        <h1>
+          <span class="app-icon">✨</span>
+          Le mie attività
+        </h1>
+        <button id="theme-toggle">
+          <span class="theme-icon">🌙</span>
+          <span class="theme-text">Scura</span>
+        </button>
+      </div>
+
+      <div class="input-section">
+        <input
+          type="text"
+          id="new-todo"
+          placeholder="Cosa vuoi fare oggi? 🎯"
+        />
+        <button id="add-todo">
+          <span class="add-icon">➕</span>
+          Aggiungi
+        </button>
+      </div>
+
+      <div class="stats" id="stats" style="display: none">
+        <div class="stat-item">
+          <span class="stat-number" id="total-count">0</span>
+          <span class="stat-label">Totali</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number" id="completed-count">0</span>
+          <span class="stat-label">Completate</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number" id="pending-count">0</span>
+          <span class="stat-label">Da fare</span>
+        </div>
+      </div>
+
+      <div class="filters-bar">
+        <button class="filter-btn active" data-filter="all">Tutte</button>
+        <button class="filter-btn" data-filter="pending">Da fare</button>
+        <button class="filter-btn" data-filter="completed">Completate</button>
+      </div>
+
+      <ul id="todo-list"></ul>
+
+      <div id="empty-state" class="empty-state">
+        <div class="empty-icon">📝</div>
+        <div class="empty-title">Nessuna attività</div>
+        <div class="empty-subtitle">
+          Aggiungi la tua prima attività per iniziare! 🚀
+        </div>
+      </div>
+      
+      <div class="actions-bar">
+        <button class="action-btn" id="clear-completed">
+          <span class="action-icon">🗑️</span>
+          Elimina completate
+        </button>
+        <button class="action-btn" id="clear-all">
+          <span class="action-icon">💥</span>
+          Elimina tutto
+        </button>
+      </div>
+    </div>
+  </body>
+</html>
