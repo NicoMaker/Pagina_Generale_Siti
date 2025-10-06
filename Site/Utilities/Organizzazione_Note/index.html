@@ -9,7 +9,7 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
     />
     <link rel="stylesheet" href="styles.css" />
-  </head>
+    </head>
   <body>
     <div class="app-container">
       <header class="app-header">
@@ -20,6 +20,7 @@
           <button id="theme-toggle" class="theme-btn">🌙</button>
         </div>
         <div class="search-container">
+          <span class="search-icon">🔍</span>
           <input
             type="text"
             id="search-input"
@@ -142,57 +143,23 @@
               type="text"
               id="note-title"
               placeholder="Titolo..."
-              style="
-                width: 100%;
-                padding: 0.75rem;
-                margin-bottom: 1rem;
-                border: 1px solid var(--border-light);
-                border-radius: var(--radius-md);
-                background: var(--bg-secondary);
-                color: var(--text-primary);
-              "
             />
             <textarea
               id="note-content"
               placeholder="Contenuto..."
-              style="
-                width: 100%;
-                padding: 0.75rem;
-                margin-bottom: 1rem;
-                border: 1px solid var(--border-light);
-                border-radius: var(--radius-md);
-                background: var(--bg-secondary);
-                color: var(--text-primary);
-                min-height: 120px;
-              "
             ></textarea>
             <input
               type="text"
               id="note-tags"
               placeholder="Tag (separati da virgola)..."
-              style="
-                width: 100%;
-                padding: 0.75rem;
-                margin-bottom: 1rem;
-                border: 1px solid var(--border-light);
-                border-radius: var(--radius-md);
-                background: var(--bg-secondary);
-                color: var(--text-primary);
-              "
             />
-            <label
-              style="
-                display: flex;
-                align-items: center;
-                gap: 0.5rem;
-                margin-bottom: 1rem;
-              "
-            >
+            
+            <label class="modal-check-label">
               <input type="checkbox" id="is-task" />
               <span>È un impegno da completare</span>
             </label>
             <div id="task-completed-container" class="hidden">
-              <label style="display: flex; align-items: center; gap: 0.5rem">
+              <label class="modal-check-label">
                 <input type="checkbox" id="is-completed" />
                 <span>Impegno completato</span>
               </label>
@@ -216,7 +183,7 @@
             <button
               id="close-modal"
               class="primary-button"
-              style="background: var(--bg-tertiary); color: var(--text-primary)"
+              style="background: var(--action-color)"
             >
               Annulla
             </button>
@@ -233,7 +200,7 @@
             <button
               id="cancel-delete"
               class="primary-button"
-              style="background: var(--bg-tertiary); color: var(--text-primary)"
+              style="background: var(--action-color)"
             >
               Annulla
             </button>

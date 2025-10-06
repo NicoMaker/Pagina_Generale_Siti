@@ -12,12 +12,27 @@ function loadNotes() {
 
 const saveNotes = () => localStorage.setItem("notes", JSON.stringify(notes));
 
-function showToast(message) {
+function showToast(message, type = 'info') {
   const toast = document.getElementById("toast");
-  document.getElementById("toast-message").textContent = message;
+  const toastMessage = document.getElementById("toast-message");
+  
+  let icon = 'ℹ️';
+  if (type === 'success') icon = '✅';
+  if (type === 'error') icon = '❌';
+
+  toastMessage.innerHTML = `${icon} ${message}`;
+  
   toast.classList.add("show");
+  // Assicurati che il messaggio non venga visualizzato in modalità desktop
+  if(window.innerWidth > 600) {
+      toast.style.right = '2rem';
+  } else {
+      toast.style.right = '1rem';
+  }
+
   setTimeout(() => toast.classList.remove("show"), 3000);
 }
+
 
 // Funzione per scaricare il file (usata per l'Esportazione)
 function downloadFile(content, filename, contentType) {
@@ -35,7 +50,7 @@ function downloadFile(content, filename, contentType) {
 document.getElementById("export-json-btn").addEventListener("click", () => {
   const data = JSON.stringify(notes, null, 2);
   downloadFile(data, "note_organizer.json", "application/json");
-  showToast("Note esportate in JSON!");
+  showToast("Note esportate in JSON!", 'success');
 });
 
 // Esporta in TXT
@@ -59,7 +74,7 @@ document.getElementById("export-txt-btn").addEventListener("click", () => {
     )
     .join("\n\n");
   downloadFile(data, "note_organizer.txt", "text/plain");
-  showToast("Note esportate in TXT!");
+  showToast("Note esportate in TXT!", 'success');
 });
 
 // Importa da file
@@ -83,9 +98,9 @@ document
             Array.isArray(parsedData) &&
             parsedData.every((n) => n.id && n.title)
           ) {
-            // Normalizza i dati e assicurati che ogni nota abbia un ID univoco (anche se non strettamente necessario in questo caso, è una buona pratica)
+            // Normalizza i dati e assicurati che ogni nota abbia un ID univoco
             importedNotes = parsedData.map((note) => ({
-              id: note.id || Date.now().toString(), // Assicura un ID
+              id: note.id || Date.now().toString(), 
               title: note.title || "Nota Senza Titolo",
               content: note.content || "",
               tags: Array.isArray(note.tags) ? note.tags : [],
@@ -121,11 +136,11 @@ document
         saveNotes();
         renderNotes();
         renderTags();
-        showToast(`${importedNotes.length} note importate con successo!`);
+        showToast(`${importedNotes.length} note importate con successo!`, 'success');
         // Resetta l'input file per poter caricare lo stesso file di nuovo
         event.target.value = "";
       } catch (error) {
-        showToast(`Errore durante l'importazione: ${error.message}`);
+        showToast(`Errore durante l'importazione: ${error.message}`, 'error');
         // Resetta l'input file
         event.target.value = "";
       }
@@ -230,7 +245,7 @@ function executeDelete() {
   saveNotes();
   renderNotes();
   renderTags();
-  showToast(`${count} note eliminate`);
+  showToast(`${count} note eliminate`, 'success');
 }
 
 function closeConfirmModal() {
@@ -277,9 +292,11 @@ document.getElementById("save-note").addEventListener("click", () => {
   const completed = document.getElementById("is-completed").checked;
 
   if (!title) {
-    showToast("Inserisci un titolo");
+    showToast("Inserisci un titolo", 'error');
     return;
   }
+
+  const isNew = !currentNoteId;
 
   const note = {
     id: currentNoteId || Date.now().toString(),
@@ -304,7 +321,7 @@ document.getElementById("save-note").addEventListener("click", () => {
   renderTags();
   document.getElementById("note-modal").classList.remove("show");
   document.getElementById("modal-overlay").classList.remove("show");
-  showToast("Nota salvata!");
+  showToast(`Nota ${isNew ? 'creata' : 'aggiornata'}!`, 'success');
 });
 
 window.editNote = (id) => {
@@ -371,7 +388,7 @@ function updateSummary(filteredNotes) {
 
   // Applichiamo il grassetto come richiesto
   summaryText.innerHTML = `
-            Hai completato **${completedTasks} di ${totalTasks}** attività filtrate.
+            Hai completato <strong>${completedTasks} </strong> di <strong>${totalTasks}</strong> attività filtrate.
             <span style="font-weight: 800; color: var(--primary-color);">(${percentage}%)</span>
         `;
 
@@ -406,11 +423,13 @@ function renderNotes() {
         <div class="note-card ${
           note.completed ? "completed" : ""
         }" onclick="editNote('${note.id}')">
-          <h3 style="font-size: 1.25rem; margin-bottom: 0.75rem; ${
+          <h3 style="font-size: 1.25rem; margin-bottom: 0.75rem;">
+             <strong style="${
             note.completed
               ? "text-decoration: line-through; color: var(--text-secondary);"
-              : ""
-          }">${note.title}</h3>
+              : "color: var(--text-primary);"
+          }">${note.title}</strong>
+          </h3>
           <p style="color: var(--text-secondary); margin-bottom: 1rem;">${note.content.substring(
             0,
             150
@@ -419,13 +438,13 @@ function renderNotes() {
             ${note.tags
               .map(
                 (tag) =>
-                  `<span style="background: var(--bg-secondary); padding: 0.25rem 0.75rem; border-radius: var(--radius-sm); font-size: 0.875rem; color: var(--text-primary);">#${tag}</span>`
+                  `<span style="background: var(--bg-tertiary); padding: 0.25rem 0.75rem; border-radius: var(--radius-sm); font-size: 0.875rem; color: var(--text-primary); font-weight: 500;">#${tag}</span>`
               )
               .join("")}
           </div>
           ${
             note.isTask
-              ? `<div style="margin-top: 1rem; font-weight: 700; color: ${
+              ? `<div style="margin-top: auto; padding-top: 0.5rem; border-top: 1px solid var(--border-light); font-weight: 700; color: ${
                   note.completed ? "var(--success-color)" : "#f59e0b"
                 };">${
                   note.completed ? "✅ Completato" : "⏳ Da completare"
@@ -461,9 +480,6 @@ function renderTags() {
           <div 
             class="tag-item ${activeClass}" 
             onclick="toggleTag('${tag}')"
-            style="background: ${
-              isActive ? "var(--primary-gradient)" : "var(--bg-secondary)"
-            };"
           >
             <span>🏷️ ${tag}</span>
             <span class="tag-count">${count}</span>
@@ -488,6 +504,7 @@ window.toggleTag = (tag) => {
 
 document.getElementById("theme-toggle").addEventListener("click", () => {
   document.body.classList.toggle("dark-theme");
+  showToast('Tema modificato', 'info');
 });
 
 const deleteDropdownBtn = document.getElementById("delete-dropdown-btn");
