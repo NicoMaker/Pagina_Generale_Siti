@@ -10,9 +10,7 @@ function loadNotes() {
   if (saved) notes = JSON.parse(saved);
 }
 
-function saveNotes() {
-  localStorage.setItem("notes", JSON.stringify(notes));
-}
+const saveNotes = () => localStorage.setItem("notes", JSON.stringify(notes));
 
 function showToast(message) {
   const toast = document.getElementById("toast");
