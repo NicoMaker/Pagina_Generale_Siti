@@ -1,895 +1,529 @@
-// Elementi DOM
-const noteModal = document.getElementById("note-modal");
-const confirmModal = document.getElementById("confirm-modal");
-const modalOverlay = document.getElementById("modal-overlay");
-const addNoteBtn = document.getElementById("add-note-btn");
-const closeModalBtn = document.getElementById("close-modal");
-const closeConfirmModalBtn = document.getElementById("close-confirm-modal");
-const saveNoteBtn = document.getElementById("save-note");
-const deleteNoteBtn = document.getElementById("delete-note");
-const confirmDeleteBtn = document.getElementById("confirm-delete");
-const cancelDeleteBtn = document.getElementById("cancel-delete");
-const modalTitle = document.getElementById("modal-title");
-const noteTitleInput = document.getElementById("note-title");
-const noteContentInput = document.getElementById("note-content");
-const noteTagsInput = document.getElementById("note-tags");
-const isTaskCheckbox = document.getElementById("is-task");
-const isCompletedCheckbox = document.getElementById("is-completed");
-const taskCompletedContainer = document.getElementById(
-  "task-completed-container",
-);
-const notesGrid = document.getElementById("notes-grid");
-const tagList = document.getElementById("tag-list");
-const searchInput = document.getElementById("search-input");
-const activeFilters = document.getElementById("active-filters");
-const clearFiltersBtn = document.getElementById("clear-filters");
-const themeToggleBtn = document.getElementById("theme-toggle");
-const completedCountEl = document.getElementById("completed-count");
-const totalCountEl = document.getElementById("total-count");
-const progressFill = document.getElementById("progress-fill");
-const completionEmoji = document.getElementById("completion-emoji");
-const toast = document.getElementById("toast");
-const toastMessage = document.getElementById("toast-message");
-const toastIcon = document.getElementById("toast-icon");
-const deleteAllBtn = document.getElementById("delete-all-btn");
-
-// Stato dell'applicazione
 let notes = [];
 let currentNoteId = null;
 let activeTagFilters = [];
-let searchQuery = "";
+let deleteAction = null;
 
-// Inizializzazione
-document.addEventListener("DOMContentLoaded", () => {
-  loadNotes();
-  renderNotes();
-  renderTags();
-  updateTaskProgress();
-  initTheme();
-  setupEventListeners();
-});
+// --- UTILITY FUNCTIONS ---
 
-// Setup event listeners
-function setupEventListeners() {
-  // Modal events
-  addNoteBtn.addEventListener("click", openAddNoteModal);
-  closeModalBtn.addEventListener("click", closeModal);
-  closeConfirmModalBtn.addEventListener("click", closeConfirmModal);
-  saveNoteBtn.addEventListener("click", saveNote);
-  deleteNoteBtn.addEventListener("click", () =>
-    openDeleteConfirmation(currentNoteId),
-  );
-  confirmDeleteBtn.addEventListener("click", handleDeleteConfirmation);
-  cancelDeleteBtn.addEventListener("click", closeConfirmModal);
-
-  // Search and filters
-  searchInput.addEventListener("input", handleSearch);
-  clearFiltersBtn.addEventListener("click", clearFilters);
-
-  // Theme toggle
-  themeToggleBtn.addEventListener("click", toggleTheme);
-
-  // Task checkbox
-  isTaskCheckbox.addEventListener("change", toggleTaskCompletedOption);
-
-  // Delete all
-  deleteAllBtn.addEventListener("click", () => openDeleteConfirmation(null));
-
-  // Import/Export
-  document.getElementById("import-btn").addEventListener("click", () => {
-    document.getElementById("import-file").click();
-  });
-  document
-    .getElementById("import-file")
-    .addEventListener("change", handleImport);
-  document
-    .getElementById("export-json-btn")
-    .addEventListener("click", exportJSON);
-  document
-    .getElementById("export-txt-btn")
-    .addEventListener("click", exportTXT);
-
-  // Modal overlay
-  modalOverlay.addEventListener("click", (e) => {
-    if (e.target === modalOverlay) {
-      if (noteModal.classList.contains("show")) {
-        closeModal();
-      } else if (confirmModal.classList.contains("show")) {
-        closeConfirmModal();
-      }
-    }
-  });
-
-  // Keyboard shortcuts
-  document.addEventListener("keydown", handleKeyboardShortcuts);
-}
-
-// Gestione del tema
-function initTheme() {
-  const isDarkMode = localStorage.getItem("darkMode") === "true";
-  if (isDarkMode) {
-    document.body.classList.add("dark-theme");
-    themeToggleBtn.innerHTML = '<span class="icon">☀️</span>';
-  } else {
-    themeToggleBtn.innerHTML = '<span class="icon">🌙</span>';
-  }
-}
-
-function toggleTheme() {
-  const isDarkMode = document.body.classList.toggle("dark-theme");
-  localStorage.setItem("darkMode", isDarkMode);
-
-  if (isDarkMode) {
-    themeToggleBtn.innerHTML = '<span class="icon">☀️</span>';
-    showToast("Tema scuro attivato", "success");
-  } else {
-    themeToggleBtn.innerHTML = '<span class="icon">🌙</span>';
-    showToast("Tema chiaro attivato", "success");
-  }
-}
-
-// Gestione del localStorage
 function loadNotes() {
-  const savedNotes = localStorage.getItem("notes");
-  if (savedNotes) {
-    try {
-      notes = JSON.parse(savedNotes);
-    } catch (error) {
-      console.error("Errore nel caricamento delle note:", error);
-      notes = [];
-    }
-  }
+  const saved = localStorage.getItem("notes");
+  if (saved) notes = JSON.parse(saved);
 }
 
 function saveNotes() {
-  try {
-    localStorage.setItem("notes", JSON.stringify(notes));
-  } catch (error) {
-    console.error("Errore nel salvataggio delle note:", error);
-    showToast("Errore nel salvataggio", "error");
-  }
+  localStorage.setItem("notes", JSON.stringify(notes));
 }
 
-// Gestione delle note
-function saveNote() {
-  const title = noteTitleInput.value.trim();
-  const content = noteContentInput.value.trim();
-  const tagsString = noteTagsInput.value.trim();
-  const isTask = isTaskCheckbox.checked;
-  const isCompleted = isCompletedCheckbox.checked;
+function showToast(message) {
+  const toast = document.getElementById("toast");
+  document.getElementById("toast-message").textContent = message;
+  toast.classList.add("show");
+  setTimeout(() => toast.classList.remove("show"), 3000);
+}
+
+// Funzione per scaricare il file (usata per l'Esportazione)
+function downloadFile(content, filename, contentType) {
+  const a = document.createElement("a");
+  const file = new Blob([content], { type: contentType });
+  a.href = URL.createObjectURL(file);
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+// --- IMPORT/EXPORT LOGIC ---
+
+// Esporta in JSON
+document.getElementById("export-json-btn").addEventListener("click", () => {
+  const data = JSON.stringify(notes, null, 2);
+  downloadFile(data, "note_organizer.json", "application/json");
+  showToast("Note esportate in JSON!");
+});
+
+// Esporta in TXT
+document.getElementById("export-txt-btn").addEventListener("click", () => {
+  const data = notes
+    .map(
+      (note) =>
+        `--- Nota ID: ${note.id} ---\n` +
+        `Titolo: ${note.title}\n` +
+        `Contenuto: ${note.content}\n` +
+        `Tags: ${note.tags.join(", ")}\n` +
+        `Task: ${
+          note.isTask
+            ? note.completed
+              ? "Completato ✅"
+              : "Da completare ⏳"
+            : "No"
+        }\n` +
+        `Creato il: ${new Date(note.createdAt).toLocaleString()}\n` +
+        `Aggiornato il: ${new Date(note.updatedAt).toLocaleString()}\n`
+    )
+    .join("\n\n");
+  downloadFile(data, "note_organizer.txt", "text/plain");
+  showToast("Note esportate in TXT!");
+});
+
+// Importa da file
+document
+  .getElementById("import-file-input")
+  .addEventListener("change", (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        let importedNotes = [];
+        const content = e.target.result;
+
+        if (file.name.endsWith(".json")) {
+          // Importa da JSON
+          const parsedData = JSON.parse(content);
+          // Assicurati che sia un array di note e che le note abbiano le proprietà minime
+          if (
+            Array.isArray(parsedData) &&
+            parsedData.every((n) => n.id && n.title)
+          ) {
+            // Normalizza i dati e assicurati che ogni nota abbia un ID univoco (anche se non strettamente necessario in questo caso, è una buona pratica)
+            importedNotes = parsedData.map((note) => ({
+              id: note.id || Date.now().toString(), // Assicura un ID
+              title: note.title || "Nota Senza Titolo",
+              content: note.content || "",
+              tags: Array.isArray(note.tags) ? note.tags : [],
+              isTask: note.isTask === true,
+              completed: note.completed === true,
+              createdAt: note.createdAt || new Date().toISOString(),
+              updatedAt: note.updatedAt || new Date().toISOString(),
+            }));
+          } else {
+            throw new Error("Formato JSON non valido per un array di note.");
+          }
+        } else if (file.name.endsWith(".txt")) {
+          // Importa da TXT (aggiunge un'unica nota con il contenuto)
+          const newNote = {
+            id: Date.now().toString(),
+            title: `Importata da file TXT: ${file.name}`,
+            content: content,
+            tags: ["import", "txt"],
+            isTask: false,
+            completed: false,
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+          };
+          importedNotes = [newNote];
+        } else {
+          throw new Error(
+            "Tipo di file non supportato (accetto solo .json o .txt)."
+          );
+        }
+
+        // Aggiunge le note importate all'inizio
+        notes.unshift(...importedNotes);
+        saveNotes();
+        renderNotes();
+        renderTags();
+        showToast(`${importedNotes.length} note importate con successo!`);
+        // Resetta l'input file per poter caricare lo stesso file di nuovo
+        event.target.value = "";
+      } catch (error) {
+        showToast(`Errore durante l'importazione: ${error.message}`);
+        // Resetta l'input file
+        event.target.value = "";
+      }
+    };
+
+    reader.readAsText(file);
+  });
+
+// --- DELETE LOGIC ---
+
+document.getElementById("delete-note").addEventListener("click", () => {
+  document.getElementById("note-modal").classList.remove("show");
+
+  deleteAction = "delete-single";
+  const confirmMsg = document.getElementById("confirm-message");
+  const noteToDelete = notes.find((n) => n.id === currentNoteId);
+
+  confirmMsg.textContent = `Sei sicuro di voler eliminare la nota: "${noteToDelete.title}"?`;
+
+  document.getElementById("confirm-modal").classList.add("show");
+  document.getElementById("modal-overlay").classList.add("show");
+});
+
+// Gestione del dropdown Opzioni Elimina
+document
+  .querySelectorAll(".dropdown-menu:not(#data-menu) .dropdown-item")
+  .forEach((item) => {
+    item.addEventListener("click", () => {
+      deleteAction = item.dataset.action;
+      openDeleteConfirmation();
+      document.getElementById("delete-menu").classList.remove("show");
+    });
+  });
+
+function openDeleteConfirmation() {
+  const confirmMsg = document.getElementById("confirm-message");
+  const filteredNotes = filterNotes();
+
+  switch (deleteAction) {
+    case "delete-all":
+      confirmMsg.textContent = `Vuoi eliminare TUTTE le ${notes.length} note?`;
+      break;
+    case "delete-all-completed":
+      const allCompleted = notes.filter((n) => n.completed);
+      confirmMsg.textContent = `Vuoi eliminare tutte le ${allCompleted.length} note completate?`;
+      break;
+    case "delete-filtered":
+      confirmMsg.textContent = `Vuoi eliminare le ${filteredNotes.length} note filtrate?`;
+      break;
+    case "delete-filtered-completed":
+      const filteredCompleted = filteredNotes.filter((n) => n.completed);
+      confirmMsg.textContent = `Vuoi eliminare le ${filteredCompleted.length} note completate tra quelle filtrate?`;
+      break;
+  }
+
+  document.getElementById("confirm-modal").classList.add("show");
+  document.getElementById("modal-overlay").classList.add("show");
+}
+
+document.getElementById("confirm-delete").addEventListener("click", () => {
+  executeDelete();
+  closeConfirmModal();
+});
+
+document
+  .getElementById("cancel-delete")
+  .addEventListener("click", closeConfirmModal);
+
+function executeDelete() {
+  const filteredNotes = filterNotes();
+  let count = 0;
+
+  switch (deleteAction) {
+    case "delete-all":
+      count = notes.length;
+      notes = [];
+      break;
+    case "delete-all-completed":
+      const beforeCount = notes.length;
+      notes = notes.filter((n) => !n.completed);
+      count = beforeCount - notes.length;
+      break;
+    case "delete-filtered":
+      const filteredIds = new Set(filteredNotes.map((n) => n.id));
+      count = filteredIds.size;
+      notes = notes.filter((n) => !filteredIds.has(n.id));
+      break;
+    case "delete-filtered-completed":
+      const completedFilteredIds = new Set(
+        filteredNotes.filter((n) => n.completed).map((n) => n.id)
+      );
+      count = completedFilteredIds.size;
+      notes = notes.filter((n) => !completedFilteredIds.has(n.id));
+      break;
+    case "delete-single":
+      notes = notes.filter((n) => n.id !== currentNoteId);
+      count = 1;
+      currentNoteId = null;
+      break;
+  }
+
+  saveNotes();
+  renderNotes();
+  renderTags();
+  showToast(`${count} note eliminate`);
+}
+
+function closeConfirmModal() {
+  document.getElementById("confirm-modal").classList.remove("show");
+  document.getElementById("modal-overlay").classList.remove("show");
+}
+
+// --- NOTE MANAGEMENT (CREATE/EDIT) ---
+
+document.getElementById("add-note-btn").addEventListener("click", () => {
+  currentNoteId = null;
+  document.getElementById("modal-title").textContent = "✏️ Aggiungi nota";
+  document.getElementById("note-title").value = "";
+  document.getElementById("note-content").value = "";
+  document.getElementById("note-tags").value = "";
+  document.getElementById("is-task").checked = false;
+  document.getElementById("is-completed").checked = false;
+  document.getElementById("task-completed-container").classList.add("hidden");
+  document.getElementById("delete-note").classList.add("hidden");
+  document.getElementById("note-modal").classList.add("show");
+  document.getElementById("modal-overlay").classList.add("show");
+});
+
+document.getElementById("close-modal").addEventListener("click", () => {
+  document.getElementById("note-modal").classList.remove("show");
+  document.getElementById("modal-overlay").classList.remove("show");
+});
+
+document.getElementById("is-task").addEventListener("change", (e) => {
+  document
+    .getElementById("task-completed-container")
+    .classList.toggle("hidden", !e.target.checked);
+});
+
+document.getElementById("save-note").addEventListener("click", () => {
+  const title = document.getElementById("note-title").value.trim();
+  const content = document.getElementById("note-content").value.trim();
+  const tags = document
+    .getElementById("note-tags")
+    .value.split(",")
+    .map((t) => t.trim())
+    .filter(Boolean);
+  const isTask = document.getElementById("is-task").checked;
+  const completed = document.getElementById("is-completed").checked;
 
   if (!title) {
-    showToast("Inserisci un titolo per la nota", "error");
-    noteTitleInput.focus();
+    showToast("Inserisci un titolo");
     return;
   }
 
-  const tags = tagsString
-    ? tagsString
-        .split(",")
-        .map((tag) => tag.trim())
-        .filter((tag) => tag)
-    : [];
-
-  if (currentNoteId) {
-    updateNote(currentNoteId, {
-      title,
-      content,
-      tags,
-      isTask,
-      completed: isTask ? isCompleted : false,
-    });
-    showToast("Nota aggiornata con successo! ✨", "success");
-  } else {
-    addNote({
-      title,
-      content,
-      tags,
-      isTask,
-      completed: isTask ? isCompleted : false,
-    });
-    showToast("Nota aggiunta con successo! 🎉", "success");
-  }
-
-  closeModal();
-}
-
-function addNote(note) {
-  const now = new Date();
-  const newNote = {
-    id: Date.now().toString(),
-    title: note.title,
-    content: note.content,
-    tags: note.tags,
-    isTask: note.isTask,
-    completed: note.completed || false,
-    createdAt: now.toISOString(),
-    updatedAt: now.toISOString(),
+  const note = {
+    id: currentNoteId || Date.now().toString(),
+    title,
+    content,
+    tags,
+    isTask,
+    completed: isTask ? completed : false,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
   };
 
-  notes.unshift(newNote);
+  if (currentNoteId) {
+    const index = notes.findIndex((n) => n.id === currentNoteId);
+    notes[index] = note;
+  } else {
+    notes.unshift(note);
+  }
+
   saveNotes();
   renderNotes();
   renderTags();
-  updateTaskProgress();
+  document.getElementById("note-modal").classList.remove("show");
+  document.getElementById("modal-overlay").classList.remove("show");
+  showToast("Nota salvata!");
+});
+
+window.editNote = (id) => {
+  const note = notes.find((n) => n.id === id);
+  if (!note) return;
+
+  currentNoteId = id;
+  document.getElementById("modal-title").textContent = "✏️ Modifica nota";
+  document.getElementById("note-title").value = note.title;
+  document.getElementById("note-content").value = note.content;
+  document.getElementById("note-tags").value = note.tags.join(", ");
+  document.getElementById("is-task").checked = note.isTask;
+  document.getElementById("is-completed").checked = note.completed;
+  document
+    .getElementById("task-completed-container")
+    .classList.toggle("hidden", !note.isTask);
+  document.getElementById("delete-note").classList.remove("hidden");
+  document.getElementById("note-modal").classList.add("show");
+  document.getElementById("modal-overlay").classList.add("show");
+};
+
+// --- RENDERING & FILTERING ---
+
+document.getElementById("search-input").addEventListener("input", renderNotes);
+
+function filterNotes() {
+  const query = document.getElementById("search-input").value.toLowerCase();
+  return notes.filter((note) => {
+    const matchesSearch =
+      !query ||
+      note.title.toLowerCase().includes(query) ||
+      note.content.toLowerCase().includes(query) ||
+      note.tags.some((t) => t.toLowerCase().includes(query));
+
+    const matchesTags =
+      activeTagFilters.length === 0 ||
+      activeTagFilters.every((tag) => note.tags.includes(tag));
+
+    return matchesSearch && matchesTags;
+  });
 }
 
-function updateNote(id, updatedNote) {
-  const index = notes.findIndex((note) => note.id === id);
-  if (index !== -1) {
-    notes[index] = {
-      ...notes[index],
-      ...updatedNote,
-      updatedAt: new Date().toISOString(),
-    };
-    saveNotes();
-    renderNotes();
-    renderTags();
-    updateTaskProgress();
+function updateSummary(filteredNotes) {
+  const summaryCard = document.getElementById("notes-summary-card");
+  const summaryText = document.getElementById("summary-text");
+  const progressFill = document.getElementById("progress-fill");
+  const progressEmoji = document.getElementById("progress-emoji");
+
+  // FILTRIAMO SOLO LE NOTE CHE SONO ATTIVITÀ (isTask: true)
+  const taskNotes = filteredNotes.filter((n) => n.isTask);
+
+  const totalTasks = taskNotes.length;
+  const completedTasks = taskNotes.filter((n) => n.completed).length;
+
+  if (totalTasks === 0) {
+    summaryCard.classList.add("hidden");
+    return;
   }
+
+  summaryCard.classList.remove("hidden");
+
+  const percentage =
+    totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+
+  // Applichiamo il grassetto come richiesto
+  summaryText.innerHTML = `
+            Hai completato **${completedTasks} di ${totalTasks}** attività filtrate.
+            <span style="font-weight: 800; color: var(--primary-color);">(${percentage}%)</span>
+        `;
+
+  progressFill.style.width = `${percentage}%`;
+
+  let emoji = "";
+  if (percentage === 0) emoji = "😔";
+  else if (percentage < 30) emoji = "🤔";
+  else if (percentage < 70) emoji = "💪";
+  else if (percentage < 100) emoji = "🥳";
+  else emoji = "🚀";
+
+  progressEmoji.textContent = emoji;
 }
 
-function deleteNote(id) {
-  const noteToDelete = notes.find((note) => note.id === id);
-  notes = notes.filter((note) => note.id !== id);
-  saveNotes();
-  renderNotes();
-  renderTags();
-  updateTaskProgress();
+function renderNotes() {
+  const grid = document.getElementById("notes-grid");
+  const filtered = filterNotes();
 
-  if (noteToDelete) {
-    showToast(`"${noteToDelete.title}" eliminata`, "success");
+  // Aggiorna il riepilogo solo con le attività
+  updateSummary(filtered);
+
+  if (filtered.length === 0) {
+    grid.innerHTML =
+      '<div style="grid-column: 1/-1; text-align: center; padding: 3rem; color: var(--text-tertiary);">Nessuna nota trovata</div>';
+    return;
   }
+
+  grid.innerHTML = filtered
+    .map(
+      (note) => `
+        <div class="note-card ${
+          note.completed ? "completed" : ""
+        }" onclick="editNote('${note.id}')">
+          <h3 style="font-size: 1.25rem; margin-bottom: 0.75rem; ${
+            note.completed
+              ? "text-decoration: line-through; color: var(--text-secondary);"
+              : ""
+          }">${note.title}</h3>
+          <p style="color: var(--text-secondary); margin-bottom: 1rem;">${note.content.substring(
+            0,
+            150
+          )}${note.content.length > 150 ? "..." : ""}</p>
+          <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.75rem;">
+            ${note.tags
+              .map(
+                (tag) =>
+                  `<span style="background: var(--bg-secondary); padding: 0.25rem 0.75rem; border-radius: var(--radius-sm); font-size: 0.875rem; color: var(--text-primary);">#${tag}</span>`
+              )
+              .join("")}
+          </div>
+          ${
+            note.isTask
+              ? `<div style="margin-top: 1rem; font-weight: 700; color: ${
+                  note.completed ? "var(--success-color)" : "#f59e0b"
+                };">${
+                  note.completed ? "✅ Completato" : "⏳ Da completare"
+                }</div>`
+              : ""
+          }
+        </div>
+      `
+    )
+    .join("");
 }
 
-function deleteAllNotes() {
-  const count = notes.length;
-  notes = [];
-  saveNotes();
-  renderNotes();
-  renderTags();
-  updateTaskProgress();
-  showToast(`${count} note eliminate`, "success");
+function renderTags() {
+  const tagList = document.getElementById("tag-list");
+  // 1. Ottiene tutti i tag unici e conta quante note li contengono
+  const tagCounts = notes
+    .flatMap((n) => n.tags)
+    .reduce((acc, tag) => {
+      acc[tag] = (acc[tag] || 0) + 1;
+      return acc;
+    }, {});
+
+  const allTags = Object.keys(tagCounts).sort();
+
+  // 2. Renderizza la lista con il conteggio
+  tagList.innerHTML = allTags
+    .map((tag) => {
+      const count = tagCounts[tag];
+      const isActive = activeTagFilters.includes(tag);
+      const activeClass = isActive ? "active" : "";
+
+      return `
+          <div 
+            class="tag-item ${activeClass}" 
+            onclick="toggleTag('${tag}')"
+            style="background: ${
+              isActive ? "var(--primary-gradient)" : "var(--bg-secondary)"
+            };"
+          >
+            <span>🏷️ ${tag}</span>
+            <span class="tag-count">${count}</span>
+          </div>
+        `;
+    })
+    .join("");
 }
 
-function toggleTaskCompletion(id) {
-  const index = notes.findIndex((note) => note.id === id);
-  if (index !== -1 && notes[index].isTask) {
-    notes[index].completed = !notes[index].completed;
-    notes[index].updatedAt = new Date().toISOString();
-    saveNotes();
-    renderNotes();
-    updateTaskProgress();
-
-    const status = notes[index].completed ? "completato! 🎉" : "da completare";
-    showToast(`Impegno segnato come ${status}`, "success");
-  }
-}
-
-// Ricerca e filtri
-function handleSearch() {
-  searchQuery = searchInput.value.toLowerCase();
-  renderNotes();
-}
-
-function clearFilters() {
-  activeTagFilters = [];
-  searchInput.value = "";
-  searchQuery = "";
-  renderTags();
-  renderActiveFilters();
-  renderNotes();
-  showToast("Filtri cancellati", "success");
-}
-
-function toggleTagFilter(tag) {
+window.toggleTag = (tag) => {
   const index = activeTagFilters.indexOf(tag);
   if (index === -1) {
     activeTagFilters.push(tag);
   } else {
     activeTagFilters.splice(index, 1);
   }
-
   renderTags();
-  renderActiveFilters();
   renderNotes();
-}
+};
 
-// Rendering delle note
-function renderNotes() {
-  notesGrid.innerHTML = "";
+// --- INITIALIZATION ---
 
-  const filteredNotes = filterNotes();
-
-  if (filteredNotes.length === 0) {
-    notesGrid.innerHTML = `
-            <div class="empty-state">
-                <div class="icon">📝</div>
-                <h3>Nessuna nota trovata</h3>
-                <p>Inizia creando la tua prima nota!</p>
-            </div>
-        `;
-    return;
-  }
-
-  filteredNotes.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
-
-  filteredNotes.forEach((note) => {
-    const noteCard = document.createElement("div");
-    noteCard.className = `note-card ${note.completed ? "completed" : ""}`;
-    noteCard.dataset.id = note.id;
-
-    const formattedDate = formatDate(note.updatedAt);
-
-    noteCard.innerHTML = `
-            <div class="note-header">
-                <h3 class="note-title">${escapeHtml(note.title)}</h3>
-                <div class="note-actions">
-                    <span class="note-date">${formattedDate}</span>
-                    <button class="icon-button edit-note" title="Modifica" data-id="${note.id}">
-                        ✏️
-                    </button>
-                    <button class="icon-button delete-from-card" title="Elimina" data-id="${note.id}">
-                        🗑️
-                    </button>
-                </div>
-            </div>
-            <div class="note-content">${escapeHtml(note.content)}</div>
-            <div class="note-footer">
-                <div class="note-tags">
-                    ${note.tags.map((tag) => `<span class="note-tag">${escapeHtml(tag)}</span>`).join("")}
-                </div>
-                ${
-                  note.isTask
-                    ? `<div class="task-status ${note.completed ? "completed" : "pending"}" data-id="${note.id}">
-                        <span class="icon">${note.completed ? "✅" : "⏳"}</span>
-                        <span>${note.completed ? "Completato" : "Da completare"}</span>
-                    </div>`
-                    : ""
-                }
-            </div>
-        `;
-
-    // Event listeners per la card
-    const editBtn = noteCard.querySelector(".edit-note");
-    const deleteBtn = noteCard.querySelector(".delete-from-card");
-    const taskStatus = noteCard.querySelector(".task-status");
-
-    editBtn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      openEditNoteModal(note);
-    });
-
-    deleteBtn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      openDeleteConfirmation(note.id);
-    });
-
-    if (taskStatus) {
-      taskStatus.addEventListener("click", (e) => {
-        e.stopPropagation();
-        toggleTaskCompletion(note.id);
-      });
-    }
-
-    // Click sulla card per modificare
-    noteCard.addEventListener("click", () => openEditNoteModal(note));
-
-    notesGrid.appendChild(noteCard);
-  });
-}
-
-function filterNotes() {
-  return notes.filter((note) => {
-    const matchesTags =
-      activeTagFilters.length === 0 ||
-      activeTagFilters.every((tag) => note.tags.includes(tag));
-
-    const searchLower = searchQuery.toLowerCase();
-    const matchesSearch =
-      searchQuery === "" ||
-      note.title.toLowerCase().includes(searchLower) ||
-      note.content.toLowerCase().includes(searchLower) ||
-      note.tags.some((tag) => tag.toLowerCase().includes(searchLower));
-
-    return matchesTags && matchesSearch;
-  });
-}
-
-// Gestione dei tag
-function getAllTags() {
-  const tagsSet = new Set();
-  notes.forEach((note) => {
-    note.tags.forEach((tag) => tagsSet.add(tag));
-  });
-  return Array.from(tagsSet).sort();
-}
-
-function getTagCount(tag) {
-  return notes.filter((note) => note.tags.includes(tag)).length;
-}
-
-function renderTags() {
-  tagList.innerHTML = "";
-  const allTags = getAllTags();
-
-  if (allTags.length === 0) {
-    tagList.innerHTML = `
-            <div class="empty-tags" style="color: var(--text-tertiary); text-align: center; padding: 1rem 0;">
-                Nessun tag disponibile
-            </div>
-        `;
-    return;
-  }
-
-  allTags.forEach((tag) => {
-    const tagElement = document.createElement("div");
-    tagElement.className = `tag ${activeTagFilters.includes(tag) ? "active" : ""}`;
-    tagElement.innerHTML = `
-            <span>🏷️ ${escapeHtml(tag)}</span>
-            <span class="tag-count">${getTagCount(tag)}</span>
-        `;
-
-    tagElement.addEventListener("click", () => toggleTagFilter(tag));
-    tagList.appendChild(tagElement);
-  });
-}
-
-function renderActiveFilters() {
-  activeFilters.innerHTML = "";
-
-  if (activeTagFilters.length === 0) {
-    activeFilters.innerHTML = `<span style="color: var(--text-tertiary);">Nessun filtro attivo</span>`;
-    return;
-  }
-
-  activeTagFilters.forEach((tag) => {
-    const filterTag = document.createElement("div");
-    filterTag.className = "tag active";
-    filterTag.innerHTML = `
-            <span>${escapeHtml(tag)}</span>
-            <span style="margin-left: 0.5rem; cursor: pointer;">✕</span>
-        `;
-
-    filterTag.addEventListener("click", () => toggleTagFilter(tag));
-    activeFilters.appendChild(filterTag);
-  });
-}
-
-// Gestione del progresso degli impegni
-function updateTaskProgress() {
-  const tasks = notes.filter((note) => note.isTask);
-  const completedTasks = tasks.filter((note) => note.completed);
-
-  const totalCount = tasks.length;
-  const completedCount = completedTasks.length;
-
-  completedCountEl.textContent = completedCount;
-  totalCountEl.textContent = totalCount;
-
-  const progressPercentage =
-    totalCount > 0 ? (completedCount / totalCount) * 100 : 0;
-  progressFill.style.width = `${progressPercentage}%`;
-
-  // Aggiorna l'emoji e il testo in base al progresso
-  const completionText = document.querySelector(".completion-text");
-  if (totalCount === 0) {
-    completionEmoji.textContent = "😊";
-    if (completionText) completionText.textContent = "Nessun impegno";
-  } else if (completedCount === totalCount) {
-    completionEmoji.textContent = "🎉";
-    if (completionText) completionText.textContent = "Tutto completato!";
-  } else if (progressPercentage >= 75) {
-    completionEmoji.textContent = "😄";
-    if (completionText) completionText.textContent = "Quasi fatto!";
-  } else if (progressPercentage >= 50) {
-    completionEmoji.textContent = "🙂";
-    if (completionText) completionText.textContent = "A metà strada!";
-  } else if (progressPercentage > 0) {
-    completionEmoji.textContent = "😐";
-    if (completionText) completionText.textContent = "Continua così!";
-  } else {
-    completionEmoji.textContent = "😴";
-    if (completionText) completionText.textContent = "Inizia ora!";
-  }
-}
-
-// Gestione del modal
-function openAddNoteModal() {
-  modalTitle.innerHTML = "✏️ Aggiungi nota";
-  noteTitleInput.value = "";
-  noteContentInput.value = "";
-  noteTagsInput.value = "";
-  isTaskCheckbox.checked = false;
-  isCompletedCheckbox.checked = false;
-  taskCompletedContainer.classList.add("hidden");
-  deleteNoteBtn.style.display = "none";
-  currentNoteId = null;
-
-  showModal(noteModal);
-  noteTitleInput.focus();
-}
-
-function openEditNoteModal(note) {
-  modalTitle.innerHTML = "✏️ Modifica nota";
-  noteTitleInput.value = note.title;
-  noteContentInput.value = note.content;
-  noteTagsInput.value = note.tags.join(", ");
-  isTaskCheckbox.checked = note.isTask;
-
-  if (note.isTask) {
-    taskCompletedContainer.classList.remove("hidden");
-    isCompletedCheckbox.checked = note.completed;
-  } else {
-    taskCompletedContainer.classList.add("hidden");
-  }
-
-  deleteNoteBtn.style.display = "flex";
-  currentNoteId = note.id;
-
-  showModal(noteModal);
-  noteTitleInput.focus();
-}
-
-function openDeleteConfirmation(id = null) {
-  currentNoteId = id;
-
-  const modalBody = confirmModal.querySelector(".modal-body");
-  if (id) {
-    const note = notes.find((n) => n.id === id);
-    modalBody.innerHTML = `
-            <div class="warning-content">
-                <div class="warning-icon">🚨</div>
-                <p>Sei sicuro di voler eliminare la nota <strong>"${escapeHtml(note?.title || "Senza titolo")}"</strong>?</p>
-                <p class="warning-text">Questa azione non può essere annullata.</p>
-            </div>
-        `;
-  } else {
-    modalBody.innerHTML = `
-            <div class="warning-content">
-                <div class="warning-icon">🚨</div>
-                <p>Vuoi davvero eliminare <strong>tutte le ${notes.length} note</strong>?</p>
-                <p class="warning-text">Questa azione è irreversibile.</p>
-            </div>
-        `;
-  }
-
-  hideModal(noteModal);
-  showModal(confirmModal);
-}
-
-function showModal(modal) {
-  modal.classList.add("show");
-  modalOverlay.classList.add("show");
-  document.body.style.overflow = "hidden";
-}
-
-function hideModal(modal) {
-  modal.classList.remove("show");
-  if (
-    !noteModal.classList.contains("show") &&
-    !confirmModal.classList.contains("show")
-  ) {
-    modalOverlay.classList.remove("show");
-    document.body.style.overflow = "";
-  }
-}
-
-function closeModal() {
-  hideModal(noteModal);
-  currentNoteId = null;
-}
-
-function closeConfirmModal() {
-  hideModal(confirmModal);
-}
-
-function handleDeleteConfirmation() {
-  if (currentNoteId) {
-    deleteNote(currentNoteId);
-    closeModal();
-  } else {
-    deleteAllNotes();
-  }
-  closeConfirmModal();
-}
-
-function toggleTaskCompletedOption() {
-  if (isTaskCheckbox.checked) {
-    taskCompletedContainer.classList.remove("hidden");
-  } else {
-    taskCompletedContainer.classList.add("hidden");
-    isCompletedCheckbox.checked = false;
-  }
-}
-
-// Import/Export
-function handleImport(e) {
-  const file = e.target.files[0];
-  if (!file) return;
-
-  const reader = new FileReader();
-  reader.onload = (event) => {
-    try {
-      let importedNotes = [];
-      if (file.name.endsWith(".json")) {
-        importedNotes = JSON.parse(event.target.result);
-      } else {
-        importedNotes = parseTxtNotes(event.target.result);
-      }
-
-      if (!Array.isArray(importedNotes)) throw new Error("Formato non valido");
-
-      let importedCount = 0;
-      importedNotes.forEach((note) => {
-        if (note.title && note.content) {
-          addNote({
-            title: note.title,
-            content: note.content,
-            tags: note.tags || [],
-            isTask: note.isTask || false,
-            completed: note.completed || false,
-          });
-          importedCount++;
-        }
-      });
-
-      showToast(`${importedCount} note importate! 📂`, "success");
-    } catch (error) {
-      console.error("Errore nell'importazione:", error);
-      showToast("Errore nell'importazione del file", "error");
-    }
-  };
-  reader.readAsText(file);
-
-  // Reset input
-  e.target.value = "";
-}
-
-function exportJSON() {
-  try {
-    const dataStr = JSON.stringify(notes, null, 2);
-    const blob = new Blob([dataStr], { type: "application/json" });
-    downloadBlob(blob, `note-${formatDateForFilename()}.json`);
-    showToast("Note esportate in JSON! 💾", "success");
-  } catch (error) {
-    console.error("Errore nell'esportazione JSON:", error);
-    showToast("Errore nell'esportazione", "error");
-  }
-}
-
-function exportTXT() {
-  try {
-    const text = notes
-      .map((note) => {
-        return `Titolo: ${note.title}\nContenuto: ${note.content}\nTag: ${note.tags.join(", ")}\nTipo: ${note.isTask ? "Impegno" : "Nota"}\nCompletato: ${note.completed ? "Sì" : "No"}\nCreato: ${formatDate(note.createdAt)}\n${"=".repeat(50)}\n`;
-      })
-      .join("\n");
-
-    const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
-    downloadBlob(blob, `note-${formatDateForFilename()}.txt`);
-    showToast("Note esportate in TXT! 📄", "success");
-  } catch (error) {
-    console.error("Errore nell'esportazione TXT:", error);
-    showToast("Errore nell'esportazione", "error");
-  }
-}
-
-function downloadBlob(blob, filename) {
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = filename;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-}
-
-function parseTxtNotes(txt) {
-  const sections = txt.split("=".repeat(50));
-  const notesParsed = [];
-
-  sections.forEach((section) => {
-    const lines = section.trim().split(/\r?\n/);
-    if (lines.length < 2) return;
-
-    const currentNote = {
-      title: "",
-      content: "",
-      tags: [],
-      isTask: false,
-      completed: false,
-    };
-
-    lines.forEach((line) => {
-      if (line.startsWith("Titolo:")) {
-        currentNote.title = line.replace("Titolo:", "").trim();
-      } else if (line.startsWith("Contenuto:")) {
-        currentNote.content = line.replace("Contenuto:", "").trim();
-      } else if (line.startsWith("Tag:")) {
-        currentNote.tags = line
-          .replace("Tag:", "")
-          .split(",")
-          .map((t) => t.trim())
-          .filter(Boolean);
-      } else if (line.startsWith("Tipo:")) {
-        currentNote.isTask = line.includes("Impegno");
-      } else if (line.startsWith("Completato:")) {
-        currentNote.completed = line.includes("Sì");
-      }
-    });
-
-    if (currentNote.title || currentNote.content) {
-      notesParsed.push(currentNote);
-    }
-  });
-
-  return notesParsed;
-}
-
-// Toast notifications
-function showToast(message, type = "success") {
-  toastMessage.textContent = message;
-
-  if (type === "error") {
-    toastIcon.textContent = "❌";
-    toastIcon.className = "toast-icon error";
-  } else {
-    toastIcon.textContent = "✅";
-    toastIcon.className = "toast-icon";
-  }
-
-  toast.classList.add("show");
-
-  setTimeout(() => {
-    toast.classList.remove("show");
-  }, 4000);
-}
-
-// Keyboard shortcuts
-function handleKeyboardShortcuts(e) {
-  // Ctrl/Cmd + N per nuova nota
-  if ((e.ctrlKey || e.metaKey) && e.key === "n") {
-    e.preventDefault();
-    openAddNoteModal();
-  }
-
-  // Escape per chiudere modal
-  if (e.key === "Escape") {
-    if (noteModal.classList.contains("show")) {
-      closeModal();
-    } else if (confirmModal.classList.contains("show")) {
-      closeConfirmModal();
-    }
-  }
-
-  // Ctrl/Cmd + S per salvare (se modal aperto)
-  if (
-    (e.ctrlKey || e.metaKey) &&
-    e.key === "s" &&
-    noteModal.classList.contains("show")
-  ) {
-    e.preventDefault();
-    saveNote();
-  }
-}
-
-// Utility functions
-function formatDate(dateString) {
-  const date = new Date(dateString);
-  const now = new Date();
-  const diffMs = now - date;
-  const diffSec = Math.floor(diffMs / 1000);
-  const diffMin = Math.floor(diffSec / 60);
-  const diffHour = Math.floor(diffMin / 60);
-  const diffDay = Math.floor(diffHour / 24);
-
-  if (diffDay > 7) {
-    return date.toLocaleDateString("it-IT", {
-      day: "numeric",
-      month: "short",
-      year: date.getFullYear() !== now.getFullYear() ? "numeric" : undefined,
-    });
-  } else if (diffDay > 0) {
-    return `${diffDay} ${diffDay === 1 ? "giorno" : "giorni"} fa`;
-  } else if (diffHour > 0) {
-    return `${diffHour} ${diffHour === 1 ? "ora" : "ore"} fa`;
-  } else if (diffMin > 0) {
-    return `${diffMin} ${diffMin === 1 ? "minuto" : "minuti"} fa`;
-  } else {
-    return "Adesso";
-  }
-}
-
-function formatDateForFilename() {
-  const now = new Date();
-  return now.toISOString().split("T")[0];
-}
-
-function escapeHtml(text) {
-  const div = document.createElement("div");
-  div.textContent = text;
-  return div.innerHTML;
-}
-
-// Auto-save draft (bonus feature)
-let draftTimeout;
-function saveDraft() {
-  clearTimeout(draftTimeout);
-  draftTimeout = setTimeout(() => {
-    if (noteModal.classList.contains("show")) {
-      const draft = {
-        title: noteTitleInput.value,
-        content: noteContentInput.value,
-        tags: noteTagsInput.value,
-        isTask: isTaskCheckbox.checked,
-        completed: isCompletedCheckbox.checked,
-      };
-      localStorage.setItem("noteDraft", JSON.stringify(draft));
-    }
-  }, 1000);
-}
-
-function loadDraft() {
-  const draft = localStorage.getItem("noteDraft");
-  if (draft && !currentNoteId) {
-    try {
-      const draftData = JSON.parse(draft);
-      if (draftData.title || draftData.content) {
-        noteTitleInput.value = draftData.title || "";
-        noteContentInput.value = draftData.content || "";
-        noteTagsInput.value = draftData.tags || "";
-        isTaskCheckbox.checked = draftData.isTask || false;
-        isCompletedCheckbox.checked = draftData.completed || false;
-        toggleTaskCompletedOption();
-      }
-    } catch (error) {
-      console.error("Errore nel caricamento della bozza:", error);
-    }
-  }
-}
-
-function clearDraft() {
-  localStorage.removeItem("noteDraft");
-}
-// Add draft functionality to inputs
-[noteTitleInput, noteContentInput, noteTagsInput].forEach((input) => {
-  input.addEventListener("input", saveDraft);
-});
-[isTaskCheckbox, isCompletedCheckbox].forEach((checkbox) => {
-  checkbox.addEventListener("change", saveDraft);
+document.getElementById("theme-toggle").addEventListener("click", () => {
+  document.body.classList.toggle("dark-theme");
 });
 
-// Load draft when opening add modal
-const originalOpenAddNoteModal = openAddNoteModal;
-openAddNoteModal = () => {
-  originalOpenAddNoteModal();
-  loadDraft();
-};
+const deleteDropdownBtn = document.getElementById("delete-dropdown-btn");
+const deleteDropdownMenu = document.getElementById("delete-menu");
+const dataDropdownBtn = document.getElementById("data-dropdown-btn");
+const dataDropdownMenu = document.getElementById("data-menu");
 
-// Clear draft when saving or closing
-const originalSaveNote = saveNote;
-saveNote = () => {
-  originalSaveNote();
-  clearDraft();
-};
+// Gestione dei dropdown
+[
+  [deleteDropdownBtn, deleteDropdownMenu],
+  [dataDropdownBtn, dataDropdownMenu],
+].forEach(([btn, menu]) => {
+  if (btn) {
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      // Chiudi l'altro dropdown se aperto
+      const otherMenu =
+        menu === deleteDropdownMenu ? dataDropdownMenu : deleteDropdownMenu;
+      if (otherMenu) otherMenu.classList.remove("show");
 
-const originalCloseModal = closeModal;
-closeModal = () => {
-  clearDraft();
-  originalCloseModal();
-};
+      menu.classList.toggle("show");
+    });
 
-// Performance optimization: debounce search
-let searchTimeout;
-const originalHandleSearch = handleSearch;
-handleSearch = () => {
-  clearTimeout(searchTimeout);
-  searchTimeout = setTimeout(originalHandleSearch, 300);
-};
+    menu.addEventListener("click", (e) => {
+      e.stopPropagation();
+    });
+  }
+});
 
-// Initialize active filters display
-renderActiveFilters();
+document.addEventListener("click", () => {
+  deleteDropdownMenu.classList.remove("show");
+  if (dataDropdownMenu) dataDropdownMenu.classList.remove("show");
+});
 
-console.log("📝 Note Organizer caricato con successo!");
+loadNotes();
+renderNotes();
+renderTags();
