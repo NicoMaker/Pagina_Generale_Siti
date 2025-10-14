@@ -12,10 +12,10 @@ function generateCalendarLinks() {
         currentDay > i
           ? `<a href="Giorni/${i}.html">${i}</a>`
           : currentDay === i
-            ? `<a href="Giorni/${i}.html">${i}</a>`
-            : `<a href="#" onclick="showDaysLeft(${i}, ${
-                i - currentDay
-              });">${i}</a>`;
+          ? `<a href="Giorni/${i}.html">${i}</a>`
+          : `<a href="#" onclick="showDaysLeft(${i}, ${
+              i - currentDay
+            });">${i}</a>`;
 
       if ((i - 1) % 5 === 0) html += "<tr>";
       html += `<td class="${
@@ -31,8 +31,8 @@ function generateCalendarLinks() {
       setTimeout(() => {
         const currentDayCell = document.querySelector(
           `td:nth-child(${((currentDay - 1) % 5) + 1}):nth-of-type(${Math.ceil(
-            currentDay / 5,
-          )})`,
+            currentDay / 5
+          )})`
         );
         if (currentDayCell) {
           currentDayCell.classList.add("today-pulse");
@@ -46,7 +46,7 @@ function generateCalendarLinks() {
       1,
       0,
       0,
-      0,
+      0
     );
     startCountdown(nextDecember);
 
@@ -103,7 +103,7 @@ function startCountdown(targetDate) {
           <div class="countdown-label">${pluralize(
             days,
             "Giorno",
-            "Giorni",
+            "Giorni"
           )}</div>
         </div>
         <div class="countdown-box">
@@ -115,7 +115,7 @@ function startCountdown(targetDate) {
           <div class="countdown-label">${pluralize(
             minutes,
             "Minuto",
-            "Minuti",
+            "Minuti"
           )}</div>
         </div>
         <div class="countdown-box">
@@ -123,7 +123,7 @@ function startCountdown(targetDate) {
           <div class="countdown-label">${pluralize(
             seconds,
             "Secondo",
-            "Secondi",
+            "Secondi"
           )}</div>
         </div>
       </div>
@@ -220,3 +220,5 @@ function toggleMusic() {
     button.innerHTML = "<span>🔔</span> Musica Natalizia";
   }
 }
+
+document.getElementById("year").textContent = new Date().getFullYear();
