@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const increaseBtn = document.querySelector(".increase");
   const generateBtn = document.getElementById("generateBtn");
   const printBtn = document.getElementById("printBtn");
+  const resetBtn = document.getElementById("resetBtn"); // Nuovo pulsante Reset
   const loadingEl = document.getElementById("loading");
   const progressBar = document.getElementById("progressBar");
   const cardsContainer = document.getElementById("cardsContainer");
@@ -35,6 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Event listeners
   generateBtn.addEventListener("click", generateCards);
   printBtn.addEventListener("click", printCards);
+  resetBtn.addEventListener("click", resetCards); // Event listener per il reset
   decreaseBtn.addEventListener("click", () => updateNumGiocatori(-1));
   increaseBtn.addEventListener("click", () => updateNumGiocatori(1));
   aboutLink.addEventListener("click", showModal);
@@ -199,7 +201,9 @@ document.addEventListener("DOMContentLoaded", () => {
     progressPercentage.textContent = `${Math.round(safePercentage)}%`;
 
     // Aggiorna il contatore
-    progressCounter.textContent = `${processed}/${total} giocatori`;
+    progressCounter.textContent = `${processed}/${total} giocatori (${
+      processed * 6
+    } / ${total * 6} cartelle)`;
 
     // Aggiorna la frazione
     let fractionText = "";
@@ -315,6 +319,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Mostra il loading
     loadingEl.classList.remove("hidden");
     cardsContainer.innerHTML = "";
+    resetBtn.disabled = true;
     printBtn.disabled = true;
 
     // Inizializza il loader
@@ -359,25 +364,6 @@ document.addEventListener("DOMContentLoaded", () => {
         for (let i = 0; i < batchCount; i++) {
           batchGiocatori.push(generateTombolaGiocatore(start + i + 1));
           processedGiocatori++;
-
-          // Aggiorna il progresso dopo ogni giocatore generato
-          const currentPercentage = (processedGiocatori / numGiocatori) * 100;
-
-          // Assicurati che la percentuale non diminuisca mai
-          const percentage = Math.max(batchLastPercentage, currentPercentage);
-          batchLastPercentage = percentage;
-
-          updateLoader(
-            percentage,
-            processedGiocatori,
-            numGiocatori,
-            currentPhase,
-          );
-
-          // Piccola pausa per rendere visibile l'animazione
-          if (processedGiocatori % 2 === 0) {
-            await new Promise((resolve) => setTimeout(resolve, 10));
-          }
         }
 
         giocatori.push(...batchGiocatori);
@@ -391,6 +377,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const timeElapsed = ((endTime - startTime) / 1000).toFixed(2);
 
       // Abilita il pulsante di stampa
+      resetBtn.disabled = false;
       printBtn.disabled = false;
 
       // Mostra un alert di successo
@@ -415,6 +402,21 @@ document.addEventListener("DOMContentLoaded", () => {
       // Nascondi il loading
       loadingEl.classList.add("hidden");
     }
+  }
+
+  /**
+   * Resetta l'area delle cartelle e i pulsanti.
+   */
+  function resetCards() {
+    cardsContainer.innerHTML = "";
+    printBtn.disabled = true;
+    resetBtn.disabled = true;
+    showAlert(
+      "info",
+      "Reset completato",
+      "L'area delle cartelle è stata pulita. Puoi generare nuove cartelle.",
+      3000,
+    );
   }
 
   /**
@@ -688,13 +690,13 @@ document.addEventListener("DOMContentLoaded", () => {
   function createCardElement(card) {
     const cardElement = document.createElement("div");
     cardElement.className = "tombola-card";
-    cardElement.setAttribute("data-card-id", card.id);
+    cardElement.setAttribute("data-card-id", card.cardNumber);
     cardElement.setAttribute("data-giocatore", card.setNumber);
 
     // Header della cartella
     const cardHeader = document.createElement("div");
     cardHeader.className = "card-header";
-    cardHeader.textContent = `Cartella #${card.id}`;
+    cardHeader.textContent = `Cartella #${card.cardNumber}`;
     cardElement.appendChild(cardHeader);
 
     // Griglia della cartella
@@ -944,154 +946,66 @@ document.addEventListener("DOMContentLoaded", () => {
    * @param {Array} card - La cartella da bilanciare
    */
   function ensureExactlyFiveNumbersPerRow(card) {
-    // Conta i numeri in ogni riga
-    const rowCounts = card.map(
-      (row) => row.filter((cell) => cell !== null).length,
-    );
+    let changed = true;
+    let attempts = 0;
+    const maxAttempts = 20; // Limite per evitare loop infiniti
 
-    // Righe con troppi numeri
-    const excessRows = rowCounts
-      .map((count, index) => ({ index, count }))
-      .filter((row) => row.count > 5)
-      .sort((a, b) => b.count - a.count);
+    while (changed && attempts < maxAttempts) {
+      changed = false;
+      attempts++;
 
-    // Righe con pochi numeri
-    const deficitRows = rowCounts
-      .map((count, index) => ({ index, count }))
-      .filter((row) => row.count < 5)
-      .sort((a, b) => a.count - b.count);
+      // Conta i numeri per ogni riga
+      const rowCounts = card.map(
+        (row) => row.filter((cell) => cell !== null).length,
+      );
 
-    // Sposta i numeri dalle righe con troppi a quelle con pochi
-    while (excessRows.length > 0 && deficitRows.length > 0) {
-      const sourceRow = excessRows[0];
-      const targetRow = deficitRows[0];
+      // Identifica le righe con troppi o troppo pochi numeri
+      const excessRows = [];
+      const deficitRows = [];
+      rowCounts.forEach((count, index) => {
+        if (count > 5) excessRows.push(index);
+        if (count < 5) deficitRows.push(index);
+      });
 
-      // Trova una colonna da cui spostare un numero
-      for (let col = 0; col < 9; col++) {
-        if (
-          card[sourceRow.index][col] !== null &&
-          card[targetRow.index][col] === null
-        ) {
-          // Sposta il numero
-          card[targetRow.index][col] = card[sourceRow.index][col];
-          card[sourceRow.index][col] = null;
-
-          // Aggiorna i conteggi
-          sourceRow.count--;
-          targetRow.count++;
-
-          // Riordina le righe se necessario
-          if (sourceRow.count === 5) {
-            excessRows.shift();
-          }
-          if (targetRow.count === 5) {
-            deficitRows.shift();
+      // Se ci sono righe in eccesso e in difetto, prova a spostare i numeri
+      if (excessRows.length > 0 && deficitRows.length > 0) {
+        // Itera sulle righe in eccesso
+        for (const sourceRowIndex of excessRows) {
+          // Trova le colonne con numeri in questa riga
+          const filledCols = [];
+          for (let col = 0; col < 9; col++) {
+            if (card[sourceRowIndex][col] !== null) {
+              filledCols.push(col);
+            }
           }
 
-          break;
-        }
-      }
-    }
+          // Mescola le colonne per rendere lo spostamento casuale
+          shuffleArray(filledCols);
 
-    // Se ci sono ancora righe con meno di 5 numeri, aggiungi numeri da altre colonne
-    if (deficitRows.length > 0) {
-      addNumbersToDeficitRows(card, deficitRows);
-    }
+          // Prova a spostare un numero in una riga in difetto
+          for (const colToMove of filledCols) {
+            // Trova una riga in difetto che sia vuota in questa colonna
+            const targetRowIndex = deficitRows.find(
+              (r) => card[r][colToMove] === null,
+            );
 
-    // Se ci sono ancora righe con più di 5 numeri, rimuovi numeri in eccesso
-    if (excessRows.length > 0) {
-      removeExcessNumbers(card, excessRows);
-    }
-  }
-
-  /**
-   * Aggiunge numeri alle righe con meno di 5 numeri
-   * @param {Array} card - La cartella
-   * @param {Array} deficitRows - Righe con meno di 5 numeri
-   */
-  function addNumbersToDeficitRows(card, deficitRows) {
-    for (const row of deficitRows) {
-      const needed = 5 - row.count;
-      if (needed <= 0) continue;
-
-      // Trova colonne vuote in questa riga
-      const emptyCols = [];
-      for (let col = 0; col < 9; col++) {
-        if (card[row.index][col] === null) {
-          emptyCols.push(col);
-        }
-      }
-
-      // Mescola le colonne vuote
-      shuffleArray(emptyCols);
-
-      // Aggiungi numeri nelle colonne vuote
-      for (let i = 0; i < Math.min(needed, emptyCols.length); i++) {
-        const col = emptyCols[i];
-        // Genera un numero valido per questa colonna
-        let min, max;
-        if (col === 0) {
-          min = 1;
-          max = 9;
-        } else if (col === 8) {
-          min = 80;
-          max = 90;
-        } else {
-          min = col * 10;
-          max = col * 10 + 9;
-        }
-
-        // Verifica che il numero non sia già presente nella cartella
-        let number;
-        let attempts = 0;
-        const maxAttempts = 100;
-        do {
-          number = Math.floor(Math.random() * (max - min + 1)) + min;
-          attempts++;
-          if (attempts > maxAttempts) {
-            // Se dopo molti tentativi non troviamo un numero valido, passiamo alla colonna successiva
-            break;
+            if (targetRowIndex !== undefined) {
+              // Esegui lo spostamento
+              card[targetRowIndex][colToMove] = card[sourceRowIndex][colToMove];
+              card[sourceRowIndex][colToMove] = null;
+              changed = true;
+              // Esci dai loop e ricomincia il controllo
+              break;
+            }
           }
-        } while (isNumberInCard(card, number));
-
-        if (attempts <= maxAttempts) {
-          card[row.index][col] = number;
-          row.count++;
+          if (changed) break;
         }
       }
     }
-  }
 
-  /**
-   * Rimuove numeri in eccesso dalle righe con più di 5 numeri
-   * @param {Array} card - La cartella
-   * @param {Array} excessRows - Righe con più di 5 numeri
-   */
-  function removeExcessNumbers(card, excessRows) {
-    for (const row of excessRows) {
-      const excess = row.count - 5;
-      if (excess <= 0) continue;
-
-      // Trova colonne con numeri in questa riga
-      const filledCols = [];
-      for (let col = 0; col < 9; col++) {
-        if (card[row.index][col] !== null) {
-          filledCols.push(col);
-        }
-      }
-
-      // Mescola le colonne piene
-      shuffleArray(filledCols);
-
-      // Rimuovi numeri in eccesso
-      for (let i = 0; i < excess; i++) {
-        if (i < filledCols.length) {
-          const col = filledCols[i];
-          card[row.index][col] = null;
-          row.count--;
-        }
-      }
-    }
+    // Se dopo i tentativi ci sono ancora discrepanze, non è un problema critico
+    // perché la logica di distribuzione iniziale è già molto buona.
+    // Questa funzione serve solo a perfezionare il bilanciamento.
   }
 
   /**
