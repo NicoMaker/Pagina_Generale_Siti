@@ -410,6 +410,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function resetCards() {
     cardsContainer.innerHTML = "";
     printBtn.disabled = true;
+    generateBtn.disabled = false; // Riabilita il pulsante Genera
     resetBtn.disabled = true;
     showAlert(
       "info",
@@ -502,6 +503,13 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         setContainer.appendChild(cardsGrid);
+
+        // Aggiungi un piè di pagina per la stampa
+        const pageFooter = document.createElement("div");
+        pageFooter.className = "print-page-footer hidden-on-screen";
+        pageFooter.innerHTML = `<p>Generato con il Generatore di Cartelle Tombola - ${new Date().toLocaleDateString()}</p>`;
+        setContainer.appendChild(pageFooter);
+
         cardsContainer.appendChild(setContainer);
       });
 
@@ -674,7 +682,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const footer = document.createElement("div");
     footer.className = "print-cover-footer";
     footer.innerHTML = `
-    <p>Generato con il Generatore di Cartelle Tombola - ${new Date().toLocaleDateString()}</p>
+    <p>Generato con il Generatore di Cartelle Tombola - ${new Date().toLocaleDateString()};</p>
   `;
     rulesContainer.appendChild(footer);
 
@@ -770,6 +778,24 @@ document.addEventListener("DOMContentLoaded", () => {
         body.printing .tombola-card {
           width: 100% !important;
           margin-bottom: 15px !important;
+        }
+
+        .hidden-on-screen {
+          display: none !important;
+        }
+
+        @media print {
+          .hidden-on-screen {
+            display: block !important;
+          }
+        }
+
+        body.printing .print-page-footer {
+          display: block !important;
+          text-align: center;
+          font-size: 0.8rem;
+          color: #666;
+          margin-top: 20px;
         }
       }
     `;
@@ -1008,12 +1034,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Questa funzione serve solo a perfezionare il bilanciamento.
   }
 
-  /**
-   * Verifica se un numero è già presente nella cartella
-   * @param {Array} card - La cartella
-   * @param {number} number - Il numero da verificare
-   * @returns {boolean} True se il numero è già presente, false altrimenti
-   */
+
   function isNumberInCard(card, number) {
     for (let row = 0; row < 3; row++) {
       for (let col = 0; col < 9; col++) {
