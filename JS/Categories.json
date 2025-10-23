@@ -423,7 +423,7 @@
       "icon": "fa-heartbeat",
       "projects": [
         {
-          "name": "Sito che Calcola Altezza ideale o Peso Ideale",
+          "name": "Calcola Altezza ideale o Peso Ideale",
           "link": "Site/Salute/Calcolo_peso_altezza_ideale/index.html"
         },
         {
