@@ -81,6 +81,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     weightSlider.value = weightInput.value;
   });
 
+  // Seleziona il contenuto degli input al focus per una facile modifica
+  heightInput.addEventListener("focus", () => heightInput.select());
+  weightInput.addEventListener("focus", () => weightInput.select());
+
   // Event listeners per i pulsanti di azione
   saveButton.addEventListener("click", saveResult);
   shareButton.addEventListener("click", shareResult);
@@ -122,17 +126,21 @@ function handleFormSubmit(event) {
   const weight = Number.parseFloat(weightInput.value);
 
   // Validazione
-  if (type === "weight" && (isNaN(height) || height < 50 || height > 250)) {
+  if (type === "weight" && (isNaN(height) || height < 50 || height > 300)) {
     showToast(
       "Errore",
-      "Inserisci un'altezza valida tra 50 e 250 cm.",
+      "Inserisci un'altezza valida tra 50 e 300 cm.",
       "error",
     );
     return;
   }
 
-  if (type === "height" && (isNaN(weight) || weight < 10 || weight > 300)) {
-    showToast("Errore", "Inserisci un peso valido tra 10 e 300 kg.", "error");
+  if (type === "height" && (isNaN(weight) || weight < 10 || weight > 3000)) {
+    showToast(
+      "Errore",
+      "Inserisci un peso valido tra 10 e 3000 kg.",
+      "error",
+    );
     return;
   }
 
