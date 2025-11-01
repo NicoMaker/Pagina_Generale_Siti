@@ -59,9 +59,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Ottieni una scelta casuale
-  function getRandomChoice() {
-    return options[Math.floor(Math.random() * options.length)];
-  }
+  const getRandomChoice = () =>
+    options[Math.floor(Math.random() * options.length)];
 
   // Determina il vincitore
   function determineWinner(choice1, choice2) {
@@ -121,10 +120,10 @@ document.addEventListener("DOMContentLoaded", () => {
               });
 
             const player1ChoiceIcon = document.querySelector(
-              "#player1-choice .choice-icon",
+              "#player1-choice .choice-icon"
             );
             const player2ChoiceIcon = document.querySelector(
-              "#player2-choice .choice-icon",
+              "#player2-choice .choice-icon"
             );
 
             player1ChoiceIcon.textContent = optionIcons[player1Choice];
@@ -146,7 +145,7 @@ document.addEventListener("DOMContentLoaded", () => {
     player1Choice,
     player2Name,
     player2Choice,
-    winner,
+    winner
   ) {
     resultMessage.textContent = `${player1Name}: ${player1Choice} vs ${player2Name}: ${player2Choice}`;
     resultMessage.classList.add("show");
@@ -182,7 +181,7 @@ document.addEventListener("DOMContentLoaded", () => {
       player1Choice,
       player2Name,
       player2Choice,
-      winner,
+      winner
     );
   }
 
@@ -211,7 +210,7 @@ document.addEventListener("DOMContentLoaded", () => {
     player1Choice,
     player2Name,
     player2Choice,
-    winner,
+    winner
   ) {
     // Limita la cronologia a 10 partite
     if (gameHistory.length >= 10) {
@@ -395,7 +394,7 @@ document.addEventListener("DOMContentLoaded", () => {
       player1Choice,
       player2Name,
       player2Choice,
-      winner,
+      winner
     );
 
     // Riabilita il pulsante
