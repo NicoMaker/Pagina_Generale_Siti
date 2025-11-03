@@ -235,6 +235,7 @@ Il portfolio include numerose categorie di progetti, ciascuna con la propria ico
 | Giochi               | 🎮    | Applicazioni ludiche interattive                         |
 | Info Paesi/Stati     | 🌍    | Informazioni geografiche su paesi e stati                |
 | Matematica           | 🧮    | Strumenti di calcolo e applicazioni matematiche          |
+| Mappe                | 🗺️    | Applicazioni per la visualizzazione di mappe e dati      |
 | Natale               | 🎄    | Progetti a tema natalizio                                |
 | Opzioni con le Frasi | 💬    | Strumenti per la manipolazione del testo                 |
 | Pasqua               | 🐰    | Progetti a tema pasquale                                 |
