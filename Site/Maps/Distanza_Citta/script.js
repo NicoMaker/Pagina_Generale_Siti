@@ -4,6 +4,9 @@ const L = window.L;
 // Import leaflet-image library
 const leafletImage = window.leafletImage;
 
+// Local Storage Key
+const LOCAL_STORAGE_KEY = 'distanceMapDataV2';
+
 // Initialize map
 const map = L.map("map").setView([41.9028, 12.4964], 6);
 
@@ -13,10 +16,10 @@ L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
 
 // Variables
 let currentMarkers = [];
-let allMarkers = [];
-let allLines = [];
+let allMarkers = []; // Contiene i riferimenti Leaflet
+let allLines = [];   // Contiene i riferimenti Leaflet
 let distanceCount = 0;
-const distanceData = [];
+const distanceData = []; // Contiene i dati persistenti (JSON-friendly)
 let totalDistance = 0;
 let selectedColor = '#667eea';
 
@@ -32,6 +35,128 @@ const loadingOverlay = document.getElementById('loadingOverlay');
 
 let sidebarOpen = true;
 
+// --- GESTIONE LOCAL STORAGE ---
+
+function saveMapData() {
+    const dataToSave = {
+        distanceData: distanceData,
+        totalDistance: totalDistance,
+        // Salva la vista corrente della mappa per un'esperienza utente migliore
+        center: map.getCenter(),
+        zoom: map.getZoom(),
+    };
+    try {
+        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(dataToSave));
+    } catch (e) {
+        console.error("Errore nel salvataggio in localStorage:", e);
+    }
+}
+
+function clearMapData() {
+    localStorage.removeItem(LOCAL_STORAGE_KEY);
+}
+
+function loadMapData() {
+    try {
+        const storedData = localStorage.getItem(LOCAL_STORAGE_KEY);
+        if (storedData) {
+            const parsedData = JSON.parse(storedData);
+            
+            // 1. Ripristina i dati e il totale
+            totalDistance = parsedData.totalDistance || 0;
+            document.getElementById("totalKm").textContent = totalDistance.toFixed(2);
+            distanceData.length = 0; // Svuota l'array
+            if (parsedData.distanceData && Array.isArray(parsedData.distanceData)) {
+                 distanceData.push(...parsedData.distanceData); 
+                 // Imposta l'ID per le nuove distanze
+                 distanceCount = distanceData.length > 0 ? Math.max(...distanceData.map(d => d.id)) : 0;
+            } else {
+                 distanceCount = 0;
+            }
+
+            // 2. Ricrea marker e linee
+            allMarkers = [];
+            allLines = [];
+            distanceData.forEach(entry => {
+                const pointA = L.latLng(entry.startLat, entry.startLng);
+                const pointB = L.latLng(entry.endLat, entry.endLng);
+                
+                // Funzione ausiliaria per creare e configurare il marker ricreato
+                const createAndConfigureMarker = (latlng, color, locationName) => {
+                    const marker = createCustomMarker(latlng, color);
+                    marker.addTo(map);
+                    allMarkers.push(marker);
+                    
+                    // Aggiunge il popup con le info
+                    marker.bindPopup(
+                        `<div style="text-align: center;">
+                            <strong style="color: ${color};">${locationName}</strong><br>
+                            <small>Lat: ${latlng.lat.toFixed(5)}<br>Lng: ${latlng.lng.toFixed(5)}</small>
+                        </div>`
+                    );
+
+                    // Aggiunge la gestione click per la rimozione del marker (molto importante per il cleanup)
+                    marker.on("click", function (e) {
+                        e.originalEvent.stopPropagation();
+                        // Trova e rimuovi la distanza associata.
+                        // Questo è un po' più complesso dopo il caricamento, ma essenziale.
+                        // Per semplicità, qui si rimuove solo il marker dalla mappa e dall'array allMarkers.
+                        // L'eliminazione completa della distanza deve avvenire tramite il pulsante nel pannello laterale.
+                        map.removeLayer(marker);
+                        allMarkers = allMarkers.filter((m) => m !== marker);
+                        // Per evitare confusione, non permettiamo la rimozione di marker persistenti dal click mappa.
+                        // La rimozione definitiva avviene solo dal pannello laterale (delete-btn).
+                    });
+                    
+                    return marker;
+                };
+
+                // Ricrea Marker A e B
+                createAndConfigureMarker(pointA, entry.color, entry.locationA);
+                createAndConfigureMarker(pointB, entry.color, entry.locationB);
+                
+                // Ricrea la Linea
+                const lineOptions = {
+                    color: entry.color,
+                    weight: 4,
+                    opacity: 0.8,
+                };
+                const line = L.polyline([pointA, pointB], lineOptions).addTo(map);
+                allLines.push(line);
+
+                // Aggiunge la gestione click per la rimozione della linea
+                line.on("click", function (e) {
+                    e.originalEvent.stopPropagation();
+                    map.removeLayer(line);
+                    allLines = allLines.filter((l) => l !== line);
+                    // Anche qui, l'eliminazione completa della distanza deve avvenire tramite il pannello laterale.
+                });
+
+            });
+
+            // 3. Ripristina la vista della mappa
+            if (parsedData.center && parsedData.zoom) {
+                 map.setView(parsedData.center, parsedData.zoom);
+            } else if (allMarkers.length > 0) {
+                 const group = new L.featureGroup(allMarkers);
+                 map.fitBounds(group.getBounds());
+            }
+
+            // 4. Aggiorna l'interfaccia
+            updateDistanceList();
+            return true; 
+        }
+    } catch (e) {
+        console.error("Errore nel caricamento da localStorage. Reset:", e);
+        clearMapData(); // Pulisce dati corrotti
+    }
+    return false; // Nessun dato caricato
+}
+
+
+// --- FINE GESTIONE LOCAL STORAGE ---
+
+
 // Sidebar toggle functionality
 sidebarToggle.addEventListener('click', () => {
     if (window.innerWidth <= 768) {
@@ -44,6 +169,8 @@ sidebarToggle.addEventListener('click', () => {
         const icon = sidebarToggle.querySelector('i');
         icon.className = sidebarOpen ? 'fas fa-bars' : 'fas fa-chevron-right';
     }
+    // Forza Leaflet a ricalcolare le dimensioni se il container cambia
+    setTimeout(() => map.invalidateSize(), 300);
 });
 
 // Color picker functionality
@@ -106,6 +233,7 @@ function resetAll() {
     document.getElementById("totalKm").textContent = totalDistance.toFixed(2);
     map.closePopup();
     updateDistanceList();
+    clearMapData(); // Pulisce i dati salvati
 }
 
 // Reverse geocoding
@@ -181,6 +309,9 @@ function updateDistanceList() {
         return;
     }
 
+    // Riordina per ID crescente per coerenza
+    distanceData.sort((a, b) => a.id - b.id);
+
     listContainer.innerHTML = distanceData.map((entry, index) => {
         const intermediatePlacesHtml = entry.intermediatePlaces && entry.intermediatePlaces.length > 0
             ? `<div class="intermediate-places">
@@ -249,6 +380,7 @@ map.on("click", async (e) => {
         map.removeLayer(marker);
         allMarkers = allMarkers.filter((m) => m !== marker);
         currentMarkers = currentMarkers.filter((cm) => cm.marker !== marker);
+        // Nota: non salviamo su localStorage qui, aspettiamo che venga calcolata una distanza.
     });
 
     if (currentMarkers.length === 2) {
@@ -258,6 +390,13 @@ map.on("click", async (e) => {
         const pointB = currentMarkers[1].marker.getLatLng();
         const locationA = currentMarkers[0].locationName;
         const locationB = currentMarkers[1].locationName;
+        
+        // Rimuovi i marker temporanei dalla mappa e da allMarkers
+        map.removeLayer(currentMarkers[0].marker);
+        allMarkers = allMarkers.filter(m => m !== currentMarkers[0].marker);
+        map.removeLayer(currentMarkers[1].marker);
+        allMarkers = allMarkers.filter(m => m !== currentMarkers[1].marker);
+        
 
         // Get intermediate places
         const intermediatePlaces = await getIntermediatePlaces(
@@ -317,7 +456,7 @@ map.on("click", async (e) => {
 
         distanceCount++;
         distanceData.push({
-            id: distanceCount,
+            id: distanceCount, // ID univoco per la persistenza
             distanceFormatted,
             unit,
             locationA,
@@ -329,9 +468,25 @@ map.on("click", async (e) => {
             color: selectedColor,
             intermediatePlaces: intermediatePlaces
         });
+        
+        // Ricrea i marker permanenti (solo lat/lng e color)
+        const permanentMarkerA = createCustomMarker(pointA, selectedColor);
+        permanentMarkerA.addTo(map);
+        allMarkers.push(permanentMarkerA);
+        permanentMarkerA.bindPopup(
+            `<div style="text-align: center;"><strong style="color: ${selectedColor};">${locationA}</strong><br><small>Lat: ${pointA.lat.toFixed(5)}<br>Lng: ${pointA.lng.toFixed(5)}</small></div>`
+        );
+        
+        const permanentMarkerB = createCustomMarker(pointB, selectedColor);
+        permanentMarkerB.addTo(map);
+        allMarkers.push(permanentMarkerB);
+        permanentMarkerB.bindPopup(
+            `<div style="text-align: center;"><strong style="color: ${selectedColor};">${locationB}</strong><br><small>Lat: ${pointB.lat.toFixed(5)}<br>Lng: ${pointB.lng.toFixed(5)}</small></div>`
+        );
 
         hideLoading();
         updateDistanceList();
+        saveMapData(); // <--- SALVA I DATI
         currentMarkers = [];
     }
 
@@ -363,8 +518,8 @@ document.getElementById("exportCSV").addEventListener("click", () => {
         ],
         ...distanceData.map((d) => [
             d.id,
-            d.locationA,
-            d.locationB,
+            `"${d.locationA}"`, // Aggiungo virgolette per gestire i nomi con virgole
+            `"${d.locationB}"`,
             d.distanceFormatted,
             d.unit,
             d.startLat,
@@ -372,7 +527,7 @@ document.getElementById("exportCSV").addEventListener("click", () => {
             d.endLat,
             d.endLng,
             d.color,
-            d.intermediatePlaces ? d.intermediatePlaces.join('; ') : ''
+            `"${d.intermediatePlaces ? d.intermediatePlaces.join('; ') : ''}"`
         ]),
     ]
         .map((row) => row.join(","))
@@ -389,7 +544,7 @@ document.getElementById("exportCSV").addEventListener("click", () => {
     link.click();
 });
 
-// Save map
+// Save map (Image export)
 document.getElementById("saveMap").addEventListener("click", () => {
     const button = document.getElementById("saveMap");
     const originalContent = button.innerHTML;
@@ -418,63 +573,60 @@ document.getElementById("saveMap").addEventListener("click", () => {
 // Reset button
 document.getElementById("resetButton").addEventListener("click", resetAll);
 
-// Delete distance entries
+// Delete distance entries (gestione più precisa della rimozione)
 document.getElementById("distanceList").addEventListener("click", (e) => {
     if (e.target.closest('.delete-btn')) {
         const deleteBtn = e.target.closest('.delete-btn');
-        const idToRemove = deleteBtn.getAttribute("data-id");
+        const idToRemove = parseInt(deleteBtn.getAttribute("data-id"));
 
-        const distanceToRemove = distanceData.find((d) => d.id == idToRemove);
-        if (!distanceToRemove) return;
+        const index = distanceData.findIndex((d) => d.id === idToRemove);
+        if (index === -1) return;
+        
+        const distanceToRemove = distanceData[index];
 
-        // Remove markers and lines
-        const markerToRemoveA = allMarkers.find(
-            (m) =>
-                m.getLatLng().lat.toFixed(5) === distanceToRemove.startLat &&
-                m.getLatLng().lng.toFixed(5) === distanceToRemove.startLng
-        );
-        const markerToRemoveB = allMarkers.find(
-            (m) =>
-                m.getLatLng().lat.toFixed(5) === distanceToRemove.endLat &&
-                m.getLatLng().lng.toFixed(5) === distanceToRemove.endLng
-        );
+        // Rimuovi i marker e le linee corrispondenti
+        // Usiamo la precisione per trovare i layer Leaflet che corrispondono ai dati
 
-        if (markerToRemoveA) {
-            map.removeLayer(markerToRemoveA);
-            allMarkers = allMarkers.filter(m => m !== markerToRemoveA);
+        // Funzione per trovare e rimuovere marker per coordinate
+        const findAndRemoveMarker = (lat, lng) => {
+            const markerIndex = allMarkers.findIndex(m => 
+                m.getLatLng().lat.toFixed(5) === lat && 
+                m.getLatLng().lng.toFixed(5) === lng
+            );
+            if (markerIndex > -1) {
+                const marker = allMarkers.splice(markerIndex, 1)[0];
+                map.removeLayer(marker);
+            }
+        };
+
+        // Rimuovi Marker A
+        findAndRemoveMarker(distanceToRemove.startLat, distanceToRemove.startLng);
+        // Rimuovi Marker B
+        findAndRemoveMarker(distanceToRemove.endLat, distanceToRemove.endLng);
+
+
+        // Rimuovi Linea (usa le coordinate della linea)
+        const lineIndex = allLines.findIndex((l) => {
+            const latlngs = l.getLatLngs();
+            const startMatch = latlngs.some(ll => ll.lat.toFixed(5) === distanceToRemove.startLat && ll.lng.toFixed(5) === distanceToRemove.startLng);
+            const endMatch = latlngs.some(ll => ll.lat.toFixed(5) === distanceToRemove.endLat && ll.lng.toFixed(5) === distanceToRemove.endLng);
+            return startMatch && endMatch;
+        });
+
+        if (lineIndex > -1) {
+             const lineToRemove = allLines.splice(lineIndex, 1)[0];
+             map.removeLayer(lineToRemove);
         }
-        if (markerToRemoveB) {
-            map.removeLayer(markerToRemoveB);
-            allMarkers = allMarkers.filter(m => m !== markerToRemoveB);
-        }
 
-        // Remove line
-        const lineToRemove = allLines.find((l) =>
-            l.getLatLngs().some(
-                (latlng) =>
-                    (latlng.lat.toFixed(5) === distanceToRemove.startLat &&
-                        latlng.lng.toFixed(5) === distanceToRemove.startLng) ||
-                    (latlng.lat.toFixed(5) === distanceToRemove.endLat &&
-                        latlng.lng.toFixed(5) === distanceToRemove.endLng)
-            )
-        );
-
-        if (lineToRemove) {
-            map.removeLayer(lineToRemove);
-            allLines = allLines.filter(l => l !== lineToRemove);
-        }
-
-        // Update total distance
+        // Aggiorna total distance
         totalDistance -= parseFloat(distanceToRemove.distanceFormatted);
         document.getElementById("totalKm").textContent = totalDistance.toFixed(2);
 
-        // Remove from data array
-        const index = distanceData.findIndex((d) => d.id == idToRemove);
-        if (index > -1) {
-            distanceData.splice(index, 1);
-        }
+        // Rimuovi dall'array dei dati
+        distanceData.splice(index, 1);
 
         updateDistanceList();
+        saveMapData(); // <--- SALVA DOPO LA RIMOZIONE
     }
 });
 
@@ -487,8 +639,11 @@ map.on('click', () => {
     }
 });
 
-// Initialize
-updateDistanceList();
+// Initialize and Load Data
+if (!loadMapData()) {
+    // Se non ci sono dati salvati, inizializza normalmente
+    updateDistanceList();
+}
 updateActivePresetColor();
 
 // Validate hex color input
