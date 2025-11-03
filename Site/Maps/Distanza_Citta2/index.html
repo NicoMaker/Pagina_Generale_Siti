@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calcolatore Distanze - Mappa Interattiva</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="icon" type="image/png" href="https://tse2.mm.bing.net/th/id/OIP.hNtCoGK55lY3Icxf7ojWXAHaEK?rs=1&pid=ImgDetMain&o=7&rm=3">
+</head>
+
+<body>
+    <div class="app-container">
+        <button class="sidebar-toggle" id="sidebarToggle">
+            <i class="fas fa-bars"></i>
+        </button>
+
+        <div class="sidebar" id="sidebar">
+            <div class="app-header">
+                <h1 class="app-title">Calcolatore Distanze</h1>
+                <p class="app-subtitle">Mappa Interattiva</p>
+            </div>
+
+            <div class="instructions">
+                <i class="fas fa-info-circle"></i>
+                Clicca sulla mappa per posizionare due marker e calcolare la distanza tra di essi.
+            </div>
+
+            <!-- Color Picker Section -->
+            <div class="controls-section">
+                <h3 class="section-title">
+                    <i class="fas fa-palette"></i>
+                    Personalizzazione
+                </h3>
+                <div class="color-picker-container">
+                    <label for="lineColor" class="color-label">Colore Linea:</label>
+                    <div class="color-input-group">
+                        <input type="color" id="lineColor" value="#667eea" class="color-picker">
+                        <input type="text" id="colorHex" value="#667eea" class="color-hex" maxlength="7">
+                    </div>
+                    <div class="preset-colors">
+                        <div class="preset-color" data-color="#667eea" style="background: #667eea;" title="Blu"></div>
+                        <div class="preset-color" data-color="#FF6B6B" style="background: #FF6B6B;" title="Rosso"></div>
+                        <div class="preset-color" data-color="#4ECDC4" style="background: #4ECDC4;" title="Turchese">
+                        </div>
+                        <div class="preset-color" data-color="#45B7D1" style="background: #45B7D1;" title="Azzurro">
+                        </div>
+                        <div class="preset-color" data-color="#96CEB4" style="background: #96CEB4;" title="Verde"></div>
+                        <div class="preset-color" data-color="#FFEAA7" style="background: #FFEAA7;" title="Giallo">
+                        </div>
+                        <div class="preset-color" data-color="#DDA0DD" style="background: #DDA0DD;" title="Viola"></div>
+                        <div class="preset-color" data-color="#F7DC6F" style="background: #F7DC6F;" title="Oro"></div>
+                    </div>
+                </div>
+
+                <div class="route-options">
+                    <label class="checkbox-container">
+                        <input type="checkbox" id="showIntermediatePlaces" checked>
+                        <span class="checkmark"></span>
+                        Mostra luoghi intermedi
+                    </label>
+                    <label class="checkbox-container">
+                        <input type="checkbox" id="animatedLines" checked>
+                        <span class="checkmark"></span>
+                        Linee animate
+                    </label>
+                </div>
+            </div>
+
+            <div class="controls-section">
+                <h3 class="section-title">
+                    <i class="fas fa-cog"></i>
+                    Controlli
+                </h3>
+                <div class="btn-group">
+                    <button class="btn btn-danger" id="resetButton">
+                        <i class="fas fa-trash-alt"></i>
+                        Reset
+                    </button>
+                    <button class="btn btn-success" id="exportCSV">
+                        <i class="fas fa-download"></i>
+                        CSV
+                    </button>
+                    <button class="btn btn-primary btn-full" id="saveMap">
+                        <i class="fas fa-camera"></i>
+                        Salva Mappa
+                    </button>
+                </div>
+            </div>
+
+            <div class="total-distance">
+                <div class="total-label">Distanza Totale</div>
+                <div class="total-value">
+                    <i class="fas fa-route"></i>
+                    <span id="totalKm">0</span> km
+                </div>
+            </div>
+
+            <div class="controls-section">
+                <h3 class="section-title">
+                    <i class="fas fa-list"></i>
+                    Distanze Calcolate
+                </h3>
+                <div class="distance-list" id="distanceList">
+                    <div class="empty-state">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <p>Nessuna distanza calcolata</p>
+                        <small>Inizia cliccando sulla mappa</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="map"></div>
+    </div>
+
+    <!-- Loading overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner">
+            <i class="fas fa-map-marked-alt"></i>
+            <p>Caricamento luoghi intermedi...</p>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-image/leaflet-image.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
