@@ -72,7 +72,7 @@ function checkMaintenanceDue(maintenance, currentKm) {
     let kmUntil = null;
 
     // Check date
-    if (daysUntil <= maintenance.notifyDaysBefore && daysUntil > 0) {
+    if (daysUntil <= maintenance.notifyDaysBefore && daysUntil > 1) {
         isDue = true;
         reason = `Scadenza tra ${daysUntil} giorni`;
     } else if (daysUntil === 0) {
@@ -80,10 +80,11 @@ function checkMaintenanceDue(maintenance, currentKm) {
         reason = `Scade oggi`;
     } else if (daysUntil === 1) {
         isDue = true;
-        reason = `Scade domani`;
+        reason = `Scade domani`; // o "Scadenza tra 1 giorno"
     } else if (daysUntil < 0) {
         isDue = true;
-        reason = `Scaduto da ${Math.abs(daysUntil)} giorni`;
+        const daysOverdue = Math.abs(daysUntil);
+        reason = `Scaduto da ${daysOverdue} ${daysOverdue === 1 ? ' giorno' : ' giorni'}`;
     }
 
     // Check km if applicable
@@ -423,7 +424,7 @@ function handleViewDetails(vehicleId) {
                                 <span>Scadenza: ${formatDate(maintenance.dueDate)}</span>
                                 ${!maintenance.completed ? `
                                     <span class="${isOverdue ? 'text-overdue' : 'text-normal'}">
-                                        (${check.daysUntil >= 0 ? `tra ${check.daysUntil} giorni` : `scaduto da ${Math.abs(check.daysUntil)} giorni`})
+                                        (${check.daysUntil >= 0 ? `tra ${check.daysUntil} giorni` : `scaduto da ${Math.abs(check.daysUntil)} ${Math.abs(check.daysUntil) === 1 ? 'giorno' : 'giorni'}`})
                                     </span>
                                 ` : ''}
                             </div>
