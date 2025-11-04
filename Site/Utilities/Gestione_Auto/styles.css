@@ -254,6 +254,11 @@ body {
   margin-top: 0.25rem;
 }
 
+.alert-actions {
+  margin-left: auto; /* Spinge il pulsante a destra */
+  flex-shrink: 0;
+}
+
 /* --- VEHICLES SECTION --- */
 .vehicles-section-header {
   display: flex;
@@ -365,24 +370,18 @@ body {
 }
 
 .btn-icon.btn-danger {
+  color: var(
+    --accent-danger
+  ); /* Imposta il colore rosso di default per l'icona */
   font-size: 1.4rem; /* Aumenta la dimensione dell'icona del cestino */
-}
-
-/* Stile specifico per l'icona del cestino */
-.btn-icon.btn-danger .fa-trash {
-  color: var(--accent-danger);
-  transition: color 0.3s ease, transform 0.3s ease;
 }
 
 .btn-icon.btn-danger:hover {
   background-color: var(
     --accent-danger
   ); /* Sfondo rosso al passaggio del mouse */
+  color: white; /* L'icona diventa bianca per contrasto */
   transform: scale(1.25); /* Ingrandisce di più al passaggio del mouse */
-}
-
-.btn-icon.btn-danger:hover .fa-trash {
-  color: white; /* Icona bianca per un contrasto migliore */
 }
 
 .btn-icon.btn-secondary {
@@ -442,6 +441,15 @@ body {
 
 .btn-danger:hover {
   background-color: var(--accent-danger-hover);
+}
+
+.btn-success {
+  background-color: var(--accent-success);
+  color: white;
+}
+
+.btn-success:hover {
+  background-color: #2f855a; /* Una tonalità più scura di verde */
 }
 
 .btn-sm {

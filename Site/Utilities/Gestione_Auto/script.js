@@ -284,7 +284,12 @@ function renderAlerts() {
             <div class="alert-message-content">
                 <strong>${alert.vehicle.brand} ${alert.vehicle.model}: ${alert.maintenance.type}</strong>
                 <p>Scadenza: ${formattedDate} (${alert.reason})</p>
-                <small>Clicca per i dettagli e completare l'azione.</small>
+                    <small>Clicca sulla card per i dettagli.</small>
+                </div>
+                <div class="alert-actions">
+                    <button class="btn btn-sm btn-success" onclick="event.stopPropagation(); handleMarkCompleteFromAlert('${alert.maintenance.id}')">
+                        <i class="fas fa-check"></i> Completa
+                    </button>
             </div>
         `;
         alertsContainerEl.appendChild(alertMessage);
@@ -532,6 +537,24 @@ function handleMarkComplete(index) {
 
     saveMaintenance(updatedMaintenance);
     loadData();
+}
+
+/**
+ * Segna una manutenzione come completata direttamente da un avviso.
+ * @param {string} maintenanceId - L'ID della manutenzione da completare.
+ */
+function handleMarkCompleteFromAlert(maintenanceId) {
+    const maintenance = maintenances.find(m => m.id === maintenanceId);
+    if (!maintenance || maintenance.completed) return;
+
+    const updatedMaintenance = {
+        ...maintenance,
+        completed: true,
+        completedAt: new Date().toISOString()
+    };
+
+    saveMaintenance(updatedMaintenance);
+    loadData(); // Ricarica tutti i dati per aggiornare l'interfaccia
 }
 
 function handleUpdateKm() {
