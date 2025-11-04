@@ -321,8 +321,8 @@ function renderVehicles() {
                     </div>
                 </div>
                 <div class="vehicle-header-actions">
-                    <button class="btn-icon btn-secondary" onclick="handleViewDetails('${vehicle.id}')" aria-label="Dettagli Veicolo">
-                        <i class="fas fa-search"></i>
+                    <button class="btn-icon btn-secondary" onclick="handleEditVehicle('${vehicle.id}')" aria-label="Modifica Veicolo">
+                        <i class="fas fa-pencil-alt"></i>
                     </button>
                     <button class="btn-icon btn-danger" onclick="handleDeleteVehicle('${vehicle.id}')" aria-label="Elimina Veicolo">
                         <i class="fas fa-trash"></i>
@@ -594,23 +594,6 @@ document.getElementById('btnCloseDetails').addEventListener('click', () => {
     currentVehicle = null;
 });
 
-document.getElementById('btnEditVehicle').addEventListener('click', () => {
-    if (!currentVehicle) return;
-
-    // Close details dialog
-    dialogVehicleDetailsEl.classList.remove('show');
-
-    // Open edit vehicle dialog
-    document.getElementById('dialogAddVehicleTitle').textContent = 'Modifica Veicolo';
-    document.getElementById('brand').value = currentVehicle.brand;
-    document.getElementById('model').value = currentVehicle.model;
-    document.getElementById('plate').value = currentVehicle.plate;
-    document.getElementById('year').value = currentVehicle.year;
-    document.getElementById('currentKm').value = currentVehicle.currentKm || 0;
-
-    dialogAddVehicleEl.classList.add('show');
-});
-
 document.getElementById('btnUpdateKm').addEventListener('click', handleUpdateKm);
 
 // Form submissions
@@ -748,3 +731,21 @@ loadData();
 
 // Check every 5 minutes
 setInterval(checkMaintenancesAndNotify, 5 * 60 * 1000);
+
+/**
+ * Apre il dialogo di modifica per un veicolo specifico.
+ * @param {string} vehicleId - L'ID del veicolo da modificare.
+ */
+function handleEditVehicle(vehicleId) {
+    const vehicle = vehicles.find(v => v.id === vehicleId);
+    if (!vehicle) return;
+
+    currentVehicle = vehicle;
+    document.getElementById('dialogAddVehicleTitle').textContent = 'Modifica Veicolo';
+    document.getElementById('brand').value = vehicle.brand;
+    document.getElementById('model').value = vehicle.model;
+    document.getElementById('plate').value = vehicle.plate;
+    document.getElementById('year').value = vehicle.year;
+    document.getElementById('currentKm').value = vehicle.currentKm || 0;
+    dialogAddVehicleEl.classList.add('show');
+}
