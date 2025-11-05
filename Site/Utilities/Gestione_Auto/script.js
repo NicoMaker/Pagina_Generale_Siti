@@ -200,9 +200,15 @@ let currentMaintenance = null;
 
 // DOM References
 const totalVehiclesEl = document.getElementById('totalVehicles');
+const totalVehiclesLabelEl = document.getElementById('totalVehiclesLabel');
 const totalMaintenancesEl = document.getElementById('totalMaintenances');
+const totalMaintenancesLabelEl = document.getElementById('totalMaintenancesLabel');
 const activeAlertsEl = document.getElementById('activeAlerts');
+const activeAlertsLabelEl = document.getElementById('activeAlertsLabel');
+
 const alertsIconEl = document.getElementById('alertsIcon');
+
+
 const alertsSectionEl = document.getElementById('alertsSection');
 const alertsContainerEl = document.getElementById('alertsContainer');
 const vehiclesContainerEl = document.getElementById('vehiclesContainer');
@@ -239,6 +245,11 @@ function renderStats() {
     totalVehiclesEl.textContent = vehicles.length;
     totalMaintenancesEl.textContent = maintenances.length;
     activeAlertsEl.textContent = alerts.length;
+
+    // Aggiorna le etichette per singolare/plurale
+    totalVehiclesLabelEl.textContent = vehicles.length === 1 ? 'Veicolo Totale' : 'Veicoli Totali';
+    totalMaintenancesLabelEl.textContent = maintenances.length === 1 ? 'Manutenzione' : 'Manutenzioni';
+    activeAlertsLabelEl.textContent = alerts.length === 1 ? 'Scadenza Attiva' : 'Scadenze Attive';
 
     // Update alerts icon
     if (alerts.length > 0) {
