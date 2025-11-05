@@ -1,225 +1,176 @@
 <!DOCTYPE html>
 <html lang="it">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Organizzatore di Note</title>
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
-    />
-    <link rel="stylesheet" href="styles.css" />
-    </head>
-  <body>
-    <div class="app-container">
-      <header class="app-header">
-        <div class="header-content">
-          <div class="logo-section">
-            <h1>📝 Note Organizer</h1>
-          </div>
-          <button id="theme-toggle" class="theme-btn">🌙</button>
-        </div>
-        <div class="search-container">
-          <span class="search-icon">🔍</span>
-          <input
-            type="text"
-            id="search-input"
-            placeholder="Cerca nelle tue note..."
-          />
-        </div>
-      </header>
 
-      <main class="app-content">
-        <aside class="sidebar">
-          <h2>📊 Categorie</h2>
-          <div id="tag-list"></div>
-        </aside>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Organizzatore di Note</title>
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
 
-        <section class="notes-container">
-          <div class="notes-header">
-            <h2>✨ Le mie note</h2>
-            <div class="notes-actions">
-              <button id="add-note-btn" class="primary-button">
-                <span>➕</span>
-                <span>Nuova nota</span>
+<body>
+  <div class="app-container">
+    <header class="app-header">
+      <div class="header-content">
+        <div class="logo-section">
+          <h1>📝 Note Organizer</h1>
+        </div>
+        <button id="theme-toggle" class="theme-btn">🌙</button>
+      </div>
+      <div class="search-container">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="search-input" placeholder="Cerca nelle tue note..." />
+      </div>
+    </header>
+
+    <main class="app-content">
+      <aside class="sidebar">
+        <h2>📊 Categorie</h2>
+        <div id="tag-list"></div>
+      </aside>
+
+      <section class="notes-container">
+        <div class="notes-header">
+          <h2>✨ Le mie note</h2>
+          <div class="notes-actions">
+            <button id="add-note-btn" class="primary-button">
+              <span style="color: white;">+</span>
+              <span>Nuova nota</span>
+            </button>
+
+            <div class="delete-dropdown">
+              <button class="dropdown-toggle" id="delete-dropdown-btn">
+                <span>🗑️</span>
+                <span>Opzioni Elimina</span>
+                <span>▼</span>
               </button>
-
-              <div class="delete-dropdown">
-                <button class="dropdown-toggle" id="delete-dropdown-btn">
+              <div class="dropdown-menu" id="delete-menu">
+                <div class="dropdown-item danger" data-action="delete-all">
                   <span>🗑️</span>
-                  <span>Opzioni Elimina</span>
-                  <span>▼</span>
-                </button>
-                <div class="dropdown-menu" id="delete-menu">
-                  <div class="dropdown-item danger" data-action="delete-all">
-                    <span>🗑️</span>
-                    <span>Elimina tutte le note</span>
-                  </div>
-                  <div
-                    class="dropdown-item danger"
-                    data-action="delete-all-completed"
-                  >
-                    <span>✅</span>
-                    <span>Elimina tutte le complete</span>
-                  </div>
-                  <div
-                    class="dropdown-item danger"
-                    data-action="delete-filtered"
-                  >
-                    <span>🔍</span>
-                    <span>Elimina note filtrate</span>
-                  </div>
-                  <div
-                    class="dropdown-item danger"
-                    data-action="delete-filtered-completed"
-                  >
-                    <span>🎯</span>
-                    <span>Elimina complete filtrate</span>
-                  </div>
+                  <span>Elimina tutte le note</span>
+                </div>
+                <div class="dropdown-item danger" data-action="delete-all-completed">
+                  <span>✅</span>
+                  <span>Elimina tutte le complete</span>
+                </div>
+                <div class="dropdown-item danger" data-action="delete-filtered">
+                  <span>🔍</span>
+                  <span>Elimina note filtrate</span>
+                </div>
+                <div class="dropdown-item danger" data-action="delete-filtered-completed">
+                  <span>🎯</span>
+                  <span>Elimina complete filtrate</span>
                 </div>
               </div>
+            </div>
 
-              <div class="delete-dropdown">
-                <button
-                  class="dropdown-toggle"
-                  id="data-dropdown-btn"
-                  style="
+            <div class="delete-dropdown">
+              <button class="dropdown-toggle" id="data-dropdown-btn" style="
                     background: linear-gradient(
                       135deg,
                       #10b981 0%,
                       #059669 100%
                     );
-                  "
-                >
-                  <span>🔄</span>
-                  <span>Dati</span>
-                  <span>▼</span>
-                </button>
-                <div class="dropdown-menu" id="data-menu">
-                  <label for="import-file-input" class="dropdown-item">
-                    <span>📥</span>
-                    <span>Importa note da file</span>
-                    <input
-                      type="file"
-                      id="import-file-input"
-                      accept=".json, .txt"
-                      style="display: none"
-                    />
-                  </label>
-                  <div class="dropdown-item" id="export-json-btn">
-                    <span>📤</span>
-                    <span>Esporta in JSON</span>
-                  </div>
-                  <div class="dropdown-item" id="export-txt-btn">
-                    <span>📄</span>
-                    <span>Esporta in TXT</span>
-                  </div>
+                  ">
+                <span>🔄</span>
+                <span>Dati</span>
+                <span>▼</span>
+              </button>
+              <div class="dropdown-menu" id="data-menu">
+                <label for="import-file-input" class="dropdown-item">
+                  <span>📥</span>
+                  <span>Importa note da file</span>
+                  <input type="file" id="import-file-input" accept=".json, .txt" style="display: none" />
+                </label>
+                <div class="dropdown-item" id="export-json-btn">
+                  <span>📤</span>
+                  <span>Esporta in JSON</span>
+                </div>
+                <div class="dropdown-item" id="export-txt-btn">
+                  <span>📄</span>
+                  <span>Esporta in TXT</span>
                 </div>
               </div>
             </div>
           </div>
+        </div>
 
-          <div id="notes-summary-card" class="summary-card hidden">
-            <div id="summary-text" class="summary-text"></div>
-            <div class="progress-bar-container">
-              <div class="progress-bar">
-                <div id="progress-fill" class="progress-fill"></div>
-              </div>
-              <span id="progress-emoji" class="progress-emoji"></span>
+        <div id="notes-summary-card" class="summary-card hidden">
+          <div id="summary-text" class="summary-text"></div>
+          <div class="progress-bar-container">
+            <div class="progress-bar">
+              <div id="progress-fill" class="progress-fill"></div>
             </div>
+            <span id="progress-emoji" class="progress-emoji"></span>
           </div>
+        </div>
 
-          <div id="notes-grid" class="notes-grid"></div>
-        </section>
-      </main>
+        <div id="notes-grid" class="notes-grid"></div>
+      </section>
+    </main>
 
-      <div id="modal-overlay" class="modal-overlay"></div>
+    <div id="modal-overlay" class="modal-overlay"></div>
 
-      <div id="note-modal" class="modal">
-        <div style="padding: 2rem">
-          <h3 id="modal-title">✏️ Aggiungi nota</h3>
-          <div style="margin-top: 1.5rem">
-            <input
-              type="text"
-              id="note-title"
-              placeholder="Titolo..."
-            />
-            <textarea
-              id="note-content"
-              placeholder="Contenuto..."
-            ></textarea>
-            <input
-              type="text"
-              id="note-tags"
-              placeholder="Tag (separati da virgola)..."
-            />
-            
+    <div id="note-modal" class="modal">
+      <div style="padding: 2rem">
+        <h3 id="modal-title">✏️ Aggiungi nota</h3>
+        <div style="margin-top: 1.5rem">
+          <input type="text" id="note-title" placeholder="Titolo..." />
+          <textarea id="note-content" placeholder="Contenuto..."></textarea>
+          <input type="text" id="note-tags" placeholder="Tag (separati da virgola)..." />
+
+          <label class="modal-check-label">
+            <input type="checkbox" id="is-task" />
+            <span>È un impegno da completare</span>
+          </label>
+          <div id="task-completed-container" class="hidden">
             <label class="modal-check-label">
-              <input type="checkbox" id="is-task" />
-              <span>È un impegno da completare</span>
+              <input type="checkbox" id="is-completed" />
+              <span>Impegno completato</span>
             </label>
-            <div id="task-completed-container" class="hidden">
-              <label class="modal-check-label">
-                <input type="checkbox" id="is-completed" />
-                <span>Impegno completato</span>
-              </label>
-            </div>
           </div>
-          <div
-            style="
+        </div>
+        <div style="
               display: flex;
               gap: 1rem;
               margin-top: 1.5rem;
               justify-content: flex-end;
-            "
-          >
-            <button
-              id="delete-note"
-              class="primary-button hidden"
-              style="background: var(--danger-gradient); margin-right: auto"
-            >
-              🗑️ Elimina
-            </button>
-            <button
-              id="close-modal"
-              class="primary-button"
-              style="background: var(--action-color)"
-            >
-              Annulla
-            </button>
-            <button id="save-note" class="primary-button">💾 Salva</button>
-          </div>
+            ">
+          <button id="delete-note" class="primary-button hidden"
+            style="background: var(--danger-gradient); margin-right: auto">
+            🗑️ Elimina
+          </button>
+          <button id="close-modal" class="primary-button" style="background: var(--action-color)">
+            Annulla
+          </button>
+          <button id="save-note" class="primary-button">💾 Salva</button>
         </div>
-      </div>
-
-      <div id="confirm-modal" class="modal">
-        <div style="padding: 2rem; text-align: center">
-          <h3>⚠️ Conferma eliminazione</h3>
-          <p id="confirm-message" style="margin: 1.5rem 0"></p>
-          <div style="display: flex; gap: 1rem; justify-content: center">
-            <button
-              id="cancel-delete"
-              class="primary-button"
-              style="background: var(--action-color)"
-            >
-              Annulla
-            </button>
-            <button
-              id="confirm-delete"
-              class="primary-button"
-              style="background: var(--danger-gradient)"
-            >
-              🗑️ Elimina
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <div id="toast" class="toast">
-        <div id="toast-message"></div>
       </div>
     </div>
 
-    <script src="script.js"></script>
-  </body>
+    <div id="confirm-modal" class="modal">
+      <div style="padding: 2rem; text-align: center">
+        <h3>⚠️ Conferma eliminazione</h3>
+        <p id="confirm-message" style="margin: 1.5rem 0"></p>
+        <div style="display: flex; gap: 1rem; justify-content: center">
+          <button id="cancel-delete" class="primary-button" style="background: var(--action-color)">
+            Annulla
+          </button>
+          <button id="confirm-delete" class="primary-button" style="background: var(--danger-gradient)">
+            🗑️ Elimina
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="toast" class="toast">
+      <div id="toast-message"></div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+
 </html>
