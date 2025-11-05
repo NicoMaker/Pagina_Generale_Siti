@@ -816,10 +816,6 @@ loadData();
 // Check every 5 minutes
 setInterval(checkMaintenancesAndNotify, 5 * 60 * 1000);
 
-/**
- * Apre il dialogo di modifica per un veicolo specifico.
- * @param {string} vehicleId - L'ID del veicolo da modificare.
- */
 function handleEditVehicle(vehicleId) {
     const vehicle = vehicles.find(v => v.id === vehicleId);
     if (!vehicle) return;
