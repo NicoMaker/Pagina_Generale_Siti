@@ -128,22 +128,26 @@ function checkAllMaintenances(vehicles, maintenances) {
 }
 
 function requestNotificationPermission() {
-    if (!('Notification' in window)) {
-        console.log('Browser non supporta le notifiche');
+    if ('Notification' in window) {
+        // Se il permesso non è né concesso né negato, lo chiediamo.
+        if (Notification.permission !== 'granted' && Notification.permission !== 'denied') {
+            Notification.requestPermission().then(permission => {
+                if (permission === 'granted') {
+                    console.log('Permesso per le notifiche concesso.');
+                    // Mostra una notifica di benvenuto
+                    showBrowserNotification('Notifiche Abilitate', 'Riceverai avvisi per le manutenzioni in scadenza.');
+                } else {
+                    console.log('Permesso per le notifiche negato.');
+                }
+            });
+        }
+        // Se il permesso è già concesso, restituisce true.
+        return Notification.permission === 'granted';
+    } else {
+        // Se il browser non supporta le notifiche.
+        console.log('Questo browser non supporta le notifiche desktop.');
         return false;
     }
-
-    if (Notification.permission === 'granted') {
-        return true;
-    }
-
-    if (Notification.permission !== 'denied') {
-        Notification.requestPermission().then(permission => {
-            return permission === 'granted';
-        });
-    }
-
-    return false;
 }
 
 function showBrowserNotification(title, body) {
@@ -754,18 +758,22 @@ function checkMaintenancesAndNotify() {
     const maintenancesData = getMaintenances();
 
     const alertsData = checkAllMaintenances(vehiclesData, maintenancesData);
-    alerts = alertsData;
+    alerts = alertsData; // Aggiorna lo stato globale degli alert
 
     if (alertsData.length > 0) {
+        // Usiamo un nuovo Set per tenere traccia degli alert già notificati in questa sessione
         const newNotifiedAlerts = new Set(notifiedAlerts);
+
         alertsData.forEach(alert => {
+            // Creiamo un ID univoco per ogni alert di manutenzione
             const alertId = `${alert.vehicle.id}-${alert.maintenance.id}`;
+            // Se non abbiamo ancora notificato questo alert, lo facciamo
             if (!notifiedAlerts.has(alertId)) {
                 showBrowserNotification(
                     `Manutenzione in scadenza: ${alert.vehicle.brand} ${alert.vehicle.model}`,
                     `${alert.maintenance.type} - ${alert.reason}`
                 );
-                newNotifiedAlerts.add(alertId);
+                newNotifiedAlerts.add(alertId); // Aggiungiamo l'ID al set per non notificarlo di nuovo
             }
         });
         notifiedAlerts = newNotifiedAlerts;
