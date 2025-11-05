@@ -507,6 +507,14 @@ function handleDeleteMaintenance(maintenanceId) {
     );
 }
 
+function showAlertDialog(title, message) {
+    // Usa il dialog di conferma esistente per mostrare un avviso
+    document.getElementById('confirmDialogTitle').textContent = title;
+    document.getElementById('confirmDialogMessage').textContent = message;
+    document.getElementById('btnConfirmAction').style.display = 'none'; // Nasconde il pulsante di conferma
+    document.getElementById('btnCancelConfirm').textContent = 'OK'; // Cambia il testo del pulsante di annullamento
+    dialogConfirmEl.classList.add('show');
+}
 function handleToggleComplete(maintenanceId) {
     const maintenance = maintenances.find(m => m.id === maintenanceId);
     if (!maintenance) return;
@@ -618,6 +626,19 @@ document.getElementById('btnCloseDetails').addEventListener('click', () => {
     currentVehicle = null;
 });
 
+document.getElementById('btnEditVehicleFromDetails').addEventListener('click', () => {
+    if (!currentVehicle) return;
+
+    // Chiudi il dialog dei dettagli
+    dialogVehicleDetailsEl.classList.remove('show');
+
+    // Apri il dialog di modifica dopo una breve attesa per una transizione fluida
+    setTimeout(() => {
+        handleEditVehicle(currentVehicle.id);
+    }, 200);
+});
+
+
 document.getElementById('btnUpdateKm').addEventListener('click', handleUpdateKm);
 
 // Form submissions
@@ -634,7 +655,7 @@ formAddVehicleEl.addEventListener('submit', (e) => {
     );
 
     if (isDuplicate) {
-        alert('Errore: La targa inserita è già associata a un altro veicolo.');
+        showAlertDialog('Errore: Targa Duplicata', 'La targa inserita è già associata a un altro veicolo. Controlla e riprova.');
         plateInput.focus();
         return; // Interrompe il salvataggio
     }
@@ -716,6 +737,11 @@ function setupDialogCloseHandlers() {
     dialogs.forEach(dialog => {
         dialog.addEventListener('click', (e) => {
             if (e.target === dialog) {
+                // Resetta lo stile del dialog di conferma quando viene chiuso
+                if (dialog === dialogConfirmEl) {
+                    document.getElementById('btnConfirmAction').style.display = 'inline-flex';
+                    document.getElementById('btnCancelConfirm').textContent = 'Annulla';
+                }
                 dialog.classList.remove('show');
             }
         });
