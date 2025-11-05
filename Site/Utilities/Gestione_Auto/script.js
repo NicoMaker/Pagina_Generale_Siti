@@ -624,6 +624,21 @@ document.getElementById('btnUpdateKm').addEventListener('click', handleUpdateKm)
 formAddVehicleEl.addEventListener('submit', (e) => {
     e.preventDefault();
 
+    const plateInput = document.getElementById('plate');
+    const newPlate = plateInput.value.toUpperCase().trim();
+
+    // Controlla se la targa esiste già per un altro veicolo
+    const allVehicles = getVehicles();
+    const isDuplicate = allVehicles.some(
+        (v) => v.plate === newPlate && v.id !== (currentVehicle ? currentVehicle.id : null)
+    );
+
+    if (isDuplicate) {
+        alert('Errore: La targa inserita è già associata a un altro veicolo.');
+        plateInput.focus();
+        return; // Interrompe il salvataggio
+    }
+
     const vehicle = {
         brand: document.getElementById('brand').value,
         model: document.getElementById('model').value,
