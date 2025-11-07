@@ -919,3 +919,28 @@ body {
   color: white;
   border-color: var(--accent-primary);
 }
+
+/* --- LAYOUT BOTTONI NEI MODALI (MOBILE) --- */
+
+/* Assicura che i bottoni siano affiancati sul desktop e con un piccolo spazio */
+.dialog-footer {
+  display: flex;
+  justify-content: flex-end; /* Allinea a destra */
+  gap: 0.75rem; /* Spazio tra i bottoni */
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-color);
+}
+
+/* Regole per schermi piccoli (es. smartphone) */
+@media (max-width: 600px) {
+  .dialog-footer {
+    /* Impila i bottoni verticalmente e inverte l'ordine: */
+    /* Salva Modifiche (Primary) andrà sopra, Chiudi (Secondary) andrà sotto. */
+    flex-direction: column-reverse;
+  }
+
+  .dialog-footer button {
+    /* Rende i bottoni a larghezza piena per una migliore usabilità mobile */
+    width: 100%;
+  }
+}
