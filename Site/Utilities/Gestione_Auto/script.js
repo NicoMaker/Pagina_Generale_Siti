@@ -626,6 +626,13 @@ document.getElementById('btnCancelAddVehicle').addEventListener('click', () => {
 
 document.getElementById('btnCancelAddMaintenance').addEventListener('click', () => {
     dialogAddMaintenanceEl.classList.remove('show');
+    // Se c'è un veicolo corrente, riapri il modale dei dettagli
+    if (currentVehicle) {
+        // Usa un piccolo ritardo per consentire al dialog di chiudersi senza intoppi
+        setTimeout(() => {
+            handleViewDetails(currentVehicle.id);
+        }, 100);
+    }
 });
 
 document.getElementById('btnCancelEditMaintenance').addEventListener('click', () => {
@@ -653,6 +660,18 @@ document.getElementById('btnEditVehicleFromDetails').addEventListener('click', (
     }, 200);
 });
 
+// Event listener for "Add Maintenance" button inside Vehicle Details dialog
+document.getElementById('btnAddMaintenanceFromDetails').addEventListener('click', () => {
+    if (!currentVehicle) return;
+
+    // Close the details dialog
+    dialogVehicleDetailsEl.classList.remove('show');
+
+    // Open the add maintenance dialog after a brief delay for a smooth transition
+    setTimeout(() => {
+        handleAddMaintenance(currentVehicle.id);
+    }, 200);
+});
 
 document.getElementById('btnUpdateKm').addEventListener('click', handleUpdateKm);
 
@@ -720,6 +739,14 @@ formAddMaintenanceEl.addEventListener('submit', (e) => {
     saveMaintenance(maintenance);
     loadData();
     dialogAddMaintenanceEl.classList.remove('show');
+
+    // Se la manutenzione è stata aggiunta da un veicolo specifico, riapri i dettagli
+    if (vehicleId) {
+        // Usa un piccolo ritardo per consentire al dialog di chiudersi senza intoppi
+        setTimeout(() => {
+            handleViewDetails(vehicleId);
+        }, 100);
+    }
 });
 
 formEditMaintenanceEl.addEventListener('submit', (e) => {
