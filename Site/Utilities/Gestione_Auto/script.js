@@ -4,19 +4,7 @@ const DB_KEYS = {
     MAINTENANCES: 'maintenances'
 };
 
-// Lista centralizzata dei tipi di manutenzione
-const MAINTENANCE_TYPES = [
-    "Collaudo",
-    "Cambio Olio",
-    "Tagliando",
-    "Revisione",
-    "Cambio Gomme",
-    "Frizione",
-    "Freni",
-    "Filtri",
-    "Controllo",
-    "Altro"
-];
+let MAINTENANCE_TYPES = [];
 
 // Storage functions
 function getVehicles() {
@@ -212,6 +200,7 @@ let notifiedAlerts = new Set();
 let currentVehicle = null;
 let currentMaintenance = null;
 
+
 // DOM References
 const totalVehiclesEl = document.getElementById('totalVehicles');
 const totalVehiclesLabelEl = document.getElementById('totalVehiclesLabel');
@@ -256,6 +245,26 @@ function loadData() {
     renderAlerts();
     renderVehicles();
 }
+
+/**
+ * Carica i tipi di manutenzione dal file JSON.
+ */
+async function loadMaintenanceTypes() {
+    try {
+        const response = await fetch('maintenance_types.json');
+        if (!response.ok) {
+            throw new Error('Errore nel caricamento dei tipi di manutenzione');
+        }
+        const data = await response.json();
+        MAINTENANCE_TYPES = data.types;
+    } catch (error) {
+        console.error(error);
+        // Fallback a una lista predefinita in caso di errore
+        MAINTENANCE_TYPES = ["Collaudo", "Cambio Olio", "Tagliando", "Revisione", "Cambio Gomme", "Frizione", "Freni", "Filtri", "Controllo", "Altro"];
+        showAlertDialog('Errore di Caricamento', 'Impossibile caricare i tipi di manutenzione. Verrà usata una lista predefinita.');
+    }
+}
+
 
 /**
  * Popola i menu a tendina per la selezione del tipo di manutenzione.
@@ -869,11 +878,30 @@ if (themeToggleBtn) {
     });
 }
 
-loadData();
-populateMaintenanceTypeSelects(); // Popola i select all'avvio
+/**
+ * Inizializza l'applicazione.
+ */
+async function initializeApp() {
+    // Setup handlers che non dipendono dai dati
+    setupDialogCloseHandlers();
+    requestNotificationPermission();
 
-// Check every 5 minutes
-setInterval(checkMaintenancesAndNotify, 5 * 60 * 1000);
+    // Inizializza il tema
+    const initialTheme = getInitialTheme();
+    setTheme(initialTheme);
+
+    // Carica i dati asincroni
+    await loadMaintenanceTypes();
+
+    // Popola i select e carica i dati principali
+    populateMaintenanceTypeSelects();
+    loadData();
+
+    // Avvia i controlli periodici
+    setInterval(checkMaintenancesAndNotify, 5 * 60 * 1000);
+}
+
+initializeApp();
 
 function handleEditVehicle(vehicleId) {
     const vehicle = vehicles.find(v => v.id === vehicleId);

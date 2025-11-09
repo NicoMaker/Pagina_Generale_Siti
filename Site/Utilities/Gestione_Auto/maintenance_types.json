@@ -1,0 +1,14 @@
+{
+  "types": [
+    "Collaudo",
+    "Cambio Olio",
+    "Tagliando",
+    "Revisione",
+    "Cambio Gomme",
+    "Frizione",
+    "Freni",
+    "Filtri",
+    "Controllo",
+    "Altro"
+  ]
+}
