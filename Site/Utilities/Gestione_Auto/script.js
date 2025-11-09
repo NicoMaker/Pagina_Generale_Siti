@@ -4,6 +4,20 @@ const DB_KEYS = {
     MAINTENANCES: 'maintenances'
 };
 
+// Lista centralizzata dei tipi di manutenzione
+const MAINTENANCE_TYPES = [
+    "Collaudo",
+    "Cambio Olio",
+    "Tagliando",
+    "Revisione",
+    "Cambio Gomme",
+    "Frizione",
+    "Freni",
+    "Filtri",
+    "Controllo",
+    "Altro"
+];
+
 // Storage functions
 function getVehicles() {
     const data = localStorage.getItem(DB_KEYS.VEHICLES);
@@ -225,6 +239,8 @@ const dialogConfirmEl = document.getElementById('dialogConfirm');
 const formAddVehicleEl = document.getElementById('formAddVehicle');
 const formAddMaintenanceEl = document.getElementById('formAddMaintenance');
 const formEditMaintenanceEl = document.getElementById('formEditMaintenance');
+const typeSelectEl = document.getElementById('type');
+const editTypeSelectEl = document.getElementById('editType');
 
 // Buttons
 const btnAddVehicleEl = document.getElementById('btnAddVehicle');
@@ -239,6 +255,21 @@ function loadData() {
     renderStats();
     renderAlerts();
     renderVehicles();
+}
+
+/**
+ * Popola i menu a tendina per la selezione del tipo di manutenzione.
+ */
+function populateMaintenanceTypeSelects() {
+    const selects = [typeSelectEl, editTypeSelectEl];
+
+    selects.forEach(select => {
+        if (!select) return;
+        select.innerHTML = '<option value="">Seleziona tipo</option>'; // Pulisce e aggiunge il placeholder
+        MAINTENANCE_TYPES.forEach(type => {
+            select.innerHTML += `<option value="${type}">${type}</option>`;
+        });
+    });
 }
 
 function renderStats() {
@@ -839,6 +870,7 @@ if (themeToggleBtn) {
 }
 
 loadData();
+populateMaintenanceTypeSelects(); // Popola i select all'avvio
 
 // Check every 5 minutes
 setInterval(checkMaintenancesAndNotify, 5 * 60 * 1000);
