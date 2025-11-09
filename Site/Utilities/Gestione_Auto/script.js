@@ -439,7 +439,7 @@ function handleViewDetails(vehicleId) {
                                 <span>Scadenza: ${formatDate(maintenance.dueDate)}</span>
                                 ${!maintenance.completed ? `
                                     <span class="${isOverdue ? 'text-overdue' : 'text-normal'}">
-                                        (${check.daysUntil >= 0 ? `tra ${check.daysUntil} giorni` : `scaduto da ${Math.abs(check.daysUntil)} ${Math.abs(check.daysUntil) === 1 ? 'giorno' : 'giorni'}`})
+                                        (${check.daysUntil >= 0 ? `tra ${check.daysUntil} ${check.daysUntil === 1 ? 'giorno' : 'giorni'}` : `scaduto da ${Math.abs(check.daysUntil)} ${Math.abs(check.daysUntil) === 1 ? 'giorno' : 'giorni'}`})
                                     </span>
                                 ` : ''}
                             </div>
