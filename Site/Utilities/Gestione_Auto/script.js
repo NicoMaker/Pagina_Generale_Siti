@@ -256,11 +256,15 @@ async function loadMaintenanceTypes() {
             throw new Error('Errore nel caricamento dei tipi di manutenzione');
         }
         const data = await response.json();
-        MAINTENANCE_TYPES = data.types;
+        // Ordina i tipi di manutenzione in ordine alfabetico
+        MAINTENANCE_TYPES = data.types.sort((a, b) => a.localeCompare(b));
     } catch (error) {
         console.error(error);
         // Fallback a una lista predefinita in caso di errore
-        MAINTENANCE_TYPES = ["Collaudo", "Cambio Olio", "Tagliando", "Revisione", "Cambio Gomme", "Frizione", "Freni", "Filtri", "Controllo", "Altro"];
+        MAINTENANCE_TYPES = [
+            "Collaudo", "Cambio Olio", "Tagliando", "Revisione", "Cambio Gomme",
+            "Frizione", "Freni", "Filtri", "Controllo", "Altro"
+        ].sort((a, b) => a.localeCompare(b));
         showAlertDialog('Errore di Caricamento', 'Impossibile caricare i tipi di manutenzione. Verrà usata una lista predefinita.');
     }
 }
