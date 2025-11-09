@@ -89,7 +89,7 @@ function checkMaintenanceDue(maintenance, currentKm) {
 
     // Check km if applicable
     if (maintenance.dueKm && currentKm) {
-        kmUntil = maintenance.dueKm - currentKm;
+        kmUntil = maintenance.dueKm - (currentKm || 0);
         if (kmUntil <= 1000 && kmUntil >= 0) {
             isDue = true;
             reason = reason ? `${reason} e ${kmUntil} km` : `Mancano ${kmUntil} km`;
