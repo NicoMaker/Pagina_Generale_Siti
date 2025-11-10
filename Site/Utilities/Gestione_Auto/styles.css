@@ -944,3 +944,181 @@ body {
     width: 100%;
   }
 }
+
+/* --- STILE CHECKBOX CUSTOM (SWITCH) --- */
+
+.form-group-checkbox {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.form-group-checkbox label {
+    margin-left: 0.5rem;
+    cursor: pointer;
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+/* Stile per il gruppo dello switch */
+.custom-switch-group {
+    padding: 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    background-color: var(--bg-secondary);
+    box-shadow: var(--shadow-sm);
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+    gap: 1rem;
+}
+
+/* Nasconde l'input checkbox standard */
+.custom-switch-input {
+    display: none;
+}
+
+/* Stile del contenitore dello switch (la pillola) */
+.custom-switch-label {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; /* Sposta lo switch a destra */
+    gap: 1rem;
+    margin-left: 0;
+    flex-grow: 1; /* Permette alla label di occupare lo spazio rimanente */
+}
+
+.custom-switch-slider {
+    position: relative;
+    display: inline-block;
+    width: 100px; /* Larghezza maggiore per contenere il testo */
+    height: 34px;
+    border-radius: 17px; /* Forma a pillola */
+    background-color: var(--accent-danger); /* Colore quando è 'Non Completata' */
+    cursor: pointer;
+    transition: background-color 0.4s;
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+/* Pseudoelemento che simula il "pomello" e il testo */
+.custom-switch-slider::after {
+    content: "NON COMPLETATA"; /* Testo predefinito */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    border-radius: 17px;
+    transition: transform 0.4s;
+}
+
+/* Cambia colore e testo quando è checked (Completata) */
+.custom-switch-input:checked + .custom-switch-label .custom-switch-slider {
+    background-color: var(--accent-success); /* Colore quando è 'Completata' */
+}
+
+.custom-switch-input:checked + .custom-switch-label .custom-switch-slider::after {
+    content: "COMPLETATA"; /* Testo quando è completata */
+    transform: none; /* Rimuove eventuali trasformazioni se volessimo animarlo */
+}
+
+/* Aggiunge un po' di spazio tra il testo "Stato:" e lo switch */
+.custom-switch-label span:first-child {
+    font-size: 1.1rem;
+}
+
+/* --- STILE CHECKBOX CUSTOM (SWITCH) --- */
+
+.form-group-checkbox {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.form-group-checkbox label {
+    margin-left: 0.5rem;
+    cursor: pointer;
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+/* Stile per il gruppo dello switch */
+.custom-switch-group {
+    padding: 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg); /* Usiamo la variabile per la consistenza */
+    background-color: var(--bg-secondary);
+    box-shadow: var(--shadow-sm);
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+    gap: 1rem;
+}
+
+/* Nasconde l'input checkbox standard */
+.custom-switch-input {
+    display: none;
+}
+
+/* Stile del contenitore dello switch (la pillola) */
+.custom-switch-label {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; /* Sposta lo switch a destra */
+    gap: 1rem;
+    margin-left: 0;
+    flex-grow: 1; /* Permette alla label di occupare lo spazio rimanente */
+}
+
+.custom-switch-slider {
+    position: relative;
+    display: inline-block;
+    width: 130px; /* Aumentato leggermente la larghezza per il testo */
+    height: 34px;
+    border-radius: 17px; /* Forma a pillola */
+    background-color: var(--accent-danger); /* Colore quando è 'Non Completata' */
+    cursor: pointer;
+    transition: background-color 0.4s;
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+/* Pseudoelemento che simula il "pomello" e il testo */
+.custom-switch-slider::after {
+    /* ⭐ AGGIORNATO: Capitalizzazione pulita */
+    content: "Non Completata"; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    border-radius: 17px;
+    transition: transform 0.4s;
+}
+
+/* Cambia colore e testo quando è checked (Completata) */
+.custom-switch-input:checked + .custom-switch-label .custom-switch-slider {
+    background-color: var(--accent-success); /* Colore quando è 'Completata' */
+}
+
+.custom-switch-input:checked + .custom-switch-label .custom-switch-slider::after {
+    /* ⭐ AGGIORNATO: Capitalizzazione pulita */
+    content: "Completata"; 
+    transform: none; 
+}
+
+/* Aggiunge un po' di spazio tra il testo "Stato:" e lo switch */
+.custom-switch-label span:first-child {
+    font-size: 1.1rem;
+}

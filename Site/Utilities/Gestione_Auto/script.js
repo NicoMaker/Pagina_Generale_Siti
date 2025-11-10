@@ -65,15 +65,19 @@ function deleteMaintenance(maintenanceId) {
 
 // Notification functions
 function checkMaintenanceDue(maintenance, currentKm) {
+    // Definizione della soglia per l'alert KM (2000 km di preavviso)
+    const KM_ALERT_THRESHOLD = 2000; 
+
     const now = new Date();
     const dueDate = new Date(maintenance.dueDate);
+    // Calcola i giorni mancanti arrotondando per eccesso
     const daysUntil = Math.ceil((dueDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
 
     let isDue = false;
     let reason = '';
     let kmUntil = null;
 
-    // Check date
+    // CHECK DATA: l'alert si attiva se i giorni mancanti sono <= al preavviso impostato
     if (daysUntil <= maintenance.notifyDaysBefore && daysUntil > 1) {
         isDue = true;
         reason = `Scadenza tra ${daysUntil} giorni`;
@@ -82,22 +86,30 @@ function checkMaintenanceDue(maintenance, currentKm) {
         reason = `Scade oggi`;
     } else if (daysUntil === 1) {
         isDue = true;
-        reason = `Scade domani`; // o "Scadenza tra 1 giorno"
+        reason = `Scade domani`;
     } else if (daysUntil < 0) {
         isDue = true;
         const daysOverdue = Math.abs(daysUntil);
         reason = `Scaduto da ${daysOverdue} ${daysOverdue === 1 ? ' giorno' : ' giorni'}`;
     }
 
-    // Check km if applicable
+    // CHECK KM se applicabile
     if (maintenance.dueKm && currentKm) {
         kmUntil = maintenance.dueKm - (currentKm || 0);
-        if (kmUntil <= 1000 && kmUntil >= 0) {
+        
+        // Alert se mancano KM_ALERT_THRESHOLD o meno
+        if (kmUntil <= KM_ALERT_THRESHOLD && kmUntil >= 0) { 
             isDue = true;
-            reason = reason ? `${reason} e ${kmUntil} km` : `Mancano ${kmUntil} km`;
-        } else if (kmUntil < 0) {
+            const kmReason = `Mancano ${kmUntil.toLocaleString()} km`;
+            // Se c'era già una ragione per la data, aggiungiamo la ragione KM
+            reason = reason ? `${reason} e ${kmReason}` : kmReason;
+        } 
+        // Alert se i KM sono stati superati
+        else if (kmUntil < 0) {
             isDue = true;
-            reason = reason ? `${reason} e superato di ${Math.abs(kmUntil)} km` : `Superato di ${Math.abs(kmUntil)} km`;
+            const kmReason = `Superato di ${Math.abs(kmUntil).toLocaleString()} km`;
+            // Se c'era già una ragione per la data, aggiungiamo la ragione KM
+            reason = reason ? `${reason} e ${kmReason}` : kmReason;
         }
     }
 
@@ -306,7 +318,7 @@ function renderStats() {
 }
 
 /**
- * Renderizza gli avvisi di manutenzione in scadenza nell'interfaccia (NUOVA FUNZIONE).
+ * Renderizza gli avvisi di manutenzione in scadenza nell'interfaccia.
  */
 function renderAlerts() {
     if (alerts.length === 0) {
@@ -493,7 +505,7 @@ function handleViewDetails(vehicleId) {
                                     <span>Km: ${maintenance.dueKm.toLocaleString()}</span>
                                     ${check.kmUntil !== null && !maintenance.completed ? `
                                         <span class="${check.kmUntil < 0 ? 'text-overdue' : 'text-normal'}">
-                                            (${check.kmUntil >= 0 ? `mancano ${check.kmUntil} km` : `superato di ${Math.abs(check.kmUntil)} km`})
+                                            (${check.kmUntil >= 0 ? `mancano ${check.kmUntil.toLocaleString()} km` : `superato di ${Math.abs(check.kmUntil).toLocaleString()} km`})
                                         </span>
                                     ` : ''}
                                 </div>
@@ -532,6 +544,7 @@ function handleAddMaintenance(vehicleId) {
     // Reset form
     formAddMaintenanceEl.reset();
     document.getElementById('notifyDaysBefore').value = '7';
+    document.getElementById('maintenanceCompleted').checked = false; // Resetta il checkbox
 
     dialogAddMaintenanceEl.classList.add('show');
 }
@@ -548,6 +561,7 @@ function handleEditMaintenance(maintenanceId) {
     document.getElementById('editDueKm').value = maintenance.dueKm || '';
     document.getElementById('editNotifyDaysBefore').value = maintenance.notifyDaysBefore || 7;
     document.getElementById('editNotes').value = maintenance.notes || '';
+    document.getElementById('editMaintenanceCompleted').checked = maintenance.completed; 
 
     dialogEditMaintenanceEl.classList.add('show');
 }
@@ -681,9 +695,19 @@ document.getElementById('btnCancelAddMaintenance').addEventListener('click', () 
 
 document.getElementById('btnCancelEditMaintenance').addEventListener('click', () => {
     dialogEditMaintenanceEl.classList.remove('show');
+    // Se c'è un veicolo corrente, riapri il modale dei dettagli
+    if (currentVehicle) {
+        // Usa un piccolo ritardo per consentire al dialog di chiudersi senza intoppi
+        setTimeout(() => {
+            handleViewDetails(currentVehicle.id);
+        }, 100);
+    }
 });
 
 document.getElementById('btnCancelConfirm').addEventListener('click', () => {
+    // Resetta lo stile del dialog di conferma quando viene chiuso
+    document.getElementById('btnConfirmAction').style.display = 'inline-flex';
+    document.getElementById('btnCancelConfirm').textContent = 'Annulla';
     dialogConfirmEl.classList.remove('show');
 });
 
@@ -769,6 +793,7 @@ formAddMaintenanceEl.addEventListener('submit', (e) => {
     e.preventDefault();
 
     const vehicleId = currentVehicle ? currentVehicle.id : null;
+    const isCompleted = document.getElementById('maintenanceCompleted').checked; 
 
     const maintenance = {
         vehicleId: vehicleId,
@@ -777,7 +802,8 @@ formAddMaintenanceEl.addEventListener('submit', (e) => {
         dueKm: document.getElementById('dueKm').value ? parseInt(document.getElementById('dueKm').value) : null,
         notifyDaysBefore: parseInt(document.getElementById('notifyDaysBefore').value),
         notes: document.getElementById('notes').value,
-        completed: false
+        completed: isCompleted, 
+        completedAt: isCompleted ? new Date().toISOString() : null 
     };
 
     saveMaintenance(maintenance);
@@ -795,6 +821,8 @@ formAddMaintenanceEl.addEventListener('submit', (e) => {
 
 formEditMaintenanceEl.addEventListener('submit', (e) => {
     e.preventDefault();
+    
+    const isCompleted = document.getElementById('editMaintenanceCompleted').checked; 
 
     const maintenance = {
         ...currentMaintenance,
@@ -802,7 +830,11 @@ formEditMaintenanceEl.addEventListener('submit', (e) => {
         dueDate: document.getElementById('editDueDate').value,
         dueKm: document.getElementById('editDueKm').value ? parseInt(document.getElementById('editDueKm').value) : null,
         notifyDaysBefore: parseInt(document.getElementById('editNotifyDaysBefore').value),
-        notes: document.getElementById('editNotes').value
+        notes: document.getElementById('editNotes').value,
+        completed: isCompleted, 
+        // Logica per aggiornare completedAt solo se lo stato cambia da non completato a completato o viceversa
+        completedAt: isCompleted && !currentMaintenance.completed ? new Date().toISOString() : 
+                     !isCompleted && currentMaintenance.completed ? null : currentMaintenance.completedAt 
     };
 
     saveMaintenance(maintenance);
@@ -901,7 +933,7 @@ async function initializeApp() {
     populateMaintenanceTypeSelects();
     loadData();
 
-    // Avvia i controlli periodici
+    // Avvia i controlli periodici (5 minuti)
     setInterval(checkMaintenancesAndNotify, 5 * 60 * 1000);
 }
 

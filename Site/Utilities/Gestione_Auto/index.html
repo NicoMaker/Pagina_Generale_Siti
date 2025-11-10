@@ -13,7 +13,6 @@
 </head>
 
 <body>
-  <!-- Header -->
   <header class="header">
     <div class="container">
       <div class="header-content">
@@ -37,7 +36,6 @@
   </header>
 
   <main class="container">
-    <!-- Stats Cards -->
     <div class="stats-grid">
       <div class="stat-card">
         <div class="stat-content">
@@ -76,7 +74,6 @@
       </div>
     </div>
 
-    <!-- Alerts Section -->
     <div id="alertsSection" class="alerts-section" style="display: none">
       <div class="section-header">
         <i class="fas fa-exclamation-triangle alert-icon"></i>
@@ -85,7 +82,6 @@
       <div id="alertsContainer"></div>
     </div>
 
-    <!-- Vehicles Section -->
     <div class="vehicles-section-header">
       <h2>I Tuoi Veicoli</h2>
       <button class="btn btn-primary" id="btnAddVehicle">
@@ -107,7 +103,6 @@
     </div>
   </main>
 
-  <!-- Add Vehicle Dialog -->
   <div id="dialogAddVehicle" class="dialog-overlay">
     <div class="dialog">
       <div class="dialog-header">
@@ -152,7 +147,6 @@
     </div>
   </div>
 
-  <!-- Add Maintenance Dialog -->
   <div id="dialogAddMaintenance" class="dialog-overlay">
     <div class="dialog">
       <div class="dialog-header">
@@ -164,8 +158,7 @@
           <div class="form-group">
             <label for="type">Tipo Manutenzione</label>
             <select id="type" required>
-              <!-- Le opzioni verranno popolate da JavaScript -->
-            </select>
+              </select>
           </div>
 
           <div class="form-group">
@@ -187,7 +180,15 @@
             <label for="notes">Note (opzionale)</label>
             <input type="text" id="notes" placeholder="Aggiungi note..." />
           </div>
-        </div>
+
+          <div class="form-group-checkbox custom-switch-group">
+            <input type="checkbox" id="maintenanceCompleted" class="custom-switch-input" />
+            <label for="maintenanceCompleted" class="custom-switch-label">
+              <span>Stato: </span>
+              <span class="custom-switch-slider"></span>
+            </label>
+          </div>
+          </div>
         <div class="dialog-footer">
           <button type="button" class="btn btn-secondary" id="btnCancelAddMaintenance">
             Annulla
@@ -200,7 +201,6 @@
     </div>
   </div>
 
-  <!-- Vehicle Details Dialog -->
   <div id="dialogVehicleDetails" class="dialog-overlay">
     <div class="dialog dialog-large">
       <div class="dialog-header">
@@ -208,7 +208,6 @@
         <p class="dialog-subtitle" id="detailsVehicleInfo"></p>
       </div>
       <div class="dialog-body">
-        <!-- Update KM -->
         <div class="card update-km-card">
           <label for="updateKm">Aggiorna Chilometraggio</label>
           <div class="update-km-controls">
@@ -217,7 +216,6 @@
           </div>
         </div>
 
-        <!-- Maintenances List -->
         <div class="maintenances-list-section">
           <h3>Manutenzioni Programmate</h3>
           <div id="maintenancesList"></div>
@@ -235,7 +233,6 @@
     </div>
   </div>
 
-  <!-- Edit Maintenance Dialog -->
   <div id="dialogEditMaintenance" class="dialog-overlay">
     <div class="dialog">
       <div class="dialog-header">
@@ -246,8 +243,7 @@
           <div class="form-group">
             <label for="editType">Tipo di Manutenzione</label>
             <select id="editType" required>
-              <!-- Le opzioni verranno popolate da JavaScript -->
-            </select>
+              </select>
           </div>
 
           <div class="form-group">
@@ -269,7 +265,15 @@
             <label for="editNotes">Note (opzionale)</label>
             <input type="text" id="editNotes" placeholder="Aggiungi note..." />
           </div>
-        </div>
+
+          <div class="form-group-checkbox custom-switch-group">
+            <input type="checkbox" id="editMaintenanceCompleted" class="custom-switch-input" />
+            <label for="editMaintenanceCompleted" class="custom-switch-label">
+              <span>Stato: </span>
+              <span class="custom-switch-slider"></span>
+            </label>
+          </div>
+          </div>
         <div class="dialog-footer">
           <button type="button" class="btn btn-secondary" id="btnCancelEditMaintenance">
             Annulla
@@ -282,7 +286,6 @@
     </div>
   </div>
 
-  <!-- Confirmation Dialog -->
   <div id="dialogConfirm" class="dialog-overlay">
     <div class="dialog">
       <div class="dialog-header">
