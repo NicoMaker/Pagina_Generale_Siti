@@ -780,8 +780,26 @@ function handleMarkCompleteFromAlert(maintenanceId) {
   loadData(); // Ricarica tutti i dati per aggiornare l'interfaccia
 }
 
+// LOGICA AGGIORNATA PER IMPEDIRE KM INFERIORI AL PRECEDENTE
 function handleUpdateKm() {
-  const newKm = parseInt(document.getElementById("updateKm").value) || 0;
+  const kmInputEl = document.getElementById("updateKm");
+  const newKm = parseInt(kmInputEl.value) || 0;
+
+  // 1. Prendi il chilometraggio attuale del veicolo
+  const currentKm = currentVehicle.currentKm || 0;
+
+  // 2. Controllo: Se il nuovo KM è inferiore al KM attuale
+  if (newKm < currentKm) {
+    showAlertDialog(
+      "Errore Chilometraggio",
+      `Il nuovo chilometraggio (${newKm.toLocaleString()} km) non può essere inferiore al chilometraggio attuale registrato per il veicolo (${currentKm.toLocaleString()} km).`
+    );
+    // Non aggiornare e riporta il valore al chilometraggio attuale per evitare confusione nell'interfaccia
+    kmInputEl.value = currentKm;
+    return; // Interrompe l'esecuzione della funzione di salvataggio
+  }
+
+  // 3. Se la convalida è superata, procedi al salvataggio
   const updatedVehicle = {
     ...currentVehicle,
     currentKm: newKm,
