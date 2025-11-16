@@ -76,6 +76,7 @@ function createBoard() {
   updateScoreDisplay();
   initializeTimeline();
   updateCardButtonsState();
+  updateGameCounter();
   updateButtonStates();
 }
 
@@ -350,6 +351,7 @@ function resetGame() {
   });
 
   updateCurrentPlayerIndicator();
+  updateGameCounter();
 
   scores.rosso.yellowCards = 0;
   scores.rosso.redCards = 0;
@@ -415,6 +417,7 @@ function resetCurrentGame() {
   updateCurrentPlayerIndicator();
 
   updateCardButtonsState();
+  updateGameCounter();
 
   addTimelineEvent(
     `Partita corrente ricominciata. Continua il giocatore ${currentPlayer}.`,
@@ -553,6 +556,7 @@ function performResetStats() {
 
   updateCurrentPlayerIndicator();
   updateCardButtonsState();
+  updateGameCounter();
   updateButtonStates();
   initializeTimeline();
 
@@ -560,6 +564,12 @@ function performResetStats() {
 
   announceForScreenReader("Reset totale completato con successo");
   hideResetStatsModal();
+}
+
+function updateGameCounter() {
+  const gameCounterElement = document.getElementById("gameCounter");
+  if (gameCounterElement)
+    gameCounterElement.textContent = `Partita: #${gameCount}`;
 }
 
 confirmResetStatsButton.addEventListener("click", performResetStats);
