@@ -108,12 +108,16 @@ h3 {
   position: relative;
 }
 
-@media (min-width: 640px) {
-  .game-info {
-    flex-direction: row;
-    justify-content: center;
-    flex-wrap: wrap;
-  }
+.game-counter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(1rem, 3vw, 1.25rem);
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  background-color: white;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-md);
 }
 
 #currentPlayerContainer span {
