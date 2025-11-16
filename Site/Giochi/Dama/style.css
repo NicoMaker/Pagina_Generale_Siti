@@ -65,7 +65,6 @@ h1 {
   text-align: center;
 }
 
-/* Opzioni di gioco */
 .game-options {
   display: flex;
   justify-content: center;
@@ -86,7 +85,6 @@ h1 {
   font-weight: 500;
 }
 
-/* Switch per le opzioni */
 .switch {
   position: relative;
   display: inline-block;
@@ -348,36 +346,27 @@ input:checked + .slider:before {
   font-weight: bold;
 }
 
-.game-btn:hover {
+.game-btn:hover:not(:disabled):not(.disabled-btn) {
   transform: translateY(-3px);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
 
-.game-btn:active {
+.game-btn:active:not(:disabled):not(.disabled-btn) {
   transform: translateY(-1px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
-/* Stile per il pulsante disabilitato */
 .game-btn:disabled,
 .disabled-btn {
   opacity: 0.5;
   cursor: not-allowed;
-  transform: none !important;
-  box-shadow: none !important;
-}
-
-.game-btn:disabled:hover,
-.disabled-btn:hover {
-  transform: none !important;
-  box-shadow: none !important;
 }
 
 .restart-btn {
   background-image: linear-gradient(to bottom, #f0ad4e, #ec971f);
 }
 
-.restart-btn:hover {
+.restart-btn:hover:not(:disabled):not(.disabled-btn) {
   background-image: linear-gradient(to bottom, #ec971f, #d58512);
 }
 
@@ -385,7 +374,7 @@ input:checked + .slider:before {
   background-image: linear-gradient(to bottom, #5a7eb9, #4a6ea9);
 }
 
-.new-game-btn:hover {
+.new-game-btn:hover:not(:disabled):not(.disabled-btn) {
   background-image: linear-gradient(to bottom, #4a6ea9, #3a5a8f);
 }
 
@@ -393,7 +382,7 @@ input:checked + .slider:before {
   background-image: linear-gradient(to bottom, #e55c5c, #d9534f);
 }
 
-.reset-all-btn:hover {
+.reset-all-btn:hover:not(:disabled):not(.disabled-btn) {
   background-image: linear-gradient(to bottom, #d9534f, #c9302c);
 }
 
@@ -541,7 +530,6 @@ input:checked + .slider:before {
   border-bottom: none;
 }
 
-/* Alert personalizzato */
 .custom-alert {
   position: fixed;
   top: 20px;
@@ -575,6 +563,7 @@ input:checked + .slider:before {
   text-align: center;
   border-top: 5px solid #4a6ea9;
   border-radius: 15px;
+  background-color: white;
 }
 
 .alert-content p {
@@ -608,7 +597,6 @@ input:checked + .slider:before {
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Stili per l'alert di vittoria */
 .victory-alert {
   width: 450px;
   max-width: 95%;
@@ -660,7 +648,6 @@ input:checked + .slider:before {
   background-image: linear-gradient(to bottom, #e0a800, #d39e00);
 }
 
-/* Animazione per il titolo */
 @keyframes bounce {
   0%,
   100% {
@@ -672,7 +659,6 @@ input:checked + .slider:before {
   }
 }
 
-/* Confetti per l'animazione di vittoria */
 .confetti {
   position: absolute;
   width: 10px;
@@ -694,7 +680,6 @@ input:checked + .slider:before {
   }
 }
 
-/* Aggiungi un overlay per evidenziare meglio l'alert */
 .custom-alert::before {
   content: "";
   position: fixed;
@@ -712,7 +697,6 @@ input:checked + .slider:before {
   opacity: 1;
 }
 
-/* Modal di conferma */
 .modal {
   display: none;
   position: fixed;
@@ -757,10 +741,6 @@ input:checked + .slider:before {
 
 .draw-header {
   background-color: #5bc0de;
-}
-
-.settings-header {
-  background-color: #5a7eb9;
 }
 
 .modal-header h3 {
@@ -817,39 +797,6 @@ input:checked + .slider:before {
 
 .new-game-draw-btn:hover {
   background-image: linear-gradient(to bottom, #4a6ea9, #3a5a8f);
-}
-
-.settings-option {
-  margin-bottom: 20px;
-  text-align: left;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.settings-select {
-  padding: 8px 15px;
-  border-radius: 8px;
-  border: 1px solid #ddd;
-  background-color: #f9f9f9;
-  font-size: 1rem;
-  width: 150px;
-}
-
-.settings-note {
-  font-size: 0.9rem;
-  color: #777;
-  font-style: italic;
-  margin-top: 20px;
-}
-
-.save-btn {
-  background-image: linear-gradient(to bottom, #5cb85c, #4cae4c);
-  color: white;
-}
-
-.save-btn:hover {
-  background-image: linear-gradient(to bottom, #4cae4c, #449d44);
 }
 
 .modal-footer {
@@ -937,19 +884,8 @@ input:checked + .slider:before {
   .option-buttons {
     flex-direction: column;
   }
-
-  .settings-option {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
-  }
-
-  .settings-select {
-    width: 100%;
-  }
 }
 
-/* Animazioni aggiuntive */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -988,8 +924,4 @@ input:checked + .slider:before {
 
 .stat-box:nth-child(2) {
   animation-delay: 0.2s;
-}
-
-.alert-content {
-  background-color: white;
 }

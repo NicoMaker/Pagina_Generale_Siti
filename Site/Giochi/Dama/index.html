@@ -47,7 +47,7 @@
             <span class="btn-icon">↺</span>
             <span class="btn-text">Ricomincia Partita</span>
           </button>
-          <button id="reset" class="game-btn new-game-btn">
+          <button id="reset" class="game-btn new-game-btn" disabled>
             <span class="btn-icon">+</span>
             <span class="btn-text">Nuova Partita</span>
           </button>
@@ -187,35 +187,6 @@
               </button>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Modal per le impostazioni di gioco -->
-    <div id="settings-modal" class="modal">
-      <div class="modal-content">
-        <div class="modal-header settings-header">
-          <h3>Impostazioni di Gioco</h3>
-        </div>
-        <div class="modal-body">
-          <div class="settings-option">
-            <label for="capture-setting">Cattura Obbligatoria:</label>
-            <select id="capture-setting" class="settings-select">
-              <option value="mandatory">Obbligatoria</option>
-              <option value="optional">Facoltativa</option>
-            </select>
-          </div>
-          <p class="settings-note">
-            Nota: Le modifiche avranno effetto dalla prossima partita.
-          </p>
-        </div>
-        <div class="modal-footer">
-          <button id="save-settings" class="modal-btn save-btn">
-            Salva Impostazioni
-          </button>
-          <button id="cancel-settings" class="modal-btn cancel-btn">
-            Annulla
-          </button>
         </div>
       </div>
     </div>
