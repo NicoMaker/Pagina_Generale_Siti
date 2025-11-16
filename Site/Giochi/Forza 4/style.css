@@ -84,7 +84,6 @@ h3 {
   font-weight: 600;
 }
 
-/* Modifica lo stile del contenitore del turno per centrarlo meglio */
 #currentPlayerContainer {
   display: flex;
   align-items: center;
@@ -97,7 +96,6 @@ h3 {
   margin: 0 auto;
 }
 
-/* Assicurati che il contenitore del giocatore corrente sia centrato */
 .game-info {
   display: flex;
   flex-direction: column;
@@ -148,24 +146,25 @@ button {
   box-shadow: var(--shadow-md);
 }
 
-button:hover {
+button:hover:not(:disabled):not(.disabled-btn) {
   background-color: var(--color-primary-dark);
   transform: translateY(-2px);
 }
 
-button:active {
+button:active:not(:disabled):not(.disabled-btn) {
   transform: translateY(0);
 }
 
-/* Stile per i pulsanti disabilitati */
-button:disabled {
+button:disabled,
+.disabled-btn {
   opacity: 0.5;
   cursor: not-allowed;
   transform: none;
   background-color: #94a3b8;
 }
 
-button:disabled:hover {
+button:disabled:hover,
+.disabled-btn:hover {
   background-color: #94a3b8;
   transform: none;
 }
@@ -233,7 +232,6 @@ button:disabled:hover {
   border: 3px solid var(--color-yellow-dark);
 }
 
-/* Responsive grid sizes */
 @media (max-width: 640px) {
   .cell {
     width: 35px;
@@ -417,7 +415,6 @@ footer {
   text-align: left;
 }
 
-/* Focus styles for accessibility */
 button:focus-visible,
 .cell:focus-visible,
 summary:focus-visible {
@@ -425,7 +422,6 @@ summary:focus-visible {
   outline-offset: 2px;
 }
 
-/* Screen reader only class */
 .sr-only {
   position: absolute;
   width: 1px;
@@ -438,7 +434,6 @@ summary:focus-visible {
   border-width: 0;
 }
 
-/* Timeline styles */
 .timeline-container {
   margin: 2rem auto;
   max-width: 800px;
@@ -494,7 +489,6 @@ summary:focus-visible {
   opacity: 0.7;
 }
 
-/* Scoreboard styles */
 .scoreboard-container {
   margin: 2rem auto;
   max-width: 800px;
@@ -611,7 +605,7 @@ summary:focus-visible {
   background-color: var(--color-yellow);
 }
 
-.yellow-card:hover {
+.yellow-card:hover:not(:disabled) {
   background-color: var(--color-yellow-dark);
 }
 
@@ -619,7 +613,7 @@ summary:focus-visible {
   background-color: var(--color-red);
 }
 
-.red-card:hover {
+.red-card:hover:not(:disabled) {
   background-color: var(--color-red-dark);
 }
 
@@ -627,21 +621,6 @@ summary:focus-visible {
   font-size: 1.25rem;
 }
 
-.reset-stats-container {
-  margin-top: 1.5rem;
-  display: flex;
-  justify-content: center;
-}
-
-.reset-stats-button {
-  background-color: var(--color-text);
-}
-
-.reset-stats-button:hover {
-  background-color: black;
-}
-
-/* Empty timeline message */
 .empty-timeline {
   padding: 1.5rem;
   text-align: center;
@@ -650,7 +629,6 @@ summary:focus-visible {
   font-style: italic;
 }
 
-/* Animation for new timeline events */
 @keyframes fadeInSlide {
   from {
     opacity: 0;
@@ -666,7 +644,6 @@ summary:focus-visible {
   animation: fadeInSlide 0.3s ease-out forwards;
 }
 
-/* Animation for stats update */
 @keyframes pulse {
   0% {
     transform: scale(1);
@@ -684,7 +661,6 @@ summary:focus-visible {
   animation: pulse 0.6s ease-out;
 }
 
-/* Stile per il pallino del giocatore nella timeline */
 .player-dot {
   display: inline-block;
   width: 12px;
@@ -703,7 +679,6 @@ summary:focus-visible {
   border: 1px solid var(--color-yellow-dark);
 }
 
-/* Stile per il messaggio di squalifica */
 .disqualification-message {
   background-color: var(--color-red);
   color: white;
@@ -742,33 +717,6 @@ summary:focus-visible {
   }
 }
 
-/* Stile per il pulsante nuova partita dopo squalifica */
-.new-game-button {
-  margin-top: 1rem;
-  background-color: #16a34a; /* Verde per miglior contrasto */
-  color: white;
-  font-weight: bold;
-  padding: 0.75rem 1.5rem;
-  border-radius: var(--border-radius);
-  cursor: pointer;
-  transition: var(--transition);
-  animation: pulse 1.5s infinite;
-}
-
-.new-game-button:hover {
-  background-color: #15803d; /* Verde scuro */
-  transform: translateY(-2px);
-}
-
-@media (max-width: 640px) {
-  .new-game-button {
-    padding: 0.5rem 1rem;
-    margin-top: 0.5rem;
-    font-size: 0.9rem;
-  }
-}
-
-/* Stile per il pallino nelle statistiche */
 .stat-item .player-dot {
   width: 10px;
   height: 10px;
@@ -777,7 +725,6 @@ summary:focus-visible {
   margin-right: 5px;
 }
 
-/* Stile per i pulsanti disabilitati */
 .card-button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
@@ -793,7 +740,6 @@ summary:focus-visible {
   background-color: var(--color-red);
 }
 
-/* Stile per i pulsanti di reset */
 .reset-buttons {
   display: flex;
   flex-direction: row;
@@ -801,6 +747,7 @@ summary:focus-visible {
   justify-content: center;
   margin-bottom: 1rem;
   width: 100%;
+  flex-wrap: wrap;
 }
 
 @media (max-width: 640px) {
@@ -811,41 +758,21 @@ summary:focus-visible {
 }
 
 #resetCurrentGameButton {
-  background-color: #6b7280; /* Grigio per distinguerlo dal pulsante principale */
+  background-color: #f59e0b;
 }
 
-#resetCurrentGameButton:hover {
-  background-color: #4b5563;
+#resetCurrentGameButton:hover:not(:disabled):not(.disabled-btn) {
+  background-color: #d97706;
 }
 
-/* Stile per il pulsante del suono */
-.sound-button {
-  position: absolute;
-  right: 10px;
-  top: 10px;
-  width: 40px;
-  height: 40px;
-  padding: 0.5rem;
-  border-radius: 50%;
-  background-color: white;
-  color: var(--color-primary);
-  box-shadow: var(--shadow-md);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: var(--transition);
+#resetAllButton {
+  background-color: #dc2626;
 }
 
-.sound-button:hover {
-  background-color: #f1f5f9;
-  transform: scale(1.1);
+#resetAllButton:hover:not(:disabled):not(.disabled-btn) {
+  background-color: #b91c1c;
 }
 
-.sound-button.sound-off {
-  color: var(--color-red);
-}
-
-/* Stile per la modale di conferma */
 .modal {
   position: fixed;
   top: 0;
@@ -930,7 +857,6 @@ summary:focus-visible {
   display: none;
 }
 
-/* Animazione per la colonna piena */
 .column-full-feedback {
   animation: columnFullShake 0.5s ease;
 }
@@ -948,19 +874,13 @@ summary:focus-visible {
   }
 }
 
-/* Stile per gli eventi importanti nella timeline */
 .timeline-event.important-event {
   background-color: rgba(37, 99, 235, 0.1);
   border-left-width: 6px;
   font-weight: 600;
 }
 
-/* Effetto hover per le celle della timeline */
 .timeline-event:hover {
   transform: translateX(5px);
   transition: transform 0.3s ease;
-}
-
-#resetCurrentGameButton {
-  display: none;
 }

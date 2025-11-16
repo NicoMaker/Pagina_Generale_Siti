@@ -35,9 +35,32 @@
         </div>
         <div class="reset-buttons">
           <button
+            id="resetCurrentGameButton"
+            onclick="resetCurrentGame()"
+            aria-label="Ricomincia la partita corrente"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"
+              ></path>
+              <path d="M3 3v5h5"></path>
+            </svg>
+            Ricomincia Partita
+          </button>
+          <button
             id="resetButton"
             onclick="resetGame()"
-            aria-label="Resetta il gioco"
+            aria-label="Inizia una nuova partita"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -58,9 +81,9 @@
             Nuova Partita
           </button>
           <button
-            id="resetCurrentGameButton"
-            onclick="resetCurrentGame()"
-            aria-label="Resetta solo la partita corrente"
+            id="resetAllButton"
+            onclick="showResetStatsModal()"
+            aria-label="Resetta tutte le statistiche"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -74,11 +97,11 @@
               stroke-linejoin="round"
             >
               <path
-                d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"
+                d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"
               ></path>
               <path d="M3 3v5h5"></path>
             </svg>
-            Reset Partita Corrente
+            Reset Totale
           </button>
         </div>
       </header>
@@ -181,32 +204,6 @@
               </div>
             </div>
           </div>
-
-          <div class="reset-stats-container">
-            <button
-              id="resetStatsButton"
-              onclick="showResetStatsModal()"
-              class="reset-stats-button"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path
-                  d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"
-                ></path>
-                <path d="M3 3v5h5"></path>
-              </svg>
-              Azzera Statistiche
-            </button>
-          </div>
         </div>
       </main>
 
@@ -245,10 +242,10 @@
       aria-describedby="modalDescription"
     >
       <div class="modal-content">
-        <h3 id="modalTitle">Conferma Azzeramento Statistiche</h3>
+        <h3 id="modalTitle">Conferma Reset Totale</h3>
         <p id="modalDescription">
-          Sei sicuro di voler azzerare tutte le statistiche di gioco? Questa
-          azione non può essere annullata.
+          Sei sicuro di voler azzerare tutte le statistiche e ricominciare
+          dalla partita 1? Questa azione non può essere annullata.
         </p>
         <div class="modal-buttons">
           <button
