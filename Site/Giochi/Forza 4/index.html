@@ -1,187 +1,272 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="icon"
+      href="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Puissance4_01.svg/260px-Puissance4_01.svg.png"
+      type="image/jpg"
+    />
+    <title>Forza 4</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="script.js" defer></script>
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="icon"
-    href="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Puissance4_01.svg/260px-Puissance4_01.svg.png"
-    type="image/jpg" />
-  <title>Forza 4</title>
-  <link rel="stylesheet" href="style.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
-  <script src="script.js" defer></script>
-</head>
-
-<body>
-  <div class="game-container">
-    <header>
-      <h1>Forza 4</h1>
-      <div class="game-info">
-        <div id="gameCounter" class="game-counter">Partita: #1</div>
-        <div id="currentPlayerContainer" class="current-player-container" aria-live="polite">
-          <span>Turno:</span>
-          <div id="currentPlayerIndicator" class="cell rosso" aria-label="Giocatore rosso"></div>
-        </div>
-      </div>
-      <div class="reset-buttons">
-        <button id="resetCurrentGameButton" onclick="resetCurrentGame()" aria-label="Ricomincia la partita corrente">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
-            <path d="M3 3v5h5"></path>
-          </svg>
-          Ricomincia Partita
-        </button>
-        <button id="resetButton" onclick="resetGame()" aria-label="Inizia una nuova partita">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
-            <path d="M3 3v5h5"></path>
-          </svg>
-          Nuova Partita
-        </button>
-        <button id="resetAllButton" onclick="showResetStatsModal()" aria-label="Resetta tutte le statistiche">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
-            <path d="M3 3v5h5"></path>
-          </svg>
-          Reset Totale
-        </button>
-      </div>
-    </header>
-
-    <main>
-      <div class="board-container">
-        <div class="board" id="board" role="grid" aria-label="Griglia di gioco Forza 4"></div>
-      </div>
-
-      <div class="timeline-container">
-        <h2>Cronologia Partita</h2>
-        <div id="timeline" class="timeline" aria-live="polite"></div>
-      </div>
-
-      <div class="scoreboard-container">
-        <h2>Punteggio</h2>
-        <div class="scoreboard">
-          <div class="score-card rosso-score">
-            <div class="player-indicator">
-              <h3>Rosso</h3>
-            </div>
-            <div class="stats">
-              <div class="stat-item">
-                <span class="stat-label">
-                  <span class="player-dot rosso"></span>Vittorie:
-                </span>
-                <span id="rossoWins" class="stat-value">0</span>
-              </div>
-              <div class="stat-item">
-                <span class="stat-label">
-                  <span class="player-dot rosso"></span>Cartellini Gialli:
-                </span>
-                <span id="rossoYellowCards" class="stat-value">0</span>
-              </div>
-              <div class="stat-item">
-                <span class="stat-label">
-                  <span class="player-dot rosso"></span>Cartellini Rossi:
-                </span>
-                <span id="rossoRedCards" class="stat-value">0</span>
-              </div>
-            </div>
-            <div class="card-actions">
-              <button onclick="addCard('rosso', 'yellow')" class="card-button yellow-card">
-                <span class="card-icon">🟨</span>
-              </button>
-              <button onclick="addCard('rosso', 'red')" class="card-button red-card">
-                <span class="card-icon">🟥</span>
-              </button>
-            </div>
-          </div>
-
-          <div class="score-card giallo-score">
-            <div class="player-indicator">
-              <h3>Giallo</h3>
-            </div>
-            <div class="stats">
-              <div class="stat-item">
-                <span class="stat-label">
-                  <span class="player-dot giallo"></span>Vittorie:
-                </span>
-                <span id="gialloWins" class="stat-value">0</span>
-              </div>
-              <div class="stat-item">
-                <span class="stat-label">
-                  <span class="player-dot giallo"></span>Cartellini Gialli:
-                </span>
-                <span id="gialloYellowCards" class="stat-value">0</span>
-              </div>
-              <div class="stat-item">
-                <span class="stat-label">
-                  <span class="player-dot giallo"></span>Cartellini Rossi:
-                </span>
-                <span id="gialloRedCards" class="stat-value">0</span>
-              </div>
-            </div>
-            <div class="card-actions">
-              <button onclick="addCard('giallo', 'yellow')" class="card-button yellow-card">
-                <span class="card-icon">🟨</span>
-              </button>
-              <button onclick="addCard('giallo', 'red')" class="card-button red-card">
-                <span class="card-icon">🟥</span>
-              </button>
-            </div>
+  <body>
+    <div class="game-container">
+      <header>
+        <h1>Forza 4</h1>
+        <div class="game-info">
+          <div id="gameCounter" class="game-counter">Partita: #1</div>
+          <div
+            id="currentPlayerContainer"
+            class="current-player-container"
+            aria-live="polite"
+          >
+            <span>Turno:</span>
+            <div
+              id="currentPlayerIndicator"
+              class="cell rosso"
+              aria-label="Giocatore rosso"
+            ></div>
           </div>
         </div>
-      </div>
-    </main>
+        <div class="reset-buttons">
+          <button
+            id="resetCurrentGameButton"
+            onclick="resetCurrentGame()"
+            aria-label="Ricomincia la partita corrente"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"
+              ></path>
+              <path d="M3 3v5h5"></path>
+            </svg>
+            Ricomincia Partita
+          </button>
+          <button
+            id="resetButton"
+            onclick="resetGame()"
+            aria-label="Inizia una nuova partita"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"
+              ></path>
+              <path d="M3 3v5h5"></path>
+            </svg>
+            Nuova Partita
+          </button>
+          <button
+            id="resetAllButton"
+            onclick="showResetStatsModal()"
+            aria-label="Resetta tutte le statistiche"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"
+              ></path>
+              <path d="M3 3v5h5"></path>
+            </svg>
+            Reset Totale
+          </button>
+        </div>
+      </header>
 
-    <footer>
-      <div class="instructions">
-        <details>
-          <summary>Come si gioca</summary>
-          <div class="instructions-content">
-            <p>
-              Inserisci i gettoni a turno cliccando sulla colonna desiderata.
-              Vince chi allinea 4 gettoni dello stesso colore in orizzontale,
-              verticale o diagonale.
-            </p>
-            <p>
-              Usa i pulsanti cartellino per assegnare penalità ai giocatori.
-              Un giocatore perde se riceve 3 cartellini gialli o 1 cartellino
-              rosso.
-            </p>
-            <p>
-              I cartellini vengono resettati all'inizio di una nuova partita.
-              Le partite si alternano: la prima inizia il rosso, la seconda il
-              giallo, e così via.
-            </p>
+      <main>
+        <div class="board-container">
+          <div
+            class="board"
+            id="board"
+            role="grid"
+            aria-label="Griglia di gioco Forza 4"
+          ></div>
+        </div>
+
+        <div class="timeline-container">
+          <h2>Cronologia Partita</h2>
+          <div id="timeline" class="timeline" aria-live="polite"></div>
+        </div>
+
+        <div class="scoreboard-container">
+          <h2>Punteggio</h2>
+          <div class="scoreboard">
+            <div class="score-card rosso-score">
+              <div class="player-indicator">
+                <h3>Rosso</h3>
+              </div>
+              <div class="stats">
+                <div class="stat-item">
+                  <span class="stat-label">
+                    <span class="player-dot rosso"></span>Vittorie:
+                  </span>
+                  <span id="rossoWins" class="stat-value">0</span>
+                </div>
+                <div class="stat-item">
+                  <span class="stat-label">
+                    <span class="player-dot rosso"></span>Cartellini Gialli:
+                  </span>
+                  <span id="rossoYellowCards" class="stat-value">0</span>
+                </div>
+                <div class="stat-item">
+                  <span class="stat-label">
+                    <span class="player-dot rosso"></span>Cartellini Rossi:
+                  </span>
+                  <span id="rossoRedCards" class="stat-value">0</span>
+                </div>
+              </div>
+              <div class="card-actions">
+                <button
+                  onclick="addCard('rosso', 'yellow')"
+                  class="card-button yellow-card"
+                >
+                  <span class="card-icon">🟨</span>
+                </button>
+                <button
+                  onclick="addCard('rosso', 'red')"
+                  class="card-button red-card"
+                >
+                  <span class="card-icon">🟥</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="score-card giallo-score">
+              <div class="player-indicator">
+                <h3>Giallo</h3>
+              </div>
+              <div class="stats">
+                <div class="stat-item">
+                  <span class="stat-label">
+                    <span class="player-dot giallo"></span>Vittorie:
+                  </span>
+                  <span id="gialloWins" class="stat-value">0</span>
+                </div>
+                <div class="stat-item">
+                  <span class="stat-label">
+                    <span class="player-dot giallo"></span>Cartellini Gialli:
+                  </span>
+                  <span id="gialloYellowCards" class="stat-value">0</span>
+                </div>
+                <div class="stat-item">
+                  <span class="stat-label">
+                    <span class="player-dot giallo"></span>Cartellini Rossi:
+                  </span>
+                  <span id="gialloRedCards" class="stat-value">0</span>
+                </div>
+              </div>
+              <div class="card-actions">
+                <button
+                  onclick="addCard('giallo', 'yellow')"
+                  class="card-button yellow-card"
+                >
+                  <span class="card-icon">🟨</span>
+                </button>
+                <button
+                  onclick="addCard('giallo', 'red')"
+                  class="card-button red-card"
+                >
+                  <span class="card-icon">🟥</span>
+                </button>
+              </div>
+            </div>
           </div>
-        </details>
-      </div>
-    </footer>
-  </div>
+        </div>
+      </main>
 
-  <div id="resetStatsModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"
-    aria-describedby="modalDescription">
-    <div class="modal-content">
-      <h3 id="modalTitle">Conferma Reset Totale</h3>
-      <p id="modalDescription">
-        Sei sicuro di voler azzerare tutte le statistiche e ricominciare
-        dalla partita 1? Questa azione non può essere annullata.
-      </p>
-      <div class="modal-buttons">
-        <button id="confirmResetStatsButton" class="modal-button confirm-button">
-          Conferma
-        </button>
-        <button id="cancelResetStatsButton" class="modal-button cancel-button">
-          Annulla
-        </button>
+      <footer>
+        <div class="instructions">
+          <details>
+            <summary>Come si gioca</summary>
+            <div class="instructions-content">
+              <p>
+                Inserisci i gettoni a turno cliccando sulla colonna desiderata.
+                Vince chi allinea 4 gettoni dello stesso colore in orizzontale,
+                verticale o diagonale.
+              </p>
+              <p>
+                Usa i pulsanti cartellino per assegnare penalità ai giocatori.
+                Un giocatore perde se riceve 3 cartellini gialli o 1 cartellino
+                rosso.
+              </p>
+              <p>
+                I cartellini vengono resettati all'inizio di una nuova partita.
+                Le partite si alternano: la prima inizia il rosso, la seconda il
+                giallo, e così via.
+              </p>
+            </div>
+          </details>
+        </div>
+      </footer>
+    </div>
+
+    <div
+      id="resetStatsModal"
+      class="modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modalTitle"
+      aria-describedby="modalDescription"
+    >
+      <div class="modal-content">
+        <h3 id="modalTitle">Conferma Reset Totale</h3>
+        <p id="modalDescription">
+          Sei sicuro di voler azzerare tutte le statistiche e ricominciare dalla
+          partita 1? Questa azione non può essere annullata.
+        </p>
+        <div class="modal-buttons">
+          <button
+            id="confirmResetStatsButton"
+            class="modal-button confirm-button"
+          >
+            Conferma
+          </button>
+          <button
+            id="cancelResetStatsButton"
+            class="modal-button cancel-button"
+          >
+            Annulla
+          </button>
+        </div>
       </div>
     </div>
-  </div>
-</body>
-
+  </body>
 </html>

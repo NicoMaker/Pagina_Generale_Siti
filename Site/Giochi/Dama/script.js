@@ -57,7 +57,9 @@ document.addEventListener("DOMContentLoaded", () => {
   // Event listeners
   resetButton.addEventListener("click", () => {
     if (gameInProgress) {
-      showMessage("Non puoi iniziare una nuova partita mentre una è in corso! Usa 'Ricomincia Partita' per ricominciare.");
+      showMessage(
+        "Non puoi iniziare una nuova partita mentre una è in corso! Usa 'Ricomincia Partita' per ricominciare."
+      );
     } else {
       if (isDraw) {
         showDrawModal();
@@ -69,7 +71,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   restartButton.addEventListener("click", () => {
     if (!gameInProgress) {
-      showMessage("Non puoi ricominciare una partita già conclusa. Inizia una nuova partita.");
+      showMessage(
+        "Non puoi ricominciare una partita già conclusa. Inizia una nuova partita."
+      );
     } else {
       restartGame();
     }
@@ -115,7 +119,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function toggleMandatoryCapture() {
     mandatoryCapture = mandatoryCaptureToggle.checked;
     showMessage(
-      `La cattura è ora ${mandatoryCapture ? "obbligatoria" : "facoltativa"}.`,
+      `La cattura è ora ${mandatoryCapture ? "obbligatoria" : "facoltativa"}.`
     );
 
     if (gameInProgress) {
@@ -243,7 +247,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function getSquareElement(row, col) {
     return document.querySelector(
-      `.square[data-row="${row}"][data-col="${col}"]`,
+      `.square[data-row="${row}"][data-col="${col}"]`
     );
   }
 
@@ -257,7 +261,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (board[row][col] && board[row][col].player === currentPlayer) {
       if (mandatoryCapture && mandatoryCaptures.length > 0) {
         const canCapture = mandatoryCaptures.some(
-          (capture) => capture.piece.row === row && capture.piece.col === col,
+          (capture) => capture.piece.row === row && capture.piece.col === col
         );
 
         if (!canCapture) {
@@ -292,7 +296,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (selectedPiece) {
       const pieceElement = getSquareElement(
         selectedPiece.row,
-        selectedPiece.col,
+        selectedPiece.col
       ).querySelector(".piece");
       if (pieceElement) {
         pieceElement.classList.remove("selected");
@@ -312,7 +316,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (mandatoryCapture && mandatoryCaptures.length > 0) {
       const pieceMandatoryCaptures = mandatoryCaptures.filter(
         (capture) =>
-          capture.piece.row === piece.row && capture.piece.col === piece.col,
+          capture.piece.row === piece.row && capture.piece.col === piece.col
       );
 
       validMoves = pieceMandatoryCaptures;
@@ -327,14 +331,14 @@ document.addEventListener("DOMContentLoaded", () => {
           [1, 1],
         ]
       : piece.player === PLAYER_WHITE
-        ? [
-            [-1, -1],
-            [-1, 1],
-          ]
-        : [
-            [1, -1],
-            [1, 1],
-          ];
+      ? [
+          [-1, -1],
+          [-1, 1],
+        ]
+      : [
+          [1, -1],
+          [1, 1],
+        ];
 
     for (const [rowDir, colDir] of directions) {
       const newRow = piece.row + rowDir;
@@ -364,14 +368,14 @@ document.addEventListener("DOMContentLoaded", () => {
           [1, 1],
         ]
       : piece.player === PLAYER_WHITE
-        ? [
-            [-1, -1],
-            [-1, 1],
-          ]
-        : [
-            [1, -1],
-            [1, 1],
-          ];
+      ? [
+          [-1, -1],
+          [-1, 1],
+        ]
+      : [
+          [1, -1],
+          [1, 1],
+        ];
 
     let captureFound = false;
 
@@ -444,11 +448,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
           if (pieceMoves.length > 0) {
             const maxPieceCaptures = Math.max(
-              ...pieceMoves.map((move) => move.captures.length),
+              ...pieceMoves.map((move) => move.captures.length)
             );
 
             const canCaptureDama = pieceMoves.some((move) =>
-              move.captures.some((capture) => capture.isKing),
+              move.captures.some((capture) => capture.isKing)
             );
 
             if (piece.isKing && !hasDamaCapture && pieceMoves.length > 0) {
@@ -470,21 +474,21 @@ document.addEventListener("DOMContentLoaded", () => {
               maxPieceCaptures > maxCaptureCount ||
               (canCaptureDama &&
                 !mandatoryCaptures.some((move) =>
-                  move.captures.some((capture) => capture.isKing),
+                  move.captures.some((capture) => capture.isKing)
                 ))
             ) {
               mandatoryCaptures = pieceMoves.filter(
                 (move) =>
                   move.captures.length === maxPieceCaptures ||
                   (canCaptureDama &&
-                    move.captures.some((capture) => capture.isKing)),
+                    move.captures.some((capture) => capture.isKing))
               );
               maxCaptureCount = maxPieceCaptures;
             } else if (maxPieceCaptures === maxCaptureCount) {
               mandatoryCaptures.push(
                 ...pieceMoves.filter(
-                  (move) => move.captures.length === maxCaptureCount,
-                ),
+                  (move) => move.captures.length === maxCaptureCount
+                )
               );
             }
           }
@@ -546,7 +550,7 @@ document.addEventListener("DOMContentLoaded", () => {
       highlightValidMoves();
 
       const pieceElement = getSquareElement(piece.row, piece.col).querySelector(
-        ".piece",
+        ".piece"
       );
       pieceElement.classList.add("selected");
     } else {
@@ -634,14 +638,14 @@ document.addEventListener("DOMContentLoaded", () => {
                   [1, 1],
                 ]
               : piece.player === PLAYER_WHITE
-                ? [
-                    [-1, -1],
-                    [-1, 1],
-                  ]
-                : [
-                    [1, -1],
-                    [1, 1],
-                  ];
+              ? [
+                  [-1, -1],
+                  [-1, 1],
+                ]
+              : [
+                  [1, -1],
+                  [1, 1],
+                ];
 
             for (const [rowDir, colDir] of directions) {
               const newRow = piece.row + rowDir;
@@ -719,7 +723,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function restartGame() {
     if (!gameInProgress) {
       showMessage(
-        "Non puoi ricominciare una partita già conclusa. Inizia una nuova partita.",
+        "Non puoi ricominciare una partita già conclusa. Inizia una nuova partita."
       );
       return;
     }
@@ -769,7 +773,7 @@ document.addEventListener("DOMContentLoaded", () => {
     updateButtonStates();
 
     showMessage(
-      "Reset totale completato! Tutte le statistiche sono state azzerate.",
+      "Reset totale completato! Tutte le statistiche sono state azzerate."
     );
   }
 

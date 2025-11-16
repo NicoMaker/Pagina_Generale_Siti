@@ -195,23 +195,17 @@ input:checked + .slider:before {
   border-radius: 50%;
   position: relative;
   cursor: pointer;
-  transition:
-    transform 0.3s,
-    box-shadow 0.3s;
+  transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .white {
   background: radial-gradient(circle at 30% 30%, #fff, #e0e0e0);
-  box-shadow:
-    0 4px 10px rgba(0, 0, 0, 0.2),
-    inset 0 -2px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2), inset 0 -2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .black {
   background: radial-gradient(circle at 30% 30%, #555, #222);
-  box-shadow:
-    0 4px 10px rgba(0, 0, 0, 0.3),
-    inset 0 -2px 5px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3), inset 0 -2px 5px rgba(0, 0, 0, 0.3);
 }
 
 .king::after {
@@ -543,8 +537,7 @@ input:checked + .slider:before {
   max-width: 90%;
   width: 400px;
   opacity: 0;
-  transition:
-    transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
     opacity 0.3s ease;
 }
 

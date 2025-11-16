@@ -59,7 +59,7 @@ function createBoard() {
       cell.setAttribute("tabindex", "0");
       cell.setAttribute(
         "aria-label",
-        `Cella vuota, riga ${i + 1}, colonna ${j + 1}`,
+        `Cella vuota, riga ${i + 1}, colonna ${j + 1}`
       );
 
       cell.addEventListener("keydown", (e) => {
@@ -131,7 +131,7 @@ function checkWin(row, col) {
 function highlightWinningCells(cells) {
   cells.forEach(([row, col]) => {
     const cell = document.querySelector(
-      `[data-row="${row}"][data-col="${col}"]`,
+      `[data-row="${row}"][data-col="${col}"]`
     );
     cell.classList.add("winning");
   });
@@ -169,7 +169,7 @@ function updateBoardUI() {
         "giallo",
         "winning",
         "rossoWin",
-        "gialloWin",
+        "gialloWin"
       );
 
       if (gameBoard[i][j]) {
@@ -178,12 +178,12 @@ function updateBoardUI() {
           "aria-label",
           `Cella con gettone ${gameBoard[i][j]}, riga ${i + 1}, colonna ${
             j + 1
-          }`,
+          }`
         );
       } else {
         cell.setAttribute(
           "aria-label",
-          `Cella vuota, riga ${i + 1}, colonna ${j + 1}`,
+          `Cella vuota, riga ${i + 1}, colonna ${j + 1}`
         );
       }
     }
@@ -197,13 +197,13 @@ function dropPiece(col) {
   if (row !== -1) {
     gameBoard[row][col] = currentPlayer;
     const cell = document.querySelector(
-      `[data-row="${row}"][data-col="${col}"]`,
+      `[data-row="${row}"][data-col="${col}"]`
     );
     cell.classList.add(currentPlayer);
 
     cell.setAttribute(
       "aria-label",
-      `Cella con gettone ${currentPlayer}, riga ${row + 1}, colonna ${col + 1}`,
+      `Cella con gettone ${currentPlayer}, riga ${row + 1}, colonna ${col + 1}`
     );
 
     addTimelineEvent(
@@ -211,7 +211,7 @@ function dropPiece(col) {
         col + 1
       }`,
       false,
-      currentPlayer,
+      currentPlayer
     );
 
     playDropSound();
@@ -228,11 +228,11 @@ function dropPiece(col) {
       addTimelineEvent(
         `Giocatore ${currentPlayer} ha vinto la partita!`,
         true,
-        currentPlayer,
+        currentPlayer
       );
 
       updateWinnerMessage(
-        `Il ${currentPlayer === "rosso" ? "Rosso" : "Giallo"} ha vinto! 🏆🎉`,
+        `Il ${currentPlayer === "rosso" ? "Rosso" : "Giallo"} ha vinto! 🏆🎉`
       );
 
       updateCardButtonsState();
@@ -244,7 +244,7 @@ function dropPiece(col) {
       const nextPlayer = gameCount % 2 === 0 ? "giallo" : "rosso";
       addTimelineEvent(
         `Partita terminata in pareggio! La prossima partita inizierà il giocatore ${nextPlayer}.`,
-        true,
+        true
       );
 
       updateWinnerMessage("Pareggio! 😲 Nessuno ha vinto.");
@@ -313,7 +313,7 @@ function resetGame() {
   // Verifica se la partita è in corso
   if (gameInProgress) {
     announceForScreenReader(
-      "Non puoi iniziare una nuova partita mentre una è in corso! Usa 'Ricomincia Partita' per ricominciare.",
+      "Non puoi iniziare una nuova partita mentre una è in corso! Usa 'Ricomincia Partita' per ricominciare."
     );
     return;
   }
@@ -337,7 +337,7 @@ function resetGame() {
       "giallo",
       "winning",
       "rossoWin",
-      "gialloWin",
+      "gialloWin"
     );
 
     const row = cell.dataset.row;
@@ -346,7 +346,7 @@ function resetGame() {
       "aria-label",
       `Cella vuota, riga ${Number.parseInt(row) + 1}, colonna ${
         Number.parseInt(col) + 1
-      }`,
+      }`
     );
   });
 
@@ -367,11 +367,11 @@ function resetGame() {
   addTimelineEvent(
     `Nuova partita iniziata. Inizia il giocatore ${currentPlayer}.`,
     false,
-    currentPlayer,
+    currentPlayer
   );
 
   announceForScreenReader(
-    `Nuova partita iniziata. Turno del giocatore ${currentPlayer}.`,
+    `Nuova partita iniziata. Turno del giocatore ${currentPlayer}.`
   );
 }
 
@@ -379,7 +379,7 @@ function resetCurrentGame() {
   // Verifica se la partita è in corso
   if (!gameInProgress) {
     announceForScreenReader(
-      "Non puoi ricominciare una partita già conclusa. Inizia una nuova partita.",
+      "Non puoi ricominciare una partita già conclusa. Inizia una nuova partita."
     );
     return;
   }
@@ -401,7 +401,7 @@ function resetCurrentGame() {
       "giallo",
       "winning",
       "rossoWin",
-      "gialloWin",
+      "gialloWin"
     );
 
     const row = cell.dataset.row;
@@ -410,7 +410,7 @@ function resetCurrentGame() {
       "aria-label",
       `Cella vuota, riga ${Number.parseInt(row) + 1}, colonna ${
         Number.parseInt(col) + 1
-      }`,
+      }`
     );
   });
 
@@ -422,11 +422,11 @@ function resetCurrentGame() {
   addTimelineEvent(
     `Partita corrente ricominciata. Continua il giocatore ${currentPlayer}.`,
     false,
-    currentPlayer,
+    currentPlayer
   );
 
   announceForScreenReader(
-    `Partita corrente ricominciata. Turno del giocatore ${currentPlayer}.`,
+    `Partita corrente ricominciata. Turno del giocatore ${currentPlayer}.`
   );
 }
 
@@ -488,10 +488,10 @@ function loadScores() {
 // MODAL LOGIC START
 const resetStatsModal = document.getElementById("resetStatsModal");
 const confirmResetStatsButton = document.getElementById(
-  "confirmResetStatsButton",
+  "confirmResetStatsButton"
 );
 const cancelResetStatsButton = document.getElementById(
-  "cancelResetStatsButton",
+  "cancelResetStatsButton"
 );
 
 function showResetStatsModal() {
@@ -541,7 +541,7 @@ function performResetStats() {
       "giallo",
       "winning",
       "rossoWin",
-      "gialloWin",
+      "gialloWin"
     );
 
     const row = cell.dataset.row;
@@ -550,7 +550,7 @@ function performResetStats() {
       "aria-label",
       `Cella vuota, riga ${Number.parseInt(row) + 1}, colonna ${
         Number.parseInt(col) + 1
-      }`,
+      }`
     );
   });
 
@@ -560,7 +560,11 @@ function performResetStats() {
   updateButtonStates();
   initializeTimeline();
 
-  addTimelineEvent("Reset totale completato. Inizia il giocatore rosso.", false, "rosso");
+  addTimelineEvent(
+    "Reset totale completato. Inizia il giocatore rosso.",
+    false,
+    "rosso"
+  );
 
   announceForScreenReader("Reset totale completato con successo");
   hideResetStatsModal();
@@ -569,7 +573,7 @@ function performResetStats() {
 function updateGameCounter() {
   const gameCounterElement = document.getElementById("gameCounter");
   if (gameCounterElement)
-    gameCounterElement.textContent = `Partita: #${gameCount}`;
+    gameCounterElement.textContent = `Partita: ${gameCount}`;
 }
 
 confirmResetStatsButton.addEventListener("click", performResetStats);
@@ -594,7 +598,7 @@ document.addEventListener("keydown", (event) => {
 function addCard(player, cardType) {
   if (gameOver) {
     announceForScreenReader(
-      "Non puoi assegnare cartellini a partita terminata",
+      "Non puoi assegnare cartellini a partita terminata"
     );
     return;
   }
@@ -606,7 +610,7 @@ function addCard(player, cardType) {
     addTimelineEvent(
       `Cartellino GIALLO assegnato al giocatore ${player}`,
       false,
-      player,
+      player
     );
 
     if (scores[player].yellowCards >= 3) {
@@ -617,7 +621,7 @@ function addCard(player, cardType) {
     addTimelineEvent(
       `Cartellino ROSSO assegnato al giocatore ${player}`,
       false,
-      player,
+      player
     );
 
     if (scores[player].redCards >= 1) {
@@ -648,12 +652,12 @@ function handleDisqualification(player, opponent, reason) {
   addTimelineEvent(
     `Giocatore ${player} squalificato per ${reason}!`,
     true,
-    player,
+    player
   );
   addTimelineEvent(
     `Giocatore ${opponent} ha vinto la partita per squalifica!`,
     true,
-    opponent,
+    opponent
   );
 
   const container = document.getElementById("currentPlayerContainer");
@@ -668,7 +672,7 @@ function handleDisqualification(player, opponent, reason) {
   updateButtonStates();
 
   announceForScreenReader(
-    `Giocatore ${player} squalificato per ${reason}. Vittoria assegnata al giocatore ${opponent}.`,
+    `Giocatore ${player} squalificato per ${reason}. Vittoria assegnata al giocatore ${opponent}.`
   );
 }
 
