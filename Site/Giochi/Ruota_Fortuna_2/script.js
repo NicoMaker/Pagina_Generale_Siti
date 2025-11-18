@@ -1,65 +1,48 @@
-// Custom Notification System
+// Utility Systems
 class NotificationSystem {
   constructor() {
     this.container = document.getElementById("notificationContainer");
     this.notifications = [];
   }
 
-  show(message, type = "info", title = "", duration = 5000) {
-    const notification = this.createNotification(message, type, title);
-    this.container.appendChild(notification);
-    this.notifications.push(notification);
-
-    // Trigger animation
-    setTimeout(() => notification.classList.add("show"), 100);
-
-    // Auto remove
-    if (duration > 0) {
-      setTimeout(() => this.remove(notification), duration);
-    }
-
-    return notification;
-  }
-
-  createNotification(message, type, title) {
+  show(message, type = "info", title = "Notifica", duration = 4000) {
     const notification = document.createElement("div");
     notification.className = `notification ${type}`;
 
-    const icons = {
-      success: "✅",
-      error: "❌",
-      warning: "⚠️",
-      info: "ℹ️",
-    };
-
-    const titles = {
-      success: title || "Successo",
-      error: title || "Errore",
-      warning: title || "Attenzione",
-      info: title || "Informazione",
-    };
+    const icon =
+      {
+        success: "✅",
+        error: "❌",
+        warning: "⚠️",
+        info: "ℹ️",
+      }[type] || "🔔";
 
     notification.innerHTML = `
             <div class="notification-header">
-                <div class="notification-title">
-                    ${icons[type]} ${titles[type]}
-                </div>
-                <button class="notification-close">✕</button>
+              <div class="notification-title">${icon} ${title}</div>
+              <button class="notification-close">✕</button>
             </div>
             <div class="notification-message">${message}</div>
-        `;
+          `;
 
-    // Close button functionality
-    notification
-      .querySelector(".notification-close")
-      .addEventListener("click", () => {
-        this.remove(notification);
-      });
+    const closeBtn = notification.querySelector(".notification-close");
+    closeBtn.addEventListener("click", () => this.hide(notification));
 
-    return notification;
+    this.container.appendChild(notification);
+    this.notifications.push(notification);
+
+    // Animate in
+    setTimeout(() => {
+      notification.classList.add("show");
+    }, 10);
+
+    // Animate out and remove
+    setTimeout(() => {
+      this.hide(notification);
+    }, duration);
   }
 
-  remove(notification) {
+  hide(notification) {
     notification.classList.remove("show");
     setTimeout(() => {
       if (notification.parentNode) {
@@ -68,13 +51,9 @@ class NotificationSystem {
       this.notifications = this.notifications.filter((n) => n !== notification);
     }, 400);
   }
-
-  clear() {
-    this.notifications.forEach((notification) => this.remove(notification));
-  }
 }
 
-// Custom Modal System
+// Modal System
 class ModalSystem {
   constructor() {
     this.overlay = document.getElementById("modalOverlay");
@@ -83,7 +62,6 @@ class ModalSystem {
     this.body = document.getElementById("modalBody");
     this.footer = document.getElementById("modalFooter");
     this.closeBtn = document.getElementById("modalClose");
-
     this.bindEvents();
   }
 
@@ -92,7 +70,6 @@ class ModalSystem {
     this.overlay.addEventListener("click", (e) => {
       if (e.target === this.overlay) this.hide();
     });
-
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape" && this.overlay.classList.contains("show")) {
         this.hide();
@@ -101,12 +78,10 @@ class ModalSystem {
   }
 
   show(options = {}) {
-    const { title = "", body = "", buttons = [], type = "info" } = options;
-
+    const { title = "", body = "", buttons = [] } = options;
     this.title.textContent = title;
     this.body.innerHTML = body;
     this.footer.innerHTML = "";
-
     buttons.forEach((button) => {
       const btn = document.createElement("button");
       btn.className = `btn ${button.class || "btn-secondary"}`;
@@ -117,7 +92,6 @@ class ModalSystem {
       });
       this.footer.appendChild(btn);
     });
-
     this.overlay.classList.add("show");
     document.body.style.overflow = "hidden";
   }
@@ -153,10 +127,7 @@ class ModalSystem {
       const inputId = "modal-prompt-input";
       this.show({
         title,
-        body: `
-                    <p>${message}</p>
-                    <input type="text" id="${inputId}" class="modal-input" value="${defaultValue}" placeholder="Inserisci valore...">
-                `,
+        body: `<p>${message}</p><input type="text" id="${inputId}" class="modal-input" value="${defaultValue}" placeholder="Inserisci valore...">`,
         buttons: [
           {
             text: "Annulla",
@@ -173,8 +144,6 @@ class ModalSystem {
           },
         ],
       });
-
-      // Focus input and handle Enter key
       setTimeout(() => {
         const input = document.getElementById(inputId);
         input.focus();
@@ -187,48 +156,68 @@ class ModalSystem {
       }, 100);
     });
   }
-
-  alert(message, title = "Avviso", type = "info") {
-    return new Promise((resolve) => {
-      this.show({
-        title,
-        body: message,
-        buttons: [
-          {
-            text: "OK",
-            class: type === "error" ? "btn-danger" : "btn-primary",
-            action: () => resolve(true),
-          },
-        ],
-      });
-    });
-  }
 }
 
-// Initialize notification and modal systems
 const notificationSystem = new NotificationSystem();
 const modalSystem = new ModalSystem();
 
+// Main Logic
 class DualWheelOfFortune {
   constructor() {
-    this.wheel1Names = []; // Names wheel - stores only names as strings
-    this.wheel2Names = []; // Nations wheel - stores only nations as strings
+    this.wheel1Names = this.loadFromStorage("wheel1Names", []); // All names
+    this.wheel2Names = this.loadFromStorage("wheel2Names", []); // All nations
+    this.availableWheel1Names = this.loadFromStorage("availableWheel1Names", [
+      ...this.wheel1Names,
+    ]); // Names not yet extracted
+    this.availableWheel2Names = this.loadFromStorage("availableWheel2Names", [
+      ...this.wheel2Names,
+    ]); // Nations not yet extracted
+    this.history = this.loadFromStorage("history", []); // Extraction history
     this.isSpinning1 = false;
     this.isSpinning2 = false;
+
     this.init();
+    this.bindEvents();
   }
 
   init() {
-    this.loadFromStorage();
-    this.bindEvents();
     this.updateWheel(1);
     this.updateWheel(2);
     this.updateNamesList(1);
     this.updateNamesList(2);
+    this.updateHistory();
+  }
+
+  loadFromStorage(key, defaultValue) {
+    try {
+      const stored = localStorage.getItem(key);
+      return stored ? JSON.parse(stored) : defaultValue;
+    } catch (e) {
+      console.error(`Error loading ${key} from storage:`, e);
+      return defaultValue;
+    }
+  }
+
+  saveToStorage() {
+    try {
+      localStorage.setItem("wheel1Names", JSON.stringify(this.wheel1Names));
+      localStorage.setItem("wheel2Names", JSON.stringify(this.wheel2Names));
+      localStorage.setItem(
+        "availableWheel1Names",
+        JSON.stringify(this.availableWheel1Names)
+      );
+      localStorage.setItem(
+        "availableWheel2Names",
+        JSON.stringify(this.availableWheel2Names)
+      );
+      localStorage.setItem("history", JSON.stringify(this.history));
+    } catch (e) {
+      console.error("Error saving to storage:", e);
+    }
   }
 
   bindEvents() {
-    // First wheel events (Names)
+    // Wheel 1 events
     document
       .getElementById("addNameBtn1")
       .addEventListener("click", () => this.addItem(1));
@@ -257,7 +246,7 @@ class DualWheelOfFortune {
       .getElementById("exportJsonBtn1")
       .addEventListener("click", () => this.exportJson(1));
 
-    // Second wheel events (Nations)
+    // Wheel 2 events
     document
       .getElementById("addNameBtn2")
       .addEventListener("click", () => this.addItem(2));
@@ -287,16 +276,31 @@ class DualWheelOfFortune {
     document
       .getElementById("exportJsonBtn2")
       .addEventListener("click", () => this.exportJson(2));
+
+    // History and reset events
+    document
+      .getElementById("resetHistoryBtn")
+      .addEventListener("click", () => this.resetHistory());
+    document
+      .getElementById("resetAllBtn")
+      .addEventListener("click", () => this.resetAll());
+    document
+      .getElementById("shareHistoryBtn")
+      .addEventListener("click", () => this.shareHistory());
+
+    // NEW COMBINED SPIN EVENT
+    document
+      .getElementById("spinBothBtn")
+      .addEventListener("click", () => this.spinCombined());
   }
 
   generateAuto(wheelNumber) {
     const count =
       Number.parseInt(
-        document.getElementById(`autoCount${wheelNumber}`).value,
+        document.getElementById(`autoCount${wheelNumber}`).value
       ) || 8;
 
     if (wheelNumber === 1) {
-      // Generate names for first wheel
       const autoNames = [
         "Marco",
         "Giulia",
@@ -348,132 +352,57 @@ class DualWheelOfFortune {
         "Manuela",
         "Massimo",
         "Patrizia",
-        "Alberto",
-        "Carla",
-        "Tommaso",
-        "Beatrice",
-        "Gabriele",
-        "Camilla",
       ];
-
       const shuffledNames = autoNames.sort(() => 0.5 - Math.random());
       this.wheel1Names = shuffledNames.slice(0, Math.min(count, 50));
-
-      notificationSystem.show(
-        `${this.wheel1Names.length} nomi generati automaticamente!`,
-        "success",
-      );
+      this.availableWheel1Names = [...this.wheel1Names];
     } else {
-      // Generate nations for second wheel
       const autoNations = [
         "Italia",
         "Francia",
         "Germania",
         "Spagna",
         "Regno Unito",
-        "Portogallo",
-        "Grecia",
-        "Olanda",
-        "Belgio",
-        "Austria",
-        "Svizzera",
-        "Polonia",
-        "Repubblica Ceca",
-        "Ungheria",
-        "Romania",
-        "Bulgaria",
-        "Croazia",
-        "Slovenia",
-        "Slovacchia",
-        "Danimarca",
-        "Svezia",
-        "Norvegia",
-        "Finlandia",
-        "Irlanda",
-        "Lituania",
-        "Lettonia",
-        "Estonia",
-        "Malta",
-        "Cipro",
-        "Lussemburgo",
-        "Islanda",
-        "Serbia",
-        "Montenegro",
-        "Bosnia",
-        "Macedonia",
-        "Albania",
-        "Moldavia",
-        "Ucraina",
-        "Bielorussia",
-        "Russia",
-        "Turchia",
+        "USA",
+        "Canada",
         "Brasile",
         "Argentina",
-        "Messico",
-        "Colombia",
-        "Perù",
-        "Cile",
-        "Venezuela",
-        "Ecuador",
-        "Uruguay",
-        "Paraguay",
-        "Bolivia",
-        "Stati Uniti",
-        "Canada",
-        "Australia",
+        "Cina",
         "Giappone",
+        "Australia",
+        "India",
+        "Russia",
+        "Messico",
+        "Egitto",
+        "Sudafrica",
+        "Svezia",
+        "Norvegia",
+        "Portogallo",
+        "Belgio",
+        "Svizzera",
+        "Grecia",
+        "Polonia",
+        "Turchia",
       ];
-
       const shuffledNations = autoNations.sort(() => 0.5 - Math.random());
-      this.wheel2Names = shuffledNations.slice(0, Math.min(count, 50));
-
-      notificationSystem.show(
-        `${this.wheel2Names.length} nazioni generate automaticamente!`,
-        "success",
-      );
+      this.wheel2Names = shuffledNations.slice(0, Math.min(count, 25));
+      this.availableWheel2Names = [...this.wheel2Names];
     }
 
     this.updateWheel(wheelNumber);
     this.updateNamesList(wheelNumber);
     this.saveToStorage();
     this.hideResult(wheelNumber);
+    const wheelName = wheelNumber === 1 ? "nomi" : "nazioni";
+    notificationSystem.show(
+      `${
+        wheelName.charAt(0).toUpperCase() + wheelName.slice(1)
+      } generati automaticamente!`,
+      "info"
+    );
   }
 
-  saveToStorage() {
-    try {
-      const data = JSON.stringify({
-        wheel1: this.wheel1Names,
-        wheel2: this.wheel2Names,
-      });
-      localStorage.setItem("dualWheelData", data);
-    } catch (e) {
-      console.error("Errore nel salvataggio:", e);
-      notificationSystem.show("Errore nel salvataggio dei dati", "error");
-    }
-  }
-
-  loadFromStorage() {
-    try {
-      const data = localStorage.getItem("dualWheelData");
-      if (data) {
-        const parsed = JSON.parse(data);
-        if (parsed.wheel1 && Array.isArray(parsed.wheel1)) {
-          this.wheel1Names = parsed.wheel1.slice(0, 100);
-        }
-        if (parsed.wheel2 && Array.isArray(parsed.wheel2)) {
-          this.wheel2Names = parsed.wheel2.slice(0, 100);
-        }
-      }
-    } catch (e) {
-      console.error("Errore nel caricamento:", e);
-      notificationSystem.show(
-        "Errore nel caricamento dei dati salvati",
-        "error",
-      );
-    }
-  }
-
-  generateColors(count) {
+  getColorPalette(count) {
     const colors = [];
     const hueStep = 360 / count;
     for (let i = 0; i < count; i++) {
@@ -484,12 +413,11 @@ class DualWheelOfFortune {
 
   async addItem(wheelNumber) {
     const items = wheelNumber === 1 ? this.wheel1Names : this.wheel2Names;
-
     if (items.length >= 100) {
       const itemType = wheelNumber === 1 ? "nomi" : "nazioni";
       notificationSystem.show(
         `Puoi inserire al massimo 100 ${itemType}!`,
-        "warning",
+        "warning"
       );
       return;
     }
@@ -513,7 +441,7 @@ class DualWheelOfFortune {
     if (items.includes(inputValue)) {
       notificationSystem.show(
         `Questo ${itemType} è già presente nella lista`,
-        "warning",
+        "warning"
       );
       return;
     }
@@ -523,31 +451,31 @@ class DualWheelOfFortune {
 
     if (wheelNumber === 1) {
       this.wheel1Names = items;
+      this.availableWheel1Names.push(inputValue);
     } else {
       this.wheel2Names = items;
+      this.availableWheel2Names.push(inputValue);
     }
 
     this.updateWheel(wheelNumber);
     this.updateNamesList(wheelNumber);
     this.saveToStorage();
     this.hideResult(wheelNumber);
-
     const wheelName = wheelNumber === 1 ? "nomi" : "nazioni";
     notificationSystem.show(
       `"${inputValue}" aggiunto alla ruota ${wheelName}!`,
-      "success",
+      "success"
     );
   }
 
   async editName(index, wheelNumber) {
     const items = wheelNumber === 1 ? this.wheel1Names : this.wheel2Names;
     const isSpinning = wheelNumber === 1 ? this.isSpinning1 : this.isSpinning2;
-
     if (isSpinning) {
       const itemType = wheelNumber === 1 ? "nomi" : "nazioni";
       notificationSystem.show(
         `Non puoi modificare i ${itemType} mentre la ruota gira`,
-        "warning",
+        "warning"
       );
       return;
     }
@@ -557,46 +485,58 @@ class DualWheelOfFortune {
     const newItem = await modalSystem.prompt(
       `Modifica ${itemType}:`,
       currentItem,
-      `Modifica ${itemType}`,
+      `Modifica ${itemType}`
     );
 
     if (newItem === null) return;
+    if (newItem === currentItem) return;
 
-    if (!newItem) {
-      notificationSystem.show(`Il ${itemType} non può essere vuoto`, "warning");
-      return;
-    }
-
-    if (items.some((item, i) => i !== index && item === newItem)) {
+    if (items.includes(newItem)) {
       notificationSystem.show(
         `Questo ${itemType} è già presente nella lista`,
-        "warning",
+        "warning"
       );
       return;
     }
 
+    // Update main list
     items[index] = newItem;
+
+    // Update available list
+    const availableItems =
+      wheelNumber === 1 ? this.availableWheel1Names : this.availableWheel2Names;
+    const availIndex = availableItems.indexOf(currentItem);
+    if (availIndex !== -1) {
+      availableItems[availIndex] = newItem;
+    }
+
+    if (wheelNumber === 1) {
+      this.wheel1Names = items;
+      this.availableWheel1Names = availableItems;
+    } else {
+      this.wheel2Names = items;
+      this.availableWheel2Names = availableItems;
+    }
+
     this.updateWheel(wheelNumber);
     this.updateNamesList(wheelNumber);
     this.saveToStorage();
     this.hideResult(wheelNumber);
-
     const wheelName = wheelNumber === 1 ? "nomi" : "nazioni";
     notificationSystem.show(
-      `${itemType} modificato nella ruota ${wheelName}: "${newItem}"`,
-      "success",
+      `"${currentItem}" modificato in "${newItem}" nella ruota ${wheelName}`,
+      "success"
     );
   }
 
   async deleteName(index, wheelNumber) {
     const items = wheelNumber === 1 ? this.wheel1Names : this.wheel2Names;
     const isSpinning = wheelNumber === 1 ? this.isSpinning1 : this.isSpinning2;
-
     if (isSpinning) {
       const itemType = wheelNumber === 1 ? "nomi" : "nazioni";
       notificationSystem.show(
         `Non puoi eliminare ${itemType} mentre la ruota sta girando`,
-        "warning",
+        "warning"
       );
       return;
     }
@@ -607,32 +547,45 @@ class DualWheelOfFortune {
 
     const confirmed = await modalSystem.confirm(
       `Sei sicuro di voler eliminare "${item}" dalla ruota ${wheelName}?`,
-      `Elimina ${itemType}`,
+      `Elimina ${itemType}`
     );
 
     if (confirmed) {
       items.splice(index, 1);
+
+      if (wheelNumber === 1) {
+        const availIndex = this.availableWheel1Names.indexOf(item);
+        if (availIndex !== -1) {
+          this.availableWheel1Names.splice(availIndex, 1);
+        }
+      } else {
+        const availIndex = this.availableWheel2Names.indexOf(item);
+        if (availIndex !== -1) {
+          this.availableWheel2Names.splice(availIndex, 1);
+        }
+      }
+
       this.updateWheel(wheelNumber);
       this.updateNamesList(wheelNumber);
       this.saveToStorage();
       this.hideResult(wheelNumber);
-
       notificationSystem.show(
         `"${item}" eliminato dalla ruota ${wheelName}`,
-        "success",
+        "success"
       );
     }
   }
 
   updateWheel(wheelNumber) {
     const svg = document.getElementById(`wheelSvg${wheelNumber}`);
-    const items = wheelNumber === 1 ? this.wheel1Names : this.wheel2Names;
+    const items =
+      wheelNumber === 1 ? this.availableWheel1Names : this.availableWheel2Names;
     svg.innerHTML = "";
 
     if (items.length === 0) {
       const circle = document.createElementNS(
         "http://www.w3.org/2000/svg",
-        "circle",
+        "circle"
       );
       circle.setAttribute("cx", "200");
       circle.setAttribute("cy", "200");
@@ -644,7 +597,7 @@ class DualWheelOfFortune {
 
       const text = document.createElementNS(
         "http://www.w3.org/2000/svg",
-        "text",
+        "text"
       );
       text.setAttribute("x", "200");
       text.setAttribute("y", "200");
@@ -660,48 +613,54 @@ class DualWheelOfFortune {
       return;
     }
 
-    const colors = this.generateColors(items.length);
-    const centerX = 200;
-    const centerY = 200;
+    const colors = this.getColorPalette(items.length);
+    const totalItems = items.length;
+    const arcDegrees = 360 / totalItems;
+    const center = 200;
     const radius = 180;
-    const angleStep = 360 / items.length;
 
     items.forEach((item, index) => {
-      const startAngle = index * angleStep;
-      const endAngle = (index + 1) * angleStep;
+      const startAngle = index * arcDegrees;
+      const endAngle = (index + 1) * arcDegrees;
 
-      const startAngleRad = (startAngle * Math.PI) / 180;
-      const endAngleRad = (endAngle * Math.PI) / 180;
+      // Pie slice path
+      const startX =
+        center + radius * Math.cos((Math.PI / 180) * (startAngle - 90));
+      const startY =
+        center + radius * Math.sin((Math.PI / 180) * (startAngle - 90));
+      const endX =
+        center + radius * Math.cos((Math.PI / 180) * (endAngle - 90));
+      const endY =
+        center + radius * Math.sin((Math.PI / 180) * (endAngle - 90));
+      const largeArcFlag = arcDegrees > 180 ? 1 : 0;
 
-      const x1 = centerX + radius * Math.cos(startAngleRad);
-      const y1 = centerY + radius * Math.sin(startAngleRad);
-      const x2 = centerX + radius * Math.cos(endAngleRad);
-      const y2 = centerY + radius * Math.sin(endAngleRad);
-
-      const largeArcFlag = angleStep > 180 ? 1 : 0;
+      const pathData = [
+        `M ${center},${center}`,
+        `L ${startX},${startY}`,
+        `A ${radius},${radius} 0 ${largeArcFlag} 1 ${endX},${endY}`,
+        "Z",
+      ].join(" ");
 
       const path = document.createElementNS(
         "http://www.w3.org/2000/svg",
-        "path",
+        "path"
       );
-      const pathData = `M ${centerX} ${centerY} L ${x1} ${y1} A ${radius} ${radius} 0 ${largeArcFlag} 1 ${x2} ${y2} Z`;
       path.setAttribute("d", pathData);
       path.setAttribute("fill", colors[index]);
-      path.setAttribute("stroke", "white");
-      path.setAttribute("stroke-width", "3");
       path.classList.add("wheel-section");
       svg.appendChild(path);
 
-      const textAngle = startAngle + angleStep / 2;
+      // Text
+      const textAngle = startAngle + arcDegrees / 2;
       const textRadius = radius * 0.7;
       const textX =
-        centerX + textRadius * Math.cos((textAngle * Math.PI) / 180);
+        center + textRadius * Math.cos((Math.PI / 180) * (textAngle - 90));
       const textY =
-        centerY + textRadius * Math.sin((textAngle * Math.PI) / 180);
+        center + textRadius * Math.sin((Math.PI / 180) * (textAngle - 90));
 
       const text = document.createElementNS(
         "http://www.w3.org/2000/svg",
-        "text",
+        "text"
       );
       text.setAttribute("x", textX);
       text.setAttribute("y", textY);
@@ -715,7 +674,7 @@ class DualWheelOfFortune {
       text.setAttribute("stroke-width", "1");
       text.setAttribute(
         "transform",
-        `rotate(${textAngle}, ${textX}, ${textY})`,
+        `rotate(${textAngle}, ${textX}, ${textY})`
       );
       text.textContent =
         item.length > 12 ? item.substring(0, 12) + "..." : item;
@@ -740,93 +699,454 @@ class DualWheelOfFortune {
     namesList.innerHTML = items
       .map(
         (item, index) => `
-        <div class="name-item">
-          <span class="name-text">${item}</span>
-          <div class="name-actions">
-            <button class="btn btn-secondary btn-small" onclick="dualWheel.editName(${index}, ${wheelNumber})" title="Modifica">✏️</button>
-            <button class="btn btn-danger btn-small" onclick="dualWheel.deleteName(${index}, ${wheelNumber})" title="Elimina">🗑️</button>
-          </div>
-        </div>
-      `,
+                <div class="name-item">
+                  <span class="name-text">${item}</span>
+                  <div class="name-actions">
+                    <button class="btn btn-secondary btn-small" onclick="dualWheel.editName(${index}, ${wheelNumber})" title="Modifica">✏️</button>
+                    <button class="btn btn-danger btn-small" onclick="dualWheel.deleteName(${index}, ${wheelNumber})" title="Elimina">🗑️</button>
+                  </div>
+                </div>
+              `
       )
       .join("");
   }
 
-  spinWheel(wheelNumber) {
-    const items = wheelNumber === 1 ? this.wheel1Names : this.wheel2Names;
-    const isSpinning = wheelNumber === 1 ? this.isSpinning1 : this.isSpinning2;
+  // NEW METHOD FOR COMBINED SPIN
+  async spinCombined() {
+    const items1 = this.availableWheel1Names;
+    const items2 = this.availableWheel2Names;
+    const spinButton1 = document.getElementById("spinButton1");
+    const spinButton2 = document.getElementById("spinButton2");
+    const spinBothBtn = document.getElementById("spinBothBtn");
 
-    if (items.length === 0) {
-      const itemType = wheelNumber === 1 ? "nomi" : "nazioni";
+    if (items1.length === 0 || items2.length === 0) {
       notificationSystem.show(
-        `Aggiungi almeno un ${itemType.slice(0, -1)} prima di girare la ruota!`,
-        "warning",
+        "Assicurati di avere almeno un nome e una nazione disponibili per l'estrazione combinata!",
+        "warning"
       );
       return;
     }
 
-    if (isSpinning) {
-      notificationSystem.show("La ruota sta già girando!", "info");
+    if (this.isSpinning1 || this.isSpinning2) {
+      notificationSystem.show(
+        "Una ruota è già in rotazione! Attendi la fine dell'estrazione.",
+        "warning"
+      );
       return;
     }
 
-    if (wheelNumber === 1) {
-      this.isSpinning1 = true;
-    } else {
-      this.isSpinning2 = true;
-    }
+    // Temporarily disable buttons
+    spinButton1.disabled = true;
+    spinButton2.disabled = true;
+    spinBothBtn.disabled = true;
 
-    const spinButton = document.getElementById(`spinButton${wheelNumber}`);
-    spinButton.disabled = true;
-    spinButton.textContent = "🔄 Girando...";
+    this.isSpinning1 = true;
+    this.isSpinning2 = true;
+    this.hideResult(1);
+    this.hideResult(2);
 
-    const svg = document.getElementById(`wheelSvg${wheelNumber}`);
-    const winnerIndex = Math.floor(Math.random() * items.length);
-    const anglePerSegment = 360 / items.length;
-    const stopAngle =
-      360 - (winnerIndex * anglePerSegment + anglePerSegment / 2);
-    const extraSpins = 10 * 360;
-    const finalRotation = extraSpins + stopAngle;
+    // 1. Spin Wheel 1 (Name) - Animation setup
+    const svg1 = document.getElementById(`wheelSvg1`);
+    const randomIndex1 = Math.floor(Math.random() * items1.length);
+    const winner1 = items1[randomIndex1];
+    const totalRotation1 = 360 * 10 + (360 / items1.length) * randomIndex1;
+    svg1.style.setProperty("--spin-rotation", `-${totalRotation1}deg`);
+    svg1.classList.add("spinning");
 
-    svg.style.setProperty("--spin-rotation", finalRotation + "deg");
-    svg.classList.add("spinning");
+    // 2. Spin Wheel 2 (Nation) - Animation setup
+    const svg2 = document.getElementById(`wheelSvg2`);
+    const randomIndex2 = Math.floor(Math.random() * items2.length);
+    const winner2 = items2[randomIndex2];
+    const totalRotation2 = 360 * 10 + (360 / items2.length) * randomIndex2;
+    svg2.style.setProperty("--spin-rotation", `-${totalRotation2}deg`);
+    svg2.classList.add("spinning");
 
-    const wheelName = wheelNumber === 1 ? "nomi" : "nazioni";
+    // 3. Wait for the spin to finish
+    await new Promise((resolve) => setTimeout(resolve, 4000));
+
+    // 4. Cleanup and Result
+    svg1.classList.remove("spinning");
+    svg2.classList.remove("spinning");
+
+    this.isSpinning1 = false;
+    this.isSpinning2 = false;
+
+    // Remove winners from available lists
+    items1.splice(randomIndex1, 1);
+    items2.splice(randomIndex2, 1);
+
+    // Update wheels and lists
+    this.updateWheel(1);
+    this.updateWheel(2);
+    this.updateNamesList(1);
+    this.updateNamesList(2);
+
+    // Show results
+    this.showResult(`${winner1}`, 1);
+    this.showResult(`${winner2}`, 2);
+
+    // Add to history (wheelNumber = 0 for combined)
+    this.addToHistory(0, winner1, winner2);
+
+    this.saveToStorage();
+
+    // Re-enable buttons
+    spinButton1.disabled = false;
+    spinButton2.disabled = false;
+    spinBothBtn.disabled = false;
+
+    // Notification
     notificationSystem.show(
-      `La ruota ${wheelName} sta girando... 🎲`,
-      "info",
-      "In corso",
-      4000,
+      `🎉 Estrazione Combinata: ${winner1} e ${winner2}!`,
+      "success",
+      "Abbiamo una Coppia!",
+      8000
     );
+  }
 
+  spinWheel(wheelNumber) {
+    const items =
+      wheelNumber === 1 ? this.availableWheel1Names : this.availableWheel2Names;
+    const isSpinning = wheelNumber === 1 ? this.isSpinning1 : this.isSpinning2;
+    const spinButton = document.getElementById(`spinButton${wheelNumber}`);
+    const resultType = wheelNumber === 1 ? "nome" : "nazione";
+    const svg = document.getElementById(`wheelSvg${wheelNumber}`);
+
+    // Check for availability and spinning state
+    if (items.length === 0) {
+      notificationSystem.show(
+        `Nessun ${resultType} disponibile per l'estrazione!`,
+        "warning"
+      );
+      return;
+    }
+    if (isSpinning) return;
+
+    // Disable buttons (including the combined one, to prevent issues)
+    spinButton.disabled = true;
+    document.getElementById("spinBothBtn").disabled = true;
+    document.getElementById(
+      `spinButton${wheelNumber === 1 ? 2 : 1}`
+    ).disabled = true;
+
+    // Select winner and start animation
+    const randomIndex = Math.floor(Math.random() * items.length);
+    const winner = items[randomIndex];
+    const totalRotation = 360 * 10 + (360 / items.length) * randomIndex;
+
+    // Reset old winner class
+    svg
+      .querySelectorAll(".wheel-section")
+      .forEach((path) => path.classList.remove("winner"));
+
+    // Start spinning
+    svg.style.setProperty("--spin-rotation", `-${totalRotation}deg`);
+    svg.classList.add("spinning");
+    this.hideResult(wheelNumber);
+
+    if (wheelNumber === 1) this.isSpinning1 = true;
+    if (wheelNumber === 2) this.isSpinning2 = true;
+
+    // End spin after 4 seconds
     setTimeout(() => {
-      const winner = items[winnerIndex];
-      this.showResult(winner, wheelNumber);
-
-      const paths = svg.querySelectorAll(".wheel-section");
-      paths.forEach((path, i) => {
-        path.classList.toggle("winner", i === winnerIndex);
-      });
-
-      if (wheelNumber === 1) {
-        this.isSpinning1 = false;
-        spinButton.textContent = "🎲 Gira la Ruota dei Nomi!";
-      } else {
-        this.isSpinning2 = false;
-        spinButton.textContent = "🎲 Gira la Ruota delle Nazioni!";
-      }
-
-      spinButton.disabled = false;
       svg.classList.remove("spinning");
 
-      const resultType = wheelNumber === 1 ? "nome" : "nazione";
+      // Highlight winner section (use next tick to ensure rotation finished)
+      setTimeout(() => {
+        svg
+          .querySelectorAll(".wheel-section")
+          [randomIndex].classList.add("winner");
+      }, 50);
+
+      // Remove winner from available list
+      items.splice(randomIndex, 1);
+
+      if (wheelNumber === 1) this.isSpinning1 = false;
+      if (wheelNumber === 2) this.isSpinning2 = false;
+
+      // Re-enable buttons
+      spinButton.disabled = false;
+      document.getElementById("spinBothBtn").disabled = false;
+      document.getElementById(
+        `spinButton${wheelNumber === 1 ? 2 : 1}`
+      ).disabled = false;
+
+      // Log result and update display
+      this.showResult(winner, wheelNumber);
+      this.addToHistory(wheelNumber, winner);
       notificationSystem.show(
         `🎉 Il ${resultType} estratto è: ${winner}!`,
         "success",
         "Abbiamo un vincitore!",
-        8000,
+        8000
       );
+
+      // Update wheel to show remaining items
+      this.updateWheel(wheelNumber);
+      this.saveToStorage();
     }, 4000);
+  }
+
+  addToHistory(wheelNumber, winner, nationWinner = null) {
+    // MODIFIED: added nationWinner
+    const timestamp = new Date();
+    const historyEntry = {
+      id: Date.now(),
+      wheelNumber,
+      winner,
+      nationWinner, // New field
+      timestamp: timestamp.toLocaleString("it-IT"),
+      wheelType:
+        wheelNumber === 1
+          ? "Nomi"
+          : wheelNumber === 2
+          ? "Nazioni"
+          : "Combinata", // New type for wheelNumber 0
+    };
+    this.history.unshift(historyEntry);
+    this.updateHistory();
+    this.saveToStorage();
+  }
+
+  updateHistory() {
+    // MODIFIED: logic to handle combined spin (wheelNumber = 0)
+    const historyList = document.getElementById("historyList");
+    if (this.history.length === 0) {
+      historyList.innerHTML = `
+              <div class="empty-state">
+                <div class="emoji">📜</div>
+                <p>Nessuna estrazione ancora.<br />Gira le ruote per iniziare!</p>
+              </div>
+            `;
+      return;
+    }
+
+    historyList.innerHTML = this.history
+      .map((entry, index) => {
+        // Logic for Combined Spin (wheelNumber = 0)
+        if (entry.wheelNumber === 0) {
+          return `
+                    <div class="history-item">
+                        <div class="history-item-header">
+                            <div class="history-item-number">#${
+                              this.history.length - index
+                            }</div>
+                            <div class="history-item-time">${
+                              entry.timestamp
+                            }</div>
+                        </div>
+                        <div class="history-item-result">
+                            <div class="history-result-box">
+                                <div class="history-result-label">👤 Nome Estratto</div>
+                                <div class="history-result-value">${
+                                  entry.winner
+                                }</div>
+                            </div>
+                            <div class="history-result-box">
+                                <div class="history-result-label">🌍 Nazione Estratta</div>
+                                <div class="history-result-value">${
+                                  entry.nationWinner
+                                }</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+        }
+        // Original logic for Single Spin (wheelNumber = 1 or 2)
+        else {
+          return `
+                    <div class="history-item">
+                        <div class="history-item-header">
+                            <div class="history-item-number">#${
+                              this.history.length - index
+                            }</div>
+                            <div class="history-item-time">${
+                              entry.timestamp
+                            }</div>
+                        </div>
+                        <div class="history-item-result">
+                            <div class="history-result-box">
+                                <div class="history-result-label">${
+                                  entry.wheelType === "Nomi" ? "👤" : "🌍"
+                                } ${entry.wheelType}</div>
+                                <div class="history-result-value">${
+                                  entry.winner
+                                }</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+        }
+      })
+      .join("");
+  }
+
+  async resetHistory() {
+    const confirmed = await modalSystem.confirm(
+      "Sei sicuro di voler resettare la cronologia? Questo ripristinerà anche tutti i nomi e le nazioni disponibili per le estrazioni.",
+      "Reset Cronologia"
+    );
+
+    if (confirmed) {
+      this.history = [];
+      this.availableWheel1Names = [...this.wheel1Names];
+      this.availableWheel2Names = [...this.wheel2Names];
+      this.updateHistory();
+      this.updateWheel(1);
+      this.updateWheel(2);
+      this.saveToStorage();
+      notificationSystem.show(
+        "Cronologia resettata! Tutti gli elementi sono di nuovo disponibili.",
+        "success"
+      );
+    }
+  }
+
+  async resetAll() {
+    const confirmed = await modalSystem.confirm(
+      "⚠️ ATTENZIONE: Sei sicuro di voler resettare COMPLETAMENTE l'applicazione? Verranno eliminati TUTTI i nomi, le nazioni e la cronologia.",
+      "Reset Completo"
+    );
+
+    if (confirmed) {
+      this.wheel1Names = [];
+      this.availableWheel1Names = [];
+      this.wheel2Names = [];
+      this.availableWheel2Names = [];
+      this.history = [];
+
+      this.updateWheel(1);
+      this.updateWheel(2);
+      this.updateNamesList(1);
+      this.updateNamesList(2);
+      this.updateHistory();
+      this.saveToStorage();
+      this.hideResult(1);
+      this.hideResult(2);
+      notificationSystem.show(
+        "Tutti i dati sono stati cancellati. Inizia ad aggiungere nuovi nomi e nazioni!",
+        "success"
+      );
+    }
+  }
+
+  shareHistory() {
+    // Creazione del testo per WhatsApp con formattazione
+    let shareText = "*🎉 CRONOLOGIA ESTRAZIONI 🎉*\n";
+    shareText += "🎡 Ruota Nomi & Nazioni 🌍\n\n";
+
+    if (this.history.length === 0) {
+      shareText += "_Nessuna estrazione registrata finora._";
+    } else {
+      this.history.forEach((entry, index) => {
+        const number = this.history.length - index;
+        let result;
+
+        if (entry.wheelNumber === 0) {
+          // Estrazione Combinata
+          result = `*👤 Nome:* ${entry.winner}\n*🌍 Nazione:* ${entry.nationWinner}`;
+        } else if (entry.wheelNumber === 1) {
+          // Estrazione Nome
+          result = `*👤 Nome Estratto:* ${entry.winner}`;
+        } else {
+          // Estrazione Nazione
+          result = `*🌍 Nazione Estratta:* ${entry.winner}`;
+        }
+
+        shareText += `---------------------------------\n`;
+        shareText += `*#${number}* - ${entry.wheelType} (${entry.timestamp})\n`;
+        shareText += `${result}\n`; // Il risultato è già formattato con *...* all'interno del blocco if/else
+      });
+      shareText += "---------------------------------\n\n";
+    }
+
+    shareText += "Powered by Ruota Nomi & Nazioni App";
+
+    const encodedText = encodeURIComponent(shareText);
+    const whatsappUrl = `https://wa.me/?text=${encodedText}`;
+
+    const isMobile =
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        navigator.userAgent
+      );
+
+    let bodyContent;
+    let buttons = [];
+
+    if (isMobile) {
+      // Option for mobile: use the native Web Share API or WhatsApp link
+      bodyContent = `<p>Tocca il pulsante qui sotto per condividere la cronologia su WhatsApp:</p>`;
+      buttons.push({
+        text: "💬 Condividi su WhatsApp",
+        class: "btn-success",
+        action: () => {
+          window.open(whatsappUrl, "_blank");
+        },
+      });
+    } else {
+      // Option for desktop: show the text for easy copy-paste and a button to open WhatsApp Web
+      bodyContent = `<p>Copia il testo e incollalo su WhatsApp Web o usa il pulsante qui sotto:</p><textarea id="shareTextarea" class="modal-input" rows="10" readonly>${shareText}</textarea>`;
+      buttons.push({
+        text: "📋 Copia Testo",
+        class: "btn-primary",
+        action: () => {
+          const textarea = document.getElementById("shareTextarea");
+          textarea.select();
+          document.execCommand("copy");
+          notificationSystem.show(
+            "Testo della cronologia copiato negli appunti!",
+            "success",
+            "Copiato!"
+          );
+        },
+        close: false,
+      });
+      buttons.push({
+        text: "🌐 Condividi su Whatsapp",
+        class: "btn-secondary",
+        action: () => {
+          window.open(whatsappUrl, "_blank");
+        },
+      });
+    }
+
+    buttons.push({ text: "Chiudi", class: "btn-secondary" });
+
+    modalSystem.show({
+      title: "🔗 Condividi Cronologia",
+      body: bodyContent,
+      buttons: buttons,
+    });
+  }
+
+  async clearWheel(wheelNumber) {
+    const items = wheelNumber === 1 ? this.wheel1Names : this.wheel2Names;
+    const wheelName = wheelNumber === 1 ? "nomi" : "nazioni";
+
+    const confirmed = await modalSystem.confirm(
+      `Sei sicuro di voler cancellare tutti i ${items.length} ${wheelName}?`,
+      "Cancella Tutto"
+    );
+
+    if (confirmed) {
+      if (wheelNumber === 1) {
+        this.wheel1Names = [];
+        this.availableWheel1Names = [];
+      } else {
+        this.wheel2Names = [];
+        this.availableWheel2Names = [];
+      }
+
+      this.updateWheel(wheelNumber);
+      this.updateNamesList(wheelNumber);
+      this.saveToStorage();
+      this.hideResult(wheelNumber);
+
+      notificationSystem.show(
+        `Tutti i ${wheelName} sono stati cancellati`,
+        "success"
+      );
+    }
   }
 
   async loadFile(event, wheelNumber) {
@@ -834,20 +1154,21 @@ class DualWheelOfFortune {
     if (!file) return;
 
     const items = wheelNumber === 1 ? this.wheel1Names : this.wheel2Names;
+    const wheelName = wheelNumber === 1 ? "nomi" : "nazioni";
 
     const reader = new FileReader();
     reader.onload = async (e) => {
-      try {
-        const content = e.target.result;
-        let newItems = [];
+      const content = e.target.result;
+      let newItems = [];
 
+      try {
         if (file.name.endsWith(".json")) {
           const data = JSON.parse(content);
           if (Array.isArray(data)) {
             newItems = data.map((item) =>
               typeof item === "string"
                 ? item
-                : item.name || item.nation || "Item",
+                : item.name || item.nation || "Item"
             );
           } else {
             newItems = data.items || data.names || data.nations || [];
@@ -858,158 +1179,50 @@ class DualWheelOfFortune {
             .map((line) => line.trim())
             .filter((line) => line);
         }
-
-        if (newItems.length === 0) {
-          const itemType = wheelNumber === 1 ? "nomi" : "nazioni";
-          notificationSystem.show(
-            `Il file non contiene ${itemType} validi`,
-            "warning",
-          );
-          return;
-        }
-
-        const uniqueItems = newItems.filter(
-          (newItem) => !items.includes(newItem),
-        );
-        const remainingSlots = 100 - items.length;
-        const itemsToAdd = uniqueItems.slice(0, remainingSlots);
-
-        if (itemsToAdd.length === 0) {
-          const itemType = wheelNumber === 1 ? "nomi" : "nazioni";
-          notificationSystem.show(
-            `Tutti i ${itemType} nel file sono già presenti nella lista`,
-            "info",
-          );
-          return;
-        }
-
-        if (wheelNumber === 1) {
-          this.wheel1Names = [...this.wheel1Names, ...itemsToAdd];
-        } else {
-          this.wheel2Names = [...this.wheel2Names, ...itemsToAdd];
-        }
-
-        this.updateWheel(wheelNumber);
-        this.updateNamesList(wheelNumber);
-        this.saveToStorage();
-        this.hideResult(wheelNumber);
-
-        const wheelName = wheelNumber === 1 ? "nomi" : "nazioni";
-        let message = `${itemsToAdd.length} ${wheelName} caricati!`;
-        if (uniqueItems.length > itemsToAdd.length) {
-          message += ` (Limite di 100 raggiunto)`;
-        }
-        if (newItems.length > uniqueItems.length) {
-          message += ` (${newItems.length - uniqueItems.length} duplicati ignorati)`;
-        }
-
-        notificationSystem.show(message, "success", "File Caricato");
-      } catch (err) {
-        console.error("Errore nel caricamento del file:", err);
+      } catch (error) {
         notificationSystem.show(
-          "Errore nel caricamento del file. Controlla il formato.",
-          "error",
+          "Errore nella lettura del file. Assicurati che sia un formato JSON o TXT valido.",
+          "error"
         );
+        return;
       }
-    };
-    reader.readAsText(file);
-    event.target.value = "";
-  }
 
-  exportTxt(wheelNumber) {
-    const items = wheelNumber === 1 ? this.wheel1Names : this.wheel2Names;
+      if (newItems.length === 0) {
+        const itemType = wheelNumber === 1 ? "nomi" : "nazioni";
+        notificationSystem.show(
+          `Il file non contiene ${itemType} validi`,
+          "warning"
+        );
+        return;
+      }
 
-    if (items.length === 0) {
-      const itemType = wheelNumber === 1 ? "nomi" : "nazioni";
-      notificationSystem.show(
-        `Nessun ${itemType.slice(0, -1)} da esportare!`,
-        "warning",
+      const uniqueItems = newItems.filter(
+        (newItem) => !items.includes(newItem)
       );
-      return;
-    }
+      const remainingSlots = 100 - items.length;
+      const itemsToAdd = uniqueItems.slice(0, remainingSlots);
 
-    try {
-      const content = items.join("\n");
-      const blob = new Blob([content], { type: "text/plain" });
-      const a = document.createElement("a");
-      a.href = URL.createObjectURL(blob);
-      const wheelName = wheelNumber === 1 ? "nomi" : "nazioni";
-      a.download = `${wheelName}.txt`;
-      a.click();
-      URL.revokeObjectURL(a.href);
+      if (itemsToAdd.length === 0) {
+        const itemType = wheelNumber === 1 ? "nomi" : "nazioni";
+        notificationSystem.show(
+          `Tutti i ${itemType} nel file sono già presenti nella lista`,
+          "info"
+        );
+        return;
+      }
 
-      notificationSystem.show(
-        `${items.length} ${wheelName} esportati in formato TXT`,
-        "success",
-      );
-    } catch (err) {
-      notificationSystem.show(
-        "Errore durante l'esportazione del file TXT",
-        "error",
-      );
-    }
-  }
-
-  exportJson(wheelNumber) {
-    const items = wheelNumber === 1 ? this.wheel1Names : this.wheel2Names;
-
-    if (items.length === 0) {
-      const itemType = wheelNumber === 1 ? "nomi" : "nazioni";
-      notificationSystem.show(
-        `Nessun ${itemType.slice(0, -1)} da esportare!`,
-        "warning",
-      );
-      return;
-    }
-
-    try {
-      const wheelName = wheelNumber === 1 ? "nomi" : "nazioni";
-      const data = {
-        [wheelName]: items,
-        exported: new Date().toISOString(),
-        count: items.length,
-        wheel: wheelNumber,
-      };
-      const blob = new Blob([JSON.stringify(data, null, 2)], {
-        type: "application/json",
-      });
-      const a = document.createElement("a");
-      a.href = URL.createObjectURL(blob);
-      a.download = `${wheelName}.json`;
-      a.click();
-      URL.revokeObjectURL(a.href);
-
-      notificationSystem.show(
-        `${items.length} ${wheelName} esportati in formato JSON`,
-        "success",
-      );
-    } catch (err) {
-      notificationSystem.show(
-        "Errore durante l'esportazione del file JSON",
-        "error",
-      );
-    }
-  }
-
-  async clearWheel(wheelNumber) {
-    const items = wheelNumber === 1 ? this.wheel1Names : this.wheel2Names;
-
-    if (items.length === 0) {
-      notificationSystem.show("La lista è già vuota!", "info");
-      return;
-    }
-
-    const wheelName = wheelNumber === 1 ? "nomi" : "nazioni";
-    const confirmed = await modalSystem.confirm(
-      `Sei sicuro di voler cancellare tutti i ${items.length} ${wheelName}?`,
-      "Cancella Tutto",
-    );
-
-    if (confirmed) {
       if (wheelNumber === 1) {
-        this.wheel1Names = [];
+        this.wheel1Names = [...this.wheel1Names, ...itemsToAdd];
+        this.availableWheel1Names = [
+          ...this.availableWheel1Names,
+          ...itemsToAdd,
+        ];
       } else {
-        this.wheel2Names = [];
+        this.wheel2Names = [...this.wheel2Names, ...itemsToAdd];
+        this.availableWheel2Names = [
+          ...this.availableWheel2Names,
+          ...itemsToAdd,
+        ];
       }
 
       this.updateWheel(wheelNumber);
@@ -1018,15 +1231,75 @@ class DualWheelOfFortune {
       this.hideResult(wheelNumber);
 
       notificationSystem.show(
-        `Tutti i ${wheelName} sono stati cancellati`,
-        "success",
+        `${itemsToAdd.length} ${wheelName} aggiunti dal file!`,
+        "success"
       );
+    };
+
+    reader.readAsText(file);
+    event.target.value = null; // Clear input
+  }
+
+  exportTxt(wheelNumber) {
+    const items = wheelNumber === 1 ? this.wheel1Names : this.wheel2Names;
+    const wheelName = wheelNumber === 1 ? "nomi" : "nazioni";
+
+    if (items.length === 0) {
+      notificationSystem.show(
+        `Nessun ${wheelName.slice(0, -1)} da esportare`,
+        "warning"
+      );
+      return;
     }
+
+    const content = items.join("\n");
+    const blob = new Blob([content], { type: "text/plain" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = `${wheelName}.txt`;
+    a.click();
+    URL.revokeObjectURL(a.href);
+    notificationSystem.show(
+      `${items.length} ${wheelName} esportati in formato TXT`,
+      "success"
+    );
+  }
+
+  exportJson(wheelNumber) {
+    const items = wheelNumber === 1 ? this.wheel1Names : this.wheel2Names;
+    const wheelName = wheelNumber === 1 ? "nomi" : "nazioni";
+
+    if (items.length === 0) {
+      notificationSystem.show(
+        `Nessun ${wheelName.slice(0, -1)} da esportare`,
+        "warning"
+      );
+      return;
+    }
+
+    const data = {
+      [wheelName]: items,
+      exported: new Date().toISOString(),
+      count: items.length,
+      wheel: wheelNumber,
+    };
+    const blob = new Blob([JSON.stringify(data, null, 2)], {
+      type: "application/json",
+    });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = `${wheelName}.json`;
+    a.click();
+    URL.revokeObjectURL(a.href);
+    notificationSystem.show(
+      `${items.length} ${wheelName} esportati in formato JSON`,
+      "success"
+    );
   }
 
   showResult(winner, wheelNumber) {
     const resultDisplay = document.getElementById(
-      `resultDisplay${wheelNumber}`,
+      `resultDisplay${wheelNumber}`
     );
     const winnerName = document.getElementById(`winnerName${wheelNumber}`);
     winnerName.textContent = winner;
@@ -1040,15 +1313,14 @@ class DualWheelOfFortune {
   }
 }
 
-// Initialize notification and modal systems
+// Initialize
 const dualWheel = new DualWheelOfFortune();
 window.dualWheel = dualWheel;
 
 setTimeout(() => {
   notificationSystem.show(
-    "Benvenuto nelle Ruote Nomi & Nazioni! La prima ruota è dedicata ai nomi, la seconda alle nazioni. Entrambe sono completamente personalizzabili!",
+    "Benvenuto! Aggiungi nomi e nazioni per iniziare, o usa 'Genera Automaticamente'.",
     "info",
-    "Benvenuto! 🎯",
-    8000,
+    "Ruota Nomi & Nazioni"
   );
-}, 1000);
+}, 500);
