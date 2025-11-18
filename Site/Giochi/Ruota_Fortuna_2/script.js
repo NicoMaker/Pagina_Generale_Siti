@@ -1030,7 +1030,7 @@ class DualWheelOfFortune {
     }
   }
 
-shareHistory() {
+  shareHistory() {
     if (this.history.length === 0) {
       notificationSystem.show("Nessuna estrazione da condividere.", "warning");
       return;
