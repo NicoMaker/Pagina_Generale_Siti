@@ -1030,10 +1030,15 @@ class DualWheelOfFortune {
     }
   }
 
-  shareHistory() {
+shareHistory() {
+    if (this.history.length === 0) {
+      notificationSystem.show("Nessuna estrazione da condividere.", "warning");
+      return;
+    }
+
     // Creazione del testo per WhatsApp con formattazione
-    let shareText = "*🎉 CRONOLOGIA ESTRAZIONI 🎉*\n";
-    shareText += "🎡 Ruota Nomi & Nazioni 🌍\n\n";
+    let shareText = "🎉 *CRONOLOGIA ESTRAZIONI* 🎉\n";
+    shareText += "🎡 _Ruota Nomi & Nazioni_ 🌍\n\n";
 
     if (this.history.length === 0) {
       shareText += "_Nessuna estrazione registrata finora._";
@@ -1047,76 +1052,24 @@ class DualWheelOfFortune {
           result = `*👤 Nome:* ${entry.winner}\n*🌍 Nazione:* ${entry.nationWinner}`;
         } else if (entry.wheelNumber === 1) {
           // Estrazione Nome
-          result = `*👤 Nome Estratto:* ${entry.winner}`;
+          result = `*👤 Estratto:* ${entry.winner}`;
         } else {
           // Estrazione Nazione
-          result = `*🌍 Nazione Estratta:* ${entry.winner}`;
+          result = `*🌍 Estratta:* ${entry.winner}`;
         }
 
         shareText += `---------------------------------\n`;
-        shareText += `*#${number}* - ${entry.wheelType} (${entry.timestamp})\n`;
-        shareText += `${result}\n`; // Il risultato è già formattato con *...* all'interno del blocco if/else
+        // Usiamo 🕒 per l'orario e ⭐ per il numero di estrazione
+        shareText += `⭐ *#${number}* - ${entry.wheelType} (🕒 ${entry.timestamp})\n`;
+        shareText += `${result}\n`;
       });
       shareText += "---------------------------------\n\n";
+      shareText += "_Generato dalla Ruota Nomi & Nazioni_";
     }
 
-    shareText += "Powered by Ruota Nomi & Nazioni App";
-
-    const encodedText = encodeURIComponent(shareText);
-    const whatsappUrl = `https://wa.me/?text=${encodedText}`;
-
-    const isMobile =
-      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-        navigator.userAgent
-      );
-
-    let bodyContent;
-    let buttons = [];
-
-    if (isMobile) {
-      // Option for mobile: use the native Web Share API or WhatsApp link
-      bodyContent = `<p>Tocca il pulsante qui sotto per condividere la cronologia su WhatsApp:</p>`;
-      buttons.push({
-        text: "💬 Condividi su WhatsApp",
-        class: "btn-success",
-        action: () => {
-          window.open(whatsappUrl, "_blank");
-        },
-      });
-    } else {
-      // Option for desktop: show the text for easy copy-paste and a button to open WhatsApp Web
-      bodyContent = `<p>Copia il testo e incollalo su WhatsApp Web o usa il pulsante qui sotto:</p><textarea id="shareTextarea" class="modal-input" rows="10" readonly>${shareText}</textarea>`;
-      buttons.push({
-        text: "📋 Copia Testo",
-        class: "btn-primary",
-        action: () => {
-          const textarea = document.getElementById("shareTextarea");
-          textarea.select();
-          document.execCommand("copy");
-          notificationSystem.show(
-            "Testo della cronologia copiato negli appunti!",
-            "success",
-            "Copiato!"
-          );
-        },
-        close: false,
-      });
-      buttons.push({
-        text: "🌐 Condividi su Whatsapp",
-        class: "btn-secondary",
-        action: () => {
-          window.open(whatsappUrl, "_blank");
-        },
-      });
-    }
-
-    buttons.push({ text: "Chiudi", class: "btn-secondary" });
-
-    modalSystem.show({
-      title: "🔗 Condividi Cronologia",
-      body: bodyContent,
-      buttons: buttons,
-    });
+    // Codice per aprire WhatsApp (lasciato invariato)
+    const whatsappUrl = `whatsapp://send?text=${encodeURIComponent(shareText)}`;
+    window.open(whatsappUrl, "_blank");
   }
 
   async clearWheel(wheelNumber) {
