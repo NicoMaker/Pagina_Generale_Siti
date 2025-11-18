@@ -176,6 +176,9 @@ class DualWheelOfFortune {
     this.isSpinning1 = false;
     this.isSpinning2 = false;
 
+    // Durata del Lampeggio (2 secondi)
+    this.FLASH_DURATION = 2000;
+
     this.init();
     this.bindEvents();
   }
@@ -288,7 +291,7 @@ class DualWheelOfFortune {
       .getElementById("shareHistoryBtn")
       .addEventListener("click", () => this.shareHistory());
 
-    // NEW COMBINED SPIN EVENT
+    // COMBINED SPIN EVENT
     document
       .getElementById("spinBothBtn")
       .addEventListener("click", () => this.spinCombined());
@@ -711,13 +714,136 @@ class DualWheelOfFortune {
       .join("");
   }
 
-  // NEW METHOD FOR COMBINED SPIN
+  showResult(winner, wheelNumber) {
+    const resultDisplay = document.getElementById(
+      `resultDisplay${wheelNumber}`
+    );
+    const winnerName = document.getElementById(`winnerName${wheelNumber}`);
+    winnerName.textContent = winner;
+    resultDisplay.classList.add("show");
+  }
+
+  hideResult(wheelNumber) {
+    document
+      .getElementById(`resultDisplay${wheelNumber}`)
+      .classList.remove("show");
+  }
+
+
+  // LOGICA SPIN RUOTA SINGOLA (Inclusi Lampeggio e Rimozione)
+  async spinWheel(wheelNumber) {
+    const items =
+      wheelNumber === 1 ? this.availableWheel1Names : this.availableWheel2Names;
+    const spinButton = document.getElementById(`spinButton${wheelNumber}`);
+    const resultType = wheelNumber === 1 ? "nome" : "nazione";
+    const svg = document.getElementById(`wheelSvg${wheelNumber}`);
+
+    if (this.isSpinning1 || this.isSpinning2) {
+      notificationSystem.show(
+        "Attenzione! Una ruota è già in rotazione! Attendi la fine dell'estrazione.",
+        "warning"
+      );
+      return;
+    }
+
+    if (items.length === 0) {
+      notificationSystem.show(
+        `Nessun ${resultType} disponibile per l'estrazione. Resetta la cronologia o aggiungi nuovi elementi.`,
+        "error"
+      );
+      return;
+    }
+
+    // Temporarily disable buttons
+    spinButton.disabled = true;
+    document.getElementById("spinBothBtn").disabled = true;
+    document.getElementById(
+      `spinButton${wheelNumber === 1 ? 2 : 1}`
+    ).disabled = true;
+
+    if (wheelNumber === 1) this.isSpinning1 = true;
+    if (wheelNumber === 2) this.isSpinning2 = true;
+
+    this.hideResult(wheelNumber);
+
+    // 1. Configurazione della rotazione per puntare al vincitore
+    const randomIndex = Math.floor(Math.random() * items.length);
+    const winner = items[randomIndex];
+    
+    // Calcola la rotazione totale: 10 giri completi + rotazione per raggiungere l'elemento + 180 gradi per allinearsi alla freccia (in alto) + offset casuale
+    const totalRotation =
+      360 * 10 + (360 / items.length) * randomIndex + 180 + Math.random() * 30; 
+
+    // Resetta la transizione e la rotazione (per evitare il "salto" iniziale)
+    svg.style.transition = "none";
+    svg.style.transform = "rotate(0deg)";
+    svg.offsetHeight; // Forza il ricalcolo
+
+    // Applica la nuova transizione e rotazione
+    svg.style.transition = "transform 4s cubic-bezier(0.25, 0.46, 0.45, 0.94)"; // <-- QUI DURA 4 SECONDI
+    svg.style.transform = `rotate(-${totalRotation}deg)`;
+    svg.classList.add("spinning");
+    
+    // Rimuovi vecchie classi 'winner'
+    svg
+      .querySelectorAll(".wheel-section")
+      .forEach((path) => path.classList.remove("winner"));
+
+    // 2. Attendi la fine dell'animazione di rotazione (4 secondi)
+    setTimeout(() => {
+      svg.classList.remove("spinning");
+
+      // EVIDENZIAZIONE: Aggiungi la classe 'winner' per avviare il lampeggio
+      const winnerSection = svg.querySelectorAll(".wheel-section")[randomIndex];
+      winnerSection.classList.add("winner");
+
+      // 3. Attendi la durata del lampeggio (2 secondi) prima di rimuovere l'elemento
+      setTimeout(() => { // <-- QUI INIZIA L'ATTESA DI 2 SECONDI (this.FLASH_DURATION = 2000)
+        // Rimuovi la classe 'winner'
+        winnerSection.classList.remove("winner");
+        
+        // RIMOZIONE: Rimuovi il vincitore dalla lista disponibile (cancella quello che è uscito)
+        items.splice(randomIndex, 1);
+
+        // Re-enable flags and buttons
+        if (wheelNumber === 1) this.isSpinning1 = false;
+        if (wheelNumber === 2) this.isSpinning2 = false;
+        spinButton.disabled = false;
+        document.getElementById("spinBothBtn").disabled = false;
+        document.getElementById(
+          `spinButton${wheelNumber === 1 ? 2 : 1}`
+        ).disabled = false;
+
+        // Log result and update display
+        this.showResult(winner, wheelNumber);
+        this.addToHistory(wheelNumber, winner);
+        notificationSystem.show(
+          `🎉 Il ${resultType} estratto è: ${winner}!`,
+          "success",
+          "Abbiamo un vincitore!",
+          8000
+        );
+
+        // AGGIORNAMENTO: Aggiorna la ruota per mostrare gli elementi rimanenti
+        this.updateWheel(wheelNumber);
+        this.saveToStorage();
+      }, this.FLASH_DURATION); // 2000ms
+    }, 4000); // Durata dell'animazione di rotazione
+  }
+
+  // LOGICA SPIN RUOTA COMBINATA (Inclusi Lampeggio e Rimozione)
   async spinCombined() {
     const items1 = this.availableWheel1Names;
     const items2 = this.availableWheel2Names;
     const spinButton1 = document.getElementById("spinButton1");
     const spinButton2 = document.getElementById("spinButton2");
     const spinBothBtn = document.getElementById("spinBothBtn");
+    
+    // Variabili per i risultati e gli indici
+    const randomIndex1 = Math.floor(Math.random() * items1.length);
+    const winner1 = items1[randomIndex1];
+    const randomIndex2 = Math.floor(Math.random() * items2.length);
+    const winner2 = items2[randomIndex2];
 
     if (items1.length === 0 || items2.length === 0) {
       notificationSystem.show(
@@ -747,39 +873,70 @@ class DualWheelOfFortune {
 
     // 1. Spin Wheel 1 (Name) - Animation setup
     const svg1 = document.getElementById(`wheelSvg1`);
-    const randomIndex1 = Math.floor(Math.random() * items1.length);
-    const winner1 = items1[randomIndex1];
-    const totalRotation1 = 360 * 10 + (360 / items1.length) * randomIndex1;
-    svg1.style.setProperty("--spin-rotation", `-${totalRotation1}deg`);
+    const totalRotation1 = 
+        360 * 10 + (360 / items1.length) * randomIndex1 + 180 + Math.random() * 30;
+
+    svg1.style.transition = "none";
+    svg1.style.transform = "rotate(0deg)";
+    svg1.offsetHeight;
+    svg1.style.transition = "transform 4s cubic-bezier(0.25, 0.46, 0.45, 0.94)"; // <-- 4 SECONDI
+    svg1.style.transform = `rotate(-${totalRotation1}deg)`;
     svg1.classList.add("spinning");
 
     // 2. Spin Wheel 2 (Nation) - Animation setup
     const svg2 = document.getElementById(`wheelSvg2`);
-    const randomIndex2 = Math.floor(Math.random() * items2.length);
-    const winner2 = items2[randomIndex2];
-    const totalRotation2 = 360 * 10 + (360 / items2.length) * randomIndex2;
-    svg2.style.setProperty("--spin-rotation", `-${totalRotation2}deg`);
-    svg2.classList.add("spinning");
+    const totalRotation2 = 
+        360 * 10 + (360 / items2.length) * randomIndex2 + 180 + Math.random() * 30;
 
-    // 3. Wait for the spin to finish
+    svg2.style.transition = "none";
+    svg2.style.transform = "rotate(0deg)";
+    svg2.offsetHeight;
+    svg2.style.transition = "transform 4s cubic-bezier(0.25, 0.46, 0.45, 0.94)"; // <-- 4 SECONDI
+    svg2.style.transform = `rotate(-${totalRotation2}deg)`;
+    svg2.classList.add("spinning");
+    
+    // Rimuovi vecchie classi 'winner'
+    svg1
+      .querySelectorAll(".wheel-section")
+      .forEach((path) => path.classList.remove("winner"));
+    svg2
+      .querySelectorAll(".wheel-section")
+      .forEach((path) => path.classList.remove("winner"));
+
+
+    // 3. Wait for the spin to finish (4 seconds)
     await new Promise((resolve) => setTimeout(resolve, 4000));
 
-    // 4. Cleanup and Result
+    // 4. EVIDENZIAZIONE: Highlight winners (Lampeggio)
+    const winnerSection1 = svg1.querySelectorAll(".wheel-section")[randomIndex1];
+    const winnerSection2 = svg2.querySelectorAll(".wheel-section")[randomIndex2];
+    winnerSection1.classList.add("winner");
+    winnerSection2.classList.add("winner");
+
+    // Attendi la durata del lampeggio (2 secondi)
+    await new Promise((resolve) => setTimeout(resolve, this.FLASH_DURATION)); // <-- 2 SECONDI
+
+    // 5. Cleanup and Result
     svg1.classList.remove("spinning");
     svg2.classList.remove("spinning");
+
+    // Rimuovi la classe 'winner'
+    winnerSection1.classList.remove("winner");
+    winnerSection2.classList.remove("winner");
 
     this.isSpinning1 = false;
     this.isSpinning2 = false;
 
-    // Remove winners from available lists
+    // 6. RIMOZIONE: Remove winners from available lists
     items1.splice(randomIndex1, 1);
     items2.splice(randomIndex2, 1);
 
-    // Update wheels and lists
+    // 7. AGGIORNAMENTO: Update wheels and lists
     this.updateWheel(1);
     this.updateWheel(2);
     this.updateNamesList(1);
     this.updateNamesList(2);
+    this.saveToStorage();
 
     // Show results
     this.showResult(`${winner1}`, 1);
@@ -787,8 +944,6 @@ class DualWheelOfFortune {
 
     // Add to history (wheelNumber = 0 for combined)
     this.addToHistory(0, winner1, winner2);
-
-    this.saveToStorage();
 
     // Re-enable buttons
     spinButton1.disabled = false;
@@ -803,105 +958,21 @@ class DualWheelOfFortune {
       8000
     );
   }
-
-  spinWheel(wheelNumber) {
-    const items =
-      wheelNumber === 1 ? this.availableWheel1Names : this.availableWheel2Names;
-    const isSpinning = wheelNumber === 1 ? this.isSpinning1 : this.isSpinning2;
-    const spinButton = document.getElementById(`spinButton${wheelNumber}`);
-    const resultType = wheelNumber === 1 ? "nome" : "nazione";
-    const svg = document.getElementById(`wheelSvg${wheelNumber}`);
-
-    // Check for availability and spinning state
-    if (items.length === 0) {
-      notificationSystem.show(
-        `Nessun ${resultType} disponibile per l'estrazione!`,
-        "warning"
-      );
-      return;
-    }
-    if (isSpinning) return;
-
-    // Disable buttons (including the combined one, to prevent issues)
-    spinButton.disabled = true;
-    document.getElementById("spinBothBtn").disabled = true;
-    document.getElementById(
-      `spinButton${wheelNumber === 1 ? 2 : 1}`
-    ).disabled = true;
-
-    // Select winner and start animation
-    const randomIndex = Math.floor(Math.random() * items.length);
-    const winner = items[randomIndex];
-    const totalRotation = 360 * 10 + (360 / items.length) * randomIndex;
-
-    // Reset old winner class
-    svg
-      .querySelectorAll(".wheel-section")
-      .forEach((path) => path.classList.remove("winner"));
-
-    // Start spinning
-    svg.style.setProperty("--spin-rotation", `-${totalRotation}deg`);
-    svg.classList.add("spinning");
-    this.hideResult(wheelNumber);
-
-    if (wheelNumber === 1) this.isSpinning1 = true;
-    if (wheelNumber === 2) this.isSpinning2 = true;
-
-    // End spin after 4 seconds
-    setTimeout(() => {
-      svg.classList.remove("spinning");
-
-      // Highlight winner section (use next tick to ensure rotation finished)
-      setTimeout(() => {
-        svg
-          .querySelectorAll(".wheel-section")
-          [randomIndex].classList.add("winner");
-      }, 50);
-
-      // Remove winner from available list
-      items.splice(randomIndex, 1);
-
-      if (wheelNumber === 1) this.isSpinning1 = false;
-      if (wheelNumber === 2) this.isSpinning2 = false;
-
-      // Re-enable buttons
-      spinButton.disabled = false;
-      document.getElementById("spinBothBtn").disabled = false;
-      document.getElementById(
-        `spinButton${wheelNumber === 1 ? 2 : 1}`
-      ).disabled = false;
-
-      // Log result and update display
-      this.showResult(winner, wheelNumber);
-      this.addToHistory(wheelNumber, winner);
-      notificationSystem.show(
-        `🎉 Il ${resultType} estratto è: ${winner}!`,
-        "success",
-        "Abbiamo un vincitore!",
-        8000
-      );
-
-      // Update wheel to show remaining items
-      this.updateWheel(wheelNumber);
-      this.saveToStorage();
-    }, 4000);
-  }
-
+  
   addToHistory(wheelNumber, winner, nationWinner = null) {
-    // MODIFIED: added nationWinner
     const timestamp = new Date();
     const historyEntry = {
       id: Date.now(),
       wheelNumber,
       winner,
-      nationWinner, // New field
+      nationWinner, 
       timestamp: timestamp.toLocaleString("it-IT"),
       wheelType:
         wheelNumber === 1
           ? "Nomi"
           : wheelNumber === 2
           ? "Nazioni"
-          : "Combinata", // New type for wheelNumber 0
+          : "Combinata", 
     };
     this.history.unshift(historyEntry);
     this.updateHistory();
@@ -909,7 +980,6 @@ class DualWheelOfFortune {
   }
 
   updateHistory() {
-    // MODIFIED: logic to handle combined spin (wheelNumber = 0)
     const historyList = document.getElementById("historyList");
     if (this.history.length === 0) {
       historyList.innerHTML = `
@@ -1248,21 +1318,6 @@ class DualWheelOfFortune {
       `${items.length} ${wheelName} esportati in formato JSON`,
       "success"
     );
-  }
-
-  showResult(winner, wheelNumber) {
-    const resultDisplay = document.getElementById(
-      `resultDisplay${wheelNumber}`
-    );
-    const winnerName = document.getElementById(`winnerName${wheelNumber}`);
-    winnerName.textContent = winner;
-    resultDisplay.classList.add("show");
-  }
-
-  hideResult(wheelNumber) {
-    document
-      .getElementById(`resultDisplay${wheelNumber}`)
-      .classList.remove("show");
   }
 }
 
