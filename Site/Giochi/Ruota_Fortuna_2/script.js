@@ -1060,6 +1060,7 @@ class DualWheelOfFortune {
     }
   }
 
+  // FUNZIONE MODIFICATA PER ORDINARE DALLA PIÙ VECCHIA (#1) ALLA PIÙ RECENTE
   shareHistory() {
     if (this.history.length === 0) {
       notificationSystem.show("Nessuna estrazione da condividere.", "warning");
@@ -1069,11 +1070,16 @@ class DualWheelOfFortune {
     let shareText = "🎉 *CRONOLOGIA ESTRAZIONI* 🎉\n";
     shareText += "🎡 _Ruota Nomi 👤 & Nazioni_ 🌍\n\n";
 
-    if (this.history.length === 0) {
+    // 1. Creiamo una copia e la invertiamo per avere [più vecchio, ..., più recente]
+    const orderedHistory = [...this.history].reverse();
+    const totalCount = orderedHistory.length;
+
+    if (totalCount === 0) {
       shareText += "_Nessuna estrazione registrata finora._";
     } else {
-      this.history.forEach((entry, index) => {
-        const number = this.history.length - index;
+      orderedHistory.forEach((entry, index) => {
+        // La numerazione sarà #1, #2, #3, ...
+        const number = index + 1; 
         let result;
 
         if (entry.wheelNumber === 0) {
