@@ -703,7 +703,9 @@ class DualWheelOfFortune {
   }
 
   showResult(winner, wheelNumber) {
-    const resultDisplay = document.getElementById(`resultDisplay${wheelNumber}`);
+    const resultDisplay = document.getElementById(
+      `resultDisplay${wheelNumber}`
+    );
     const winnerName = document.getElementById(`winnerName${wheelNumber}`);
     winnerName.textContent = winner;
     resultDisplay.classList.add("show");
@@ -751,7 +753,7 @@ class DualWheelOfFortune {
 
     const randomIndex = Math.floor(Math.random() * items.length);
     const winner = items[randomIndex];
-    
+
     const totalRotation =
       360 * 20 + (360 / items.length) * randomIndex + 180 + Math.random() * 30;
 
@@ -762,7 +764,7 @@ class DualWheelOfFortune {
     svg.style.transition = `transform ${this.SPIN_DURATION}ms cubic-bezier(0.25, 0.46, 0.45, 0.94)`;
     svg.style.transform = `rotate(-${totalRotation}deg)`;
     svg.classList.add("spinning");
-    
+
     svg
       .querySelectorAll(".wheel-section")
       .forEach((path) => path.classList.remove("winner"));
@@ -775,7 +777,7 @@ class DualWheelOfFortune {
 
       setTimeout(() => {
         winnerSection.classList.remove("winner");
-        
+
         items.splice(randomIndex, 1);
 
         if (wheelNumber === 1) this.isSpinning1 = false;
@@ -807,7 +809,7 @@ class DualWheelOfFortune {
     const spinButton1 = document.getElementById("spinButton1");
     const spinButton2 = document.getElementById("spinButton2");
     const spinBothBtn = document.getElementById("spinBothBtn");
-    
+
     const randomIndex1 = Math.floor(Math.random() * items1.length);
     const winner1 = items1[randomIndex1];
     const randomIndex2 = Math.floor(Math.random() * items2.length);
@@ -815,7 +817,7 @@ class DualWheelOfFortune {
 
     if (items1.length === 0 || items2.length === 0) {
       notificationSystem.show(
-        "Assicurati di avere almeno un nome e una nazione disponibili per l'estrazione combinata!",
+        "Assicurati di avere almeno un nome e una nazione disponibili per l'estrazione Nomi & Nazioni!",
         "warning"
       );
       return;
@@ -840,8 +842,11 @@ class DualWheelOfFortune {
     this.hideResult(2);
 
     const svg1 = document.getElementById(`wheelSvg1`);
-    const totalRotation1 = 
-        360 * 20 + (360 / items1.length) * randomIndex1 + 180 + Math.random() * 30;
+    const totalRotation1 =
+      360 * 20 +
+      (360 / items1.length) * randomIndex1 +
+      180 +
+      Math.random() * 30;
 
     svg1.style.transition = "none";
     svg1.style.transform = "rotate(0deg)";
@@ -851,8 +856,11 @@ class DualWheelOfFortune {
     svg1.classList.add("spinning");
 
     const svg2 = document.getElementById(`wheelSvg2`);
-    const totalRotation2 = 
-        360 * 20 + (360 / items2.length) * randomIndex2 + 180 + Math.random() * 30;
+    const totalRotation2 =
+      360 * 20 +
+      (360 / items2.length) * randomIndex2 +
+      180 +
+      Math.random() * 30;
 
     svg2.style.transition = "none";
     svg2.style.transform = "rotate(0deg)";
@@ -860,7 +868,7 @@ class DualWheelOfFortune {
     svg2.style.transition = `transform ${this.SPIN_DURATION}ms cubic-bezier(0.25, 0.46, 0.45, 0.94)`;
     svg2.style.transform = `rotate(-${totalRotation2}deg)`;
     svg2.classList.add("spinning");
-    
+
     svg1
       .querySelectorAll(".wheel-section")
       .forEach((path) => path.classList.remove("winner"));
@@ -870,8 +878,10 @@ class DualWheelOfFortune {
 
     await new Promise((resolve) => setTimeout(resolve, this.SPIN_DURATION));
 
-    const winnerSection1 = svg1.querySelectorAll(".wheel-section")[randomIndex1];
-    const winnerSection2 = svg2.querySelectorAll(".wheel-section")[randomIndex2];
+    const winnerSection1 =
+      svg1.querySelectorAll(".wheel-section")[randomIndex1];
+    const winnerSection2 =
+      svg2.querySelectorAll(".wheel-section")[randomIndex2];
     winnerSection1.classList.add("winner");
     winnerSection2.classList.add("winner");
 
@@ -905,27 +915,27 @@ class DualWheelOfFortune {
     spinBothBtn.disabled = false;
 
     notificationSystem.show(
-      `🎉 Estrazione Combinata: ${winner1} e ${winner2}!`,
+      `🎉 Estrazione Nomi & Nazioni!: ${winner1} e ${winner2}!`,
       "success",
       "Abbiamo una Coppia!",
       8000
     );
   }
-  
+
   addToHistory(wheelNumber, winner, nationWinner = null) {
     const timestamp = new Date();
     const historyEntry = {
       id: Date.now(),
       wheelNumber,
       winner,
-      nationWinner, 
+      nationWinner,
       timestamp: timestamp.toLocaleString("it-IT"),
       wheelType:
         wheelNumber === 1
           ? "Nomi"
           : wheelNumber === 2
           ? "Nazioni"
-          : "Combinata", 
+          : "Nomi & Nazioni",
     };
     this.history.unshift(historyEntry);
     this.updateHistory();
@@ -1057,7 +1067,7 @@ class DualWheelOfFortune {
     }
 
     let shareText = "🎉 *CRONOLOGIA ESTRAZIONI* 🎉\n";
-    shareText += "🎡 _Ruota Nomi & Nazioni_ 🌍\n\n";
+    shareText += "🎡 _Ruota Nomi 👤 & Nazioni_ 🌍\n\n";
 
     if (this.history.length === 0) {
       shareText += "_Nessuna estrazione registrata finora._";
