@@ -174,8 +174,8 @@ class DualWheelOfFortune {
     this.isSpinning1 = false;
     this.isSpinning2 = false;
 
-    this.SPIN_DURATION = 4000;
-    this.FLASH_DURATION = 2000;
+    this.SPIN_DURATION = 2000;
+    this.FLASH_DURATION = 1500;
 
     this.init();
     this.bindEvents();
@@ -753,7 +753,7 @@ class DualWheelOfFortune {
     const winner = items[randomIndex];
     
     const totalRotation =
-      360 * 10 + (360 / items.length) * randomIndex + 180 + Math.random() * 30;
+      360 * 20 + (360 / items.length) * randomIndex + 180 + Math.random() * 30;
 
     svg.style.transition = "none";
     svg.style.transform = "rotate(0deg)";
@@ -841,7 +841,7 @@ class DualWheelOfFortune {
 
     const svg1 = document.getElementById(`wheelSvg1`);
     const totalRotation1 = 
-        360 * 10 + (360 / items1.length) * randomIndex1 + 180 + Math.random() * 30;
+        360 * 20 + (360 / items1.length) * randomIndex1 + 180 + Math.random() * 30;
 
     svg1.style.transition = "none";
     svg1.style.transform = "rotate(0deg)";
@@ -852,7 +852,7 @@ class DualWheelOfFortune {
 
     const svg2 = document.getElementById(`wheelSvg2`);
     const totalRotation2 = 
-        360 * 10 + (360 / items2.length) * randomIndex2 + 180 + Math.random() * 30;
+        360 * 20 + (360 / items2.length) * randomIndex2 + 180 + Math.random() * 30;
 
     svg2.style.transition = "none";
     svg2.style.transform = "rotate(0deg)";
