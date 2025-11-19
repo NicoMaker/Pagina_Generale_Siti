@@ -1,4 +1,3 @@
-
 * {
   margin: 0;
   padding: 0;
@@ -381,7 +380,8 @@ body::before {
   width: 350px;
   height: 350px;
   filter: drop-shadow(0 30px 60px rgba(0, 0, 0, 0.4));
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: 50% 50%;
+  transition: transform 0.5s ease-out;
 }
 
 .wheel-pointer {
@@ -784,94 +784,9 @@ body::before {
 .wheel-section.winner {
   stroke: var(--accent);
   stroke-width: 8;
-  filter: brightness(1.3) drop-shadow(0 0 30px rgba(245, 158, 11, 0.8));
+  animation: flash-winner 0.3s ease-in-out infinite alternate;
 }
 
-.wheel-text {
-  font-size: 14px;
-  font-weight: 700;
-  fill: white;
-  text-anchor: middle;
-  dominant-baseline: middle;
-  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8);
-  pointer-events: none;
-}
-
-
-@keyframes fadeInDown {
-  from { opacity: 0; transform: translateY(-50px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@media (max-width: 1024px) {
-  .dual-wheel-layout { grid-template-columns: 1fr; }
-  .wheel-svg { width: 300px; height: 300px; }
-}
-
-@media (max-width: 768px) {
-  .header h1 { font-size: 2rem; }
-  .wheel-svg { width: 280px; height: 280px; }
-  .reset-buttons { flex-direction: column; }
-  .history-buttons { flex-direction: column; }
-}
-
-
-/* ... (regole CSS precedenti) ... */
-
-/* ---------------------------------------------------------------------- */
-/* MEDIA QUERIES (Mobile/Tablet) */
-/* ---------------------------------------------------------------------- */
-
-@media (max-width: 1024px) {
-    /* Tablet layout */
-    .grid-container {
-        grid-template-columns: 1fr; /* Una colonna singola per tutto */
-    }
-}
-
-@media (max-width: 768px) {
-  /* ... (altre regole per mobile) ... */
-
-  /* FIX: Cronologia Estrazioni - Pulsanti affiancati */
-  .history-header {
-    flex-direction: column; /* Il titolo rimane sopra i pulsanti */
-    align-items: flex-start;
-    gap: 1rem;
-  }
-  
-  .history-buttons {
-    width: 100%; /* Contenitore dei pulsanti a tutta larghezza */
-    display: flex;
-    flex-direction: row; /* <--- MANTIENI SULLA STESSA RIGA */
-    justify-content: space-between; /* Distribuisci lo spazio */
-    gap: 0.5rem; /* Riduci il gap tra i pulsanti */
-  }
-  
-  .history-buttons .btn {
-    flex: 1; /* Distribuisci lo spazio equamente */
-    min-width: 0; /* Permette la compressione */
-    padding: 0.75rem 0.5rem; /* Riduci padding per farlo stare */
-    font-size: 0.9rem; /* Riduci la dimensione del testo */
-    text-align: center;
-  }
-  
-  .history-results {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 0.5rem;
-  }
-  
-  /* ... (altre regole per mobile) ... */
-}
-
-.wheel-svg {
-    /* Questa regola è importante */
-    transform-origin: 50% 50%;
-    /* Aggiungiamo anche una transizione di fallback, anche se il JS la imposta a 4s */
-    transition: transform 0.5s ease-out; 
-}
-
-/* Animazione Keyframe per creare l'effetto lampeggiante */
 @keyframes flash-winner {
   0% {
     filter: brightness(1.3) drop-shadow(0 0 30px rgba(245, 158, 11, 0.8));
@@ -887,11 +802,56 @@ body::before {
   }
 }
 
-/* Classe applicata al segmento vincente SVG (path.wheel-section) per 2 secondi */
-.wheel-section.winner {
-  stroke: var(--accent);
-  stroke-width: 8; 
-  /* La durata di 0.3s qui è solo per l'effetto del singolo flash. 
-     Il JS la attiva per 2 secondi in totale. */
-  animation: flash-winner 0.3s ease-in-out infinite alternate;
+.wheel-text {
+  font-size: 14px;
+  font-weight: 700;
+  fill: white;
+  text-anchor: middle;
+  dominant-baseline: middle;
+  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8);
+  pointer-events: none;
+}
+
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-50px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 1024px) {
+  .dual-wheel-layout { grid-template-columns: 1fr; }
+  .wheel-svg { width: 300px; height: 300px; }
+}
+
+@media (max-width: 768px) {
+  .header h1 { font-size: 2rem; }
+  .wheel-svg { width: 280px; height: 280px; }
+  .reset-buttons { flex-direction: column; }
+  
+  .history-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  
+  .history-buttons {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+  
+  .history-buttons .btn {
+    flex: 1;
+    min-width: 0;
+    padding: 0.75rem 0.5rem;
+    font-size: 0.9rem;
+    text-align: center;
+  }
+  
+  .history-item-result {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
 }
