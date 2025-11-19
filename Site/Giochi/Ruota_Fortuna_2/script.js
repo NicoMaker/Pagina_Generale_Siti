@@ -917,7 +917,7 @@ class DualWheelOfFortune {
     notificationSystem.show(
       `🎉 Estrazione Nomi & Nazioni!: ${winner1} e ${winner2}!`,
       "success",
-      "Abbiamo una Coppia!",
+      "Abbiamo una Generazione Nome & Nazione!",
       8000
     );
   }
