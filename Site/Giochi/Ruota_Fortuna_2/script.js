@@ -392,8 +392,7 @@ class DualWheelOfFortune {
     this.hideResult(wheelNumber);
     const wheelName = wheelNumber === 1 ? "nomi" : "nazioni";
     notificationSystem.show(
-      `${
-        wheelName.charAt(0).toUpperCase() + wheelName.slice(1)
+      `${wheelName.charAt(0).toUpperCase() + wheelName.slice(1)
       } generati automaticamente!`,
       "info"
     );
@@ -934,8 +933,8 @@ class DualWheelOfFortune {
         wheelNumber === 1
           ? "Nomi"
           : wheelNumber === 2
-          ? "Nazioni"
-          : "Nomi & Nazioni",
+            ? "Nazioni"
+            : "Nomi & Nazioni",
     };
     this.history.unshift(historyEntry);
     this.updateHistory();
@@ -954,60 +953,51 @@ class DualWheelOfFortune {
       return;
     }
 
-    historyList.innerHTML = this.history
-      .map((entry, index) => {
-        if (entry.wheelNumber === 0) {
-          return `
+    historyList.innerHTML = this.history.slice().reverse().map((entry, index) => {
+      if (entry.wheelNumber === 0) {
+        return `
                     <div class="history-item">
                         <div class="history-item-header">
-                            <div class="history-item-number">#${
-                              this.history.length - index
-                            }</div>
-                            <div class="history-item-time">${
-                              entry.timestamp
-                            }</div>
+                            <div class="history-item-number">#${index + 1
+          }</div>
+                            <div class="history-item-time">${entry.timestamp
+          }</div>
                         </div>
                         <div class="history-item-result">
                             <div class="history-result-box">
                                 <div class="history-result-label">👤 Nome Estratto</div>
-                                <div class="history-result-value">${
-                                  entry.winner
-                                }</div>
+                                <div class="history-result-value">${entry.winner
+          }</div>
                             </div>
                             <div class="history-result-box">
                                 <div class="history-result-label">🌍 Nazione Estratta</div>
-                                <div class="history-result-value">${
-                                  entry.nationWinner
-                                }</div>
+                                <div class="history-result-value">${entry.nationWinner
+          }</div>
                             </div>
                         </div>
                     </div>
                 `;
-        } else {
-          return `
+      } else {
+        return `
                     <div class="history-item">
                         <div class="history-item-header">
-                            <div class="history-item-number">#${
-                              this.history.length - index
-                            }</div>
-                            <div class="history-item-time">${
-                              entry.timestamp
-                            }</div>
+                            <div class="history-item-number">#${index + 1
+          }</div>
+                            <div class="history-item-time">${entry.timestamp
+          }</div>
                         </div>
                         <div class="history-item-result">
                             <div class="history-result-box">
-                                <div class="history-result-label">${
-                                  entry.wheelType === "Nomi" ? "👤" : "🌍"
-                                } ${entry.wheelType}</div>
-                                <div class="history-result-value">${
-                                  entry.winner
-                                }</div>
+                                <div class="history-result-label">${entry.wheelType === "Nomi" ? "👤" : "🌍"
+          } ${entry.wheelType}</div>
+                                <div class="history-result-value">${entry.winner
+          }</div>
                             </div>
                         </div>
                     </div>
                 `;
-        }
-      })
+      }
+    })
       .join("");
   }
 
@@ -1079,7 +1069,7 @@ class DualWheelOfFortune {
     } else {
       orderedHistory.forEach((entry, index) => {
         // La numerazione sarà #1, #2, #3, ...
-        const number = index + 1; 
+        const number = index + 1;
         let result;
 
         if (entry.wheelNumber === 0) {
