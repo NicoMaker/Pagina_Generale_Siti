@@ -212,12 +212,6 @@ Su dispositivi desktop, il sito utilizza un cursore personalizzato composto da:
 
 Questo cursore si adatta quando passi sopra elementi cliccabili o durante il clic.
 
-### Pulsante "Torna in Cima"
-
-Quando scorri verso il basso nella pagina, appare un pulsante nell'angolo in basso a destra:
-
-Cliccando su questo pulsante, verrai riportato all'inizio della pagina con un'animazione fluida.
-
 ---
 
 ## Categorie di Progetti
