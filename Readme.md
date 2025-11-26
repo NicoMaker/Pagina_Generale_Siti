@@ -20,12 +20,11 @@
 16. [Funzionalità Speciali](#funzionalità-speciali)
 17. [Preloader Animato](#preloader-animato)
 18. [Cursore Personalizzato](#cursore-personalizzato)
-19. [Pulsante "Torna in Cima"](#pulsante-torna-in-cima)
-20. [Categorie di Progetti](#categorie-di-progetti)
-21. [Elenco Completo dei Siti](#elenco-completo-dei-siti)
-22. [Compatibilità e Responsive Design](#compatibilità-e-responsive-design)
-23. [Risoluzione Problemi](#risoluzione-problemi)
-24. [Link Utili](#link-utili)
+19. [Categorie di Progetti](#categorie-di-progetti)
+20. [Elenco Completo dei Siti](#elenco-completo-dei-siti)
+21. [Compatibilità e Responsive Design](#compatibilità-e-responsive-design)
+22. [Risoluzione Problemi](#risoluzione-problemi)
+23. [Link Utili](#link-utili)
 
 ---
 
@@ -211,12 +210,6 @@ Su dispositivi desktop, il sito utilizza un cursore personalizzato composto da:
 - Un cerchio più grande che segue il movimento del mouse
 
 Questo cursore si adatta quando passi sopra elementi cliccabili o durante il clic.
-
-### Pulsante "Torna in Cima"
-
-Quando scorri verso il basso nella pagina, appare un pulsante nell'angolo in basso a destra:
-
-Cliccando su questo pulsante, verrai riportato all'inizio della pagina con un'animazione fluida.
 
 ---
 
