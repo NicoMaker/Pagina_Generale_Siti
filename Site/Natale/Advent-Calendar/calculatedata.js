@@ -200,10 +200,8 @@ window.onload = function () {
   audioElement.loop = true;
   audioElement.volume = 0.5;
   audioElement.innerHTML = `
-    <audio controls>
-  <source src="https://cdn.chosic.com/wp-content/uploads/2023/05/christmas-mood.mp3" type="audio/mpeg">
-  Your browser does not support the audio element.
-</audio>
+    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mp3">
+  `;
   document.body.appendChild(audioElement);
 };
 
