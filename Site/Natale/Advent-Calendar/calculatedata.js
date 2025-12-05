@@ -200,7 +200,7 @@ window.onload = function () {
   audioElement.loop = true;
   audioElement.volume = 0.5;
   audioElement.innerHTML = `
-  <source src="https://cdn.pixabay.com/download/audio/2023/02/28/audio_7bdffa8a56.mp3?filename=we-wish-you-a-merry-christmas-13577.mp3" type="audio/mp3">
+    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mp3">
   `;
   document.body.appendChild(audioElement);
 };
