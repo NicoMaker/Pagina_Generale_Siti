@@ -13,7 +13,7 @@
 - **[Mappe](Maps/Readme.md)** [1 Progetto]
 - **[Matematica](Math/Readme.md)** [26 Progetti]
 - **[Natale](Natale/Readme.md)** [3 Progetti]
-- **[Opzioni con le Frasi](Opzioni_Con_Le_Frasi/Readme.md)** [6 Progetti]
+- **[Opzioni con le Frasi](Opzioni_Con_Le_Frasi/Readme.md)** [8 Progetti]
 - **[Pasqua](Pasqua/Readme.md)** [2 Progetti]
 - **[Password](Password/Readme.md)** [2 Progetti]
 - **[Pokemon](https://github.com/NicoMaker/PokeApi)** [1 Progetto]
