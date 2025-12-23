@@ -410,70 +410,104 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /**
-   * Genera 6 cartelle per un giocatore garantendo TUTTI i 90 numeri
+   * Genera 6 cartelle per un giocatore garantendo TUTTI i 90 numeri senza blocchi
    */
   function generateTombolaGiocatore(giocatoreNumber) {
-    // 1. CREAZIONE DELLE 9 COLONNE (Totale 90 numeri)
-    const columns = [[], [], [], [], [], [], [], [], []];
+    let success = false;
+    let cards;
 
-    for (let n = 1; n <= 90; n++) {
-      // Calcolo preciso dell'indice colonna:
-      // 1-9 -> Col 0 | 10-19 -> Col 1 | ... | 80-90 -> Col 8
-      let colIndex = Math.floor(n / 10);
-      if (n === 90) colIndex = 8; // Il 90 va nell'ultima colonna
-      columns[colIndex].push(n);
-    }
+    // Ripete il tentativo di generazione se la logica si blocca
+    while (!success) {
+      try {
+        // 1. CREAZIONE DELLE 9 COLONNE (90 numeri)
+        const columns = [[], [], [], [], [], [], [], [], []];
+        for (let n = 1; n <= 90; n++) {
+          let colIndex = Math.floor(n / 10);
+          if (n === 90) colIndex = 8;
+          columns[colIndex].push(n);
+        }
+        columns.forEach((col) => shuffleArray(col));
 
-    // Mescola i numeri all'interno di ogni colonna
-    columns.forEach((col) => shuffleArray(col));
+        // 2. CREAZIONE DELLE 6 CARTELLE VUOTE
+        cards = Array.from({ length: 6 }, () =>
+          Array.from({ length: 3 }, () => Array(9).fill(null))
+        );
 
-    // 2. CREAZIONE DELLE 6 CARTELLE VUOTE
-    const cards = Array.from({ length: 6 }, () =>
-      Array.from({ length: 3 }, () => Array(9).fill(null))
-    );
+        // FASE 1: Distribuzione obbligatoria (1 numero per colonna in ogni cartella)
+        for (let c = 0; c < 9; c++) {
+          for (let k = 0; k < 6; k++) {
+            const row = Math.floor(Math.random() * 3);
+            cards[k][row][c] = columns[c].pop();
+          }
+        }
 
-    // FASE 1: Distribuzione obbligatoria - 1 numero per colonna in ogni cartella (54 numeri)
-    for (let c = 0; c < 9; c++) {
-      for (let k = 0; k < 6; k++) {
-        const row = Math.floor(Math.random() * 3);
-        cards[k][row][c] = columns[c].pop();
-      }
-    }
+        // FASE 2: Distribuzione dei restanti 36 numeri
+        for (let c = 0; c < 9; c++) {
+          while (columns[c].length > 0) {
+            const num = columns[c].pop();
+            let placed = false;
+            const shuffledIndices = [0, 1, 2, 3, 4, 5];
+            shuffleArray(shuffledIndices);
 
-    // FASE 2: Distribuzione dei restanti 36 numeri (54 + 36 = 90)
-    for (let c = 0; c < 9; c++) {
-      while (columns[c].length > 0) {
-        const num = columns[c].pop();
-        let placed = false;
-        const shuffledIndices = [0, 1, 2, 3, 4, 5];
-        shuffleArray(shuffledIndices);
+            for (let k of shuffledIndices) {
+              const totalInCard = cards[k]
+                .flat()
+                .filter((n) => n !== null).length;
+              const colCount = [0, 1, 2].filter(
+                (r) => cards[k][r][c] !== null
+              ).length;
 
-        for (let k of shuffledIndices) {
-          const totalInCard = cards[k].flat().filter((n) => n !== null).length;
-          const colCount = [0, 1, 2].filter(
-            (r) => cards[k][r][c] !== null
-          ).length;
+              if (totalInCard < 15 && colCount < 3) {
+                const rows = [0, 1, 2];
+                shuffleArray(rows);
+                for (let r of rows) {
+                  if (cards[k][r][c] === null) {
+                    cards[k][r][c] = num;
+                    placed = true;
+                    break;
+                  }
+                }
+              }
+              if (placed) break;
+            }
+            if (!placed) throw new Error("Incastro"); // Se un numero non trova posto, ricomincia
+          }
+        }
 
-          if (totalInCard < 15 && colCount < 3) {
-            const rows = [0, 1, 2];
-            shuffleArray(rows);
-            for (let r of rows) {
-              if (cards[k][r][c] === null) {
-                cards[k][r][c] = num;
-                placed = true;
+        // FASE 3: Bilanciamento righe con protezione loop infinito
+        cards.forEach((card) => {
+          let iterations = 0;
+          while (iterations < 50) {
+            const counts = card.map((r) => r.filter((n) => n !== null).length);
+            const high = counts.findIndex((c) => c > 5);
+            const low = counts.findIndex((c) => c < 5);
+            if (high === -1 || low === -1) break;
+
+            let moved = false;
+            for (let c = 0; c < 9; c++) {
+              if (card[high][c] !== null && card[low][c] === null) {
+                card[low][c] = card[high][c];
+                card[high][c] = null;
+                moved = true;
                 break;
               }
             }
+            if (!moved) break;
+            iterations++;
           }
-          if (placed) break;
-        }
+          // Verifica finale: ogni riga deve avere esattamente 5 numeri
+          if (card.some((r) => r.filter((n) => n !== null).length !== 5)) {
+            throw new Error("Bilanciamento fallito");
+          }
+        });
+
+        success = true; // Se arriva qui, la generazione è riuscita
+      } catch (e) {
+        success = false; // Ricomincia il ciclo while
       }
     }
 
-    // FASE 3: Bilanciamento righe (esattamente 5 numeri per riga)
-    cards.forEach((card) => balanceCardRows(card));
-
-    // FASE 4: Ordinamento dei numeri in ogni colonna (crescente)
+    // FASE 4: Ordinamento verticale per colonna
     cards.forEach((card) => {
       for (let c = 0; c < 9; c++) {
         const colValues = [card[0][c], card[1][c], card[2][c]]
@@ -481,9 +515,7 @@ document.addEventListener("DOMContentLoaded", () => {
           .sort((a, b) => a - b);
         let idx = 0;
         for (let r = 0; r < 3; r++) {
-          if (card[r][c] !== null) {
-            card[r][c] = colValues[idx++];
-          }
+          if (card[r][c] !== null) card[r][c] = colValues[idx++];
         }
       }
     });
