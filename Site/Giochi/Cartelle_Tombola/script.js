@@ -26,7 +26,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const progressFraction = document.getElementById("progressFraction");
 
   // Variabile globale per memorizzare l'ultima percentuale raggiunta
-  // Questo garantisce che la barra non vada mai indietro anche tra diverse chiamate a updateLoader
   let globalLastPercentage = 0;
 
   // Imposta l'attributo max sull'input
@@ -191,7 +190,6 @@ document.addEventListener("DOMContentLoaded", () => {
    */
   function updateLoader(percentage, processed, total, phase) {
     // IMPORTANTE: Assicurati che la percentuale non diminuisca mai
-    // usando la variabile globale globalLastPercentage
     const safePercentage = Math.max(globalLastPercentage, percentage);
     globalLastPercentage = safePercentage;
 
@@ -230,7 +228,7 @@ document.addEventListener("DOMContentLoaded", () => {
       "quarter",
       "half",
       "three-quarters",
-      "complete",
+      "complete"
     );
     if (safePercentage >= 100) {
       progressBar.classList.add("complete");
@@ -304,7 +302,7 @@ document.addEventListener("DOMContentLoaded", () => {
       showAlert(
         "error",
         "Errore",
-        `Inserisci un numero di giocatori valido (1-${sumcartelle})`,
+        `Inserisci un numero di giocatori valido (1-${sumcartelle})`
       );
       return;
     }
@@ -324,14 +322,13 @@ document.addEventListener("DOMContentLoaded", () => {
       // Inizia a misurare il tempo
       const startTime = performance.now();
 
-      // Genera i giocatori in modo asincrono per non bloccare l'interfaccia
-      const batchSize = 5; // Numero di giocatori da generare per batch
+      // Genera i giocatori in modo asincrono
+      const batchSize = 5;
       const totalBatches = Math.ceil(numGiocatori / batchSize);
       const giocatori = [];
       let processedGiocatori = 0;
 
       for (let batchIndex = 0; batchIndex < totalBatches; batchIndex++) {
-        // Attendi il prossimo frame di animazione per mantenere l'interfaccia reattiva
         await new Promise((resolve) => requestAnimationFrame(resolve));
 
         const start = batchIndex * batchSize;
@@ -352,18 +349,14 @@ document.addEventListener("DOMContentLoaded", () => {
           currentPhase = "Finalizzazione";
         }
 
-        // Genera il batch corrente
         const batchGiocatori = [];
-        let batchLastPercentage = globalLastPercentage; // Usa la percentuale globale come punto di partenza
+        let batchLastPercentage = globalLastPercentage;
 
         for (let i = 0; i < batchCount; i++) {
           batchGiocatori.push(generateTombolaGiocatore(start + i + 1));
           processedGiocatori++;
 
-          // Aggiorna il progresso dopo ogni giocatore generato
           const currentPercentage = (processedGiocatori / numGiocatori) * 100;
-
-          // Assicurati che la percentuale non diminuisca mai
           const percentage = Math.max(batchLastPercentage, currentPercentage);
           batchLastPercentage = percentage;
 
@@ -371,10 +364,9 @@ document.addEventListener("DOMContentLoaded", () => {
             percentage,
             processedGiocatori,
             numGiocatori,
-            currentPhase,
+            currentPhase
           );
 
-          // Piccola pausa per rendere visibile l'animazione
           if (processedGiocatori % 2 === 0) {
             await new Promise((resolve) => setTimeout(resolve, 10));
           }
@@ -383,7 +375,7 @@ document.addEventListener("DOMContentLoaded", () => {
         giocatori.push(...batchGiocatori);
       }
 
-      // Visualizza le cartelle in modo ottimizzato
+      // Visualizza le cartelle
       await renderCardsOptimized(giocatori);
 
       // Calcola il tempo impiegato
@@ -397,7 +389,7 @@ document.addEventListener("DOMContentLoaded", () => {
       showAlert(
         "success",
         "Generazione completata",
-        `Sono stati generati ${numGiocatori} giocatori di cartelle in ${timeElapsed} secondi.`,
+        `Sono stati generati ${numGiocatori} giocatori di cartelle in ${timeElapsed} secondi.`
       );
 
       // Scorri fino alle cartelle
@@ -409,7 +401,7 @@ document.addEventListener("DOMContentLoaded", () => {
       showAlert(
         "error",
         "Errore",
-        `Si è verificato un errore: ${error.message}`,
+        `Si è verificato un errore: ${error.message}`
       );
     } finally {
       // Nascondi il loading
@@ -418,14 +410,134 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /**
+   * Genera 6 cartelle per un giocatore garantendo TUTTI i 90 numeri
+   */
+  function generateTombolaGiocatore(giocatoreNumber) {
+    // 1. CREAZIONE DELLE 9 COLONNE (Totale 90 numeri)
+    const columns = [[], [], [], [], [], [], [], [], []];
+
+    for (let n = 1; n <= 90; n++) {
+      // Calcolo preciso dell'indice colonna:
+      // 1-9 -> Col 0 | 10-19 -> Col 1 | ... | 80-90 -> Col 8
+      let colIndex = Math.floor(n / 10);
+      if (n === 90) colIndex = 8; // Il 90 va nell'ultima colonna
+      columns[colIndex].push(n);
+    }
+
+    // Mescola i numeri all'interno di ogni colonna
+    columns.forEach((col) => shuffleArray(col));
+
+    // 2. CREAZIONE DELLE 6 CARTELLE VUOTE
+    const cards = Array.from({ length: 6 }, () =>
+      Array.from({ length: 3 }, () => Array(9).fill(null))
+    );
+
+    // FASE 1: Distribuzione obbligatoria - 1 numero per colonna in ogni cartella (54 numeri)
+    for (let c = 0; c < 9; c++) {
+      for (let k = 0; k < 6; k++) {
+        const row = Math.floor(Math.random() * 3);
+        cards[k][row][c] = columns[c].pop();
+      }
+    }
+
+    // FASE 2: Distribuzione dei restanti 36 numeri (54 + 36 = 90)
+    for (let c = 0; c < 9; c++) {
+      while (columns[c].length > 0) {
+        const num = columns[c].pop();
+        let placed = false;
+        const shuffledIndices = [0, 1, 2, 3, 4, 5];
+        shuffleArray(shuffledIndices);
+
+        for (let k of shuffledIndices) {
+          const totalInCard = cards[k].flat().filter((n) => n !== null).length;
+          const colCount = [0, 1, 2].filter(
+            (r) => cards[k][r][c] !== null
+          ).length;
+
+          if (totalInCard < 15 && colCount < 3) {
+            const rows = [0, 1, 2];
+            shuffleArray(rows);
+            for (let r of rows) {
+              if (cards[k][r][c] === null) {
+                cards[k][r][c] = num;
+                placed = true;
+                break;
+              }
+            }
+          }
+          if (placed) break;
+        }
+      }
+    }
+
+    // FASE 3: Bilanciamento righe (esattamente 5 numeri per riga)
+    cards.forEach((card) => balanceCardRows(card));
+
+    // FASE 4: Ordinamento dei numeri in ogni colonna (crescente)
+    cards.forEach((card) => {
+      for (let c = 0; c < 9; c++) {
+        const colValues = [card[0][c], card[1][c], card[2][c]]
+          .filter((v) => v !== null)
+          .sort((a, b) => a - b);
+        let idx = 0;
+        for (let r = 0; r < 3; r++) {
+          if (card[r][c] !== null) {
+            card[r][c] = colValues[idx++];
+          }
+        }
+      }
+    });
+
+    return cards.map((grid, index) => ({
+      id: (giocatoreNumber - 1) * 6 + index + 1,
+      setNumber: giocatoreNumber,
+      cardNumber: index + 1,
+      grid: grid,
+    }));
+  }
+
+  /**
+   * Bilancia le righe di una cartella per avere esattamente 5 numeri per riga
+   */
+  function balanceCardRows(card) {
+    let iterations = 0;
+    while (iterations < 100) {
+      const counts = card.map((r) => r.filter((n) => n !== null).length);
+      const high = counts.findIndex((c) => c > 5);
+      const low = counts.findIndex((c) => c < 5);
+
+      if (high === -1 || low === -1) break;
+
+      let moved = false;
+      for (let c = 0; c < 9; c++) {
+        if (card[high][c] !== null && card[low][c] === null) {
+          card[low][c] = card[high][c];
+          card[high][c] = null;
+          moved = true;
+          break;
+        }
+      }
+      if (!moved) break;
+      iterations++;
+    }
+  }
+
+  /**
+   * Mescola un array in modo casuale (algoritmo Fisher-Yates)
+   */
+  function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+  }
+
+  /**
    * Renderizza le cartelle in modo ottimizzato per grandi volumi
    * @param {Array} giocatori - Array di giocatori di cartelle
    */
   async function renderCardsOptimized(giocatori) {
-    // Rimuovi la classe loader-complete se presente
     loadingEl.classList.remove("loader-complete");
-
-    // Aggiorna i marcatori della barra di progresso
     updateProgressMarkers(giocatori.length);
 
     cardsContainer.innerHTML = "";
@@ -434,66 +546,54 @@ document.addEventListener("DOMContentLoaded", () => {
     const printCoverPage = createPrintCoverPage();
     cardsContainer.appendChild(printCoverPage);
 
-    // Renderizza i giocatori in batch per evitare di bloccare l'interfaccia
-    const batchSize = 10; // Numero di giocatori da renderizzare per batch
+    // Renderizza i giocatori in batch
+    const batchSize = 10;
     const totalBatches = Math.ceil(giocatori.length / batchSize);
-    let renderLastPercentage = globalLastPercentage; // Usa la percentuale globale come punto di partenza
+    let renderLastPercentage = globalLastPercentage;
 
     for (let batchIndex = 0; batchIndex < totalBatches; batchIndex++) {
-      // Calcola la percentuale di rendering
       const currentRenderPercentage = ((batchIndex + 1) / totalBatches) * 100;
-
-      // Assicurati che la percentuale non diminuisca mai
       const renderPercentage = Math.max(
         renderLastPercentage,
-        currentRenderPercentage,
+        currentRenderPercentage
       );
       renderLastPercentage = renderPercentage;
 
       const processedCount = Math.min(
         (batchIndex + 1) * batchSize,
-        giocatori.length,
+        giocatori.length
       );
 
-      // Aggiorna il loader con la fase di rendering
       updateLoader(
         renderPercentage,
         processedCount,
         giocatori.length,
-        "Rendering cartelle",
+        "Rendering cartelle"
       );
 
-      // Attendi il prossimo frame di animazione per mantenere l'interfaccia reattiva
       await new Promise((resolve) => requestAnimationFrame(resolve));
 
       const start = batchIndex * batchSize;
       const end = Math.min(start + batchSize, giocatori.length);
       const batch = giocatori.slice(start, end);
 
-      // Renderizza il batch corrente
       batch.forEach((giocatore) => {
-        // Crea un contenitore per il giocatore
         const setContainer = document.createElement("div");
         setContainer.className = "card-giocatore";
         setContainer.setAttribute("data-giocatore", giocatore[0].setNumber);
 
-        // Titolo del giocatore
         const setTitle = document.createElement("h2");
         setTitle.className = "giocatore-title";
         setTitle.innerHTML = `<i class="fas fa-folder"></i> Giocatore #${giocatore[0].setNumber}`;
         setContainer.appendChild(setTitle);
 
-        // Contenitore per le cartelle del giocatore (griglia)
         const cardsGrid = document.createElement("div");
         cardsGrid.className = "cards-grid";
-
-        // Stile per la visualizzazione normale (non in stampa)
         cardsGrid.style.display = "grid";
         cardsGrid.style.gridTemplateColumns =
           "repeat(auto-fit, minmax(300px, 1fr))";
         cardsGrid.style.gap = "15px";
 
-        // Crea le cartelle del giocatore
         giocatore.forEach((card) => {
           const cardElement = createCardElement(card);
           cardsGrid.appendChild(cardElement);
@@ -503,16 +603,13 @@ document.addEventListener("DOMContentLoaded", () => {
         cardsContainer.appendChild(setContainer);
       });
 
-      // Piccola pausa per rendere visibile l'animazione
       if (batchIndex < totalBatches - 1) {
         await new Promise((resolve) => setTimeout(resolve, 20));
       }
     }
 
-    // Aggiorna il loader al 100% al completamento
     updateLoader(100, giocatori.length, giocatori.length, "Completato");
 
-    // Mostra la copertina solo quando si stampa
     window.addEventListener("beforeprint", () => {
       printCoverPage.style.display = "block";
     });
@@ -526,154 +623,94 @@ document.addEventListener("DOMContentLoaded", () => {
    * Stampa le cartelle in modo ottimizzato
    */
   function printCards() {
-    // Mostra un alert informativo prima di iniziare la stampa
     showAlert(
       "info",
       "Preparazione stampa",
       "Preparazione della stampa in corso. Questo potrebbe richiedere alcuni secondi per grandi volumi.",
-      3000,
+      3000
     );
 
-    // Breve ritardo per permettere all'alert di essere visualizzato
     setTimeout(() => {
-      // Ottimizza per la stampa
       document.body.classList.add("printing");
-
-      // Avvia la stampa
       window.print();
-
-      // Ripristina dopo la stampa
       document.body.classList.remove("printing");
     }, 500);
   }
 
   /**
    * Crea la pagina di copertina per la stampa
-   * @returns {HTMLElement} Elemento della pagina di copertina
    */
   function createPrintCoverPage() {
     const coverPage = document.createElement("div");
     coverPage.className = "print-cover-page";
-    coverPage.style.display = "none"; // Nascondi nell'interfaccia normale
+    coverPage.style.display = "none";
 
-    // Titolo principale
     const mainTitle = document.createElement("h1");
     mainTitle.className = "print-cover-title";
     mainTitle.textContent = "CARTELLE TOMBOLA";
     coverPage.appendChild(mainTitle);
 
-    // Logo/Icona
     const logoContainer = document.createElement("div");
     logoContainer.className = "print-cover-logo";
     logoContainer.innerHTML = '<i class="fas fa-dice"></i>';
     coverPage.appendChild(logoContainer);
 
-    // Sottotitolo
     const subtitle = document.createElement("h2");
     subtitle.className = "print-cover-subtitle";
     subtitle.textContent = "Istruzioni e Regole del Gioco";
     coverPage.appendChild(subtitle);
 
-    // Contenitore delle regole
     const rulesContainer = document.createElement("div");
     rulesContainer.className = "print-cover-rules";
 
-    // Sezione: Introduzione
     const introSection = document.createElement("div");
     introSection.className = "print-cover-section";
-
     const introTitle = document.createElement("h3");
     introTitle.textContent = "Introduzione";
     introSection.appendChild(introTitle);
-
     const introText = document.createElement("p");
-    introText.innerHTML = `
-    La tombola è un gioco tradizionale italiano, particolarmente popolare durante le festività natalizie. 
-    È un gioco di fortuna che coinvolge l'estrazione di numeri e la marcatura di cartelle.
-  `;
+    introText.innerHTML = `La tombola è un gioco tradizionale italiano, particolarmente popolare durante le festività natalizie. È un gioco di fortuna che coinvolge l'estrazione di numeri e la marcatura di cartelle.`;
     introSection.appendChild(introText);
     rulesContainer.appendChild(introSection);
 
-    // Sezione: Materiale di Gioco
     const materialsSection = document.createElement("div");
     materialsSection.className = "print-cover-section";
-
     const materialsTitle = document.createElement("h3");
     materialsTitle.textContent = "Materiale di Gioco";
     materialsSection.appendChild(materialsTitle);
-
     const materialsList = document.createElement("ul");
-
-    const item1 = document.createElement("li");
-    item1.innerHTML =
-      "<strong>Cartelle:</strong> Ogni giocatore riceve un set di 6 cartelle. Ogni set contiene tutti i numeri da 1 a 90, distribuiti in modo che ogni cartella abbia 15 numeri (5 numeri per riga).";
-    materialsList.appendChild(item1);
-
-    const item2 = document.createElement("li");
-    item2.innerHTML =
-      "<strong>Tabellone:</strong> Un tabellone con i numeri da 1 a 90 per tenere traccia dei numeri estratti.";
-    materialsList.appendChild(item2);
-
-    const item3 = document.createElement("li");
-    item3.innerHTML =
-      "<strong>Sacchetto con numeri:</strong> Un sacchetto contenente 90 numeri (da 1 a 90) per l'estrazione.";
-    materialsList.appendChild(item3);
-
-    const item4 = document.createElement("li");
-    item4.innerHTML =
-      "<strong>Segnalini:</strong> Oggetti per marcare i numeri estratti sulle cartelle (fagioli, bottoni, ecc.).";
-    materialsList.appendChild(item4);
-
+    materialsList.innerHTML = `
+      <li><strong>Cartelle:</strong> Ogni giocatore riceve un set di 6 cartelle. Ogni set contiene tutti i numeri da 1 a 90, distribuiti in modo che ogni cartella abbia 15 numeri (5 numeri per riga).</li>
+      <li><strong>Tabellone:</strong> Un tabellone con i numeri da 1 a 90 per tenere traccia dei numeri estratti.</li>
+      <li><strong>Sacchetto con numeri:</strong> Un sacchetto contenente 90 numeri (da 1 a 90) per l'estrazione.</li>
+      <li><strong>Segnalini:</strong> Oggetti per marcare i numeri estratti sulle cartelle (fagioli, bottoni, ecc.).</li>
+    `;
     materialsSection.appendChild(materialsList);
     rulesContainer.appendChild(materialsSection);
 
-    // Sezione: Combinazioni Vincenti
     const combinationsSection = document.createElement("div");
     combinationsSection.className = "print-cover-section";
-
     const combinationsTitle = document.createElement("h3");
     combinationsTitle.textContent = "Combinazioni Vincenti";
     combinationsSection.appendChild(combinationsTitle);
-
     const combinationsText = document.createElement("p");
     combinationsText.textContent =
       "Vince chi per primo realizza una delle seguenti combinazioni:";
     combinationsSection.appendChild(combinationsText);
-
     const combinationsList = document.createElement("ul");
-
-    const amboItem = document.createElement("li");
-    amboItem.innerHTML = "<strong>Ambo:</strong> 2 numeri sulla stessa riga";
-    combinationsList.appendChild(amboItem);
-
-    const ternoItem = document.createElement("li");
-    ternoItem.innerHTML = "<strong>Terno:</strong> 3 numeri sulla stessa riga";
-    combinationsList.appendChild(ternoItem);
-
-    const quaternaItem = document.createElement("li");
-    quaternaItem.innerHTML =
-      "<strong>Quaterna:</strong> 4 numeri sulla stessa riga";
-    combinationsList.appendChild(quaternaItem);
-
-    const cinquinaItem = document.createElement("li");
-    cinquinaItem.innerHTML =
-      "<strong>Cinquina:</strong> 5 numeri sulla stessa riga (riga completa)";
-    combinationsList.appendChild(cinquinaItem);
-
-    const tombolaItem = document.createElement("li");
-    tombolaItem.innerHTML =
-      "<strong>Tombola:</strong> tutti i 15 numeri di una cartella";
-    combinationsList.appendChild(tombolaItem);
-
+    combinationsList.innerHTML = `
+      <li><strong>Ambo:</strong> 2 numeri sulla stessa riga</li>
+      <li><strong>Terno:</strong> 3 numeri sulla stessa riga</li>
+      <li><strong>Quaterna:</strong> 4 numeri sulla stessa riga</li>
+      <li><strong>Cinquina:</strong> 5 numeri sulla stessa riga (riga completa)</li>
+      <li><strong>Tombola:</strong> tutti i 15 numeri di una cartella</li>
+    `;
     combinationsSection.appendChild(combinationsList);
     rulesContainer.appendChild(combinationsSection);
 
-    // Nota a piè di pagina
     const footer = document.createElement("div");
     footer.className = "print-cover-footer";
-    footer.innerHTML = `
-    <p>Generato con il Generatore di Cartelle Tombola - ${new Date().toLocaleDateString()}</p>
-  `;
+    footer.innerHTML = `<p>Generato con il Generatore di Cartelle Tombola - ${new Date().toLocaleDateString()}</p>`;
     rulesContainer.appendChild(footer);
 
     coverPage.appendChild(rulesContainer);
@@ -682,8 +719,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /**
    * Crea l'elemento HTML per una cartella
-   * @param {Object} card - Dati della cartella
-   * @returns {HTMLElement} Elemento della cartella
    */
   function createCardElement(card) {
     const cardElement = document.createElement("div");
@@ -691,41 +726,31 @@ document.addEventListener("DOMContentLoaded", () => {
     cardElement.setAttribute("data-card-id", card.id);
     cardElement.setAttribute("data-giocatore", card.setNumber);
 
-    // Header della cartella
     const cardHeader = document.createElement("div");
     cardHeader.className = "card-header";
     cardHeader.textContent = `Cartella #${card.id}`;
     cardElement.appendChild(cardHeader);
 
-    // Griglia della cartella
     const table = document.createElement("table");
     table.className = "card-grid";
-
     const tbody = document.createElement("tbody");
 
-    // Crea le righe della cartella
     for (let row = 0; row < 3; row++) {
       const tr = document.createElement("tr");
-
-      // Crea le celle della riga
       for (let col = 0; col < 9; col++) {
         const td = document.createElement("td");
         const value = card.grid[row][col];
-
         if (value !== null) {
           td.textContent = value;
           td.className = "filled";
         }
-
         tr.appendChild(td);
       }
-
       tbody.appendChild(tr);
     }
 
     table.appendChild(tbody);
     cardElement.appendChild(table);
-
     return cardElement;
   }
 
@@ -734,7 +759,7 @@ document.addEventListener("DOMContentLoaded", () => {
     showAlert(
       "info",
       "Benvenuto",
-      `Genera facilmente cartelle per la tua tombola. Seleziona il numero di giocatori (fino a ${sumcartelle}) e clicca su Genera.`,
+      `Genera facilmente cartelle per la tua tombola. Seleziona il numero di giocatori (fino a ${sumcartelle}) e clicca su Genera.`
     );
   }, 500);
 
@@ -776,338 +801,4 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Aggiungi gli stili di stampa
   addPrintStyles();
-
-  /**
-   * Genera un giocatore di 6 cartelle della tombola con tutti i numeri da 1 a 90
-   * @param {number} giocatoreNumber - Numero identificativo del giocatore
-   * @returns {Array} Array di 6 cartelle
-   */
-  function generateTombolaGiocatore(giocatoreNumber) {
-    // Crea un array con tutti i numeri da 1 a 90
-    const allNumbers = Array.from({ length: 90 }, (_, i) => i + 1);
-
-    // Mescola i numeri
-    shuffleArray(allNumbers);
-
-    // Dividi i numeri in 9 colonne secondo le regole della tombola
-    const columns = [
-      allNumbers.filter((n) => n >= 1 && n <= 9), // Colonna 1: 1-9
-      allNumbers.filter((n) => n >= 10 && n <= 19), // Colonna 2: 10-19
-      allNumbers.filter((n) => n >= 20 && n <= 29), // Colonna 3: 20-29
-      allNumbers.filter((n) => n >= 30 && n <= 39), // Colonna 4: 30-39
-      allNumbers.filter((n) => n >= 40 && n <= 49), // Colonna 5: 40-49
-      allNumbers.filter((n) => n >= 50 && n <= 59), // Colonna 6: 50-59
-      allNumbers.filter((n) => n >= 60 && n <= 69), // Colonna 7: 60-69
-      allNumbers.filter((n) => n >= 70 && n <= 79), // Colonna 8: 70-79
-      allNumbers.filter((n) => n >= 80 && n <= 90), // Colonna 9: 80-90
-    ];
-
-    // Mescola ogni colonna
-    columns.forEach((col) => shuffleArray(col));
-
-    // Crea 6 cartelle vuote
-    const cards = Array(6)
-      .fill()
-      .map(() =>
-        Array(3)
-          .fill()
-          .map(() => Array(9).fill(null)),
-      );
-
-    // Distribuisci i numeri nelle cartelle
-    distributeNumbers(columns, cards);
-
-    // Formatta le cartelle per la risposta
-    return cards.map((card, index) => ({
-      id: (giocatoreNumber - 1) * 6 + index + 1,
-      setNumber: giocatoreNumber,
-      cardNumber: index + 1,
-      grid: card,
-    }));
-  }
-
-  /**
-   * Mescola un array in modo casuale (algoritmo Fisher-Yates)
-   * @param {Array} array - Array da mescolare
-   */
-  function shuffleArray(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
-    }
-  }
-
-  /**
-   * Distribuisce i numeri nelle cartelle secondo le regole della tombola
-   * @param {Array} columns - Array di colonne con i numeri
-   * @param {Array} cards - Array di cartelle vuote
-   */
-  function distributeNumbers(columns, cards) {
-    // Per ogni colonna
-    for (let colIndex = 0; colIndex < 9; colIndex++) {
-      const colNumbers = [...columns[colIndex]];
-
-      // Determina quanti numeri per ogni cartella in questa colonna
-      // Ogni cartella deve avere 15 numeri in totale, distribuiti nelle 9 colonne
-      // Alcune colonne avranno 1 numero, altre 2 (raramente 3)
-      const numbersPerCard = distributeColumnNumbers(
-        colNumbers.length,
-        cards.length,
-      );
-
-      // Assegna i numeri alle cartelle
-      let numberIndex = 0;
-      for (let cardIndex = 0; cardIndex < cards.length; cardIndex++) {
-        const card = cards[cardIndex];
-        const numToAssign = numbersPerCard[cardIndex];
-
-        // Prendi i numeri per questa cartella
-        const cardNumbers = colNumbers.slice(
-          numberIndex,
-          numberIndex + numToAssign,
-        );
-        numberIndex += numToAssign;
-
-        // Ordina i numeri
-        cardNumbers.sort((a, b) => a - b);
-
-        // Assegna i numeri alle righe della cartella
-        assignNumbersToRows(card, colIndex, cardNumbers);
-      }
-    }
-
-    // Assicurati che ogni riga abbia esattamente 5 numeri
-    for (const card of cards) {
-      ensureExactlyFiveNumbersPerRow(card);
-    }
-  }
-
-  /**
-   * Distribuisce il numero di elementi per cartella in una colonna
-   * @param {number} totalNumbers - Numero totale di elementi nella colonna
-   * @param {number} numCards - Numero di cartelle
-   * @returns {Array} Array con il numero di elementi per cartella
-   */
-  function distributeColumnNumbers(totalNumbers, numCards) {
-    // Inizializza con la distribuzione base
-    const distribution = Array(numCards).fill(
-      Math.floor(totalNumbers / numCards),
-    );
-
-    // Distribuisci i numeri rimanenti
-    const remaining =
-      totalNumbers - Math.floor(totalNumbers / numCards) * numCards;
-    for (let i = 0; i < remaining; i++) {
-      distribution[i]++;
-    }
-
-    // Mescola la distribuzione per evitare che le prime cartelle abbiano sempre più numeri
-    shuffleArray(distribution);
-
-    return distribution;
-  }
-
-  /**
-   * Assegna i numeri alle righe di una cartella
-   * @param {Array} card - La cartella
-   * @param {number} colIndex - Indice della colonna
-   * @param {Array} numbers - Numeri da assegnare
-   */
-  function assignNumbersToRows(card, colIndex, numbers) {
-    // Se non ci sono numeri, esci
-    if (numbers.length === 0) return;
-
-    // Ordina i numeri
-    numbers.sort((a, b) => a - b);
-
-    // Assegna i numeri alle righe
-    if (numbers.length === 1) {
-      // Un solo numero: mettilo in una riga casuale
-      const rowIndex = Math.floor(Math.random() * 3);
-      card[rowIndex][colIndex] = numbers[0];
-    } else if (numbers.length === 2) {
-      // Due numeri: mettili in righe diverse
-      const rows = [0, 1, 2];
-      shuffleArray(rows);
-      card[rows[0]][colIndex] = numbers[0];
-      card[rows[1]][colIndex] = numbers[1];
-    } else if (numbers.length === 3) {
-      // Tre numeri: uno per ogni riga
-      card[0][colIndex] = numbers[0];
-      card[1][colIndex] = numbers[1];
-      card[2][colIndex] = numbers[2];
-    }
-  }
-
-  /**
-   * Assicura che ogni riga abbia esattamente 5 numeri
-   * @param {Array} card - La cartella da bilanciare
-   */
-  function ensureExactlyFiveNumbersPerRow(card) {
-    // Conta i numeri in ogni riga
-    const rowCounts = card.map(
-      (row) => row.filter((cell) => cell !== null).length,
-    );
-
-    // Righe con troppi numeri
-    const excessRows = rowCounts
-      .map((count, index) => ({ index, count }))
-      .filter((row) => row.count > 5)
-      .sort((a, b) => b.count - a.count);
-
-    // Righe con pochi numeri
-    const deficitRows = rowCounts
-      .map((count, index) => ({ index, count }))
-      .filter((row) => row.count < 5)
-      .sort((a, b) => a.count - b.count);
-
-    // Sposta i numeri dalle righe con troppi a quelle con pochi
-    while (excessRows.length > 0 && deficitRows.length > 0) {
-      const sourceRow = excessRows[0];
-      const targetRow = deficitRows[0];
-
-      // Trova una colonna da cui spostare un numero
-      for (let col = 0; col < 9; col++) {
-        if (
-          card[sourceRow.index][col] !== null &&
-          card[targetRow.index][col] === null
-        ) {
-          // Sposta il numero
-          card[targetRow.index][col] = card[sourceRow.index][col];
-          card[sourceRow.index][col] = null;
-
-          // Aggiorna i conteggi
-          sourceRow.count--;
-          targetRow.count++;
-
-          // Riordina le righe se necessario
-          if (sourceRow.count === 5) {
-            excessRows.shift();
-          }
-          if (targetRow.count === 5) {
-            deficitRows.shift();
-          }
-
-          break;
-        }
-      }
-    }
-
-    // Se ci sono ancora righe con meno di 5 numeri, aggiungi numeri da altre colonne
-    if (deficitRows.length > 0) {
-      addNumbersToDeficitRows(card, deficitRows);
-    }
-
-    // Se ci sono ancora righe con più di 5 numeri, rimuovi numeri in eccesso
-    if (excessRows.length > 0) {
-      removeExcessNumbers(card, excessRows);
-    }
-  }
-
-  /**
-   * Aggiunge numeri alle righe con meno di 5 numeri
-   * @param {Array} card - La cartella
-   * @param {Array} deficitRows - Righe con meno di 5 numeri
-   */
-  function addNumbersToDeficitRows(card, deficitRows) {
-    for (const row of deficitRows) {
-      const needed = 5 - row.count;
-      if (needed <= 0) continue;
-
-      // Trova colonne vuote in questa riga
-      const emptyCols = [];
-      for (let col = 0; col < 9; col++) {
-        if (card[row.index][col] === null) {
-          emptyCols.push(col);
-        }
-      }
-
-      // Mescola le colonne vuote
-      shuffleArray(emptyCols);
-
-      // Aggiungi numeri nelle colonne vuote
-      for (let i = 0; i < Math.min(needed, emptyCols.length); i++) {
-        const col = emptyCols[i];
-        // Genera un numero valido per questa colonna
-        let min, max;
-        if (col === 0) {
-          min = 1;
-          max = 9;
-        } else if (col === 8) {
-          min = 80;
-          max = 90;
-        } else {
-          min = col * 10;
-          max = col * 10 + 9;
-        }
-
-        // Verifica che il numero non sia già presente nella cartella
-        let number;
-        let attempts = 0;
-        const maxAttempts = 100;
-        do {
-          number = Math.floor(Math.random() * (max - min + 1)) + min;
-          attempts++;
-          if (attempts > maxAttempts) {
-            // Se dopo molti tentativi non troviamo un numero valido, passiamo alla colonna successiva
-            break;
-          }
-        } while (isNumberInCard(card, number));
-
-        if (attempts <= maxAttempts) {
-          card[row.index][col] = number;
-          row.count++;
-        }
-      }
-    }
-  }
-
-  /**
-   * Rimuove numeri in eccesso dalle righe con più di 5 numeri
-   * @param {Array} card - La cartella
-   * @param {Array} excessRows - Righe con più di 5 numeri
-   */
-  function removeExcessNumbers(card, excessRows) {
-    for (const row of excessRows) {
-      const excess = row.count - 5;
-      if (excess <= 0) continue;
-
-      // Trova colonne con numeri in questa riga
-      const filledCols = [];
-      for (let col = 0; col < 9; col++) {
-        if (card[row.index][col] !== null) {
-          filledCols.push(col);
-        }
-      }
-
-      // Mescola le colonne piene
-      shuffleArray(filledCols);
-
-      // Rimuovi numeri in eccesso
-      for (let i = 0; i < excess; i++) {
-        if (i < filledCols.length) {
-          const col = filledCols[i];
-          card[row.index][col] = null;
-          row.count--;
-        }
-      }
-    }
-  }
-
-  /**
-   * Verifica se un numero è già presente nella cartella
-   * @param {Array} card - La cartella
-   * @param {number} number - Il numero da verificare
-   * @returns {boolean} True se il numero è già presente, false altrimenti
-   */
-  function isNumberInCard(card, number) {
-    for (let row = 0; row < 3; row++) {
-      for (let col = 0; col < 9; col++) {
-        if (card[row][col] === number) {
-          return true;
-        }
-      }
-    }
-    return false;
-  }
 });
