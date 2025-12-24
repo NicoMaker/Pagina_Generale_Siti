@@ -658,15 +658,27 @@ document.addEventListener("DOMContentLoaded", () => {
     showAlert(
       "info",
       "Preparazione stampa",
-      "Preparazione della stampa in corso. Questo potrebbe richiedere alcuni secondi per grandi volumi.",
+      "Sul telefono, dopo il popup di stampa potrebbe volerci qualche secondo per caricare tutte le pagine.",
       3000
     );
 
-    setTimeout(() => {
-      document.body.classList.add("printing");
+    document.body.classList.add("printing");
+
+    // tenta di sfruttare beforeprint/afterprint dove esistono
+    const cleanUp = () => document.body.classList.remove("printing");
+
+    if ("onafterprint" in window) {
+      const handler = () => {
+        cleanUp();
+        window.removeEventListener("afterprint", handler);
+      };
+      window.addEventListener("afterprint", handler);
       window.print();
-      document.body.classList.remove("printing");
-    }, 500);
+    } else {
+      // fallback (molti mobile): rimuovi la classe dopo un po'
+      window.print();
+      setTimeout(cleanUp, 3000);
+    }
   }
 
   /**
