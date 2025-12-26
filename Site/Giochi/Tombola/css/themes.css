@@ -16,6 +16,7 @@
   --theme-text: #fff;
   --theme-success: #4caf50;
   --theme-danger: #f44336;
+  --theme-info: #17a2b8;
 }
 
 .spring-theme {
@@ -26,6 +27,7 @@
   --theme-text: #fff;
   --theme-success: #4caf50;
   --theme-danger: #f44336;
+  --theme-info: #17a2b8;
 }
 
 .game-container {
@@ -102,11 +104,17 @@
   flex-direction: column;
   align-items: center;
   gap: 15px;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   background-color: rgba(255, 255, 255, 0.95);
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.announce-controls {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
 }
 
 .interval-control {
@@ -196,6 +204,15 @@
 .game-btn.danger {
   background-color: var(--theme-danger);
   color: white;
+}
+
+.game-btn.info {
+  background: linear-gradient(135deg, #17a2b8, #138496);
+  color: white;
+}
+
+.game-btn.info:hover {
+  background: linear-gradient(135deg, #138496, #117a8b);
 }
 
 .game-btn:hover {
@@ -517,8 +534,4 @@
     width: 70px;
     padding: 8px;
   }
-}
-
-.number-tag {
-  display: none;
 }

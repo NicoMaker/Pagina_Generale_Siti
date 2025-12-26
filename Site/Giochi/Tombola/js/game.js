@@ -13,6 +13,7 @@ let isAnimating = false;
 const extractBtn = document.getElementById("extractBtn");
 const resetBtn = document.getElementById("resetBtn");
 const autoBtn = document.getElementById("autoBtn");
+const announceBtn = document.getElementById("announceBtn");
 const intervalInput = document.getElementById("intervalInput");
 const currentNumberDisplay = document.getElementById("currentNumber");
 const extractedNumbersList = document.getElementById("extractedNumbersList");
@@ -78,6 +79,11 @@ async function initGame() {
   if (intervalInput) {
     intervalInput.addEventListener("change", updateInterval);
     intervalInput.value = secondsInterval;
+  }
+
+  // Announce button event listener
+  if (announceBtn) {
+    announceBtn.addEventListener("click", announceExtractedNumbers);
   }
 
   // Add speech toggle button
@@ -468,6 +474,41 @@ function speak(text) {
   synth.speak(utterance);
 }
 
+// Announce extracted numbers - Con pausa più lunga tra i numeri
+function announceExtractedNumbers() {
+  if (extractedNumbers.size === 0) {
+    speak("Nessun numero estratto");
+    showNotification("Nessun numero estratto ancora", "warning");
+    return;
+  }
+
+  const sortedNumbers = Array.from(extractedNumbers).sort((a, b) => a - b);
+
+  // Annuncia il conteggio prima
+  speak(`Numeri estratti: ${extractedNumbers.size}`);
+
+  // Pausa di 2 secondi prima di iniziare ad annunciare i numeri
+  setTimeout(() => {
+    let index = 0;
+
+    function announceNext() {
+      if (index < sortedNumbers.length) {
+        speak(`${sortedNumbers[index]}`);
+        index++;
+        // Pausa di 2 secondi tra ogni numero (più lunga dell'automatico)
+        setTimeout(announceNext, 2000);
+      }
+    }
+
+    announceNext();
+  }, 2000);
+
+  showNotification(
+    `Annunciando ${extractedNumbers.size} numeri estratti`,
+    "success"
+  );
+}
+
 // Add speech toggle button
 function addSpeechToggle() {
   const gameHeader = document.querySelector(".game-header");
@@ -662,6 +703,11 @@ function addKeyboardShortcuts() {
     // A to toggle auto
     if (e.code === "KeyA" && autoBtn) {
       toggleAutoGenerate();
+    }
+
+    // N to announce numbers
+    if (e.code === "KeyN" && announceBtn) {
+      announceExtractedNumbers();
     }
 
     // Escape to go back
