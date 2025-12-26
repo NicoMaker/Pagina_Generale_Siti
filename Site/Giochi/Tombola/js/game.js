@@ -43,14 +43,13 @@ async function initGame() {
       const extractedContainer = document.createElement("div");
       extractedContainer.className = "extracted-numbers";
       extractedContainer.innerHTML = `
-        <h3>Numeri Estratti</h3>
-        <div id="extractedNumbersList" class="numbers-list"></div>
-      `;
-
+                <h3>Numeri Estratti (0/90)</h3>
+                <div class="extracted-list" id="extractedNumbersList"></div>
+            `;
       // Insert before the tombola container
       tombolaContainer.parentNode.insertBefore(
         extractedContainer,
-        tombolaContainer,
+        tombolaContainer
       );
     }
   } catch (error) {
@@ -64,7 +63,7 @@ async function initGame() {
     // Show error notification
     showNotification(
       "Errore nel caricamento delle tabelle. Utilizzando tabella predefinita.",
-      "error",
+      "error"
     );
   }
 
@@ -76,7 +75,6 @@ async function initGame() {
   if (autoBtn) {
     autoBtn.addEventListener("click", toggleAutoGenerate);
   }
-
   if (intervalInput) {
     intervalInput.addEventListener("change", updateInterval);
     intervalInput.value = secondsInterval;
@@ -105,7 +103,7 @@ function generateTables(tablesData) {
   let tableContent = "";
 
   tablesData.forEach((table, index) => {
-    tableContent += `<div class="sub-table" data-table="${index + 1}">`;
+    tableContent += `<div class="sub-table">`;
     tableContent += `<table>`;
 
     // Create rows with 5 numbers each
@@ -114,7 +112,7 @@ function generateTables(tablesData) {
       for (let j = 0; j < 5; j++) {
         const number = table.numbers[i + j];
         if (number) {
-          tableContent += `<td id="nr${number}" onclick="choseMe(this)" aria-label="Numero ${number}">${number}</td>`;
+          tableContent += `<td id="nr${number}" onclick="choseMe(this)">${number}</td>`;
         } else {
           tableContent += `<td></td>`;
         }
@@ -122,7 +120,8 @@ function generateTables(tablesData) {
       tableContent += `</tr>`;
     }
 
-    tableContent += `</table></div>`;
+    tableContent += `</table>`;
+    tableContent += `</div>`;
   });
 
   tombolaContainer.innerHTML = tableContent;
@@ -144,8 +143,7 @@ function startGame() {
     speak("Si inizia!");
     isFirstStart = false;
     gameStarted = true;
-    extractBtn.innerHTML =
-      '<i class="fas fa-random"></i> <span>Estrai Numero</span>';
+    extractBtn.innerHTML = '<i class="fas fa-random"></i> Estrai Numero';
 
     // Add pulse animation to extract button
     extractBtn.classList.add("pulse-animation");
@@ -164,8 +162,7 @@ function toggleAutoGenerate() {
     // Stop auto-generation
     clearInterval(autoGenerateInterval);
     autoGenerateInterval = null;
-    autoBtn.innerHTML =
-      '<i class="fas fa-play"></i> <span>Avvia Automatico</span>';
+    autoBtn.innerHTML = '<i class="fas fa-play"></i> Avvia Automatico';
     autoBtn.classList.remove("danger");
     autoBtn.classList.add("success");
     intervalInput.disabled = false;
@@ -187,22 +184,16 @@ function toggleAutoGenerate() {
 
     // Set up the UI first
     secondsInterval = Number.parseInt(intervalInput.value) || 3;
-    autoBtn.innerHTML =
-      '<i class="fas fa-pause"></i> <span>Ferma Automatico</span>';
+    autoBtn.innerHTML = '<i class="fas fa-stop"></i> Ferma Automatico';
     autoBtn.classList.remove("success");
     autoBtn.classList.add("danger");
     intervalInput.disabled = true;
 
-    // Announce the automatic extraction *before* the first number
-    speak(`Estrazione automatica ogni ${secondsInterval} secondi`);
+    // Extract the first number immediately
+    extractRandom();
 
-    // Use a slight delay to ensure the first speech is complete before extracting the number
-    setTimeout(() => {
-      // Extract the first number immediately after the announcement
-      extractRandom();
-      // Start the interval for subsequent numbers after the first number is extracted
-      autoGenerateInterval = setInterval(extractRandom, secondsInterval * 1000);
-    }, 1500); // A 1.5-second delay should be enough for the speech to start.
+    // Start the interval for subsequent numbers
+    autoGenerateInterval = setInterval(extractRandom, secondsInterval * 1000);
   }
 }
 
@@ -275,6 +266,15 @@ function selectNr(nn) {
   // Announce number using speech synthesis
   speak(`${nn}`);
 
+  // Announce milestones
+  if (extractedNumbers.size === 10) {
+    setTimeout(() => speak(`Estratti 10 numeri!`), 1500);
+  } else if (extractedNumbers.size === 20) {
+    setTimeout(() => speak(`Estratti 20 numeri!`), 1500);
+  } else if (extractedNumbers.size === 90) {
+    setTimeout(() => speak(`Tutti i numeri estratti!`), 1500);
+  }
+
   // Update current number display with animation
   currentNumber = nn;
   updateUI(true);
@@ -282,7 +282,6 @@ function selectNr(nn) {
   // Create confetti effect for milestone numbers
   if (extractedNumbers.size % 10 === 0) {
     createConfetti();
-    speak(`Estratti ${extractedNumbers.size} numeri!`);
   }
 
   // Update extracted numbers list
@@ -309,6 +308,7 @@ function choseMe(anode) {
 
   const id = anode.id,
     nn = +id.match(/\d+/)[0];
+
   if (!extractedNumbers.has(nn)) {
     selectNr(nn);
   } else {
@@ -321,7 +321,6 @@ function updateUI(animate = false) {
   // Update current number display
   if (currentNumberDisplay) {
     const numberSpan = currentNumberDisplay.querySelector("span");
-
     if (animate && currentNumber) {
       // Add animation class
       numberSpan.classList.add("number-change");
@@ -349,7 +348,6 @@ function updateExtractedNumbers() {
   if (!extractedList) return;
 
   extractedList.innerHTML = "";
-
   const sortedNumbers = Array.from(extractedNumbers).sort((a, b) => a - b);
 
   sortedNumbers.forEach((number) => {
@@ -375,14 +373,11 @@ function resetGame() {
   if (autoGenerateInterval) {
     clearInterval(autoGenerateInterval);
     autoGenerateInterval = null;
-
     if (autoBtn) {
-      autoBtn.innerHTML =
-        '<i class="fas fa-play"></i> <span>Avvia Automatico</span>';
+      autoBtn.innerHTML = '<i class="fas fa-play"></i> Avvia Automatico';
       autoBtn.classList.remove("danger");
       autoBtn.classList.add("success");
     }
-
     if (intervalInput) {
       intervalInput.disabled = false;
     }
@@ -409,8 +404,7 @@ function resetGame() {
 
   // Reset extract button text
   if (extractBtn) {
-    extractBtn.innerHTML =
-      '<i class="fas fa-random"></i> <span>Estrai Numero</span>';
+    extractBtn.innerHTML = '<i class="fas fa-random"></i> Estrai Numero';
   }
 
   // After a short delay, announce "Si inizia!" again
@@ -451,7 +445,7 @@ function createConfetti() {
       {
         duration: Math.random() * 3000 + 2000,
         easing: "cubic-bezier(0.1, 0.8, 0.9, 1)",
-      },
+      }
     );
 
     animation.onfinish = () => {
@@ -500,78 +494,79 @@ function addSpeechToggle() {
   // Add styles for the speech toggle
   const style = document.createElement("style");
   style.textContent = `
-    .speech-toggle {
-      background: none;
-      border: none;
-      color: var(--theme-primary);
-      font-size: 1.5rem;
-      cursor: pointer;
-      padding: 5px;
-      border-radius: 50%;
-      transition: all 0.3s ease;
-    }
-    .speech-toggle:hover {
-      background-color: rgba(0, 0, 0, 0.05);
-      transform: scale(1.1);
-    }
-    
-    @keyframes number-change {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.2); }
-      100% { transform: scale(1); }
-    }
-    
-    .number-change {
-      animation: number-change 0.5s ease;
-    }
-    
-    .fade-in {
-      opacity: 0;
-      transform: translateY(20px);
-      animation: fadeIn 0.5s forwards;
-    }
-    
-    .pulse-animation {
-      animation: pulse 1s infinite alternate;
-    }
-    
-    .loading {
-      text-align: center;
-      padding: 20px;
-      font-size: 1.2rem;
-      color: var(--theme-primary);
-    }
-    
-    .notification {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      padding: 15px 20px;
-      border-radius: 8px;
-      background-color: rgba(255, 255, 255, 0.95);
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-      z-index: 1000;
-      transform: translateX(120%);
-      transition: transform 0.3s ease;
-      color: #333;
-    }
-    
-    .notification.show {
-      transform: translateX(0);
-    }
-    
-    .notification.success {
-      border-left: 4px solid var(--theme-success);
-    }
-    
-    .notification.error {
-      border-left: 4px solid var(--theme-danger);
-    }
-    
-    .notification.warning {
-      border-left: 4px solid var(--theme-accent);
-    }
-  `;
+        .speech-toggle {
+            background: none;
+            border: none;
+            color: var(--theme-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .speech-toggle:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+            transform: scale(1.1);
+        }
+
+        @keyframes number-change {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        .number-change {
+            animation: number-change 0.5s ease;
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 0.5s forwards;
+        }
+
+        .pulse-animation {
+            animation: pulse 1s infinite alternate;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            font-size: 1.2rem;
+            color: var(--theme-primary);
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: 8px;
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            transform: translateX(120%);
+            transition: transform 0.3s ease;
+            color: #333;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.success {
+            border-left: 4px solid var(--theme-success);
+        }
+
+        .notification.error {
+            border-left: 4px solid var(--theme-danger);
+        }
+
+        .notification.warning {
+            border-left: 4px solid var(--theme-accent);
+        }
+    `;
   document.head.appendChild(style);
 }
 
@@ -617,7 +612,7 @@ function addSwipeGestures() {
     (e) => {
       touchStartX = e.changedTouches[0].screenX;
     },
-    false,
+    false
   );
 
   document.addEventListener(
@@ -626,7 +621,7 @@ function addSwipeGestures() {
       touchEndX = e.changedTouches[0].screenX;
       handleSwipe();
     },
-    false,
+    false
   );
 
   function handleSwipe() {
