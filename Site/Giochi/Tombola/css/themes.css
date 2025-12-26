@@ -535,3 +535,7 @@
     padding: 8px;
   }
 }
+
+.numbers-list{
+  display: none;
+}
