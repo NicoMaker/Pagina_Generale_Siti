@@ -10,12 +10,10 @@
       href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD0iI2U1MzkzNSIgZD0iTTE5LjUgMTAuNUMxOS41IDEzLjEgMTcuNCAxNS4xIDE0LjggMTUuMUMxMi4yIDE1LjEgMTAuMSAxMy4xIDEwLjEgMTAuNUMxMC4xIDcuOSAxMi4yIDUuOSAxNC44IDUuOUMxNy41IDUuOSAxOS41IDcuOSAxOS41IDEwLjVNNy41IDEwLjVDNy41IDEzLjEgNS40IDE1LjEgMi44IDE1LjFDMS4yIDE1LjEgMCAyMCAwIDIwQzAgMjAgMi40IDE0LjQgMi4yIDEyLl9DMiAxMS40IDEuMiAxMC45IDEuMiAxMC41QzEuMiA3LjkgMy4zIDUuOSA1LjkgNS45QzguNSA1LjkgMTAuNSA3LjkgMTAuNSAxMC41QzEwLjUgMTAuNSA3LjMgNy45IDcuNSAxMC41TTIxLjEgMTguN0MyMC43IDE4LjMgMjAuNyAxNy43IDIxLjEgMTcuMyAyMS41IDE2LjkgMjIuMSAxNi45IDIyLjUgMTcuM0wyMyAxNy44QzIzLjQgMTguMiAyMy40IDE4LjggMjMgMTkuMkwyMC41IDIxLjdDMjAuMSAyMi4xIDE5LjUgMjIuMSAxOS4xIDIxLjdMMTYuNiAxOS4yQzE2LjIgMTguOCAxNi4yIDE4LjIgMTYuNiAxNy44TDE3LjEgMTcuM0MxNy41IDE2LjkgMTguMSAxNi45IDE4LjUgMTcuM0wxOS44IDE4LjYgMjEuMSAxOC43TTIxLjEgMTMuN0MyMC43IDEzLjMgMjAuNyAxMi43IDIxLjEgMTIuMyAyMS41IDExLjkgMjIuMSAxMS45IDIyLjUgMTIuM0wyMyAxMi44QzIzLjQgMTMuMiAyMy40IDEzLjggMjMgMTQuMkwyMC41IDE2LjdDMjAuMSAxNy4xIDE5LjUgMTcuMSAxOS4xIDE2LjdMMTYuNiAxNC4yQzE2LjIgMTMuOCAxNi4yIDEzLjIgMTYuNiAxMi44TDE3LjEgMTIuM0MxNy41IDExLjkgMTguMSAxMS45IDE4LjUgMTIuM0wxOS44IDEzLjYgMjEuMSAxMy43TTIxLjEgOC43QzIwLjcgOC4zIDIwLjcgNy43IDIxLjEgNy4zIDIxLjUgNi45IDIyLjEgNi45IDIyLjUgNy4zTDIzIDcuOEMyMy40IDguMiAyMy40IDguOCAyMyA5LjJMMjAuNSAxMS43QzIwLjEgMTIuMSAxOS41IDEyLjEgMTkuMSAxMS43TDE2LjYgOS4yQzE2LjIgOC44IDE2LjIgOC4yIDE2LjYgNy44TDE3LjEgNy4zQzE3LjUgNi45IDE4LjEgNi45IDE4LjUgNy4zTDE5LjggOC42IDIxLjEgOC43TTIxLjEgMy43QzIwLjcgMy4zIDIwLjcgMi43IDIxLjEgMi4zIDIxLjUgMS45IDIyLjEgMS45IDIyLjUgMi4zTDIzIDIuOEMyMy40IDMuMiAyMy40IDMuOCAyMyA0LjJMMjAuNSA2LjdDMjAuMSA3LjEgMTkuNSA3LjEgMTkuMSA2LjdMMTYuNiA0LjJDMTYuMiAzLjggMTYuMiAzLjIgMTYuNiAyLjhMMTcuMSAyLjNDMTcuNSAxLjkgMTguMSAxLjkgMTguNSAyLjNMMTkuOCAzLjYgMjEuMSAzLjdaIiAvPjwvc3ZnPg=="
       type="image/svg+xml"
     />
-    <!-- Font Awesome per le icone -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -57,7 +55,6 @@
       </nav>
 
       <main class="app-content">
-        <!-- Sezione Generatore -->
         <section id="generator" class="section-container active">
           <div class="control-panel">
             <div class="card">
@@ -94,6 +91,9 @@
                   <button id="generateBtn" class="btn primary">
                     <i class="fas fa-magic"></i> Genera Cartelle
                   </button>
+                  <button id="resetBtn" class="btn secondary">
+                    <i class="fas fa-redo"></i> Reset
+                  </button>
                   <button id="printBtn" class="btn secondary" disabled>
                     <i class="fas fa-print"></i> Stampa Cartelle
                   </button>
@@ -104,7 +104,6 @@
 
           <div id="alertContainer" class="alert-container"></div>
 
-          <!-- Nuovo loader avanzato -->
           <div id="loading" class="loading-container hidden">
             <div class="loader-header">
               <div class="loader-title">Generazione in corso</div>
@@ -170,7 +169,6 @@
           <div id="cardsContainer" class="cards-container"></div>
         </section>
 
-        <!-- Sezione Regole -->
         <section id="rules" class="section-container">
           <div class="rules-container">
             <div class="card">
@@ -302,7 +300,7 @@
                       <li>
                         Stampa in formato A4 per una migliore leggibilità.
                       </li>
-                      <li>Ogni giocatore inizia su una nuova pagina.</li>
+                      <li>2 giocatori per pagina per ottimizzare la carta.</li>
                       <li>
                         Utilizza carta di buona qualità per una maggiore durata.
                       </li>
@@ -329,7 +327,6 @@
       </footer>
     </div>
 
-    <!-- Template per gli alert -->
     <template id="alertTemplate">
       <div class="alert">
         <div class="alert-icon"></div>
@@ -341,7 +338,6 @@
       </div>
     </template>
 
-    <!-- Template per il modal -->
     <div id="modalContainer" class="modal-container hidden">
       <div class="modal">
         <div class="modal-header">

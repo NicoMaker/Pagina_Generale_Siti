@@ -1,9 +1,9 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // Elementi DOM
   const numGiocatoriInput = document.getElementById("numGiocatori");
   const decreaseBtn = document.querySelector(".decrease");
   const increaseBtn = document.querySelector(".increase");
   const generateBtn = document.getElementById("generateBtn");
+  const resetBtn = document.getElementById("resetBtn");
   const printBtn = document.getElementById("printBtn");
   const loadingEl = document.getElementById("loading");
   const progressBar = document.getElementById("progressBar");
@@ -15,9 +15,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const modalCloseX = document.querySelector(".modal-close");
   const navLinks = document.querySelectorAll(".app-nav a");
   const sections = document.querySelectorAll(".section-container");
-  const sumcartelle = 600; // Limite massimo di cartelle
+  const sumcartelle = 600;
 
-  // Nuovi elementi per il loader avanzato
   const progressPercentage = document.getElementById("progressPercentage");
   const progressCounter = document.getElementById("progressCounter");
   const loaderIcon = document.getElementById("loaderIcon");
@@ -25,14 +24,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const loaderMessage = document.getElementById("loaderMessage");
   const progressFraction = document.getElementById("progressFraction");
 
-  // Variabile globale per memorizzare l'ultima percentuale raggiunta
   let globalLastPercentage = 0;
 
-  // Imposta l'attributo max sull'input
   numGiocatoriInput.max = sumcartelle;
 
-  // Event listeners
   generateBtn.addEventListener("click", generateCards);
+  resetBtn.addEventListener("click", resetCards);
   printBtn.addEventListener("click", printCards);
   decreaseBtn.addEventListener("click", () => updateNumGiocatori(-1));
   increaseBtn.addEventListener("click", () => updateNumGiocatori(1));
@@ -44,18 +41,13 @@ document.addEventListener("DOMContentLoaded", () => {
     if (e.target === modalContainer) hideModal();
   });
 
-  // Gestione della navigazione
   navLinks.forEach((link) => {
     link.addEventListener("click", (e) => {
       if (link.getAttribute("href").startsWith("#")) {
         e.preventDefault();
         const targetId = link.getAttribute("href").substring(1);
-
-        // Aggiorna la classe active sui link
         navLinks.forEach((l) => l.classList.remove("active"));
         link.classList.add("active");
-
-        // Mostra la sezione corrispondente
         sections.forEach((section) => {
           section.classList.remove("active");
           if (section.id === targetId) {
@@ -66,17 +58,9 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // Sistema di alert
   const alertContainer = document.getElementById("alertContainer");
   const alertTemplate = document.getElementById("alertTemplate");
 
-  /**
-   * Mostra un alert
-   * @param {string} type - Tipo di alert (success, error, warning, info)
-   * @param {string} title - Titolo dell'alert
-   * @param {string} message - Messaggio dell'alert
-   * @param {number} duration - Durata in millisecondi (0 per non chiudere automaticamente)
-   */
   function showAlert(type, title, message, duration = 5000) {
     const alert = alertTemplate.content.cloneNode(true).querySelector(".alert");
     alert.classList.add(`alert-${type}`);
@@ -86,7 +70,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const messageElement = alert.querySelector(".alert-message");
     const closeButton = alert.querySelector(".alert-close");
 
-    // Imposta l'icona in base al tipo
     let icon;
     switch (type) {
       case "success":
@@ -107,10 +90,8 @@ document.addEventListener("DOMContentLoaded", () => {
     titleElement.textContent = title;
     messageElement.textContent = message;
 
-    // Aggiungi l'alert al container
     alertContainer.appendChild(alert);
 
-    // Gestisci la chiusura
     const closeAlert = () => {
       alert.classList.add("closing");
       setTimeout(() => {
@@ -120,7 +101,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     closeButton.addEventListener("click", closeAlert);
 
-    // Chiudi automaticamente dopo la durata specificata
     if (duration > 0) {
       setTimeout(closeAlert, duration);
     }
@@ -128,41 +108,28 @@ document.addEventListener("DOMContentLoaded", () => {
     return alert;
   }
 
-  /**
-   * Aggiorna il valore del numero di giocatori
-   * @param {number} delta - Valore da aggiungere/sottrarre
-   */
   function updateNumGiocatori(delta) {
     const currentValue = Number.parseInt(numGiocatoriInput.value) || 1;
     const newValue = Math.max(1, Math.min(sumcartelle, currentValue + delta));
     numGiocatoriInput.value = newValue;
   }
 
-  /**
-   * Aggiorna i marcatori della barra di progresso in base al numero totale di giocatori
-   * @param {number} total - Numero totale di giocatori
-   */
   function updateProgressMarkers(total) {
     const marker25 = document.getElementById("marker-25");
     const marker50 = document.getElementById("marker-50");
     const marker75 = document.getElementById("marker-75");
     const marker100 = document.getElementById("marker-100");
 
-    // Calcola i valori per ogni quarto
     const quarter = Math.ceil(total / 4);
     const half = Math.ceil(total / 2);
     const threeQuarters = Math.ceil((total * 3) / 4);
 
-    // Aggiorna i marcatori con i valori calcolati
     marker25.textContent = quarter.toString();
     marker50.textContent = half.toString();
     marker75.textContent = threeQuarters.toString();
     marker100.textContent = total.toString();
   }
 
-  /**
-   * Mostra il modal informativo
-   */
   function showModal(e) {
     if (e) e.preventDefault();
     modalContainer.classList.remove("hidden");
@@ -171,9 +138,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 10);
   }
 
-  /**
-   * Nasconde il modal
-   */
   function hideModal() {
     modalContainer.classList.remove("visible");
     setTimeout(() => {
@@ -181,33 +145,18 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 300);
   }
 
-  /**
-   * Aggiorna l'interfaccia del loader in base alla percentuale di completamento
-   * @param {number} percentage - Percentuale di completamento (0-100)
-   * @param {number} processed - Numero di giocatori processati
-   * @param {number} total - Numero totale di giocatori
-   * @param {string} phase - Fase corrente del processo
-   */
   function updateLoader(percentage, processed, total, phase) {
-    // IMPORTANTE: Assicurati che la percentuale non diminuisca mai
     const safePercentage = Math.max(globalLastPercentage, percentage);
     globalLastPercentage = safePercentage;
 
-    // Aggiorna la percentuale
     progressPercentage.textContent = `${Math.round(safePercentage)}%`;
-
-    // Aggiorna il contatore
     progressCounter.textContent = `${processed}/${total} giocatori`;
 
-    // Aggiorna la frazione
     let fractionText = "";
-
-    // Calcola i valori per ogni quarto
     const quarter = Math.ceil(total / 4);
     const half = Math.ceil(total / 2);
     const threeQuarters = Math.ceil((total * 3) / 4);
 
-    // Determina in quale quarto siamo
     if (processed <= quarter) {
       fractionText = "1/4";
     } else if (processed <= half) {
@@ -219,11 +168,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     progressFraction.textContent = `${fractionText} completato`;
-
-    // Aggiorna la barra di progresso
     progressBar.style.width = `${safePercentage}%`;
 
-    // Aggiungi classi alla barra di progresso in base alla percentuale
     progressBar.classList.remove(
       "quarter",
       "half",
@@ -240,10 +186,8 @@ document.addEventListener("DOMContentLoaded", () => {
       progressBar.classList.add("quarter");
     }
 
-    // Aggiorna la fase
     loaderPhase.textContent = phase;
 
-    // Aggiorna il messaggio in base alla percentuale
     if (safePercentage < 25) {
       loaderMessage.textContent =
         "Inizializzazione della generazione delle cartelle...";
@@ -257,7 +201,6 @@ document.addEventListener("DOMContentLoaded", () => {
         "Finalizzazione e preparazione per la visualizzazione...";
     }
 
-    // Cambia l'icona e lo stile della barra di progresso in base alla percentuale
     if (safePercentage < 33) {
       loaderIcon.innerHTML = '<i class="fas fa-cog fa-spin"></i>';
       progressBar.style.background = "var(--loader-initial)";
@@ -272,12 +215,9 @@ document.addEventListener("DOMContentLoaded", () => {
       progressPercentage.style.color = "var(--success-color)";
     }
 
-    // Aggiungi animazione di completamento quando raggiunge il 100%
     if (safePercentage >= 100) {
       loadingEl.classList.add("loader-complete");
       loaderMessage.textContent = "Generazione completata con successo!";
-
-      // Rimuovi la classe dopo l'animazione
       setTimeout(() => {
         loadingEl.classList.remove("loader-complete");
       }, 3000);
@@ -286,14 +226,22 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  /**
-   * Genera le cartelle della tombola
-   */
-  async function generateCards() {
-    // Resetta la variabile globale per una nuova generazione
+  function resetCards() {
+    cardsContainer.innerHTML = "";
+    printBtn.disabled = true;
+    numGiocatoriInput.value = 1;
     globalLastPercentage = 0;
+    loadingEl.classList.add("hidden");
 
-    // Rimuovi la classe loader-complete se presente
+    showAlert(
+      "success",
+      "Reset completato",
+      "Le cartelle generate sono state cancellate."
+    );
+  }
+
+  async function generateCards() {
+    globalLastPercentage = 0;
     loadingEl.classList.remove("loader-complete");
 
     const numGiocatori = Number.parseInt(numGiocatoriInput.value);
@@ -307,22 +255,16 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // Aggiorna i marcatori della barra di progresso
     updateProgressMarkers(numGiocatori);
-
-    // Mostra il loading
     loadingEl.classList.remove("hidden");
     cardsContainer.innerHTML = "";
     printBtn.disabled = true;
 
-    // Inizializza il loader
     updateLoader(0, 0, numGiocatori, "Inizializzazione");
 
     try {
-      // Inizia a misurare il tempo
       const startTime = performance.now();
 
-      // Genera i giocatori in modo asincrono
       const batchSize = 5;
       const totalBatches = Math.ceil(numGiocatori / batchSize);
       const giocatori = [];
@@ -335,7 +277,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const end = Math.min(start + batchSize, numGiocatori);
         const batchCount = end - start;
 
-        // Determina la fase attuale
         let currentPhase;
         const progress = (batchIndex / totalBatches) * 100;
 
@@ -375,24 +316,19 @@ document.addEventListener("DOMContentLoaded", () => {
         giocatori.push(...batchGiocatori);
       }
 
-      // Visualizza le cartelle
       await renderCardsOptimized(giocatori);
 
-      // Calcola il tempo impiegato
       const endTime = performance.now();
       const timeElapsed = ((endTime - startTime) / 1000).toFixed(2);
 
-      // Abilita il pulsante di stampa
       printBtn.disabled = false;
 
-      // Mostra un alert di successo
       showAlert(
         "success",
         "Generazione completata",
         `Sono stati generati ${numGiocatori} giocatori di cartelle in ${timeElapsed} secondi.`
       );
 
-      // Scorri fino alle cartelle
       setTimeout(() => {
         cardsContainer.scrollIntoView({ behavior: "smooth" });
       }, 500);
@@ -404,22 +340,16 @@ document.addEventListener("DOMContentLoaded", () => {
         `Si è verificato un errore: ${error.message}`
       );
     } finally {
-      // Nascondi il loading
       loadingEl.classList.add("hidden");
     }
   }
 
-  /**
-   * Genera 6 cartelle per un giocatore garantendo TUTTI i 90 numeri senza blocchi
-   */
   function generateTombolaGiocatore(giocatoreNumber) {
     let success = false;
     let cards;
 
-    // Ripete il tentativo di generazione se la logica si blocca
     while (!success) {
       try {
-        // 1. CREAZIONE DELLE 9 COLONNE (90 numeri)
         const columns = [[], [], [], [], [], [], [], [], []];
         for (let n = 1; n <= 90; n++) {
           let colIndex = Math.floor(n / 10);
@@ -428,12 +358,10 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         columns.forEach((col) => shuffleArray(col));
 
-        // 2. CREAZIONE DELLE 6 CARTELLE VUOTE
         cards = Array.from({ length: 6 }, () =>
           Array.from({ length: 3 }, () => Array(9).fill(null))
         );
 
-        // FASE 1: Distribuzione obbligatoria (1 numero per colonna in ogni cartella)
         for (let c = 0; c < 9; c++) {
           for (let k = 0; k < 6; k++) {
             const row = Math.floor(Math.random() * 3);
@@ -441,7 +369,6 @@ document.addEventListener("DOMContentLoaded", () => {
           }
         }
 
-        // FASE 2: Distribuzione dei restanti 36 numeri
         for (let c = 0; c < 9; c++) {
           while (columns[c].length > 0) {
             const num = columns[c].pop();
@@ -470,11 +397,10 @@ document.addEventListener("DOMContentLoaded", () => {
               }
               if (placed) break;
             }
-            if (!placed) throw new Error("Incastro"); // Se un numero non trova posto, ricomincia
+            if (!placed) throw new Error("Incastro");
           }
         }
 
-        // FASE 3: Bilanciamento righe con protezione loop infinito
         cards.forEach((card) => {
           let iterations = 0;
           while (iterations < 50) {
@@ -495,19 +421,17 @@ document.addEventListener("DOMContentLoaded", () => {
             if (!moved) break;
             iterations++;
           }
-          // Verifica finale: ogni riga deve avere esattamente 5 numeri
           if (card.some((r) => r.filter((n) => n !== null).length !== 5)) {
             throw new Error("Bilanciamento fallito");
           }
         });
 
-        success = true; // Se arriva qui, la generazione è riuscita
+        success = true;
       } catch (e) {
-        success = false; // Ricomincia il ciclo while
+        success = false;
       }
     }
 
-    // FASE 4: Ordinamento verticale per colonna
     cards.forEach((card) => {
       for (let c = 0; c < 9; c++) {
         const colValues = [card[0][c], card[1][c], card[2][c]]
@@ -528,35 +452,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }));
   }
 
-  /**
-   * Bilancia le righe di una cartella per avere esattamente 5 numeri per riga
-   */
-  function balanceCardRows(card) {
-    let iterations = 0;
-    while (iterations < 100) {
-      const counts = card.map((r) => r.filter((n) => n !== null).length);
-      const high = counts.findIndex((c) => c > 5);
-      const low = counts.findIndex((c) => c < 5);
-
-      if (high === -1 || low === -1) break;
-
-      let moved = false;
-      for (let c = 0; c < 9; c++) {
-        if (card[high][c] !== null && card[low][c] === null) {
-          card[low][c] = card[high][c];
-          card[high][c] = null;
-          moved = true;
-          break;
-        }
-      }
-      if (!moved) break;
-      iterations++;
-    }
-  }
-
-  /**
-   * Mescola un array in modo casuale (algoritmo Fisher-Yates)
-   */
   function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -564,21 +459,15 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  /**
-   * Renderizza le cartelle in modo ottimizzato per grandi volumi
-   * @param {Array} giocatori - Array di giocatori di cartelle
-   */
   async function renderCardsOptimized(giocatori) {
     loadingEl.classList.remove("loader-complete");
     updateProgressMarkers(giocatori.length);
 
     cardsContainer.innerHTML = "";
 
-    // Crea la pagina di copertina per la stampa
     const printCoverPage = createPrintCoverPage();
     cardsContainer.appendChild(printCoverPage);
 
-    // Renderizza i giocatori in batch
     const batchSize = 10;
     const totalBatches = Math.ceil(giocatori.length / batchSize);
     let renderLastPercentage = globalLastPercentage;
@@ -651,9 +540,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  /**
-   * Stampa le cartelle in modo ottimizzato
-   */
   function printCards() {
     showAlert(
       "info",
@@ -664,7 +550,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.body.classList.add("printing");
 
-    // tenta di sfruttare beforeprint/afterprint dove esistono
     const cleanUp = () => document.body.classList.remove("printing");
 
     if ("onafterprint" in window) {
@@ -675,15 +560,11 @@ document.addEventListener("DOMContentLoaded", () => {
       window.addEventListener("afterprint", handler);
       window.print();
     } else {
-      // fallback (molti mobile): rimuovi la classe dopo un po'
       window.print();
       setTimeout(cleanUp, 3000);
     }
   }
 
-  /**
-   * Crea la pagina di copertina per la stampa
-   */
   function createPrintCoverPage() {
     const coverPage = document.createElement("div");
     coverPage.className = "print-cover-page";
@@ -761,9 +642,6 @@ document.addEventListener("DOMContentLoaded", () => {
     return coverPage;
   }
 
-  /**
-   * Crea l'elemento HTML per una cartella
-   */
   function createCardElement(card) {
     const cardElement = document.createElement("div");
     cardElement.className = "tombola-card";
@@ -798,7 +676,6 @@ document.addEventListener("DOMContentLoaded", () => {
     return cardElement;
   }
 
-  // Mostra un alert di benvenuto
   setTimeout(() => {
     showAlert(
       "info",
@@ -806,43 +683,4 @@ document.addEventListener("DOMContentLoaded", () => {
       `Genera facilmente cartelle per la tua tombola. Seleziona il numero di giocatori (fino a ${sumcartelle}) e clicca su Genera.`
     );
   }, 500);
-
-  // Aggiungi stili CSS per l'ottimizzazione della stampa
-  const addPrintStyles = () => {
-    const styleElement = document.createElement("style");
-    styleElement.textContent = `
-      @media print {
-        body.printing .app-content {
-          padding: 0 !important;
-          margin: 0 !important;
-        }
-        
-        body.printing .card-giocatore {
-          page-break-before: always !important;
-          break-before: page !important;
-        }
-        
-        body.printing .card-giocatore:first-child {
-          page-break-before: auto !important;
-          break-before: auto !important;
-        }
-        
-        body.printing .cards-grid {
-          display: grid !important;
-          grid-template-columns: repeat(2, 1fr) !important;
-          gap: 15px !important;
-          width: 100% !important;
-        }
-        
-        body.printing .tombola-card {
-          width: 100% !important;
-          margin-bottom: 15px !important;
-        }
-      }
-    `;
-    document.head.appendChild(styleElement);
-  };
-
-  // Aggiungi gli stili di stampa
-  addPrintStyles();
 });

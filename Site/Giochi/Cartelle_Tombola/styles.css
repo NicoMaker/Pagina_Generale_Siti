@@ -1,43 +1,28 @@
 /* Variabili CSS */
 :root {
-  /* Colori principali - Tema Rosso */
   --primary-color: #e53935;
   --primary-dark: #c62828;
   --primary-light: #ffcdd2;
   --secondary-color: #d32f2f;
   --secondary-dark: #b71c1c;
   --secondary-light: #ef5350;
-
-  /* Colori di testo e sfondo */
   --text-color: #212121;
   --text-light: #757575;
   --background-color: #f9f9f9;
   --card-background: #ffffff;
   --border-color: #e0e0e0;
-
-  /* Colori di stato */
   --success-color: #4caf50;
   --warning-color: #ff9800;
   --error-color: #f44336;
   --info-color: #2196f3;
-
-  /* Ombre */
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
-  --shadow-md:
-    0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  --shadow-lg:
-    0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-
-  /* Bordi e transizioni */
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
   --border-radius: 0.5rem;
   --border-radius-lg: 0.75rem;
   --border-radius-sm: 0.25rem;
   --transition-speed: 0.3s;
-
-  /* Tipografia */
   --font-family: "Montserrat", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-
-  /* Loader */
   --loader-height: 8px;
   --loader-bg: #f0f0f0;
   --loader-initial: linear-gradient(90deg, #e53935 0%, #ef5350 100%);
@@ -46,7 +31,6 @@
   --loader-glow: rgba(229, 57, 53, 0.5);
 }
 
-/* Reset e stili base */
 * {
   margin: 0;
   padding: 0;
@@ -59,9 +43,7 @@ body {
   color: var(--text-color);
   background-color: var(--background-color);
   min-height: 100vh;
-  transition:
-    background-color 0.3s ease,
-    color 0.3s ease;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .app-container {
@@ -78,13 +60,8 @@ body {
   width: 100%;
 }
 
-/* Header */
 .app-header {
-  background: linear-gradient(
-    135deg,
-    var(--primary-color) 0%,
-    var(--primary-dark) 100%
-  );
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
   color: white;
   padding: 1.25rem;
   display: flex;
@@ -108,28 +85,15 @@ body {
   left: -50%;
   width: 200%;
   height: 200%;
-  background: radial-gradient(
-    circle,
-    rgba(255, 255, 255, 0.1) 0%,
-    rgba(255, 255, 255, 0) 70%
-  );
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 70%);
   animation: pulse 15s infinite;
   z-index: 0;
 }
 
 @keyframes pulse {
-  0% {
-    transform: scale(1);
-    opacity: 0.5;
-  }
-  50% {
-    transform: scale(1.2);
-    opacity: 0.2;
-  }
-  100% {
-    transform: scale(1);
-    opacity: 0.5;
-  }
+  0% { transform: scale(1); opacity: 0.5; }
+  50% { transform: scale(1.2); opacity: 0.2; }
+  100% { transform: scale(1); opacity: 0.5; }
 }
 
 .logo {
@@ -171,7 +135,6 @@ body {
   opacity: 0.9;
 }
 
-/* Navigation */
 .app-nav {
   background-color: var(--card-background);
   box-shadow: var(--shadow-sm);
@@ -214,7 +177,6 @@ body {
   border-bottom: 3px solid var(--primary-color);
 }
 
-/* Section Container */
 .section-container {
   display: none;
   animation: fadeIn 0.5s ease;
@@ -225,27 +187,17 @@ body {
 }
 
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-/* Card */
 .card {
   background-color: var(--card-background);
   border-radius: var(--border-radius);
   box-shadow: var(--shadow-md);
   overflow: hidden;
   margin-bottom: 1.25rem;
-  transition:
-    transform var(--transition-speed),
-    box-shadow var(--transition-speed),
-    background-color 0.3s ease;
+  transition: transform var(--transition-speed), box-shadow var(--transition-speed), background-color 0.3s ease;
   border: 1px solid var(--border-color);
 }
 
@@ -256,11 +208,7 @@ body {
 
 .card-header {
   padding: 0.9375rem 1.25rem;
-  background: linear-gradient(
-    135deg,
-    var(--primary-color) 0%,
-    var(--primary-dark) 100%
-  );
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
   color: white;
 }
 
@@ -279,7 +227,6 @@ body {
   padding: 1.25rem;
 }
 
-/* Control Panel */
 .control-panel {
   margin-bottom: 1.875rem;
 }
@@ -317,10 +264,7 @@ input[type="number"] {
   -moz-appearance: textfield;
   background-color: var(--card-background);
   color: var(--text-color);
-  transition:
-    border-color 0.3s ease,
-    background-color 0.3s ease,
-    color 0.3s ease;
+  transition: border-color 0.3s ease, background-color 0.3s ease, color 0.3s ease;
 }
 
 input[type="number"]:focus {
@@ -386,6 +330,7 @@ input[type="number"]::-webkit-inner-spin-button {
   justify-content: center;
   position: relative;
   overflow: hidden;
+  flex: 1;
 }
 
 .btn::after {
@@ -407,14 +352,8 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 
 @keyframes ripple {
-  0% {
-    transform: scale(0, 0);
-    opacity: 0.5;
-  }
-  100% {
-    transform: scale(20, 20);
-    opacity: 0;
-  }
+  0% { transform: scale(0, 0); opacity: 0.5; }
+  100% { transform: scale(20, 20); opacity: 0; }
 }
 
 .btn i {
@@ -430,40 +369,22 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 
 .btn.primary {
-  background: linear-gradient(
-    135deg,
-    var(--primary-color) 0%,
-    var(--primary-dark) 100%
-  );
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
   color: white;
-  flex: 1;
 }
 
 .btn.primary:hover {
-  background: linear-gradient(
-    135deg,
-    var(--primary-dark) 0%,
-    var(--primary-dark) 100%
-  );
+  background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-dark) 100%);
   box-shadow: 0 4px 8px rgba(229, 57, 53, 0.3);
 }
 
 .btn.secondary {
-  background: linear-gradient(
-    135deg,
-    var(--secondary-color) 0%,
-    var(--secondary-dark) 100%
-  );
+  background: linear-gradient(135deg, var(--secondary-color) 0%, var(--secondary-dark) 100%);
   color: white;
-  flex: 1;
 }
 
 .btn.secondary:hover {
-  background: linear-gradient(
-    135deg,
-    var(--secondary-dark) 0%,
-    var(--secondary-dark) 100%
-  );
+  background: linear-gradient(135deg, var(--secondary-dark) 0%, var(--secondary-dark) 100%);
   box-shadow: 0 4px 8px rgba(211, 47, 47, 0.3);
 }
 
@@ -474,7 +395,6 @@ input[type="number"]::-webkit-inner-spin-button {
   box-shadow: none;
 }
 
-/* Nuovo Loader Avanzato */
 .loading-container {
   display: flex;
   flex-direction: column;
@@ -512,13 +432,8 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 
 @keyframes fadeInOut {
-  0%,
-  100% {
-    opacity: 0.7;
-  }
-  50% {
-    opacity: 1;
-  }
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 1; }
 }
 
 .loader-content {
@@ -605,11 +520,7 @@ input[type="number"]::-webkit-inner-spin-button {
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(
-    135deg,
-    rgba(229, 57, 53, 0.1) 0%,
-    rgba(229, 57, 53, 0.05) 100%
-  );
+  background: linear-gradient(135deg, rgba(229, 57, 53, 0.1) 0%, rgba(229, 57, 53, 0.05) 100%);
   border-radius: 0.5rem;
   z-index: 1;
   transform: skewX(-10deg);
@@ -617,15 +528,8 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 
 @keyframes pulse-bg {
-  0%,
-  100% {
-    opacity: 0.5;
-    transform: skewX(-10deg) scale(1);
-  }
-  50% {
-    opacity: 0.8;
-    transform: skewX(-10deg) scale(1.05);
-  }
+  0%, 100% { opacity: 0.5; transform: skewX(-10deg) scale(1); }
+  50% { opacity: 0.8; transform: skewX(-10deg) scale(1.05); }
 }
 
 .loader-counter {
@@ -649,13 +553,8 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 
 @keyframes celebrate {
-  0%,
-  100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.2);
-  }
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.2); }
 }
 
 .loader-complete .loader-icon {
@@ -673,25 +572,13 @@ input[type="number"]::-webkit-inner-spin-button {
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 0.8) 50%,
-    rgba(255, 255, 255, 0) 100%
-  );
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.8) 50%, rgba(255, 255, 255, 0) 100%);
   animation: flash 1s ease-in-out 3;
 }
 
 @keyframes flash {
-  0%,
-  100% {
-    opacity: 0;
-    transform: translateX(-100%);
-  }
-  50% {
-    opacity: 1;
-    transform: translateX(100%);
-  }
+  0%, 100% { opacity: 0; transform: translateX(-100%); }
+  50% { opacity: 1; transform: translateX(100%); }
 }
 
 .loader-marker span {
@@ -707,10 +594,6 @@ input[type="number"]::-webkit-inner-spin-button {
   padding: 2px 5px;
   border-radius: 4px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-.loader-marker span {
-  font-weight: 600;
 }
 
 .loader-progress-container {
@@ -731,29 +614,15 @@ input[type="number"]::-webkit-inner-spin-button {
   width: 0%;
   border-radius: 1rem;
   background: var(--loader-initial);
-  transition:
-    width 0.5s ease-out,
-    background 0.5s ease;
+  transition: width 0.5s ease-out, background 0.5s ease;
   position: relative;
   z-index: 1;
 }
 
-/* Aggiungi queste classi per i diversi stati della barra di progresso */
-.loader-progress-bar.quarter {
-  background: var(--loader-initial);
-}
-
-.loader-progress-bar.half {
-  background: var(--loader-middle);
-}
-
-.loader-progress-bar.three-quarters {
-  background: var(--loader-middle);
-}
-
-.loader-progress-bar.complete {
-  background: var(--loader-final);
-}
+.loader-progress-bar.quarter { background: var(--loader-initial); }
+.loader-progress-bar.half { background: var(--loader-middle); }
+.loader-progress-bar.three-quarters { background: var(--loader-middle); }
+.loader-progress-bar.complete { background: var(--loader-final); }
 
 .loader-progress-glow {
   position: absolute;
@@ -761,24 +630,15 @@ input[type="number"]::-webkit-inner-spin-button {
   left: 0;
   height: 100%;
   width: 60px;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.6),
-    transparent
-  );
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
   animation: glow 2s infinite;
   z-index: 2;
   transform: translateX(-100%);
 }
 
 @keyframes glow {
-  0% {
-    transform: translateX(-100%);
-  }
-  100% {
-    transform: translateX(1000%);
-  }
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(1000%); }
 }
 
 .loader-progress-markers {
@@ -817,16 +677,13 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 
 @keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
+  to { transform: rotate(360deg); }
 }
 
 .hidden {
   display: none !important;
 }
 
-/* Cartelle */
 .cards-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
@@ -841,7 +698,6 @@ input[type="number"]::-webkit-inner-spin-button {
   animation: fadeIn 0.5s ease;
 }
 
-/* Stile per il titolo del giocatore */
 .giocatore-title {
   margin-bottom: 0.9375rem;
   padding-bottom: 0.3125rem;
@@ -863,9 +719,7 @@ input[type="number"]::-webkit-inner-spin-button {
   overflow: hidden;
   break-inside: avoid;
   page-break-inside: avoid;
-  transition:
-    transform var(--transition-speed),
-    box-shadow var(--transition-speed);
+  transition: transform var(--transition-speed), box-shadow var(--transition-speed);
   background-color: var(--card-background);
 }
 
@@ -874,12 +728,8 @@ input[type="number"]::-webkit-inner-spin-button {
   box-shadow: var(--shadow-md);
 }
 
-.card-header {
-  background: linear-gradient(
-    135deg,
-    var(--primary-color) 0%,
-    var(--primary-dark) 100%
-  );
+.tombola-card .card-header {
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
   color: white;
   padding: 0.5rem;
   text-align: center;
@@ -912,7 +762,6 @@ input[type="number"]::-webkit-inner-spin-button {
   background-color: rgba(229, 57, 53, 0.15);
 }
 
-/* Alert */
 .alert-container {
   position: fixed;
   top: 20px;
@@ -939,25 +788,13 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 
 @keyframes slideIn {
-  from {
-    transform: translateX(100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
 }
 
 @keyframes slideOut {
-  from {
-    transform: translateX(0);
-    opacity: 1;
-  }
-  to {
-    transform: translateX(100%);
-    opacity: 0;
-  }
+  from { transform: translateX(0); opacity: 1; }
+  to { transform: translateX(100%); opacity: 0; }
 }
 
 .alert-icon {
@@ -993,39 +830,15 @@ input[type="number"]::-webkit-inner-spin-button {
   margin-left: 0.625rem;
 }
 
-.alert-success {
-  border-left-color: var(--success-color);
-}
+.alert-success { border-left-color: var(--success-color); }
+.alert-success .alert-icon { color: var(--success-color); }
+.alert-error { border-left-color: var(--error-color); }
+.alert-error .alert-icon { color: var(--error-color); }
+.alert-warning { border-left-color: var(--warning-color); }
+.alert-warning .alert-icon { color: var(--warning-color); }
+.alert-info { border-left-color: var(--info-color); }
+.alert-info .alert-icon { color: var(--info-color); }
 
-.alert-success .alert-icon {
-  color: var(--success-color);
-}
-
-.alert-error {
-  border-left-color: var(--error-color);
-}
-
-.alert-error .alert-icon {
-  color: var(--error-color);
-}
-
-.alert-warning {
-  border-left-color: var(--warning-color);
-}
-
-.alert-warning .alert-icon {
-  color: var(--warning-color);
-}
-
-.alert-info {
-  border-left-color: var(--info-color);
-}
-
-.alert-info .alert-icon {
-  color: var(--info-color);
-}
-
-/* Modal */
 .modal-container {
   position: fixed;
   top: 0;
@@ -1056,9 +869,7 @@ input[type="number"]::-webkit-inner-spin-button {
   overflow: auto;
   box-shadow: var(--shadow-lg);
   transform: scale(0.9);
-  transition:
-    transform var(--transition-speed),
-    background-color 0.3s ease;
+  transition: transform var(--transition-speed), background-color 0.3s ease;
 }
 
 .modal-container.visible .modal {
@@ -1071,11 +882,7 @@ input[type="number"]::-webkit-inner-spin-button {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: linear-gradient(
-    135deg,
-    var(--primary-color) 0%,
-    var(--primary-dark) 100%
-  );
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
   color: white;
   border-top-left-radius: var(--border-radius-lg);
   border-top-right-radius: var(--border-radius-lg);
@@ -1123,13 +930,8 @@ input[type="number"]::-webkit-inner-spin-button {
   text-align: right;
 }
 
-/* Footer */
 .app-footer {
-  background: linear-gradient(
-    135deg,
-    var(--primary-color) 0%,
-    var(--primary-dark) 100%
-  );
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
   color: white;
   text-align: center;
   padding: 0.9375rem;
@@ -1157,7 +959,6 @@ input[type="number"]::-webkit-inner-spin-button {
   opacity: 0.8;
 }
 
-/* Regole */
 .rules-container {
   max-width: 900px;
   margin: 0 auto;
@@ -1174,24 +975,12 @@ input[type="number"]::-webkit-inner-spin-button {
   animation-fill-mode: both;
 }
 
-.rules-section:nth-child(1) {
-  animation-delay: 0.1s;
-}
-.rules-section:nth-child(2) {
-  animation-delay: 0.2s;
-}
-.rules-section:nth-child(3) {
-  animation-delay: 0.3s;
-}
-.rules-section:nth-child(4) {
-  animation-delay: 0.4s;
-}
-.rules-section:nth-child(5) {
-  animation-delay: 0.5s;
-}
-.rules-section:nth-child(6) {
-  animation-delay: 0.6s;
-}
+.rules-section:nth-child(1) { animation-delay: 0.1s; }
+.rules-section:nth-child(2) { animation-delay: 0.2s; }
+.rules-section:nth-child(3) { animation-delay: 0.3s; }
+.rules-section:nth-child(4) { animation-delay: 0.4s; }
+.rules-section:nth-child(5) { animation-delay: 0.5s; }
+.rules-section:nth-child(6) { animation-delay: 0.6s; }
 
 .rules-section h3 {
   color: var(--primary-color);
@@ -1235,10 +1024,7 @@ input[type="number"]::-webkit-inner-spin-button {
   padding: 0.9375rem;
   text-align: center;
   box-shadow: var(--shadow-sm);
-  transition:
-    transform 0.3s ease,
-    box-shadow 0.3s ease,
-    background-color 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
   border: 1px solid var(--border-color);
 }
 
@@ -1265,9 +1051,8 @@ input[type="number"]::-webkit-inner-spin-button {
   margin: 0;
 }
 
-/* Pagina di copertina per la stampa */
 .print-cover-page {
-  display: none; /* Nascosto nell'interfaccia normale */
+  display: none;
   text-align: center;
   padding: 2cm;
   height: 100vh;
@@ -1346,7 +1131,6 @@ input[type="number"]::-webkit-inner-spin-button {
   text-align: center;
 }
 
-/* Responsive */
 @media (max-width: 768px) {
   .app-header {
     flex-direction: column;
@@ -1440,8 +1224,7 @@ input[type="number"]::-webkit-inner-spin-button {
   }
 }
 
-/* Stampa */
-@media print {
+  @media print {
   body {
     background-color: white;
     padding: 0;
@@ -1465,7 +1248,6 @@ input[type="number"]::-webkit-inner-spin-button {
     margin: 0;
   }
 
-  /* Mostra la pagina di copertina */
   .print-cover-page {
     display: block !important;
     height: 100vh;
@@ -1473,111 +1255,7 @@ input[type="number"]::-webkit-inner-spin-button {
     break-after: page;
   }
 
-  /* Intestazione principale della stampa */
-  .print-header {
-    text-align: center;
-    font-size: 24px;
-    font-weight: bold;
-    color: var(--primary-color) !important;
-    margin-bottom: 20px;
-    padding-bottom: 10px;
-    border-bottom: 2px solid var(--primary-color) !important;
-    print-color-adjust: exact !important;
-    -webkit-print-color-adjust: exact !important;
-  }
-
-  /* Stile per il titolo del giocatore */
-  .giocatore-title {
-    display: block !important;
-    color: var(--primary-color) !important;
-    font-size: 20px !important;
-    font-weight: bold !important;
-    margin: 30px 0 15px !important;
-    padding: 8px 15px !important;
-    background-color: #f8f8f8 !important;
-    border-left: 5px solid var(--primary-color) !important;
-    break-before: page !important;
-    page-break-before: always !important;
-    print-color-adjust: exact !important;
-    -webkit-print-color-adjust: exact !important;
-  }
-
-  /* Il primo giocatore non deve avere un'interruzione di pagina prima */
-  .card-giocatore:first-child .giocatore-title {
-    break-before: auto !important;
-    page-break-before: auto !important;
-  }
-
-  /* Layout a griglia per le cartelle - 2 per riga */
-  .cards-grid {
-    display: grid !important;
-    grid-template-columns: repeat(2, 1fr) !important;
-    gap: 15px !important;
-    width: 100% !important;
-  }
-
-  /* Stile per ogni cartella */
-  .tombola-card {
-    margin-bottom: 15px !important;
-    border: 2px solid var(--primary-color) !important;
-    break-inside: avoid !important;
-    page-break-inside: avoid !important;
-    width: 100% !important;
-  }
-
-  /* Intestazione della cartella */
-  .card-header {
-    background-color: var(--primary-color) !important;
-    color: white !important;
-    padding: 8px !important;
-    text-align: center !important;
-    font-weight: bold !important;
-    print-color-adjust: exact !important;
-    -webkit-print-color-adjust: exact !important;
-  }
-
-  /* Celle della griglia */
-  .card-grid {
-    width: 100% !important;
-    border-collapse: collapse !important;
-  }
-
-  .card-grid td {
-    height: 30px !important;
-    font-size: 16px !important;
-    border: 1px solid #ccc !important;
-    text-align: center !important;
-  }
-
-  .card-grid td.filled {
-    background-color: rgba(229, 57, 53, 0.1) !important;
-    print-color-adjust: exact !important;
-    -webkit-print-color-adjust: exact !important;
-  }
-
-  /* Impostazioni pagina */
-  @page {
-    size: A4;
-    margin: 1.5cm;
-  }
-}
-
-/* Assicurati che la pagina di copertina sia visibile durante la stampa */
-@media print {
-  .print-cover-page {
-    display: block !important;
-    height: auto !important;
-    min-height: 100vh;
-    page-break-after: always !important;
-    break-after: page !important;
-  }
-
-  .print-cover-title {
-    color: var(--primary-color) !important;
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
-  }
-
+  .print-cover-title,
   .print-cover-logo {
     color: var(--primary-color) !important;
     -webkit-print-color-adjust: exact !important;
@@ -1589,6 +1267,149 @@ input[type="number"]::-webkit-inner-spin-button {
     border-left: 4px solid var(--primary-color) !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
+  }
+
+  /* Due giocatori per pagina */
+  .cards-container {
+    display: block !important;
+  }
+
+  /* Nascondi la cover page dalla visualizzazione normale ma mostrala in stampa */
+  .print-cover-page {
+    display: block !important;
+  }
+
+  .card-giocatore {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    margin-bottom: 0.6cm !important;
+  }
+
+  /* Usa data-giocatore per identificare i giocatori pari e dispari */
+  /* Giocatori pari (2, 4, 6, 8...) - forzano nuova pagina */
+  .card-giocatore[data-giocatore="2"],
+  .card-giocatore[data-giocatore="4"],
+  .card-giocatore[data-giocatore="6"],
+  .card-giocatore[data-giocatore="8"],
+  .card-giocatore[data-giocatore="10"],
+  .card-giocatore[data-giocatore="12"],
+  .card-giocatore[data-giocatore="14"],
+  .card-giocatore[data-giocatore="16"],
+  .card-giocatore[data-giocatore="18"],
+  .card-giocatore[data-giocatore="20"],
+  .card-giocatore[data-giocatore="22"],
+  .card-giocatore[data-giocatore="24"],
+  .card-giocatore[data-giocatore="26"],
+  .card-giocatore[data-giocatore="28"],
+  .card-giocatore[data-giocatore="30"],
+  .card-giocatore[data-giocatore="32"],
+  .card-giocatore[data-giocatore="34"],
+  .card-giocatore[data-giocatore="36"],
+  .card-giocatore[data-giocatore="38"],
+  .card-giocatore[data-giocatore="40"],
+  .card-giocatore[data-giocatore="42"],
+  .card-giocatore[data-giocatore="44"],
+  .card-giocatore[data-giocatore="46"],
+  .card-giocatore[data-giocatore="48"],
+  .card-giocatore[data-giocatore="50"] {
+    page-break-after: always !important;
+    break-after: page !important;
+    margin-bottom: 0 !important;
+  }
+
+  /* Giocatori dispari (1, 3, 5, 7...) - più spazio sotto */
+  .card-giocatore[data-giocatore="1"],
+  .card-giocatore[data-giocatore="3"],
+  .card-giocatore[data-giocatore="5"],
+  .card-giocatore[data-giocatore="7"],
+  .card-giocatore[data-giocatore="9"],
+  .card-giocatore[data-giocatore="11"],
+  .card-giocatore[data-giocatore="13"],
+  .card-giocatore[data-giocatore="15"],
+  .card-giocatore[data-giocatore="17"],
+  .card-giocatore[data-giocatore="19"],
+  .card-giocatore[data-giocatore="21"],
+  .card-giocatore[data-giocatore="23"],
+  .card-giocatore[data-giocatore="25"],
+  .card-giocatore[data-giocatore="27"],
+  .card-giocatore[data-giocatore="29"],
+  .card-giocatore[data-giocatore="31"],
+  .card-giocatore[data-giocatore="33"],
+  .card-giocatore[data-giocatore="35"],
+  .card-giocatore[data-giocatore="37"],
+  .card-giocatore[data-giocatore="39"],
+  .card-giocatore[data-giocatore="41"],
+  .card-giocatore[data-giocatore="43"],
+  .card-giocatore[data-giocatore="45"],
+  .card-giocatore[data-giocatore="47"],
+  .card-giocatore[data-giocatore="49"] {
+    page-break-after: avoid !important;
+    break-after: avoid !important;
+    margin-bottom: 0.8cm !important;
+  }
+
+  .giocatore-title {
+    display: block !important;
+    color: var(--primary-color) !important;
+    font-size: 16px !important;
+    font-weight: bold !important;
+    margin: 0.3cm 0 0.25cm !important;
+    padding: 4px 8px !important;
+    background-color: #f8f8f8 !important;
+    border-left: 4px solid var(--primary-color) !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .cards-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.25cm !important;
+    width: 100% !important;
+    margin-bottom: 0 !important;
+  }
+
+  .tombola-card {
+    margin-bottom: 0.2cm !important;
+    border: 1.5px solid var(--primary-color) !important;
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+    width: 100% !important;
+  }
+
+  .tombola-card .card-header {
+    background-color: var(--primary-color) !important;
+    color: white !important;
+    padding: 3px !important;
+    text-align: center !important;
+    font-weight: bold !important;
+    font-size: 11px !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .card-grid {
+    width: 100% !important;
+    border-collapse: collapse !important;
+  }
+
+  .card-grid td {
+    height: 22px !important;
+    font-size: 13px !important;
+    border: 1px solid #ccc !important;
+    text-align: center !important;
+    padding: 1px !important;
+  }
+
+  .card-grid td.filled {
+    background-color: rgba(229, 57, 53, 0.1) !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  @page {
+    size: A4 portrait;
+    margin: 0.8cm 0.6cm;
   }
 }
 
