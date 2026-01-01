@@ -1,24 +1,36 @@
 // Wait for DOM to be fully loaded
 document.addEventListener("DOMContentLoaded", () => {
-  // Add event listeners
-  document.getElementById("number").addEventListener("keypress", (e) => {
-    if (e.key === "Enter") {
-      checkPrime();
-    }
-  });
+  // Add event listeners for prime number checker (if elements exist)
+  const numberInput = document.getElementById("number");
+  const clearBtn = document.getElementById("clear-btn");
+  const copyBtn = document.getElementById("copy-btn");
 
-  document.getElementById("clear-btn").addEventListener("click", () => {
-    document.getElementById("number").value = "";
-    document.getElementById("number").focus();
-    document.getElementById("result").innerHTML =
-      '<div class="placeholder-text">I risultati appariranno qui dopo la ricerca</div>';
-    clearVisualization();
-  });
+  if (numberInput) {
+    numberInput.addEventListener("keypress", (e) => {
+      if (e.key === "Enter") {
+        checkPrime();
+      }
+    });
+  }
 
-  document.getElementById("copy-btn").addEventListener("click", copyResults);
+  if (clearBtn) {
+    clearBtn.addEventListener("click", () => {
+      document.getElementById("number").value = "";
+      document.getElementById("number").focus();
+      document.getElementById("result").innerHTML =
+        '<div class="placeholder-text">I risultati appariranno qui dopo la ricerca</div>';
+      clearVisualization();
+    });
+  }
+
+  if (copyBtn) {
+    copyBtn.addEventListener("click", copyResults);
+  }
 
   // Initialize with empty state
-  clearVisualization();
+  if (document.getElementById("number-grid")) {
+    clearVisualization();
+  }
 });
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -30,19 +42,23 @@ document.addEventListener("DOMContentLoaded", () => {
       ? currentYear + 1
       : currentYear + 1;
 
-  // Set next year in all relevant elements
-  document.getElementById("next-year").textContent = nextYear;
-  document.getElementById("footer-year").textContent = nextYear;
-  document.getElementById("celebration-year").textContent = nextYear;
-  document.getElementById("copyright-year").textContent =
-    `© ${currentYear} Countdown Capodanno. Tutti i diritti riservati.`;
-
-  // Set countdown target
-  const countdownDate = new Date(`Jan 1, ${nextYear} 00:00:00`).getTime();
-
   // Check if it's New Year's Day
   const isNewYearsDay =
     currentDate.getMonth() === 0 && currentDate.getDate() === 1;
+
+  // Set next year in all relevant elements
+  // Se è il 1 gennaio, mostra solo l'anno corrente, altrimenti mostra l'anno successivo
+  const yearToDisplay = isNewYearsDay ? currentYear : nextYear;
+
+  document.getElementById("next-year").textContent = yearToDisplay;
+  document.getElementById("footer-year").textContent = yearToDisplay;
+  document.getElementById("celebration-year").textContent = yearToDisplay;
+  document.getElementById(
+    "copyright-year"
+  ).textContent = `© ${currentYear} Countdown Capodanno. Tutti i diritti riservati.`;
+
+  // Set countdown target
+  const countdownDate = new Date(`Jan 1, ${nextYear} 00:00:00`).getTime();
 
   // If it's New Year's Day, show celebration message
   if (isNewYearsDay) {
@@ -51,7 +67,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Add "Happy New Year" message to the celebration message
     const celebrationMessage = document.querySelector(
-      ".celebration-message h2",
+      ".celebration-message h2"
     );
     celebrationMessage.textContent = "Happy New Year!";
 
@@ -104,7 +120,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Calculate time units
     const days = Math.floor(distance / (1000 * 60 * 60 * 24));
     const hours = Math.floor(
-      (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
+      (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
     );
     const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
     const seconds = Math.floor((distance % (1000 * 60)) / 1000);
@@ -300,13 +316,45 @@ document.head.insertAdjacentHTML(
       }
       100% {
         opacity: 0;
-        transform: translate(calc(var(--end-x) - ${
-          window.innerWidth * 0.01 * x
-        }px), calc(var(--end-y) - ${window.innerHeight * 0.01 * y}px)) scale(0);
+        transform: translate(calc(var(--end-x) - 50%), calc(var(--end-y) - 50%)) scale(0);
       }
     }
+    
+    @keyframes shake {
+      10%, 90% {
+        transform: translate3d(-1px, 0, 0);
+      }
+      20%, 80% {
+        transform: translate3d(2px, 0, 0);
+      }
+      30%, 50%, 70% {
+        transform: translate3d(-4px, 0, 0);
+      }
+      40%, 60% {
+        transform: translate3d(4px, 0, 0);
+      }
+    }
+    
+    .shake {
+      animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+    }
+    
+    .result-message {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--text-light);
+      padding: 15px;
+      background-color: rgba(100, 116, 139, 0.1);
+      border-radius: var(--radius);
+    }
+    
+    .result-summary {
+      font-size: 1.1rem;
+      margin-bottom: 15px;
+    }
   </style>
-`,
+`
 );
 
 // Main function to check prime numbers
@@ -343,9 +391,10 @@ function checkPrime() {
 
   // Scroll to visualization
   setTimeout(() => {
-    document
-      .getElementById("visualization-container")
-      .scrollIntoView({ behavior: "smooth" });
+    const vizContainer = document.getElementById("visualization-container");
+    if (vizContainer) {
+      vizContainer.scrollIntoView({ behavior: "smooth" });
+    }
   }, 500);
 }
 
@@ -428,15 +477,19 @@ function displayResult(number, primeCount, primesList, resultElement) {
 
   // Add highlight animation to result card
   const resultCard = document.getElementById("result-card");
-  resultCard.classList.add("pulse");
-  setTimeout(() => {
-    resultCard.classList.remove("pulse");
-  }, 1500);
+  if (resultCard) {
+    resultCard.classList.add("pulse");
+    setTimeout(() => {
+      resultCard.classList.remove("pulse");
+    }, 1500);
+  }
 }
 
 // Create visual representation of numbers
 function createVisualization(number, primesList) {
   const gridContainer = document.getElementById("number-grid");
+  if (!gridContainer) return;
+
   gridContainer.innerHTML = "";
 
   // Create a set of prime numbers for faster lookup
@@ -464,7 +517,10 @@ function createVisualization(number, primesList) {
 
 // Clear visualization
 function clearVisualization() {
-  document.getElementById("number-grid").innerHTML = "";
+  const gridContainer = document.getElementById("number-grid");
+  if (gridContainer) {
+    gridContainer.innerHTML = "";
+  }
 }
 
 // Generate a random number
@@ -474,10 +530,11 @@ function generateRandom() {
 
   // Set the input value
   const numberInput = document.getElementById("number");
-  numberInput.value = randomNumber;
-
-  // Trigger the check
-  checkPrime();
+  if (numberInput) {
+    numberInput.value = randomNumber;
+    // Trigger the check
+    checkPrime();
+  }
 }
 
 // Show error message
@@ -486,16 +543,18 @@ function showError(inputElement, message) {
 
   // Create error message
   const resultElement = document.getElementById("result");
-  resultElement.innerHTML = `
-    <div class="error-message">
-      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="12" cy="12" r="10"></circle>
-        <line x1="12" y1="8" x2="12" y2="12"></line>
-        <line x1="12" y1="16" x2="12.01" y2="16"></line>
-      </svg>
-      <span>${message}</span>
-    </div>
-  `;
+  if (resultElement) {
+    resultElement.innerHTML = `
+      <div class="error-message">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="8" x2="12" y2="12"></line>
+          <line x1="12" y1="16" x2="12.01" y2="16"></line>
+        </svg>
+        <span>${message}</span>
+      </div>
+    `;
+  }
 
   // Shake animation for error feedback
   inputElement.classList.add("shake");
@@ -507,6 +566,8 @@ function showError(inputElement, message) {
 // Copy results to clipboard
 function copyResults() {
   const resultElement = document.getElementById("result");
+  if (!resultElement) return;
+
   const resultText = resultElement.textContent.trim();
 
   if (resultText === "I risultati appariranno qui dopo la ricerca") {
@@ -523,57 +584,17 @@ function copyResults() {
 
   // Show success message
   const copyBtn = document.getElementById("copy-btn");
-  const originalHTML = copyBtn.innerHTML;
+  if (copyBtn) {
+    const originalHTML = copyBtn.innerHTML;
 
-  copyBtn.innerHTML = `
-    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <polyline points="20 6 9 17 4 12"></polyline>
-    </svg>
-  `;
+    copyBtn.innerHTML = `
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="20 6 9 17 4 12"></polyline>
+      </svg>
+    `;
 
-  setTimeout(() => {
-    copyBtn.innerHTML = originalHTML;
-  }, 2000);
-}
-
-// Add this CSS to the existing stylesheet
-document.head.insertAdjacentHTML(
-  "beforeend",
-  `
-<style>
-.shake {
-  animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
-}
-
-@keyframes shake {
-  10%, 90% {
-    transform: translate3d(-1px, 0, 0);
-  }
-  20%, 80% {
-    transform: translate3d(2px, 0, 0);
-  }
-  30%, 50%, 70% {
-    transform: translate3d(-4px, 0, 0);
-  }
-  40%, 60% {
-    transform: translate3d(4px, 0, 0);
+    setTimeout(() => {
+      copyBtn.innerHTML = originalHTML;
+    }, 2000);
   }
 }
-
-.result-message {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  color: var(--text-light);
-  padding: 15px;
-  background-color: rgba(100, 116, 139, 0.1);
-  border-radius: var(--radius);
-}
-
-.result-summary {
-  font-size: 1.1rem;
-  margin-bottom: 15px;
-}
-</style>
-`,
-);
