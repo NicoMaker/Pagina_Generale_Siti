@@ -36,20 +36,25 @@ document.addEventListener("DOMContentLoaded", () => {
 document.addEventListener("DOMContentLoaded", () => {
   // Get current date and calculate next new year
   const currentDate = new Date();
-  const currentYear = currentDate.getFullYear();
-  const nextYear =
-    currentDate.getMonth() === 11 && currentDate.getDate() > 25
-      ? currentYear + 1
-      : currentYear + 1;
+  const currentYear = currentDate.getFullYear(); // anno corrente [web:7][web:16]
 
-  // Check if it's New Year's Day
+  // È il 1 gennaio?
   const isNewYearsDay =
     currentDate.getMonth() === 0 && currentDate.getDate() === 1;
 
-  // Set next year in all relevant elements
-  // Se è il 1 gennaio, mostra solo l'anno corrente, altrimenti mostra l'anno successivo
-  const yearToDisplay = isNewYearsDay ? currentYear : nextYear;
+  // Se è il 1 gennaio, mostri l'anno corrente come "anno nuovo"
+  // altrimenti mostri l'anno successivo
+  const yearToDisplay = isNewYearsDay ? currentYear : currentYear + 1;
 
+  // Target del countdown:
+  // - se oggi è 1 gennaio 2026, target = 1 gennaio 2027
+  // - se oggi è qualunque altro giorno del 2025, target = 1 gennaio 2026
+  const countdownTargetYear = isNewYearsDay ? currentYear + 1 : currentYear + 1;
+  const countdownDate = new Date(
+    `Jan 1, ${countdownTargetYear} 00:00:00`
+  ).getTime(); // [web:30][web:10]
+
+  // Set year in UI
   document.getElementById("next-year").textContent = yearToDisplay;
   document.getElementById("footer-year").textContent = yearToDisplay;
   document.getElementById("celebration-year").textContent = yearToDisplay;
@@ -57,21 +62,18 @@ document.addEventListener("DOMContentLoaded", () => {
     "copyright-year"
   ).textContent = `© ${currentYear} Countdown Capodanno. Tutti i diritti riservati.`;
 
-  // Set countdown target
-  const countdownDate = new Date(`Jan 1, ${nextYear} 00:00:00`).getTime();
-
   // If it's New Year's Day, show celebration message
   if (isNewYearsDay) {
     document.querySelector(".countdown-wrapper").style.display = "none";
     document.querySelector(".celebration-message").style.display = "block";
 
-    // Add "Happy New Year" message to the celebration message
+    // Messaggio "Buon anno" con anno giusto
     const celebrationMessage = document.querySelector(
       ".celebration-message h2"
     );
-    celebrationMessage.textContent = "Happy New Year!";
+    celebrationMessage.textContent = `Happy New Year!`;
 
-    // Add additional styling to make it stand out
+    // Stile del messaggio
     celebrationMessage.style.fontSize = "3rem";
     celebrationMessage.style.background =
       "linear-gradient(135deg, var(--gold), var(--accent))";
@@ -84,6 +86,47 @@ document.addEventListener("DOMContentLoaded", () => {
     // Update countdown every second
     const timerInterval = setInterval(updateCountdown, 1000);
     updateCountdown(); // Initial call to avoid delay
+
+    // Function to update countdown
+    function updateCountdown() {
+      const now = new Date().getTime();
+      const distance = countdownDate - now;
+
+      // If countdown is finished
+      if (distance < 0) {
+        clearInterval(timerInterval);
+        document.querySelector(".countdown-wrapper").style.display = "none";
+        document.querySelector(".celebration-message").style.display = "block";
+        launchFireworks();
+        return;
+      }
+
+      // Calculate time units
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor(
+        (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+      );
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      // Update DOM
+      document.getElementById("days").textContent = formatTime(days);
+      document.getElementById("hours").textContent = formatTime(hours);
+      document.getElementById("minutes").textContent = formatTime(minutes);
+      document.getElementById("seconds").textContent = formatTime(seconds);
+
+      // Add pulse animation to seconds
+      const secondsElement = document.getElementById("seconds");
+      secondsElement.classList.add("pulse");
+      setTimeout(() => {
+        secondsElement.classList.remove("pulse");
+      }, 900);
+    }
+
+    // Format time units to always have two digits
+    function formatTime(time) {
+      return time < 10 ? `0${time}` : time;
+    }
   }
 
   // Theme toggle functionality
@@ -102,47 +145,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // Wish submission
   const submitWishBtn = document.getElementById("submit-wish");
   submitWishBtn.addEventListener("click", submitWish);
-
-  // Function to update countdown
-  function updateCountdown() {
-    const now = new Date().getTime();
-    const distance = countdownDate - now;
-
-    // If countdown is finished
-    if (distance < 0) {
-      clearInterval(timerInterval);
-      document.querySelector(".countdown-wrapper").style.display = "none";
-      document.querySelector(".celebration-message").style.display = "block";
-      launchFireworks();
-      return;
-    }
-
-    // Calculate time units
-    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    const hours = Math.floor(
-      (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-    );
-    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-    // Update DOM
-    document.getElementById("days").textContent = formatTime(days);
-    document.getElementById("hours").textContent = formatTime(hours);
-    document.getElementById("minutes").textContent = formatTime(minutes);
-    document.getElementById("seconds").textContent = formatTime(seconds);
-
-    // Add pulse animation to seconds
-    const secondsElement = document.getElementById("seconds");
-    secondsElement.classList.add("pulse");
-    setTimeout(() => {
-      secondsElement.classList.remove("pulse");
-    }, 900);
-  }
-
-  // Format time units to always have two digits
-  function formatTime(time) {
-    return time < 10 ? `0${time}` : time;
-  }
 
   // Toggle theme function
   function toggleTheme() {
@@ -403,26 +405,20 @@ function findPreviousPrimes(number) {
   let primeCount = 0;
   const primesList = [];
 
-  // More efficient prime checking algorithm
-  // Create a boolean array "isPrime[0..n]"
-  const isPrime = new Array(number).fill(true);
+  // Sieve of Eratosthenes
+  const isPrimeArr = new Array(number).fill(true);
+  isPrimeArr[0] = isPrimeArr[1] = false;
 
-  // Mark 0 and 1 as non-prime
-  isPrime[0] = isPrime[1] = false;
-
-  // Use Sieve of Eratosthenes
   for (let i = 2; i * i < number; i++) {
-    // If i is prime, mark all its multiples as non-prime
-    if (isPrime[i]) {
+    if (isPrimeArr[i]) {
       for (let j = i * i; j < number; j += i) {
-        isPrime[j] = false;
+        isPrimeArr[j] = false;
       }
     }
   }
 
-  // Collect all prime numbers
   for (let i = 2; i < number; i++) {
-    if (isPrime[i]) {
+    if (isPrimeArr[i]) {
       primeCount++;
       primesList.push(i);
     }
@@ -447,7 +443,6 @@ function isPrime(n) {
 
 // Display the results
 function displayResult(number, primeCount, primesList, resultElement) {
-  // Create result HTML
   let resultHTML = "";
 
   if (primeCount === 0) {
@@ -472,10 +467,8 @@ function displayResult(number, primeCount, primesList, resultElement) {
     `;
   }
 
-  // Update the result element with animation
   resultElement.innerHTML = resultHTML;
 
-  // Add highlight animation to result card
   const resultCard = document.getElementById("result-card");
   if (resultCard) {
     resultCard.classList.add("pulse");
@@ -492,23 +485,19 @@ function createVisualization(number, primesList) {
 
   gridContainer.innerHTML = "";
 
-  // Create a set of prime numbers for faster lookup
   const primesSet = new Set(primesList);
 
-  // Create cells for numbers from 1 to the input number
   for (let i = 1; i < number; i++) {
     const cell = document.createElement("div");
     cell.className = "number-cell";
     cell.textContent = i;
 
-    // Add prime class if the number is prime
     if (primesSet.has(i)) {
       cell.classList.add("prime");
     }
 
     gridContainer.appendChild(cell);
 
-    // Add staggered animation
     setTimeout(() => {
       cell.classList.add("show");
     }, i * 10);
@@ -525,14 +514,10 @@ function clearVisualization() {
 
 // Generate a random number
 function generateRandom() {
-  // Generate a random number between 10 and 200
   const randomNumber = Math.floor(Math.random() * 191) + 10;
-
-  // Set the input value
   const numberInput = document.getElementById("number");
   if (numberInput) {
     numberInput.value = randomNumber;
-    // Trigger the check
     checkPrime();
   }
 }
@@ -541,7 +526,6 @@ function generateRandom() {
 function showError(inputElement, message) {
   inputElement.classList.add("error");
 
-  // Create error message
   const resultElement = document.getElementById("result");
   if (resultElement) {
     resultElement.innerHTML = `
@@ -556,7 +540,6 @@ function showError(inputElement, message) {
     `;
   }
 
-  // Shake animation for error feedback
   inputElement.classList.add("shake");
   setTimeout(() => {
     inputElement.classList.remove("shake");
@@ -574,7 +557,6 @@ function copyResults() {
     return;
   }
 
-  // Create a temporary textarea element to copy text
   const textarea = document.createElement("textarea");
   textarea.value = resultText;
   document.body.appendChild(textarea);
@@ -582,7 +564,6 @@ function copyResults() {
   document.execCommand("copy");
   document.body.removeChild(textarea);
 
-  // Show success message
   const copyBtn = document.getElementById("copy-btn");
   if (copyBtn) {
     const originalHTML = copyBtn.innerHTML;
