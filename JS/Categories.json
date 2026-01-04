@@ -13,6 +13,27 @@
         }
       ]
     },
+    "Animatiozioni": {
+      "icon": "fa-film",
+      "projects": [
+        {
+          "name":"Merry Christmas",
+          "link":"https://nicomaker.github.io/Merry_Christmas/"
+        },
+        {
+          "name":"New Year",
+          "link":"https://nicomaker.github.io/New_Year/"
+        },
+        {
+          "name":"Happy Easter",
+          "link":"https://nicomaker.github.io/Happy_Easter/"
+        },
+        {
+          "name":"Summer",
+          "link":"https://nicomaker.github.io/Summer/"
+        }
+      ]
+    },
     "Astronomia": {
       "icon": "fa-meteor",
       "projects": [
