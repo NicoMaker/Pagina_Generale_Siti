@@ -278,6 +278,9 @@
         {
           "name": "Esercizi Elementari",
           "link": "Site/Math/Esercizi_Elementari/index.html"
+        },{
+          "name":"Calcolatore Partizioni",
+          "link":"Site/Math/Calcolatore_Partizioni/index.html"
         }
       ]
     },

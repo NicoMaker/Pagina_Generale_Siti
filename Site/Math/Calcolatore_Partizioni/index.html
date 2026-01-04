@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calcolatore di Partizioni</title>
+    <link rel="stylesheet" href="styles.css">
+        <link
+      rel="icon"
+      href="https://cdn-icons-png.flaticon.com/512/1176/1176289.png"
+      type="image/png"
+    />
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🧮 Calcolatore di Partizioni</h1>
+            <p class="subtitle">Trova tutte le combinazioni possibili per sommare al tuo numero</p>
+        </header>
+        
+        <form id="calculatorForm">
+            <div class="input-group">
+                <label for="numberInput">Numero da partizionare</label>
+                <input 
+                    type="number" 
+                    id="numberInput" 
+                    min="1" 
+                    max="1000000000"
+                    placeholder="Inserisci un numero (es. 4)"
+                    required
+                >
+            </div>
+
+            <div class="input-group">
+                <label for="modeSelect">Modalità di calcolo</label>
+                <div class="select-wrapper">
+                    <select id="modeSelect" required>
+                        <option value="no-zero-no-repeat">Senza 0 e senza ripetizioni</option>
+                        <option value="no-zero-repeat">Senza 0 e con ripetizioni</option>
+                        <option value="no-repeat-with-zero">Con 0 senza ripetizioni</option>
+                        <option value="repeat-with-zero">Con 0 e ripetizioni</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button type="submit" class="btn btn-primary">
+                    ✨ Calcola Partizioni
+                </button>
+                <button type="button" class="btn btn-secondary" id="resetBtn">
+                    🔄 Reset
+                </button>
+            </div>
+        </form>
+
+        <div class="results-section" id="resultsSection" style="display: none;">
+            <div class="total-card">
+                <h2>Totale Partizioni</h2>
+                <div class="total-number" id="totalCount">0</div>
+            </div>
+
+            <div class="partitions-header">
+                <h3 class="partitions-title">Tutte le combinazioni</h3>
+                <span class="partitions-badge" id="countBadge">0 risultati</span>
+            </div>
+
+            <div class="partitions-container" id="partitionsList">
+                <div class="empty-state">
+                    <div class="empty-state-icon">📊</div>
+                    <p class="empty-state-text">Nessuna partizione trovata</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

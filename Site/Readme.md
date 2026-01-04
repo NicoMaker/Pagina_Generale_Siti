@@ -11,7 +11,7 @@
 - **[Giochi](Giochi/Readme.md)** [23 Progetti]
 - **[Info Paesi / Stati](Info_Paesi_Stati/Readme.md)** [4 Progetti]
 - **[Mappe](Maps/Readme.md)** [1 Progetto]
-- **[Matematica](Math/Readme.md)** [26 Progetti]
+- **[Matematica](Math/Readme.md)** [27 Progetti]
 - **[Natale](Natale/Readme.md)** [3 Progetti]
 - **[Opzioni con le Frasi](Opzioni_Con_Le_Frasi/Readme.md)** [8 Progetti]
 - **[Pasqua](Pasqua/Readme.md)** [2 Progetti]

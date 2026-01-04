@@ -4,6 +4,7 @@
 
 - **[Ahmes](Ahmes)**
 - **[Biografia su Alan Turing](Biografia%20Su%20Alan%20Turing)**
+- **[Calcolatore Partizioni](Calcolatore_Partizioni)**
 - **[Calcolatrice](Calcolatrice)**
 - **[Calcolatrice Scientifica](Calcolatrice_Scientifica)**
 - **[Calcolatrice Scientifica V2](Calcolatrice_scientifica_V2)**
