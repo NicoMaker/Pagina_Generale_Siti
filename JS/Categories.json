@@ -39,6 +39,10 @@
         {
           "name":"Buon San Valentino",
           "link":"Site/Animations/Buon_San_Valentino/index.html"
+        },
+        {
+          "name":"Halloween",
+          "link":"Site/Animations/Halloween/index.html"
         }
       ]
     },

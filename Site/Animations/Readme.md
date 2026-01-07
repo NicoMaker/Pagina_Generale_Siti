@@ -3,6 +3,7 @@
 # Animazioni
 
 - **[Buon San Valentino](Buon_San_Valentino)**
+- **[Halloween](Halloween)**
 - **[Happy Birthday](https://github.com/NicoMaker/Happy_Birthday)**
 - **[Happy Easter](https://github.com/NicoMaker/Happy_Easter)**
 - **[Merry Christmas](https://github.com/NicoMaker/Merry_Christmas)**

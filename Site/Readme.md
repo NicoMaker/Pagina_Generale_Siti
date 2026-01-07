@@ -4,7 +4,7 @@
 
 - **[Animali](Animals/Readme.md)** [2 Progetti]
 - **[Astronomia](Astronomia/Readme.md)** [3 Progetti]
-- **[Animazioni](Animations/Readme.md)** [6 Progetti]
+- **[Animazioni](Animations/Readme.md)** [7 Progetti]
 - **[Bici](https://github.com/NicoMaker/Giri-in-bici)** [1 Progetto]
 - **[Borsa](Borsa/Readme.md)** [5 Progetti]
 - **[Calcio](Calcio/Readme.md)** [3 Progetti]

@@ -1,0 +1,252 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+  overflow: hidden;
+  background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+  min-height: 100vh;
+  min-height: 100dvh;
+  position: relative;
+  cursor: crosshair;
+}
+
+.container {
+  position: relative;
+  z-index: 10;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: clamp(1rem, 3vw, 2rem);
+  gap: clamp(1rem, 3vw, 2rem);
+}
+
+h1 {
+  font-family: "Creepster", cursive;
+  font-size: clamp(2.5rem, 10vw, 8rem);
+  color: #ff6b00;
+  text-shadow: -3px -3px 0 #000, 3px -3px 0 #000, -3px 3px 0 #000,
+    3px 3px 0 #000, -4px 0 0 #000, 4px 0 0 #000, 0 -4px 0 #000, 0 4px 0 #000,
+    0 0 20px rgba(255, 107, 0, 0.8), 0 0 40px rgba(255, 107, 0, 0.6),
+    0 0 60px rgba(255, 107, 0, 0.4);
+  margin-bottom: clamp(0.5rem, 2vw, 1rem);
+  animation: glow 2s ease-in-out infinite alternate;
+  line-height: 1.2;
+  letter-spacing: 0.05em;
+}
+
+@keyframes glow {
+  from {
+    text-shadow: -3px -3px 0 #000, 3px -3px 0 #000, -3px 3px 0 #000,
+      3px 3px 0 #000, -4px 0 0 #000, 4px 0 0 #000, 0 -4px 0 #000, 0 4px 0 #000,
+      0 0 20px rgba(255, 107, 0, 0.8), 0 0 40px rgba(255, 107, 0, 0.6);
+  }
+  to {
+    text-shadow: -3px -3px 0 #000, 3px -3px 0 #000, -3px 3px 0 #000,
+      3px 3px 0 #000, -4px 0 0 #000, 4px 0 0 #000, 0 -4px 0 #000, 0 4px 0 #000,
+      0 0 30px rgba(255, 165, 0, 1), 0 0 60px rgba(255, 165, 0, 0.8),
+      0 0 90px rgba(255, 165, 0, 0.6);
+  }
+}
+
+.pumpkin-wrapper {
+  position: relative;
+  margin: clamp(0.5rem, 2vw, 1.5rem) 0;
+}
+
+.pumpkin {
+  width: clamp(180px, 35vw, 400px);
+  height: clamp(180px, 35vw, 400px);
+  cursor: pointer;
+  filter: drop-shadow(0 10px 30px rgba(255, 107, 0, 0.6));
+  transition: transform 0.3s ease;
+}
+
+.pumpkin:hover {
+  transform: scale(1.1) rotate(5deg);
+}
+
+.pumpkin:active {
+  transform: scale(0.95);
+}
+
+/* Stelle scintillanti */
+.star {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: white;
+  border-radius: 50%;
+  animation: twinkle 3s infinite;
+  pointer-events: none;
+}
+
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.5);
+  }
+}
+
+/* Pipistrelli */
+.bat {
+  position: absolute;
+  font-size: clamp(18px, 2.5vw, 30px);
+  animation: fly 8s infinite ease-in-out;
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+@keyframes fly {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  25% {
+    transform: translate(100px, -50px) scale(1.2);
+  }
+  50% {
+    transform: translate(200px, 0) scale(0.8);
+  }
+  75% {
+    transform: translate(100px, 50px) scale(1.1);
+  }
+}
+
+/* Fantasmi */
+.ghost {
+  position: absolute;
+  width: clamp(35px, 5vw, 60px);
+  height: clamp(45px, 6vw, 75px);
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 50% 50% 0 0;
+  animation: float 4s infinite ease-in-out;
+  pointer-events: none;
+}
+
+.ghost::before {
+  content: "";
+  position: absolute;
+  top: clamp(15px, 3vw, 20px);
+  left: clamp(10px, 2vw, 15px);
+  width: clamp(6px, 1.2vw, 8px);
+  height: clamp(6px, 1.2vw, 8px);
+  background: #000;
+  border-radius: 50%;
+  box-shadow: clamp(10px, 2vw, 15px) 0 0 #000;
+}
+
+.ghost::after {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  left: 0;
+  width: 100%;
+  height: 15px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 0 0 50% 50%;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0) translateX(0);
+  }
+  50% {
+    transform: translateY(-30px) translateX(20px);
+  }
+}
+
+/* Particelle fuochi d'artificio */
+.particle {
+  position: absolute;
+  width: clamp(4px, 1vw, 6px);
+  height: clamp(4px, 1vw, 6px);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+@keyframes explode {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--x), var(--y)) scale(0);
+  }
+}
+
+/* Coriandoli */
+.confetti {
+  position: absolute;
+  width: clamp(8px, 1.5vw, 10px);
+  height: clamp(8px, 1.5vw, 10px);
+  pointer-events: none;
+}
+
+@keyframes fall {
+  0% {
+    transform: translateY(-100vh) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+/* Responsive mobile */
+@media (max-width: 768px) {
+  h1 {
+    font-size: clamp(2rem, 12vw, 4rem);
+    text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000,
+      2px 2px 0 #000, -3px 0 0 #000, 3px 0 0 #000, 0 -3px 0 #000, 0 3px 0 #000,
+      0 0 15px rgba(255, 107, 0, 0.8), 0 0 30px rgba(255, 107, 0, 0.6);
+  }
+
+  .pumpkin {
+    width: clamp(150px, 45vw, 300px);
+    height: clamp(150px, 45vw, 300px);
+  }
+
+  .container {
+    gap: clamp(0.5rem, 2vw, 1rem);
+  }
+}
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: clamp(1.8rem, 14vw, 3rem);
+  }
+
+  .pumpkin {
+    width: clamp(130px, 50vw, 250px);
+    height: clamp(130px, 50vw, 250px);
+  }
+
+  .bat {
+    font-size: clamp(16px, 3vw, 24px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
