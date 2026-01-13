@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <title>Generatore Barcode</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%232563eb' width='100' height='100' rx='20'/><rect fill='%23fff' x='15' y='30' width='4' height='40'/><rect fill='%23fff' x='22' y='30' width='2' height='40'/><rect fill='%23fff' x='27' y='30' width='6' height='40'/><rect fill='%23fff' x='36' y='30' width='3' height='40'/><rect fill='%23fff' x='42' y='30' width='2' height='40'/><rect fill='%23fff' x='47' y='30' width='5' height='40'/><rect fill='%23fff' x='55' y='30' width='3' height='40'/><rect fill='%23fff' x='61' y='30' width='2' height='40'/><rect fill='%23fff' x='66' y='30' width='4' height='40'/><rect fill='%23fff' x='73' y='30' width='6' height='40'/><rect fill='%23fff' x='82' y='30' width='3' height='40'/></svg>" type="image/svg+xml">
+
+  <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
+  <link rel="stylesheet" href="styles.css">">
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🏷️ Generatore Barcode</h1>
+      <p>Crea e scarica barcode professionali istantaneamente</p>
+    </div>
+
+    <div class="card">
+      <div class="input-group">
+        <label for="codiceInput">Inserisci il codice</label>
+        <div class="input-wrapper">
+          <input type="text" id="codiceInput" value="123456789012" placeholder="Es: 123456789012" />
+          <button id="generaBtn" class="btn btn-primary">
+            <span>✨</span>
+            Genera Barcode
+          </button>
+        </div>
+      </div>
+
+      <div class="info-badge">
+        <span class="live-dot"></span>
+        Formato: CODE128 · Alta qualità
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="barcode-section">
+        <h2>
+          Anteprima Barcode
+          <span class="badge">SVG</span>
+        </h2>
+        <div class="barcode-container">
+          <svg id="barcodeSvg"></svg>
+        </div>
+      </div>
+
+      <div class="barcode-section">
+        <h2>
+          Barcode Scaricabile
+          <span class="badge">PNG</span>
+        </h2>
+        <div class="barcode-container">
+          <canvas id="barcodeCanvas"></canvas>
+        </div>
+        <a id="downloadBarcode" class="btn btn-download" download="barcode.png" href="#">
+          <span>⬇️</span>
+          Scarica Barcode PNG
+        </a>
+      </div>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

@@ -17,32 +17,32 @@
       "icon": "fa-film",
       "projects": [
         {
-          "name":"Merry Christmas",
-          "link":"https://nicomaker.github.io/Merry_Christmas/"
+          "name": "Merry Christmas",
+          "link": "https://nicomaker.github.io/Merry_Christmas/"
         },
         {
-          "name":"New Year",
-          "link":"https://nicomaker.github.io/New_Year/"
+          "name": "New Year",
+          "link": "https://nicomaker.github.io/New_Year/"
         },
         {
-          "name":"Happy Easter",
-          "link":"https://nicomaker.github.io/Happy_Easter/"
+          "name": "Happy Easter",
+          "link": "https://nicomaker.github.io/Happy_Easter/"
         },
         {
-          "name":"Summer",
-          "link":"https://nicomaker.github.io/Summer/"
+          "name": "Summer",
+          "link": "https://nicomaker.github.io/Summer/"
         },
         {
-          "name":"Happy Birthday",
-          "link":"https://nicomaker.github.io/Happy_Birthday/"
+          "name": "Happy Birthday",
+          "link": "https://nicomaker.github.io/Happy_Birthday/"
         },
         {
-          "name":"Buon San Valentino",
-          "link":"Site/Animations/Buon_San_Valentino/index.html"
+          "name": "Buon San Valentino",
+          "link": "Site/Animations/Buon_San_Valentino/index.html"
         },
         {
-          "name":"Halloween",
-          "link":"Site/Animations/Halloween/index.html"
+          "name": "Halloween",
+          "link": "Site/Animations/Halloween/index.html"
         }
       ]
     },
@@ -311,9 +311,10 @@
         {
           "name": "Esercizi Elementari",
           "link": "Site/Math/Esercizi_Elementari/index.html"
-        },{
-          "name":"Calcolatore Partizioni",
-          "link":"Site/Math/Calcolatore_Partizioni/index.html"
+        },
+        {
+          "name": "Calcolatore Partizioni",
+          "link": "Site/Math/Calcolatore_Partizioni/index.html"
         }
       ]
     },
@@ -546,6 +547,14 @@
         {
           "name": "Gestione Auto",
           "link": "Site/Utilities/Gestione_Auto/index.html"
+        },
+        {
+          "name": "Ora giorno in tempo reale",
+          "link": "Site/Utilities/Ora_Giorno_Tempo_Reale/index.html"
+        },
+        {
+          "name": "Barcode Generator",
+          "link": "Site/Utilities/Barcode_Generator/index.html"
         }
       ]
     }
