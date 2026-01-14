@@ -309,3 +309,24 @@ body::after {
     padding: 24px 16px;
   }
 }
+@media (max-width: 480px) {
+  body {
+    padding: 10px 0;
+  }
+
+  .container {
+    max-width: 480px;
+    margin: 0 auto;
+    transform: scale(0.85);
+    transform-origin: top center;
+  }
+}
+
+/* Vale per tutto, anche mobile */
+html,
+body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;   /* NO scroll orizzontale */
+  overflow-y: auto;     /* SÌ scroll verticale */
+}
