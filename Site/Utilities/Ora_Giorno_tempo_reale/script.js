@@ -38,7 +38,10 @@ buttons.forEach((btn) => {
   });
 });
 
-buttons[0].classList.add("active");
+// 24h attivo di default
+if (buttons[0]) {
+  buttons[0].classList.add("active");
+}
 
 function pad2(value) {
   return String(value).padStart(2, "0");

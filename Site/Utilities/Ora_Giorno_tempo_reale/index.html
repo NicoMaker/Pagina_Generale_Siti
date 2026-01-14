@@ -1,55 +1,32 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8">
-  <title>Orologio Moderno</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%232563eb'/><circle cx='50' cy='50' r='38' fill='%230f172a'/><line x1='50' y1='50' x2='50' y2='25' stroke='%23ffffff' stroke-width='3' stroke-linecap='round'/><line x1='50' y1='50' x2='65' y2='50' stroke='%2322c55e' stroke-width='2.5' stroke-linecap='round'/><circle cx='50' cy='50' r='4' fill='%23ef4444'/></svg>" type="image/svg+xml">
-  <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <title>Orologio Digitale</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <div class="clock-wrapper">
-    <div class="clock-container">
-      <div class="clock-header">
-        <div class="clock-title">Orologio</div>
-        <div class="chip">
-          <span class="live-dot"></span>
-          Live
+  <main class="clock-page">
+    <section class="clock-card">
+      <header class="clock-header">
+        <div class="title-area">
+          <h1>Orologio digitale</h1>
+          <p>Formato 12 / 24 ore</p>
         </div>
-      </div>
-
-      <div id="date"></div>
-      <div id="time"></div>
-
-      <div class="format-section">
-        <div class="format-label">Formato ora</div>
         <div class="format-buttons">
-          <button data-format="24">
-            <span class="dot"></span>
-            24 ore
-          </button>
-          <button data-format="12">
-            <span class="dot"></span>
-            12 ore (AM/PM)
-          </button>
+          <button type="button" data-format="24">24h</button>
+          <button type="button" data-format="12">12h</button>
         </div>
-      </div>
-    </div>
-  </div>
+      </header>
 
-  <div class="info-block">
-    <div class="info-content">
-      <div class="info-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
-        </svg>
+      <div class="clock-body">
+        <div id="date" class="date-text">--</div>
+        <div id="time" class="time-text">--:--:--</div>
       </div>
-      <div class="info-text">
-        <div class="info-title">Orologio sincronizzato</div>
-        <div class="info-description">L'ora viene aggiornata automaticamente ogni secondo con precisione</div>
-      </div>
-    </div>
-  </div>
+    </section>
+  </main>
+
   <script src="script.js"></script>
 </body>
 </html>
