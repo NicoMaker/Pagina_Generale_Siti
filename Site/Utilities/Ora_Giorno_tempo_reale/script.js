@@ -23,62 +23,60 @@ const mesi = [
   "dicembre",
 ];
 
-const dateEl = document.getElementById("date");
 const timeEl = document.getElementById("time");
-const buttons = document.querySelectorAll(".format-buttons button");
+const dateEl = document.getElementById("date");
+const periodEl = document.getElementById("period");
+const buttons = document.querySelectorAll(".btn");
 
-let currentFormat = "24";
+let formato = "24";
 
+// Event listener per i pulsanti
 buttons.forEach((btn) => {
   btn.addEventListener("click", () => {
-    currentFormat = btn.dataset.format;
+    formato = btn.dataset.format;
     buttons.forEach((b) => b.classList.remove("active"));
     btn.classList.add("active");
-    updateClock();
+    aggiornaClock();
   });
 });
 
-// 24h attivo di default
-if (buttons[0]) {
-  buttons[0].classList.add("active");
+// Funzione per aggiungere lo zero
+function pad(num) {
+  return String(num).padStart(2, "0");
 }
 
-function pad2(value) {
-  return String(value).padStart(2, "0");
-}
-
-function updateClock() {
+// Funzione principale per aggiornare l'orologio
+function aggiornaClock() {
   const now = new Date();
 
-  const dayName = giorni[now.getDay()];
-  const dayNumber = pad2(now.getDate());
-  const monthName = mesi[now.getMonth()];
-  const year = now.getFullYear();
+  // Data
+  const giorno = giorni[now.getDay()];
+  const numeroGiorno = pad(now.getDate());
+  const mese = mesi[now.getMonth()];
+  const anno = now.getFullYear();
 
-  let hours = now.getHours();
-  const minutes = pad2(now.getMinutes());
-  const seconds = pad2(now.getSeconds());
+  // Ora
+  let ore = now.getHours();
+  const minuti = pad(now.getMinutes());
+  const secondi = pad(now.getSeconds());
 
+  let orario = "";
   let ampm = "";
-  let hoursForDisplay = hours;
 
-  if (currentFormat === "12") {
-    ampm = hours >= 12 ? "PM" : "AM";
-    hoursForDisplay = hours % 12;
-    if (hoursForDisplay === 0) hoursForDisplay = 12;
-  }
-
-  let timeString = "";
-
-  if (currentFormat === "24") {
-    timeString = `${pad2(hours)}:${minutes}:${seconds}`;
+  if (formato === "24") {
+    orario = `${pad(ore)}:${minuti}:${secondi}`;
   } else {
-    timeString = `${pad2(hoursForDisplay)}:${minutes}:${seconds} ${ampm}`;
+    ampm = ore >= 12 ? "PM" : "AM";
+    ore = ore % 12 || 12;
+    orario = `${pad(ore)}:${minuti}:${secondi}`;
   }
 
-  dateEl.textContent = `${dayName} ${dayNumber} ${monthName} ${year}`;
-  timeEl.textContent = timeString;
+  // Aggiorna il DOM
+  timeEl.textContent = orario;
+  periodEl.textContent = ampm;
+  dateEl.textContent = `${giorno} ${numeroGiorno} ${mese} ${anno}`;
 }
 
-updateClock();
-setInterval(updateClock, 1000);
+// Avvia l'orologio
+aggiornaClock();
+setInterval(aggiornaClock, 1000);

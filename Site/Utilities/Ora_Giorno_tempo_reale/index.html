@@ -1,32 +1,33 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8" />
-  <title>Orologio Digitale</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="styles.css" />
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%232563eb'/><circle cx='50' cy='50' r='38' fill='%230f172a'/><line x1='50' y1='50' x2='50' y2='25' stroke='%23ffffff' stroke-width='3' stroke-linecap='round'/><line x1='50' y1='50' x2='65' y2='50' stroke='%2322c55e' stroke-width='2.5' stroke-linecap='round'/><circle cx='50' cy='50' r='4' fill='%23ef4444'/></svg>" type="image/svg+xml">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Orologio Digitale Moderno</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><linearGradient id='grad' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' style='stop-color:%23667eea'/><stop offset='100%' style='stop-color:%23764ba2'/></linearGradient></defs><circle cx='50' cy='50' r='45' fill='url(%23grad)'/><circle cx='50' cy='50' r='38' fill='white'/><line x1='50' y1='50' x2='50' y2='25' stroke='%23667eea' stroke-width='3' stroke-linecap='round'/><line x1='50' y1='50' x2='65' y2='50' stroke='%23764ba2' stroke-width='2.5' stroke-linecap='round'/><circle cx='50' cy='50' r='4' fill='%23667eea'/></svg>" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <main class="clock-page">
-    <section class="clock-card">
-      <header class="clock-header">
-        <div class="title-area">
-          <h1>Orologio digitale</h1>
-          <p>Formato 12 / 24 ore</p>
-        </div>
-        <div class="format-buttons">
-          <button type="button" data-format="24">24h</button>
-          <button type="button" data-format="12">12h</button>
-        </div>
-      </header>
+  <div class="clock-container">
+    <div class="decoration"></div>
+    <div class="decoration"></div>
+    
+    <div class="header">
+      <h1>Orologio Digitale</h1>
+      <p>Formato 12 / 24 ore</p>
+    </div>
 
-      <div class="clock-body">
-        <div id="date" class="date-text">--</div>
-        <div id="time" class="time-text">--:--:--</div>
-      </div>
-    </section>
-  </main>
+    <div class="time-display">
+      <div class="time" id="time">00:00:00</div>
+      <div class="period" id="period"></div>
+      <div class="date" id="date">caricamento...</div>
+    </div>
+
+    <div class="controls">
+      <button class="btn active" data-format="24">24 ore</button>
+      <button class="btn" data-format="12">12 ore</button>
+    </div>
+  </div>
 
   <script src="script.js"></script>
 </body>
