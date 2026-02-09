@@ -151,6 +151,10 @@
             </div>
           </div>
         </div>
+          <div class="form-group">
+            <label for="vehicleNotes">Note (opzionale)</label>
+            <textarea id="vehicleNotes" rows="3" placeholder="Aggiungi note sul veicolo..."></textarea>
+          </div>
         <div class="dialog-footer">
           <button type="button" class="btn btn-secondary" id="btnCancelAddVehicle">
             Annulla
@@ -228,6 +232,10 @@
             <input type="number" id="updateKm" class="update-km-input" />
             <button class="btn btn-primary" id="btnUpdateKm">Aggiorna</button>
           </div>
+        </div>
+        <div id="vehicleNotesDisplay" class="card" style="display: none; margin-top: 16px;">
+          <label style="font-weight: 600; margin-bottom: 8px; display: block;">Note Veicolo</label>
+          <p id="vehicleNotesText" style="color: var(--text-secondary); margin: 0;"></p>
         </div>
 
         <div class="maintenances-list-section">

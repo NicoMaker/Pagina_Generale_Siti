@@ -462,6 +462,11 @@ function renderVehicles() {
                     </button>
                 </div>
                 </div>
+            ${vehicle.notes && vehicle.notes.trim() !== "" ? `
+            <div class="vehicle-card-notes">
+                <i class="fas fa-sticky-note"></i>
+                <span>${vehicle.notes}</span>
+            </div>` : ""}
             <div class="vehicle-card-footer">
                 <div class="vehicle-card-info-item">
                     <i class="fas fa-tachometer-alt"></i>
@@ -535,6 +540,15 @@ function handleViewDetails(vehicleId) {
     "detailsVehicleInfo"
   ).textContent = `${vehicle.plate} - Anno ${vehicle.year}`;
   document.getElementById("updateKm").value = vehicle.currentKm || 0;
+  // Display vehicle notes if present
+  const vehicleNotesDisplay = document.getElementById("vehicleNotesDisplay");
+  const vehicleNotesText = document.getElementById("vehicleNotesText");
+  if (vehicle.notes && vehicle.notes.trim() !== "") {
+    vehicleNotesDisplay.style.display = "block";
+    vehicleNotesText.textContent = vehicle.notes;
+  } else {
+    vehicleNotesDisplay.style.display = "none";
+  }
 
   // Render maintenances
   const maintenancesListEl = document.getElementById("maintenancesList");
@@ -944,6 +958,7 @@ formAddVehicleEl.addEventListener("submit", (e) => {
     plate: document.getElementById("plate").value.toUpperCase(),
     year: parseInt(document.getElementById("year").value),
     currentKm: parseInt(document.getElementById("currentKm").value) || 0,
+    notes: document.getElementById("vehicleNotes").value || "",
   };
 
   // If editing, keep the ID and remember we were editing
@@ -1148,5 +1163,6 @@ function handleEditVehicle(vehicleId) {
   document.getElementById("plate").value = vehicle.plate;
   document.getElementById("year").value = vehicle.year;
   document.getElementById("currentKm").value = vehicle.currentKm || 0;
+  document.getElementById("vehicleNotes").value = vehicle.notes || "";
   dialogAddVehicleEl.classList.add("show");
 }

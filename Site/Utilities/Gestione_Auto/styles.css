@@ -1122,3 +1122,67 @@ body {
 .custom-switch-label span:first-child {
     font-size: 1.1rem;
 }
+/* --- VEHICLE CARD NOTES --- */
+.vehicle-card-notes {
+  padding: 0.75rem 1.5rem;
+  background-color: var(--bg-primary);
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.vehicle-card-notes i {
+  color: var(--accent-warning);
+  margin-top: 0.15rem;
+  flex-shrink: 0;
+}
+
+.vehicle-card-notes span {
+  flex: 1;
+}
+
+/* --- VEHICLE NOTES IN DETAILS DIALOG --- */
+#vehicleNotesDisplay {
+  padding: 1rem;
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+}
+
+#vehicleNotesDisplay label {
+  color: var(--text-primary);
+  font-size: 0.95rem;
+}
+
+#vehicleNotesText {
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+/* --- TEXTAREA STYLING --- */
+textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  font-family: inherit;
+  font-size: 1rem;
+  color: var(--text-primary);
+  background-color: var(--bg-secondary);
+  resize: vertical;
+  transition: border-color var(--transition-speed) ease;
+}
+
+textarea:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+}
+
+textarea::placeholder {
+  color: var(--text-secondary);
+  opacity: 0.6;
+}
