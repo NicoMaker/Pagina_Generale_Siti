@@ -32,7 +32,8 @@ let formato = "24";
 
 // Event listener per i pulsanti
 buttons.forEach((btn) => {
-  btn.addEventListener("click", () => {
+  btn.addEventListener("click", (e) => {
+    e.preventDefault();
     formato = btn.dataset.format;
     buttons.forEach((b) => b.classList.remove("active"));
     btn.classList.add("active");
@@ -80,3 +81,24 @@ function aggiornaClock() {
 // Avvia l'orologio
 aggiornaClock();
 setInterval(aggiornaClock, 1000);
+
+// Previeni il refresh accidentale su mobile
+let startY = 0;
+document.addEventListener(
+  "touchstart",
+  (e) => {
+    startY = e.touches[0].pageY;
+  },
+  { passive: false },
+);
+
+document.addEventListener(
+  "touchmove",
+  (e) => {
+    const y = e.touches[0].pageY;
+    if (window.scrollY === 0 && y > startY) {
+      e.preventDefault();
+    }
+  },
+  { passive: false },
+);
