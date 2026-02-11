@@ -9,6 +9,7 @@ class QRGenerator {
     this.typeSelect = document.getElementById("qr-type");
     this.generateBtn = document.getElementById("generate-btn");
     this.downloadBtn = document.getElementById("download-btn");
+    this.printBtn = document.getElementById("print-btn");
     this.copyBtn = document.getElementById("copy-btn");
     this.qrContainer = document.getElementById("qr-container");
     this.downloadSection = document.getElementById("download-section");
@@ -46,6 +47,7 @@ class QRGenerator {
     this.typeSelect.addEventListener("change", () => this.handleTypeChange());
     this.generateBtn.addEventListener("click", () => this.generateQR());
     this.downloadBtn.addEventListener("click", () => this.downloadQR());
+    this.printBtn.addEventListener("click", () => this.printQR());
 
     Object.values(this.inputs).forEach((input) => {
       if (input) input.addEventListener("input", () => this.debounceGenerate());
@@ -148,6 +150,60 @@ class QRGenerator {
     link.download = `qr-${this.currentQR.type}-${now}.png`;
     link.click();
     this.showToast("QR Code scaricato!", "success");
+  }
+
+  printQR() {
+    if (!this.currentQR) return;
+    
+    const printWindow = window.open('', '_blank');
+    const imgData = this.currentQR.canvas.toDataURL("image/png");
+    
+    printWindow.document.write(`
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <title>Stampa QR Code</title>
+          <style>
+            body {
+              margin: 0;
+              padding: 20px;
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              justify-content: center;
+              min-height: 100vh;
+              font-family: Arial, sans-serif;
+            }
+            img {
+              max-width: 100%;
+              height: auto;
+              margin: 20px 0;
+            }
+            h2 {
+              margin-bottom: 10px;
+            }
+            @media print {
+              body {
+                padding: 0;
+              }
+            }
+          </style>
+        </head>
+        <body>
+          <h2>QR Code</h2>
+          <img src="${imgData}" alt="QR Code"/>
+        </body>
+      </html>
+    `);
+    
+    printWindow.document.close();
+    printWindow.focus();
+    
+    setTimeout(() => {
+      printWindow.print();
+    }, 250);
+    
+    this.showToast("Finestra di stampa aperta!", "success");
   }
 
   clearQR() {
