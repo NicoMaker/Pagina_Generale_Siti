@@ -1,4 +1,4 @@
-class NexusCalc {
+class Calculator {
   constructor() {
     this.initElements();
     this.bindEvents();
@@ -465,7 +465,7 @@ class NexusCalc {
       )
       .join("\n");
 
-    return `📊 ${title}\n✅ ${value}\n\n${details}\n\n— Calcolato con NexusCalc`;
+    return `📊 ${title}\n✅ ${value}\n\n${details}\n\n— Calcolato con CalcolatorePrezzi`;
   }
 
   // Utility
@@ -570,5 +570,5 @@ document.head.appendChild(style);
 
 // Inizializza al caricamento del DOM
 document.addEventListener("DOMContentLoaded", () => {
-  new NexusCalc();
+  new Calculator();
 });
