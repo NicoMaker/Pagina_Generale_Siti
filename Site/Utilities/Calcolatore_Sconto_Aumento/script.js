@@ -260,9 +260,7 @@ class ModernCalculator {
       : "var(--discount)";
   }
 
-  delay(ms) {
-    return new Promise((res) => setTimeout(res, ms));
-  }
+  delay = (ms) => new Promise((res) => setTimeout(res, ms));
 }
 
 document.addEventListener("DOMContentLoaded", () => new ModernCalculator());
