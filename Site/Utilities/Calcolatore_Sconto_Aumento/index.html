@@ -3,41 +3,46 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Calcolatore Smart - Moderno e Intuitivo</title>
-    <!-- Updated fonts to match design brief -->
+    <meta name="theme-color" content="#0a0a0b" />
+    <title>Calcolatore Smart - Calcolo Prezzi e Percentuali</title>
+
+    <link
+      rel="icon"
+      type="image/png"
+      href="https://img.icons8.com/fluency/48/calculator.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      href="https://img.icons8.com/fluency/180/calculator.png"
+    />
+
+    <meta
+      name="description"
+      content="Calcolatore professionale per sconti, aumenti e percentuali. Strumento moderno e intuitivo per professionisti."
+    />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Source+Sans+Pro:wght@300;400;500;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
-    <link
-      rel="icon"
-      href="https://img.freepik.com/premium-vector/rise-cost-electricity-icon_946691-2660.jpg?w=2000"
-      type="image/x-icon"
-    />
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <!-- Added background pattern and improved structure -->
-    <div class="background-pattern"></div>
-
     <div class="calculator-container">
-      <!-- Enhanced header with better typography -->
       <div class="header">
         <div class="header-icon">
           <i class="fas fa-calculator"></i>
         </div>
         <h1>Calcolatore Smart</h1>
-        <p>Calcola sconti, aumenti e percentuali con facilità e precisione</p>
+        <p>Calcola sconti, aumenti e percentuali con precisione</p>
       </div>
 
       <div class="calculator-form" id="calculator-form">
-        <!-- Mode Selector -->
         <div class="mode-selector">
           <div class="mode-option">
             <input
@@ -49,7 +54,7 @@
             />
             <label for="mode-final" class="mode-button">
               <i class="fas fa-calculator"></i>
-              <span>Calcola Prezzo Finale</span>
+              <span>Prezzo Finale</span>
             </label>
           </div>
           <div class="mode-option">
@@ -61,20 +66,18 @@
             />
             <label for="mode-percentage" class="mode-button">
               <i class="fas fa-percent"></i>
-              <span>Calcola Percentuale</span>
+              <span>Percentuale</span>
             </label>
           </div>
         </div>
 
-        <!-- Final Price Mode -->
         <div id="final-price-mode" class="calculation-mode active">
           <div class="input-group">
-            <label class="input-label">
-              <i class="fas fa-tag"></i>
-              Prezzo Base
-            </label>
+            <label class="input-label"
+              ><i class="fas fa-tag"></i> Prezzo Base</label
+            >
             <div class="input-wrapper">
-              <span class="currency-symbol">€</span>
+              <span class="currency-symbol">&euro;</span>
               <input
                 type="number"
                 class="input-field"
@@ -84,12 +87,8 @@
                 step="0.01"
               />
             </div>
-            <div class="error-message" id="base-price-error">
-              Inserisci un prezzo valido maggiore di zero
-            </div>
           </div>
 
-          <!-- Operation Selector -->
           <div class="operation-selector">
             <div class="operation-option">
               <input
@@ -100,29 +99,25 @@
                 checked
               />
               <label for="op-subtract" class="operation-button">
-                <i class="fas fa-minus"></i>
-                <span>Sconto</span>
+                <i class="fas fa-arrow-down"></i><span>Sconto</span>
               </label>
             </div>
             <div class="operation-option">
               <input type="radio" name="operation" value="add" id="op-add" />
               <label for="op-add" class="operation-button">
-                <i class="fas fa-plus"></i>
-                <span>Aumento</span>
+                <i class="fas fa-arrow-up"></i><span>Aumento</span>
               </label>
             </div>
           </div>
 
-          <!-- Slider -->
           <div class="slider-container">
             <div class="slider-header">
               <div class="input-label">
-                <i class="fas fa-percent"></i>
-                Percentuale
+                <i class="fas fa-percent"></i> Percentuale
               </div>
               <div class="percentage-controls">
                 <span class="percentage-display" id="percentage-display"
-                  >0.00%</span
+                  >0%</span
                 >
                 <input
                   type="number"
@@ -142,23 +137,20 @@
           </div>
 
           <button class="calculate-button" id="calculate-final">
-            <span class="button-text">
-              <i class="fas fa-calculator"></i>
-              Calcola Prezzo Finale
-            </span>
+            <span class="button-text"
+              ><i class="fas fa-arrow-right"></i> Calcola Prezzo Finale</span
+            >
             <div class="button-spinner"></div>
           </button>
         </div>
 
-        <!-- Percentage Mode -->
         <div id="percentage-mode" class="calculation-mode">
           <div class="input-group">
-            <label class="input-label">
-              <i class="fas fa-tag"></i>
-              Prezzo Prima
-            </label>
+            <label class="input-label"
+              ><i class="fas fa-tag"></i> Prezzo Prima</label
+            >
             <div class="input-wrapper">
-              <span class="currency-symbol">€</span>
+              <span class="currency-symbol">&euro;</span>
               <input
                 type="number"
                 class="input-field"
@@ -168,18 +160,13 @@
                 step="0.01"
               />
             </div>
-            <div class="error-message" id="price-before-error">
-              Inserisci un prezzo valido maggiore di zero
-            </div>
           </div>
-
           <div class="input-group">
-            <label class="input-label">
-              <i class="fas fa-tags"></i>
-              Prezzo Dopo
-            </label>
+            <label class="input-label"
+              ><i class="fas fa-tags"></i> Prezzo Dopo</label
+            >
             <div class="input-wrapper">
-              <span class="currency-symbol">€</span>
+              <span class="currency-symbol">&euro;</span>
               <input
                 type="number"
                 class="input-field"
@@ -189,45 +176,37 @@
                 step="0.01"
               />
             </div>
-            <div class="error-message" id="price-after-error">
-              Il prezzo dopo deve essere diverso dal prezzo prima
-            </div>
           </div>
-
           <button class="calculate-button" id="calculate-percentage">
-            <span class="button-text">
-              <i class="fas fa-percent"></i>
-              Calcola Percentuale
-            </span>
+            <span class="button-text"
+              ><i class="fas fa-arrow-right"></i> Calcola Percentuale</span
+            >
             <div class="button-spinner"></div>
           </button>
         </div>
       </div>
 
-      <!-- Result Container -->
       <div class="result-container" id="result-container">
-        <div class="result-icon">
-          <i class="fas fa-check-circle"></i>
-        </div>
+        <div class="result-icon"><i class="fas fa-check-circle"></i></div>
         <div class="result-title" id="result-title"></div>
         <div class="result-value" id="result-value"></div>
         <div class="result-details" id="result-details"></div>
         <div class="result-actions">
           <button class="action-button primary" id="new-calculation-button">
-            <i class="fas fa-calculator"></i>
-            <span>Nuova Calcolatrice</span>
+            <i class="fas fa-rotate-left"></i><span>Nuovo</span>
+          </button>
+          <button class="action-button secondary" id="copy-button">
+            <i class="fas fa-copy"></i><span>Copia</span>
           </button>
           <button class="action-button secondary" id="share-button">
-            <i class="fas fa-share"></i>
-            <span>Condividi</span>
+            <i class="fas fa-share-nodes"></i><span>Condividi</span>
           </button>
         </div>
       </div>
     </div>
 
-    <!-- Added footer with branding -->
     <footer class="footer">
-      <p>Calcolatore Smart - Progettato per la semplicità</p>
+      <p>Calcolatore Smart &mdash; Progettato per professionisti</p>
     </footer>
 
     <script src="script.js"></script>
