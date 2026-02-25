@@ -1,98 +1,118 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="it">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Remove BG Oggetti - Rimuovi sfondo da qualsiasi immagine</title>
-    <link rel="stylesheet" href="styles.css">7
-    
-    <link rel="icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-_qHrDClQ-p5Yj2n_nUQqAbnu9cXcaRLlKw&s" type="image/png">
-</head>
-<body>
+    <link rel="stylesheet" href="styles.css" />
+    7
+
+    <link
+      rel="icon"
+      href="https://cdn3.pixelcut.app/background_remover_after_1_f08afa1811.jpg"
+      type="image/png"
+    />
+  </head>
+  <body>
     <div class="container">
-        <h1>🎯 Remove BG Oggetti</h1>
-        <p class="subtitle">Rimuovi lo sfondo da oggetti, prodotti, persone e qualsiasi immagine</p>
-        
-        <div class="upload-area">
-            <input type="file" id="fileInput" class="file-input" accept="image/*">
-            <label for="fileInput" class="file-label">
-                <span>📸</span>
-                <span>Carica la tua immagine</span>
-                <small>JPG, PNG, WebP • Trascina o clicca</small>
-            </label>
+      <h1>🎯 Remove BG Oggetti</h1>
+      <p class="subtitle">
+        Rimuovi lo sfondo da oggetti, prodotti, persone e qualsiasi immagine
+      </p>
+
+      <div class="upload-area">
+        <input type="file" id="fileInput" class="file-input" accept="image/*" />
+        <label for="fileInput" class="file-label">
+          <span>📸</span>
+          <span>Carica la tua immagine</span>
+          <small>JPG, PNG, WebP • Trascina o clicca</small>
+        </label>
+      </div>
+
+      <div class="loader" id="loader">
+        <div class="spinner"></div>
+        <p style="color: #333; font-size: 1.2em; font-weight: 600">
+          Analizzo e rimuovo lo sfondo...
+        </p>
+      </div>
+
+      <div class="status info" id="status">Carica un'immagine per iniziare</div>
+
+      <div class="mode-selector" id="modeSelector" style="display: none">
+        <button class="mode-btn active" data-mode="auto">🤖 Auto</button>
+        <button class="mode-btn" data-mode="oggetto">📦 Oggetto</button>
+        <button class="mode-btn" data-mode="persona">👤 Persona</button>
+        <button class="mode-btn" data-mode="logo">🎯 Logo</button>
+      </div>
+
+      <div class="slider-container" id="sliderContainer">
+        <div class="slider-label">
+          <span>Sensibilità rimozione</span>
+          <span id="sensitivityValue">50</span>
         </div>
-        
-        <div class="loader" id="loader">
-            <div class="spinner"></div>
-            <p style="color: #333; font-size: 1.2em; font-weight: 600;">Analizzo e rimuovo lo sfondo...</p>
+        <input
+          type="range"
+          id="sensitivitySlider"
+          min="10"
+          max="100"
+          value="50"
+        />
+      </div>
+
+      <div class="controls">
+        <button class="primary-btn" id="removeBtn" disabled>
+          ✨ Rimuovi sfondo
+        </button>
+      </div>
+
+      <div class="previews" id="previews" style="display: none">
+        <div class="preview-card">
+          <h3>🖼️ Originale</h3>
+          <div class="canvas-container">
+            <canvas id="originalCanvas"></canvas>
+          </div>
+          <div id="typeBadge" class="badge"></div>
         </div>
-        
-        <div class="status info" id="status">
-            Carica un'immagine per iniziare
+
+        <div class="preview-card">
+          <h3>✨ Senza sfondo</h3>
+          <div class="canvas-container">
+            <canvas id="resultCanvas"></canvas>
+          </div>
         </div>
-        
-        <div class="mode-selector" id="modeSelector" style="display: none;">
-            <button class="mode-btn active" data-mode="auto">🤖 Auto</button>
-            <button class="mode-btn" data-mode="oggetto">📦 Oggetto</button>
-            <button class="mode-btn" data-mode="persona">👤 Persona</button>
-            <button class="mode-btn" data-mode="logo">🎯 Logo</button>
+      </div>
+
+      <div class="download-section" id="downloadSection" style="display: none">
+        <a
+          href="#"
+          id="downloadBtn"
+          class="download-btn"
+          download="oggetto-senza-sfondo.png"
+        >
+          <span>💾</span>
+          <span>Scarica PNG trasparente</span>
+        </a>
+      </div>
+
+      <div class="features">
+        <div class="feature">
+          <span>🎯</span>
+          <h4>Riconoscimento oggetti</h4>
+          <p>Rileva automaticamente oggetti, prodotti e persone</p>
         </div>
-        
-        <div class="slider-container" id="sliderContainer">
-            <div class="slider-label">
-                <span>Sensibilità rimozione</span>
-                <span id="sensitivityValue">50</span>
-            </div>
-            <input type="range" id="sensitivitySlider" min="10" max="100" value="50">
+        <div class="feature">
+          <span>⚡</span>
+          <h4>Alta precisione</h4>
+          <p>Algoritmi avanzati per bordi precisi e dettagli</p>
         </div>
-        
-        <div class="controls">
-            <button class="primary-btn" id="removeBtn" disabled>✨ Rimuovi sfondo</button>
+        <div class="feature">
+          <span>🔒</span>
+          <h4>100% privato</h4>
+          <p>Niente server, tutto elaborato localmente</p>
         </div>
-        
-        <div class="previews" id="previews" style="display: none;">
-            <div class="preview-card">
-                <h3>🖼️ Originale</h3>
-                <div class="canvas-container">
-                    <canvas id="originalCanvas"></canvas>
-                </div>
-                <div id="typeBadge" class="badge"></div>
-            </div>
-            
-            <div class="preview-card">
-                <h3>✨ Senza sfondo</h3>
-                <div class="canvas-container">
-                    <canvas id="resultCanvas"></canvas>
-                </div>
-            </div>
-        </div>
-        
-        <div class="download-section" id="downloadSection" style="display: none;">
-            <a href="#" id="downloadBtn" class="download-btn" download="oggetto-senza-sfondo.png">
-                <span>💾</span>
-                <span>Scarica PNG trasparente</span>
-            </a>
-        </div>
-        
-        <div class="features">
-            <div class="feature">
-                <span>🎯</span>
-                <h4>Riconoscimento oggetti</h4>
-                <p>Rileva automaticamente oggetti, prodotti e persone</p>
-            </div>
-            <div class="feature">
-                <span>⚡</span>
-                <h4>Alta precisione</h4>
-                <p>Algoritmi avanzati per bordi precisi e dettagli</p>
-            </div>
-            <div class="feature">
-                <span>🔒</span>
-                <h4>100% privato</h4>
-                <p>Niente server, tutto elaborato localmente</p>
-            </div>
-        </div>
+      </div>
     </div>
 
     <script src="script.js"></script>
-</body>
+  </body>
 </html>
