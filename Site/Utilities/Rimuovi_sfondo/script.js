@@ -1,391 +1,357 @@
-// Elementi DOM
+// ── Imports ────────────────────────────────────────────────────────────────────
+import {
+  pipeline,
+  env,
+} from "https://cdn.jsdelivr.net/npm/@huggingface/transformers@3/dist/transformers.min.js";
+
+// Use remote models (browser caches after first download)
+env.allowLocalModels = false;
+env.useBrowserCache = true;
+
+// ── DOM refs ───────────────────────────────────────────────────────────────────
 const fileInput = document.getElementById("fileInput");
+const dropLabel = document.getElementById("dropLabel");
 const removeBtn = document.getElementById("removeBtn");
 const statusEl = document.getElementById("status");
 const loader = document.getElementById("loader");
-const modeSelector = document.getElementById("modeSelector");
+const loaderFill = document.getElementById("loaderFill");
+const loaderText = document.getElementById("loaderText");
 const previews = document.getElementById("previews");
 const originalCanvas = document.getElementById("originalCanvas");
 const resultCanvas = document.getElementById("resultCanvas");
+const emptyResult = document.getElementById("emptyResult");
 const downloadSection = document.getElementById("downloadSection");
 const downloadBtn = document.getElementById("downloadBtn");
-const typeBadge = document.getElementById("typeBadge");
-const sliderContainer = document.getElementById("sliderContainer");
-const sensitivitySlider = document.getElementById("sensitivitySlider");
-const sensitivityValue = document.getElementById("sensitivityValue");
+const modelBanner = document.getElementById("modelBanner");
+const modelReady = document.getElementById("modelReady");
+const modelStatus = document.getElementById("modelStatus");
+const uploadZone = document.getElementById("uploadZone");
 
-// Stato
-let currentImageData = null;
-let currentMode = "auto";
-let imageType = "auto";
-let originalImage = null;
+// ── State ──────────────────────────────────────────────────────────────────────
+let segmenter = null;
+let currentFile = null;
+let modelLoaded = false;
 
-// Sensibilità
-sensitivitySlider.addEventListener("input", () => {
-  sensitivityValue.textContent = sensitivitySlider.value;
-});
+// ── Helpers ────────────────────────────────────────────────────────────────────
+function setStatus(msg, type = "info") {
+  statusEl.textContent = msg;
+  statusEl.className = `status-bar ${type}`;
+}
 
-// Gestione bottoni modalità
-document.querySelectorAll(".mode-btn").forEach((btn) => {
-  btn.addEventListener("click", () => {
-    document
-      .querySelectorAll(".mode-btn")
-      .forEach((b) => b.classList.remove("active"));
-    btn.classList.add("active");
-    currentMode = btn.dataset.mode;
+function setLoader(active, text = "", progress = null) {
+  loader.classList.toggle("active", active);
+  if (text) loaderText.textContent = text;
+  if (progress === null) {
+    loaderFill.style.width = "0%";
+    loaderFill.classList.add("indeterminate");
+  } else {
+    loaderFill.classList.remove("indeterminate");
+    loaderFill.style.width = progress + "%";
+  }
+}
 
-    if (currentImageData) {
-      removeBackground();
+// ── Load AI model ──────────────────────────────────────────────────────────────
+async function loadModel() {
+  try {
+    modelStatus.textContent =
+      "Download in corso (prima volta ~50MB, poi in cache)…";
+    setStatus("Caricamento modello AI RMBG-1.4…", "warning");
+
+    // Try WebGPU first for speed, fall back to WASM
+    try {
+      segmenter = await pipeline("background-removal", "briaai/RMBG-1.4", {
+        device: "webgpu",
+      });
+    } catch {
+      modelStatus.textContent = "WebGPU non disponibile, uso WebAssembly…";
+      segmenter = await pipeline("background-removal", "briaai/RMBG-1.4", {
+        device: "wasm",
+      });
+    }
+
+    modelBanner.style.display = "none";
+    modelReady.style.display = "flex";
+    modelLoaded = true;
+
+    setStatus("Modello AI pronto. Carica un'immagine per iniziare.", "success");
+    uploadZone.style.opacity = "1";
+    uploadZone.style.pointerEvents = "auto";
+
+    if (currentFile) removeBtn.disabled = false;
+  } catch (err) {
+    console.error("Model load error:", err);
+    modelBanner.innerHTML =
+      '<span style="color:#ff8fa3">❌ Errore caricamento modello. Verifica la connessione e ricarica la pagina.</span>';
+    setStatus("Errore caricamento modello AI.", "error");
+  }
+}
+
+// ── Remove background ──────────────────────────────────────────────────────────
+async function removeBackground() {
+  if (!segmenter || !currentFile) return;
+
+  removeBtn.disabled = true;
+  emptyResult.style.display = "none";
+  setLoader(true, "Preparazione immagine…", 10);
+  setStatus("Elaborazione con rete neurale…", "warning");
+
+  try {
+    const imgURL = URL.createObjectURL(currentFile);
+
+    setLoader(true, "Inferenza AI in corso (5–20s)…", 30);
+    const output = await segmenter(imgURL);
+    URL.revokeObjectURL(imgURL);
+
+    setLoader(true, "Applicazione maschera…", 80);
+    await compositeResult(currentFile, output);
+
+    setLoader(true, "Finalizzazione…", 100);
+    await new Promise((r) => setTimeout(r, 150));
+    setLoader(false);
+
+    resultCanvas.toBlob((blob) => {
+      downloadBtn.href = URL.createObjectURL(blob);
+      downloadSection.classList.add("visible");
+    }, "image/png");
+
+    setStatus("✦ Sfondo rimosso con successo!", "success");
+  } catch (err) {
+    console.error("Remove BG error:", err);
+    setStatus("Errore durante l'elaborazione AI. Riprova.", "error");
+    setLoader(false);
+    emptyResult.style.display = "block";
+  } finally {
+    removeBtn.disabled = false;
+  }
+}
+
+// ── Composite: original image × AI mask → result canvas ───────────────────────
+// background-removal pipeline in Transformers.js v3 returns a RawImage (RGBA)
+// where the alpha channel already encodes the mask. Use toCanvas()/toBlob() directly.
+async function compositeResult(imageFile, output) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      // Unwrap array if needed
+      const raw = Array.isArray(output) ? output[0] : output;
+
+      // Fast path: RawImage has toCanvas()
+      if (raw && typeof raw.toCanvas === "function") {
+        const c = raw.toCanvas();
+        resultCanvas.width = c.width;
+        resultCanvas.height = c.height;
+        resultCanvas.getContext("2d").drawImage(c, 0, 0);
+        return resolve();
+      }
+
+      // Second path: RawImage has toBlob()
+      if (raw && typeof raw.toBlob === "function") {
+        const blob = await raw.toBlob();
+        const url = URL.createObjectURL(blob);
+        const img = new Image();
+        img.onload = () => {
+          resultCanvas.width = img.naturalWidth;
+          resultCanvas.height = img.naturalHeight;
+          resultCanvas.getContext("2d").drawImage(img, 0, 0);
+          URL.revokeObjectURL(url);
+          resolve();
+        };
+        img.onerror = reject;
+        img.src = url;
+        return;
+      }
+
+      // Fallback: manual pixel composite using raw pixel data
+      const origImg = new Image();
+      origImg.onload = async () => {
+        const w = origImg.naturalWidth;
+        const h = origImg.naturalHeight;
+        const origC = document.createElement("canvas");
+        origC.width = w;
+        origC.height = h;
+        const origCtx = origC.getContext("2d");
+        origCtx.drawImage(origImg, 0, 0, w, h);
+        const origPx = origCtx.getImageData(0, 0, w, h);
+
+        const maskPx = await extractMaskPixels(output, w, h);
+        const composed = origCtx.createImageData(w, h);
+        for (let i = 0; i < origPx.data.length; i += 4) {
+          composed.data[i] = origPx.data[i];
+          composed.data[i + 1] = origPx.data[i + 1];
+          composed.data[i + 2] = origPx.data[i + 2];
+          composed.data[i + 3] = maskPx[i];
+        }
+        resultCanvas.width = w;
+        resultCanvas.height = h;
+        resultCanvas.getContext("2d").putImageData(composed, 0, 0);
+        resolve();
+      };
+      origImg.onerror = reject;
+      origImg.src = URL.createObjectURL(imageFile);
+    } catch (e) {
+      reject(e);
     }
   });
-});
-
-function setStatus(message, type = "info") {
-  statusEl.textContent = message;
-  statusEl.className = `status ${type}`;
 }
 
-// Analisi avanzata del tipo di immagine
-function analyzeImageTypeAdvanced(imageData) {
-  const data = imageData.data;
-  const width = imageData.width;
-  const height = imageData.height;
+// ── Extract mask pixels from any Transformers.js v3 output format ──────────────
+// Returns Uint8ClampedArray where every 4th byte (red channel) is the mask value (0–255)
+async function extractMaskPixels(output, targetW, targetH) {
+  // --- Format A: pipeline returns array of RawImage objects directly ---
+  // briaai/RMBG-1.4 with subtask:'background-removal' returns the masked RGBA image
+  // as output[0] (a RawImage with channels=4, alpha=mask)
+  if (Array.isArray(output)) {
+    const first = output[0];
 
-  let edgePixels = 0;
-  let bgPixels = 0;
-  let objectPixels = 0;
-  let varianceSum = 0;
+    if (first && first.data && first.width && first.height) {
+      // It's a RawImage. Check channels.
+      return rawImageToAlpha(first, targetW, targetH);
+    }
 
-  // Analisi dettagliata dei bordi
-  for (let y = 0; y < height; y++) {
-    for (let x = 0; x < width; x++) {
-      if (x < 10 || y < 10 || x > width - 11 || y > height - 11) {
-        const i = (y * width + x) * 4;
-        const r = data[i];
-        const g = data[i + 1];
-        const b = data[i + 2];
+    // --- Format B: array with {mask: RawImage, label, score} objects ---
+    if (first && first.mask && first.mask.data) {
+      return rawImageToAlpha(first.mask, targetW, targetH);
+    }
 
-        edgePixels++;
-
-        const variance = Math.abs(r - g) + Math.abs(g - b) + Math.abs(b - r);
-        varianceSum += variance;
-
-        if (variance < 30) {
-          bgPixels++;
-        }
-      } else {
-        const i = (y * width + x) * 4;
-        const r = data[i];
-        const g = data[i + 1];
-        const b = data[i + 2];
-
-        const variance = Math.abs(r - g) + Math.abs(g - b) + Math.abs(b - r);
-        if (variance > 50) {
-          objectPixels++;
-        }
-      }
+    // --- Format C: output is array with an object that has a .output RawImage ---
+    if (first && first.output && first.output.data) {
+      return rawImageToAlpha(first.output, targetW, targetH);
     }
   }
 
-  const bgRatio = bgPixels / edgePixels;
-  const objectRatio = objectPixels / (width * height - edgePixels);
-  const avgVariance = varianceSum / edgePixels;
-
-  // Loghi: sfondo uniforme ai bordi
-  if (bgRatio > 0.7 && avgVariance < 40) {
-    return "logo";
+  // --- Format D: output is a single RawImage (not array) ---
+  if (output && output.data && output.width) {
+    return rawImageToAlpha(output, targetW, targetH);
   }
 
-  // Oggetti: molta varianza interna e bordi variabili
-  if (objectRatio > 0.4 && avgVariance > 30) {
-    return "oggetto";
-  }
-
-  // Persone: pattern specifici (tonalità pelle, contrasto)
-  if (objectRatio > 0.3 && avgVariance > 50) {
-    return "persona";
-  }
-
-  return "oggetto"; // Default per foto generiche
+  throw new Error(
+    "Unknown output format from segmentation pipeline: " +
+      JSON.stringify(output),
+  );
 }
 
-// Algoritmo per oggetti (basato su gradienti e bordi)
-function removeObjectBackground(imageData) {
-  const data = imageData.data;
-  const width = imageData.width;
-  const height = imageData.height;
-  const result = new ImageData(new Uint8ClampedArray(data), width, height);
-  const resultData = result.data;
+// Convert a RawImage (any channel count) to a scaled greyscale Uint8ClampedArray
+function rawImageToAlpha(raw, targetW, targetH) {
+  const { width: mW, height: mH, channels, data } = raw;
+  const isFloat = !(
+    data instanceof Uint8ClampedArray || data instanceof Uint8Array
+  );
 
-  const sensitivity = parseInt(sensitivitySlider.value) / 100;
-  const threshold = 30 + sensitivity * 50;
+  // Build greyscale canvas at native mask resolution
+  const tmpC = document.createElement("canvas");
+  tmpC.width = mW;
+  tmpC.height = mH;
+  const tmpCtx = tmpC.getContext("2d");
+  const imgData = tmpCtx.createImageData(mW, mH);
 
-  // Crea mappa dei gradienti per trovare i bordi
-  const gradientMap = new Uint8Array(width * height);
-
-  for (let y = 1; y < height - 1; y++) {
-    for (let x = 1; x < width - 1; x++) {
-      const i = (y * width + x) * 4;
-
-      const gx =
-        Math.abs(data[i] - data[(y * width + (x + 1)) * 4]) +
-        Math.abs(data[i + 1] - data[(y * width + (x + 1)) * 4 + 1]) +
-        Math.abs(data[i + 2] - data[(y * width + (x + 1)) * 4 + 2]);
-
-      const gy =
-        Math.abs(data[i] - data[((y + 1) * width + x) * 4]) +
-        Math.abs(data[i + 1] - data[((y + 1) * width + x) * 4 + 1]) +
-        Math.abs(data[i + 2] - data[((y + 1) * width + x) * 4 + 2]);
-
-      gradientMap[y * width + x] = Math.min(255, (gx + gy) / 2);
-    }
-  }
-
-  // Trova colore sfondo dai bordi
-  let bgR = 0,
-    bgG = 0,
-    bgB = 0,
-    bgCount = 0;
-
-  for (let y = 0; y < height; y++) {
-    for (let x = 0; x < width; x++) {
-      if (x < 10 || y < 10 || x > width - 11 || y > height - 11) {
-        const i = (y * width + x) * 4;
-        const grad = gradientMap[y * width + x];
-
-        if (grad < 20) {
-          // Se il gradiente è basso, è probabile sfondo
-          bgR += data[i];
-          bgG += data[i + 1];
-          bgB += data[i + 2];
-          bgCount++;
-        }
-      }
-    }
-  }
-
-  if (bgCount > 0) {
-    bgR /= bgCount;
-    bgG /= bgCount;
-    bgB /= bgCount;
-  } else {
-    bgR = data[0];
-    bgG = data[1];
-    bgB = data[2];
-  }
-
-  // Rimuovi sfondo basato su colore E gradienti
-  for (let i = 0; i < data.length; i += 4) {
-    const r = data[i];
-    const g = data[i + 1];
-    const b = data[i + 2];
-
-    const colorDiff = Math.abs(r - bgR) + Math.abs(g - bgG) + Math.abs(b - bgB);
-
-    const x = (i / 4) % width;
-    const y = Math.floor(i / 4 / width);
-    const grad = gradientMap[y * width + x];
-
-    // Se colore simile allo sfondo E gradiente basso, rimuovi
-    if (colorDiff < threshold && grad < 30) {
-      resultData[i + 3] = 0;
+  for (let i = 0; i < mW * mH; i++) {
+    let v;
+    if (channels === 1) {
+      v = data[i];
+    } else if (channels === 4) {
+      // Use alpha channel
+      v = data[i * 4 + 3];
     } else {
-      resultData[i] = r;
-      resultData[i + 1] = g;
-      resultData[i + 2] = b;
-      resultData[i + 3] = 255;
+      // RGB — average
+      v =
+        (data[i * channels] + data[i * channels + 1] + data[i * channels + 2]) /
+        3;
     }
-  }
+    // Normalise float [0,1] → [0,255]
+    if (isFloat) v = Math.round(v * 255);
+    v = Math.max(0, Math.min(255, Math.round(v)));
 
-  return result;
+    imgData.data[i * 4] = v;
+    imgData.data[i * 4 + 1] = v;
+    imgData.data[i * 4 + 2] = v;
+    imgData.data[i * 4 + 3] = 255;
+  }
+  tmpCtx.putImageData(imgData, 0, 0);
+
+  // Scale to target resolution using drawImage (bilinear)
+  const scaledC = document.createElement("canvas");
+  scaledC.width = targetW;
+  scaledC.height = targetH;
+  const scaledCtx = scaledC.getContext("2d");
+  scaledCtx.drawImage(tmpC, 0, 0, targetW, targetH);
+
+  return scaledCtx.getImageData(0, 0, targetW, targetH).data;
 }
 
-// Algoritmo per persone (più sensibile ai dettagli)
-function removePersonBackground(imageData) {
-  return removeObjectBackground(imageData); // Usa lo stesso ma con sensibilità diversa
-}
-
-// Algoritmo per loghi
-function removeLogoBackground(imageData) {
-  const data = imageData.data;
-  const width = imageData.width;
-  const height = imageData.height;
-  const result = new ImageData(new Uint8ClampedArray(data), width, height);
-  const resultData = result.data;
-
-  const colorCounts = new Map();
-
-  for (let y = 0; y < height; y++) {
-    for (let x = 0; x < width; x++) {
-      if (x < 5 || y < 5 || x > width - 6 || y > height - 6) {
-        const i = (y * width + x) * 4;
-        const r = Math.round(data[i] / 20) * 20;
-        const g = Math.round(data[i + 1] / 20) * 20;
-        const b = Math.round(data[i + 2] / 20) * 20;
-        const key = `${r},${g},${b}`;
-        colorCounts.set(key, (colorCounts.get(key) || 0) + 1);
-      }
-    }
-  }
-
-  let maxCount = 0;
-  let bgColor = [255, 255, 255];
-
-  for (const [color, count] of colorCounts.entries()) {
-    if (count > maxCount) {
-      maxCount = count;
-      bgColor = color.split(",").map(Number);
-    }
-  }
-
-  const threshold = 60;
-
-  for (let i = 0; i < data.length; i += 4) {
-    const r = data[i];
-    const g = data[i + 1];
-    const b = data[i + 2];
-
-    const diff =
-      Math.abs(r - bgColor[0]) +
-      Math.abs(g - bgColor[1]) +
-      Math.abs(b - bgColor[2]);
-
-    if (diff < threshold) {
-      resultData[i + 3] = 0;
-    } else {
-      resultData[i] = r;
-      resultData[i + 1] = g;
-      resultData[i + 2] = b;
-      resultData[i + 3] = 255;
-    }
-  }
-
-  return result;
-}
-
-function removeBackground() {
-  if (!currentImageData) return;
-
-  loader.classList.add("active");
-  removeBtn.disabled = true;
-  setStatus("Rimuovo lo sfondo...", "warning");
-
-  setTimeout(() => {
-    try {
-      let resultImageData;
-
-      const detectedType = analyzeImageTypeAdvanced(currentImageData);
-
-      if (currentMode === "auto") {
-        if (detectedType === "logo") {
-          resultImageData = removeLogoBackground(currentImageData);
-        } else {
-          resultImageData = removeObjectBackground(currentImageData);
-        }
-      } else if (currentMode === "logo") {
-        resultImageData = removeLogoBackground(currentImageData);
-      } else {
-        resultImageData = removeObjectBackground(currentImageData);
-      }
-
-      resultCanvas.width = resultImageData.width;
-      resultCanvas.height = resultImageData.height;
-      const ctx = resultCanvas.getContext("2d");
-      ctx.putImageData(resultImageData, 0, 0);
-
-      resultCanvas.toBlob((blob) => {
-        downloadBtn.href = URL.createObjectURL(blob);
-        downloadSection.style.display = "block";
-        setStatus("✅ Sfondo rimosso con successo!", "success");
-      }, "image/png");
-    } catch (error) {
-      setStatus("❌ Errore durante la rimozione", "error");
-      console.error(error);
-    } finally {
-      loader.classList.remove("active");
-      removeBtn.disabled = false;
-    }
-  }, 100);
-}
-
-fileInput.addEventListener("change", (e) => {
-  const file = e.target.files[0];
-  if (!file) return;
-
-  setStatus("Caricamento in corso...", "warning");
-  loader.classList.add("active");
+// ── Load preview after file selection ─────────────────────────────────────────
+function loadPreview(file) {
+  currentFile = file;
 
   const img = new Image();
   img.onload = () => {
-    try {
-      const maxSize = 800;
-      let width = img.width;
-      let height = img.height;
-
-      if (width > height) {
-        if (width > maxSize) {
-          height = Math.round((height * maxSize) / width);
-          width = maxSize;
-        }
-      } else {
-        if (height > maxSize) {
-          width = Math.round((width * maxSize) / height);
-          height = maxSize;
-        }
+    const maxSize = 900;
+    let w = img.width,
+      h = img.height;
+    if (w > h) {
+      if (w > maxSize) {
+        h = Math.round((h * maxSize) / w);
+        w = maxSize;
       }
+    } else {
+      if (h > maxSize) {
+        w = Math.round((w * maxSize) / h);
+        h = maxSize;
+      }
+    }
 
-      originalCanvas.width = width;
-      originalCanvas.height = height;
-      const ctx = originalCanvas.getContext("2d");
-      ctx.drawImage(img, 0, 0, width, height);
+    originalCanvas.width = w;
+    originalCanvas.height = h;
+    originalCanvas.getContext("2d").drawImage(img, 0, 0, w, h);
 
-      currentImageData = ctx.getImageData(0, 0, width, height);
+    resultCanvas.width = 0;
+    resultCanvas.height = 0;
+    emptyResult.style.display = "block";
+    downloadSection.classList.remove("visible");
+    previews.classList.add("visible");
 
-      imageType = analyzeImageTypeAdvanced(currentImageData);
-
-      const typeLabels = {
-        oggetto: "📦 Oggetto rilevato",
-        persona: "👤 Persona rilevata",
-        logo: "🎯 Logo rilevato",
-        foto: "📸 Foto",
-      };
-
-      typeBadge.textContent = typeLabels[imageType] || "✨ Immagine pronta";
-      typeBadge.className = `badge badge-${imageType}`;
-
+    if (modelLoaded) {
       removeBtn.disabled = false;
-      modeSelector.style.display = "flex";
-      sliderContainer.classList.add("active");
-      previews.style.display = "grid";
-      downloadSection.style.display = "none";
-
-      resultCanvas.width = 0;
-      resultCanvas.height = 0;
-
       setStatus(
-        '✅ Immagine caricata! Regola la sensibilità e clicca "Rimuovi sfondo"',
+        'Immagine caricata. Premi "Rimuovi sfondo" per elaborare.',
         "success",
       );
-    } catch (error) {
-      setStatus("❌ Errore nel caricamento", "error");
-      console.error(error);
-    } finally {
-      loader.classList.remove("active");
+    } else {
+      setStatus(
+        "Immagine caricata. Attendi il caricamento del modello AI…",
+        "warning",
+      );
     }
   };
-
-  img.onerror = () => {
-    setStatus("❌ Errore nel caricamento del file", "error");
-    loader.classList.remove("active");
-  };
-
   img.src = URL.createObjectURL(file);
+}
+
+// ── Drag & Drop ────────────────────────────────────────────────────────────────
+dropLabel.addEventListener("dragover", (e) => {
+  e.preventDefault();
+  dropLabel.classList.add("drag-over");
+});
+dropLabel.addEventListener("dragleave", () =>
+  dropLabel.classList.remove("drag-over"),
+);
+dropLabel.addEventListener("drop", (e) => {
+  e.preventDefault();
+  dropLabel.classList.remove("drag-over");
+  const file = e.dataTransfer.files[0];
+  if (file && file.type.startsWith("image/")) loadPreview(file);
+});
+
+// ── Event listeners ────────────────────────────────────────────────────────────
+fileInput.addEventListener("change", (e) => {
+  const file = e.target.files[0];
+  if (file) loadPreview(file);
 });
 
 removeBtn.addEventListener("click", removeBackground);
 
 downloadBtn.addEventListener("click", () => {
-  setTimeout(() => {
-    URL.revokeObjectURL(downloadBtn.href);
-  }, 1000);
+  setTimeout(() => URL.revokeObjectURL(downloadBtn.href), 1200);
 });
+
+// ── Init ───────────────────────────────────────────────────────────────────────
+uploadZone.style.opacity = "0.5";
+uploadZone.style.pointerEvents = "none";
+loadModel();

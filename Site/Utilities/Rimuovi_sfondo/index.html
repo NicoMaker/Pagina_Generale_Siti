@@ -3,116 +3,151 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Remove BG Oggetti - Rimuovi sfondo da qualsiasi immagine</title>
-    <link rel="stylesheet" href="styles.css" />
-    7
-
+    <title>ClearCut AI — Rimuovi lo sfondo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link
-      rel="icon"
-      href="https://cdn3.pixelcut.app/background_remover_after_1_f08afa1811.jpg"
-      type="image/png"
+      href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap"
+      rel="stylesheet"
     />
+    <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <div class="container">
-      <h1>🎯 Remove BG Oggetti</h1>
-      <p class="subtitle">
-        Rimuovi lo sfondo da oggetti, prodotti, persone e qualsiasi immagine
-      </p>
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
 
-      <div class="upload-area">
-        <input type="file" id="fileInput" class="file-input" accept="image/*" />
-        <label for="fileInput" class="file-label">
-          <span>📸</span>
-          <span>Carica la tua immagine</span>
-          <small>JPG, PNG, WebP • Trascina o clicca</small>
+    <div class="wrap">
+      <header>
+        <div class="logo-pill"><span>✦</span> ClearCut AI</div>
+        <h1>Rimuovi lo sfondo<br /><em>con l'AI</em></h1>
+        <p class="sub">
+          Modello AI reale nel browser — zero server, zero API, risultati
+          professionali.
+        </p>
+      </header>
+
+      <!-- Model loading state -->
+      <div class="model-banner" id="modelBanner">
+        <div class="model-spinner"></div>
+        <div class="model-text">
+          <strong>Caricamento modello AI…</strong>
+          <span id="modelStatus">Download in corso (prima volta ~50MB)</span>
+        </div>
+      </div>
+
+      <div class="model-ready" id="modelReady" style="display: none">
+        <span>✦</span> Modello AI pronto
+      </div>
+
+      <!-- Upload -->
+      <div class="upload-zone" id="uploadZone">
+        <input type="file" id="fileInput" accept="image/*" />
+        <label class="drop-label" for="fileInput" id="dropLabel">
+          <div class="drop-icon">📎</div>
+          <strong>Trascina un'immagine qui</strong>
+          <small>oppure clicca per scegliere — JPG, PNG, WebP</small>
         </label>
       </div>
 
+      <!-- Status -->
+      <div class="status-bar info" id="status">In attesa del modello AI…</div>
+
+      <!-- Loader -->
       <div class="loader" id="loader">
-        <div class="spinner"></div>
-        <p style="color: #333; font-size: 1.2em; font-weight: 600">
-          Analizzo e rimuovo lo sfondo...
-        </p>
-      </div>
-
-      <div class="status info" id="status">Carica un'immagine per iniziare</div>
-
-      <div class="mode-selector" id="modeSelector" style="display: none">
-        <button class="mode-btn active" data-mode="auto">🤖 Auto</button>
-        <button class="mode-btn" data-mode="oggetto">📦 Oggetto</button>
-        <button class="mode-btn" data-mode="persona">👤 Persona</button>
-        <button class="mode-btn" data-mode="logo">🎯 Logo</button>
-      </div>
-
-      <div class="slider-container" id="sliderContainer">
-        <div class="slider-label">
-          <span>Sensibilità rimozione</span>
-          <span id="sensitivityValue">50</span>
+        <div class="loader-track">
+          <div class="loader-fill" id="loaderFill"></div>
         </div>
-        <input
-          type="range"
-          id="sensitivitySlider"
-          min="10"
-          max="100"
-          value="50"
-        />
+        <p id="loaderText">Elaborazione in corso…</p>
       </div>
 
-      <div class="controls">
-        <button class="primary-btn" id="removeBtn" disabled>
-          ✨ Rimuovi sfondo
+      <!-- Actions -->
+      <div class="actions">
+        <button class="btn-primary" id="removeBtn" disabled>
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+          >
+            <path d="M12 2L2 7l10 5 10-5-10-5z" />
+            <path d="M2 17l10 5 10-5" />
+            <path d="M2 12l10 5 10-5" />
+          </svg>
+          Rimuovi sfondo
         </button>
       </div>
 
-      <div class="previews" id="previews" style="display: none">
+      <!-- Previews -->
+      <div class="previews" id="previews">
         <div class="preview-card">
-          <h3>🖼️ Originale</h3>
-          <div class="canvas-container">
-            <canvas id="originalCanvas"></canvas>
-          </div>
-          <div id="typeBadge" class="badge"></div>
+          <h3>Originale</h3>
+          <div class="canvas-wrap"><canvas id="originalCanvas"></canvas></div>
         </div>
-
-        <div class="preview-card">
-          <h3>✨ Senza sfondo</h3>
-          <div class="canvas-container">
+        <div class="preview-card result-card">
+          <h3>Risultato AI</h3>
+          <div class="canvas-wrap" id="resultWrap">
             <canvas id="resultCanvas"></canvas>
+            <div class="empty-result" id="emptyResult">
+              Premi il pulsante per elaborare
+            </div>
           </div>
         </div>
       </div>
 
-      <div class="download-section" id="downloadSection" style="display: none">
+      <!-- Download -->
+      <div class="download-wrap" id="downloadSection">
         <a
           href="#"
           id="downloadBtn"
-          class="download-btn"
-          download="oggetto-senza-sfondo.png"
+          class="btn-download"
+          download="clearcut-output.png"
         >
-          <span>💾</span>
-          <span>Scarica PNG trasparente</span>
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <polyline points="7 10 12 15 17 10" />
+            <line x1="12" y1="15" x2="12" y2="3" />
+          </svg>
+          Scarica PNG trasparente
         </a>
       </div>
 
+      <!-- Features -->
       <div class="features">
-        <div class="feature">
-          <span>🎯</span>
-          <h4>Riconoscimento oggetti</h4>
-          <p>Rileva automaticamente oggetti, prodotti e persone</p>
+        <div class="feat">
+          <span class="feat-icon">🧠</span>
+          <h4>Modello RMBG-1.4</h4>
+          <p>
+            Rete neurale BRIA AI specializzata nella segmentazione di oggetti,
+            animali e persone.
+          </p>
         </div>
-        <div class="feature">
-          <span>⚡</span>
-          <h4>Alta precisione</h4>
-          <p>Algoritmi avanzati per bordi precisi e dettagli</p>
+        <div class="feat">
+          <span class="feat-icon">⚡</span>
+          <h4>WebAssembly / WebGPU</h4>
+          <p>
+            Inferenza accelerata nel browser tramite WASM o GPU, nessun server
+            coinvolto.
+          </p>
         </div>
-        <div class="feature">
-          <span>🔒</span>
+        <div class="feat">
+          <span class="feat-icon">🔒</span>
           <h4>100% privato</h4>
-          <p>Niente server, tutto elaborato localmente</p>
+          <p>
+            Le tue immagini non lasciano mai il tuo dispositivo. Il modello si
+            scarica una sola volta.
+          </p>
         </div>
       </div>
     </div>
 
-    <script src="script.js"></script>
+    <script type="module" src="script.js"></script>
   </body>
 </html>
