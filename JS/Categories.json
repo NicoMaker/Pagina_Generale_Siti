@@ -13,6 +13,15 @@
         }
       ]
     },
+    "Olimpiadi": {
+      "icon": "fa-medal",
+      "projects": [
+        {
+          "name": "MedaglMedagliere Milano Cortina 2026",
+          "link": "https://nicomaker.github.io/MilanoCortina2026_Medals/"
+        }
+      ]
+    },
     "Animatiozioni": {
       "icon": "fa-film",
       "projects": [

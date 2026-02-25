@@ -231,6 +231,7 @@ Il portfolio include numerose categorie di progetti, ciascuna con la propria ico
 | Matematica           | 🧮    | Strumenti di calcolo e applicazioni matematiche          |
 | Mappe                | 🗺️    | Applicazioni per la visualizzazione di mappe e dati      |
 | Natale               | 🎄    | Progetti a tema natalizio                                |
+| Olimpiadi            | 🏆    | Applicazioni per l'olimpiadi                             |
 | Opzioni con le Frasi | 💬    | Strumenti per la manipolazione del testo                 |
 | Pasqua               | 🐰    | Progetti a tema pasquale                                 |
 | Password             | 🔑    | Strumenti per la sicurezza delle password                |
