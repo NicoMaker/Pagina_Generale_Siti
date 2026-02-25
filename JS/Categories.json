@@ -555,6 +555,10 @@
         {
           "name": "Barcode Generator",
           "link": "Site/Utilities/Barcode_Generator/index.html"
+        },
+        {
+          "name": "Rimuovi Sfondo",
+          "link": "Site/Utilities/Rimuovi_sfondo/index.html"
         }
       ]
     }
