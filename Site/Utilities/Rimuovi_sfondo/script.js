@@ -50,23 +50,63 @@ function setLoader(active, text = "", progress = null) {
   }
 }
 
+// ── Detect mobile / low-memory device ─────────────────────────────────────────
+function isMobile() {
+  return /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+}
+
+function hasEnoughMemory() {
+  // deviceMemory is in GB; undefined means we can't tell → assume OK
+  if (navigator.deviceMemory !== undefined) {
+    return navigator.deviceMemory >= 2;
+  }
+  return true;
+}
+
 // ── Load AI model ──────────────────────────────────────────────────────────────
 async function loadModel() {
   try {
-    modelStatus.textContent =
-      "Download in corso (prima volta ~50MB, poi in cache)…";
+    const mobile = isMobile();
+    const lowMem = !hasEnoughMemory();
+
+    if (mobile) {
+      modelStatus.textContent =
+        "Dispositivo mobile rilevato — uso WebAssembly (potrebbero volerci 1-2 min la prima volta)…";
+    } else {
+      modelStatus.textContent =
+        "Download in corso (prima volta ~50MB, poi in cache)…";
+    }
+
     setStatus("Caricamento modello AI RMBG-1.4…", "warning");
 
-    // Try WebGPU first for speed, fall back to WASM
-    try {
-      segmenter = await pipeline("background-removal", "briaai/RMBG-1.4", {
-        device: "webgpu",
-      });
-    } catch {
-      modelStatus.textContent = "WebGPU non disponibile, uso WebAssembly…";
-      segmenter = await pipeline("background-removal", "briaai/RMBG-1.4", {
-        device: "wasm",
-      });
+    // On mobile skip WebGPU entirely (poor support, crashes on iOS/Android)
+    if (!mobile) {
+      try {
+        modelStatus.textContent = "Tentativo WebGPU…";
+        segmenter = await pipeline("background-removal", "briaai/RMBG-1.4", {
+          device: "webgpu",
+        });
+      } catch (gpuErr) {
+        console.warn("WebGPU failed, falling back to WASM:", gpuErr);
+        modelStatus.textContent = "WebGPU non disponibile, uso WebAssembly…";
+        segmenter = await pipeline("background-removal", "briaai/RMBG-1.4", {
+          device: "wasm",
+        });
+      }
+    } else {
+      // Mobile: WASM only
+      modelStatus.textContent =
+        "Caricamento WebAssembly… (attendere, ~50MB)";
+      try {
+        segmenter = await pipeline("background-removal", "briaai/RMBG-1.4", {
+          device: "wasm",
+        });
+      } catch (wasmErr) {
+        console.error("WASM failed on mobile:", wasmErr);
+        // Try with no device hint as last resort
+        modelStatus.textContent = "Tentativo modalità compatibilità…";
+        segmenter = await pipeline("background-removal", "briaai/RMBG-1.4");
+      }
     }
 
     modelBanner.style.display = "none";
@@ -80,9 +120,39 @@ async function loadModel() {
     if (currentFile) removeBtn.disabled = false;
   } catch (err) {
     console.error("Model load error:", err);
-    modelBanner.innerHTML =
-      '<span style="color:#ff8fa3">❌ Errore caricamento modello. Verifica la connessione e ricarica la pagina.</span>';
+
+    // Show a more helpful error message
+    let hint = "Verifica la connessione e ricarica la pagina.";
+    if (isMobile()) {
+      hint =
+        "Su mobile prova con Chrome o Safari aggiornati. Se il problema persiste, usa un PC.";
+    }
+
+    modelBanner.innerHTML = `<span style="color:#ff8fa3">❌ Errore caricamento modello. ${hint}<br><small style="opacity:.6">${err.message || err}</small></span>`;
     setStatus("Errore caricamento modello AI.", "error");
+
+    // Allow retry
+    uploadZone.style.opacity = "1";
+    uploadZone.style.pointerEvents = "auto";
+    const retryBtn = document.createElement("button");
+    retryBtn.textContent = "🔄 Riprova";
+    retryBtn.className = "btn-primary";
+    retryBtn.style.marginTop = "16px";
+    retryBtn.onclick = () => {
+      modelBanner.innerHTML = `
+        <div class="model-spinner"></div>
+        <div class="model-text">
+          <strong>Caricamento modello AI…</strong>
+          <span id="modelStatus">Nuovo tentativo…</span>
+        </div>`;
+      modelBanner.style.display = "flex";
+      // Re-grab modelStatus ref after innerHTML change
+      const ms = document.getElementById("modelStatus");
+      if (ms) ms.textContent = "Nuovo tentativo…";
+      retryBtn.remove();
+      loadModel();
+    };
+    modelBanner.after(retryBtn);
   }
 }
 
@@ -98,7 +168,7 @@ async function removeBackground() {
   try {
     const imgURL = URL.createObjectURL(currentFile);
 
-    setLoader(true, "Inferenza AI in corso (5–20s)…", 30);
+    setLoader(true, isMobile() ? "Inferenza AI in corso (30–90s su mobile)…" : "Inferenza AI in corso (5–20s)…", 30);
     const output = await segmenter(imgURL);
     URL.revokeObjectURL(imgURL);
 
@@ -283,7 +353,8 @@ function loadPreview(file) {
 
   const img = new Image();
   img.onload = () => {
-    const maxSize = 900;
+    // Use smaller max on mobile to reduce RAM usage and processing time
+    const maxSize = isMobile() ? 600 : 900;
     let w = img.width,
       h = img.height;
     if (w > h) {
@@ -354,4 +425,11 @@ downloadBtn.addEventListener("click", () => {
 // ── Init ───────────────────────────────────────────────────────────────────────
 uploadZone.style.opacity = "0.5";
 uploadZone.style.pointerEvents = "none";
+
+// Show mobile-specific notice
+const mobileNotice = document.getElementById("mobileNotice");
+if (isMobile() && mobileNotice) {
+  mobileNotice.style.display = "flex";
+}
+
 loadModel();
