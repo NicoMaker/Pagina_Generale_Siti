@@ -290,7 +290,19 @@ function newTurn() {
 function updateTopBar() {
   const p = players[curP];
   document.getElementById("tb-emo").textContent = p.emoji;
-  document.getElementById("tb-name").textContent = p.name;
+  
+  // Controlla se il giocatore ha completato tutte le 13 categorie
+  const totalCats = ALL.length;
+  const isWinner = Object.keys(p.scores).length === totalCats;
+  
+  // Mostra il nome con badge vincitore se necessario
+  const nameEl = document.getElementById("tb-name");
+  if (isWinner) {
+    nameEl.innerHTML = p.name + ' <span style="color:var(--green);font-weight:700;margin-left:8px;">🏆 VINCITORE!</span>';
+  } else {
+    nameEl.textContent = p.name;
+  }
+  
   players.forEach((_, i) => {
     document.getElementById("pc" + i).classList.toggle("act", i === curP);
     document.getElementById("cn" + i).className =
@@ -323,6 +335,10 @@ function updateDiceUI() {
 }
 
 function updateBtns() {
+  const totalCats = ALL.length;
+  const completed = Object.keys(players[curP].scores).length;
+  const remaining = totalCats - completed;
+  
   const rb = document.getElementById("rbtn");
   const rbt = document.getElementById("rbtn-txt");
   const ab = document.getElementById("abtn");
@@ -333,13 +349,29 @@ function updateBtns() {
 
   if (!hasRolled) {
     rbt.textContent = "LANCIA I DADI";
-    hint.innerHTML = "Clicca <span>Lancia</span> per iniziare";
+    if (remaining <= 1) {
+      hint.innerHTML = "🏆 <span>" + players[curP].name + " può vincere!</span>";
+    } else {
+      hint.innerHTML = "Clicca <span>Lancia</span> per iniziare";
+    }
   } else if (rollsLeft === 0) {
     rbt.textContent = "SCEGLI CATEGORIA";
-    hint.innerHTML = "<span>Scegli</span> dove assegnare il punteggio";
+    if (remaining <= 1) {
+      hint.innerHTML = "🏆 <span>Ultima categoria! Scegli e vinci!</span>";
+    } else if (remaining <= 3) {
+      hint.innerHTML = "<span>Quasi finito!</span> " + remaining + " categorie rimaste";
+    } else {
+      hint.innerHTML = "<span>Scegli</span> dove assegnare il punteggio";
+    }
   } else {
     rbt.textContent = "RILANCIA (" + rollsLeft + ")";
-    hint.innerHTML = "Tocca i dadi per tenerli, poi <span>Rilancia</span>";
+    if (remaining <= 1) {
+      hint.innerHTML = "🏆 <span>Tocca e rilancia!</span> Ultima chance per vincere!";
+    } else if (remaining <= 3) {
+      hint.innerHTML = "Tocca i dadi, <span>Rilancia</span> (" + remaining + " categorie rimaste)";
+    } else {
+      hint.innerHTML = "Tocca i dadi per tenerli, poi <span>Rilancia</span>";
+    }
   }
 
   ab.disabled = autoRunning;
@@ -592,21 +624,19 @@ function assign(catId, val) {
   p.scores[catId] = val;
   refreshTable();
   
-  // Controlla se qualcuno ha raggiunto 130 punti (vittoria automatica)
-  const winner = players.find((pl, idx) => getTot(idx).total >= 130);
-  if (winner) {
+  const totalCats = ALL.length;
+  
+  // Controlla se il giocatore attuale ha completato TUTTE le categorie
+  if (Object.keys(players[curP].scores).length === totalCats) {
+    // Questo giocatore ha completato tutto per PRIMO e vince!
     setTimeout(() => {
-      showToast("🏆 " + winner.name + " ha raggiunto 130 punti!");
+      showToast("🏆 " + p.name + " ha completato tutte le categorie!");
       setTimeout(showEnd, 600);
     }, 200);
     return;
   }
   
-  const totalCats = ALL.length;
-  if (players.every((pl) => Object.keys(pl.scores).length === totalCats)) {
-    setTimeout(showEnd, 400);
-    return;
-  }
+  // Se non tutti hanno completato, passa al prossimo giocatore
   let next = (curP + 1) % players.length,
     loops = 0;
   while (
@@ -632,7 +662,21 @@ function getTot(pi) {
 }
 
 function refreshTable() {
+  const totalCats = ALL.length;
+  
   players.forEach((p, pi) => {
+    const isWinner = Object.keys(p.scores).length === totalCats;
+    const th = document.getElementById("th" + pi);
+    
+    // Aggiungi classe "winner" all'intestazione della colonna se ha vinto
+    if (th) {
+      if (isWinner) {
+        th.classList.add("winner-col");
+      } else {
+        th.classList.remove("winner-col");
+      }
+    }
+    
     ALL.forEach((cat) => {
       const td = document.getElementById("sv-" + cat.id + "-" + pi);
       if (!td) return;
@@ -716,6 +760,14 @@ function showEnd() {
 //  RESET GAME - Azzera tutto e ritorna al setup
 // ============================================================
 function resetGame() {
+  // Se siamo in gioco, chiedi conferma
+  const gamePanel = document.getElementById("game");
+  if (gamePanel.style.display === "flex") {
+    if (!confirm("⚠️ Sei sicuro? Perderai la partita in corso!")) {
+      return; // Annulla il reset
+    }
+  }
+  
   // Azzera lo stato globale
   players = [];
   curP = 0;
