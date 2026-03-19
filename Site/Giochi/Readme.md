@@ -25,3 +25,4 @@
 - **[Tombola](Tombola)**
 - **[Tris](Tris)**
 - **[Tris versione 2](Tris2)**
+- **[Yahtzee](Yahtzee)**
