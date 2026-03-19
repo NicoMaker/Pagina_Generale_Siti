@@ -86,13 +86,13 @@
 
       <!-- Mobile score toggle -->
       <button class="score-toggle" id="score-toggle" onclick="toggleScore()">📊 Mostra Segnapunti</button>
-      <button class="wa-mobile" onclick="shareWhatsApp(false)">📲 Condividi Punteggi su WhatsApp</button>
+      <button class="wa-mobile" id="wa-mobile-btn" onclick="shareWhatsApp(false)">📲 Condividi Punteggi su WhatsApp</button>
 
     </div>
 
     <!-- RIGHT: SCOREBOARD -->
     <div class="right" id="right-panel">
-      <div class="sbh" style="display:flex;align-items:center;justify-content:space-between;"><span>✦ Segnapunti</span><button class="wa-inline" onclick="shareWhatsApp(false)" title="Condividi punteggi su WhatsApp">📲 WhatsApp</button></div>
+      <div class="sbh" style="display:flex;align-items:center;justify-content:space-between;"><span>✦ Segnapunti</span></div>
       <div class="sbsc">
         <table>
           <thead><tr id="sch"></tr></thead>

@@ -132,6 +132,13 @@ function startGame() {
   const g = document.getElementById("game");
   g.style.display = "flex";
   document.getElementById("end").classList.remove("show");
+  
+  // Mostra il bottone "Condividi Punteggi" su mobile
+  const waMobileBtn = document.getElementById("wa-mobile-btn");
+  if (waMobileBtn) {
+    waMobileBtn.style.display = "";
+  }
+  
   buildUI();
   newTurn();
 }
@@ -754,6 +761,12 @@ function showEnd() {
   });
   spawnConfetti();
   document.getElementById("end").classList.add("show");
+  
+  // Nascondi il bottone "Condividi Punteggi" su mobile quando la partita finisce
+  const waMobileBtn = document.getElementById("wa-mobile-btn");
+  if (waMobileBtn) {
+    waMobileBtn.style.display = "none";
+  }
 }
 
 // ============================================================
