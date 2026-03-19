@@ -572,6 +572,10 @@
         {
           "name": "Rimuovi Sfondo",
           "link": "Site/Utilities/Rimuovi_sfondo/index.html"
+        },
+        {
+          "name": "Timer Pomodoro",
+          "link": "Site/Utilities/Timer_Pomodoro/index.html"
         }
       ]
     }

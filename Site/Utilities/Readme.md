@@ -11,5 +11,6 @@
 - **[Organizzazione Note](Organizzazione_Note)**
 - **[QR Code Generator](QR_Code_Generator)**
 - **[Rimuovi Sfondo](Rimuovi_sfondo)**
+- **[Timer Pomodoro](Timer_Pomodoro)**
 - **[ToDoList](ToDoList)**
 - **[Traduttore](Traduttore)**
