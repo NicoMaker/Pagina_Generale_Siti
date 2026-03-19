@@ -34,7 +34,7 @@ function deleteVehicle(vehicleId) {
 
   // Delete associated maintenances
   const maintenances = getMaintenances().filter(
-    (m) => m.vehicleId !== vehicleId
+    (m) => m.vehicleId !== vehicleId,
   );
   localStorage.setItem(DB_KEYS.MAINTENANCES, JSON.stringify(maintenances));
 }
@@ -74,7 +74,7 @@ function checkMaintenanceDue(maintenance, currentKm) {
   const dueDate = new Date(maintenance.dueDate);
   // Calcola i giorni mancanti arrotondando per eccesso
   const daysUntil = Math.ceil(
-    (dueDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24)
+    (dueDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24),
   );
 
   let isDue = false;
@@ -127,7 +127,7 @@ function checkAllMaintenances(vehicles, maintenances) {
 
   vehicles.forEach((vehicle) => {
     const vehicleMaintenances = maintenances.filter(
-      (m) => m.vehicleId === vehicle.id
+      (m) => m.vehicleId === vehicle.id,
     );
 
     vehicleMaintenances.forEach((maintenance) => {
@@ -162,7 +162,7 @@ function requestNotificationPermission() {
           // Mostra una notifica di benvenuto
           showBrowserNotification(
             "Notifiche Abilitate",
-            "Riceverai avvisi per le manutenzioni in scadenza."
+            "Riceverai avvisi per le manutenzioni in scadenza.",
           );
         } else {
           console.log("Permesso per le notifiche negato.");
@@ -215,7 +215,7 @@ function updateThemeToggleUI(theme) {
   if (!btn) return;
   btn.setAttribute(
     "aria-label",
-    theme === "dark" ? "Passa al tema chiaro" : "Passa al tema scuro"
+    theme === "dark" ? "Passa al tema chiaro" : "Passa al tema scuro",
   );
   btn.innerHTML =
     theme === "dark"
@@ -236,15 +236,15 @@ const totalVehiclesEl = document.getElementById("totalVehicles");
 const totalVehiclesLabelEl = document.getElementById("totalVehiclesLabel");
 const totalMaintenancesEl = document.getElementById("totalMaintenances");
 const totalMaintenancesLabelEl = document.getElementById(
-  "totalMaintenancesLabel"
+  "totalMaintenancesLabel",
 );
 const activeAlertsEl = document.getElementById("activeAlerts");
 const activeAlertsLabelEl = document.getElementById("activeAlertsLabel");
 const completedMaintenancesEl = document.getElementById(
-  "completedMaintenances"
+  "completedMaintenances",
 );
 const completedMaintenancesLabelEl = document.getElementById(
-  "completedMaintenancesLabel"
+  "completedMaintenancesLabel",
 );
 
 const alertsIconEl = document.getElementById("alertsIcon");
@@ -259,7 +259,7 @@ const dialogAddVehicleEl = document.getElementById("dialogAddVehicle");
 const dialogAddMaintenanceEl = document.getElementById("dialogAddMaintenance");
 const dialogVehicleDetailsEl = document.getElementById("dialogVehicleDetails");
 const dialogEditMaintenanceEl = document.getElementById(
-  "dialogEditMaintenance"
+  "dialogEditMaintenance",
 );
 const dialogConfirmEl = document.getElementById("dialogConfirm");
 
@@ -314,7 +314,7 @@ async function loadMaintenanceTypes() {
     ].sort((a, b) => a.localeCompare(b));
     showAlertDialog(
       "Errore di Caricamento",
-      "Impossibile caricare i tipi di manutenzione. Verrà usata una lista predefinita."
+      "Impossibile caricare i tipi di manutenzione. Verrà usata una lista predefinita.",
     );
   }
 }
@@ -391,7 +391,7 @@ function renderAlerts() {
     alertMessage.onclick = () => handleViewDetails(alert.vehicle.id); // Rende l'alert cliccabile
 
     const formattedDate = new Date(
-      alert.maintenance.dueDate
+      alert.maintenance.dueDate,
     ).toLocaleDateString("it-IT", {
       year: "numeric",
       month: "long",
@@ -429,7 +429,7 @@ function renderVehicles() {
 
   vehicles.forEach((vehicle, index) => {
     const vehicleMaintenances = maintenances.filter(
-      (m) => m.vehicleId === vehicle.id
+      (m) => m.vehicleId === vehicle.id,
     );
     const maintenanceText =
       vehicleMaintenances.length === 1 ? "manutenzione" : "manutenzioni";
@@ -462,11 +462,15 @@ function renderVehicles() {
                     </button>
                 </div>
                 </div>
-            ${vehicle.notes && vehicle.notes.trim() !== "" ? `
+            ${
+              vehicle.notes && vehicle.notes.trim() !== ""
+                ? `
             <div class="vehicle-card-notes">
                 <i class="fas fa-sticky-note"></i>
                 <span>${vehicle.notes}</span>
-            </div>` : ""}
+            </div>`
+                : ""
+            }
             <div class="vehicle-card-footer">
                 <div class="vehicle-card-info-item">
                     <i class="fas fa-tachometer-alt"></i>
@@ -508,7 +512,7 @@ function handleDeleteVehicle(vehicleId) {
     () => {
       deleteVehicle(vehicleId);
       loadData();
-    }
+    },
   );
 }
 
@@ -529,16 +533,14 @@ function handleViewDetails(vehicleId) {
 
   currentVehicle = vehicle;
   const vehicleMaintenances = maintenances.filter(
-    (m) => m.vehicleId === vehicleId
+    (m) => m.vehicleId === vehicleId,
   );
 
   // Set dialog info
-  document.getElementById(
-    "detailsVehicleName"
-  ).textContent = `${vehicle.brand} ${vehicle.model}`;
-  document.getElementById(
-    "detailsVehicleInfo"
-  ).textContent = `${vehicle.plate} - Anno ${vehicle.year}`;
+  document.getElementById("detailsVehicleName").textContent =
+    `${vehicle.brand} ${vehicle.model}`;
+  document.getElementById("detailsVehicleInfo").textContent =
+    `${vehicle.plate} - Anno ${vehicle.year}`;
   document.getElementById("updateKm").value = vehicle.currentKm || 0;
   // Display vehicle notes if present
   const vehicleNotesDisplay = document.getElementById("vehicleNotesDisplay");
@@ -588,7 +590,7 @@ function handleViewDetails(vehicleId) {
                             <div class="maintenance-detail-item" style="color: var(--text-secondary)">
                                 <i class="fas fa-calendar"></i>
                                 <span>Scadenza: ${formatDate(
-                                  maintenance.dueDate
+                                  maintenance.dueDate,
                                 )}</span>
                                 ${
                                   !maintenance.completed
@@ -604,7 +606,7 @@ function handleViewDetails(vehicleId) {
                                                   : "giorni"
                                               }`
                                             : `scaduto da ${Math.abs(
-                                                check.daysUntil
+                                                check.daysUntil,
                                               )} ${
                                                 Math.abs(check.daysUntil) === 1
                                                   ? "giorno"
@@ -635,7 +637,7 @@ function handleViewDetails(vehicleId) {
                                               check.kmUntil >= 0
                                                 ? `mancano ${check.kmUntil.toLocaleString()} km`
                                                 : `superato di ${Math.abs(
-                                                    check.kmUntil
+                                                    check.kmUntil,
                                                   ).toLocaleString()} km`
                                             })
                                         </span>
@@ -655,7 +657,7 @@ function handleViewDetails(vehicleId) {
                               maintenance.completed && maintenance.completedAt
                                 ? `
                                 <p class="maintenance-completed-date">Completata il ${formatDate(
-                                  maintenance.completedAt
+                                  maintenance.completedAt,
                                 )}</p>
                             `
                                 : ""
@@ -688,9 +690,8 @@ function handleAddMaintenance(vehicleId) {
   if (!vehicle) return;
 
   currentVehicle = vehicle;
-  document.getElementById(
-    "maintenanceVehicleInfo"
-  ).textContent = `${vehicle.brand} ${vehicle.model} - ${vehicle.plate}`;
+  document.getElementById("maintenanceVehicleInfo").textContent =
+    `${vehicle.brand} ${vehicle.model} - ${vehicle.plate}`;
 
   // Reset form
   formAddMaintenanceEl.reset();
@@ -731,7 +732,7 @@ function handleDeleteMaintenance(maintenanceId) {
       if (currentVehicle) {
         handleViewDetails(currentVehicle.id);
       }
-    }
+    },
   );
 }
 
@@ -806,7 +807,7 @@ function handleUpdateKm() {
   if (newKm < currentKm) {
     showAlertDialog(
       "Errore Chilometraggio",
-      `Il nuovo chilometraggio (${newKm.toLocaleString()} km) non può essere inferiore al chilometraggio attuale registrato per il veicolo (${currentKm.toLocaleString()} km).`
+      `Il nuovo chilometraggio (${newKm.toLocaleString()} km) non può essere inferiore al chilometraggio attuale registrato per il veicolo (${currentKm.toLocaleString()} km).`,
     );
     // Non aggiornare e riporta il valore al chilometraggio attuale per evitare confusione nell'interfaccia
     kmInputEl.value = currentKm;
@@ -940,13 +941,13 @@ formAddVehicleEl.addEventListener("submit", (e) => {
   const isDuplicate = allVehicles.some(
     (v) =>
       v.plate === newPlate &&
-      v.id !== (currentVehicle ? currentVehicle.id : null)
+      v.id !== (currentVehicle ? currentVehicle.id : null),
   );
 
   if (isDuplicate) {
     showAlertDialog(
       "Errore: Targa Duplicata",
-      "La targa inserita è già associata a un altro veicolo. Controlla e riprova."
+      "La targa inserita è già associata a un altro veicolo. Controlla e riprova.",
     );
     plateInput.focus();
     return; // Interrompe il salvataggio
@@ -994,7 +995,7 @@ formAddMaintenanceEl.addEventListener("submit", (e) => {
       ? parseInt(document.getElementById("dueKm").value)
       : null,
     notifyDaysBefore: parseInt(
-      document.getElementById("notifyDaysBefore").value
+      document.getElementById("notifyDaysBefore").value,
     ),
     notes: document.getElementById("notes").value,
     completed: isCompleted,
@@ -1018,7 +1019,7 @@ formEditMaintenanceEl.addEventListener("submit", (e) => {
   e.preventDefault();
 
   const isCompleted = document.getElementById(
-    "editMaintenanceCompleted"
+    "editMaintenanceCompleted",
   ).checked;
 
   const maintenance = {
@@ -1029,7 +1030,7 @@ formEditMaintenanceEl.addEventListener("submit", (e) => {
       ? parseInt(document.getElementById("editDueKm").value)
       : null,
     notifyDaysBefore: parseInt(
-      document.getElementById("editNotifyDaysBefore").value
+      document.getElementById("editNotifyDaysBefore").value,
     ),
     notes: document.getElementById("editNotes").value,
     completed: isCompleted,
@@ -1038,8 +1039,8 @@ formEditMaintenanceEl.addEventListener("submit", (e) => {
       isCompleted && !currentMaintenance.completed
         ? new Date().toISOString()
         : !isCompleted && currentMaintenance.completed
-        ? null
-        : currentMaintenance.completedAt,
+          ? null
+          : currentMaintenance.completedAt,
   };
 
   saveMaintenance(maintenance);
@@ -1097,7 +1098,7 @@ function checkMaintenancesAndNotify() {
       if (!notifiedAlerts.has(alertId)) {
         showBrowserNotification(
           `Manutenzione in scadenza: ${alert.vehicle.brand} ${alert.vehicle.model}`,
-          `${alert.maintenance.type} - ${alert.reason}`
+          `${alert.maintenance.type} - ${alert.reason}`,
         );
         newNotifiedAlerts.add(alertId); // Aggiungiamo l'ID al set per non notificarlo di nuovo
       }

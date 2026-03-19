@@ -174,7 +174,7 @@ document.addEventListener("DOMContentLoaded", () => {
       "quarter",
       "half",
       "three-quarters",
-      "complete"
+      "complete",
     );
     if (safePercentage >= 100) {
       progressBar.classList.add("complete");
@@ -236,7 +236,7 @@ document.addEventListener("DOMContentLoaded", () => {
     showAlert(
       "success",
       "Reset completato",
-      "Le cartelle generate sono state cancellate."
+      "Le cartelle generate sono state cancellate.",
     );
   }
 
@@ -250,7 +250,7 @@ document.addEventListener("DOMContentLoaded", () => {
       showAlert(
         "error",
         "Errore",
-        `Inserisci un numero di giocatori valido (1-${sumcartelle})`
+        `Inserisci un numero di giocatori valido (1-${sumcartelle})`,
       );
       return;
     }
@@ -305,7 +305,7 @@ document.addEventListener("DOMContentLoaded", () => {
             percentage,
             processedGiocatori,
             numGiocatori,
-            currentPhase
+            currentPhase,
           );
 
           if (processedGiocatori % 2 === 0) {
@@ -326,7 +326,7 @@ document.addEventListener("DOMContentLoaded", () => {
       showAlert(
         "success",
         "Generazione completata",
-        `Sono stati generati ${numGiocatori} giocatori di cartelle in ${timeElapsed} secondi.`
+        `Sono stati generati ${numGiocatori} giocatori di cartelle in ${timeElapsed} secondi.`,
       );
 
       setTimeout(() => {
@@ -337,7 +337,7 @@ document.addEventListener("DOMContentLoaded", () => {
       showAlert(
         "error",
         "Errore",
-        `Si è verificato un errore: ${error.message}`
+        `Si è verificato un errore: ${error.message}`,
       );
     } finally {
       loadingEl.classList.add("hidden");
@@ -359,7 +359,7 @@ document.addEventListener("DOMContentLoaded", () => {
         columns.forEach((col) => shuffleArray(col));
 
         cards = Array.from({ length: 6 }, () =>
-          Array.from({ length: 3 }, () => Array(9).fill(null))
+          Array.from({ length: 3 }, () => Array(9).fill(null)),
         );
 
         for (let c = 0; c < 9; c++) {
@@ -381,7 +381,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 .flat()
                 .filter((n) => n !== null).length;
               const colCount = [0, 1, 2].filter(
-                (r) => cards[k][r][c] !== null
+                (r) => cards[k][r][c] !== null,
               ).length;
 
               if (totalInCard < 15 && colCount < 3) {
@@ -476,20 +476,20 @@ document.addEventListener("DOMContentLoaded", () => {
       const currentRenderPercentage = ((batchIndex + 1) / totalBatches) * 100;
       const renderPercentage = Math.max(
         renderLastPercentage,
-        currentRenderPercentage
+        currentRenderPercentage,
       );
       renderLastPercentage = renderPercentage;
 
       const processedCount = Math.min(
         (batchIndex + 1) * batchSize,
-        giocatori.length
+        giocatori.length,
       );
 
       updateLoader(
         renderPercentage,
         processedCount,
         giocatori.length,
-        "Rendering cartelle"
+        "Rendering cartelle",
       );
 
       await new Promise((resolve) => requestAnimationFrame(resolve));
@@ -545,7 +545,7 @@ document.addEventListener("DOMContentLoaded", () => {
       "info",
       "Preparazione stampa",
       "Sul telefono, dopo il popup di stampa potrebbe volerci qualche secondo per caricare tutte le pagine.",
-      3000
+      3000,
     );
 
     document.body.classList.add("printing");
@@ -680,7 +680,7 @@ document.addEventListener("DOMContentLoaded", () => {
     showAlert(
       "info",
       "Benvenuto",
-      `Genera facilmente cartelle per la tua tombola. Seleziona il numero di giocatori (fino a ${sumcartelle}) e clicca su Genera.`
+      `Genera facilmente cartelle per la tua tombola. Seleziona il numero di giocatori (fino a ${sumcartelle}) e clicca su Genera.`,
     );
   }, 500);
 });

@@ -1,127 +1,156 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="it">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>YAHTZEE</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
-</head>
-
-    <link
-      rel="icon"
-      href="https://m.media-amazon.com/images/I/71a4Th3W18L._AC_UF1000,1000_QL80_.jpg"
-      type="image/jpg"
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
     />
-<body>
+    <title>YAHTZEE</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
 
-<!-- ===================== WINNER BANNER ===================== -->
-<div id="winner-banner" class="winner-banner"></div>
+  <link
+    rel="icon"
+    href="https://m.media-amazon.com/images/I/71a4Th3W18L._AC_UF1000,1000_QL80_.jpg"
+    type="image/jpg"
+  />
+  <body>
+    <!-- ===================== WINNER BANNER ===================== -->
+    <div id="winner-banner" class="winner-banner"></div>
 
-<!-- ===================== SETUP ===================== -->
-<div id="setup">
-  <div class="scard">
-    <div class="slogo">YAHTZEE</div>
-    <div class="stagline">Il Classico Gioco dei Dadi</div>
-    <div class="slbl">Numero di giocatori</div>
-    <div class="cnt-row" id="cnt-row"></div>
-    <div class="slbl">Nomi dei giocatori</div>
-    <div class="ngrid" id="ngrid"></div>
-    <button class="sbtn" onclick="startGame()">✦ INIZIA LA PARTITA ✦</button>
-  </div>
-</div>
-
-<!-- ===================== GAME ===================== -->
-<div id="game">
-
-  <!-- Topbar -->
-  <div class="topbar">
-    <div class="tlogo">✦ YAHTZEE</div>
-    <div class="tblock">
-      <div class="tname">
-        <span class="temo" id="tb-emo"></span><span id="tb-name">—</span>
-      </div>
-      <div class="rirow">
-        <div class="ri" id="ri0"></div>
-        <div class="ri" id="ri1"></div>
-        <div class="ri" id="ri2"></div>
+    <!-- ===================== SETUP ===================== -->
+    <div id="setup">
+      <div class="scard">
+        <div class="slogo">YAHTZEE</div>
+        <div class="stagline">Il Classico Gioco dei Dadi</div>
+        <div class="slbl">Numero di giocatori</div>
+        <div class="cnt-row" id="cnt-row"></div>
+        <div class="slbl">Nomi dei giocatori</div>
+        <div class="ngrid" id="ngrid"></div>
+        <button class="sbtn" onclick="startGame()">
+          ✦ INIZIA LA PARTITA ✦
+        </button>
       </div>
     </div>
-    <button class="ngbtn" onclick="showSetup()">← Nuova</button>
-  </div>
 
-  <!-- Player strip -->
-  <div class="pstrip" id="pstrip"></div>
-
-  <!-- Main -->
-  <div class="main">
-
-    <!-- LEFT -->
-    <div class="left">
-
-      <div class="sec-lbl">I tuoi dadi</div>
-
-      <!-- Dice card -->
-      <div class="dice-wrap">
-        <div class="roll-info">
-          <div class="roll-hint" id="roll-hint">Clicca <span>Lancia</span> per iniziare</div>
-          <div class="roll-hint">Tocca un dado per tenerlo</div>
+    <!-- ===================== GAME ===================== -->
+    <div id="game">
+      <!-- Topbar -->
+      <div class="topbar">
+        <div class="tlogo">✦ YAHTZEE</div>
+        <div class="tblock">
+          <div class="tname">
+            <span class="temo" id="tb-emo"></span><span id="tb-name">—</span>
+          </div>
+          <div class="rirow">
+            <div class="ri" id="ri0"></div>
+            <div class="ri" id="ri1"></div>
+            <div class="ri" id="ri2"></div>
+          </div>
         </div>
-        <div class="drow" id="drow"></div>
+        <button class="ngbtn" onclick="showSetup()">← Nuova</button>
+      </div>
 
-        <!-- BIG ROLL BUTTON -->
-        <div class="btn-row">
-          <button class="rbtn" id="rbtn" onclick="rollDice()">
-            <span class="dice-icon">🎲</span>
-            <span id="rbtn-txt">LANCIA I DADI</span>
+      <!-- Player strip -->
+      <div class="pstrip" id="pstrip"></div>
+
+      <!-- Main -->
+      <div class="main">
+        <!-- LEFT -->
+        <div class="left">
+          <div class="sec-lbl">I tuoi dadi</div>
+
+          <!-- Dice card -->
+          <div class="dice-wrap">
+            <div class="roll-info">
+              <div class="roll-hint" id="roll-hint">
+                Clicca <span>Lancia</span> per iniziare
+              </div>
+              <div class="roll-hint">Tocca un dado per tenerlo</div>
+            </div>
+            <div class="drow" id="drow"></div>
+
+            <!-- BIG ROLL BUTTON -->
+            <div class="btn-row">
+              <button class="rbtn" id="rbtn" onclick="rollDice()">
+                <span class="dice-icon">🎲</span>
+                <span id="rbtn-txt">LANCIA I DADI</span>
+              </button>
+              <button class="abtn" id="abtn" onclick="autoPlay()">
+                <span>⚡</span><span id="abtn-txt">AUTO</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="sec-lbl">Dove vuoi segnare?</div>
+          <div class="hgrid" id="hgrid"></div>
+
+          <!-- Mobile score toggle -->
+          <button
+            class="score-toggle"
+            id="score-toggle"
+            onclick="toggleScore()"
+          >
+            📊 Mostra Segnapunti
           </button>
-          <button class="abtn" id="abtn" onclick="autoPlay()">
-            <span>⚡</span><span id="abtn-txt">AUTO</span>
+          <button
+            class="wa-mobile"
+            id="wa-mobile-btn"
+            onclick="shareWhatsApp(false)"
+          >
+            📲 Condividi Punteggi su WhatsApp
           </button>
         </div>
+
+        <!-- RIGHT: SCOREBOARD -->
+        <div class="right" id="right-panel">
+          <div
+            class="sbh"
+            style="
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+            "
+          >
+            <span>✦ Segnapunti</span>
+          </div>
+          <div class="sbsc">
+            <table>
+              <thead>
+                <tr id="sch"></tr>
+              </thead>
+              <tbody id="scb"></tbody>
+            </table>
+          </div>
+        </div>
       </div>
-
-      <div class="sec-lbl">Dove vuoi segnare?</div>
-      <div class="hgrid" id="hgrid"></div>
-
-      <!-- Mobile score toggle -->
-      <button class="score-toggle" id="score-toggle" onclick="toggleScore()">📊 Mostra Segnapunti</button>
-      <button class="wa-mobile" id="wa-mobile-btn" onclick="shareWhatsApp(false)">📲 Condividi Punteggi su WhatsApp</button>
-
     </div>
 
-    <!-- RIGHT: SCOREBOARD -->
-    <div class="right" id="right-panel">
-      <div class="sbh" style="display:flex;align-items:center;justify-content:space-between;"><span>✦ Segnapunti</span></div>
-      <div class="sbsc">
-        <table>
-          <thead><tr id="sch"></tr></thead>
-          <tbody id="scb"></tbody>
-        </table>
+    <!-- ===================== END ===================== -->
+    <div id="end">
+      <div class="etag">Partita Terminata</div>
+      <div class="ewrap">
+        <div class="eemo" id="eemo">🏆</div>
+        <div class="ewn" id="ewn"></div>
+        <div class="ewp" id="ewp"></div>
+      </div>
+      <div class="elist" id="elist"></div>
+      <div class="end-btns">
+        <button class="wabtn" onclick="shareWhatsApp(true)">
+          <span>📲</span><span>Condividi Risultati su WhatsApp</span>
+        </button>
+        <button class="eagn" onclick="resetGame()">↻ Resetta Partita</button>
+        <button class="eagn" onclick="showSetup()">✦ Gioca Ancora ✦</button>
       </div>
     </div>
 
-  </div>
-</div>
+    <div id="toast"></div>
 
-<!-- ===================== END ===================== -->
-<div id="end">
-  <div class="etag">Partita Terminata</div>
-  <div class="ewrap">
-    <div class="eemo" id="eemo">🏆</div>
-    <div class="ewn" id="ewn"></div>
-    <div class="ewp" id="ewp"></div>
-  </div>
-  <div class="elist" id="elist"></div>
-  <div class="end-btns">
-    <button class="wabtn" onclick="shareWhatsApp(true)"><span>📲</span><span>Condividi Risultati su WhatsApp</span></button>
-    <button class="eagn" onclick="resetGame()">↻ Resetta Partita</button>
-    <button class="eagn" onclick="showSetup()">✦ Gioca Ancora ✦</button>
-  </div>
-</div>
-
-<div id="toast"></div>
-
-<script src="script.js"></script>
-</body>
+    <script src="script.js"></script>
+  </body>
 </html>

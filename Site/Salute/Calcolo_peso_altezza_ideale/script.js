@@ -136,11 +136,7 @@ function handleFormSubmit(event) {
   }
 
   if (type === "height" && (isNaN(weight) || weight < 10 || weight > 3000)) {
-    showToast(
-      "Errore",
-      "Inserisci un peso valido tra 10 e 3000 kg.",
-      "error",
-    );
+    showToast("Errore", "Inserisci un peso valido tra 10 e 3000 kg.", "error");
     return;
   }
 

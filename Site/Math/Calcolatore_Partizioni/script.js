@@ -94,9 +94,9 @@ function displayResults(results, num) {
             index * 0.02
           }s;">
                         <span class="partition-sum">${partition.join(
-                          " + "
+                          " + ",
                         )} = ${num}</span>
-                    </div>`
+                    </div>`,
       )
       .join("");
   }

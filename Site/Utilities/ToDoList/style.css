@@ -22,10 +22,10 @@
   --bg-secondary: #f1f5f9;
   --bg-card: #ffffff;
   --border-color: #e2e8f0;
-  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
-    0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
-    0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg:
+    0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
   --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
 }
 
@@ -37,9 +37,10 @@
   --bg-secondary: #1e293b;
   --bg-card: #334155;
   --border-color: #475569;
-  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
-  --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.4),
-    0 10px 10px -5px rgba(0, 0, 0, 0.3);
+  --shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+  --shadow-lg:
+    0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 10px 10px -5px rgba(0, 0, 0, 0.3);
 }
 
 body {
@@ -351,7 +352,6 @@ h1 {
   box-shadow: var(--shadow);
   transform: translateY(-2px);
 }
-
 
 #todo-list {
   list-style: none;

@@ -95,8 +95,7 @@ async function loadModel() {
       }
     } else {
       // Mobile: WASM only
-      modelStatus.textContent =
-        "Caricamento WebAssembly… (attendere, ~50MB)";
+      modelStatus.textContent = "Caricamento WebAssembly… (attendere, ~50MB)";
       try {
         segmenter = await pipeline("background-removal", "briaai/RMBG-1.4", {
           device: "wasm",
@@ -168,7 +167,13 @@ async function removeBackground() {
   try {
     const imgURL = URL.createObjectURL(currentFile);
 
-    setLoader(true, isMobile() ? "Inferenza AI in corso (30–90s su mobile)…" : "Inferenza AI in corso (5–20s)…", 30);
+    setLoader(
+      true,
+      isMobile()
+        ? "Inferenza AI in corso (30–90s su mobile)…"
+        : "Inferenza AI in corso (5–20s)…",
+      30,
+    );
     const output = await segmenter(imgURL);
     URL.revokeObjectURL(imgURL);
 

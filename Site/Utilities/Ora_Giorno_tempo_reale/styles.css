@@ -18,17 +18,22 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   overflow: hidden;
 }
 
 body::before {
-  content: '';
+  content: "";
   position: absolute;
   width: 200%;
   height: 200%;
-  background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.1) 1px,
+    transparent 1px
+  );
   background-size: 50px 50px;
   animation: drift 60s linear infinite;
   opacity: 0.3;
@@ -36,8 +41,12 @@ body::before {
 }
 
 @keyframes drift {
-  from { transform: translate(0, 0); }
-  to { transform: translate(50px, 50px); }
+  from {
+    transform: translate(0, 0);
+  }
+  to {
+    transform: translate(50px, 50px);
+  }
 }
 
 .clock-container {
@@ -47,7 +56,7 @@ body::before {
   -webkit-backdrop-filter: blur(20px);
   border-radius: 30px;
   padding: 50px 60px;
-  box-shadow: 
+  box-shadow:
     0 20px 60px rgba(0, 0, 0, 0.3),
     0 0 0 1px rgba(255, 255, 255, 0.5) inset;
   max-width: 600px;
@@ -57,8 +66,13 @@ body::before {
 }
 
 @keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
 }
 
 .header {
@@ -161,7 +175,11 @@ body::before {
   width: 100px;
   height: 100px;
   border-radius: 50%;
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(118, 75, 162, 0.2));
+  background: linear-gradient(
+    135deg,
+    rgba(102, 126, 234, 0.2),
+    rgba(118, 75, 162, 0.2)
+  );
   filter: blur(40px);
   animation: pulse 4s ease-in-out infinite;
   pointer-events: none;
@@ -179,8 +197,15 @@ body::before {
 }
 
 @keyframes pulse {
-  0%, 100% { transform: scale(1); opacity: 0.5; }
-  50% { transform: scale(1.2); opacity: 0.8; }
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.8;
+  }
 }
 
 @media (max-width: 600px) {

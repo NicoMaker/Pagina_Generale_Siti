@@ -51,16 +51,15 @@ document.addEventListener("DOMContentLoaded", () => {
   // - se oggi è qualunque altro giorno del 2025, target = 1 gennaio 2026
   const countdownTargetYear = isNewYearsDay ? currentYear + 1 : currentYear + 1;
   const countdownDate = new Date(
-    `Jan 1, ${countdownTargetYear} 00:00:00`
+    `Jan 1, ${countdownTargetYear} 00:00:00`,
   ).getTime(); // [web:30][web:10]
 
   // Set year in UI
   document.getElementById("next-year").textContent = yearToDisplay;
   document.getElementById("footer-year").textContent = yearToDisplay;
   document.getElementById("celebration-year").textContent = yearToDisplay;
-  document.getElementById(
-    "copyright-year"
-  ).textContent = `© ${currentYear} Countdown Capodanno. Tutti i diritti riservati.`;
+  document.getElementById("copyright-year").textContent =
+    `© ${currentYear} Countdown Capodanno. Tutti i diritti riservati.`;
 
   // If it's New Year's Day, show celebration message
   if (isNewYearsDay) {
@@ -69,7 +68,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Messaggio "Buon anno" con anno giusto
     const celebrationMessage = document.querySelector(
-      ".celebration-message h2"
+      ".celebration-message h2",
     );
     celebrationMessage.textContent = `Happy New Year!`;
 
@@ -104,7 +103,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // Calculate time units
       const days = Math.floor(distance / (1000 * 60 * 60 * 24));
       const hours = Math.floor(
-        (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+        (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
       );
       const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
       const seconds = Math.floor((distance % (1000 * 60)) / 1000);
@@ -356,7 +355,7 @@ document.head.insertAdjacentHTML(
       margin-bottom: 15px;
     }
   </style>
-`
+`,
 );
 
 // Main function to check prime numbers

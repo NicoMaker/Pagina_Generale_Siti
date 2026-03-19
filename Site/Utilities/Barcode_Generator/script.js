@@ -78,10 +78,10 @@ btnPrint.addEventListener("click", function () {
     return;
   }
 
-  const printWindow = window.open('', '_blank');
+  const printWindow = window.open("", "_blank");
   const imgData = canvas.toDataURL("image/png");
   const codice = document.getElementById("codiceInput").value.trim();
-  
+
   printWindow.document.write(`
     <!DOCTYPE html>
     <html>
@@ -130,10 +130,10 @@ btnPrint.addEventListener("click", function () {
       </body>
     </html>
   `);
-  
+
   printWindow.document.close();
   printWindow.focus();
-  
+
   setTimeout(() => {
     printWindow.print();
   }, 250);

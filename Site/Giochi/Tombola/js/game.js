@@ -50,7 +50,7 @@ async function initGame() {
       // Insert before the tombola container
       tombolaContainer.parentNode.insertBefore(
         extractedContainer,
-        tombolaContainer
+        tombolaContainer,
       );
     }
   } catch (error) {
@@ -64,7 +64,7 @@ async function initGame() {
     // Show error notification
     showNotification(
       "Errore nel caricamento delle tabelle. Utilizzando tabella predefinita.",
-      "error"
+      "error",
     );
   }
 
@@ -451,7 +451,7 @@ function createConfetti() {
       {
         duration: Math.random() * 3000 + 2000,
         easing: "cubic-bezier(0.1, 0.8, 0.9, 1)",
-      }
+      },
     );
 
     animation.onfinish = () => {
@@ -505,7 +505,7 @@ function announceExtractedNumbers() {
 
   showNotification(
     `Annunciando ${extractedNumbers.size} numeri estratti`,
-    "success"
+    "success",
   );
 }
 
@@ -653,7 +653,7 @@ function addSwipeGestures() {
     (e) => {
       touchStartX = e.changedTouches[0].screenX;
     },
-    false
+    false,
   );
 
   document.addEventListener(
@@ -662,7 +662,7 @@ function addSwipeGestures() {
       touchEndX = e.changedTouches[0].screenX;
       handleSwipe();
     },
-    false
+    false,
   );
 
   function handleSwipe() {

@@ -154,10 +154,10 @@ class QRGenerator {
 
   printQR() {
     if (!this.currentQR) return;
-    
-    const printWindow = window.open('', '_blank');
+
+    const printWindow = window.open("", "_blank");
     const imgData = this.currentQR.canvas.toDataURL("image/png");
-    
+
     printWindow.document.write(`
       <!DOCTYPE html>
       <html>
@@ -195,14 +195,14 @@ class QRGenerator {
         </body>
       </html>
     `);
-    
+
     printWindow.document.close();
     printWindow.focus();
-    
+
     setTimeout(() => {
       printWindow.print();
     }, 250);
-    
+
     this.showToast("Finestra di stampa aperta!", "success");
   }
 

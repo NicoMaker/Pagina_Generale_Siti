@@ -205,11 +205,11 @@ class DualWheelOfFortune {
       localStorage.setItem("wheel2Names", JSON.stringify(this.wheel2Names));
       localStorage.setItem(
         "availableWheel1Names",
-        JSON.stringify(this.availableWheel1Names)
+        JSON.stringify(this.availableWheel1Names),
       );
       localStorage.setItem(
         "availableWheel2Names",
-        JSON.stringify(this.availableWheel2Names)
+        JSON.stringify(this.availableWheel2Names),
       );
       localStorage.setItem("history", JSON.stringify(this.history));
     } catch (e) {
@@ -294,7 +294,7 @@ class DualWheelOfFortune {
   generateAuto(wheelNumber) {
     const count =
       Number.parseInt(
-        document.getElementById(`autoCount${wheelNumber}`).value
+        document.getElementById(`autoCount${wheelNumber}`).value,
       ) || 8;
 
     if (wheelNumber === 1) {
@@ -392,9 +392,10 @@ class DualWheelOfFortune {
     this.hideResult(wheelNumber);
     const wheelName = wheelNumber === 1 ? "nomi" : "nazioni";
     notificationSystem.show(
-      `${wheelName.charAt(0).toUpperCase() + wheelName.slice(1)
+      `${
+        wheelName.charAt(0).toUpperCase() + wheelName.slice(1)
       } generati automaticamente!`,
-      "info"
+      "info",
     );
   }
 
@@ -413,7 +414,7 @@ class DualWheelOfFortune {
       const itemType = wheelNumber === 1 ? "nomi" : "nazioni";
       notificationSystem.show(
         `Puoi inserire al massimo 100 ${itemType}!`,
-        "warning"
+        "warning",
       );
       return;
     }
@@ -437,7 +438,7 @@ class DualWheelOfFortune {
     if (items.includes(inputValue)) {
       notificationSystem.show(
         `Questo ${itemType} è già presente nella lista`,
-        "warning"
+        "warning",
       );
       return;
     }
@@ -459,7 +460,7 @@ class DualWheelOfFortune {
     const wheelName = wheelNumber === 1 ? "nomi" : "nazioni";
     notificationSystem.show(
       `"${inputValue}" aggiunto alla ruota ${wheelName}!`,
-      "success"
+      "success",
     );
   }
 
@@ -470,7 +471,7 @@ class DualWheelOfFortune {
       const itemType = wheelNumber === 1 ? "nomi" : "nazioni";
       notificationSystem.show(
         `Non puoi modificare i ${itemType} mentre la ruota gira`,
-        "warning"
+        "warning",
       );
       return;
     }
@@ -480,7 +481,7 @@ class DualWheelOfFortune {
     const newItem = await modalSystem.prompt(
       `Modifica ${itemType}:`,
       currentItem,
-      `Modifica ${itemType}`
+      `Modifica ${itemType}`,
     );
 
     if (newItem === null) return;
@@ -489,7 +490,7 @@ class DualWheelOfFortune {
     if (items.includes(newItem)) {
       notificationSystem.show(
         `Questo ${itemType} è già presente nella lista`,
-        "warning"
+        "warning",
       );
       return;
     }
@@ -517,7 +518,7 @@ class DualWheelOfFortune {
     const wheelName = wheelNumber === 1 ? "nomi" : "nazioni";
     notificationSystem.show(
       `"${currentItem}" modificato in "${newItem}" nella ruota ${wheelName}`,
-      "success"
+      "success",
     );
   }
 
@@ -528,7 +529,7 @@ class DualWheelOfFortune {
       const itemType = wheelNumber === 1 ? "nomi" : "nazioni";
       notificationSystem.show(
         `Non puoi eliminare ${itemType} mentre la ruota sta girando`,
-        "warning"
+        "warning",
       );
       return;
     }
@@ -539,7 +540,7 @@ class DualWheelOfFortune {
 
     const confirmed = await modalSystem.confirm(
       `Sei sicuro di voler eliminare "${item}" dalla ruota ${wheelName}?`,
-      `Elimina ${itemType}`
+      `Elimina ${itemType}`,
     );
 
     if (confirmed) {
@@ -563,7 +564,7 @@ class DualWheelOfFortune {
       this.hideResult(wheelNumber);
       notificationSystem.show(
         `"${item}" eliminato dalla ruota ${wheelName}`,
-        "success"
+        "success",
       );
     }
   }
@@ -577,7 +578,7 @@ class DualWheelOfFortune {
     if (items.length === 0) {
       const circle = document.createElementNS(
         "http://www.w3.org/2000/svg",
-        "circle"
+        "circle",
       );
       circle.setAttribute("cx", "200");
       circle.setAttribute("cy", "200");
@@ -589,7 +590,7 @@ class DualWheelOfFortune {
 
       const text = document.createElementNS(
         "http://www.w3.org/2000/svg",
-        "text"
+        "text",
       );
       text.setAttribute("x", "200");
       text.setAttribute("y", "200");
@@ -634,7 +635,7 @@ class DualWheelOfFortune {
 
       const path = document.createElementNS(
         "http://www.w3.org/2000/svg",
-        "path"
+        "path",
       );
       path.setAttribute("d", pathData);
       path.setAttribute("fill", colors[index]);
@@ -650,7 +651,7 @@ class DualWheelOfFortune {
 
       const text = document.createElementNS(
         "http://www.w3.org/2000/svg",
-        "text"
+        "text",
       );
       text.setAttribute("x", textX);
       text.setAttribute("y", textY);
@@ -664,7 +665,7 @@ class DualWheelOfFortune {
       text.setAttribute("stroke-width", "1");
       text.setAttribute(
         "transform",
-        `rotate(${textAngle}, ${textX}, ${textY})`
+        `rotate(${textAngle}, ${textX}, ${textY})`,
       );
       text.textContent =
         item.length > 12 ? item.substring(0, 12) + "..." : item;
@@ -696,14 +697,14 @@ class DualWheelOfFortune {
                     <button class="btn btn-danger btn-small" onclick="dualWheel.deleteName(${index}, ${wheelNumber})" title="Elimina">🗑️</button>
                   </div>
                 </div>
-              `
+              `,
       )
       .join("");
   }
 
   showResult(winner, wheelNumber) {
     const resultDisplay = document.getElementById(
-      `resultDisplay${wheelNumber}`
+      `resultDisplay${wheelNumber}`,
     );
     const winnerName = document.getElementById(`winnerName${wheelNumber}`);
     winnerName.textContent = winner;
@@ -726,7 +727,7 @@ class DualWheelOfFortune {
     if (this.isSpinning1 || this.isSpinning2) {
       notificationSystem.show(
         "Attenzione! Una ruota è già in rotazione! Attendi la fine dell'estrazione.",
-        "warning"
+        "warning",
       );
       return;
     }
@@ -734,16 +735,15 @@ class DualWheelOfFortune {
     if (items.length === 0) {
       notificationSystem.show(
         `Nessun ${resultType} disponibile per l'estrazione. Resetta la cronologia o aggiungi nuovi elementi.`,
-        "error"
+        "error",
       );
       return;
     }
 
     spinButton.disabled = true;
     document.getElementById("spinBothBtn").disabled = true;
-    document.getElementById(
-      `spinButton${wheelNumber === 1 ? 2 : 1}`
-    ).disabled = true;
+    document.getElementById(`spinButton${wheelNumber === 1 ? 2 : 1}`).disabled =
+      true;
 
     if (wheelNumber === 1) this.isSpinning1 = true;
     if (wheelNumber === 2) this.isSpinning2 = true;
@@ -784,7 +784,7 @@ class DualWheelOfFortune {
         spinButton.disabled = false;
         document.getElementById("spinBothBtn").disabled = false;
         document.getElementById(
-          `spinButton${wheelNumber === 1 ? 2 : 1}`
+          `spinButton${wheelNumber === 1 ? 2 : 1}`,
         ).disabled = false;
 
         this.showResult(winner, wheelNumber);
@@ -793,7 +793,7 @@ class DualWheelOfFortune {
           `🎉 Il ${resultType} estratto è: ${winner}!`,
           "success",
           "Abbiamo un vincitore!",
-          8000
+          8000,
         );
 
         this.updateWheel(wheelNumber);
@@ -817,7 +817,7 @@ class DualWheelOfFortune {
     if (items1.length === 0 || items2.length === 0) {
       notificationSystem.show(
         "Assicurati di avere almeno un nome e una nazione disponibili per l'estrazione Nomi & Nazioni!",
-        "warning"
+        "warning",
       );
       return;
     }
@@ -825,7 +825,7 @@ class DualWheelOfFortune {
     if (this.isSpinning1 || this.isSpinning2) {
       notificationSystem.show(
         "Una ruota è già in rotazione! Attendi la fine dell'estrazione.",
-        "warning"
+        "warning",
       );
       return;
     }
@@ -917,7 +917,7 @@ class DualWheelOfFortune {
       `🎉 Estrazione Nomi & Nazioni!: ${winner1} e ${winner2}!`,
       "success",
       "Abbiamo una Generazione Nome & Nazione!",
-      8000
+      8000,
     );
   }
 
@@ -953,58 +953,65 @@ class DualWheelOfFortune {
       return;
     }
 
-    historyList.innerHTML = this.history.slice().reverse().map((entry, index) => {
-      if (entry.wheelNumber === 0) {
-        return `
+    historyList.innerHTML = this.history
+      .slice()
+      .reverse()
+      .map((entry, index) => {
+        if (entry.wheelNumber === 0) {
+          return `
                     <div class="history-item">
                         <div class="history-item-header">
-                            <div class="history-item-number">#${index + 1
-          }</div>
-                            <div class="history-item-time">${entry.timestamp
-          }</div>
+                            <div class="history-item-number">#${index + 1}</div>
+                            <div class="history-item-time">${
+                              entry.timestamp
+                            }</div>
                         </div>
                         <div class="history-item-result">
                             <div class="history-result-box">
                                 <div class="history-result-label">👤 Nome Estratto</div>
-                                <div class="history-result-value">${entry.winner
-          }</div>
+                                <div class="history-result-value">${
+                                  entry.winner
+                                }</div>
                             </div>
                             <div class="history-result-box">
                                 <div class="history-result-label">🌍 Nazione Estratta</div>
-                                <div class="history-result-value">${entry.nationWinner
-          }</div>
+                                <div class="history-result-value">${
+                                  entry.nationWinner
+                                }</div>
                             </div>
                         </div>
                     </div>
                 `;
-      } else {
-        return `
+        } else {
+          return `
                     <div class="history-item">
                         <div class="history-item-header">
-                            <div class="history-item-number">#${index + 1
-          }</div>
-                            <div class="history-item-time">${entry.timestamp
-          }</div>
+                            <div class="history-item-number">#${index + 1}</div>
+                            <div class="history-item-time">${
+                              entry.timestamp
+                            }</div>
                         </div>
                         <div class="history-item-result">
                             <div class="history-result-box">
-                                <div class="history-result-label">${entry.wheelType === "Nomi" ? "👤" : "🌍"
-          } ${entry.wheelType}</div>
-                                <div class="history-result-value">${entry.winner
-          }</div>
+                                <div class="history-result-label">${
+                                  entry.wheelType === "Nomi" ? "👤" : "🌍"
+                                } ${entry.wheelType}</div>
+                                <div class="history-result-value">${
+                                  entry.winner
+                                }</div>
                             </div>
                         </div>
                     </div>
                 `;
-      }
-    })
+        }
+      })
       .join("");
   }
 
   async resetHistory() {
     const confirmed = await modalSystem.confirm(
       "Sei sicuro di voler resettare la cronologia? Questo ripristinerà anche tutti i nomi e le nazioni disponibili per le estrazioni.",
-      "Reset Cronologia"
+      "Reset Cronologia",
     );
 
     if (confirmed) {
@@ -1017,7 +1024,7 @@ class DualWheelOfFortune {
       this.saveToStorage();
       notificationSystem.show(
         "Cronologia resettata! Tutti gli elementi sono di nuovo disponibili.",
-        "success"
+        "success",
       );
     }
   }
@@ -1025,7 +1032,7 @@ class DualWheelOfFortune {
   async resetAll() {
     const confirmed = await modalSystem.confirm(
       "⚠️ ATTENZIONE: Sei sicuro di voler resettare COMPLETAMENTE l'applicazione? Verranno eliminati TUTTI i nomi, le nazioni e la cronologia.",
-      "Reset Completo"
+      "Reset Completo",
     );
 
     if (confirmed) {
@@ -1045,7 +1052,7 @@ class DualWheelOfFortune {
       this.hideResult(2);
       notificationSystem.show(
         "Tutti i dati sono stati cancellati. Inizia ad aggiungere nuovi nomi e nazioni!",
-        "success"
+        "success",
       );
     }
   }
@@ -1098,7 +1105,7 @@ class DualWheelOfFortune {
 
     const confirmed = await modalSystem.confirm(
       `Sei sicuro di voler cancellare tutti i ${items.length} ${wheelName}?`,
-      "Cancella Tutto"
+      "Cancella Tutto",
     );
 
     if (confirmed) {
@@ -1117,7 +1124,7 @@ class DualWheelOfFortune {
 
       notificationSystem.show(
         `Tutti i ${wheelName} sono stati cancellati`,
-        "success"
+        "success",
       );
     }
   }
@@ -1141,7 +1148,7 @@ class DualWheelOfFortune {
             newItems = data.map((item) =>
               typeof item === "string"
                 ? item
-                : item.name || item.nation || "Item"
+                : item.name || item.nation || "Item",
             );
           } else {
             newItems = data.items || data.names || data.nations || [];
@@ -1155,7 +1162,7 @@ class DualWheelOfFortune {
       } catch (error) {
         notificationSystem.show(
           "Errore nella lettura del file. Assicurati che sia un formato JSON o TXT valido.",
-          "error"
+          "error",
         );
         return;
       }
@@ -1164,13 +1171,13 @@ class DualWheelOfFortune {
         const itemType = wheelNumber === 1 ? "nomi" : "nazioni";
         notificationSystem.show(
           `Il file non contiene ${itemType} validi`,
-          "warning"
+          "warning",
         );
         return;
       }
 
       const uniqueItems = newItems.filter(
-        (newItem) => !items.includes(newItem)
+        (newItem) => !items.includes(newItem),
       );
       const remainingSlots = 100 - items.length;
       const itemsToAdd = uniqueItems.slice(0, remainingSlots);
@@ -1179,7 +1186,7 @@ class DualWheelOfFortune {
         const itemType = wheelNumber === 1 ? "nomi" : "nazioni";
         notificationSystem.show(
           `Tutti i ${itemType} nel file sono già presenti nella lista`,
-          "info"
+          "info",
         );
         return;
       }
@@ -1204,7 +1211,7 @@ class DualWheelOfFortune {
 
       notificationSystem.show(
         `${itemsToAdd.length} ${wheelName} aggiunti dal file!`,
-        "success"
+        "success",
       );
     };
 
@@ -1219,7 +1226,7 @@ class DualWheelOfFortune {
     if (items.length === 0) {
       notificationSystem.show(
         `Nessun ${wheelName.slice(0, -1)} da esportare`,
-        "warning"
+        "warning",
       );
       return;
     }
@@ -1233,7 +1240,7 @@ class DualWheelOfFortune {
     URL.revokeObjectURL(a.href);
     notificationSystem.show(
       `${items.length} ${wheelName} esportati in formato TXT`,
-      "success"
+      "success",
     );
   }
 
@@ -1244,7 +1251,7 @@ class DualWheelOfFortune {
     if (items.length === 0) {
       notificationSystem.show(
         `Nessun ${wheelName.slice(0, -1)} da esportare`,
-        "warning"
+        "warning",
       );
       return;
     }
@@ -1265,7 +1272,7 @@ class DualWheelOfFortune {
     URL.revokeObjectURL(a.href);
     notificationSystem.show(
       `${items.length} ${wheelName} esportati in formato JSON`,
-      "success"
+      "success",
     );
   }
 }
@@ -1277,6 +1284,6 @@ setTimeout(() => {
   notificationSystem.show(
     "Benvenuto! Aggiungi nomi e nazioni per iniziare, o usa 'Genera Automaticamente'.",
     "info",
-    "Ruota Nomi & Nazioni"
+    "Ruota Nomi & Nazioni",
   );
 }, 500);

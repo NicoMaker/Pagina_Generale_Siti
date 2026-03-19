@@ -36,8 +36,12 @@
       </div>
 
       <div class="reset-buttons">
-        <button class="btn btn-danger" id="resetAllBtn">⚠️ Resetta Tutto</button>
-        <button class="btn btn-primary" id="spinBothBtn">🎉 Gira NOME & NAZIONE</button>
+        <button class="btn btn-danger" id="resetAllBtn">
+          ⚠️ Resetta Tutto
+        </button>
+        <button class="btn btn-primary" id="spinBothBtn">
+          🎉 Gira NOME & NAZIONE
+        </button>
       </div>
 
       <div class="dual-wheel-layout">
@@ -46,10 +50,16 @@
           <div class="wheel-container">
             <div class="wheel-content">
               <div class="wheel-svg-container">
-                <svg class="wheel-svg" id="wheelSvg1" viewBox="0 0 400 400"></svg>
+                <svg
+                  class="wheel-svg"
+                  id="wheelSvg1"
+                  viewBox="0 0 400 400"
+                ></svg>
                 <div class="wheel-pointer"></div>
               </div>
-              <button class="spin-button" id="spinButton1">🎲 Gira la Ruota dei Nomi!</button>
+              <button class="spin-button" id="spinButton1">
+                🎲 Gira la Ruota dei Nomi!
+              </button>
               <div class="result-display" id="resultDisplay1">
                 <h4>🏆 Nome Estratto:</h4>
                 <div class="winner" id="winnerName1"></div>
@@ -60,30 +70,59 @@
             <h3>⚙️ Controlli Ruota Nomi</h3>
             <div class="input-group">
               <label for="nameInput1">Nome:</label>
-              <input type="text" id="nameInput1" placeholder="Inserisci un nome..." />
+              <input
+                type="text"
+                id="nameInput1"
+                placeholder="Inserisci un nome..."
+              />
             </div>
-            <button class="btn btn-primary" id="addNameBtn1">➕ Aggiungi Nome</button>
+            <button class="btn btn-primary" id="addNameBtn1">
+              ➕ Aggiungi Nome
+            </button>
             <div class="auto-controls">
               <div class="input-group">
                 <label for="autoCount1">Numero nomi da generare:</label>
-                <input type="number" id="autoCount1" min="2" max="50" value="8" />
+                <input
+                  type="number"
+                  id="autoCount1"
+                  min="2"
+                  max="50"
+                  value="8"
+                />
               </div>
-              <button class="btn btn-primary" id="generateCompleteBtn1">👤 Genera Nomi Automaticamente</button>
+              <button class="btn btn-primary" id="generateCompleteBtn1">
+                👤 Genera Nomi Automaticamente
+              </button>
             </div>
             <div class="file-input">
-              <button class="btn btn-primary" id="loadFileBtn1">📂 Carica Nomi</button>
-              <input type="file" id="fileInput1" accept=".txt,.json" style="display: none" />
+              <button class="btn btn-primary" id="loadFileBtn1">
+                📂 Carica Nomi
+              </button>
+              <input
+                type="file"
+                id="fileInput1"
+                accept=".txt,.json"
+                style="display: none"
+              />
             </div>
             <div class="export-section">
               <h4>💾 Esporta Nomi</h4>
-              <button class="btn btn-secondary" id="exportTxtBtn1">📄 Scarica TXT</button>
-              <button class="btn btn-secondary" id="exportJsonBtn1">📋 Scarica JSON</button>
+              <button class="btn btn-secondary" id="exportTxtBtn1">
+                📄 Scarica TXT
+              </button>
+              <button class="btn btn-secondary" id="exportJsonBtn1">
+                📋 Scarica JSON
+              </button>
             </div>
-            <button class="btn btn-danger" id="clearAllBtn1">🗑️ Cancella Tutto</button>
+            <button class="btn btn-danger" id="clearAllBtn1">
+              🗑️ Cancella Tutto
+            </button>
             <div class="names-list" id="namesList1">
               <div class="empty-state">
                 <div class="emoji">👤</div>
-                <p>Nessun nome ancora.<br />Aggiungi alcuni nomi per iniziare!</p>
+                <p>
+                  Nessun nome ancora.<br />Aggiungi alcuni nomi per iniziare!
+                </p>
               </div>
             </div>
           </div>
@@ -94,10 +133,16 @@
           <div class="wheel-container">
             <div class="wheel-content">
               <div class="wheel-svg-container">
-                <svg class="wheel-svg" id="wheelSvg2" viewBox="0 0 400 400"></svg>
+                <svg
+                  class="wheel-svg"
+                  id="wheelSvg2"
+                  viewBox="0 0 400 400"
+                ></svg>
                 <div class="wheel-pointer"></div>
               </div>
-              <button class="spin-button" id="spinButton2">🎲 Gira la Ruota delle Nazioni!</button>
+              <button class="spin-button" id="spinButton2">
+                🎲 Gira la Ruota delle Nazioni!
+              </button>
               <div class="result-display" id="resultDisplay2">
                 <h4>🏆 Nazione Estratta:</h4>
                 <div class="winner" id="winnerName2"></div>
@@ -108,30 +153,60 @@
             <h3>⚙️ Controlli Ruota Nazioni</h3>
             <div class="input-group">
               <label for="nationInput2">Nazione:</label>
-              <input type="text" id="nationInput2" placeholder="Inserisci una nazione..." />
+              <input
+                type="text"
+                id="nationInput2"
+                placeholder="Inserisci una nazione..."
+              />
             </div>
-            <button class="btn btn-primary" id="addNameBtn2">➕ Aggiungi Nazione</button>
+            <button class="btn btn-primary" id="addNameBtn2">
+              ➕ Aggiungi Nazione
+            </button>
             <div class="auto-controls">
               <div class="input-group">
                 <label for="autoCount2">Numero nazioni da generare:</label>
-                <input type="number" id="autoCount2" min="2" max="50" value="8" />
+                <input
+                  type="number"
+                  id="autoCount2"
+                  min="2"
+                  max="50"
+                  value="8"
+                />
               </div>
-              <button class="btn btn-primary" id="generateCompleteBtn2">🌍 Genera Nazioni Automaticamente</button>
+              <button class="btn btn-primary" id="generateCompleteBtn2">
+                🌍 Genera Nazioni Automaticamente
+              </button>
             </div>
             <div class="file-input">
-              <button class="btn btn-primary" id="loadFileBtn2">📂 Carica Nazioni</button>
-              <input type="file" id="fileInput2" accept=".txt,.json" style="display: none" />
+              <button class="btn btn-primary" id="loadFileBtn2">
+                📂 Carica Nazioni
+              </button>
+              <input
+                type="file"
+                id="fileInput2"
+                accept=".txt,.json"
+                style="display: none"
+              />
             </div>
             <div class="export-section">
               <h4>💾 Esporta Nazioni</h4>
-              <button class="btn btn-secondary" id="exportTxtBtn2">📄 Scarica TXT</button>
-              <button class="btn btn-secondary" id="exportJsonBtn2">📋 Scarica JSON</button>
+              <button class="btn btn-secondary" id="exportTxtBtn2">
+                📄 Scarica TXT
+              </button>
+              <button class="btn btn-secondary" id="exportJsonBtn2">
+                📋 Scarica JSON
+              </button>
             </div>
-            <button class="btn btn-danger" id="clearAllBtn2">🗑️ Cancella Tutto</button>
+            <button class="btn btn-danger" id="clearAllBtn2">
+              🗑️ Cancella Tutto
+            </button>
             <div class="names-list" id="namesList2">
               <div class="empty-state">
                 <div class="emoji">🌍</div>
-                <p>Nessuna nazione ancora.<br />Aggiungi alcune nazioni per iniziare!</p>
+                <p>
+                  Nessuna nazione ancora.<br />Aggiungi alcune nazioni per
+                  iniziare!
+                </p>
               </div>
             </div>
           </div>
@@ -142,8 +217,12 @@
         <div class="history-header">
           <h2>📜 Cronologia Estrazioni</h2>
           <div class="history-buttons">
-            <button class="btn btn-secondary btn-small" id="shareHistoryBtn">🔗 Condividi Cronologia</button>
-            <button class="btn btn-danger btn-small" id="resetHistoryBtn">🔄 Reset Cronologia</button>
+            <button class="btn btn-secondary btn-small" id="shareHistoryBtn">
+              🔗 Condividi Cronologia
+            </button>
+            <button class="btn btn-danger btn-small" id="resetHistoryBtn">
+              🔄 Reset Cronologia
+            </button>
           </div>
         </div>
         <div class="history-list" id="historyList">

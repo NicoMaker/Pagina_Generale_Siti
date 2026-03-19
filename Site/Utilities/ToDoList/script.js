@@ -32,7 +32,7 @@ class ModernTodoApp {
     });
     this.themeToggle.addEventListener("click", () => this.toggleTheme());
     this.clearCompleted.addEventListener("click", () =>
-      this.clearCompletedTodos()
+      this.clearCompletedTodos(),
     );
     this.clearAll.addEventListener("click", () => this.clearAllTodos());
 
@@ -277,7 +277,7 @@ class ModernTodoApp {
       } attività completate</strong>:<br><br>${completedTodos
         .map((t) => `• ${t.text}`)
         .join(
-          "<br>"
+          "<br>",
         )}<br><br>⚠️ <strong>Questa azione è irreversibile!</strong>`,
       buttons: [
         {
@@ -346,26 +346,29 @@ class ModernTodoApp {
               }, index * 100);
             });
 
-            setTimeout(() => {
-              this.todos = [];
-              this.saveData();
-              this.updateDisplay();
+            setTimeout(
+              () => {
+                this.todos = [];
+                this.saveData();
+                this.updateDisplay();
 
-              this.showAlert({
-                type: "success",
-                title: "🎉 Reset completato!",
-                message: `Tutte le ${totalTodos} attività sono state eliminate!<br><br>La tua lista è ora vuota e pronta per nuove sfide! ✨`,
-                buttons: [
-                  {
-                    text: "🚀 Ricominciamo!",
-                    type: "primary",
-                    action: () => {
-                      this.input.focus();
+                this.showAlert({
+                  type: "success",
+                  title: "🎉 Reset completato!",
+                  message: `Tutte le ${totalTodos} attività sono state eliminate!<br><br>La tua lista è ora vuota e pronta per nuove sfide! ✨`,
+                  buttons: [
+                    {
+                      text: "🚀 Ricominciamo!",
+                      type: "primary",
+                      action: () => {
+                        this.input.focus();
+                      },
                     },
-                  },
-                ],
-              });
-            }, todoElements.length * 100 + 400);
+                  ],
+                });
+              },
+              todoElements.length * 100 + 400,
+            );
           },
         },
         {
@@ -396,7 +399,7 @@ class ModernTodoApp {
 
   renderTodos() {
     this.todoList.innerHTML = "";
-    
+
     // Filtra le attività in base allo stato
     const filteredTodos = this.todos.filter((todo) => {
       if (this.filter === "completed") return todo.completed;
@@ -450,10 +453,10 @@ class ModernTodoApp {
   updateEmptyState() {
     // Aggiorna lo stato vuoto in base al filtro corrente
     const filteredCount = this.todos.filter((todo) => {
-        if (this.filter === "completed") return todo.completed;
-        if (this.filter === "pending") return !todo.completed;
-        return true;
-      }).length;
+      if (this.filter === "completed") return todo.completed;
+      if (this.filter === "pending") return !todo.completed;
+      return true;
+    }).length;
     this.emptyState.style.display = filteredCount === 0 ? "block" : "none";
   }
 
@@ -510,8 +513,8 @@ class ModernTodoApp {
       .map(
         (btn) =>
           `<button class="alert-btn ${btn.type}" data-action="${buttons.indexOf(
-            btn
-          )}">${btn.text}</button>`
+            btn,
+          )}">${btn.text}</button>`,
       )
       .join("");
 
@@ -640,7 +643,7 @@ document.addEventListener("DOMContentLoaded", function () {
       {
         duration: 3000,
         easing: "linear",
-      }
+      },
     );
 
     animation.onfinish = () => {

@@ -1,64 +1,89 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="it">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Convertitore Testo ↔ HTML</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⇄</text></svg>">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⇄</text></svg>"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
     <div class="container">
-        <h1>Convertitore HTML <span class="emoji">⇄</span></h1>
+      <h1>Convertitore HTML <span class="emoji">⇄</span></h1>
 
-        <div class="input-section">
-            <div class="label-wrapper">
-                <label for="inputArea">📝 Input</label>
-            </div>
-            <textarea id="inputArea" placeholder="Inserisci il tuo testo o codice HTML qui..."></textarea>
+      <div class="input-section">
+        <div class="label-wrapper">
+          <label for="inputArea">📝 Input</label>
+        </div>
+        <textarea
+          id="inputArea"
+          placeholder="Inserisci il tuo testo o codice HTML qui..."
+        ></textarea>
+      </div>
+
+      <div class="controls">
+        <div class="radio-group">
+          <div class="radio-option">
+            <input
+              type="radio"
+              id="toHtml"
+              name="conversionType"
+              value="toHtml"
+              checked
+            />
+            <label for="toHtml" class="radio-label">📄 Testo → HTML</label>
+          </div>
+
+          <div class="radio-option">
+            <input
+              type="radio"
+              id="toText"
+              name="conversionType"
+              value="toText"
+            />
+            <label for="toText" class="radio-label">💻 HTML → Testo</label>
+          </div>
         </div>
 
-        <div class="controls">
-            <div class="radio-group">
-                <div class="radio-option">
-                    <input type="radio" id="toHtml" name="conversionType" value="toHtml" checked>
-                    <label for="toHtml" class="radio-label">📄 Testo → HTML</label>
-                </div>
+        <button onclick="convertiTesto()">✨ Converti Ora</button>
+      </div>
 
-                <div class="radio-option">
-                    <input type="radio" id="toText" name="conversionType" value="toText">
-                    <label for="toText" class="radio-label">💻 HTML → Testo</label>
-                </div>
-            </div>
-            
-            <button onclick="convertiTesto()">✨ Converti Ora</button>
+      <div class="output-section">
+        <div class="output-container">
+          <h3>🎯 Risultato</h3>
+          <pre id="risultatoTesto">Il risultato apparirà qui...</pre>
+          <button
+            class="copy-btn"
+            onclick="copiaRisultato()"
+            style="display: none"
+          >
+            📋 Copia Risultato
+          </button>
         </div>
+      </div>
 
-        <div class="output-section">
-            <div class="output-container">
-                <h3>🎯 Risultato</h3>
-                <pre id="risultatoTesto">Il risultato apparirà qui...</pre>
-                <button class="copy-btn" onclick="copiaRisultato()" style="display: none;">📋 Copia Risultato</button>
-            </div>
-        </div>
-
-        <div class="features">
-            <h4>✨ Funzionalità Complete</h4>
-            <ul>
-                <li>📰 Converte paragrafi</li>
-                <li>🔤 Gestisce titoli H1-H6</li>
-                <li>📋 Gestisce liste</li>
-                <li>🔗 Preserva link</li>
-                <li>💪 Formattazione bold/italic</li>
-                <li>📊 Gestisce div e span</li>
-                <li>⚡ Caratteri speciali</li>
-                <li>🎨 Salti di riga <br></li>
-            </ul>
-        </div>
+      <div class="features">
+        <h4>✨ Funzionalità Complete</h4>
+        <ul>
+          <li>📰 Converte paragrafi</li>
+          <li>🔤 Gestisce titoli H1-H6</li>
+          <li>📋 Gestisce liste</li>
+          <li>🔗 Preserva link</li>
+          <li>💪 Formattazione bold/italic</li>
+          <li>📊 Gestisce div e span</li>
+          <li>⚡ Caratteri speciali</li>
+          <li>🎨 Salti di riga <br /></li>
+        </ul>
+      </div>
     </div>
 
     <script src="script.js"></script>
-</body>
+  </body>
 </html>
