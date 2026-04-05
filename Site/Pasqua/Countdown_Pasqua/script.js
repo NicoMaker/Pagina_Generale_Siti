@@ -1,21 +1,19 @@
 /**
- * Buona Pasqua — script.js
+ * script.js — Buona Pasqua | Countdown Festivo
  *
- * Logica dei 4 scenari:
- *
- * CASO 1 — Giorno di PASQUA
+ * SCENARIO 1 — Giorno di PASQUA
  *   Sezione Pasqua   → "Buona Pasqua!" (nessun countdown)
  *   Sezione Pasquetta → countdown verso Pasquetta (= domani, ~1 giorno)
  *
- * CASO 2 — Giorno di PASQUETTA (Lunedì dell'Angelo)
+ * SCENARIO 2 — Giorno di PASQUETTA (Lunedì dell'Angelo)
  *   Sezione Pasqua   → "La Pasqua è passata!" (nessun countdown)
  *   Sezione Pasquetta → "Buon Lunedì dell'Angelo!" (nessun countdown)
  *
- * CASO 3 — DOPO Pasquetta (stesso anno → anno prossimo)
+ * SCENARIO 3 — DOPO Pasquetta → anno prossimo
  *   Sezione Pasqua   → countdown verso Pasqua ANNO PROSSIMO
  *   Sezione Pasquetta → countdown verso Pasquetta ANNO PROSSIMO
  *
- * CASO 4 — PRIMA di Pasqua (normale)
+ * SCENARIO 4 — PRIMA di Pasqua (normale)
  *   Sezione Pasqua   → countdown verso Pasqua di quest'anno
  *   Sezione Pasquetta → countdown verso Pasquetta di quest'anno
  */
@@ -35,11 +33,11 @@ function calculateEasterDate(year) {
   const l = (32 + 2 * e + 2 * i - h - k) % 7;
   const m = Math.floor((a + 11 * h + 22 * l) / 451);
   const month = Math.floor((h + l - 7 * m + 114) / 31);
-  const day   = ((h + l - 7 * m + 114) % 31) + 1;
+  const day = ((h + l - 7 * m + 114) % 31) + 1;
   return new Date(year, month - 1, day);
 }
 
-// Confronta solo anno/mese/giorno (ignora l'ora)
+// Confronta solo anno/mese/giorno (ignora l'orario)
 function isSameDay(d1, d2) {
   return (
     d1.getFullYear() === d2.getFullYear() &&
@@ -48,13 +46,28 @@ function isSameDay(d1, d2) {
   );
 }
 
-// Formatta a due cifre
+// Formatta numero a due cifre
 function fmt(n) {
   return n < 10 ? "0" + n : String(n);
 }
 
-// ── Avvia un countdown verso una data target ─────────────────────────────────
-// Quando arriva a zero mostra il messaggio di celebrazione e nasconde il countdown
+// ── Mostra un messaggio di celebrazione ─────────────────────────────────────
+function showCelebration(sectionId, titleId, textId, titleText, bodyText, titleCssClass) {
+  const section = document.getElementById(sectionId);
+  const title   = document.getElementById(titleId);
+  const text    = document.getElementById(textId);
+
+  section.style.display = "block";
+  section.classList.add("fade-in");
+  title.textContent = titleText;
+  if (titleCssClass) title.classList.add(titleCssClass);
+  if (text && bodyText) text.textContent = bodyText;
+}
+
+// ── Avvia un countdown verso targetDate ─────────────────────────────────────
+// - ids: { daysId, hoursId, minutesId, secondsId }
+// - celebrationId: ID del div da mostrare quando scade
+// - countdownContainerId: ID del div countdown da nascondere quando scade
 function startCountdown(targetDate, ids, celebrationId, countdownContainerId) {
   const { daysId, hoursId, minutesId, secondsId } = ids;
 
@@ -62,20 +75,21 @@ function startCountdown(targetDate, ids, celebrationId, countdownContainerId) {
     const distance = targetDate.getTime() - Date.now();
 
     if (distance <= 0) {
-      // Azzeramento
+      // Azzeramento display
       document.getElementById(daysId).textContent    = "00";
       document.getElementById(hoursId).textContent   = "00";
       document.getElementById(minutesId).textContent = "00";
       document.getElementById(secondsId).textContent = "00";
-
+      // Nascondi countdown, mostra celebrazione
       if (countdownContainerId) {
         document.getElementById(countdownContainerId).style.display = "none";
       }
       if (celebrationId) {
-        document.getElementById(celebrationId).style.display = "block";
-        document.getElementById(celebrationId).classList.add("fade-in");
+        const cel = document.getElementById(celebrationId);
+        cel.style.display = "block";
+        cel.classList.add("fade-in");
       }
-      return; // stop
+      return; // stop il timer
     }
 
     const d = Math.floor(distance / (1000 * 60 * 60 * 24));
@@ -90,7 +104,7 @@ function startCountdown(targetDate, ids, celebrationId, countdownContainerId) {
     const secEl = document.getElementById(secondsId);
     secEl.textContent = fmt(s);
 
-    // Pulse sull'elemento secondi
+    // Animazione pulse sul box dei secondi
     const box = secEl.parentElement;
     box.classList.add("pulse");
     setTimeout(() => box.classList.remove("pulse"), 900);
@@ -101,32 +115,18 @@ function startCountdown(targetDate, ids, celebrationId, countdownContainerId) {
   tick();
 }
 
-// ── Mostra un messaggio di celebrazione ─────────────────────────────────────
-function showCelebration(sectionId, titleId, textId, titleText, bodyText, titleCssClass) {
-  const section = document.getElementById(sectionId);
-  const title   = document.getElementById(titleId);
-  const text    = document.getElementById(textId);
-
-  section.style.display = "block";
-  section.classList.add("fade-in");
-
-  title.textContent = titleText;
-  if (titleCssClass) title.classList.add(titleCssClass);
-  if (text && bodyText) text.textContent = bodyText;
-}
-
-// ── Crea e anima le uova galleggianti ───────────────────────────────────────
+// ── Crea uova galleggianti ───────────────────────────────────────────────────
 function spawnEgg(container) {
-  const egg    = document.createElement("div");
-  egg.className = "easter-egg";
-  const colors  = ["var(--egg-1)", "var(--egg-2)", "var(--egg-3)", "var(--egg-4)", "var(--egg-5)"];
-  const dur     = Math.random() * 10 + 15;
-  const delay   = Math.random() * 10;
+  const egg     = document.createElement("div");
+  egg.className  = "easter-egg";
+  const colors   = ["var(--egg-1)", "var(--egg-2)", "var(--egg-3)", "var(--egg-4)", "var(--egg-5)"];
+  const dur      = Math.random() * 10 + 15;
+  const delay    = Math.random() * 10;
   egg.style.cssText = [
-    "left:" + (Math.random() * 100) + "%",
-    "background-color:" + colors[Math.floor(Math.random() * colors.length)],
-    "animation-duration:" + dur + "s",
-    "animation-delay:-" + delay + "s",
+    "left:"                + (Math.random() * 100) + "%",
+    "background-color:"    + colors[Math.floor(Math.random() * colors.length)],
+    "animation-duration:"  + dur + "s",
+    "animation-delay:-"    + delay + "s",
   ].join(";");
   container.appendChild(egg);
   setTimeout(() => { egg.remove(); spawnEgg(container); }, dur * 1000);
@@ -148,7 +148,7 @@ function triggerCelebration() {
 // ── Entry point ──────────────────────────────────────────────────────────────
 document.addEventListener("DOMContentLoaded", () => {
 
-  // Anno corrente nel footer
+  // Anno nel footer
   document.getElementById("current-year").textContent = new Date().getFullYear();
 
   // Tema chiaro / scuro
@@ -158,53 +158,60 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   themeToggle.addEventListener("click", () => {
     document.body.classList.toggle("dark-theme");
-    localStorage.setItem("theme", document.body.classList.contains("dark-theme") ? "dark" : "light");
+    localStorage.setItem(
+      "theme",
+      document.body.classList.contains("dark-theme") ? "dark" : "light"
+    );
   });
 
   // Uova galleggianti
   createEasterEggs();
 
   // ── Calcolo date ────────────────────────────────────────────────────────────
-  const now   = new Date();
-  // "Oggi" senza ora (mezzanotte locale)
-  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const now       = new Date();
+  // "Oggi" a mezzanotte locale (per confronto puro per data)
+  const today     = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
-  const thisYear        = now.getFullYear();
-  const nextYear        = thisYear + 1;
+  const thisYear  = now.getFullYear();
+  const nextYear  = thisYear + 1;
 
-  const easterThis      = calculateEasterDate(thisYear);
-  const pasquettaThis   = new Date(easterThis);
+  // Pasqua e Pasquetta di quest'anno
+  const easterThis    = calculateEasterDate(thisYear);
+  const pasquettaThis = new Date(easterThis);
   pasquettaThis.setDate(pasquettaThis.getDate() + 1);
 
-  const easterNext      = calculateEasterDate(nextYear);
-  const pasquettaNext   = new Date(easterNext);
+  // Pasqua e Pasquetta dell'anno prossimo
+  const easterNext    = calculateEasterDate(nextYear);
+  const pasquettaNext = new Date(easterNext);
   pasquettaNext.setDate(pasquettaNext.getDate() + 1);
 
-  // Giorno dopo Pasquetta = inizio del periodo "dopo le feste"
-  const afterPasquetta  = new Date(pasquettaThis);
+  // Primo giorno "dopo le feste" = giorno successivo a Pasquetta
+  const afterPasquetta = new Date(pasquettaThis);
   afterPasquetta.setDate(afterPasquetta.getDate() + 1);
 
   const localeOpts = { weekday: "long", year: "numeric", month: "long", day: "numeric" };
 
+  // Rilevamento scenario
   const isEasterDay    = isSameDay(today, easterThis);
   const isPasquettaDay = isSameDay(today, pasquettaThis);
-  // "Dopo": siamo già nel giorno successivo a Pasquetta (o oltre)
-  const isAfter        = today >= afterPasquetta;
+  const isAfter        = today >= afterPasquetta; // giorno dopo Pasquetta o oltre
 
-  // ID comuni
+  // Alias ID
   const easterIds    = { daysId: "days",          hoursId: "hours",          minutesId: "minutes",          secondsId: "seconds"          };
   const pasquettaIds = { daysId: "pasquetta-days", hoursId: "pasquetta-hours", minutesId: "pasquetta-minutes", secondsId: "pasquetta-seconds" };
 
-  // ── CASO 1: Giorno di PASQUA ─────────────────────────────────────────────
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // SCENARIO 1 — Giorno di PASQUA
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   if (isEasterDay) {
-    // Titolo header
+
+    // Header
     document.getElementById("main-title").textContent    = "Buona Pasqua! 🐣";
     document.getElementById("main-subtitle").textContent = "Che la gioia di questo giorno illumini il tuo cuore";
 
     // Sezione Pasqua → celebrazione, nessun countdown
     document.getElementById("easter-section-title").textContent = "È Pasqua!";
-    document.getElementById("easter-date").textContent =
-      easterThis.toLocaleDateString("it-IT", localeOpts);
+    document.getElementById("easter-date").textContent          = easterThis.toLocaleDateString("it-IT", localeOpts);
     document.getElementById("countdown-container").style.display = "none";
     showCelebration(
       "celebration-message", "celebration-title", "celebration-text",
@@ -214,26 +221,27 @@ document.addEventListener("DOMContentLoaded", () => {
     );
 
     // Sezione Pasquetta → countdown verso domani
-    document.getElementById("pasquetta-section-title").textContent = "Manca alla Pasquetta";
-    document.getElementById("pasquetta-date").textContent =
-      pasquettaThis.toLocaleDateString("it-IT", localeOpts);
-    document.getElementById("pasquetta-countdown-container").style.display = "flex";
-    document.getElementById("pasquetta-celebration-message").style.display = "none";
+    document.getElementById("pasquetta-section-title").textContent          = "Manca alla Pasquetta";
+    document.getElementById("pasquetta-date").textContent                   = pasquettaThis.toLocaleDateString("it-IT", localeOpts);
+    document.getElementById("pasquetta-countdown-container").style.display  = "flex";
+    document.getElementById("pasquetta-celebration-message").style.display  = "none";
     startCountdown(pasquettaThis, pasquettaIds, "pasquetta-celebration-message", "pasquetta-countdown-container");
 
     document.body.classList.add("celebrating");
   }
 
-  // ── CASO 2: Giorno di PASQUETTA ──────────────────────────────────────────
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // SCENARIO 2 — Giorno di PASQUETTA (Lunedì dell'Angelo)
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   else if (isPasquettaDay) {
-    // Titolo header
+
+    // Header
     document.getElementById("main-title").textContent    = "Buon Lunedì dell'Angelo! 🌿";
     document.getElementById("main-subtitle").textContent = "Un giorno di allegria, picnic e spensieratezza";
 
     // Sezione Pasqua → "La Pasqua è passata!", nessun countdown
-    document.getElementById("easter-section-title").textContent = "Pasqua";
-    document.getElementById("easter-date").textContent =
-      easterThis.toLocaleDateString("it-IT", localeOpts);
+    document.getElementById("easter-section-title").textContent  = "Pasqua";
+    document.getElementById("easter-date").textContent           = easterThis.toLocaleDateString("it-IT", localeOpts);
     document.getElementById("countdown-container").style.display = "none";
     showCelebration(
       "celebration-message", "celebration-title", "celebration-text",
@@ -243,10 +251,9 @@ document.addEventListener("DOMContentLoaded", () => {
     );
 
     // Sezione Pasquetta → "Buon Lunedì dell'Angelo!", nessun countdown
-    document.getElementById("pasquetta-main-title").textContent = "Buon Lunedì dell'Angelo! 🌿";
-    document.getElementById("pasquetta-section-title").textContent = "È Pasquetta!";
-    document.getElementById("pasquetta-date").textContent =
-      pasquettaThis.toLocaleDateString("it-IT", localeOpts);
+    document.getElementById("pasquetta-main-title").textContent            = "Buon Lunedì dell'Angelo! 🌿";
+    document.getElementById("pasquetta-section-title").textContent         = "È Pasquetta!";
+    document.getElementById("pasquetta-date").textContent                  = pasquettaThis.toLocaleDateString("it-IT", localeOpts);
     document.getElementById("pasquetta-countdown-container").style.display = "none";
     showCelebration(
       "pasquetta-celebration-message", "pasquetta-celebration-title", "pasquetta-celebration-text",
@@ -258,49 +265,52 @@ document.addEventListener("DOMContentLoaded", () => {
     document.body.classList.add("celebrating");
   }
 
-  // ── CASO 3: DOPO Pasquetta → countdown anno prossimo ─────────────────────
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // SCENARIO 3 — DOPO Pasquetta → countdown anno prossimo
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   else if (isAfter) {
-    // Titolo header
-    document.getElementById("main-title").textContent    = "Buona Pasqua";
-    document.getElementById("main-subtitle").textContent = "Aspettando la prossima Pasqua...";
 
-    // Sezione Pasqua → countdown Pasqua anno prossimo
-    document.getElementById("easter-section-title").textContent = "Manca alla Pasqua " + nextYear;
-    document.getElementById("easter-date").textContent =
-      easterNext.toLocaleDateString("it-IT", localeOpts);
+    // Header
+    document.getElementById("main-title").textContent    = "Buona Pasqua";
+    document.getElementById("main-subtitle").textContent = "Aspettando la prossima Pasqua " + nextYear + "…";
+
+    // Sezione Pasqua → countdown verso Pasqua anno prossimo
+    document.getElementById("easter-section-title").textContent  = "Manca alla Pasqua " + nextYear;
+    document.getElementById("easter-date").textContent           = easterNext.toLocaleDateString("it-IT", localeOpts);
     document.getElementById("celebration-message").style.display = "none";
     document.getElementById("countdown-container").style.display = "flex";
     startCountdown(easterNext, easterIds, "celebration-message", "countdown-container");
 
-    // Sezione Pasquetta → countdown Pasquetta anno prossimo
-    document.getElementById("pasquetta-section-title").textContent = "Manca alla Pasquetta " + nextYear;
-    document.getElementById("pasquetta-date").textContent =
-      pasquettaNext.toLocaleDateString("it-IT", localeOpts);
-    document.getElementById("pasquetta-celebration-message").style.display = "none";
-    document.getElementById("pasquetta-countdown-container").style.display = "flex";
+    // Sezione Pasquetta → countdown verso Pasquetta anno prossimo
+    document.getElementById("pasquetta-section-title").textContent          = "Manca alla Pasquetta " + nextYear;
+    document.getElementById("pasquetta-date").textContent                   = pasquettaNext.toLocaleDateString("it-IT", localeOpts);
+    document.getElementById("pasquetta-celebration-message").style.display  = "none";
+    document.getElementById("pasquetta-countdown-container").style.display  = "flex";
     startCountdown(pasquettaNext, pasquettaIds, "pasquetta-celebration-message", "pasquetta-countdown-container");
   }
 
-  // ── CASO 4: PRIMA di Pasqua → countdown normale ───────────────────────────
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // SCENARIO 4 — PRIMA di Pasqua → countdown normale (quest'anno)
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   else {
+
     // Sezione Pasqua
-    document.getElementById("easter-section-title").textContent = "Manca alla Pasqua";
-    document.getElementById("easter-date").textContent =
-      easterThis.toLocaleDateString("it-IT", localeOpts);
+    document.getElementById("easter-section-title").textContent  = "Manca alla Pasqua";
+    document.getElementById("easter-date").textContent           = easterThis.toLocaleDateString("it-IT", localeOpts);
     document.getElementById("celebration-message").style.display = "none";
     document.getElementById("countdown-container").style.display = "flex";
     startCountdown(easterThis, easterIds, "celebration-message", "countdown-container");
 
     // Sezione Pasquetta
-    document.getElementById("pasquetta-section-title").textContent = "Manca alla Pasquetta";
-    document.getElementById("pasquetta-date").textContent =
-      pasquettaThis.toLocaleDateString("it-IT", localeOpts);
-    document.getElementById("pasquetta-celebration-message").style.display = "none";
-    document.getElementById("pasquetta-countdown-container").style.display = "flex";
+    document.getElementById("pasquetta-section-title").textContent          = "Manca alla Pasquetta";
+    document.getElementById("pasquetta-date").textContent                   = pasquettaThis.toLocaleDateString("it-IT", localeOpts);
+    document.getElementById("pasquetta-celebration-message").style.display  = "none";
+    document.getElementById("pasquetta-countdown-container").style.display  = "flex";
     startCountdown(pasquettaThis, pasquettaIds, "pasquetta-celebration-message", "pasquetta-countdown-container");
   }
 
   // ── Bottoni Festeggia ────────────────────────────────────────────────────
   document.getElementById("celebrate-btn")?.addEventListener("click", triggerCelebration);
   document.getElementById("pasquetta-celebrate-btn")?.addEventListener("click", triggerCelebration);
+
 });
