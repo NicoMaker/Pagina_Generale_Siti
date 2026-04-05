@@ -345,15 +345,17 @@ body {
 }
 
 .countdown__val {
-  font-family: 'Cormorant Garamond', serif;
+  font-family: 'DM Sans', sans-serif;
   font-size: clamp(1.8rem, 5vw, 2.8rem);
   font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
   color: white;
   line-height: 1;
   position: relative;
   z-index: 1;
   text-shadow: 0 2px 8px rgba(0,0,0,0.2);
-  transition: transform 0.15s ease;
+  transition: transform 0.15s ease, opacity 0.1s ease;
 }
 
 .countdown__lbl {
@@ -363,6 +365,9 @@ body {
   text-transform: uppercase;
   color: var(--text-secondary);
   text-align: center;
+  white-space: nowrap;
+  min-width: clamp(72px, 16vw, 110px);
+  display: block;
 }
 
 .countdown__sep {

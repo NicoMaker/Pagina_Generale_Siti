@@ -222,8 +222,9 @@ function initParticles() {
 // ── Entry point ──────────────────────────────────────────────────────────────
 document.addEventListener("DOMContentLoaded", () => {
 
-  // Anno footer
+  // Anno footer e badge
   document.getElementById("current-year").textContent = new Date().getFullYear();
+  document.getElementById("hero-year").textContent    = new Date().getFullYear();
 
   // Tema
   const themeBtn = document.getElementById("theme-toggle");
