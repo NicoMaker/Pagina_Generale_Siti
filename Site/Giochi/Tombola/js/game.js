@@ -49,13 +49,14 @@ async function initGame() {
     showNotification("Errore nel caricamento delle tabelle. Utilizzando tabella predefinita.", "error");
   }
 
-  // Interval slider
+  // Interval slider — supports 0.5 steps (e.g. 2.5s, 3.5s)
   if (intervalInput) {
     intervalInput.addEventListener("input", () => {
-      secondsInterval = parseInt(intervalInput.value);
+      secondsInterval = parseFloat(intervalInput.value);
       if (intervalLabel) intervalLabel.textContent = secondsInterval + "s";
     });
-    secondsInterval = parseInt(intervalInput.value) || 3;
+    secondsInterval = parseFloat(intervalInput.value) || 3;
+    if (intervalLabel) intervalLabel.textContent = secondsInterval + "s";
   }
 
   // Announce speed slider
@@ -592,7 +593,7 @@ function addKeyboardShortcuts() {
     #intervalLabel, #speedLabel {
       font-weight: 700;
       color: var(--theme-primary);
-      min-width: 28px;
+      min-width: 36px;
       font-size: 0.95rem;
     }
 
