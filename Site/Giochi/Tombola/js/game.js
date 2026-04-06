@@ -11,26 +11,29 @@ let isAnimating = false;
 
 // Announce state
 let announceTimeout = null;
-let announceQueue = [];
 let isAnnouncingNumbers = false;
 let stopAnnounceFlag = false;
+let announceMode = "all";
+let countPreset = "all";
+let rangeFrom = 1;
+let rangeTo = 90;
 
 // DOM Elements
 const extractBtn = document.getElementById("extractBtn");
 const resetBtn = document.getElementById("resetBtn");
 const autoBtn = document.getElementById("autoBtn");
-const announceBtn = document.getElementById("announceBtn");
 const intervalInput = document.getElementById("intervalInput");
+const intervalLabel = document.getElementById("intervalLabel");
 const currentNumberDisplay = document.getElementById("currentNumber");
-const extractedNumbersList = document.getElementById("extractedNumbersList");
 const tombolaContainer = document.getElementById("tombola-container");
 const confettiContainer = document.getElementById("confettiContainer");
 
-// Speech synthesis configuration
+// Speech synthesis
 const synth = window.speechSynthesis;
 let speechEnabled = true;
 
-// Initialize the game
+// ─── INIT ─────────────────────────────────────────────────────────────────────
+
 async function initGame() {
   tombolaContainer.innerHTML = '<div class="loading">Caricamento tabellone...</div>';
   numbers = Array.from({ length: 90 }, (_, i) => i + 1);
@@ -39,16 +42,6 @@ async function initGame() {
     const response = await fetch("../tables.json");
     const data = await response.json();
     generateTables(data.tables);
-
-    if (!document.querySelector(".extracted-numbers")) {
-      const extractedContainer = document.createElement("div");
-      extractedContainer.className = "extracted-numbers";
-      extractedContainer.innerHTML = `
-        <h3>Numeri Estratti (0/90)</h3>
-        <div class="extracted-list" id="extractedNumbersList"></div>
-      `;
-      tombolaContainer.parentNode.insertBefore(extractedContainer, tombolaContainer);
-    }
   } catch (error) {
     console.error("Error loading tables:", error);
     const fallbackTable = { numbers: Array.from({ length: 90 }, (_, i) => i + 1) };
@@ -56,18 +49,37 @@ async function initGame() {
     showNotification("Errore nel caricamento delle tabelle. Utilizzando tabella predefinita.", "error");
   }
 
+  // Interval slider
+  if (intervalInput) {
+    intervalInput.addEventListener("input", () => {
+      secondsInterval = parseInt(intervalInput.value);
+      if (intervalLabel) intervalLabel.textContent = secondsInterval + "s";
+    });
+    secondsInterval = parseInt(intervalInput.value) || 3;
+  }
+
+  // Announce speed slider
+  const speedSlider = document.getElementById("announceSpeed");
+  const speedLabel = document.getElementById("speedLabel");
+  if (speedSlider && speedLabel) {
+    speedSlider.addEventListener("input", () => {
+      speedLabel.textContent = speedSlider.value + "s";
+    });
+  }
+
+  // Check number on Enter
+  const checkInput = document.getElementById("checkNumberInput");
+  if (checkInput) {
+    checkInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") checkNumber();
+    });
+  }
+
   extractBtn.addEventListener("click", startGame);
   resetBtn.addEventListener("click", resetGame);
-
   if (autoBtn) autoBtn.addEventListener("click", toggleAutoGenerate);
-  if (intervalInput) {
-    intervalInput.addEventListener("change", updateInterval);
-    intervalInput.value = secondsInterval;
-  }
-  if (announceBtn) announceBtn.addEventListener("click", showAnnouncePanel);
 
   addSpeechToggle();
-  injectAnnouncePanel();
   updateUI();
   addSwipeGestures();
   addKeyboardShortcuts();
@@ -75,7 +87,8 @@ async function initGame() {
   setTimeout(() => { speak("Si inizia!"); }, 1000);
 }
 
-// Generate tables
+// ─── TABLES ───────────────────────────────────────────────────────────────────
+
 function generateTables(tablesData) {
   let tableContent = "";
   tablesData.forEach((table) => {
@@ -84,11 +97,9 @@ function generateTables(tablesData) {
       tableContent += `<tr>`;
       for (let j = 0; j < 5; j++) {
         const number = table.numbers[i + j];
-        if (number) {
-          tableContent += `<td id="nr${number}" onclick="choseMe(this)">${number}</td>`;
-        } else {
-          tableContent += `<td></td>`;
-        }
+        tableContent += number
+          ? `<td id="nr${number}" onclick="choseMe(this)">${number}</td>`
+          : `<td></td>`;
       }
       tableContent += `</tr>`;
     }
@@ -96,14 +107,14 @@ function generateTables(tablesData) {
   });
   tombolaContainer.innerHTML = tableContent;
 
-  const tables = document.querySelectorAll(".sub-table");
-  tables.forEach((table, index) => {
+  document.querySelectorAll(".sub-table").forEach((table, index) => {
     table.style.animationDelay = `${index * 0.1}s`;
     table.classList.add("fade-in");
   });
 }
 
-// Start game function
+// ─── GAME FLOW ────────────────────────────────────────────────────────────────
+
 function startGame() {
   if (isAnimating) return;
   if (isFirstStart) {
@@ -122,10 +133,10 @@ function toggleAutoGenerate() {
   if (autoGenerateInterval) {
     clearInterval(autoGenerateInterval);
     autoGenerateInterval = null;
-    autoBtn.innerHTML = '<i class="fas fa-play"></i> Avvia Automatico';
+    autoBtn.innerHTML = '<i class="fas fa-play"></i> <span>Avvia Automatico</span>';
     autoBtn.classList.remove("danger");
     autoBtn.classList.add("success");
-    intervalInput.disabled = false;
+    if (intervalInput) intervalInput.disabled = false;
     speak("Estrazione automatica fermata");
   } else {
     if (isFirstStart) startGame();
@@ -133,22 +144,12 @@ function toggleAutoGenerate() {
       showNotification("Tutti i numeri sono stati estratti!", "warning");
       return;
     }
-    secondsInterval = Number.parseInt(intervalInput.value) || 3;
-    autoBtn.innerHTML = '<i class="fas fa-stop"></i> Ferma Automatico';
+    autoBtn.innerHTML = '<i class="fas fa-stop"></i> <span>Ferma Automatico</span>';
     autoBtn.classList.remove("success");
     autoBtn.classList.add("danger");
-    intervalInput.disabled = true;
+    if (intervalInput) intervalInput.disabled = true;
     extractRandom();
     autoGenerateInterval = setInterval(extractRandom, secondsInterval * 1000);
-  }
-}
-
-function updateInterval() {
-  const value = Number.parseInt(intervalInput.value);
-  if (value && value > 0) {
-    secondsInterval = value;
-  } else {
-    intervalInput.value = secondsInterval;
   }
 }
 
@@ -168,7 +169,6 @@ function extractRandom() {
 
   const idx = Math.floor(Math.random() * numbers.length);
   const num = numbers[idx];
-
   if (!extractedNumbers.has(num)) {
     isAnimating = true;
     selectNr(num);
@@ -186,8 +186,7 @@ function selectNr(nn) {
 
   let blinkCount = 9;
   const blinkInterval = setInterval(() => {
-    if (blinkCount % 2 === 0) { celnode.className = "on"; }
-    else { celnode.className = "blink"; }
+    celnode.className = blinkCount % 2 === 0 ? "on" : "blink";
     blinkCount--;
     if (blinkCount < 0) { clearInterval(blinkInterval); celnode.className = "on"; }
   }, 300);
@@ -202,7 +201,6 @@ function selectNr(nn) {
   updateUI(true);
 
   if (extractedNumbers.size % 10 === 0) createConfetti();
-
   updateExtractedNumbers();
 }
 
@@ -218,9 +216,9 @@ function resetNr(nn) {
 
 function choseMe(anode) {
   if (isAnimating) return;
-  const id = anode.id, nn = +id.match(/\d+/)[0];
-  if (!extractedNumbers.has(nn)) { selectNr(nn); }
-  else { resetNr(nn); }
+  const nn = +anode.id.match(/\d+/)[0];
+  if (!extractedNumbers.has(nn)) selectNr(nn);
+  else resetNr(nn);
 }
 
 function updateUI(animate = false) {
@@ -239,15 +237,14 @@ function updateExtractedNumbers() {
   const extractedList = document.getElementById("extractedNumbersList");
   if (!extractedList) return;
   extractedList.innerHTML = "";
-  const sortedNumbers = Array.from(extractedNumbers).sort((a, b) => a - b);
-  sortedNumbers.forEach((number) => {
-    const numberTag = document.createElement("div");
-    numberTag.className = "number-tag";
-    numberTag.textContent = number;
-    numberTag.setAttribute("aria-label", `Numero estratto ${number}`);
-    extractedList.appendChild(numberTag);
+  Array.from(extractedNumbers).sort((a, b) => a - b).forEach((number) => {
+    const tag = document.createElement("div");
+    tag.className = "number-tag";
+    tag.textContent = number;
+    tag.setAttribute("aria-label", `Numero estratto ${number}`);
+    extractedList.appendChild(tag);
   });
-  const heading = extractedList.parentNode.querySelector("h3");
+  const heading = document.querySelector(".extracted-numbers h3");
   if (heading) heading.textContent = `Numeri Estratti (${extractedNumbers.size}/90)`;
 }
 
@@ -257,7 +254,7 @@ function resetGame() {
     clearInterval(autoGenerateInterval);
     autoGenerateInterval = null;
     if (autoBtn) {
-      autoBtn.innerHTML = '<i class="fas fa-play"></i> Avvia Automatico';
+      autoBtn.innerHTML = '<i class="fas fa-play"></i> <span>Avvia Automatico</span>';
       autoBtn.classList.remove("danger");
       autoBtn.classList.add("success");
     }
@@ -281,136 +278,11 @@ function resetGame() {
   setTimeout(() => { speak("Si inizia!"); }, 1500);
 }
 
-// ─── PANNELLO ANNUNCIO AVANZATO ───────────────────────────────────────────────
-
-function injectAnnouncePanel() {
-  const panel = document.createElement("div");
-  panel.id = "announcePanel";
-  panel.className = "announce-panel hidden";
-  panel.innerHTML = `
-    <div class="announce-panel-inner">
-      <div class="announce-panel-header">
-        <h3><i class="fas fa-bullhorn"></i> Annuncia Numeri Estratti</h3>
-        <button class="close-panel-btn" onclick="hideAnnouncePanel()"><i class="fas fa-times"></i></button>
-      </div>
-
-      <div class="announce-section">
-        <label class="announce-label"><i class="fas fa-list-ol"></i> Modalità annuncio</label>
-        <div class="announce-mode-btns">
-          <button class="mode-btn active" data-mode="all" onclick="setAnnounceMode('all', this)">Tutti</button>
-          <button class="mode-btn" data-mode="count" onclick="setAnnounceMode('count', this)">Ultimi N</button>
-          <button class="mode-btn" data-mode="range" onclick="setAnnounceMode('range', this)">Range</button>
-        </div>
-      </div>
-
-      <!-- Modalità TUTTI -->
-      <div id="modeAll" class="announce-mode-section">
-        <p class="announce-hint">Verranno annunciati tutti i numeri estratti finora.</p>
-        <div class="announce-qty-row">
-          <label>Quanti numeri annunciare:</label>
-          <select id="announceQtyAll">
-            <option value="all">Tutti</option>
-            <option value="5">Ultimi 5</option>
-            <option value="10">Ultimi 10</option>
-            <option value="15">Ultimi 15</option>
-            <option value="20">Ultimi 20</option>
-            <option value="30">Ultimi 30</option>
-            <option value="50">Ultimi 50</option>
-          </select>
-        </div>
-      </div>
-
-      <!-- Modalità ULTIMI N -->
-      <div id="modeCount" class="announce-mode-section hidden">
-        <label class="announce-label">Annuncia gli ultimi:</label>
-        <div class="count-presets">
-          <button class="preset-btn active" data-val="10" onclick="setCountPreset(10, this)">10</button>
-          <button class="preset-btn" data-val="15" onclick="setCountPreset(15, this)">15</button>
-          <button class="preset-btn" data-val="20" onclick="setCountPreset(20, this)">20</button>
-          <button class="preset-btn" data-val="25" onclick="setCountPreset(25, this)">25</button>
-          <button class="preset-btn" data-val="30" onclick="setCountPreset(30, this)">30</button>
-        </div>
-        <div class="custom-count-row">
-          <label>oppure inserisci un numero:</label>
-          <input type="number" id="customCountInput" min="1" max="90" placeholder="es. 12" />
-        </div>
-      </div>
-
-      <!-- Modalità RANGE -->
-      <div id="modeRange" class="announce-mode-section hidden">
-        <label class="announce-label">Annuncia numeri estratti in questo range:</label>
-        <div class="range-presets">
-          <button class="preset-btn active" data-from="1" data-to="10" onclick="setRangePreset(1,10,this)">1-10</button>
-          <button class="preset-btn" data-from="1" data-to="20" onclick="setRangePreset(1,20,this)">1-20</button>
-          <button class="preset-btn" data-from="1" data-to="30" onclick="setRangePreset(1,30,this)">1-30</button>
-          <button class="preset-btn" data-from="1" data-to="50" onclick="setRangePreset(1,50,this)">1-50</button>
-          <button class="preset-btn" data-from="51" data-to="90" onclick="setRangePreset(51,90,this)">51-90</button>
-        </div>
-        <div class="range-custom-row">
-          <label>oppure range personalizzato:</label>
-          <div class="range-inputs">
-            <input type="number" id="rangeFrom" min="1" max="90" placeholder="Da" value="1" />
-            <span>→</span>
-            <input type="number" id="rangeTo" min="1" max="90" placeholder="A" value="90" />
-          </div>
-        </div>
-      </div>
-
-      <!-- Velocità -->
-      <div class="announce-section">
-        <label class="announce-label"><i class="fas fa-tachometer-alt"></i> Velocità (secondi tra i numeri)</label>
-        <div class="speed-row">
-          <span>1s</span>
-          <input type="range" id="announceSpeed" min="1" max="6" value="2" step="0.5" />
-          <span>6s</span>
-          <span id="speedLabel">2s</span>
-        </div>
-      </div>
-
-      <!-- Controllo numero -->
-      <div class="announce-section check-section">
-        <label class="announce-label"><i class="fas fa-search"></i> Controlla numero</label>
-        <div class="check-number-row">
-          <input type="number" id="checkNumberInput" min="1" max="90" placeholder="1-90" />
-          <button class="check-btn" onclick="checkNumber()"><i class="fas fa-search"></i> Controlla</button>
-        </div>
-        <div id="checkResult" class="check-result hidden"></div>
-      </div>
-
-      <!-- Pulsanti azione -->
-      <div class="announce-actions">
-        <button id="startAnnounceBtn" class="game-btn primary" onclick="startAnnouncement()">
-          <i class="fas fa-play"></i> <span>Avvia Annuncio</span>
-        </button>
-        <button id="stopAnnounceBtn" class="game-btn danger hidden" onclick="stopAnnouncement()">
-          <i class="fas fa-stop"></i> <span>Ferma Annuncio</span>
-        </button>
-      </div>
-
-      <div id="announceProgress" class="announce-progress hidden">
-        <span id="announceProgressText">Annunciando...</span>
-      </div>
-    </div>
-  `;
-
-  document.body.appendChild(panel);
-
-  // Speed slider label update
-  const speedSlider = document.getElementById("announceSpeed");
-  const speedLabel = document.getElementById("speedLabel");
-  speedSlider.addEventListener("input", () => {
-    speedLabel.textContent = speedSlider.value + "s";
-  });
-}
-
-let announceMode = "all";
-let countPreset = 10;
-let rangeFrom = 1;
-let rangeTo = 90;
+// ─── ANNOUNCE MODE CONTROLS ───────────────────────────────────────────────────
 
 function setAnnounceMode(mode, btn) {
   announceMode = mode;
-  document.querySelectorAll(".announce-mode-btns .mode-btn").forEach(b => b.classList.remove("active"));
+  document.querySelectorAll(".mode-btn-group .mode-btn").forEach(b => b.classList.remove("active"));
   btn.classList.add("active");
   document.getElementById("modeAll").classList.add("hidden");
   document.getElementById("modeCount").classList.add("hidden");
@@ -420,7 +292,7 @@ function setAnnounceMode(mode, btn) {
 
 function setCountPreset(val, btn) {
   countPreset = val;
-  document.querySelectorAll(".count-presets .preset-btn").forEach(b => b.classList.remove("active"));
+  document.querySelectorAll("#modeCount .preset-btn").forEach(b => b.classList.remove("active"));
   btn.classList.add("active");
   document.getElementById("customCountInput").value = "";
 }
@@ -428,20 +300,13 @@ function setCountPreset(val, btn) {
 function setRangePreset(from, to, btn) {
   rangeFrom = from;
   rangeTo = to;
-  document.querySelectorAll(".range-presets .preset-btn").forEach(b => b.classList.remove("active"));
+  document.querySelectorAll("#modeRange .preset-btn").forEach(b => b.classList.remove("active"));
   btn.classList.add("active");
   document.getElementById("rangeFrom").value = from;
   document.getElementById("rangeTo").value = to;
 }
 
-function showAnnouncePanel() {
-  document.getElementById("announcePanel").classList.remove("hidden");
-}
-
-function hideAnnouncePanel() {
-  document.getElementById("announcePanel").classList.add("hidden");
-  stopAnnouncement();
-}
+// ─── ANNOUNCE ─────────────────────────────────────────────────────────────────
 
 function buildAnnounceList() {
   const sorted = Array.from(extractedNumbers).sort((a, b) => a - b);
@@ -455,7 +320,8 @@ function buildAnnounceList() {
   if (announceMode === "count") {
     const customVal = document.getElementById("customCountInput").value;
     const count = customVal ? parseInt(customVal) : countPreset;
-    return sorted.slice(-count);
+    if (count === "all" || count === 0) return sorted;
+    return sorted.slice(-parseInt(count));
   }
 
   if (announceMode === "range") {
@@ -474,7 +340,7 @@ function startAnnouncement() {
     return;
   }
 
-  stopAnnouncement(); // stop any previous
+  stopAnnouncement();
 
   const list = buildAnnounceList();
   if (list.length === 0) {
@@ -486,12 +352,14 @@ function startAnnouncement() {
   stopAnnounceFlag = false;
   isAnnouncingNumbers = true;
 
-  document.getElementById("startAnnounceBtn").classList.add("hidden");
-  document.getElementById("stopAnnounceBtn").classList.remove("hidden");
-  document.getElementById("announceProgress").classList.remove("hidden");
+  const startBtn = document.getElementById("startAnnounceBtn");
+  const stopBtn = document.getElementById("stopAnnounceBtn");
+  const progress = document.getElementById("announceProgress");
+  if (startBtn) startBtn.classList.add("hidden");
+  if (stopBtn) stopBtn.classList.remove("hidden");
+  if (progress) progress.classList.remove("hidden");
 
   const speed = parseFloat(document.getElementById("announceSpeed").value) * 1000;
-
   speak(`Annunciando ${list.length} numeri`);
 
   let index = 0;
@@ -502,7 +370,7 @@ function startAnnouncement() {
       finishAnnouncement();
       return;
     }
-    progressText.textContent = `Annunciando ${index + 1} di ${list.length}: ${list[index]}`;
+    if (progressText) progressText.textContent = `Annunciando ${index + 1} di ${list.length}: ${list[index]}`;
     speak(`${list[index]}`);
     index++;
     announceTimeout = setTimeout(announceNext, speed);
@@ -530,7 +398,7 @@ function finishAnnouncement() {
   if (progress) progress.classList.add("hidden");
 }
 
-// ─── CONTROLLO NUMERO ─────────────────────────────────────────────────────────
+// ─── CHECK NUMBER ─────────────────────────────────────────────────────────────
 
 function checkNumber() {
   const input = document.getElementById("checkNumberInput");
@@ -547,7 +415,6 @@ function checkNumber() {
 
   const isOut = extractedNumbers.has(val);
   result.classList.remove("hidden");
-
   if (isOut) {
     result.className = "check-result out";
     result.innerHTML = `<i class="fas fa-check-circle"></i> Il numero <strong>${val}</strong> è già uscito!`;
@@ -558,16 +425,6 @@ function checkNumber() {
     speak(`Il numero ${val} non è ancora uscito`);
   }
 }
-
-// Check number on Enter key in input
-document.addEventListener("DOMContentLoaded", () => {
-  const checkInput = document.getElementById("checkNumberInput");
-  if (checkInput) {
-    checkInput.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") checkNumber();
-    });
-  }
-});
 
 // ─── CONFETTI ─────────────────────────────────────────────────────────────────
 
@@ -583,7 +440,6 @@ function createConfetti() {
     confetti.style.height = `${Math.random() * 10 + 5}px`;
     confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
     confettiContainer.appendChild(confetti);
-
     const animation = confetti.animate(
       [
         { transform: `translate(${Math.random() * 20 - 10}px, 0) rotate(0deg)` },
@@ -607,32 +463,233 @@ function speak(text) {
   synth.speak(utterance);
 }
 
-// ─── SPEECH TOGGLE ────────────────────────────────────────────────────────────
-
 function addSpeechToggle() {
   const gameHeader = document.querySelector(".game-header");
   if (!gameHeader) return;
-
   const speechToggle = document.createElement("button");
   speechToggle.className = "speech-toggle";
   speechToggle.innerHTML = '<i class="fas fa-volume-up"></i>';
   speechToggle.setAttribute("aria-label", "Attiva/disattiva audio");
   speechToggle.setAttribute("title", "Attiva/disattiva audio");
-
   speechToggle.addEventListener("click", () => {
     speechEnabled = !speechEnabled;
-    if (speechEnabled) {
-      speechToggle.innerHTML = '<i class="fas fa-volume-up"></i>';
-      speak("Audio attivato");
-    } else {
-      speechToggle.innerHTML = '<i class="fas fa-volume-mute"></i>';
-    }
+    speechToggle.innerHTML = speechEnabled
+      ? '<i class="fas fa-volume-up"></i>'
+      : '<i class="fas fa-volume-mute"></i>';
+    if (speechEnabled) speak("Audio attivato");
   });
-
   gameHeader.appendChild(speechToggle);
+}
 
+// ─── NOTIFICATION ─────────────────────────────────────────────────────────────
+
+function showNotification(message, type = "success") {
+  const existing = document.querySelector(".notification");
+  if (existing) existing.remove();
+  const notification = document.createElement("div");
+  notification.className = `notification ${type}`;
+  notification.textContent = message;
+  document.body.appendChild(notification);
+  setTimeout(() => { notification.classList.add("show"); }, 10);
+  setTimeout(() => {
+    notification.classList.remove("show");
+    setTimeout(() => { notification.remove(); }, 300);
+  }, 3000);
+}
+
+// ─── SWIPE & KEYBOARD ─────────────────────────────────────────────────────────
+
+function addSwipeGestures() {
+  let touchStartX = 0;
+  document.addEventListener("touchstart", (e) => { touchStartX = e.changedTouches[0].screenX; }, false);
+  document.addEventListener("touchend", (e) => {
+    const touchEndX = e.changedTouches[0].screenX;
+    const threshold = 100;
+    if (touchEndX - touchStartX > threshold) window.location.href = "../index.html";
+    else if (touchStartX - touchEndX > threshold) {
+      if (!isFirstStart) extractRandom(); else startGame();
+    }
+  }, false);
+}
+
+function addKeyboardShortcuts() {
+  document.addEventListener("keydown", (e) => {
+    if (e.code === "Space" || e.code === "Enter") {
+      if (document.activeElement && ["INPUT", "SELECT", "BUTTON"].includes(document.activeElement.tagName)) return;
+      e.preventDefault();
+      if (!isFirstStart) extractRandom(); else startGame();
+    }
+    if (e.code === "KeyR") resetGame();
+    if (e.code === "KeyA" && autoBtn) toggleAutoGenerate();
+    if (e.code === "Escape") window.location.href = "../index.html";
+  });
+}
+
+// ─── CSS INLINE ───────────────────────────────────────────────────────────────
+
+(function injectStyles() {
   const style = document.createElement("style");
   style.textContent = `
+    /* ── Inline controls grid ── */
+    .inline-controls-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+    @media (max-width: 768px) {
+      .inline-controls-grid { grid-template-columns: 1fr; }
+    }
+
+    .control-box {
+      background: rgba(255,255,255,0.95);
+      border-radius: 14px;
+      padding: 18px 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .control-box-title {
+      font-weight: 700;
+      color: var(--theme-primary);
+      font-size: 1rem;
+      border-bottom: 2px solid var(--theme-primary);
+      padding-bottom: 8px;
+      margin-bottom: 4px;
+    }
+    .control-box-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .control-box-row label {
+      font-weight: 600;
+      font-size: 0.88rem;
+      color: var(--theme-primary);
+      white-space: nowrap;
+    }
+    .control-box-row input[type=range] {
+      flex: 1;
+      min-width: 80px;
+      accent-color: var(--theme-primary);
+    }
+    .control-box-row select {
+      padding: 6px 10px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+    .control-box-row input[type=number] {
+      padding: 6px 8px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      text-align: center;
+    }
+    #intervalLabel, #speedLabel {
+      font-weight: 700;
+      color: var(--theme-primary);
+      min-width: 28px;
+      font-size: 0.95rem;
+    }
+
+    /* Mode buttons */
+    .label-row { align-items: center; }
+    .mode-btn-group { display: flex; gap: 6px; flex-wrap: wrap; }
+    .mode-btn {
+      padding: 7px 14px;
+      border: 2px solid #ddd;
+      border-radius: 10px;
+      background: #f8f8f8;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.85rem;
+      transition: all 0.2s;
+    }
+    .mode-btn.active {
+      border-color: var(--theme-primary);
+      background: var(--theme-primary);
+      color: #fff;
+    }
+
+    /* Announce sub sections */
+    .announce-sub-section { display: flex; flex-direction: column; gap: 8px; }
+    .announce-sub-section.hidden { display: none; }
+
+    /* Preset buttons */
+    .preset-row { display: flex; flex-wrap: wrap; gap: 6px; }
+    .preset-btn {
+      padding: 6px 12px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      background: #f8f8f8;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.85rem;
+      transition: all 0.2s;
+    }
+    .preset-btn.active {
+      border-color: var(--theme-secondary);
+      background: var(--theme-secondary);
+      color: #fff;
+    }
+
+    /* Mini search button */
+    .mini-btn {
+      padding: 7px 12px;
+      background: var(--theme-primary);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+    }
+    .mini-btn:hover { opacity: 0.85; transform: translateY(-1px); }
+
+    /* Check result */
+    .check-result {
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .check-result.hidden { display: none; }
+    .check-result.out { background:#e8f5e9; color:#2e7d32; border:2px solid #a5d6a7; }
+    .check-result.not-out { background:#fff3e0; color:#e65100; border:2px solid #ffcc80; }
+    .check-result.error { background:#fce4ec; color:#c62828; border:2px solid #ef9a9a; }
+
+    /* Announce action row */
+    .announce-action-row { justify-content: flex-start; gap: 10px; }
+    .small-btn { padding: 10px 18px !important; font-size: 0.9rem !important; }
+
+    /* Announce progress */
+    .announce-progress {
+      padding: 8px 12px;
+      background: #f0f4ff;
+      border-radius: 8px;
+      color: var(--theme-primary);
+      font-weight: 600;
+      font-size: 0.88rem;
+      text-align: center;
+    }
+    .announce-progress.hidden { display: none; }
+
+    /* Extracted numbers list */
+    .extracted-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+    }
+
+    /* Speech toggle */
     .speech-toggle {
       background: none;
       border: none;
@@ -643,28 +700,9 @@ function addSpeechToggle() {
       border-radius: 50%;
       transition: all 0.3s ease;
     }
-    .speech-toggle:hover {
-      background-color: rgba(0,0,0,0.05);
-      transform: scale(1.1);
-    }
-    @keyframes number-change {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.2); }
-      100% { transform: scale(1); }
-    }
-    .number-change { animation: number-change 0.5s ease; }
-    .fade-in {
-      opacity: 0;
-      transform: translateY(20px);
-      animation: fadeIn 0.5s forwards;
-    }
-    .pulse-animation { animation: pulse 1s infinite alternate; }
-    .loading {
-      text-align: center;
-      padding: 20px;
-      font-size: 1.2rem;
-      color: var(--theme-primary);
-    }
+    .speech-toggle:hover { background-color: rgba(0,0,0,0.05); transform: scale(1.1); }
+
+    /* Notification */
     .notification {
       position: fixed;
       top: 20px;
@@ -683,289 +721,19 @@ function addSpeechToggle() {
     .notification.error { border-left: 4px solid var(--theme-danger); }
     .notification.warning { border-left: 4px solid var(--theme-accent); }
 
-    /* ── ANNOUNCE PANEL ── */
-    .announce-panel {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.55);
-      z-index: 3000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 16px;
-      backdrop-filter: blur(4px);
+    /* Animations */
+    @keyframes number-change {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+      100% { transform: scale(1); }
     }
-    .announce-panel.hidden { display: none; }
-    .announce-panel-inner {
-      background: #fff;
-      border-radius: 18px;
-      padding: 28px 24px 24px;
-      max-width: 480px;
-      width: 100%;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-      max-height: 90vh;
-      overflow-y: auto;
-    }
-    .announce-panel-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-    }
-    .announce-panel-header h3 {
-      color: var(--theme-primary);
-      font-size: 1.3rem;
-    }
-    .close-panel-btn {
-      background: none;
-      border: none;
-      font-size: 1.3rem;
-      cursor: pointer;
-      color: #666;
-      padding: 4px 8px;
-      border-radius: 8px;
-      transition: all 0.2s;
-    }
-    .close-panel-btn:hover { background: #f0f0f0; color: #333; }
-    .announce-section {
-      margin-bottom: 18px;
-    }
-    .announce-label {
-      display: block;
-      font-weight: 600;
-      color: var(--theme-primary);
-      margin-bottom: 8px;
-      font-size: 0.95rem;
-    }
-    .announce-mode-btns {
-      display: flex;
-      gap: 8px;
-    }
-    .mode-btn {
-      flex: 1;
-      padding: 10px;
-      border: 2px solid #ddd;
-      border-radius: 10px;
-      background: #f8f8f8;
-      cursor: pointer;
-      font-weight: 600;
-      transition: all 0.2s;
-      font-size: 0.9rem;
-    }
-    .mode-btn.active {
-      border-color: var(--theme-primary);
-      background: var(--theme-primary);
-      color: #fff;
-    }
-    .announce-mode-section { margin-bottom: 14px; }
-    .announce-mode-section.hidden { display: none; }
-    .announce-hint {
-      color: #666;
-      font-size: 0.9rem;
-      margin-bottom: 10px;
-    }
-    .announce-qty-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .announce-qty-row select {
-      padding: 8px 12px;
-      border: 2px solid #ddd;
-      border-radius: 8px;
-      font-size: 0.95rem;
-      cursor: pointer;
-    }
-    .count-presets, .range-presets {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 12px;
-    }
-    .preset-btn {
-      padding: 8px 14px;
-      border: 2px solid #ddd;
-      border-radius: 8px;
-      background: #f8f8f8;
-      cursor: pointer;
-      font-weight: 600;
-      font-size: 0.9rem;
-      transition: all 0.2s;
-    }
-    .preset-btn.active {
-      border-color: var(--theme-secondary);
-      background: var(--theme-secondary);
-      color: #fff;
-    }
-    .custom-count-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-    .custom-count-row label, .range-custom-row label { font-size: 0.88rem; color: #555; }
-    .custom-count-row input {
-      width: 80px;
-      padding: 8px;
-      border: 2px solid #ddd;
-      border-radius: 8px;
-      text-align: center;
-      font-size: 1rem;
-    }
-    .range-custom-row {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-    .range-inputs {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .range-inputs input {
-      width: 72px;
-      padding: 8px;
-      border: 2px solid #ddd;
-      border-radius: 8px;
-      text-align: center;
-      font-size: 1rem;
-    }
-    .speed-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .speed-row input[type=range] { flex: 1; accent-color: var(--theme-primary); }
-    #speedLabel {
-      font-weight: 700;
-      color: var(--theme-primary);
-      min-width: 28px;
-    }
-    .check-section {}
-    .check-number-row {
-      display: flex;
-      gap: 10px;
-      align-items: center;
-    }
-    .check-number-row input {
-      width: 90px;
-      padding: 10px;
-      border: 2px solid #ddd;
-      border-radius: 8px;
-      text-align: center;
-      font-size: 1.1rem;
-    }
-    .check-btn {
-      padding: 10px 18px;
-      background: var(--theme-primary);
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      transition: all 0.2s;
-    }
-    .check-btn:hover { opacity: 0.85; transform: translateY(-2px); }
-    .check-result {
-      margin-top: 12px;
-      padding: 12px 16px;
-      border-radius: 10px;
-      font-weight: 600;
-      font-size: 1rem;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .check-result.hidden { display: none; }
-    .check-result.out {
-      background: #e8f5e9;
-      color: #2e7d32;
-      border: 2px solid #a5d6a7;
-    }
-    .check-result.not-out {
-      background: #fff3e0;
-      color: #e65100;
-      border: 2px solid #ffcc80;
-    }
-    .check-result.error {
-      background: #fce4ec;
-      color: #c62828;
-      border: 2px solid #ef9a9a;
-    }
-    .announce-actions {
-      display: flex;
-      gap: 12px;
-      margin-top: 20px;
-      justify-content: center;
-    }
-    .announce-progress {
-      text-align: center;
-      margin-top: 12px;
-      padding: 10px;
-      background: #f0f4ff;
-      border-radius: 8px;
-      color: var(--theme-primary);
-      font-weight: 600;
-      font-size: 0.95rem;
-    }
-    .announce-progress.hidden { display: none; }
+    .number-change { animation: number-change 0.5s ease; }
+    .fade-in { opacity:0; transform:translateY(20px); animation: fadeIn 0.5s forwards; }
+    .pulse-animation { animation: pulse 1s infinite alternate; }
+    .loading { text-align:center; padding:20px; font-size:1.2rem; color:var(--theme-primary); }
   `;
   document.head.appendChild(style);
-}
+})();
 
-// ─── NOTIFICATION ─────────────────────────────────────────────────────────────
-
-function showNotification(message, type = "success") {
-  const existingNotification = document.querySelector(".notification");
-  if (existingNotification) existingNotification.remove();
-
-  const notification = document.createElement("div");
-  notification.className = `notification ${type}`;
-  notification.textContent = message;
-  document.body.appendChild(notification);
-
-  setTimeout(() => { notification.classList.add("show"); }, 10);
-  setTimeout(() => {
-    notification.classList.remove("show");
-    setTimeout(() => { notification.remove(); }, 300);
-  }, 3000);
-}
-
-// ─── SWIPE & KEYBOARD ─────────────────────────────────────────────────────────
-
-function addSwipeGestures() {
-  let touchStartX = 0;
-  let touchEndX = 0;
-
-  document.addEventListener("touchstart", (e) => { touchStartX = e.changedTouches[0].screenX; }, false);
-  document.addEventListener("touchend", (e) => {
-    touchEndX = e.changedTouches[0].screenX;
-    const threshold = 100;
-    if (touchEndX - touchStartX > threshold) window.location.href = "../index.html";
-    else if (touchStartX - touchEndX > threshold) {
-      if (!isFirstStart) extractRandom(); else startGame();
-    }
-  }, false);
-}
-
-function addKeyboardShortcuts() {
-  document.addEventListener("keydown", (e) => {
-    const panel = document.getElementById("announcePanel");
-    if (panel && !panel.classList.contains("hidden")) return;
-
-    if (e.code === "Space" || e.code === "Enter") {
-      e.preventDefault();
-      if (!isFirstStart) extractRandom(); else startGame();
-    }
-    if (e.code === "KeyR") resetGame();
-    if (e.code === "KeyA" && autoBtn) toggleAutoGenerate();
-    if (e.code === "KeyN" && announceBtn) showAnnouncePanel();
-    if (e.code === "Escape") window.location.href = "../index.html";
-  });
-}
-
-// Initialize
+// ─── BOOT ─────────────────────────────────────────────────────────────────────
 document.addEventListener("DOMContentLoaded", initGame);
