@@ -305,7 +305,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // SCENARIO 2 — PASQUETTA (Lunedì dell'Angelo)
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   else if (isPasquettaDay) {
-    setText("main-title",    "Buon Lunedì dell'Angelo! 🌿");
+    setText("main-title",    "Buona Pasquetta! 🌿");
     setText("main-subtitle", "Un giorno di allegria, picnic e spensieratezza");
 
     // Pasqua: countdown verso ANNO PROSSIMO
@@ -333,8 +333,8 @@ document.addEventListener("DOMContentLoaded", () => {
   // SCENARIO 3 — DOPO Pasquetta → anno prossimo
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   else if (isAfter) {
-    setText("main-title",    "Buona Pasqua");
-    setText("main-subtitle", "Aspettando la prossima Pasqua " + nextYear + "…");
+    setText("main-title",    "🐰 Si attende la Pasqua " + nextYear);
+    setText("main-subtitle", "Mancano ancora tanti giorni… ma l'attesa fa parte della magia 🌸");
 
     setText("easter-section-title", "Manca alla Pasqua " + nextYear);
     setText("easter-date", easterNext.toLocaleDateString("it-IT", localeOpts));
@@ -353,6 +353,9 @@ document.addEventListener("DOMContentLoaded", () => {
   // SCENARIO 4 — PRIMA di Pasqua → quest'anno
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   else {
+    setText("main-title",    "🐣 Si attende la Pasqua " + thisYear);
+    setText("main-subtitle", "Il conto alla rovescia è iniziato… la primavera sta arrivando 🌷");
+
     setText("easter-section-title", "Manca alla Pasqua");
     setText("easter-date", easterThis.toLocaleDateString("it-IT", localeOpts));
     hide("celebration-message");
