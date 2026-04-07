@@ -14,7 +14,8 @@ let announceTimeout = null;
 let isAnnouncingNumbers = false;
 let stopAnnounceFlag = false;
 let announceMode = "all";
-let countPreset = "all";
+let countPreset = 10;
+let allPreset = "all";
 let rangeFrom = 1;
 let rangeTo = 90;
 
@@ -49,7 +50,6 @@ async function initGame() {
     showNotification("Errore nel caricamento delle tabelle. Utilizzando tabella predefinita.", "error");
   }
 
-  // Interval slider — supports 0.5 steps (e.g. 2.5s, 3.5s)
   if (intervalInput) {
     intervalInput.addEventListener("input", () => {
       secondsInterval = parseFloat(intervalInput.value);
@@ -59,7 +59,6 @@ async function initGame() {
     if (intervalLabel) intervalLabel.textContent = secondsInterval + "s";
   }
 
-  // Announce speed slider
   const speedSlider = document.getElementById("announceSpeed");
   const speedLabel = document.getElementById("speedLabel");
   if (speedSlider && speedLabel) {
@@ -68,13 +67,78 @@ async function initGame() {
     });
   }
 
-  // Check number on Enter
   const checkInput = document.getElementById("checkNumberInput");
   if (checkInput) {
     checkInput.addEventListener("keydown", (e) => {
       if (e.key === "Enter") checkNumber();
     });
   }
+
+  // ── Clamp tutti gli input[type=number] entro min/max ──────────────────────
+  function clampInput(el) {
+    const min = parseInt(el.min);
+    const max = parseInt(el.max);
+    el.addEventListener("input", () => {
+      let val = parseInt(el.value);
+      if (isNaN(val)) return;
+      if (val < min) el.value = min;
+      if (val > max) el.value = max;
+      syncPresetButtons(el);
+    });
+    el.addEventListener("blur", () => {
+      let val = parseInt(el.value);
+      if (isNaN(val) || val < min) el.value = min;
+      if (val > max) el.value = max;
+      syncPresetButtons(el);
+    });
+    el.addEventListener("keydown", (e) => {
+      const val = parseInt(el.value) || 0;
+      if (e.key === "ArrowUp"   && val >= max) e.preventDefault();
+      if (e.key === "ArrowDown" && val <= min) e.preventDefault();
+    });
+    el.addEventListener("keyup", () => {
+      syncPresetButtons(el);
+    });
+  }
+  document.querySelectorAll('input[type="number"]').forEach(clampInput);
+  // ─────────────────────────────────────────────────────────────────────────
+
+  // ── Sincronizza bottoni preset quando si scrive nel campo ─────────────────
+  function syncPresetButtons(el) {
+    const id = el.id;
+    const val = parseInt(el.value);
+
+    // Campo "N personalizzato" (Ultimi N)
+    if (id === "customCountInput") {
+      const btns = document.querySelectorAll("#modeCount .preset-btn");
+      btns.forEach(b => b.classList.remove("active"));
+      if (!isNaN(val)) {
+        btns.forEach(b => {
+          const bval = b.dataset.val;
+          if (bval !== "all" && parseInt(bval) === val) b.classList.add("active");
+        });
+      }
+      if (!isNaN(val)) countPreset = val;
+      return;
+    }
+
+    // Campi Da / A (Range)
+    if (id === "rangeFrom" || id === "rangeTo") {
+      const from = parseInt(document.getElementById("rangeFrom").value) || 1;
+      const to   = parseInt(document.getElementById("rangeTo").value)   || 90;
+      rangeFrom = from;
+      rangeTo   = to;
+      const btns = document.querySelectorAll("#modeRange .preset-btn");
+      btns.forEach(b => b.classList.remove("active"));
+      btns.forEach(b => {
+        if (parseInt(b.dataset.from) === from && parseInt(b.dataset.to) === to) {
+          b.classList.add("active");
+        }
+      });
+      return;
+    }
+  }
+  // ─────────────────────────────────────────────────────────────────────────
 
   extractBtn.addEventListener("click", startGame);
   resetBtn.addEventListener("click", resetGame);
@@ -291,6 +355,13 @@ function setAnnounceMode(mode, btn) {
   document.getElementById("mode" + mode.charAt(0).toUpperCase() + mode.slice(1)).classList.remove("hidden");
 }
 
+// Sezione TUTTI — preset buttons
+function setAllPreset(val, btn) {
+  allPreset = val;
+  document.querySelectorAll("#modeAll .preset-btn").forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
+}
+
 function setCountPreset(val, btn) {
   countPreset = val;
   document.querySelectorAll("#modeCount .preset-btn").forEach(b => b.classList.remove("active"));
@@ -313,16 +384,15 @@ function buildAnnounceList() {
   const sorted = Array.from(extractedNumbers).sort((a, b) => a - b);
 
   if (announceMode === "all") {
-    const qty = document.getElementById("announceQtyAll").value;
-    if (qty === "all") return sorted;
-    return sorted.slice(-parseInt(qty));
+    if (allPreset === "all") return sorted;
+    return sorted.slice(-parseInt(allPreset));
   }
 
   if (announceMode === "count") {
     const customVal = document.getElementById("customCountInput").value;
-    const count = customVal ? parseInt(customVal) : countPreset;
-    if (count === "all" || count === 0) return sorted;
-    return sorted.slice(-parseInt(count));
+    if (customVal) return sorted.slice(-parseInt(customVal));
+    if (countPreset === "all" || !countPreset) return sorted;
+    return sorted.slice(-parseInt(countPreset));
   }
 
   if (announceMode === "range") {
@@ -531,7 +601,6 @@ function addKeyboardShortcuts() {
 (function injectStyles() {
   const style = document.createElement("style");
   style.textContent = `
-    /* ── Inline controls grid ── */
     .inline-controls-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;

@@ -58,19 +58,16 @@
             </div>
           </div>
 
-          <!-- Sezione TUTTI -->
+          <!-- Sezione TUTTI — bottoni preset, niente dropdown -->
           <div id="modeAll" class="announce-sub-section">
-            <div class="control-box-row">
-              <label>Quanti:</label>
-              <select id="announceQtyAll">
-                <option value="all">Tutti</option>
-                <option value="5">Ultimi 5</option>
-                <option value="10">Ultimi 10</option>
-                <option value="15">Ultimi 15</option>
-                <option value="20">Ultimi 20</option>
-                <option value="30">Ultimi 30</option>
-                <option value="50">Ultimi 50</option>
-              </select>
+            <div class="control-box-row preset-row">
+              <button class="preset-btn active" data-val="all" onclick="setAllPreset('all', this)">Tutti</button>
+              <button class="preset-btn" data-val="5"  onclick="setAllPreset('5', this)">Ultimi 5</button>
+              <button class="preset-btn" data-val="10" onclick="setAllPreset('10', this)">Ultimi 10</button>
+              <button class="preset-btn" data-val="15" onclick="setAllPreset('15', this)">Ultimi 15</button>
+              <button class="preset-btn" data-val="20" onclick="setAllPreset('20', this)">Ultimi 20</button>
+              <button class="preset-btn" data-val="30" onclick="setAllPreset('30', this)">Ultimi 30</button>
+              <button class="preset-btn" data-val="50" onclick="setAllPreset('50', this)">Ultimi 50</button>
             </div>
           </div>
 
@@ -78,11 +75,14 @@
           <div id="modeCount" class="announce-sub-section hidden">
             <div class="control-box-row preset-row">
               <button class="preset-btn active" data-val="all" onclick="setCountPreset('all', this)">Tutti</button>
+              <button class="preset-btn" data-val="5"  onclick="setCountPreset(5, this)">5</button>
               <button class="preset-btn" data-val="10" onclick="setCountPreset(10, this)">10</button>
               <button class="preset-btn" data-val="15" onclick="setCountPreset(15, this)">15</button>
               <button class="preset-btn" data-val="20" onclick="setCountPreset(20, this)">20</button>
               <button class="preset-btn" data-val="25" onclick="setCountPreset(25, this)">25</button>
               <button class="preset-btn" data-val="30" onclick="setCountPreset(30, this)">30</button>
+              <button class="preset-btn" data-val="40" onclick="setCountPreset(40, this)">40</button>
+              <button class="preset-btn" data-val="50" onclick="setCountPreset(50, this)">50</button>
             </div>
             <div class="control-box-row">
               <label>Oppure:</label>
@@ -90,14 +90,26 @@
             </div>
           </div>
 
-          <!-- Sezione RANGE -->
+          <!-- Sezione RANGE — più bottoni preset -->
           <div id="modeRange" class="announce-sub-section hidden">
             <div class="control-box-row preset-row">
-              <button class="preset-btn active" data-from="1" data-to="10" onclick="setRangePreset(1,10,this)">1-10</button>
-              <button class="preset-btn" data-from="1" data-to="20" onclick="setRangePreset(1,20,this)">1-20</button>
-              <button class="preset-btn" data-from="1" data-to="30" onclick="setRangePreset(1,30,this)">1-30</button>
-              <button class="preset-btn" data-from="1" data-to="50" onclick="setRangePreset(1,50,this)">1-50</button>
-              <button class="preset-btn" data-from="51" data-to="90" onclick="setRangePreset(51,90,this)">51-90</button>
+              <button class="preset-btn active" data-from="1"  data-to="90"  onclick="setRangePreset(1,90,this)">Tutti (1-90)</button>
+              <button class="preset-btn" data-from="1"  data-to="10"  onclick="setRangePreset(1,10,this)">1-10</button>
+              <button class="preset-btn" data-from="1"  data-to="20"  onclick="setRangePreset(1,20,this)">1-20</button>
+              <button class="preset-btn" data-from="1"  data-to="30"  onclick="setRangePreset(1,30,this)">1-30</button>
+              <button class="preset-btn" data-from="1"  data-to="40"  onclick="setRangePreset(1,40,this)">1-40</button>
+              <button class="preset-btn" data-from="1"  data-to="50"  onclick="setRangePreset(1,50,this)">1-50</button>
+              <button class="preset-btn" data-from="1"  data-to="60"  onclick="setRangePreset(1,60,this)">1-60</button>
+              <button class="preset-btn" data-from="1"  data-to="70"  onclick="setRangePreset(1,70,this)">1-70</button>
+              <button class="preset-btn" data-from="11" data-to="20"  onclick="setRangePreset(11,20,this)">11-20</button>
+              <button class="preset-btn" data-from="21" data-to="30"  onclick="setRangePreset(21,30,this)">21-30</button>
+              <button class="preset-btn" data-from="31" data-to="40"  onclick="setRangePreset(31,40,this)">31-40</button>
+              <button class="preset-btn" data-from="41" data-to="50"  onclick="setRangePreset(41,50,this)">41-50</button>
+              <button class="preset-btn" data-from="51" data-to="60"  onclick="setRangePreset(51,60,this)">51-60</button>
+              <button class="preset-btn" data-from="51" data-to="90"  onclick="setRangePreset(51,90,this)">51-90</button>
+              <button class="preset-btn" data-from="61" data-to="70"  onclick="setRangePreset(61,70,this)">61-70</button>
+              <button class="preset-btn" data-from="71" data-to="80"  onclick="setRangePreset(71,80,this)">71-80</button>
+              <button class="preset-btn" data-from="81" data-to="90"  onclick="setRangePreset(81,90,this)">81-90</button>
             </div>
             <div class="control-box-row">
               <label>Da:</label>
