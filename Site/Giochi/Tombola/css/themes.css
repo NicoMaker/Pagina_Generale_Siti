@@ -539,3 +539,7 @@
 .numbers-list {
   display: none;
 }
+
+.number-tag{
+  display: none;
+}
