@@ -36,7 +36,8 @@ let speechEnabled = true;
 // ─── INIT ─────────────────────────────────────────────────────────────────────
 
 async function initGame() {
-  tombolaContainer.innerHTML = '<div class="loading">Caricamento tabellone...</div>';
+  tombolaContainer.innerHTML =
+    '<div class="loading">Caricamento tabellone...</div>';
   numbers = Array.from({ length: 90 }, (_, i) => i + 1);
 
   try {
@@ -45,9 +46,14 @@ async function initGame() {
     generateTables(data.tables);
   } catch (error) {
     console.error("Error loading tables:", error);
-    const fallbackTable = { numbers: Array.from({ length: 90 }, (_, i) => i + 1) };
+    const fallbackTable = {
+      numbers: Array.from({ length: 90 }, (_, i) => i + 1),
+    };
     generateTables([fallbackTable]);
-    showNotification("Errore nel caricamento delle tabelle. Utilizzando tabella predefinita.", "error");
+    showNotification(
+      "Errore nel caricamento delle tabelle. Utilizzando tabella predefinita.",
+      "error",
+    );
   }
 
   if (intervalInput) {
@@ -93,7 +99,7 @@ async function initGame() {
     });
     el.addEventListener("keydown", (e) => {
       const val = parseInt(el.value) || 0;
-      if (e.key === "ArrowUp"   && val >= max) e.preventDefault();
+      if (e.key === "ArrowUp" && val >= max) e.preventDefault();
       if (e.key === "ArrowDown" && val <= min) e.preventDefault();
     });
     el.addEventListener("keyup", () => {
@@ -111,23 +117,28 @@ async function initGame() {
     // Campo "N personalizzato" (sezione Tutti)
     if (id === "customAllInput") {
       const btns = document.querySelectorAll("#modeAll .preset-btn");
-      btns.forEach(b => b.classList.remove("active"));
+      btns.forEach((b) => b.classList.remove("active"));
       if (!isNaN(val)) {
         // 90 = tutti: colora "Tutti" e svuota solo al blur, non mentre si scrive
         if (val >= 90 && trigger === "blur") {
-          const tuttiBtn = document.querySelector("#modeAll .preset-btn[data-val='all']");
+          const tuttiBtn = document.querySelector(
+            "#modeAll .preset-btn[data-val='all']",
+          );
           if (tuttiBtn) tuttiBtn.classList.add("active");
           allPreset = "all";
-          el.value = "";
+          el.value = "90";
         } else if (val >= 90) {
           // mentre si scrive 90: colora solo "Tutti" senza svuotare
-          const tuttiBtn = document.querySelector("#modeAll .preset-btn[data-val='all']");
+          const tuttiBtn = document.querySelector(
+            "#modeAll .preset-btn[data-val='all']",
+          );
           if (tuttiBtn) tuttiBtn.classList.add("active");
           allPreset = "all";
         } else {
-          btns.forEach(b => {
+          btns.forEach((b) => {
             const bval = b.dataset.val;
-            if (bval !== "all" && parseInt(bval) === val) b.classList.add("active");
+            if (bval !== "all" && parseInt(bval) === val)
+              b.classList.add("active");
           });
           allPreset = String(val);
         }
@@ -138,11 +149,12 @@ async function initGame() {
     // Campo "N personalizzato" (Ultimi N)
     if (id === "customCountInput") {
       const btns = document.querySelectorAll("#modeCount .preset-btn");
-      btns.forEach(b => b.classList.remove("active"));
+      btns.forEach((b) => b.classList.remove("active"));
       if (!isNaN(val)) {
-        btns.forEach(b => {
+        btns.forEach((b) => {
           const bval = b.dataset.val;
-          if (bval !== "all" && parseInt(bval) === val) b.classList.add("active");
+          if (bval !== "all" && parseInt(bval) === val)
+            b.classList.add("active");
         });
       }
       if (!isNaN(val)) countPreset = val;
@@ -152,13 +164,16 @@ async function initGame() {
     // Campi Da / A (Range)
     if (id === "rangeFrom" || id === "rangeTo") {
       const from = parseInt(document.getElementById("rangeFrom").value) || 1;
-      const to   = parseInt(document.getElementById("rangeTo").value)   || 90;
+      const to = parseInt(document.getElementById("rangeTo").value) || 90;
       rangeFrom = from;
-      rangeTo   = to;
+      rangeTo = to;
       const btns = document.querySelectorAll("#modeRange .preset-btn");
-      btns.forEach(b => b.classList.remove("active"));
-      btns.forEach(b => {
-        if (parseInt(b.dataset.from) === from && parseInt(b.dataset.to) === to) {
+      btns.forEach((b) => b.classList.remove("active"));
+      btns.forEach((b) => {
+        if (
+          parseInt(b.dataset.from) === from &&
+          parseInt(b.dataset.to) === to
+        ) {
           b.classList.add("active");
         }
       });
@@ -176,7 +191,16 @@ async function initGame() {
   addSwipeGestures();
   addKeyboardShortcuts();
 
-  setTimeout(() => { speak("Si inizia!"); }, 1000);
+  // Valori iniziali nei campi personalizzati coerenti con i bottoni attivi di default
+  const customAllInput = document.getElementById("customAllInput");
+  if (customAllInput) customAllInput.value = "90"; // default: Tutti = 90
+
+  const customCountInput = document.getElementById("customCountInput");
+  if (customCountInput) customCountInput.value = "90"; // default: Tutti = 90
+
+  setTimeout(() => {
+    speak("Si inizia!");
+  }, 1000);
 }
 
 // ─── TABLES ───────────────────────────────────────────────────────────────────
@@ -215,7 +239,9 @@ function startGame() {
     gameStarted = true;
     extractBtn.innerHTML = '<i class="fas fa-random"></i> Estrai Numero';
     extractBtn.classList.add("pulse-animation");
-    setTimeout(() => { extractBtn.classList.remove("pulse-animation"); }, 2000);
+    setTimeout(() => {
+      extractBtn.classList.remove("pulse-animation");
+    }, 2000);
     return;
   }
   extractRandom();
@@ -225,7 +251,8 @@ function toggleAutoGenerate() {
   if (autoGenerateInterval) {
     clearInterval(autoGenerateInterval);
     autoGenerateInterval = null;
-    autoBtn.innerHTML = '<i class="fas fa-play"></i> <span>Avvia Automatico</span>';
+    autoBtn.innerHTML =
+      '<i class="fas fa-play"></i> <span>Avvia Automatico</span>';
     autoBtn.classList.remove("danger");
     autoBtn.classList.add("success");
     if (intervalInput) intervalInput.disabled = false;
@@ -236,7 +263,8 @@ function toggleAutoGenerate() {
       showNotification("Tutti i numeri sono stati estratti!", "warning");
       return;
     }
-    autoBtn.innerHTML = '<i class="fas fa-stop"></i> <span>Ferma Automatico</span>';
+    autoBtn.innerHTML =
+      '<i class="fas fa-stop"></i> <span>Ferma Automatico</span>';
     autoBtn.classList.remove("success");
     autoBtn.classList.add("danger");
     if (intervalInput) intervalInput.disabled = true;
@@ -264,7 +292,9 @@ function extractRandom() {
   if (!extractedNumbers.has(num)) {
     isAnimating = true;
     selectNr(num);
-    setTimeout(() => { isAnimating = false; }, 2000);
+    setTimeout(() => {
+      isAnimating = false;
+    }, 2000);
   }
 }
 
@@ -280,14 +310,20 @@ function selectNr(nn) {
   const blinkInterval = setInterval(() => {
     celnode.className = blinkCount % 2 === 0 ? "on" : "blink";
     blinkCount--;
-    if (blinkCount < 0) { clearInterval(blinkInterval); celnode.className = "on"; }
+    if (blinkCount < 0) {
+      clearInterval(blinkInterval);
+      celnode.className = "on";
+    }
   }, 300);
 
   speak(`${nn}`);
 
-  if (extractedNumbers.size === 10) setTimeout(() => speak("Estratti 10 numeri!"), 1500);
-  else if (extractedNumbers.size === 20) setTimeout(() => speak("Estratti 20 numeri!"), 1500);
-  else if (extractedNumbers.size === 90) setTimeout(() => speak("Tutti i numeri estratti!"), 1500);
+  if (extractedNumbers.size === 10)
+    setTimeout(() => speak("Estratti 10 numeri!"), 1500);
+  else if (extractedNumbers.size === 20)
+    setTimeout(() => speak("Estratti 20 numeri!"), 1500);
+  else if (extractedNumbers.size === 90)
+    setTimeout(() => speak("Tutti i numeri estratti!"), 1500);
 
   currentNumber = nn;
   updateUI(true);
@@ -318,7 +354,9 @@ function updateUI(animate = false) {
     const numberSpan = currentNumberDisplay.querySelector("span");
     if (animate && currentNumber) {
       numberSpan.classList.add("number-change");
-      setTimeout(() => { numberSpan.classList.remove("number-change"); }, 1000);
+      setTimeout(() => {
+        numberSpan.classList.remove("number-change");
+      }, 1000);
     }
     numberSpan.textContent = currentNumber ? currentNumber : "?";
   }
@@ -329,15 +367,18 @@ function updateExtractedNumbers() {
   const extractedList = document.getElementById("extractedNumbersList");
   if (!extractedList) return;
   extractedList.innerHTML = "";
-  Array.from(extractedNumbers).sort((a, b) => a - b).forEach((number) => {
-    const tag = document.createElement("div");
-    tag.className = "number-tag";
-    tag.textContent = number;
-    tag.setAttribute("aria-label", `Numero estratto ${number}`);
-    extractedList.appendChild(tag);
-  });
+  Array.from(extractedNumbers)
+    .sort((a, b) => a - b)
+    .forEach((number) => {
+      const tag = document.createElement("div");
+      tag.className = "number-tag";
+      tag.textContent = number;
+      tag.setAttribute("aria-label", `Numero estratto ${number}`);
+      extractedList.appendChild(tag);
+    });
   const heading = document.querySelector(".extracted-numbers h3");
-  if (heading) heading.textContent = `Numeri Estratti (${extractedNumbers.size}/90)`;
+  if (heading)
+    heading.textContent = `Numeri Estratti (${extractedNumbers.size}/90)`;
 }
 
 function resetGame() {
@@ -346,7 +387,8 @@ function resetGame() {
     clearInterval(autoGenerateInterval);
     autoGenerateInterval = null;
     if (autoBtn) {
-      autoBtn.innerHTML = '<i class="fas fa-play"></i> <span>Avvia Automatico</span>';
+      autoBtn.innerHTML =
+        '<i class="fas fa-play"></i> <span>Avvia Automatico</span>';
       autoBtn.classList.remove("danger");
       autoBtn.classList.add("success");
     }
@@ -362,47 +404,62 @@ function resetGame() {
   currentNumber = null;
 
   document.querySelectorAll('td[id^="nr"]').forEach((cell, index) => {
-    setTimeout(() => { cell.className = ""; }, index * 5);
+    setTimeout(() => {
+      cell.className = "";
+    }, index * 5);
   });
 
   updateUI();
-  if (extractBtn) extractBtn.innerHTML = '<i class="fas fa-random"></i> Estrai Numero';
-  setTimeout(() => { speak("Si inizia!"); }, 1500);
+  if (extractBtn)
+    extractBtn.innerHTML = '<i class="fas fa-random"></i> Estrai Numero';
+  setTimeout(() => {
+    speak("Si inizia!");
+  }, 1500);
 }
 
 // ─── ANNOUNCE MODE CONTROLS ───────────────────────────────────────────────────
 
 function setAnnounceMode(mode, btn) {
   announceMode = mode;
-  document.querySelectorAll(".mode-btn-group .mode-btn").forEach(b => b.classList.remove("active"));
+  document
+    .querySelectorAll(".mode-btn-group .mode-btn")
+    .forEach((b) => b.classList.remove("active"));
   btn.classList.add("active");
   document.getElementById("modeAll").classList.add("hidden");
   document.getElementById("modeCount").classList.add("hidden");
   document.getElementById("modeRange").classList.add("hidden");
-  document.getElementById("mode" + mode.charAt(0).toUpperCase() + mode.slice(1)).classList.remove("hidden");
+  document
+    .getElementById("mode" + mode.charAt(0).toUpperCase() + mode.slice(1))
+    .classList.remove("hidden");
 }
 
 // Sezione TUTTI — preset buttons
 function setAllPreset(val, btn) {
   allPreset = val;
-  document.querySelectorAll("#modeAll .preset-btn").forEach(b => b.classList.remove("active"));
+  document
+    .querySelectorAll("#modeAll .preset-btn")
+    .forEach((b) => b.classList.remove("active"));
   btn.classList.add("active");
   const customAllInput = document.getElementById("customAllInput");
-  if (customAllInput) customAllInput.value = (val === "all") ? "" : val;
+  if (customAllInput) customAllInput.value = val === "all" ? "90" : val;
 }
 
 function setCountPreset(val, btn) {
   countPreset = val;
-  document.querySelectorAll("#modeCount .preset-btn").forEach(b => b.classList.remove("active"));
+  document
+    .querySelectorAll("#modeCount .preset-btn")
+    .forEach((b) => b.classList.remove("active"));
   btn.classList.add("active");
   const customCountInput = document.getElementById("customCountInput");
-  if (customCountInput) customCountInput.value = (val === "all") ? "" : val;
+  if (customCountInput) customCountInput.value = val === "all" ? "90" : val;
 }
 
 function setRangePreset(from, to, btn) {
   rangeFrom = from;
   rangeTo = to;
-  document.querySelectorAll("#modeRange .preset-btn").forEach(b => b.classList.remove("active"));
+  document
+    .querySelectorAll("#modeRange .preset-btn")
+    .forEach((b) => b.classList.remove("active"));
   btn.classList.add("active");
   document.getElementById("rangeFrom").value = from;
   document.getElementById("rangeTo").value = to;
@@ -414,7 +471,9 @@ function buildAnnounceList() {
   const sorted = Array.from(extractedNumbers).sort((a, b) => a - b);
 
   if (announceMode === "all") {
-    const customAllVal = document.getElementById("customAllInput") ? document.getElementById("customAllInput").value : "";
+    const customAllVal = document.getElementById("customAllInput")
+      ? document.getElementById("customAllInput").value
+      : "";
     if (customAllVal) return sorted.slice(-parseInt(customAllVal));
     if (allPreset === "all") return sorted;
     return sorted.slice(-parseInt(allPreset));
@@ -430,7 +489,7 @@ function buildAnnounceList() {
   if (announceMode === "range") {
     const from = parseInt(document.getElementById("rangeFrom").value) || 1;
     const to = parseInt(document.getElementById("rangeTo").value) || 90;
-    return sorted.filter(n => n >= from && n <= to);
+    return sorted.filter((n) => n >= from && n <= to);
   }
 
   return sorted;
@@ -462,7 +521,8 @@ function startAnnouncement() {
   if (stopBtn) stopBtn.classList.remove("hidden");
   if (progress) progress.classList.remove("hidden");
 
-  const speed = parseFloat(document.getElementById("announceSpeed").value) * 1000;
+  const speed =
+    parseFloat(document.getElementById("announceSpeed").value) * 1000;
   speak(`Annunciando ${list.length} numeri`);
 
   let index = 0;
@@ -473,7 +533,8 @@ function startAnnouncement() {
       finishAnnouncement();
       return;
     }
-    if (progressText) progressText.textContent = `Annunciando ${index + 1} di ${list.length}: ${list[index]}`;
+    if (progressText)
+      progressText.textContent = `Annunciando ${index + 1} di ${list.length}: ${list[index]}`;
     speak(`${list[index]}`);
     index++;
     announceTimeout = setTimeout(announceNext, speed);
@@ -486,7 +547,10 @@ function startAnnouncement() {
 function stopAnnouncement() {
   stopAnnounceFlag = true;
   isAnnouncingNumbers = false;
-  if (announceTimeout) { clearTimeout(announceTimeout); announceTimeout = null; }
+  if (announceTimeout) {
+    clearTimeout(announceTimeout);
+    announceTimeout = null;
+  }
   synth.cancel();
   finishAnnouncement();
 }
@@ -538,19 +602,29 @@ function createConfetti() {
     confetti.className = "confetti";
     confetti.style.left = `${Math.random() * 100}%`;
     confetti.style.top = "-10px";
-    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+    confetti.style.backgroundColor =
+      colors[Math.floor(Math.random() * colors.length)];
     confetti.style.width = `${Math.random() * 10 + 5}px`;
     confetti.style.height = `${Math.random() * 10 + 5}px`;
     confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
     confettiContainer.appendChild(confetti);
     const animation = confetti.animate(
       [
-        { transform: `translate(${Math.random() * 20 - 10}px, 0) rotate(0deg)` },
-        { transform: `translate(${Math.random() * 50 - 25}px, ${window.innerHeight}px) rotate(${Math.random() * 360}deg)` },
+        {
+          transform: `translate(${Math.random() * 20 - 10}px, 0) rotate(0deg)`,
+        },
+        {
+          transform: `translate(${Math.random() * 50 - 25}px, ${window.innerHeight}px) rotate(${Math.random() * 360}deg)`,
+        },
       ],
-      { duration: Math.random() * 3000 + 2000, easing: "cubic-bezier(0.1, 0.8, 0.9, 1)" }
+      {
+        duration: Math.random() * 3000 + 2000,
+        easing: "cubic-bezier(0.1, 0.8, 0.9, 1)",
+      },
     );
-    animation.onfinish = () => { confetti.remove(); };
+    animation.onfinish = () => {
+      confetti.remove();
+    };
   }
 }
 
@@ -593,10 +667,14 @@ function showNotification(message, type = "success") {
   notification.className = `notification ${type}`;
   notification.textContent = message;
   document.body.appendChild(notification);
-  setTimeout(() => { notification.classList.add("show"); }, 10);
+  setTimeout(() => {
+    notification.classList.add("show");
+  }, 10);
   setTimeout(() => {
     notification.classList.remove("show");
-    setTimeout(() => { notification.remove(); }, 300);
+    setTimeout(() => {
+      notification.remove();
+    }, 300);
   }, 3000);
 }
 
@@ -604,23 +682,40 @@ function showNotification(message, type = "success") {
 
 function addSwipeGestures() {
   let touchStartX = 0;
-  document.addEventListener("touchstart", (e) => { touchStartX = e.changedTouches[0].screenX; }, false);
-  document.addEventListener("touchend", (e) => {
-    const touchEndX = e.changedTouches[0].screenX;
-    const threshold = 100;
-    if (touchEndX - touchStartX > threshold) window.location.href = "../index.html";
-    else if (touchStartX - touchEndX > threshold) {
-      if (!isFirstStart) extractRandom(); else startGame();
-    }
-  }, false);
+  document.addEventListener(
+    "touchstart",
+    (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    },
+    false,
+  );
+  document.addEventListener(
+    "touchend",
+    (e) => {
+      const touchEndX = e.changedTouches[0].screenX;
+      const threshold = 100;
+      if (touchEndX - touchStartX > threshold)
+        window.location.href = "../index.html";
+      else if (touchStartX - touchEndX > threshold) {
+        if (!isFirstStart) extractRandom();
+        else startGame();
+      }
+    },
+    false,
+  );
 }
 
 function addKeyboardShortcuts() {
   document.addEventListener("keydown", (e) => {
     if (e.code === "Space" || e.code === "Enter") {
-      if (document.activeElement && ["INPUT", "SELECT", "BUTTON"].includes(document.activeElement.tagName)) return;
+      if (
+        document.activeElement &&
+        ["INPUT", "SELECT", "BUTTON"].includes(document.activeElement.tagName)
+      )
+        return;
       e.preventDefault();
-      if (!isFirstStart) extractRandom(); else startGame();
+      if (!isFirstStart) extractRandom();
+      else startGame();
     }
     if (e.code === "KeyR") resetGame();
     if (e.code === "KeyA" && autoBtn) toggleAutoGenerate();

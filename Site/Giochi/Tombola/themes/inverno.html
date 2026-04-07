@@ -7,14 +7,19 @@
     <link rel="stylesheet" href="../css/main.css" />
     <link rel="stylesheet" href="../css/themes.css" />
     <link rel="icon" href="../assets/images/Natale.gif" type="image/png" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
     <script src="../js/game.js" defer></script>
   </head>
 
   <body class="game-page winter-theme">
     <div class="game-container">
       <header class="game-header">
-        <a href="../index.html" class="back-btn"><i class="fas fa-arrow-left"></i> Indietro</a>
+        <a href="../index.html" class="back-btn"
+          ><i class="fas fa-arrow-left"></i> Indietro</a
+        >
         <h1 class="game-title">Tombola di Natale</h1>
       </header>
 
@@ -30,13 +35,21 @@
 
       <!-- Controlli automatici + Annuncia (tutto inline, due colonne) -->
       <div class="inline-controls-grid">
-
         <!-- BOX: Automatico -->
         <div class="control-box">
-          <div class="control-box-title"><i class="fas fa-clock"></i> Estrazione Automatica</div>
+          <div class="control-box-title">
+            <i class="fas fa-clock"></i> Estrazione Automatica
+          </div>
           <div class="control-box-row">
             <label for="intervalInput">Intervallo (secondi):</label>
-            <input type="range" id="intervalInput" min="0.5" max="30" value="3" step="0.5" />
+            <input
+              type="range"
+              id="intervalInput"
+              min="0.5"
+              max="30"
+              value="3"
+              step="0.5"
+            />
             <span id="intervalLabel">3s</span>
           </div>
           <button id="autoBtn" class="game-btn success">
@@ -46,104 +59,391 @@
 
         <!-- BOX: Annuncia Numeri -->
         <div class="control-box">
-          <div class="control-box-title"><i class="fas fa-bullhorn"></i> Annuncia Numeri Estratti</div>
+          <div class="control-box-title">
+            <i class="fas fa-bullhorn"></i> Annuncia Numeri Estratti
+          </div>
 
           <!-- Modalità -->
           <div class="control-box-row label-row">
             <label><i class="fas fa-list-ol"></i> Modalità:</label>
             <div class="mode-btn-group">
-              <button class="mode-btn active" data-mode="all" onclick="setAnnounceMode('all', this)">Tutti</button>
-              <button class="mode-btn" data-mode="count" onclick="setAnnounceMode('count', this)">Ultimi N</button>
-              <button class="mode-btn" data-mode="range" onclick="setAnnounceMode('range', this)">Range</button>
+              <button
+                class="mode-btn active"
+                data-mode="all"
+                onclick="setAnnounceMode('all', this)"
+              >
+                Tutti
+              </button>
+              <button
+                class="mode-btn"
+                data-mode="count"
+                onclick="setAnnounceMode('count', this)"
+              >
+                Ultimi N
+              </button>
+              <button
+                class="mode-btn"
+                data-mode="range"
+                onclick="setAnnounceMode('range', this)"
+              >
+                Range
+              </button>
             </div>
           </div>
 
           <!-- Sezione TUTTI — bottoni preset + campo personalizzato -->
           <div id="modeAll" class="announce-sub-section">
             <div class="control-box-row preset-row">
-              <button class="preset-btn active" data-val="all" onclick="setAllPreset('all', this)">Tutti</button>
-              <button class="preset-btn" data-val="5"  onclick="setAllPreset('5', this)">Ultimi 5</button>
-              <button class="preset-btn" data-val="10" onclick="setAllPreset('10', this)">Ultimi 10</button>
-              <button class="preset-btn" data-val="15" onclick="setAllPreset('15', this)">Ultimi 15</button>
-              <button class="preset-btn" data-val="20" onclick="setAllPreset('20', this)">Ultimi 20</button>
-              <button class="preset-btn" data-val="30" onclick="setAllPreset('30', this)">Ultimi 30</button>
-              <button class="preset-btn" data-val="50" onclick="setAllPreset('50', this)">Ultimi 50</button>
+              <button
+                class="preset-btn active"
+                data-val="all"
+                onclick="setAllPreset('all', this)"
+              >
+                Tutti
+              </button>
+              <button
+                class="preset-btn"
+                data-val="5"
+                onclick="setAllPreset('5', this)"
+              >
+                Ultimi 5
+              </button>
+              <button
+                class="preset-btn"
+                data-val="10"
+                onclick="setAllPreset('10', this)"
+              >
+                Ultimi 10
+              </button>
+              <button
+                class="preset-btn"
+                data-val="15"
+                onclick="setAllPreset('15', this)"
+              >
+                Ultimi 15
+              </button>
+              <button
+                class="preset-btn"
+                data-val="20"
+                onclick="setAllPreset('20', this)"
+              >
+                Ultimi 20
+              </button>
+              <button
+                class="preset-btn"
+                data-val="30"
+                onclick="setAllPreset('30', this)"
+              >
+                Ultimi 30
+              </button>
+              <button
+                class="preset-btn"
+                data-val="50"
+                onclick="setAllPreset('50', this)"
+              >
+                Ultimi 50
+              </button>
             </div>
             <div class="control-box-row">
               <label>Oppure:</label>
-              <input type="number" id="customAllInput" min="1" max="90" placeholder="N personalizzato" style="width:130px;" />
+              <input
+                type="number"
+                id="customAllInput"
+                min="1"
+                max="90"
+                placeholder="N personalizzato"
+                style="width: 130px"
+              />
             </div>
           </div>
 
           <!-- Sezione ULTIMI N -->
           <div id="modeCount" class="announce-sub-section hidden">
             <div class="control-box-row preset-row">
-              <button class="preset-btn active" data-val="all" onclick="setCountPreset('all', this)">Tutti</button>
-              <button class="preset-btn" data-val="5"  onclick="setCountPreset(5, this)">5</button>
-              <button class="preset-btn" data-val="10" onclick="setCountPreset(10, this)">10</button>
-              <button class="preset-btn" data-val="15" onclick="setCountPreset(15, this)">15</button>
-              <button class="preset-btn" data-val="20" onclick="setCountPreset(20, this)">20</button>
-              <button class="preset-btn" data-val="25" onclick="setCountPreset(25, this)">25</button>
-              <button class="preset-btn" data-val="30" onclick="setCountPreset(30, this)">30</button>
-              <button class="preset-btn" data-val="40" onclick="setCountPreset(40, this)">40</button>
-              <button class="preset-btn" data-val="50" onclick="setCountPreset(50, this)">50</button>
+              <button
+                class="preset-btn active"
+                data-val="all"
+                onclick="setCountPreset('all', this)"
+              >
+                Tutti
+              </button>
+              <button
+                class="preset-btn"
+                data-val="5"
+                onclick="setCountPreset(5, this)"
+              >
+                5
+              </button>
+              <button
+                class="preset-btn"
+                data-val="10"
+                onclick="setCountPreset(10, this)"
+              >
+                10
+              </button>
+              <button
+                class="preset-btn"
+                data-val="15"
+                onclick="setCountPreset(15, this)"
+              >
+                15
+              </button>
+              <button
+                class="preset-btn"
+                data-val="20"
+                onclick="setCountPreset(20, this)"
+              >
+                20
+              </button>
+              <button
+                class="preset-btn"
+                data-val="25"
+                onclick="setCountPreset(25, this)"
+              >
+                25
+              </button>
+              <button
+                class="preset-btn"
+                data-val="30"
+                onclick="setCountPreset(30, this)"
+              >
+                30
+              </button>
+              <button
+                class="preset-btn"
+                data-val="40"
+                onclick="setCountPreset(40, this)"
+              >
+                40
+              </button>
+              <button
+                class="preset-btn"
+                data-val="50"
+                onclick="setCountPreset(50, this)"
+              >
+                50
+              </button>
             </div>
             <div class="control-box-row">
               <label>Oppure:</label>
-              <input type="number" id="customCountInput" min="1" max="90" placeholder="N personalizzato" style="width:130px;" />
+              <input
+                type="number"
+                id="customCountInput"
+                min="1"
+                max="90"
+                placeholder="N personalizzato"
+                style="width: 130px"
+              />
             </div>
           </div>
 
           <!-- Sezione RANGE — più bottoni preset -->
           <div id="modeRange" class="announce-sub-section hidden">
             <div class="control-box-row preset-row">
-              <button class="preset-btn active" data-from="1"  data-to="90"  onclick="setRangePreset(1,90,this)">Tutti (1-90)</button>
-              <button class="preset-btn" data-from="1"  data-to="10"  onclick="setRangePreset(1,10,this)">1-10</button>
-              <button class="preset-btn" data-from="1"  data-to="20"  onclick="setRangePreset(1,20,this)">1-20</button>
-              <button class="preset-btn" data-from="1"  data-to="30"  onclick="setRangePreset(1,30,this)">1-30</button>
-              <button class="preset-btn" data-from="1"  data-to="40"  onclick="setRangePreset(1,40,this)">1-40</button>
-              <button class="preset-btn" data-from="1"  data-to="50"  onclick="setRangePreset(1,50,this)">1-50</button>
-              <button class="preset-btn" data-from="1"  data-to="60"  onclick="setRangePreset(1,60,this)">1-60</button>
-              <button class="preset-btn" data-from="1"  data-to="70"  onclick="setRangePreset(1,70,this)">1-70</button>
-              <button class="preset-btn" data-from="11" data-to="20"  onclick="setRangePreset(11,20,this)">11-20</button>
-              <button class="preset-btn" data-from="21" data-to="30"  onclick="setRangePreset(21,30,this)">21-30</button>
-              <button class="preset-btn" data-from="31" data-to="40"  onclick="setRangePreset(31,40,this)">31-40</button>
-              <button class="preset-btn" data-from="41" data-to="50"  onclick="setRangePreset(41,50,this)">41-50</button>
-              <button class="preset-btn" data-from="51" data-to="60"  onclick="setRangePreset(51,60,this)">51-60</button>
-              <button class="preset-btn" data-from="51" data-to="90"  onclick="setRangePreset(51,90,this)">51-90</button>
-              <button class="preset-btn" data-from="61" data-to="70"  onclick="setRangePreset(61,70,this)">61-70</button>
-              <button class="preset-btn" data-from="71" data-to="80"  onclick="setRangePreset(71,80,this)">71-80</button>
-              <button class="preset-btn" data-from="81" data-to="90"  onclick="setRangePreset(81,90,this)">81-90</button>
+              <button
+                class="preset-btn active"
+                data-from="1"
+                data-to="90"
+                onclick="setRangePreset(1, 90, this)"
+              >
+                Tutti (1-90)
+              </button>
+              <button
+                class="preset-btn"
+                data-from="1"
+                data-to="10"
+                onclick="setRangePreset(1, 10, this)"
+              >
+                1-10
+              </button>
+              <button
+                class="preset-btn"
+                data-from="1"
+                data-to="20"
+                onclick="setRangePreset(1, 20, this)"
+              >
+                1-20
+              </button>
+              <button
+                class="preset-btn"
+                data-from="1"
+                data-to="30"
+                onclick="setRangePreset(1, 30, this)"
+              >
+                1-30
+              </button>
+              <button
+                class="preset-btn"
+                data-from="1"
+                data-to="40"
+                onclick="setRangePreset(1, 40, this)"
+              >
+                1-40
+              </button>
+              <button
+                class="preset-btn"
+                data-from="1"
+                data-to="50"
+                onclick="setRangePreset(1, 50, this)"
+              >
+                1-50
+              </button>
+              <button
+                class="preset-btn"
+                data-from="1"
+                data-to="60"
+                onclick="setRangePreset(1, 60, this)"
+              >
+                1-60
+              </button>
+              <button
+                class="preset-btn"
+                data-from="1"
+                data-to="70"
+                onclick="setRangePreset(1, 70, this)"
+              >
+                1-70
+              </button>
+              <button
+                class="preset-btn"
+                data-from="11"
+                data-to="20"
+                onclick="setRangePreset(11, 20, this)"
+              >
+                11-20
+              </button>
+              <button
+                class="preset-btn"
+                data-from="21"
+                data-to="30"
+                onclick="setRangePreset(21, 30, this)"
+              >
+                21-30
+              </button>
+              <button
+                class="preset-btn"
+                data-from="31"
+                data-to="40"
+                onclick="setRangePreset(31, 40, this)"
+              >
+                31-40
+              </button>
+              <button
+                class="preset-btn"
+                data-from="41"
+                data-to="50"
+                onclick="setRangePreset(41, 50, this)"
+              >
+                41-50
+              </button>
+              <button
+                class="preset-btn"
+                data-from="51"
+                data-to="60"
+                onclick="setRangePreset(51, 60, this)"
+              >
+                51-60
+              </button>
+              <button
+                class="preset-btn"
+                data-from="51"
+                data-to="90"
+                onclick="setRangePreset(51, 90, this)"
+              >
+                51-90
+              </button>
+              <button
+                class="preset-btn"
+                data-from="61"
+                data-to="70"
+                onclick="setRangePreset(61, 70, this)"
+              >
+                61-70
+              </button>
+              <button
+                class="preset-btn"
+                data-from="71"
+                data-to="80"
+                onclick="setRangePreset(71, 80, this)"
+              >
+                71-80
+              </button>
+              <button
+                class="preset-btn"
+                data-from="81"
+                data-to="90"
+                onclick="setRangePreset(81, 90, this)"
+              >
+                81-90
+              </button>
             </div>
             <div class="control-box-row">
               <label>Da:</label>
-              <input type="number" id="rangeFrom" min="1" max="90" value="1" style="width:65px;" />
+              <input
+                type="number"
+                id="rangeFrom"
+                min="1"
+                max="90"
+                value="1"
+                style="width: 65px"
+              />
               <label>A:</label>
-              <input type="number" id="rangeTo" min="1" max="90" value="90" style="width:65px;" />
+              <input
+                type="number"
+                id="rangeTo"
+                min="1"
+                max="90"
+                value="90"
+                style="width: 65px"
+              />
             </div>
           </div>
 
           <!-- Velocità annuncio -->
           <div class="control-box-row">
             <label><i class="fas fa-tachometer-alt"></i> Velocità:</label>
-            <input type="range" id="announceSpeed" min="1" max="6" value="2" step="0.5" />
+            <input
+              type="range"
+              id="announceSpeed"
+              min="1"
+              max="6"
+              value="2"
+              step="0.5"
+            />
             <span id="speedLabel">2s</span>
           </div>
 
           <!-- Controlla numero -->
           <div class="control-box-row">
             <label><i class="fas fa-search"></i> Controlla:</label>
-            <input type="number" id="checkNumberInput" min="1" max="90" placeholder="1-90" style="width:80px;" />
-            <button class="mini-btn" onclick="checkNumber()"><i class="fas fa-search"></i></button>
+            <input
+              type="number"
+              id="checkNumberInput"
+              min="1"
+              max="90"
+              placeholder="1-90"
+              style="width: 80px"
+            />
+            <button class="mini-btn" onclick="checkNumber()">
+              <i class="fas fa-search"></i>
+            </button>
           </div>
           <div id="checkResult" class="check-result hidden"></div>
 
           <!-- Azioni annuncio -->
           <div class="control-box-row announce-action-row">
-            <button id="startAnnounceBtn" class="game-btn primary small-btn" onclick="startAnnouncement()">
+            <button
+              id="startAnnounceBtn"
+              class="game-btn primary small-btn"
+              onclick="startAnnouncement()"
+            >
               <i class="fas fa-play"></i> <span>Avvia Annuncio</span>
             </button>
-            <button id="stopAnnounceBtn" class="game-btn danger small-btn hidden" onclick="stopAnnouncement()">
+            <button
+              id="stopAnnounceBtn"
+              class="game-btn danger small-btn hidden"
+              onclick="stopAnnouncement()"
+            >
               <i class="fas fa-stop"></i> <span>Ferma</span>
             </button>
           </div>
@@ -151,7 +451,6 @@
             <span id="announceProgressText">Annunciando...</span>
           </div>
         </div>
-
       </div>
       <!-- fine inline-controls-grid -->
 
