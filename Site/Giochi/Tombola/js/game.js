@@ -83,13 +83,13 @@ async function initGame() {
       if (isNaN(val)) return;
       if (val < min) el.value = min;
       if (val > max) el.value = max;
-      syncPresetButtons(el);
+      syncPresetButtons(el, "input");
     });
     el.addEventListener("blur", () => {
       let val = parseInt(el.value);
       if (isNaN(val) || val < min) el.value = min;
       if (val > max) el.value = max;
-      syncPresetButtons(el);
+      syncPresetButtons(el, "blur");
     });
     el.addEventListener("keydown", (e) => {
       const val = parseInt(el.value) || 0;
@@ -97,16 +97,43 @@ async function initGame() {
       if (e.key === "ArrowDown" && val <= min) e.preventDefault();
     });
     el.addEventListener("keyup", () => {
-      syncPresetButtons(el);
+      syncPresetButtons(el, "keyup");
     });
   }
   document.querySelectorAll('input[type="number"]').forEach(clampInput);
   // ─────────────────────────────────────────────────────────────────────────
 
   // ── Sincronizza bottoni preset quando si scrive nel campo ─────────────────
-  function syncPresetButtons(el) {
+  function syncPresetButtons(el, trigger) {
     const id = el.id;
     const val = parseInt(el.value);
+
+    // Campo "N personalizzato" (sezione Tutti)
+    if (id === "customAllInput") {
+      const btns = document.querySelectorAll("#modeAll .preset-btn");
+      btns.forEach(b => b.classList.remove("active"));
+      if (!isNaN(val)) {
+        // 90 = tutti: colora "Tutti" e svuota solo al blur, non mentre si scrive
+        if (val >= 90 && trigger === "blur") {
+          const tuttiBtn = document.querySelector("#modeAll .preset-btn[data-val='all']");
+          if (tuttiBtn) tuttiBtn.classList.add("active");
+          allPreset = "all";
+          el.value = "";
+        } else if (val >= 90) {
+          // mentre si scrive 90: colora solo "Tutti" senza svuotare
+          const tuttiBtn = document.querySelector("#modeAll .preset-btn[data-val='all']");
+          if (tuttiBtn) tuttiBtn.classList.add("active");
+          allPreset = "all";
+        } else {
+          btns.forEach(b => {
+            const bval = b.dataset.val;
+            if (bval !== "all" && parseInt(bval) === val) b.classList.add("active");
+          });
+          allPreset = String(val);
+        }
+      }
+      return;
+    }
 
     // Campo "N personalizzato" (Ultimi N)
     if (id === "customCountInput") {
@@ -360,13 +387,16 @@ function setAllPreset(val, btn) {
   allPreset = val;
   document.querySelectorAll("#modeAll .preset-btn").forEach(b => b.classList.remove("active"));
   btn.classList.add("active");
+  const customAllInput = document.getElementById("customAllInput");
+  if (customAllInput) customAllInput.value = (val === "all") ? "" : val;
 }
 
 function setCountPreset(val, btn) {
   countPreset = val;
   document.querySelectorAll("#modeCount .preset-btn").forEach(b => b.classList.remove("active"));
   btn.classList.add("active");
-  document.getElementById("customCountInput").value = "";
+  const customCountInput = document.getElementById("customCountInput");
+  if (customCountInput) customCountInput.value = (val === "all") ? "" : val;
 }
 
 function setRangePreset(from, to, btn) {
@@ -384,6 +414,8 @@ function buildAnnounceList() {
   const sorted = Array.from(extractedNumbers).sort((a, b) => a - b);
 
   if (announceMode === "all") {
+    const customAllVal = document.getElementById("customAllInput") ? document.getElementById("customAllInput").value : "";
+    if (customAllVal) return sorted.slice(-parseInt(customAllVal));
     if (allPreset === "all") return sorted;
     return sorted.slice(-parseInt(allPreset));
   }

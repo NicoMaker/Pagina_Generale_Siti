@@ -58,7 +58,7 @@
             </div>
           </div>
 
-          <!-- Sezione TUTTI — bottoni preset, niente dropdown -->
+          <!-- Sezione TUTTI — bottoni preset + campo personalizzato -->
           <div id="modeAll" class="announce-sub-section">
             <div class="control-box-row preset-row">
               <button class="preset-btn active" data-val="all" onclick="setAllPreset('all', this)">Tutti</button>
@@ -68,6 +68,10 @@
               <button class="preset-btn" data-val="20" onclick="setAllPreset('20', this)">Ultimi 20</button>
               <button class="preset-btn" data-val="30" onclick="setAllPreset('30', this)">Ultimi 30</button>
               <button class="preset-btn" data-val="50" onclick="setAllPreset('50', this)">Ultimi 50</button>
+            </div>
+            <div class="control-box-row">
+              <label>Oppure:</label>
+              <input type="number" id="customAllInput" min="1" max="90" placeholder="N personalizzato" style="width:130px;" />
             </div>
           </div>
 
