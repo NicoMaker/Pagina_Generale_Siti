@@ -23,17 +23,21 @@ const mesi = [
   "dicembre",
 ];
 
-const timeEl       = document.getElementById("time");
-const dateEl       = document.getElementById("date");
-const periodEl     = document.getElementById("period");
-const dateAnalogEl = document.getElementById("date-analog");
-const digitalDisp  = document.getElementById("digital-display");
-const analogDisp   = document.getElementById("analog-display");
-const buttons      = document.querySelectorAll(".btn");
+const timeEl            = document.getElementById("time");
+const dateEl            = document.getElementById("date");
+const periodEl          = document.getElementById("period");
+const dateAnalogEl      = document.getElementById("date-analog");
+const analogPeriodLabel = document.getElementById("analog-period-label");
+const digitalDisp       = document.getElementById("digital-display");
+const analogDisp        = document.getElementById("analog-display");
+const buttons           = document.querySelectorAll(".btn");
 
-let formato = "24";
+// formato: "24" | "12" | "analog"
+// formatoOra: "24" | "12" — ricorda l'ultima scelta digitale, usata anche sull'analogico
+let formato    = "24";
+let formatoOra = "24";
 
-// ─── Genera tacche del quadrante ───────────────────────────────────────
+// ─── Genera tacche e numeri del quadrante ────────────────────────────
 (function buildTicks() {
   const ticksGroup = document.getElementById("ticks");
   for (let i = 0; i < 60; i++) {
@@ -57,13 +61,12 @@ let formato = "24";
     line.setAttribute("stroke-linecap", "round");
     ticksGroup.appendChild(line);
 
-    // Numeri delle ore
     if (isHour) {
-      const num   = i / 5 || 12;
-      const lr    = 70;
-      const tx    = 100 + lr * Math.cos(rad);
-      const ty    = 100 + lr * Math.sin(rad);
-      const text  = document.createElementNS("http://www.w3.org/2000/svg", "text");
+      const num  = i / 5 || 12;
+      const lr   = 70;
+      const tx   = 100 + lr * Math.cos(rad);
+      const ty   = 100 + lr * Math.sin(rad);
+      const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
       text.setAttribute("x", tx);
       text.setAttribute("y", ty);
       text.setAttribute("text-anchor", "middle");
@@ -86,7 +89,6 @@ function pad(num) {
 function rotateLancetta(id, deg) {
   const el = document.getElementById(id);
   if (!el) return;
-  // Ruota attorno al centro (100,100)
   el.setAttribute("transform", `rotate(${deg} 100 100)`);
 }
 
@@ -94,13 +96,13 @@ function rotateLancetta(id, deg) {
 function aggiornaClock() {
   const now = new Date();
 
-  const giorno      = giorni[now.getDay()];
+  const giorno       = giorni[now.getDay()];
   const numeroGiorno = pad(now.getDate());
-  const mese        = mesi[now.getMonth()];
-  const anno        = now.getFullYear();
-  const dataStr     = `${giorno} ${numeroGiorno} ${mese} ${anno}`;
+  const mese         = mesi[now.getMonth()];
+  const anno         = now.getFullYear();
+  const dataStr      = `${giorno} ${numeroGiorno} ${mese} ${anno}`;
 
-  let ore     = now.getHours();
+  const oreRaw  = now.getHours();
   const minuti  = now.getMinutes();
   const secondi = now.getSeconds();
 
@@ -110,11 +112,11 @@ function aggiornaClock() {
     let ampm   = "";
 
     if (formato === "24") {
-      orario = `${pad(ore)}:${pad(minuti)}:${pad(secondi)}`;
+      orario = `${pad(oreRaw)}:${pad(minuti)}:${pad(secondi)}`;
     } else {
-      ampm = ore >= 12 ? "PM" : "AM";
-      ore  = ore % 12 || 12;
-      orario = `${pad(ore)}:${pad(minuti)}:${pad(secondi)}`;
+      ampm = oreRaw >= 12 ? "PM" : "AM";
+      const ore12 = oreRaw % 12 || 12;
+      orario = `${pad(ore12)}:${pad(minuti)}:${pad(secondi)}`;
     }
 
     timeEl.textContent   = orario;
@@ -124,16 +126,24 @@ function aggiornaClock() {
 
   // ── Analogico ──
   if (formato === "analog") {
-    // Gradi continui per movimento fluido
-    const secDeg = secondi * 6;                              // 360/60
-    const minDeg = minuti * 6 + secondi * 0.1;              // 360/60 + scorrimento continuo
-    const oreDeg = (ore % 12) * 30 + minuti * 0.5;          // 360/12 + scorrimento continuo
+    const secDeg = secondi * 6;
+    const minDeg = minuti * 6 + secondi * 0.1;
+    const oreDeg = (oreRaw % 12) * 30 + minuti * 0.5;
 
     rotateLancetta("hour-hand",   oreDeg);
     rotateLancetta("minute-hand", minDeg);
     rotateLancetta("second-hand", secDeg);
 
     dateAnalogEl.textContent = dataStr;
+
+    // Label dentro il quadrante: AM/PM se formato 12h, "24H" se 24h
+    if (analogPeriodLabel) {
+      if (formatoOra === "12") {
+        analogPeriodLabel.textContent = oreRaw >= 12 ? "PM" : "AM";
+      } else {
+        analogPeriodLabel.textContent = "24H";
+      }
+    }
   }
 }
 
@@ -144,6 +154,11 @@ buttons.forEach((btn) => {
     formato = btn.dataset.format;
     buttons.forEach((b) => b.classList.remove("active"));
     btn.classList.add("active");
+
+    // Salva il formato ora usato sull'analogico
+    if (formato !== "analog") {
+      formatoOra = formato;
+    }
 
     if (formato === "analog") {
       digitalDisp.style.display = "none";
