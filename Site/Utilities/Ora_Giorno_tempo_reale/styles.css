@@ -208,6 +208,48 @@ body::before {
   }
 }
 
+/* ─── Orologio Analogico ─── */
+.analog-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.analog-clock {
+  width: 220px;
+  height: 220px;
+  filter: drop-shadow(0 8px 24px rgba(102, 126, 234, 0.25));
+  transition: transform 0.3s ease;
+}
+
+.analog-clock:hover {
+  transform: scale(1.03);
+}
+
+/* ─── Legenda orologio analogico ─── */
+.clock-legend {
+  display: flex;
+  gap: 18px;
+  justify-content: center;
+  margin-top: 14px;
+  flex-wrap: wrap;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.82rem;
+  color: #666;
+  font-weight: 500;
+}
+
+.legend-dot {
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+
 @media (max-width: 600px) {
   .clock-container {
     padding: 35px 25px;
@@ -238,13 +280,20 @@ body::before {
 
   .controls {
     flex-direction: row;
-    gap: 10px;
+    gap: 8px;
+    flex-wrap: wrap;
   }
 
   .btn {
     flex: 1;
-    padding: 14px 20px;
-    font-size: 0.9rem;
+    min-width: 80px;
+    padding: 14px 14px;
+    font-size: 0.85rem;
+  }
+
+  .analog-clock {
+    width: 180px;
+    height: 180px;
   }
 }
 
@@ -259,12 +308,12 @@ body::before {
   }
 
   .controls {
-    gap: 8px;
+    gap: 6px;
   }
 
   .btn {
-    padding: 12px 16px;
-    font-size: 0.85rem;
+    padding: 11px 12px;
+    font-size: 0.8rem;
   }
 }
 
