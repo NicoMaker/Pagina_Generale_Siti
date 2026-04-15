@@ -18,9 +18,11 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   overflow: hidden;
+  overscroll-behavior-y: contain;
 }
 
 body::before {
@@ -28,7 +30,11 @@ body::before {
   position: absolute;
   width: 200%;
   height: 200%;
-  background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.1) 1px,
+    transparent 1px
+  );
   background-size: 50px 50px;
   animation: drift 60s linear infinite;
   opacity: 0.3;
@@ -36,35 +42,42 @@ body::before {
 }
 
 @keyframes drift {
-  from { transform: translate(0, 0); }
-  to   { transform: translate(50px, 50px); }
+  from {
+    transform: translate(0, 0);
+  }
+  to {
+    transform: translate(50px, 50px);
+  }
 }
 
-/* ─── Contenitore principale ─── */
 .clock-container {
   position: relative;
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-radius: 30px;
-  padding: 50px 60px;
+  padding: 40px 50px;
   box-shadow:
     0 20px 60px rgba(0, 0, 0, 0.3),
     0 0 0 1px rgba(255, 255, 255, 0.5) inset;
-  max-width: 600px;
+  max-width: 750px;
   width: calc(100% - 40px);
   animation: float 6s ease-in-out infinite;
 }
 
 @keyframes float {
-  0%,  100% { transform: translateY(0px); }
-  50%        { transform: translateY(-10px); }
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
 }
 
-/* ─── Header ─── */
 .header {
   text-align: center;
-  margin-bottom: 40px;
+  margin-bottom: 25px;
 }
 
 .header h1 {
@@ -81,10 +94,43 @@ body::before {
   color: #888;
 }
 
-/* ─── Display digitale ─── */
+/* Pulsanti formato per la modalità digitale (sopra l'orologio) */
+.digital-format-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.digital-fmt-btn {
+  padding: 8px 28px;
+  border: none;
+  border-radius: 50px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: #f0f0f0;
+  color: #666;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.digital-fmt-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.12);
+}
+
+.digital-fmt-btn.active {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  box-shadow: 0 4px 18px rgba(102, 126, 234, 0.4);
+}
+
 .time-display {
   text-align: center;
-  margin-bottom: 30px;
+  margin-bottom: 25px;
 }
 
 .time {
@@ -112,26 +158,25 @@ body::before {
 }
 
 .date {
-  font-size: 1.1rem;
+  font-size: 1rem;
   color: #555;
-  margin-top: 15px;
+  margin-top: 12px;
   font-weight: 500;
   text-transform: capitalize;
 }
 
-/* ─── Pulsanti formato principale ─── */
 .controls {
   display: flex;
   gap: 15px;
   justify-content: center;
-  margin-top: 30px;
+  margin-top: 25px;
 }
 
 .btn {
-  padding: 12px 28px;
+  padding: 10px 24px;
   border: none;
   border-radius: 50px;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -157,27 +202,44 @@ body::before {
   transform: translateY(0);
 }
 
-/* ─── Decorazioni angolo ─── */
 .decoration {
   position: absolute;
   width: 100px;
   height: 100px;
   border-radius: 50%;
-  background: linear-gradient(135deg, rgba(102,126,234,0.2), rgba(118,75,162,0.2));
+  background: linear-gradient(
+    135deg,
+    rgba(102, 126, 234, 0.2),
+    rgba(118, 75, 162, 0.2)
+  );
   filter: blur(40px);
   animation: pulse 4s ease-in-out infinite;
   pointer-events: none;
 }
 
-.decoration:nth-child(1) { top: -50px; left: -50px; }
-.decoration:nth-child(2) { bottom: -50px; right: -50px; animation-delay: 2s; }
-
-@keyframes pulse {
-  0%,  100% { transform: scale(1);   opacity: 0.5; }
-  50%        { transform: scale(1.2); opacity: 0.8; }
+.decoration:nth-child(1) {
+  top: -50px;
+  left: -50px;
+}
+.decoration:nth-child(2) {
+  bottom: -50px;
+  right: -50px;
+  animation-delay: 2s;
 }
 
-/* ─── Orologio Analogico ─── */
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.8;
+  }
+}
+
+/* Analogico */
 .analog-wrapper {
   display: flex;
   flex-direction: column;
@@ -185,29 +247,28 @@ body::before {
 }
 
 .analog-clock {
-  width: 220px;
-  height: 220px;
+  width: 300px;
+  height: 300px;
   filter: drop-shadow(0 8px 24px rgba(102, 126, 234, 0.25));
   transition: transform 0.3s ease;
 }
 
 .analog-clock:hover {
-  transform: scale(1.03);
+  transform: scale(1.02);
 }
 
-/* ─── Sotto-pulsanti 12h / 24h (dentro analogico) ─── */
 .sub-controls {
   display: flex;
-  gap: 10px;
+  gap: 12px;
   justify-content: center;
   margin-bottom: 16px;
 }
 
 .sub-btn {
-  padding: 8px 22px;
+  padding: 8px 28px;
   border: none;
   border-radius: 50px;
-  font-size: 0.88rem;
+  font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -219,7 +280,7 @@ body::before {
 }
 
 .sub-btn:hover {
-  transform: translateY(-1px);
+  transform: translateY(-2px);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.12);
 }
 
@@ -229,16 +290,11 @@ body::before {
   box-shadow: 0 4px 18px rgba(102, 126, 234, 0.4);
 }
 
-.sub-btn:active {
-  transform: translateY(0);
-}
-
-/* ─── Legenda orologio analogico ─── */
 .clock-legend {
   display: flex;
   gap: 18px;
   justify-content: center;
-  margin-top: 14px;
+  margin-top: 12px;
   flex-wrap: wrap;
 }
 
@@ -246,7 +302,7 @@ body::before {
   display: flex;
   align-items: center;
   gap: 7px;
-  font-size: 0.82rem;
+  font-size: 0.75rem;
   color: #666;
   font-weight: 500;
 }
@@ -256,79 +312,19 @@ body::before {
   flex-shrink: 0;
 }
 
-/* ─── Responsive ─── */
-@media (max-width: 600px) {
+@media (max-width: 650px) {
   .clock-container {
-    padding: 35px 25px;
-    border-radius: 25px;
-    width: calc(100% - 30px);
+    padding: 30px 25px;
   }
-
-  .header h1 {
-    font-size: 1rem;
-    letter-spacing: 2px;
-  }
-
-  .header p {
-    font-size: 0.85rem;
-  }
-
-  .time {
-    font-size: clamp(2.5rem, 12vw, 4rem);
-  }
-
-  .period {
-    font-size: 1.2rem;
-  }
-
-  .date {
-    font-size: 0.95rem;
-  }
-
-  .controls {
-    gap: 8px;
-    flex-wrap: wrap;
-  }
-
-  .btn {
-    flex: 1;
-    min-width: 80px;
-    padding: 14px 14px;
-    font-size: 0.85rem;
-  }
-
   .analog-clock {
-    width: 180px;
-    height: 180px;
-  }
-
-  .sub-btn {
-    padding: 8px 16px;
-    font-size: 0.82rem;
+    width: 240px;
+    height: 240px;
   }
 }
 
-@media (max-width: 400px) {
-  .clock-container {
-    padding: 30px 20px;
+@media (max-width: 500px) {
+  .analog-clock {
+    width: 210px;
+    height: 210px;
   }
-
-  .header h1 {
-    font-size: 0.9rem;
-    letter-spacing: 1.5px;
-  }
-
-  .controls {
-    gap: 6px;
-  }
-
-  .btn {
-    padding: 11px 12px;
-    font-size: 0.8rem;
-  }
-}
-
-/* Previeni pull-to-refresh su mobile */
-body {
-  overscroll-behavior-y: contain;
 }
