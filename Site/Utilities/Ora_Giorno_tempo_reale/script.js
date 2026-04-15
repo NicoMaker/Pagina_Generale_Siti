@@ -1,27 +1,5 @@
-const giorni = [
-  "domenica",
-  "lunedì",
-  "martedì",
-  "mercoledì",
-  "giovedì",
-  "venerdì",
-  "sabato",
-];
-
-const mesi = [
-  "gennaio",
-  "febbraio",
-  "marzo",
-  "aprile",
-  "maggio",
-  "giugno",
-  "luglio",
-  "agosto",
-  "settembre",
-  "ottobre",
-  "novembre",
-  "dicembre",
-];
+const giorni = ["domenica","lunedì","martedì","mercoledì","giovedì","venerdì","sabato"];
+const mesi   = ["gennaio","febbraio","marzo","aprile","maggio","giugno","luglio","agosto","settembre","ottobre","novembre","dicembre"];
 
 const timeEl            = document.getElementById("time");
 const dateEl            = document.getElementById("date");
@@ -32,18 +10,34 @@ const digitalDisp       = document.getElementById("digital-display");
 const analogDisp        = document.getElementById("analog-display");
 const buttons           = document.querySelectorAll(".btn");
 
-// formato: "24" | "12" | "analog"
-// formatoOra: "24" | "12" — ricorda l'ultima scelta digitale, usata anche sull'analogico
-let formato    = "24";
-let formatoOra = "24";
+// formato principale: "24" | "12" | "analog"
+// subFmt: formato ore sull'analogico: "12" | "24"
+let formato = "24";
+let subFmt  = "12";
 
-// ─── Genera tacche e numeri del quadrante ────────────────────────────
-(function buildTicks() {
+// ─── Helpers ─────────────────────────────────────────────────────────
+function pad(num) {
+  return String(num).padStart(2, "0");
+}
+
+function rotateLancetta(id, deg) {
+  const el = document.getElementById(id);
+  if (el) el.setAttribute("transform", `rotate(${deg} 100 100)`);
+}
+
+// ─── Costruisce tacche + numeri del quadrante ─────────────────────────
+// is24: true = quadrante 24 ore, false = quadrante 12 ore
+function buildTicks(is24) {
   const ticksGroup = document.getElementById("ticks");
-  for (let i = 0; i < 60; i++) {
-    const angle  = (i / 60) * 360;
-    const isHour = i % 5 === 0;
-    const inner  = isHour ? 82 : 90;
+  ticksGroup.innerHTML = "";
+
+  const totalHours = is24 ? 24 : 12;
+  const totalTicks = 60; // tacche dei minuti come base
+
+  for (let i = 0; i < totalTicks; i++) {
+    const isHour = i % (totalTicks / totalHours) === 0;
+    const angle  = (i / totalTicks) * 360;
+    const inner  = isHour ? 80 : 90;
     const outer  = 96;
     const rad    = (angle - 90) * (Math.PI / 180);
     const x1     = 100 + inner * Math.cos(rad);
@@ -51,6 +45,7 @@ let formatoOra = "24";
     const x2     = 100 + outer * Math.cos(rad);
     const y2     = 100 + outer * Math.sin(rad);
 
+    // Linea tacca
     const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
     line.setAttribute("x1", x1);
     line.setAttribute("y1", y1);
@@ -61,35 +56,35 @@ let formatoOra = "24";
     line.setAttribute("stroke-linecap", "round");
     ticksGroup.appendChild(line);
 
+    // Numero ora
     if (isHour) {
-      const num  = i / 5 || 12;
-      const lr   = 70;
-      const tx   = 100 + lr * Math.cos(rad);
-      const ty   = 100 + lr * Math.sin(rad);
+      // Indice numerico dell'ora in questo punto del quadrante
+      const hourIndex = i / (totalTicks / totalHours);
+      // 12h: 0 → 12, 1..11 → 1..11
+      // 24h: 0 → 0, 1..23 → 1..23 (ma 0 lo scriviamo come "0" o "24"?)
+      // Convenzione: 0 → 0 in 24h, 12 → 12
+      const label = is24
+        ? String(hourIndex).padStart(2, "0")   // 00, 01 … 23
+        : (hourIndex === 0 ? 12 : hourIndex);   // 12, 1 … 11
+
+      // Raggio testo: più piccolo in 24h per non sovrapporre
+      const lr  = is24 ? 67 : 70;
+      const tx  = 100 + lr * Math.cos(rad);
+      const ty  = 100 + lr * Math.sin(rad);
+
       const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
       text.setAttribute("x", tx);
       text.setAttribute("y", ty);
       text.setAttribute("text-anchor", "middle");
       text.setAttribute("dominant-baseline", "central");
-      text.setAttribute("font-size", "11");
+      text.setAttribute("font-size", is24 ? "8" : "11");
       text.setAttribute("font-weight", "600");
       text.setAttribute("fill", "#667eea");
       text.setAttribute("font-family", "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif");
-      text.textContent = num;
+      text.textContent = label;
       ticksGroup.appendChild(text);
     }
   }
-})();
-
-// ─── Helpers ──────────────────────────────────────────────────────────
-function pad(num) {
-  return String(num).padStart(2, "0");
-}
-
-function rotateLancetta(id, deg) {
-  const el = document.getElementById(id);
-  if (!el) return;
-  el.setAttribute("transform", `rotate(${deg} 100 100)`);
 }
 
 // ─── Aggiornamento orologio ───────────────────────────────────────────
@@ -106,7 +101,7 @@ function aggiornaClock() {
   const minuti  = now.getMinutes();
   const secondi = now.getSeconds();
 
-  // ── Digitale ──
+  // ── Digitale ──────────────────────────────────────────────────────
   if (formato !== "analog") {
     let orario = "";
     let ampm   = "";
@@ -124,11 +119,20 @@ function aggiornaClock() {
     dateEl.textContent   = dataStr;
   }
 
-  // ── Analogico ──
+  // ── Analogico ─────────────────────────────────────────────────────
   if (formato === "analog") {
+    let oreDeg;
     const secDeg = secondi * 6;
     const minDeg = minuti * 6 + secondi * 0.1;
-    const oreDeg = (oreRaw % 12) * 30 + minuti * 0.5;
+
+    if (subFmt === "24") {
+      // Quadrante 24h: lancetta ore compie un giro completo in 24 ore
+      // Mezzanotte in cima (0°), mezzogiorno in basso (180°)
+      oreDeg = (oreRaw / 24) * 360 + (minuti / 24) * 0.5;
+    } else {
+      // Quadrante 12h classico
+      oreDeg = (oreRaw % 12) * 30 + minuti * 0.5;
+    }
 
     rotateLancetta("hour-hand",   oreDeg);
     rotateLancetta("minute-hand", minDeg);
@@ -136,33 +140,29 @@ function aggiornaClock() {
 
     dateAnalogEl.textContent = dataStr;
 
-    // Label dentro il quadrante: AM/PM se formato 12h, "24H" se 24h
+    // Label AM/PM (solo in 12h, vuota in 24h)
     if (analogPeriodLabel) {
-      if (formatoOra === "12") {
-        analogPeriodLabel.textContent = oreRaw >= 12 ? "PM" : "AM";
-      } else {
-        analogPeriodLabel.textContent = "24H";
-      }
+      analogPeriodLabel.textContent = (subFmt === "12")
+        ? (oreRaw >= 12 ? "PM" : "AM")
+        : "";
     }
   }
 }
 
-// ─── Switch modalità ─────────────────────────────────────────────────
+// ─── Switch modalità principale (24 / 12 / analog) ───────────────────
 buttons.forEach((btn) => {
   btn.addEventListener("click", (e) => {
     e.preventDefault();
     formato = btn.dataset.format;
+
     buttons.forEach((b) => b.classList.remove("active"));
     btn.classList.add("active");
-
-    // Salva il formato ora usato sull'analogico
-    if (formato !== "analog") {
-      formatoOra = formato;
-    }
 
     if (formato === "analog") {
       digitalDisp.style.display = "none";
       analogDisp.style.display  = "flex";
+      // Costruisce subito il quadrante corretto
+      buildTicks(subFmt === "24");
     } else {
       digitalDisp.style.display = "block";
       analogDisp.style.display  = "none";
@@ -173,24 +173,26 @@ buttons.forEach((btn) => {
   });
 });
 
+// ─── Switch sotto-formato analogico (12h / 24h) ──────────────────────
+function setSubFmt(sf) {
+  subFmt = sf;
+
+  document.getElementById("sub12").classList.toggle("active", sf === "12");
+  document.getElementById("sub24").classList.toggle("active", sf === "24");
+
+  buildTicks(sf === "24");
+  aggiornaClock();
+}
+
 // ─── Avvio ────────────────────────────────────────────────────────────
+buildTicks(false); // quadrante 12h di default
 aggiornaClock();
 setInterval(aggiornaClock, 1000);
 
 // ─── Previeni pull-to-refresh su mobile ──────────────────────────────
 let startY = 0;
-document.addEventListener(
-  "touchstart",
-  (e) => { startY = e.touches[0].pageY; },
-  { passive: false }
-);
-document.addEventListener(
-  "touchmove",
-  (e) => {
-    const y = e.touches[0].pageY;
-    if (window.scrollY === 0 && y > startY) {
-      e.preventDefault();
-    }
-  },
-  { passive: false }
-);
+document.addEventListener("touchstart", (e) => { startY = e.touches[0].pageY; }, { passive: false });
+document.addEventListener("touchmove", (e) => {
+  const y = e.touches[0].pageY;
+  if (window.scrollY === 0 && y > startY) e.preventDefault();
+}, { passive: false });

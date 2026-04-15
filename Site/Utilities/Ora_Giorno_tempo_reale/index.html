@@ -2,18 +2,11 @@
 <html lang="it">
   <head>
     <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=3.0, user-scalable=yes"
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=3.0, user-scalable=yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="mobile-web-app-capable" content="yes" />
     <title>Orologio Digitale Moderno</title>
-    <link
-      rel="icon"
-      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><linearGradient id='grad' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' style='stop-color:%23667eea'/><stop offset='100%' style='stop-color:%23764ba2'/></linearGradient></defs><circle cx='50' cy='50' r='45' fill='url(%23grad)'/><circle cx='50' cy='50' r='38' fill='white'/><line x1='50' y1='50' x2='50' y2='25' stroke='%23667eea' stroke-width='3' stroke-linecap='round'/><line x1='50' y1='50' x2='65' y2='50' stroke='%23764ba2' stroke-width='2.5' stroke-linecap='round'/><circle cx='50' cy='50' r='4' fill='%23667eea'/></svg>"
-      type="image/svg+xml"
-    />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><linearGradient id='grad' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' style='stop-color:%23667eea'/><stop offset='100%' style='stop-color:%23764ba2'/></linearGradient></defs><circle cx='50' cy='50' r='45' fill='url(%23grad)'/><circle cx='50' cy='50' r='38' fill='white'/><line x1='50' y1='50' x2='50' y2='25' stroke='%23667eea' stroke-width='3' stroke-linecap='round'/><line x1='50' y1='50' x2='65' y2='50' stroke='%23764ba2' stroke-width='2.5' stroke-linecap='round'/><circle cx='50' cy='50' r='4' fill='%23667eea'/></svg>" type="image/svg+xml" />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
@@ -35,8 +28,14 @@
 
       <!-- Analogico -->
       <div class="time-display analog-wrapper" id="analog-display" style="display:none;">
+
+        <!-- Sotto-pulsanti 12h / 24h visibili solo in modalità analogica -->
+        <div class="sub-controls">
+          <button class="sub-btn active" id="sub12" onclick="setSubFmt('12')">12 ore</button>
+          <button class="sub-btn" id="sub24" onclick="setSubFmt('24')">24 ore</button>
+        </div>
+
         <svg class="analog-clock" id="analog-clock" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-          <!-- Sfondo quadrante -->
           <defs>
             <linearGradient id="faceGrad" x1="0%" y1="0%" x2="100%" y2="100%">
               <stop offset="0%" style="stop-color:#f8f8ff"/>
@@ -49,7 +48,7 @@
           </defs>
           <!-- Cerchio esterno -->
           <circle cx="100" cy="100" r="98" fill="url(#faceGrad)" stroke="url(#handGrad)" stroke-width="2"/>
-          <!-- Tacche ore -->
+          <!-- Tacche e numeri (generati da JS) -->
           <g id="ticks"></g>
           <!-- Lancetta ore (blu scuro, corta e spessa) -->
           <line id="hour-hand" x1="100" y1="108" x2="100" y2="55"
@@ -60,8 +59,8 @@
           <!-- Lancetta secondi (rosso vivo, sottile) -->
           <line id="second-hand" x1="100" y1="118" x2="100" y2="28"
             stroke="#e74c3c" stroke-width="2" stroke-linecap="round"/>
-          <!-- AM/PM o 24h label -->
-          <text id="analog-period-label" x="100" y="140"
+          <!-- AM/PM label (solo in modalità 12h) -->
+          <text id="analog-period-label" x="100" y="148"
             text-anchor="middle" dominant-baseline="central"
             font-size="10" font-weight="700"
             fill="#764ba2" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
@@ -70,14 +69,23 @@
           <circle cx="100" cy="100" r="5" fill="url(#handGrad)"/>
           <circle cx="100" cy="100" r="2" fill="white"/>
         </svg>
+
         <div class="date" id="date-analog">caricamento...</div>
+
         <div class="clock-legend">
-          <span class="legend-item"><span class="legend-dot" style="background:#2d3a8c;width:12px;height:6px;border-radius:3px;"></span> Ore</span>
-          <span class="legend-item"><span class="legend-dot" style="background:#764ba2;width:10px;height:4px;border-radius:2px;"></span> Minuti</span>
-          <span class="legend-item"><span class="legend-dot" style="background:#e74c3c;width:8px;height:2px;border-radius:1px;"></span> Secondi</span>
+          <span class="legend-item">
+            <span class="legend-dot" style="background:#2d3a8c;width:12px;height:6px;border-radius:3px;"></span> Ore
+          </span>
+          <span class="legend-item">
+            <span class="legend-dot" style="background:#764ba2;width:10px;height:4px;border-radius:2px;"></span> Minuti
+          </span>
+          <span class="legend-item">
+            <span class="legend-dot" style="background:#e74c3c;width:8px;height:2px;border-radius:1px;"></span> Secondi
+          </span>
         </div>
       </div>
 
+      <!-- Pulsanti formato principale -->
       <div class="controls">
         <button class="btn active" data-format="24">24 ore</button>
         <button class="btn" data-format="12">12 ore</button>
