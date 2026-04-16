@@ -44,22 +44,22 @@ function rotateLancetta(id, deg) {
   if (el) el.setAttribute("transform", `rotate(${deg} 100 100)`);
 }
 
-// Costruisce il quadrante analogico con TUTTE le 24 tacche (ogni ora)
+// Costruisce il quadrante analogico
 function buildAnalogTicks() {
   const ticksGroup = document.getElementById("ticks");
   ticksGroup.innerHTML = "";
 
   const is24h = analogFormat === "24";
   const totalHours = is24h ? 24 : 12;
-  const totalTicks = 60;
 
-  // Raggio per i numeri - più piccolo per 24h per far entrare tutti i numeri
+  // Raggio per i numeri
   const labelRadius = is24h ? 64 : 72;
 
-  for (let i = 0; i < totalTicks; i++) {
-    const isHour = i % (totalTicks / totalHours) === 0;
-    const angle = (i / totalTicks) * 360;
-    const inner = isHour ? 80 : 90;
+  // Disegna 60 tacche per i minuti
+  for (let i = 0; i < 60; i++) {
+    const angle = (i / 60) * 360;
+    const isMinorTick = true;
+    const inner = 90;
     const outer = 96;
     const rad = (angle - 90) * (Math.PI / 180);
     const x1 = 100 + inner * Math.cos(rad);
@@ -67,51 +67,65 @@ function buildAnalogTicks() {
     const x2 = 100 + outer * Math.cos(rad);
     const y2 = 100 + outer * Math.sin(rad);
 
-    // Tacca
     const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
     line.setAttribute("x1", x1);
     line.setAttribute("y1", y1);
     line.setAttribute("x2", x2);
     line.setAttribute("y2", y2);
-    line.setAttribute("stroke", isHour ? "#667eea" : "#ccc");
-    line.setAttribute("stroke-width", isHour ? "2.5" : "1");
+    line.setAttribute("stroke", "#ccc");
+    line.setAttribute("stroke-width", "1");
+    line.setAttribute("stroke-linecap", "round");
+    ticksGroup.appendChild(line);
+  }
+
+  // Disegna le tacche delle ore e i numeri
+  for (let h = 0; h < totalHours; h++) {
+    const angle = (h / totalHours) * 360;
+    const rad = (angle - 90) * (Math.PI / 180);
+
+    const inner = 80;
+    const outer = 96;
+    const x1 = 100 + inner * Math.cos(rad);
+    const y1 = 100 + inner * Math.sin(rad);
+    const x2 = 100 + outer * Math.cos(rad);
+    const y2 = 100 + outer * Math.sin(rad);
+
+    // Tacca ora (sopra le tacche minuti)
+    const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+    line.setAttribute("x1", x1);
+    line.setAttribute("y1", y1);
+    line.setAttribute("x2", x2);
+    line.setAttribute("y2", y2);
+    line.setAttribute("stroke", "#667eea");
+    line.setAttribute("stroke-width", "2.5");
     line.setAttribute("stroke-linecap", "round");
     ticksGroup.appendChild(line);
 
-    // Numero (ogni ora - TUTTI i numeri da 00 a 23 per 24h)
-    if (isHour) {
-      const hourIndex = i / (totalTicks / totalHours);
-      let label;
-
-      if (is24h) {
-        // 24h: mostra TUTTI i numeri 00,01,02,03...23
-        label = String(hourIndex).padStart(2, "0");
-      } else {
-        // 12h: 12,1,2...11
-        label = hourIndex === 0 ? 12 : hourIndex;
-      }
-
-      const tx = 100 + labelRadius * Math.cos(rad);
-      const ty = 100 + labelRadius * Math.sin(rad);
-
-      const text = document.createElementNS(
-        "http://www.w3.org/2000/svg",
-        "text",
-      );
-      text.setAttribute("x", tx);
-      text.setAttribute("y", ty);
-      text.setAttribute("text-anchor", "middle");
-      text.setAttribute("dominant-baseline", "central");
-      text.setAttribute("font-size", is24h ? "6.5" : "10");
-      text.setAttribute("font-weight", "600");
-      text.setAttribute("fill", is24h ? "#555" : "#667eea");
-      text.setAttribute(
-        "font-family",
-        "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
-      );
-      text.textContent = label;
-      ticksGroup.appendChild(text);
+    // Numero
+    let label;
+    if (is24h) {
+      label = String(h).padStart(2, "0");
+    } else {
+      label = h === 0 ? 12 : h;
     }
+
+    const tx = 100 + labelRadius * Math.cos(rad);
+    const ty = 100 + labelRadius * Math.sin(rad);
+
+    const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    text.setAttribute("x", tx);
+    text.setAttribute("y", ty);
+    text.setAttribute("text-anchor", "middle");
+    text.setAttribute("dominant-baseline", "central");
+    text.setAttribute("font-size", is24h ? "6.5" : "10");
+    text.setAttribute("font-weight", "600");
+    text.setAttribute("fill", is24h ? "#555" : "#667eea");
+    text.setAttribute(
+      "font-family",
+      "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+    );
+    text.textContent = label;
+    ticksGroup.appendChild(text);
   }
 }
 
