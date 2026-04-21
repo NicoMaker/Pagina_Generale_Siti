@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>BioClock | Cronobiologia & Ritmi Circadiani</title>
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23FFD166'/%3E%3Cstop offset='100%25' stop-color='%23EF476F'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='50' cy='50' r='45' fill='url(%23g)'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-size='45' fill='white' font-weight='bold'%3E⏰%3C/text%3E%3C/svg%3E"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="app-container">
+      <div class="bio-card">
+        <!-- header -->
+        <div class="bio-header">
+          <div class="logo">
+            <span class="logo-icon">⏰</span>
+            <h1>BioClock</h1>
+          </div>
+          <p class="tagline">
+            Cronobiologia · Ritmi circadiani · Energia su misura
+          </p>
+        </div>
+
+        <!-- questionario cronotipo -->
+        <div class="question-section" id="questionSection">
+          <h2>🧬 Scopri il tuo Cronotipo</h2>
+          <p class="question-desc">
+            Rispondi a queste domande per identificare il tuo ritmo biologico
+            naturale
+          </p>
+
+          <div class="question-card" id="q1">
+            <div class="question-text">
+              🌅 A che ora ti senti più sveglio e produttivo al mattino?
+            </div>
+            <div class="options">
+              <button class="opt-btn" data-value="early">
+                Prima delle 8:00 (Allodola)
+              </button>
+              <button class="opt-btn" data-value="neutral">
+                Tra le 8:00 e le 10:00
+              </button>
+              <button class="opt-btn" data-value="late">
+                Dopo le 10:00 (Gufo)
+              </button>
+            </div>
+          </div>
+
+          <div class="question-card hidden" id="q2">
+            <div class="question-text">
+              🌙 A che ora preferisci andare a dormire abitualmente?
+            </div>
+            <div class="options">
+              <button class="opt-btn" data-value="early">
+                Prima delle 22:30
+              </button>
+              <button class="opt-btn" data-value="neutral">
+                Tra le 22:30 e le 00:30
+              </button>
+              <button class="opt-btn" data-value="late">Dopo le 00:30</button>
+            </div>
+          </div>
+
+          <div class="question-card hidden" id="q3">
+            <div class="question-text">
+              ⚡ Quando hai il tuo picco massimo di energia mentale?
+            </div>
+            <div class="options">
+              <button class="opt-btn" data-value="early">
+                Mattina (8:00 - 12:00)
+              </button>
+              <button class="opt-btn" data-value="neutral">
+                Pomeriggio (12:00 - 16:00)
+              </button>
+              <button class="opt-btn" data-value="late">
+                Sera/Notte (dopo le 18:00)
+              </button>
+            </div>
+          </div>
+
+          <div class="question-card hidden" id="q4">
+            <div class="question-text">
+              😴 Quanto è difficile per te svegliarti la mattina senza sveglia?
+            </div>
+            <div class="options">
+              <button class="opt-btn" data-value="early">
+                Molto facile, mi sveglio da solo presto
+              </button>
+              <button class="opt-btn" data-value="neutral">
+                Abbastanza normale
+              </button>
+              <button class="opt-btn" data-value="late">
+                Molto difficile, ho bisogno di più sveglie
+              </button>
+            </div>
+          </div>
+
+          <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+          </div>
+          <div class="question-counter" id="questionCounter">
+            Domanda 1 di 4
+          </div>
+        </div>
+
+        <!-- risultati area -->
+        <div class="results-section hidden" id="resultsSection">
+          <div class="chronotype-badge" id="chronotypeBadge">
+            <span id="chronoIcon">🦉</span>
+            <span id="chronoName">Gufo Notturno</span>
+          </div>
+
+          <div class="rhythm-chart" id="rhythmChart">
+            <h3>📊 Il tuo OROLOGIO BIOLOGICO</h3>
+            <div class="timeline" id="timeline"></div>
+          </div>
+
+          <div class="advice-grid">
+            <div class="advice-card">
+              <div class="advice-icon">🌙</div>
+              <h4>Finestra di sonno ideale</h4>
+              <p id="sleepWindow">--:-- → --:--</p>
+              <small id="sleepDetail">durata consigliata</small>
+            </div>
+            <div class="advice-card">
+              <div class="advice-icon">💡</div>
+              <h4>Picco di creatività</h4>
+              <p id="creativePeak">--:--</p>
+              <small>Momento migliore per lavori creativi</small>
+            </div>
+            <div class="advice-card">
+              <div class="advice-icon">💪</div>
+              <h4>Performance fisica</h4>
+              <p id="sportPeak">--:--</p>
+              <small>Allenamento ottimale</small>
+            </div>
+            <div class="advice-card">
+              <div class="advice-icon">🍽️</div>
+              <h4>Pasti principali</h4>
+              <p id="mealTimes">--:-- / --:-- / --:--</p>
+              <small>Allineati al tuo ritmo</small>
+            </div>
+            <div class="advice-card">
+              <div class="advice-icon">🧘</div>
+              <h4>Momento di relax</h4>
+              <p id="relaxTime">--:--</p>
+              <small>Rituale serale consigliato</small>
+            </div>
+            <div class="advice-card">
+              <div class="advice-icon">☕</div>
+              <h4>Caffeina & stimoli</h4>
+              <p id="caffeineAdvice">--</p>
+              <small>Ultimo caffè consigliato</small>
+            </div>
+          </div>
+
+          <button class="reset-btn" id="resetBtn">🔄 Rifai il test</button>
+        </div>
+
+        <footer class="bio-footer">
+          <p>🌿 Basato sulla ricerca sui ritmi circadiani e cronobiologia</p>
+          <p>⏱️ Ogni persona è unica: ascolta sempre il tuo corpo</p>
+        </footer>
+      </div>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
