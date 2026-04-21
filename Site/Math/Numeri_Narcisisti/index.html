@@ -1,82 +1,110 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="it">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
     <title>Narcisisti | Dimostrazione numeri di Armstrong</title>
-    <!-- Favicon moderna (diamante + gradiente) -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%2340c4ff'/%3E%3Cstop offset='100%25' stop-color='%239d4eff'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='20' fill='url(%23g)'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-size='58' fill='white' font-weight='bold'%3E💎%3C/text%3E%3C/svg%3E">
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%2340c4ff'/%3E%3Cstop offset='100%25' stop-color='%239d4eff'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='20' fill='url(%23g)'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-size='58' fill='white' font-weight='bold'%3E💎%3C/text%3E%3C/svg%3E"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
     <div class="app-wrapper">
-        <div class="glass-container">
-            <!-- header -->
-            <div class="hero-section">
-                <div class="badge-narc">NUMERI DI ARMSTRONG</div>
-                <h1>
-                    <span class="icon-sparkle">✨</span> 
-                    Narcisisti Assoluti 
-                    <span class="icon-sparkle">💎</span>
-                </h1>
-                <p class="subtitle">Ogni numero = somma delle sue cifre elevate alla potenza (numero di cifre)</p>
-                <div class="example-ribbon">
-                    <code>153 → 1³ + 5³ + 3³ = 1 + 125 + 27 = 153</code>
-                </div>
-            </div>
-
-            <!-- pannello input -->
-            <div class="input-panel">
-                <div class="input-header">
-                    <label>🔢 Lunghezza (cifre)</label>
-                    <span class="range-hint">1 – 60 cifre · motore BigInt</span>
-                </div>
-                <div class="input-group">
-                    <div class="input-field">
-                        <input type="number" id="lengthInput" placeholder="es. 3" min="1" max="60" step="1" value="3">
-                    </div>
-                    <button id="searchBtn" class="btn-primary">
-                        <span>🔍</span> Cerca & Dimostra
-                    </button>
-                </div>
-                <div class="info-note">
-                    ⚡ Algoritmo combinatorio con potature – risultati immediati anche per 60 cifre
-                </div>
-            </div>
-
-            <!-- stat bar -->
-            <div class="stats-bar" id="statsBar">
-                <div class="stat-item">
-                    <span class="stat-icon">🎯</span>
-                    <span id="statsText">Pronto · inserisci lunghezza</span>
-                </div>
-                <div class="stat-item" id="timeBadge" style="display: none;">
-                    <span class="stat-icon">⏱️</span>
-                    <span id="timeElapsed">—</span>
-                </div>
-            </div>
-
-            <!-- risultati con dimostrazione -->
-            <div class="results-card">
-                <div class="results-header">
-                    <div class="title-icon">📜</div>
-                    <h3>Dimostrazione completa</h3>
-                    <div class="chip-info">equazione esplicita per ogni numero</div>
-                </div>
-                <div id="narcListContainer" class="narc-list">
-                    <div class="placeholder-message">
-                        <div class="placeholder-icon">🧪</div>
-                        <p>Scegli una lunghezza e premi "Cerca & Dimostra"<br>es: 3 → 153, 370, 371, 407</p>
-                    </div>
-                </div>
-            </div>
-
-            <footer class="app-footer">
-                <p>💡 Regola: se N è il numero di cifre → Σ (cifra^N) = numero stesso</p>
-                <p>⚙️ Motore combinatorio + BigInt · validato fino a 60 cifre · tutti i narcisisti noti</p>
-            </footer>
+      <div class="glass-container">
+        <div class="hero-section">
+          <div class="badge-narc">NUMERI DI ARMSTRONG</div>
+          <h1>
+            <span class="icon-sparkle">✨</span>
+            Narcisisti Assoluti
+            <span class="icon-sparkle">💎</span>
+          </h1>
+          <p class="subtitle">
+            Ogni numero = somma delle sue cifre elevate alla potenza (numero di
+            cifre)
+          </p>
+          <div class="example-ribbon">
+            <code>153 → 1³ + 5³ + 3³ = 1 + 125 + 27 = 153</code>
+          </div>
         </div>
+
+        <div class="input-panel">
+          <div class="input-header">
+            <label>🔢 Lunghezza (cifre)</label>
+            <span class="range-hint">2 – 60 cifre · motore BigInt</span>
+          </div>
+          <div class="input-group">
+            <div class="input-field">
+              <input
+                type="number"
+                id="lengthInput"
+                placeholder="es. 3"
+                min="2"
+                max="60"
+                step="1"
+                value=""
+              />
+            </div>
+            <button id="searchBtn" class="btn-primary">
+              <span>🔍</span> Cerca & Dimostra
+            </button>
+          </div>
+          <div class="info-note">
+            ⚡ Algoritmo combinatorio con potature – risultati immediati anche
+            per 60 cifre<br />
+            ℹ️ I numeri a 1 cifra non sono considerati narcisisti (servono
+            almeno 2 cifre per la verifica)
+          </div>
+        </div>
+
+        <div class="stats-bar" id="statsBar">
+          <div class="stat-item">
+            <span class="stat-icon">🎯</span>
+            <span id="statsText">Pronto · inserisci lunghezza (minimo 2)</span>
+          </div>
+          <div class="stat-item" id="timeBadge" style="display: none">
+            <span class="stat-icon">⏱️</span>
+            <span id="timeElapsed">—</span>
+          </div>
+        </div>
+
+        <div class="results-card">
+          <div class="results-header">
+            <div class="title-icon">📜</div>
+            <h3>Dimostrazione completa</h3>
+            <div class="chip-info">
+              passo dopo passo: potenze → somma → verifica
+            </div>
+          </div>
+          <div id="narcListContainer" class="narc-list">
+            <div class="placeholder-message">
+              <div class="placeholder-icon">🧪</div>
+              <p>
+                Scegli una lunghezza (2-60) e premi "Cerca & Dimostra"<br />es:
+                3 → 153, 370, 371, 407
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <footer class="app-footer">
+          <p>
+            💡 Regola: se N è il numero di cifre (N ≥ 2) → Σ (cifra^N) = numero
+            stesso
+          </p>
+          <p>
+            ⚙️ Motore combinatorio + BigInt · validato fino a 60 cifre · tutti i
+            narcisisti noti
+          </p>
+        </footer>
+      </div>
     </div>
+
     <script src="script.js"></script>
-</body>
+  </body>
 </html>
