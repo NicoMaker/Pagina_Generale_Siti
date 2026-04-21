@@ -19,6 +19,7 @@
 - **[Fattoriale](Fattoriale)**
 - **[Fibonacci](Fibonacci)**
 - **[Logaritmi](Logaritmi)**
+- **[Numeri Narcisisti](Numeri_Narcisisti)**
 - **[Numero Primo](Numero%20Primo)**
 - **[Pitagora](Pitagora)**
 - **[Stampa numeri pari o dispari o tutti](StampaNumeri)**

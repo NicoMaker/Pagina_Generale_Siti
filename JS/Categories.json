@@ -328,6 +328,10 @@
         {
           "name": "Calcolatore Partizioni",
           "link": "Site/Math/Calcolatore_Partizioni/index.html"
+        },
+        {
+          "name": "Numeri Narcisisti",
+          "link": "Site/Math/Numeri_Narcisisti/index.html"
         }
       ]
     },
