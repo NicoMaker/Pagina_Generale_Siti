@@ -2,173 +2,240 @@
 <html lang="it">
   <head>
     <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, user-scalable=yes"
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
     <title>BioClock | Cronobiologia & Ritmi Circadiani</title>
-    <link
-      rel="icon"
-      type="image/svg+xml"
-      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23FFD166'/%3E%3Cstop offset='100%25' stop-color='%23EF476F'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='50' cy='50' r='45' fill='url(%23g)'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-size='45' fill='white' font-weight='bold'%3E⏰%3C/text%3E%3C/svg%3E"
-    />
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='bg' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%230C111A'/%3E%3Cstop offset='100%25' stop-color='%23182030'/%3E%3C/linearGradient%3E%3ClinearGradient id='ring' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23E8C96A'/%3E%3Cstop offset='100%25' stop-color='%23D4607A'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='50' cy='50' r='50' fill='url(%23bg)'/%3E%3Ccircle cx='50' cy='50' r='38' fill='none' stroke='url(%23ring)' stroke-width='5' stroke-dasharray='210 28' stroke-linecap='round' transform='rotate(-90 50 50)'/%3E%3Ccircle cx='50' cy='50' r='4' fill='%23E8C96A'/%3E%3Cline x1='50' y1='50' x2='50' y2='20' stroke='%23E8C96A' stroke-width='3.5' stroke-linecap='round'/%3E%3Cline x1='50' y1='50' x2='72' y2='58' stroke='%23D4607A' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E" />
+    <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Cdefs%3E%3ClinearGradient id='bg' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%230C111A'/%3E%3Cstop offset='100%25' stop-color='%23182030'/%3E%3C/linearGradient%3E%3ClinearGradient id='ring' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23E8C96A'/%3E%3Cstop offset='100%25' stop-color='%23D4607A'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='180' height='180' rx='40' fill='url(%23bg)'/%3E%3Ccircle cx='90' cy='90' r='65' fill='none' stroke='url(%23ring)' stroke-width='8' stroke-dasharray='370 48' stroke-linecap='round' transform='rotate(-90 90 90)'/%3E%3Ccircle cx='90' cy='90' r='7' fill='%23E8C96A'/%3E%3Cline x1='90' y1='90' x2='90' y2='36' stroke='%23E8C96A' stroke-width='6' stroke-linecap='round'/%3E%3Cline x1='90' y1='90' x2='130' y2='104' stroke='%23D4607A' stroke-width='4.5' stroke-linecap='round'/%3E%3C/svg%3E" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
+    <!-- Ambient background orbs -->
+    <div class="ambient" aria-hidden="true">
+      <div class="orb orb-1"></div>
+      <div class="orb orb-2"></div>
+      <div class="orb orb-3"></div>
+      <div class="grain"></div>
+    </div>
+
     <div class="app-container">
-      <div class="bio-card">
-        <!-- header -->
-        <div class="bio-header">
-          <div class="logo">
-            <span class="logo-icon">⏰</span>
-            <h1>BioClock</h1>
+
+      <!-- HERO HEADER -->
+      <header class="bio-header">
+        <div class="header-inner">
+          <div class="logo-lockup">
+            <div class="logo-ring">
+              <svg viewBox="0 0 80 80" class="clock-svg">
+                <circle cx="40" cy="40" r="36" class="ring-track"/>
+                <circle cx="40" cy="40" r="36" class="ring-fill" id="ringFill"/>
+                <line x1="40" y1="40" x2="40" y2="14" class="hand hour-hand" id="hourHand"/>
+                <line x1="40" y1="40" x2="58" y2="40" class="hand minute-hand" id="minuteHand"/>
+                <circle cx="40" cy="40" r="3" class="center-dot"/>
+              </svg>
+            </div>
+            <div class="logo-text">
+              <h1 class="logo-title">Bio<em>Clock</em></h1>
+              <p class="logo-sub">Cronobiologia · Ritmi Circadiani</p>
+            </div>
           </div>
-          <p class="tagline">
-            Cronobiologia · Ritmi circadiani · Energia su misura
-          </p>
+          <p class="header-tagline">Scopri il ritmo che il tuo corpo conosce già</p>
+        </div>
+      </header>
+
+      <!-- QUIZ SECTION -->
+      <main class="main-card" id="quizCard">
+        <div class="section-label">
+          <span class="dot"></span> Questionario cronotipo
         </div>
 
-        <!-- questionario cronotipo -->
         <div class="question-section" id="questionSection">
-          <h2>🧬 Scopri il tuo Cronotipo</h2>
-          <p class="question-desc">
-            Rispondi a queste domande per identificare il tuo ritmo biologico
-            naturale
-          </p>
+          <div class="q-progress-row">
+            <div class="q-steps" id="qSteps">
+              <div class="q-step active" data-step="0"></div>
+              <div class="q-step" data-step="1"></div>
+              <div class="q-step" data-step="2"></div>
+              <div class="q-step" data-step="3"></div>
+            </div>
+            <span class="q-label" id="questionCounter">01 / 04</span>
+          </div>
 
+          <!-- Q1 -->
           <div class="question-card" id="q1">
-            <div class="question-text">
-              🌅 A che ora ti senti più sveglio e produttivo al mattino?
-            </div>
+            <p class="q-number">01</p>
+            <h2 class="q-text">A che ora ti senti più sveglio e produttivo al mattino?</h2>
             <div class="options">
               <button class="opt-btn" data-value="early">
-                Prima delle 8:00 (Allodola)
+                <span class="opt-icon">🌄</span>
+                <span class="opt-main">Prima delle 8:00</span>
+                <span class="opt-tag">Allodola</span>
               </button>
               <button class="opt-btn" data-value="neutral">
-                Tra le 8:00 e le 10:00
+                <span class="opt-icon">☀️</span>
+                <span class="opt-main">Tra le 8:00 e le 10:00</span>
+                <span class="opt-tag">Neutro</span>
               </button>
               <button class="opt-btn" data-value="late">
-                Dopo le 10:00 (Gufo)
+                <span class="opt-icon">🌤️</span>
+                <span class="opt-main">Dopo le 10:00</span>
+                <span class="opt-tag">Gufo</span>
               </button>
             </div>
           </div>
 
+          <!-- Q2 -->
           <div class="question-card hidden" id="q2">
-            <div class="question-text">
-              🌙 A che ora preferisci andare a dormire abitualmente?
-            </div>
+            <p class="q-number">02</p>
+            <h2 class="q-text">A che ora preferisci andare a dormire abitualmente?</h2>
             <div class="options">
               <button class="opt-btn" data-value="early">
-                Prima delle 22:30
+                <span class="opt-icon">🌙</span>
+                <span class="opt-main">Prima delle 22:30</span>
+                <span class="opt-tag">Presto</span>
               </button>
               <button class="opt-btn" data-value="neutral">
-                Tra le 22:30 e le 00:30
+                <span class="opt-icon">🌛</span>
+                <span class="opt-main">22:30 – 00:30</span>
+                <span class="opt-tag">Medio</span>
               </button>
-              <button class="opt-btn" data-value="late">Dopo le 00:30</button>
+              <button class="opt-btn" data-value="late">
+                <span class="opt-icon">🌌</span>
+                <span class="opt-main">Dopo le 00:30</span>
+                <span class="opt-tag">Tardi</span>
+              </button>
             </div>
           </div>
 
+          <!-- Q3 -->
           <div class="question-card hidden" id="q3">
-            <div class="question-text">
-              ⚡ Quando hai il tuo picco massimo di energia mentale?
-            </div>
+            <p class="q-number">03</p>
+            <h2 class="q-text">Quando hai il tuo picco massimo di energia mentale?</h2>
             <div class="options">
               <button class="opt-btn" data-value="early">
-                Mattina (8:00 - 12:00)
+                <span class="opt-icon">⚡</span>
+                <span class="opt-main">Mattina</span>
+                <span class="opt-tag">8:00 – 12:00</span>
               </button>
               <button class="opt-btn" data-value="neutral">
-                Pomeriggio (12:00 - 16:00)
+                <span class="opt-icon">🔥</span>
+                <span class="opt-main">Pomeriggio</span>
+                <span class="opt-tag">12:00 – 16:00</span>
               </button>
               <button class="opt-btn" data-value="late">
-                Sera/Notte (dopo le 18:00)
+                <span class="opt-icon">✨</span>
+                <span class="opt-main">Sera / Notte</span>
+                <span class="opt-tag">dopo le 18:00</span>
               </button>
             </div>
           </div>
 
+          <!-- Q4 -->
           <div class="question-card hidden" id="q4">
-            <div class="question-text">
-              😴 Quanto è difficile per te svegliarti la mattina senza sveglia?
-            </div>
+            <p class="q-number">04</p>
+            <h2 class="q-text">Com'è difficile svegliarti senza sveglia al mattino?</h2>
             <div class="options">
               <button class="opt-btn" data-value="early">
-                Molto facile, mi sveglio da solo presto
+                <span class="opt-icon">🐓</span>
+                <span class="opt-main">Molto facile</span>
+                <span class="opt-tag">Mi sveglio da solo</span>
               </button>
               <button class="opt-btn" data-value="neutral">
-                Abbastanza normale
+                <span class="opt-icon">😐</span>
+                <span class="opt-main">Abbastanza normale</span>
+                <span class="opt-tag">Una sveglia basta</span>
               </button>
               <button class="opt-btn" data-value="late">
-                Molto difficile, ho bisogno di più sveglie
+                <span class="opt-icon">😴</span>
+                <span class="opt-main">Molto difficile</span>
+                <span class="opt-tag">Troppe sveglie</span>
               </button>
             </div>
           </div>
 
-          <div class="progress-bar">
-            <div class="progress-fill" id="progressFill"></div>
-          </div>
-          <div class="question-counter" id="questionCounter">
-            Domanda 1 di 4
+          <div class="q-bar-wrap">
+            <div class="q-bar" id="progressFill"></div>
           </div>
         </div>
 
-        <!-- risultati area -->
+        <!-- RESULTS -->
         <div class="results-section hidden" id="resultsSection">
-          <div class="chronotype-badge" id="chronotypeBadge">
-            <span id="chronoIcon">🦉</span>
-            <span id="chronoName">Gufo Notturno</span>
+          <div class="result-hero">
+            <div class="chrono-badge" id="chronotypeBadge">
+              <span class="chrono-icon" id="chronoIcon">🦉</span>
+              <div>
+                <p class="chrono-label">Il tuo cronotipo</p>
+                <h2 class="chrono-name" id="chronoName">Gufo Notturno</h2>
+              </div>
+            </div>
           </div>
 
-          <div class="rhythm-chart" id="rhythmChart">
-            <h3>📊 Il tuo OROLOGIO BIOLOGICO</h3>
-            <div class="timeline" id="timeline"></div>
+          <!-- Energy chart -->
+          <div class="chart-section">
+            <div class="chart-header">
+              <span class="section-label"><span class="dot"></span> Orologio biologico</span>
+              <span class="chart-note">Livelli di energia nel corso della giornata</span>
+            </div>
+            <div class="energy-chart" id="timeline"></div>
+            <div class="chart-legend">
+              <span class="leg leg-low">Bassa</span>
+              <span class="leg leg-medium">Media</span>
+              <span class="leg leg-high">Alta</span>
+              <span class="leg leg-peak">Picco ⚡</span>
+            </div>
           </div>
 
+          <!-- Advice grid -->
           <div class="advice-grid">
-            <div class="advice-card">
-              <div class="advice-icon">🌙</div>
-              <h4>Finestra di sonno ideale</h4>
-              <p id="sleepWindow">--:-- → --:--</p>
+            <div class="advice-card card-sleep">
+              <div class="card-icon">🌙</div>
+              <h4>Finestra di sonno</h4>
+              <p class="card-value" id="sleepWindow">– → –</p>
               <small id="sleepDetail">durata consigliata</small>
             </div>
-            <div class="advice-card">
-              <div class="advice-icon">💡</div>
-              <h4>Picco di creatività</h4>
-              <p id="creativePeak">--:--</p>
-              <small>Momento migliore per lavori creativi</small>
+            <div class="advice-card card-create">
+              <div class="card-icon">💡</div>
+              <h4>Picco creatività</h4>
+              <p class="card-value" id="creativePeak">–:–</p>
+              <small>Lavori creativi e focus</small>
             </div>
-            <div class="advice-card">
-              <div class="advice-icon">💪</div>
+            <div class="advice-card card-sport">
+              <div class="card-icon">💪</div>
               <h4>Performance fisica</h4>
-              <p id="sportPeak">--:--</p>
+              <p class="card-value" id="sportPeak">–:–</p>
               <small>Allenamento ottimale</small>
             </div>
-            <div class="advice-card">
-              <div class="advice-icon">🍽️</div>
+            <div class="advice-card card-meal">
+              <div class="card-icon">🍽️</div>
               <h4>Pasti principali</h4>
-              <p id="mealTimes">--:-- / --:-- / --:--</p>
+              <p class="card-value" id="mealTimes">–/–/–</p>
               <small>Allineati al tuo ritmo</small>
             </div>
-            <div class="advice-card">
-              <div class="advice-icon">🧘</div>
-              <h4>Momento di relax</h4>
-              <p id="relaxTime">--:--</p>
-              <small>Rituale serale consigliato</small>
+            <div class="advice-card card-relax">
+              <div class="card-icon">🧘</div>
+              <h4>Rituale serale</h4>
+              <p class="card-value" id="relaxTime">–:–</p>
+              <small>Momento di relax ideale</small>
             </div>
-            <div class="advice-card">
-              <div class="advice-icon">☕</div>
-              <h4>Caffeina & stimoli</h4>
-              <p id="caffeineAdvice">--</p>
+            <div class="advice-card card-coffee">
+              <div class="card-icon">☕</div>
+              <h4>Caffeina</h4>
+              <p class="card-value" id="caffeineAdvice">–</p>
               <small>Ultimo caffè consigliato</small>
             </div>
           </div>
 
-          <button class="reset-btn" id="resetBtn">🔄 Rifai il test</button>
+          <button class="reset-btn" id="resetBtn">
+            <span>Rifai il test</span>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M13.5 8A5.5 5.5 0 1 1 8 2.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M10 2l-2 .5 2.5 2L10 2z" fill="currentColor"/></svg>
+          </button>
         </div>
+      </main>
 
-        <footer class="bio-footer">
-          <p>🌿 Basato sulla ricerca sui ritmi circadiani e cronobiologia</p>
-          <p>⏱️ Ogni persona è unica: ascolta sempre il tuo corpo</p>
-        </footer>
-      </div>
+      <footer class="bio-footer">
+        <p>Basato sulla ricerca sui ritmi circadiani e cronobiologia &mdash; ogni corpo è unico</p>
+      </footer>
+
     </div>
     <script src="script.js"></script>
   </body>
