@@ -6,53 +6,53 @@
 
 :root {
   /* Palette rosa/primavera */
-  --rose-50:   #fff0f5;
-  --rose-100:  #ffe0ec;
-  --rose-200:  #ffc2d9;
-  --rose-400:  #f7739a;
-  --rose-500:  #e84c82;
-  --rose-600:  #c93668;
+  --rose-50: #fff0f5;
+  --rose-100: #ffe0ec;
+  --rose-200: #ffc2d9;
+  --rose-400: #f7739a;
+  --rose-500: #e84c82;
+  --rose-600: #c93668;
 
   /* Palette azzurro/verde */
-  --sky-100:   #e0f2ff;
-  --sky-400:   #60b8f5;
-  --sky-500:   #3a9fd9;
-  --sky-600:   #2480b8;
+  --sky-100: #e0f2ff;
+  --sky-400: #60b8f5;
+  --sky-500: #3a9fd9;
+  --sky-600: #2480b8;
 
   /* Neutri */
-  --cream:     #fdf8f2;
-  --warm-50:   #faf6f0;
-  --warm-100:  #f2ebe0;
-  --warm-200:  #e8ddd0;
-  --warm-500:  #9c8878;
-  --warm-700:  #5a4a3c;
-  --warm-900:  #2c1f14;
+  --cream: #fdf8f2;
+  --warm-50: #faf6f0;
+  --warm-100: #f2ebe0;
+  --warm-200: #e8ddd0;
+  --warm-500: #9c8878;
+  --warm-700: #5a4a3c;
+  --warm-900: #2c1f14;
 
   /* Accento oro */
-  --gold:      #d4a843;
-  --gold-light:#f0cc70;
+  --gold: #d4a843;
+  --gold-light: #f0cc70;
 
   /* Semantici (light) */
-  --bg:            var(--cream);
-  --bg-alt:        var(--warm-50);
-  --surface:       #ffffff;
-  --surface-glass: rgba(255,255,255,0.72);
-  --text-primary:  var(--warm-900);
-  --text-secondary:var(--warm-500);
-  --text-accent:   var(--rose-500);
-  --border:        rgba(180,150,130,0.18);
-  --shadow-soft:   0 4px 30px rgba(180,120,100,0.10);
-  --shadow-md:     0 8px 40px rgba(180,120,100,0.14);
-  --shadow-xl:     0 20px 60px rgba(180,120,100,0.18);
+  --bg: var(--cream);
+  --bg-alt: var(--warm-50);
+  --surface: #ffffff;
+  --surface-glass: rgba(255, 255, 255, 0.72);
+  --text-primary: var(--warm-900);
+  --text-secondary: var(--warm-500);
+  --text-accent: var(--rose-500);
+  --border: rgba(180, 150, 130, 0.18);
+  --shadow-soft: 0 4px 30px rgba(180, 120, 100, 0.1);
+  --shadow-md: 0 8px 40px rgba(180, 120, 100, 0.14);
+  --shadow-xl: 0 20px 60px rgba(180, 120, 100, 0.18);
 
   /* Countdown rosa */
-  --cd-bg:         var(--rose-500);
-  --cd-glow:       rgba(232,76,130,0.35);
-  --cd-text:       #ffffff;
+  --cd-bg: var(--rose-500);
+  --cd-glow: rgba(232, 76, 130, 0.35);
+  --cd-text: #ffffff;
 
   /* Countdown blu */
-  --cd-blue-bg:    var(--sky-500);
-  --cd-blue-glow:  rgba(58,159,217,0.35);
+  --cd-blue-bg: var(--sky-500);
+  --cd-blue-glow: rgba(58, 159, 217, 0.35);
 
   --radius-sm: 10px;
   --radius-md: 18px;
@@ -64,34 +64,44 @@
 
 /* Dark theme */
 .dark-theme {
-  --bg:            #18101a;
-  --bg-alt:        #1f1525;
-  --surface:       #251830;
-  --surface-glass: rgba(30,18,40,0.80);
-  --text-primary:  #f5eeff;
-  --text-secondary:#9b80b8;
-  --text-accent:   var(--rose-400);
-  --border:        rgba(200,160,220,0.12);
-  --shadow-soft:   0 4px 30px rgba(0,0,0,0.3);
-  --shadow-md:     0 8px 40px rgba(0,0,0,0.4);
-  --shadow-xl:     0 20px 60px rgba(0,0,0,0.5);
-  --gold:          #c9a040;
-  --gold-light:    #e8c060;
+  --bg: #18101a;
+  --bg-alt: #1f1525;
+  --surface: #251830;
+  --surface-glass: rgba(30, 18, 40, 0.8);
+  --text-primary: #f5eeff;
+  --text-secondary: #9b80b8;
+  --text-accent: var(--rose-400);
+  --border: rgba(200, 160, 220, 0.12);
+  --shadow-soft: 0 4px 30px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 8px 40px rgba(0, 0, 0, 0.4);
+  --shadow-xl: 0 20px 60px rgba(0, 0, 0, 0.5);
+  --gold: #c9a040;
+  --gold-light: #e8c060;
 }
 
 /* ── Reset ─────────────────────────────────────────────────── */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+}
 
 body {
-  font-family: 'DM Sans', sans-serif;
+  font-family: "DM Sans", sans-serif;
   background-color: var(--bg);
   color: var(--text-primary);
   line-height: 1.65;
   min-height: 100vh;
   overflow-x: hidden;
-  transition: background-color 0.4s ease, color 0.4s ease;
+  transition:
+    background-color 0.4s ease,
+    color 0.4s ease;
 }
 
 /* ── Canvas Particelle ─────────────────────────────────────── */
@@ -128,11 +138,21 @@ body {
   transform: scale(1.1) rotate(12deg);
   box-shadow: var(--shadow-md);
 }
-.toggle-icon { line-height: 1; }
-.sun-icon { display: none; }
-.moon-icon { display: block; }
-.dark-theme .sun-icon { display: block; }
-.dark-theme .moon-icon { display: none; }
+.toggle-icon {
+  line-height: 1;
+}
+.sun-icon {
+  display: none;
+}
+.moon-icon {
+  display: block;
+}
+.dark-theme .sun-icon {
+  display: block;
+}
+.dark-theme .moon-icon {
+  display: none;
+}
 
 /* ── Page Wrapper ──────────────────────────────────────────── */
 .page-wrapper {
@@ -154,7 +174,7 @@ body {
   display: inline-block;
   background: linear-gradient(135deg, var(--rose-100), var(--sky-100));
   color: var(--rose-600);
-  font-family: 'DM Sans', sans-serif;
+  font-family: "DM Sans", sans-serif;
   font-size: 0.78rem;
   font-weight: 600;
   letter-spacing: 0.12em;
@@ -166,18 +186,23 @@ body {
   animation: fadeSlideDown 0.6s ease both;
 }
 .dark-theme .hero-badge {
-  background: rgba(232,76,130,0.15);
-  border-color: rgba(232,76,130,0.3);
+  background: rgba(232, 76, 130, 0.15);
+  border-color: rgba(232, 76, 130, 0.3);
   color: var(--rose-400);
 }
 
 .hero-title {
-  font-family: 'Cormorant Garamond', serif;
+  font-family: "Cormorant Garamond", serif;
   font-size: clamp(3rem, 9vw, 6.5rem);
   font-weight: 700;
   line-height: 1.05;
   letter-spacing: -0.02em;
-  background: linear-gradient(135deg, var(--rose-500) 0%, var(--gold) 50%, var(--rose-600) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--rose-500) 0%,
+    var(--gold) 50%,
+    var(--rose-600) 100%
+  );
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -206,8 +231,14 @@ body {
   opacity: 0.7;
   animation: shimmer 2.5s ease-in-out infinite;
 }
-.hero-divider span:nth-child(2) { animation-delay: 0.4s; opacity: 1; font-size: 1.3rem; }
-.hero-divider span:nth-child(3) { animation-delay: 0.8s; }
+.hero-divider span:nth-child(2) {
+  animation-delay: 0.4s;
+  opacity: 1;
+  font-size: 1.3rem;
+}
+.hero-divider span:nth-child(3) {
+  animation-delay: 0.8s;
+}
 
 /* ── CARD ──────────────────────────────────────────────────── */
 .card {
@@ -218,7 +249,9 @@ body {
   overflow: hidden;
   position: relative;
   border: 1px solid var(--border);
-  transition: box-shadow var(--transition), transform var(--transition);
+  transition:
+    box-shadow var(--transition),
+    transform var(--transition);
   animation: fadeSlideUp 0.6s ease both;
 }
 .card:hover {
@@ -228,18 +261,34 @@ body {
 
 .card__ribbon {
   height: 5px;
-  background: linear-gradient(90deg, var(--rose-400), var(--gold-light), var(--rose-500), var(--rose-400));
+  background: linear-gradient(
+    90deg,
+    var(--rose-400),
+    var(--gold-light),
+    var(--rose-500),
+    var(--rose-400)
+  );
   background-size: 300% 100%;
   animation: ribbonShift 6s linear infinite;
 }
 .card__ribbon--blue {
-  background: linear-gradient(90deg, var(--sky-400), #a5d8ff, var(--sky-500), var(--sky-400));
+  background: linear-gradient(
+    90deg,
+    var(--sky-400),
+    #a5d8ff,
+    var(--sky-500),
+    var(--sky-400)
+  );
   background-size: 300% 100%;
 }
 
 @keyframes ribbonShift {
-  0%   { background-position: 0% 0; }
-  100% { background-position: 300% 0; }
+  0% {
+    background-position: 0% 0;
+  }
+  100% {
+    background-position: 300% 0;
+  }
 }
 
 .card__inner {
@@ -257,17 +306,19 @@ body {
   font-size: 2.4rem;
   line-height: 1;
   flex-shrink: 0;
-  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15));
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15));
 }
 
 .card__title {
-  font-family: 'Cormorant Garamond', serif;
+  font-family: "Cormorant Garamond", serif;
   font-size: clamp(1.5rem, 4vw, 2.2rem);
   font-weight: 600;
   color: var(--rose-500);
   line-height: 1.1;
 }
-.card__title--blue { color: var(--sky-500); }
+.card__title--blue {
+  color: var(--sky-500);
+}
 
 .card__date {
   font-size: 0.85rem;
@@ -312,18 +363,22 @@ body {
   justify-content: center;
   box-shadow:
     0 8px 24px var(--cd-glow),
-    inset 0 1px 0 rgba(255,255,255,0.25),
-    inset 0 -1px 0 rgba(0,0,0,0.15);
-  transition: transform var(--transition), box-shadow var(--transition);
+    inset 0 1px 0 rgba(255, 255, 255, 0.25),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15);
+  transition:
+    transform var(--transition),
+    box-shadow var(--transition);
   overflow: hidden;
 }
 
 .countdown__glass::before {
-  content: '';
+  content: "";
   position: absolute;
-  top: 0; left: 0; right: 0;
+  top: 0;
+  left: 0;
+  right: 0;
   height: 50%;
-  background: rgba(255,255,255,0.10);
+  background: rgba(255, 255, 255, 0.1);
   border-radius: var(--radius-md) var(--radius-md) 0 0;
 }
 
@@ -331,8 +386,8 @@ body {
   background: linear-gradient(145deg, var(--cd-blue-bg), var(--sky-600));
   box-shadow:
     0 8px 24px var(--cd-blue-glow),
-    inset 0 1px 0 rgba(255,255,255,0.25),
-    inset 0 -1px 0 rgba(0,0,0,0.15);
+    inset 0 1px 0 rgba(255, 255, 255, 0.25),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15);
 }
 
 .countdown__glass--pulse {
@@ -340,12 +395,17 @@ body {
 }
 
 @keyframes glassPulse {
-  0%, 100% { transform: scale(1); }
-  50%       { transform: scale(1.04); }
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.04);
+  }
 }
 
 .countdown__val {
-  font-family: 'DM Sans', sans-serif;
+  font-family: "DM Sans", sans-serif;
   font-size: clamp(1.8rem, 5vw, 2.8rem);
   font-weight: 700;
   font-variant-numeric: tabular-nums;
@@ -354,8 +414,10 @@ body {
   line-height: 1;
   position: relative;
   z-index: 1;
-  text-shadow: 0 2px 8px rgba(0,0,0,0.2);
-  transition: transform 0.15s ease, opacity 0.1s ease;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transition:
+    transform 0.15s ease,
+    opacity 0.1s ease;
 }
 
 .countdown__lbl {
@@ -371,7 +433,7 @@ body {
 }
 
 .countdown__sep {
-  font-family: 'Cormorant Garamond', serif;
+  font-family: "Cormorant Garamond", serif;
   font-size: clamp(1.8rem, 5vw, 2.8rem);
   font-weight: 300;
   color: var(--rose-400);
@@ -380,11 +442,18 @@ body {
   opacity: 0.6;
   animation: blink 1s step-end infinite;
 }
-.countdown__sep--blue { color: var(--sky-400); }
+.countdown__sep--blue {
+  color: var(--sky-400);
+}
 
 @keyframes blink {
-  0%, 100% { opacity: 0.6; }
-  50%       { opacity: 0.15; }
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 0.15;
+  }
 }
 
 /* ── Celebration ───────────────────────────────────────────── */
@@ -401,8 +470,8 @@ body {
   animation: fadeSlideUp 0.5s ease both;
 }
 .dark-theme .celebration {
-  background: rgba(232,76,130,0.08);
-  border-color: rgba(232,76,130,0.2);
+  background: rgba(232, 76, 130, 0.08);
+  border-color: rgba(232, 76, 130, 0.2);
 }
 
 .celebration--blue {
@@ -410,24 +479,31 @@ body {
   border-color: var(--sky-100);
 }
 .dark-theme .celebration--blue {
-  background: rgba(58,159,217,0.08);
-  border-color: rgba(58,159,217,0.2);
+  background: rgba(58, 159, 217, 0.08);
+  border-color: rgba(58, 159, 217, 0.2);
 }
 
 .celebration__emoji {
   font-size: 3rem;
-  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.1));
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.1));
   animation: bounce 2s ease infinite;
 }
 
 @keyframes bounce {
-  0%, 100% { transform: translateY(0); }
-  40%       { transform: translateY(-12px); }
-  60%       { transform: translateY(-6px); }
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-12px);
+  }
+  60% {
+    transform: translateY(-6px);
+  }
 }
 
 .celebration__title {
-  font-family: 'Cormorant Garamond', serif;
+  font-family: "Cormorant Garamond", serif;
   font-size: clamp(1.8rem, 5vw, 2.8rem);
   font-weight: 700;
   background: linear-gradient(135deg, var(--rose-500), var(--gold));
@@ -457,7 +533,7 @@ body {
   padding: 14px 32px;
   border-radius: 50px;
   border: none;
-  font-family: 'DM Sans', sans-serif;
+  font-family: "DM Sans", sans-serif;
   font-size: 0.95rem;
   font-weight: 600;
   cursor: pointer;
@@ -503,7 +579,9 @@ body {
   display: block;
   transition: transform 0.7s ease;
 }
-.banner:hover .banner__img { transform: scale(1.04); }
+.banner:hover .banner__img {
+  transform: scale(1.04);
+}
 
 .banner__overlay {
   position: absolute;
@@ -511,7 +589,7 @@ body {
   background: linear-gradient(
     to top,
     rgba(30, 10, 40, 0.75) 0%,
-    rgba(30, 10, 40, 0.20) 50%,
+    rgba(30, 10, 40, 0.2) 50%,
     transparent 100%
   );
   display: flex;
@@ -520,13 +598,13 @@ body {
 }
 
 .banner__quote {
-  font-family: 'Cormorant Garamond', serif;
+  font-family: "Cormorant Garamond", serif;
   font-style: italic;
   font-size: clamp(1.1rem, 3vw, 1.5rem);
-  color: rgba(255,255,255,0.92);
+  color: rgba(255, 255, 255, 0.92);
   max-width: 500px;
   line-height: 1.4;
-  text-shadow: 0 2px 12px rgba(0,0,0,0.5);
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
 }
 
 /* ── Traditions ────────────────────────────────────────────── */
@@ -536,7 +614,7 @@ body {
 }
 
 .traditions__heading {
-  font-family: 'Cormorant Garamond', serif;
+  font-family: "Cormorant Garamond", serif;
   font-size: clamp(1.8rem, 5vw, 2.6rem);
   font-weight: 700;
   color: var(--text-primary);
@@ -545,7 +623,7 @@ body {
   position: relative;
 }
 .traditions__heading::after {
-  content: '';
+  content: "";
   display: block;
   width: 60px;
   height: 3px;
@@ -572,9 +650,11 @@ body {
   overflow: hidden;
 }
 .tradition-card::before {
-  content: '';
+  content: "";
   position: absolute;
-  top: 0; left: 0; right: 0;
+  top: 0;
+  left: 0;
+  right: 0;
   height: 3px;
   background: linear-gradient(90deg, var(--rose-400), var(--gold-light));
   opacity: 0;
@@ -584,13 +664,15 @@ body {
   transform: translateY(-6px);
   box-shadow: var(--shadow-md);
 }
-.tradition-card:hover::before { opacity: 1; }
+.tradition-card:hover::before {
+  opacity: 1;
+}
 
 .tradition-card__icon {
   font-size: 2.5rem;
   margin-bottom: 14px;
   display: block;
-  filter: drop-shadow(0 3px 6px rgba(0,0,0,0.12));
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.12));
   transition: transform var(--transition);
 }
 .tradition-card:hover .tradition-card__icon {
@@ -598,7 +680,7 @@ body {
 }
 
 .tradition-card h3 {
-  font-family: 'Cormorant Garamond', serif;
+  font-family: "Cormorant Garamond", serif;
   font-size: 1.2rem;
   font-weight: 600;
   color: var(--text-primary);
@@ -633,18 +715,37 @@ body {
 
 /* ── Animations ────────────────────────────────────────────── */
 @keyframes fadeSlideDown {
-  from { opacity: 0; transform: translateY(-16px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes fadeSlideUp {
-  from { opacity: 0; transform: translateY(24px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes shimmer {
-  0%, 100% { opacity: 0.5; transform: scale(1); }
-  50%       { opacity: 1;   transform: scale(1.2); }
+  0%,
+  100% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
 }
 
 /* ── Confetti burst ────────────────────────────────────────── */
@@ -659,15 +760,27 @@ body {
 }
 
 @keyframes confettiFall {
-  0%   { opacity: 1; transform: translateY(-20px) rotate(0deg); }
-  100% { opacity: 0; transform: translateY(100vh) rotate(720deg); }
+  0% {
+    opacity: 1;
+    transform: translateY(-20px) rotate(0deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(100vh) rotate(720deg);
+  }
 }
 
 /* ── Responsive ────────────────────────────────────────────── */
 @media (max-width: 640px) {
-  .page-wrapper { padding: 0 14px 50px; }
-  .hero { padding: 60px 10px 36px; }
-  .card__inner { padding: 22px 20px 28px; }
+  .page-wrapper {
+    padding: 0 14px 50px;
+  }
+  .hero {
+    padding: 60px 10px 36px;
+  }
+  .card__inner {
+    padding: 22px 20px 28px;
+  }
 
   .countdown {
     gap: 5px;
@@ -677,22 +790,34 @@ body {
     height: clamp(62px, 20vw, 85px);
     border-radius: 12px;
   }
-  .countdown__sep { padding-top: clamp(15px, 4.5vw, 22px); }
+  .countdown__sep {
+    padding-top: clamp(15px, 4.5vw, 22px);
+  }
 
-  .banner__img { height: 220px; }
-  .banner__overlay { padding: 20px; }
+  .banner__img {
+    height: 220px;
+  }
+  .banner__overlay {
+    padding: 20px;
+  }
 
   .traditions__grid {
     grid-template-columns: 1fr 1fr;
     gap: 12px;
   }
-  .tradition-card { padding: 20px 14px; }
+  .tradition-card {
+    padding: 20px 14px;
+  }
 }
 
 @media (max-width: 400px) {
   .traditions__grid {
     grid-template-columns: 1fr;
   }
-  .countdown { gap: 4px; }
-  .countdown__sep { display: none; }
+  .countdown {
+    gap: 4px;
+  }
+  .countdown__sep {
+    display: none;
+  }
 }

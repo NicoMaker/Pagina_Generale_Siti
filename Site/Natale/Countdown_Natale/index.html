@@ -1,197 +1,267 @@
 <!doctype html>
 <html lang="it">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Countdown di Natale</title>
-  <link rel="icon" href="https://th.bing.com/th/id/OIP.HfBuXKpL3Dx7co030UYHEQHaI4?rs=1&pid=ImgDetMain" type="image/jpg" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Countdown di Natale</title>
+    <link
+      rel="icon"
+      href="https://th.bing.com/th/id/OIP.HfBuXKpL3Dx7co030UYHEQHaI4?rs=1&pid=ImgDetMain"
+      type="image/jpg"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;600&family=Instrument+Serif:ital@0;1&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div id="snow"></div>
 
-<div id="snow"></div>
-
-<header>
-  <div class="nav">
-    <a href="#top" class="logo">
-      <span class="logo-star">✦</span>
-      <span>Natale <span id="year-label"></span></span>
-    </a>
-    <nav>
-      <ul>
-        <li><a href="#countdown-section">Countdown</a></li>
-        <li><a href="#traditions-section">Tradizioni</a></li>
-        <li><a href="#wishes-section">Auguri</a></li>
-      </ul>
-    </nav>
-    <button class="theme-btn" id="theme-btn" aria-label="Cambia tema">☀️</button>
-  </div>
-</header>
-
-<main>
-  <!-- ── HERO ────────────────────────────────────── -->
-  <section class="hero" id="top">
-    <div class="hero-inner">
-
-
-      <h1 id="main-title"><!-- filled by JS --></h1>
-      <p class="subtitle" id="main-subtitle"></p>
-
-      <!-- CELEBRATION block (25 e 26 dic) -->
-      <div class="celebration" id="celebration-block" style="display:none;">
-        <h2 id="cel-title"></h2>
-        <p id="cel-text"></p>
-        <button class="celebrate-btn" id="celebrate-btn">Festeggia! 🎉</button>
+    <header>
+      <div class="nav">
+        <a href="#top" class="logo">
+          <span class="logo-star">✦</span>
+          <span>Natale <span id="year-label"></span></span>
+        </a>
+        <nav>
+          <ul>
+            <li><a href="#countdown-section">Countdown</a></li>
+            <li><a href="#traditions-section">Tradizioni</a></li>
+            <li><a href="#wishes-section">Auguri</a></li>
+          </ul>
+        </nav>
+        <button class="theme-btn" id="theme-btn" aria-label="Cambia tema">
+          ☀️
+        </button>
       </div>
+    </header>
 
-      <!-- PRIMARY countdown -->
-      <div class="countdown-section" id="primary-cd">
-        <p class="countdown-label" id="primary-label"></p>
-        <div class="countdown-grid">
-          <div class="cd-box">
-            <span class="cd-num" id="p-days">00</span>
-            <span class="cd-unit" id="u-days">Giorni</span>
+    <main>
+      <!-- ── HERO ────────────────────────────────────── -->
+      <section class="hero" id="top">
+        <div class="hero-inner">
+          <h1 id="main-title"><!-- filled by JS --></h1>
+          <p class="subtitle" id="main-subtitle"></p>
+
+          <!-- CELEBRATION block (25 e 26 dic) -->
+          <div class="celebration" id="celebration-block" style="display: none">
+            <h2 id="cel-title"></h2>
+            <p id="cel-text"></p>
+            <button class="celebrate-btn" id="celebrate-btn">
+              Festeggia! 🎉
+            </button>
           </div>
-          <div class="cd-box">
-            <span class="cd-num" id="p-hours">00</span>
-            <span class="cd-unit" id="u-hours">Ore</span>
+
+          <!-- PRIMARY countdown -->
+          <div class="countdown-section" id="primary-cd">
+            <p class="countdown-label" id="primary-label"></p>
+            <div class="countdown-grid">
+              <div class="cd-box">
+                <span class="cd-num" id="p-days">00</span>
+                <span class="cd-unit" id="u-days">Giorni</span>
+              </div>
+              <div class="cd-box">
+                <span class="cd-num" id="p-hours">00</span>
+                <span class="cd-unit" id="u-hours">Ore</span>
+              </div>
+              <div class="cd-box">
+                <span class="cd-num" id="p-minutes">00</span>
+                <span class="cd-unit" id="u-minutes">Minuti</span>
+              </div>
+              <div class="cd-box">
+                <span class="cd-num" id="p-seconds">00</span>
+                <span class="cd-unit" id="u-seconds">Secondi</span>
+              </div>
+            </div>
           </div>
-          <div class="cd-box">
-            <span class="cd-num" id="p-minutes">00</span>
-            <span class="cd-unit" id="u-minutes">Minuti</span>
+
+          <div
+            class="section-divider"
+            id="divider"
+            style="display: none; margin: 32px auto"
+          ></div>
+
+          <!-- SECONDARY countdown (Santo Stefano o Natale) -->
+          <div
+            class="countdown-section secondary"
+            id="secondary-cd"
+            style="display: none"
+          >
+            <p class="countdown-label" id="secondary-label"></p>
+            <div class="countdown-grid">
+              <div class="cd-box">
+                <span class="cd-num" id="s-days">00</span>
+                <span class="cd-unit" id="su-days">Giorni</span>
+              </div>
+              <div class="cd-box">
+                <span class="cd-num" id="s-hours">00</span>
+                <span class="cd-unit" id="su-hours">Ore</span>
+              </div>
+              <div class="cd-box">
+                <span class="cd-num" id="s-minutes">00</span>
+                <span class="cd-unit" id="su-minutes">Minuti</span>
+              </div>
+              <div class="cd-box">
+                <span class="cd-num" id="s-seconds">00</span>
+                <span class="cd-unit" id="su-seconds">Secondi</span>
+              </div>
+            </div>
           </div>
-          <div class="cd-box">
-            <span class="cd-num" id="p-seconds">00</span>
-            <span class="cd-unit" id="u-seconds">Secondi</span>
+
+          <!-- Tree -->
+          <div class="tree-wrap" id="countdown-section">
+            <div class="tree-inner">
+              <img
+                src="https://th.bing.com/th/id/OIP.HfBuXKpL3Dx7co030UYHEQHaI4?rs=1&pid=ImgDetMain"
+                alt="Albero di Natale"
+                class="christmas-img"
+              />
+              <div class="lights-overlay" id="lights-overlay"></div>
+            </div>
           </div>
         </div>
-      </div>
+      </section>
 
-      <div class="section-divider" id="divider" style="display:none; margin:32px auto;"></div>
-
-      <!-- SECONDARY countdown (Santo Stefano o Natale) -->
-      <div class="countdown-section secondary" id="secondary-cd" style="display:none;">
-        <p class="countdown-label" id="secondary-label"></p>
-        <div class="countdown-grid">
-          <div class="cd-box">
-            <span class="cd-num" id="s-days">00</span>
-            <span class="cd-unit" id="su-days">Giorni</span>
+      <!-- ── TRADIZIONI ───────────────────────────────── -->
+      <section class="traditions" id="traditions-section">
+        <div class="section-head">
+          <p class="section-eyebrow">✦ &nbsp;Cultura &nbsp;✦</p>
+          <h2>Tradizioni Natalizie</h2>
+        </div>
+        <div class="grid-4">
+          <div class="t-card">
+            <div class="t-icon">🎄</div>
+            <h3>L'Albero di Natale</h3>
+            <p>
+              Decorare l'albero di Natale è una tradizione che risale al XVI
+              secolo in Germania. Oggi è un simbolo universale delle festività
+              natalizie.
+            </p>
           </div>
-          <div class="cd-box">
-            <span class="cd-num" id="s-hours">00</span>
-            <span class="cd-unit" id="su-hours">Ore</span>
+          <div class="t-card">
+            <div class="t-icon">🎅</div>
+            <h3>Babbo Natale</h3>
+            <p>
+              La figura di Babbo Natale è ispirata a San Nicola, un vescovo
+              greco noto per la sua generosità verso i più bisognosi.
+            </p>
           </div>
-          <div class="cd-box">
-            <span class="cd-num" id="s-minutes">00</span>
-            <span class="cd-unit" id="su-minutes">Minuti</span>
+          <div class="t-card">
+            <div class="t-icon">🍪</div>
+            <h3>Biscotti e Latte</h3>
+            <p>
+              Lasciare biscotti e latte per Babbo Natale è una tradizione
+              americana diffusa nel mondo come segno di gratitudine e attesa.
+            </p>
           </div>
-          <div class="cd-box">
-            <span class="cd-num" id="s-seconds">00</span>
-            <span class="cd-unit" id="su-seconds">Secondi</span>
+          <div class="t-card">
+            <div class="t-icon">🎁</div>
+            <h3>Scambio di Regali</h3>
+            <p>
+              Lo scambio di regali simboleggia i doni portati dai Re Magi e
+              rappresenta l'amore e la generosità dello spirito natalizio.
+            </p>
           </div>
         </div>
-      </div>
+      </section>
 
-      <!-- Tree -->
-      <div class="tree-wrap" id="countdown-section">
-        <div class="tree-inner">
-          <img
-            src="https://th.bing.com/th/id/OIP.HfBuXKpL3Dx7co030UYHEQHaI4?rs=1&pid=ImgDetMain"
-            alt="Albero di Natale"
-            class="christmas-img"
-          />
-          <div class="lights-overlay" id="lights-overlay"></div>
+      <!-- ── AUGURI ────────────────────────────────────── -->
+      <section class="wishes" id="wishes-section">
+        <div class="section-head">
+          <p class="section-eyebrow">✦ &nbsp;Condividi &nbsp;✦</p>
+          <h2>Auguri di Natale</h2>
+        </div>
+        <div class="wish-form-wrap">
+          <p>Scrivi il tuo augurio e condividilo con il mondo!</p>
+          <div class="form-col">
+            <input type="text" id="wish-name" placeholder="Il tuo nome" />
+            <textarea
+              id="wish-text"
+              placeholder="Il tuo augurio di Natale…"
+            ></textarea>
+            <button class="submit-btn" id="submit-wish">Invia Augurio</button>
+          </div>
+        </div>
+        <div class="wishes-wall" id="wishes-wall">
+          <div class="w-card">
+            <p class="w-text">
+              "Che il calore del Natale riempia i vostri cuori di gioia e le
+              vostre case di amore."
+            </p>
+            <p class="w-author">— Marco</p>
+          </div>
+          <div class="w-card">
+            <p class="w-text">
+              "Auguro a tutti un Natale sereno e un nuovo anno pieno di speranza
+              e felicità."
+            </p>
+            <p class="w-author">— Sofia</p>
+          </div>
+          <div class="w-card">
+            <p class="w-text">
+              "Che la magia del Natale porti pace e gioia in ogni casa e in ogni
+              cuore."
+            </p>
+            <p class="w-author">— Luca</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="footer-inner">
+        <div class="f-logo">
+          <span style="color: var(--gold)">✦</span> Countdown di Natale
+        </div>
+        <div class="f-links">
+          <a href="#top">Countdown</a>
+          <a href="#traditions-section">Tradizioni</a>
+          <a href="#wishes-section">Auguri</a>
+        </div>
+        <div class="f-social">
+          <!-- Facebook -->
+          <a href="#" aria-label="Facebook">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"
+              />
+            </svg>
+          </a>
+          <!-- Instagram -->
+          <a href="#" aria-label="Instagram">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+            </svg>
+          </a>
         </div>
       </div>
-
-    </div>
-  </section>
-
-  <!-- ── TRADIZIONI ───────────────────────────────── -->
-  <section class="traditions" id="traditions-section">
-    <div class="section-head">
-      <p class="section-eyebrow">✦ &nbsp;Cultura &nbsp;✦</p>
-      <h2>Tradizioni Natalizie</h2>
-    </div>
-    <div class="grid-4">
-      <div class="t-card">
-        <div class="t-icon">🎄</div>
-        <h3>L'Albero di Natale</h3>
-        <p>Decorare l'albero di Natale è una tradizione che risale al XVI secolo in Germania. Oggi è un simbolo universale delle festività natalizie.</p>
+      <div class="copy" id="copy-year">
+        © 2024 Countdown di Natale. Tutti i diritti riservati.
       </div>
-      <div class="t-card">
-        <div class="t-icon">🎅</div>
-        <h3>Babbo Natale</h3>
-        <p>La figura di Babbo Natale è ispirata a San Nicola, un vescovo greco noto per la sua generosità verso i più bisognosi.</p>
-      </div>
-      <div class="t-card">
-        <div class="t-icon">🍪</div>
-        <h3>Biscotti e Latte</h3>
-        <p>Lasciare biscotti e latte per Babbo Natale è una tradizione americana diffusa nel mondo come segno di gratitudine e attesa.</p>
-      </div>
-      <div class="t-card">
-        <div class="t-icon">🎁</div>
-        <h3>Scambio di Regali</h3>
-        <p>Lo scambio di regali simboleggia i doni portati dai Re Magi e rappresenta l'amore e la generosità dello spirito natalizio.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── AUGURI ────────────────────────────────────── -->
-  <section class="wishes" id="wishes-section">
-    <div class="section-head">
-      <p class="section-eyebrow">✦ &nbsp;Condividi &nbsp;✦</p>
-      <h2>Auguri di Natale</h2>
-    </div>
-    <div class="wish-form-wrap">
-      <p>Scrivi il tuo augurio e condividilo con il mondo!</p>
-      <div class="form-col">
-        <input type="text" id="wish-name" placeholder="Il tuo nome" />
-        <textarea id="wish-text" placeholder="Il tuo augurio di Natale…"></textarea>
-        <button class="submit-btn" id="submit-wish">Invia Augurio</button>
-      </div>
-    </div>
-    <div class="wishes-wall" id="wishes-wall">
-      <div class="w-card">
-        <p class="w-text">"Che il calore del Natale riempia i vostri cuori di gioia e le vostre case di amore."</p>
-        <p class="w-author">— Marco</p>
-      </div>
-      <div class="w-card">
-        <p class="w-text">"Auguro a tutti un Natale sereno e un nuovo anno pieno di speranza e felicità."</p>
-        <p class="w-author">— Sofia</p>
-      </div>
-      <div class="w-card">
-        <p class="w-text">"Che la magia del Natale porti pace e gioia in ogni casa e in ogni cuore."</p>
-        <p class="w-author">— Luca</p>
-      </div>
-    </div>
-  </section>
-</main>
-
-<footer>
-  <div class="footer-inner">
-    <div class="f-logo"><span style="color:var(--gold)">✦</span> Countdown di Natale</div>
-    <div class="f-links">
-      <a href="#top">Countdown</a>
-      <a href="#traditions-section">Tradizioni</a>
-      <a href="#wishes-section">Auguri</a>
-    </div>
-    <div class="f-social">
-      <!-- Facebook -->
-      <a href="#" aria-label="Facebook">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
-      </a>
-      <!-- Instagram -->
-      <a href="#" aria-label="Instagram">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
-      </a>
-    </div>
-  </div>
-  <div class="copy" id="copy-year">© 2024 Countdown di Natale. Tutti i diritti riservati.</div>
-</footer>
-<script src="script.js"></script>
-</body>
+    </footer>
+    <script src="script.js"></script>
+  </body>
 </html>

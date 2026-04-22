@@ -1,198 +1,264 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="it">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Buona Pasqua | Countdown Festivo</title>
-  <link rel="icon" href="https://img.freepik.com/free-photo/happy-bunny-with-many-easter-eggs-grass-festive-background-decorative-design_90220-1091.jpg?size=626&ext=jpg" type="image/jpg">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Buona Pasqua | Countdown Festivo</title>
+    <link
+      rel="icon"
+      href="https://img.freepik.com/free-photo/happy-bunny-with-many-easter-eggs-grass-festive-background-decorative-design_90220-1091.jpg?size=626&ext=jpg"
+      type="image/jpg"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- Canvas particelle -->
+    <canvas id="particle-canvas"></canvas>
 
-  <!-- Canvas particelle -->
-  <canvas id="particle-canvas"></canvas>
+    <!-- Toggle tema -->
+    <button id="theme-toggle" class="theme-toggle" aria-label="Cambia tema">
+      <span class="toggle-icon sun-icon">☀️</span>
+      <span class="toggle-icon moon-icon">🌙</span>
+    </button>
 
-  <!-- Toggle tema -->
-  <button id="theme-toggle" class="theme-toggle" aria-label="Cambia tema">
-    <span class="toggle-icon sun-icon">☀️</span>
-    <span class="toggle-icon moon-icon">🌙</span>
-  </button>
-
-  <!-- Wrapper principale -->
-  <div class="page-wrapper">
-
-    <!-- HERO HEADER -->
-    <header class="hero">
-      <div class="hero-badge">🌸 Primavera <span id="hero-year"></span></div>
-      <h1 class="hero-title" id="main-title">Buona Pasqua</h1>
-      <p class="hero-subtitle" id="main-subtitle">Celebra la rinascita e la gioia della primavera</p>
-      <div class="hero-divider">
-        <span>✦</span><span>✦</span><span>✦</span>
-      </div>
-    </header>
-
-    <main>
-
-      <!-- CARD PASQUA -->
-      <section class="card card--easter" id="easter-card">
-        <div class="card__ribbon"></div>
-        <div class="card__inner">
-          <div class="card__header">
-            <div class="card__icon">🐣</div>
-            <div>
-              <h2 class="card__title" id="easter-section-title">Manca alla Pasqua</h2>
-              <p class="card__date" id="easter-date">Calcolo in corso…</p>
-            </div>
-          </div>
-
-          <!-- Countdown Pasqua -->
-          <div class="countdown" id="countdown-container">
-            <div class="countdown__unit">
-              <div class="countdown__glass">
-                <span class="countdown__val" id="days">00</span>
-              </div>
-              <span class="countdown__lbl" id="lbl-days">Giorni</span>
-            </div>
-            <div class="countdown__sep">:</div>
-            <div class="countdown__unit">
-              <div class="countdown__glass">
-                <span class="countdown__val" id="hours">00</span>
-              </div>
-              <span class="countdown__lbl" id="lbl-hours">Ore</span>
-            </div>
-            <div class="countdown__sep">:</div>
-            <div class="countdown__unit">
-              <div class="countdown__glass">
-                <span class="countdown__val" id="minutes">00</span>
-              </div>
-              <span class="countdown__lbl" id="lbl-minutes">Minuti</span>
-            </div>
-            <div class="countdown__sep">:</div>
-            <div class="countdown__unit">
-              <div class="countdown__glass countdown__glass--pulse" id="seconds-box">
-                <span class="countdown__val" id="seconds">00</span>
-              </div>
-              <span class="countdown__lbl" id="lbl-seconds">Secondi</span>
-            </div>
-          </div>
-
-          <!-- Messaggio celebrazione Pasqua -->
-          <div class="celebration" id="celebration-message">
-            <div class="celebration__emoji">🎊</div>
-            <h3 class="celebration__title" id="celebration-title">Buona Pasqua!</h3>
-            <p class="celebration__text" id="celebration-text">Che questa giornata porti gioia, pace e serenità a te e alla tua famiglia.</p>
-            <button class="btn btn--primary" id="celebrate-btn">Festeggia! 🎉</button>
-          </div>
+    <!-- Wrapper principale -->
+    <div class="page-wrapper">
+      <!-- HERO HEADER -->
+      <header class="hero">
+        <div class="hero-badge">🌸 Primavera <span id="hero-year"></span></div>
+        <h1 class="hero-title" id="main-title">Buona Pasqua</h1>
+        <p class="hero-subtitle" id="main-subtitle">
+          Celebra la rinascita e la gioia della primavera
+        </p>
+        <div class="hero-divider">
+          <span>✦</span><span>✦</span><span>✦</span>
         </div>
-      </section>
+      </header>
 
-      <!-- BANNER IMMAGINE -->
-      <section class="banner">
-        <img
-          src="https://img.freepik.com/free-photo/happy-bunny-with-many-easter-eggs-grass-festive-background-decorative-design_90220-1091.jpg?size=626&ext=jpg"
-          alt="Coniglietto di Pasqua con uova colorate"
-          class="banner__img"
-          loading="lazy">
-        <div class="banner__overlay">
-          <p class="banner__quote">«La Pasqua porta con sé il profumo della speranza»</p>
-        </div>
-      </section>
-
-      <!-- TRADIZIONI -->
-      <section class="traditions">
-        <h2 class="traditions__heading">Tradizioni Pasquali</h2>
-        <div class="traditions__grid">
-          <div class="tradition-card">
-            <div class="tradition-card__icon">🥚</div>
-            <h3>Uova di Pasqua</h3>
-            <p>Le uova simboleggiano la nuova vita e la rinascita, temi centrali della Pasqua.</p>
-          </div>
-          <div class="tradition-card">
-            <div class="tradition-card__icon">🐰</div>
-            <h3>Coniglio Pasquale</h3>
-            <p>Il coniglio è simbolo di fertilità e rappresenta l'arrivo della primavera.</p>
-          </div>
-          <div class="tradition-card">
-            <div class="tradition-card__icon">🍫</div>
-            <h3>Cioccolato</h3>
-            <p>Le uova di cioccolato sono un dolce tradizionale che delizia grandi e piccini.</p>
-          </div>
-          <div class="tradition-card">
-            <div class="tradition-card__icon">🌷</div>
-            <h3>Fiori Primaverili</h3>
-            <p>Gigli, tulipani e narcisi decorano le case portando i colori della stagione.</p>
-          </div>
-        </div>
-      </section>
-
-      <!-- CARD PASQUETTA -->
-      <section class="card card--pasquetta" id="pasquetta-card">
-        <div class="card__ribbon card__ribbon--blue"></div>
-        <div class="card__inner">
-          <div class="card__header">
-            <div class="card__icon">🌿</div>
-            <div>
-              <h2 class="card__title card__title--blue" id="pasquetta-section-title">Manca alla Pasquetta</h2>
-              <p class="card__date" id="pasquetta-date">Calcolo in corso…</p>
-            </div>
-          </div>
-
-          <p class="card__desc" id="pasquetta-desc">Il Lunedì dell'Angelo è tradizionalmente dedicato alle gite fuori porta e ai picnic all'aperto con amici e familiari.</p>
-
-          <!-- Countdown Pasquetta -->
-          <div class="countdown countdown--blue" id="pasquetta-countdown-container">
-            <div class="countdown__unit">
-              <div class="countdown__glass countdown__glass--blue">
-                <span class="countdown__val" id="pasquetta-days">00</span>
+      <main>
+        <!-- CARD PASQUA -->
+        <section class="card card--easter" id="easter-card">
+          <div class="card__ribbon"></div>
+          <div class="card__inner">
+            <div class="card__header">
+              <div class="card__icon">🐣</div>
+              <div>
+                <h2 class="card__title" id="easter-section-title">
+                  Manca alla Pasqua
+                </h2>
+                <p class="card__date" id="easter-date">Calcolo in corso…</p>
               </div>
-              <span class="countdown__lbl" id="lbl-pasquetta-days">Giorni</span>
             </div>
-            <div class="countdown__sep countdown__sep--blue">:</div>
-            <div class="countdown__unit">
-              <div class="countdown__glass countdown__glass--blue">
-                <span class="countdown__val" id="pasquetta-hours">00</span>
+
+            <!-- Countdown Pasqua -->
+            <div class="countdown" id="countdown-container">
+              <div class="countdown__unit">
+                <div class="countdown__glass">
+                  <span class="countdown__val" id="days">00</span>
+                </div>
+                <span class="countdown__lbl" id="lbl-days">Giorni</span>
               </div>
-              <span class="countdown__lbl" id="lbl-pasquetta-hours">Ore</span>
+              <div class="countdown__sep">:</div>
+              <div class="countdown__unit">
+                <div class="countdown__glass">
+                  <span class="countdown__val" id="hours">00</span>
+                </div>
+                <span class="countdown__lbl" id="lbl-hours">Ore</span>
+              </div>
+              <div class="countdown__sep">:</div>
+              <div class="countdown__unit">
+                <div class="countdown__glass">
+                  <span class="countdown__val" id="minutes">00</span>
+                </div>
+                <span class="countdown__lbl" id="lbl-minutes">Minuti</span>
+              </div>
+              <div class="countdown__sep">:</div>
+              <div class="countdown__unit">
+                <div
+                  class="countdown__glass countdown__glass--pulse"
+                  id="seconds-box"
+                >
+                  <span class="countdown__val" id="seconds">00</span>
+                </div>
+                <span class="countdown__lbl" id="lbl-seconds">Secondi</span>
+              </div>
             </div>
-            <div class="countdown__sep countdown__sep--blue">:</div>
-            <div class="countdown__unit">
-              <div class="countdown__glass countdown__glass--blue">
-                <span class="countdown__val" id="pasquetta-minutes">00</span>
-              </div>
-              <span class="countdown__lbl" id="lbl-pasquetta-minutes">Minuti</span>
-            </div>
-            <div class="countdown__sep countdown__sep--blue">:</div>
-            <div class="countdown__unit">
-              <div class="countdown__glass countdown__glass--blue countdown__glass--pulse" id="pasquetta-seconds-box">
-                <span class="countdown__val" id="pasquetta-seconds">00</span>
-              </div>
-              <span class="countdown__lbl" id="lbl-pasquetta-seconds">Secondi</span>
+
+            <!-- Messaggio celebrazione Pasqua -->
+            <div class="celebration" id="celebration-message">
+              <div class="celebration__emoji">🎊</div>
+              <h3 class="celebration__title" id="celebration-title">
+                Buona Pasqua!
+              </h3>
+              <p class="celebration__text" id="celebration-text">
+                Che questa giornata porti gioia, pace e serenità a te e alla tua
+                famiglia.
+              </p>
+              <button class="btn btn--primary" id="celebrate-btn">
+                Festeggia! 🎉
+              </button>
             </div>
           </div>
+        </section>
 
-          <!-- Messaggio celebrazione Pasquetta -->
-          <div class="celebration celebration--blue" id="pasquetta-celebration-message">
-            <div class="celebration__emoji">🌿</div>
-            <h3 class="celebration__title celebration__title--blue" id="pasquetta-celebration-title">Buona Pasquetta!</h3>
-            <p class="celebration__text" id="pasquetta-celebration-text">È il momento perfetto per un picnic all'aperto con amici e familiari!</p>
-            <button class="btn btn--blue" id="pasquetta-celebrate-btn">Festeggia! 🌿</button>
+        <!-- BANNER IMMAGINE -->
+        <section class="banner">
+          <img
+            src="https://img.freepik.com/free-photo/happy-bunny-with-many-easter-eggs-grass-festive-background-decorative-design_90220-1091.jpg?size=626&ext=jpg"
+            alt="Coniglietto di Pasqua con uova colorate"
+            class="banner__img"
+            loading="lazy"
+          />
+          <div class="banner__overlay">
+            <p class="banner__quote">
+              «La Pasqua porta con sé il profumo della speranza»
+            </p>
           </div>
-        </div>
-      </section>
+        </section>
 
-    </main>
+        <!-- TRADIZIONI -->
+        <section class="traditions">
+          <h2 class="traditions__heading">Tradizioni Pasquali</h2>
+          <div class="traditions__grid">
+            <div class="tradition-card">
+              <div class="tradition-card__icon">🥚</div>
+              <h3>Uova di Pasqua</h3>
+              <p>
+                Le uova simboleggiano la nuova vita e la rinascita, temi
+                centrali della Pasqua.
+              </p>
+            </div>
+            <div class="tradition-card">
+              <div class="tradition-card__icon">🐰</div>
+              <h3>Coniglio Pasquale</h3>
+              <p>
+                Il coniglio è simbolo di fertilità e rappresenta l'arrivo della
+                primavera.
+              </p>
+            </div>
+            <div class="tradition-card">
+              <div class="tradition-card__icon">🍫</div>
+              <h3>Cioccolato</h3>
+              <p>
+                Le uova di cioccolato sono un dolce tradizionale che delizia
+                grandi e piccini.
+              </p>
+            </div>
+            <div class="tradition-card">
+              <div class="tradition-card__icon">🌷</div>
+              <h3>Fiori Primaverili</h3>
+              <p>
+                Gigli, tulipani e narcisi decorano le case portando i colori
+                della stagione.
+              </p>
+            </div>
+          </div>
+        </section>
 
-    <!-- FOOTER -->
-    <footer class="footer">
-      <div class="footer__eggs">🥚 🐣 🌸 🐰 🌷</div>
-      <p class="footer__copy">&copy; <span id="current-year"></span> Buona Pasqua — Con amore</p>
-    </footer>
+        <!-- CARD PASQUETTA -->
+        <section class="card card--pasquetta" id="pasquetta-card">
+          <div class="card__ribbon card__ribbon--blue"></div>
+          <div class="card__inner">
+            <div class="card__header">
+              <div class="card__icon">🌿</div>
+              <div>
+                <h2
+                  class="card__title card__title--blue"
+                  id="pasquetta-section-title"
+                >
+                  Manca alla Pasquetta
+                </h2>
+                <p class="card__date" id="pasquetta-date">Calcolo in corso…</p>
+              </div>
+            </div>
 
-  </div>
+            <p class="card__desc" id="pasquetta-desc">
+              Il Lunedì dell'Angelo è tradizionalmente dedicato alle gite fuori
+              porta e ai picnic all'aperto con amici e familiari.
+            </p>
 
-  <script src="script.js"></script>
-</body>
+            <!-- Countdown Pasquetta -->
+            <div
+              class="countdown countdown--blue"
+              id="pasquetta-countdown-container"
+            >
+              <div class="countdown__unit">
+                <div class="countdown__glass countdown__glass--blue">
+                  <span class="countdown__val" id="pasquetta-days">00</span>
+                </div>
+                <span class="countdown__lbl" id="lbl-pasquetta-days"
+                  >Giorni</span
+                >
+              </div>
+              <div class="countdown__sep countdown__sep--blue">:</div>
+              <div class="countdown__unit">
+                <div class="countdown__glass countdown__glass--blue">
+                  <span class="countdown__val" id="pasquetta-hours">00</span>
+                </div>
+                <span class="countdown__lbl" id="lbl-pasquetta-hours">Ore</span>
+              </div>
+              <div class="countdown__sep countdown__sep--blue">:</div>
+              <div class="countdown__unit">
+                <div class="countdown__glass countdown__glass--blue">
+                  <span class="countdown__val" id="pasquetta-minutes">00</span>
+                </div>
+                <span class="countdown__lbl" id="lbl-pasquetta-minutes"
+                  >Minuti</span
+                >
+              </div>
+              <div class="countdown__sep countdown__sep--blue">:</div>
+              <div class="countdown__unit">
+                <div
+                  class="countdown__glass countdown__glass--blue countdown__glass--pulse"
+                  id="pasquetta-seconds-box"
+                >
+                  <span class="countdown__val" id="pasquetta-seconds">00</span>
+                </div>
+                <span class="countdown__lbl" id="lbl-pasquetta-seconds"
+                  >Secondi</span
+                >
+              </div>
+            </div>
+
+            <!-- Messaggio celebrazione Pasquetta -->
+            <div
+              class="celebration celebration--blue"
+              id="pasquetta-celebration-message"
+            >
+              <div class="celebration__emoji">🌿</div>
+              <h3
+                class="celebration__title celebration__title--blue"
+                id="pasquetta-celebration-title"
+              >
+                Buona Pasquetta!
+              </h3>
+              <p class="celebration__text" id="pasquetta-celebration-text">
+                È il momento perfetto per un picnic all'aperto con amici e
+                familiari!
+              </p>
+              <button class="btn btn--blue" id="pasquetta-celebrate-btn">
+                Festeggia! 🌿
+              </button>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <!-- FOOTER -->
+      <footer class="footer">
+        <div class="footer__eggs">🥚 🐣 🌸 🐰 🌷</div>
+        <p class="footer__copy">
+          &copy; <span id="current-year"></span> Buona Pasqua — Con amore
+        </p>
+      </footer>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
 </html>

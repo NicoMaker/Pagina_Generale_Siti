@@ -2,16 +2,25 @@
 <html lang="it">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
     <title>Narcisisti | Numeri di Armstrong</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%231a1a2e'/%3E%3Ctext x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' font-size='58' fill='%23d4a843'%3E%u25C6%3C/text%3E%3C/svg%3E" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%231a1a2e'/%3E%3Ctext x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' font-size='58' fill='%23d4a843'%3E%u25C6%3C/text%3E%3C/svg%3E"
+    />
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-
     <div class="noise-overlay"></div>
 
     <!-- ===== HEADER ===== -->
@@ -33,31 +42,44 @@
 
     <!-- ===== INFO MODAL ===== -->
     <div class="modal-backdrop" id="modalBackdrop" aria-hidden="true">
-      <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-
+      <div
+        class="modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modalTitle"
+      >
         <div class="modal-header">
           <div class="modal-eyebrow">
             <span class="eyebrow-line"></span>
             <span class="eyebrow-label">Guida teorica</span>
             <span class="eyebrow-line"></span>
           </div>
-          <h2 class="modal-title" id="modalTitle">Cosa sono i numeri narcisisti?</h2>
-          <button class="modal-close" id="modalClose" aria-label="Chiudi">&#10005;</button>
+          <h2 class="modal-title" id="modalTitle">
+            Cosa sono i numeri narcisisti?
+          </h2>
+          <button class="modal-close" id="modalClose" aria-label="Chiudi">
+            &#10005;
+          </button>
         </div>
 
         <div class="modal-body">
-
           <!-- DEFINIZIONE -->
           <div class="modal-section">
             <div class="msec-label">Definizione</div>
             <p class="msec-text">
-              Un <strong>numero narcisista</strong> (detto anche numero di Armstrong) è un numero naturale
-              uguale alla somma di ciascuna delle sue cifre, ognuna elevata alla potenza pari al
+              Un <strong>numero narcisista</strong> (detto anche numero di
+              Armstrong) è un numero naturale uguale alla somma di ciascuna
+              delle sue cifre, ognuna elevata alla potenza pari al
               <em>numero totale di cifre</em> del numero stesso.
             </p>
             <div class="formula-box">
-              <span class="formula-main">n = &Sigma; d<sub>i</sub><sup>k</sup></span>
-              <span class="formula-sub">dove k = numero di cifre di n, e d<sub>i</sub> sono le singole cifre</span>
+              <span class="formula-main"
+                >n = &Sigma; d<sub>i</sub><sup>k</sup></span
+              >
+              <span class="formula-sub"
+                >dove k = numero di cifre di n, e d<sub>i</sub> sono le singole
+                cifre</span
+              >
             </div>
           </div>
 
@@ -69,28 +91,39 @@
                 <div class="mstep-num">1</div>
                 <div class="mstep-content">
                   <strong>Conta le cifre</strong>
-                  <p>Determina k = quante cifre ha il numero. Es: 153 ha 3 cifre → k = 3</p>
+                  <p>
+                    Determina k = quante cifre ha il numero. Es: 153 ha 3 cifre
+                    → k = 3
+                  </p>
                 </div>
               </div>
               <div class="mstep">
                 <div class="mstep-num">2</div>
                 <div class="mstep-content">
                   <strong>Eleva ogni cifra alla potenza k</strong>
-                  <p>Prendi ogni singola cifra e calcola il k-esimo potere. Es: 1³ = 1, 5³ = 125, 3³ = 27</p>
+                  <p>
+                    Prendi ogni singola cifra e calcola il k-esimo potere. Es:
+                    1³ = 1, 5³ = 125, 3³ = 27
+                  </p>
                 </div>
               </div>
               <div class="mstep">
                 <div class="mstep-num">3</div>
                 <div class="mstep-content">
                   <strong>Somma tutti i risultati</strong>
-                  <p>Addiziona tutte le potenze calcolate. Es: 1 + 125 + 27 = 153</p>
+                  <p>
+                    Addiziona tutte le potenze calcolate. Es: 1 + 125 + 27 = 153
+                  </p>
                 </div>
               </div>
               <div class="mstep">
                 <div class="mstep-num">4</div>
                 <div class="mstep-content">
                   <strong>Confronta con il numero originale</strong>
-                  <p>Se la somma coincide con il numero di partenza → è narcisista ✓</p>
+                  <p>
+                    Se la somma coincide con il numero di partenza → è
+                    narcisista ✓
+                  </p>
                 </div>
               </div>
             </div>
@@ -106,9 +139,11 @@
           <div class="modal-section">
             <div class="msec-label">Perché "Narcisista"?</div>
             <p class="msec-text">
-              Come Narciso si specchiava nell'acqua innamorandosi della propria immagine, questi numeri
-              si <em>rispecchiano</em> nelle loro cifre: si ricostruiscono completamente a partire
-              dalle proprie parti elevate a potenza. Una forma di <strong>autodescrizione matematica</strong>.
+              Come Narciso si specchiava nell'acqua innamorandosi della propria
+              immagine, questi numeri si <em>rispecchiano</em> nelle loro cifre:
+              si ricostruiscono completamente a partire dalle proprie parti
+              elevate a potenza. Una forma di
+              <strong>autodescrizione matematica</strong>.
             </p>
           </div>
 
@@ -118,19 +153,30 @@
             <div class="facts-grid">
               <div class="fact-card">
                 <div class="fact-icon">🔢</div>
-                <div class="fact-text">Esistono esattamente <strong>88</strong> numeri narcisisti in base 10</div>
+                <div class="fact-text">
+                  Esistono esattamente <strong>88</strong> numeri narcisisti in
+                  base 10
+                </div>
               </div>
               <div class="fact-card">
                 <div class="fact-icon">📏</div>
-                <div class="fact-text">Il più grande ha <strong>39 cifre</strong>, trovato nel 1985</div>
+                <div class="fact-text">
+                  Il più grande ha <strong>39 cifre</strong>, trovato nel 1985
+                </div>
               </div>
               <div class="fact-card">
                 <div class="fact-icon">❌</div>
-                <div class="fact-text">I numeri a <strong>1 cifra</strong> sono esclusi per convenzione</div>
+                <div class="fact-text">
+                  I numeri a <strong>1 cifra</strong> sono esclusi per
+                  convenzione
+                </div>
               </div>
               <div class="fact-card">
                 <div class="fact-icon">🌐</div>
-                <div class="fact-text">Il concetto si estende ad <strong>altre basi</strong> (2, 8, 16…)</div>
+                <div class="fact-text">
+                  Il concetto si estende ad <strong>altre basi</strong> (2, 8,
+                  16…)
+                </div>
               </div>
             </div>
           </div>
@@ -140,20 +186,27 @@
             <div class="msec-label">Verifica un numero tu stesso</div>
             <div class="checker-box">
               <div class="checker-row">
-                <input type="number" id="checkerInput" class="checker-input" placeholder="es. 9474" min="10" />
+                <input
+                  type="number"
+                  id="checkerInput"
+                  class="checker-input"
+                  placeholder="es. 9474"
+                  min="10"
+                />
                 <button id="checkerBtn" class="checker-btn">Verifica</button>
               </div>
               <div id="checkerResult" class="checker-result"></div>
             </div>
           </div>
-
-        </div><!-- /modal-body -->
-      </div><!-- /modal -->
-    </div><!-- /modal-backdrop -->
+        </div>
+        <!-- /modal-body -->
+      </div>
+      <!-- /modal -->
+    </div>
+    <!-- /modal-backdrop -->
 
     <!-- ===== MAIN ===== -->
     <main class="main-content">
-
       <section class="hero">
         <div class="hero-eyebrow">
           <span class="eyebrow-line"></span>
@@ -165,13 +218,15 @@
           <span class="title-line italic">elevata a potere.</span>
         </h1>
         <p class="hero-desc">
-          Un numero narcisista è uguale alla somma delle sue cifre,<br>
+          Un numero narcisista è uguale alla somma delle sue cifre,<br />
           ciascuna elevata alla potenza pari al numero totale di cifre.
         </p>
         <div class="hero-example">
           <span class="ex-num">153</span>
           <span class="ex-arrow">→</span>
-          <span class="ex-math">1<sup>3</sup> + 5<sup>3</sup> + 3<sup>3</sup></span>
+          <span class="ex-math"
+            >1<sup>3</sup> + 5<sup>3</sup> + 3<sup>3</sup></span
+          >
           <span class="ex-arrow">=</span>
           <span class="ex-result">153</span>
           <span class="ex-check">✓</span>
@@ -200,14 +255,17 @@
             </button>
           </div>
           <div class="input-meta">
-            Intervallo valido: 2 – 60 cifre &nbsp;·&nbsp; Motore BigInt &nbsp;·&nbsp; Algoritmo combinatorio
+            Intervallo valido: 2 – 60 cifre &nbsp;·&nbsp; Motore BigInt
+            &nbsp;·&nbsp; Algoritmo combinatorio
           </div>
         </div>
       </section>
 
       <div class="status-bar" id="statusBar">
-        <span id="statusText" class="status-text">Inserisci una lunghezza e premi Dimostra</span>
-        <span id="timeBadge" class="time-badge" style="display:none">
+        <span id="statusText" class="status-text"
+          >Inserisci una lunghezza e premi Dimostra</span
+        >
+        <span id="timeBadge" class="time-badge" style="display: none">
           <span class="time-icon">◷</span>
           <span id="timeElapsed">—</span>
         </span>
@@ -216,22 +274,28 @@
       <section class="results-section">
         <div class="results-header">
           <h2 class="results-title">Dimostrazione</h2>
-          <div class="results-subtitle">passo dopo passo: potenze → somma → verifica</div>
+          <div class="results-subtitle">
+            passo dopo passo: potenze → somma → verifica
+          </div>
         </div>
         <div id="narcListContainer" class="narc-list">
           <div class="placeholder">
             <div class="placeholder-glyph">◆</div>
-            <p class="placeholder-text">Scegli una lunghezza (2–60) e premi Dimostra</p>
+            <p class="placeholder-text">
+              Scegli una lunghezza (2–60) e premi Dimostra
+            </p>
             <p class="placeholder-hint">es: 3 → 153, 370, 371, 407</p>
           </div>
         </div>
       </section>
-
     </main>
 
     <footer class="site-footer">
       <div class="footer-inner">
-        <p>Σ (cifra<sup>N</sup>) = numero &nbsp;·&nbsp; N ≥ 2 &nbsp;·&nbsp; Validato fino a 60 cifre</p>
+        <p>
+          Σ (cifra<sup>N</sup>) = numero &nbsp;·&nbsp; N ≥ 2 &nbsp;·&nbsp;
+          Validato fino a 60 cifre
+        </p>
       </div>
     </footer>
 
