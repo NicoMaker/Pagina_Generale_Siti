@@ -97,3 +97,8 @@ body{
   .mode-tabs{margin-bottom:12px;}
   .fmt-pills{margin-bottom:18px;}
 }
+
+.digital-date,
+.header__label{
+  color: white !important;
+}
