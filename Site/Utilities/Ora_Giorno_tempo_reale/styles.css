@@ -1,330 +1,99 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  -webkit-tap-highlight-color: transparent;
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html{-webkit-text-size-adjust:100%;height:100%;}
+
+body{
+  position:fixed;inset:0;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'DM Mono','Courier New',monospace;
+  background:#07060f;
+  overflow:hidden;overscroll-behavior:none;
 }
 
-html {
-  -webkit-text-size-adjust: 100%;
+.bg-orb{position:fixed;border-radius:50%;pointer-events:none;}
+.bg-orb--1{width:500px;height:500px;top:-150px;left:-150px;background:radial-gradient(circle,rgba(109,40,217,0.15) 0%,transparent 65%);animation:orbDrift 16s ease-in-out infinite alternate;}
+.bg-orb--2{width:400px;height:400px;bottom:-120px;right:-120px;background:radial-gradient(circle,rgba(20,184,166,0.12) 0%,transparent 65%);animation:orbDrift 20s ease-in-out infinite alternate-reverse;}
+@keyframes orbDrift{from{transform:translate(0,0);}to{transform:translate(40px,50px);}}
+
+/* Container */
+.clock-container{
+  position:relative;
+  display:flex;flex-direction:column;align-items:center;
+  background:rgba(255,255,255,0.04);
+  backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:28px;
+  padding:36px 44px 40px;
+  max-width:460px;width:calc(100% - 32px);
+  box-shadow:0 0 0 1px rgba(109,40,217,0.12) inset, 0 32px 80px rgba(0,0,0,0.6);
 }
 
-body {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family:
-    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  overflow: hidden;
-  overscroll-behavior-y: contain;
+/* Header */
+.header{display:flex;align-items:center;gap:10px;margin-bottom:26px;}
+.header__label{font-size:10px;font-weight:400;color:rgba(255,255,255,0.3);letter-spacing:4px;text-transform:uppercase;}
+.header__dot{width:4px;height:4px;border-radius:50%;background:rgba(167,139,250,0.6);}
+
+/* Mode tabs */
+.mode-tabs{display:flex;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.07);border-radius:100px;padding:4px;margin-bottom:22px;}
+.mode-tab{
+  padding:9px 28px;border:none;background:transparent;
+  color:rgba(255,255,255,0.35);
+  font-family:'DM Mono',monospace;font-size:11px;font-weight:500;
+  letter-spacing:1.5px;text-transform:uppercase;
+  cursor:pointer;border-radius:100px;transition:all 0.3s ease;
+}
+.mode-tab.active{background:rgba(109,40,217,0.35);border:1px solid rgba(167,139,250,0.5);color:#ddd6fe;}
+.mode-tab:not(.active):hover{color:rgba(255,255,255,0.6);}
+
+/* Format pills */
+.fmt-pills{display:flex;gap:8px;margin-bottom:30px;}
+.fmt-pill{
+  padding:7px 22px;border:1px solid rgba(255,255,255,0.12);background:transparent;
+  color:rgba(255,255,255,0.3);
+  font-family:'DM Mono',monospace;font-size:10px;font-weight:400;
+  letter-spacing:1.2px;text-transform:uppercase;
+  border-radius:100px;cursor:pointer;transition:all 0.25s ease;
+}
+.fmt-pill.active{background:rgba(109,40,217,0.25);border-color:rgba(167,139,250,0.6);color:#c4b5fd;}
+.fmt-pill:not(.active):hover{border-color:rgba(255,255,255,0.25);color:rgba(255,255,255,0.55);}
+
+/* DIGITAL */
+.digital-panel{display:none;flex-direction:column;align-items:center;min-height:160px;justify-content:center;}
+.digital-panel.active{display:flex;}
+
+.digital-time{
+  font-size:clamp(52px,14vw,90px);font-weight:300;
+  color:#ffffff;
+  letter-spacing:-2px;line-height:1;
+  font-variant-numeric:tabular-nums;
+}
+.digital-ampm{font-size:14px;font-weight:500;color:#a78bfa;letter-spacing:4px;text-transform:uppercase;margin-top:10px;min-height:20px;}
+.digital-date{font-size:11px;font-weight:300;color:rgba(255,255,255,0.28);letter-spacing:2.5px;text-transform:uppercase;margin-top:14px;}
+
+/* ANALOG */
+.analog-panel{display:none;flex-direction:column;align-items:center;}
+.analog-panel.active{display:flex;}
+
+.clock-svg{
+  width:clamp(220px,62vw,290px);
+  height:clamp(220px,62vw,290px);
+  overflow:visible;
 }
 
-body::before {
-  content: "";
-  position: absolute;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(
-    circle,
-    rgba(255, 255, 255, 0.1) 1px,
-    transparent 1px
-  );
-  background-size: 50px 50px;
-  animation: drift 60s linear infinite;
-  opacity: 0.3;
-  pointer-events: none;
-}
+.analog-date{font-size:10px;font-weight:300;color:rgba(255,255,255,0.28);letter-spacing:2.5px;text-transform:uppercase;margin-top:18px;}
+.analog-ampm-disp{font-size:12px;font-weight:500;color:#2dd4bf;letter-spacing:4px;text-transform:uppercase;margin-top:6px;min-height:18px;}
 
-@keyframes drift {
-  from {
-    transform: translate(0, 0);
-  }
-  to {
-    transform: translate(50px, 50px);
-  }
-}
+/* Legend */
+.legend{display:flex;gap:18px;margin-top:14px;flex-wrap:wrap;justify-content:center;}
+.legend-item{display:flex;align-items:center;gap:7px;font-size:9px;font-weight:300;color:rgba(255,255,255,0.3);letter-spacing:2px;text-transform:uppercase;}
 
-.clock-container {
-  position: relative;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-radius: 30px;
-  padding: 40px 50px;
-  box-shadow:
-    0 20px 60px rgba(0, 0, 0, 0.3),
-    0 0 0 1px rgba(255, 255, 255, 0.5) inset;
-  max-width: 750px;
-  width: calc(100% - 40px);
-  animation: float 6s ease-in-out infinite;
+/* Responsive */
+@media(max-width:480px){
+  .clock-container{padding:28px 20px 32px;border-radius:22px;}
+  .mode-tab{padding:8px 18px;}
 }
-
-@keyframes float {
-  0%,
-  100% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-}
-
-.header {
-  text-align: center;
-  margin-bottom: 25px;
-}
-
-.header h1 {
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: #667eea;
-  text-transform: uppercase;
-  letter-spacing: 3px;
-  margin-bottom: 8px;
-}
-
-.header p {
-  font-size: 0.9rem;
-  color: #888;
-}
-
-/* Pulsanti formato per la modalità digitale (sopra l'orologio) */
-.digital-format-buttons {
-  display: flex;
-  gap: 12px;
-  justify-content: center;
-  margin-bottom: 20px;
-}
-
-.digital-fmt-btn {
-  padding: 8px 28px;
-  border: none;
-  border-radius: 50px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  background: #f0f0f0;
-  color: #666;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
-  -webkit-user-select: none;
-  user-select: none;
-}
-
-.digital-fmt-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.12);
-}
-
-.digital-fmt-btn.active {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  box-shadow: 0 4px 18px rgba(102, 126, 234, 0.4);
-}
-
-.time-display {
-  text-align: center;
-  margin-bottom: 25px;
-}
-
-.time {
-  font-size: clamp(3rem, 8vw, 5rem);
-  font-weight: 700;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  letter-spacing: 2px;
-  line-height: 1.2;
-  display: inline-block;
-}
-
-.period {
-  font-size: 1.5rem;
-  font-weight: 700;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  margin-top: 5px;
-  letter-spacing: 1px;
-  min-height: 2rem;
-}
-
-.date {
-  font-size: 1rem;
-  color: #555;
-  margin-top: 12px;
-  font-weight: 500;
-  text-transform: capitalize;
-}
-
-.controls {
-  display: flex;
-  gap: 15px;
-  justify-content: center;
-  margin-top: 25px;
-}
-
-.btn {
-  padding: 10px 24px;
-  border: none;
-  border-radius: 50px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  background: #f0f0f0;
-  color: #666;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  -webkit-user-select: none;
-  user-select: none;
-}
-
-.btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-}
-
-.btn.active {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  box-shadow: 0 6px 25px rgba(102, 126, 234, 0.4);
-}
-
-.btn:active {
-  transform: translateY(0);
-}
-
-.decoration {
-  position: absolute;
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  background: linear-gradient(
-    135deg,
-    rgba(102, 126, 234, 0.2),
-    rgba(118, 75, 162, 0.2)
-  );
-  filter: blur(40px);
-  animation: pulse 4s ease-in-out infinite;
-  pointer-events: none;
-}
-
-.decoration:nth-child(1) {
-  top: -50px;
-  left: -50px;
-}
-.decoration:nth-child(2) {
-  bottom: -50px;
-  right: -50px;
-  animation-delay: 2s;
-}
-
-@keyframes pulse {
-  0%,
-  100% {
-    transform: scale(1);
-    opacity: 0.5;
-  }
-  50% {
-    transform: scale(1.2);
-    opacity: 0.8;
-  }
-}
-
-/* Analogico */
-.analog-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.analog-clock {
-  width: 300px;
-  height: 300px;
-  filter: drop-shadow(0 8px 24px rgba(102, 126, 234, 0.25));
-  transition: transform 0.3s ease;
-}
-
-.analog-clock:hover {
-  transform: scale(1.02);
-}
-
-.sub-controls {
-  display: flex;
-  gap: 12px;
-  justify-content: center;
-  margin-bottom: 16px;
-}
-
-.sub-btn {
-  padding: 8px 28px;
-  border: none;
-  border-radius: 50px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  background: #f0f0f0;
-  color: #666;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
-  -webkit-user-select: none;
-  user-select: none;
-}
-
-.sub-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.12);
-}
-
-.sub-btn.active {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  box-shadow: 0 4px 18px rgba(102, 126, 234, 0.4);
-}
-
-.clock-legend {
-  display: flex;
-  gap: 18px;
-  justify-content: center;
-  margin-top: 12px;
-  flex-wrap: wrap;
-}
-
-.legend-item {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  font-size: 0.75rem;
-  color: #666;
-  font-weight: 500;
-}
-
-.legend-dot {
-  display: inline-block;
-  flex-shrink: 0;
-}
-
-@media (max-width: 650px) {
-  .clock-container {
-    padding: 30px 25px;
-  }
-  .analog-clock {
-    width: 240px;
-    height: 240px;
-  }
-}
-
-@media (max-width: 500px) {
-  .analog-clock {
-    width: 210px;
-    height: 210px;
-  }
+@media(max-height:600px){
+  .clock-container{padding:18px 32px 22px;}
+  .header{margin-bottom:14px;}
+  .mode-tabs{margin-bottom:12px;}
+  .fmt-pills{margin-bottom:18px;}
 }
