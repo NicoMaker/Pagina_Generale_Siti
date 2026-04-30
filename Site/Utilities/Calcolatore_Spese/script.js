@@ -1,14 +1,33 @@
 let persone = [];
+let modalitaScelta = 'uguali';
+let spesaTotale = 0;
 
-document.getElementById('generaPersoneBtn').addEventListener('click', generaPersone);
-document.getElementById('calcolaBtn')?.addEventListener('click', calcolaSpese);
-document.getElementById('copiaBtn')?.addEventListener('click', copiaRisultati);
-document.getElementById('resetBtn')?.addEventListener('click', resetApp);
+// DOM Elements
+const totaleInput = document.getElementById('totale');
+const personeInput = document.getElementById('persone');
+const generaBtn = document.getElementById('generaBtn');
+const personalizzataSection = document.getElementById('personalizzataSection');
+const risultatiContainer = document.getElementById('risultatiContainer');
+const personeListDiv = document.getElementById('personeListPersonalizzata');
+const calcolaPersonalizzataBtn = document.getElementById('calcolaPersonalizzataBtn');
+const annullaPersonalizzataBtn = document.getElementById('annullaPersonalizzataBtn');
+const copiaBtn = document.getElementById('copiaBtn');
+const resetBtn = document.getElementById('resetBtn');
 
-function generaPersone() {
-    const totaleInput = document.getElementById('totale');
-    const personeInput = document.getElementById('persone');
-    
+// Radio buttons per la scelta modalità
+const radioUguali = document.querySelector('input[value="uguali"]');
+const radioPersonalizzata = document.querySelector('input[value="personalizzata"]');
+
+radioUguali.addEventListener('change', () => { modalitaScelta = 'uguali'; });
+radioPersonalizzata.addEventListener('change', () => { modalitaScelta = 'personalizzata'; });
+
+generaBtn.addEventListener('click', avviaCalcolo);
+calcolaPersonalizzataBtn.addEventListener('click', calcolaPersonalizzata);
+annullaPersonalizzataBtn.addEventListener('click', annullaPersonalizzata);
+copiaBtn.addEventListener('click', copiaRisultati);
+resetBtn.addEventListener('click', resetApp);
+
+function avviaCalcolo() {
     const totale = parseFloat(totaleInput.value);
     const numPersone = parseInt(personeInput.value);
     
@@ -22,10 +41,31 @@ function generaPersone() {
         return;
     }
     
-    // Memorizzo totale per uso futuro
-    window.spesaTotale = totale;
+    spesaTotale = totale;
     
-    // Genero persone con nome e percentuale vuota
+    if (modalitaScelta === 'uguali') {
+        // Calcolo diretto: tutti uguali
+        const quota = totale / numPersone;
+        const quote = [];
+        for (let i = 0; i < numPersone; i++) {
+            quote.push({
+                nome: `Persona ${i+1}`,
+                quota: quota,
+                percentualeUsata: 100 / numPersone,
+                eAuto: true
+            });
+        }
+        mostrarRisultati(quote, totale);
+    } else {
+        // Modalità personalizzata: mostra form per nomi e %
+        generaPersonePersonalizzata(numPersone);
+        personalizzataSection.style.display = 'block';
+        risultatiContainer.style.display = 'none';
+        document.querySelector('.card:first-of-type').style.opacity = '0.5';
+    }
+}
+
+function generaPersonePersonalizzata(numPersone) {
     persone = [];
     for (let i = 0; i < numPersone; i++) {
         persone.push({
@@ -34,150 +74,145 @@ function generaPersone() {
             percentuale: ''
         });
     }
-    
-    renderPersoneForm();
+    renderPersoneFormPersonalizzata();
 }
 
-function renderPersoneForm() {
-    const container = document.getElementById('personeContainer');
-    const listContainer = document.getElementById('personeList');
-    
-    if (!listContainer) return;
-    
-    listContainer.innerHTML = '';
+function renderPersoneFormPersonalizzata() {
+    personeListDiv.innerHTML = '';
     
     persone.forEach((persona, index) => {
         const div = document.createElement('div');
         div.className = 'persona-item';
         div.innerHTML = `
             <div class="persona-header">
-                <span class="persona-nome">${escapeHtml(persona.nome)}</span>
-                <span class="persona-quota">Quota</span>
+                <input type="text" class="persona-nome-input" id="nome_${index}" value="${escapeHtml(persona.nome)}" placeholder="Nome">
+                <span class="auto-badge" id="autoBadge_${index}" style="${persona.percentuale ? 'display:none' : 'display:inline-block'}">⚡ Auto</span>
             </div>
             <input type="number" step="any" class="input-percentuale" id="perc_${index}" 
-                   placeholder="Percentuale % (es. 25 oppure lascia vuoto)" value="${persona.percentuale}">
+                   placeholder="Percentuale % (es. 25 o lascia vuoto per auto)" value="${persona.percentuale}">
         `;
-        listContainer.appendChild(div);
+        personeListDiv.appendChild(div);
         
-        // Aggiungo event listener per salvare il valore
-        const input = document.getElementById(`perc_${index}`);
-        input.addEventListener('input', (e) => {
-            persone[index].percentuale = e.target.value;
+        const nomeInput = document.getElementById(`nome_${index}`);
+        nomeInput.addEventListener('change', (e) => {
+            persone[index].nome = e.target.value || `Persona ${index+1}`;
+        });
+        
+        const percInput = document.getElementById(`perc_${index}`);
+        const autoBadge = document.getElementById(`autoBadge_${index}`);
+        percInput.addEventListener('input', (e) => {
+            const val = e.target.value;
+            persone[index].percentuale = val;
+            if (val && val !== '') {
+                autoBadge.style.display = 'none';
+            } else {
+                autoBadge.style.display = 'inline-block';
+            }
         });
     });
-    
-    container.style.display = 'block';
-    document.getElementById('risultatiContainer').style.display = 'none';
 }
 
-function calcolaSpese() {
-    const totale = window.spesaTotale;
-    if (!totale || isNaN(totale)) {
-        alert('Errore: totale non valido. Ricomincia.');
-        resetApp();
-        return;
-    }
+function calcolaPersonalizzata() {
+    const totale = spesaTotale;
     
-    // Controllo percentuali
-    let percentualiValide = [];
-    let tutteValide = true;
+    // Raccogli percentuali
+    let percentualiInserite = [];
     let sommaPercentuali = 0;
     let countPercentuali = 0;
     
     for (let i = 0; i < persone.length; i++) {
         const val = persone[i].percentuale;
-        if (val !== undefined && val !== null && val !== '') {
+        if (val && val !== '') {
             const num = parseFloat(val);
             if (isNaN(num) || num < 0) {
-                mostraAlert(`Percentuale non valida per ${persone[i].nome}. Usa numeri positivi.`);
-                tutteValide = false;
-                break;
+                mostraAlert(`Percentuale non valida per ${persone[i].nome}`);
+                return;
             }
-            percentualiValide[i] = num;
+            if (num > 100) {
+                mostraAlert(`Percentuale per ${persone[i].nome} non può superare 100%`);
+                return;
+            }
+            percentualiInserite[i] = num;
             sommaPercentuali += num;
             countPercentuali++;
         } else {
-            percentualiValide[i] = null;
+            percentualiInserite[i] = null;
         }
     }
     
-    if (!tutteValide) return;
-    
-    // Se ci sono percentuali ma la somma non è 100
-    if (countPercentuali > 0 && Math.abs(sommaPercentuali - 100) > 0.01) {
-        mostraAlert(`La somma delle percentuali è ${sommaPercentuali}%, deve essere 100%!`);
+    if (sommaPercentuali > 100.01) {
+        mostraAlert(`La somma delle percentuali è ${sommaPercentuali.toFixed(1)}%, non può superare 100%!`);
         return;
     }
     
-    // Calcolo quote
-    let quote = [];
+    const personeSenzaPercentuale = persone.length - countPercentuali;
+    const percentualeRestante = 100 - sommaPercentuali;
     
-    if (countPercentuali === 0) {
-        // Ripartizione equa
-        const quotaUguale = totale / persone.length;
-        for (let i = 0; i < persone.length; i++) {
-            quote.push({
-                nome: persone[i].nome,
-                quota: quotaUguale,
-                percentualeUsata: 100 / persone.length
-            });
-        }
-    } else {
-        // Ripartizione con percentuali
-        for (let i = 0; i < persone.length; i++) {
-            let perc = percentualiValide[i];
-            if (perc === null) {
-                mostraAlert(`Tutti devono avere una percentuale se si usa la personalizzazione. Manca quella di ${persone[i].nome}`);
-                return;
-            }
-            const quotaPersona = (perc / 100) * totale;
-            quote.push({
-                nome: persone[i].nome,
-                quota: quotaPersona,
-                percentualeUsata: perc
-            });
-        }
+    // Se tutti hanno percentuali ma la somma non è 100
+    if (personeSenzaPercentuale === 0 && Math.abs(sommaPercentuali - 100) > 0.01) {
+        mostraAlert(`Hai inserito percentuali per tutti ma la somma è ${sommaPercentuali}%, deve essere 100%!`);
+        return;
     }
     
-    // Verifica arrotondamenti: somma quote deve essere ≈ totale
+    // Calcola quote
+    let quote = [];
+    for (let i = 0; i < persone.length; i++) {
+        let percentualeUsata;
+        if (percentualiInserite[i] !== null) {
+            percentualeUsata = percentualiInserite[i];
+        } else {
+            percentualeUsata = personeSenzaPercentuale > 0 ? percentualeRestante / personeSenzaPercentuale : 0;
+        }
+        const quota = (percentualeUsata / 100) * totale;
+        quote.push({
+            nome: persone[i].nome,
+            quota: quota,
+            percentualeUsata: percentualeUsata,
+            eAuto: percentualiInserite[i] === null
+        });
+    }
+    
+    // Correzione arrotondamenti
     const sommaQuote = quote.reduce((sum, q) => sum + q.quota, 0);
     if (Math.abs(sommaQuote - totale) > 0.01) {
-        // Aggiusto l'ultimo valore per arrotondamento
         const differenza = totale - sommaQuote;
-        quote[quote.length - 1].quota += differenza;
+        for (let i = quote.length - 1; i >= 0; i--) {
+            if (quote[i].eAuto) {
+                quote[i].quota += differenza;
+                break;
+            }
+        }
     }
     
+    personalizzataSection.style.display = 'none';
+    document.querySelector('.card:first-of-type').style.opacity = '1';
     mostrarRisultati(quote, totale);
 }
 
+function annullaPersonalizzata() {
+    personalizzataSection.style.display = 'none';
+    document.querySelector('.card:first-of-type').style.opacity = '1';
+    document.getElementById('percentualeAlert').style.display = 'none';
+}
+
 function mostrarRisultati(quote, totale) {
-    const container = document.getElementById('risultatiContainer');
     const listContainer = document.getElementById('risultatiList');
-    
     listContainer.innerHTML = '';
     
-    // Calcolo chi deve dare/ricevere (simuliamo un unico pagante ideale? Meglio mostrare quanto paga ognuno)
-    // Mostro semplicemente quanto paga ciascuno
     quote.forEach(q => {
         const div = document.createElement('div');
         div.className = 'risultato-item';
         div.innerHTML = `
-            <span class="risultato-nome">${escapeHtml(q.nome)}</span>
-            <span class="risultato-importo">💰 ${q.quota.toFixed(2)} €</span>
+            <div style="flex:1">
+                <strong>${escapeHtml(q.nome)}</strong>
+                ${q.eAuto ? '<span style="font-size:0.7rem; margin-left:8px; background:#dbeafe; padding:2px 8px; border-radius:20px;">auto</span>' : ''}
+                <div style="font-size:0.75rem; color:#6b7280;">${q.percentualeUsata.toFixed(1)}%</div>
+            </div>
+            <span style="font-weight:700; font-size:1.1rem;">💰 ${q.quota.toFixed(2)} €</span>
         `;
-        if (q.percentualeUsata) {
-            const smallSpan = document.createElement('div');
-            smallSpan.style.fontSize = '0.75rem';
-            smallSpan.style.color = '#6b7280';
-            smallSpan.style.marginTop = '4px';
-            smallSpan.style.width = '100%';
-            smallSpan.innerText = `(${q.percentualeUsata.toFixed(1)}%)`;
-            div.appendChild(smallSpan);
-        }
         listContainer.appendChild(div);
     });
     
-    // Aggiungi riepilogo
     const riepilogo = document.createElement('div');
     riepilogo.style.marginTop = '16px';
     riepilogo.style.padding = '12px';
@@ -187,60 +222,42 @@ function mostrarRisultati(quote, totale) {
     riepilogo.innerHTML = `<strong>Totale spesa:</strong> ${totale.toFixed(2)} €`;
     listContainer.appendChild(riepilogo);
     
-    container.style.display = 'block';
-    
-    // Nascondi alert
-    document.getElementById('percentualeAlert').style.display = 'none';
-    
-    // Salvo i risultati per copia
+    risultatiContainer.style.display = 'block';
     window.ultimiRisultati = quote;
     window.ultimoTotale = totale;
 }
 
 function copiaRisultati() {
-    if (!window.ultimiRisultati || window.ultimiRisultati.length === 0) {
-        alert('Nessun risultato da copiare');
-        return;
-    }
-    
-    let messaggio = `💰 SPESA DIVISA - Totale: ${window.ultimoTotale.toFixed(2)}€\n\n`;
+    if (!window.ultimiRisultati) return;
+    let msg = `💰 SPESA DIVISA - Totale: ${window.ultimoTotale.toFixed(2)}€\n\n`;
     window.ultimiRisultati.forEach(r => {
-        messaggio += `• ${r.nome}: ${r.quota.toFixed(2)}€\n`;
-        if (r.percentualeUsata) {
-            messaggio += `  (${r.percentualeUsata.toFixed(1)}%)\n`;
-        }
+        msg += `• ${r.nome}: ${r.quota.toFixed(2)}€ (${r.percentualeUsata.toFixed(1)}%)\n`;
     });
-    
-    navigator.clipboard.writeText(messaggio).then(() => {
-        const btnCopia = document.getElementById('copiaBtn');
-        const testoOriginale = btnCopia.innerText;
-        btnCopia.innerText = '✅ Copiato!';
-        setTimeout(() => {
-            btnCopia.innerText = testoOriginale;
-        }, 2000);
-    }).catch(() => {
-        alert('Non è stato possibile copiare manualmente');
-    });
+    navigator.clipboard.writeText(msg);
+    const btn = document.getElementById('copiaBtn');
+    const oldText = btn.innerText;
+    btn.innerText = '✅ Copiato!';
+    setTimeout(() => { btn.innerText = oldText; }, 2000);
 }
 
-function mostraAlert(messaggio) {
+function mostraAlert(msg) {
     const alertDiv = document.getElementById('percentualeAlert');
-    alertDiv.innerText = messaggio;
+    alertDiv.innerText = msg;
     alertDiv.style.display = 'block';
-    setTimeout(() => {
-        alertDiv.style.display = 'none';
-    }, 3000);
+    setTimeout(() => { alertDiv.style.display = 'none'; }, 3000);
 }
 
 function resetApp() {
     persone = [];
-    window.spesaTotale = null;
-    window.ultimiRisultati = null;
+    spesaTotale = 0;
     document.getElementById('totale').value = '';
     document.getElementById('persone').value = '';
-    document.getElementById('personeContainer').style.display = 'none';
-    document.getElementById('risultatiContainer').style.display = 'none';
+    personalizzataSection.style.display = 'none';
+    risultatiContainer.style.display = 'none';
+    document.querySelector('.card:first-of-type').style.opacity = '1';
     document.getElementById('percentualeAlert').style.display = 'none';
+    radioUguali.checked = true;
+    modalitaScelta = 'uguali';
 }
 
 function escapeHtml(str) {

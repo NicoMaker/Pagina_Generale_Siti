@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>SplitSpesa - Dividi spese con amici</title>
-    <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAAB0klEQVR4nO2WPU7DMBSA3wQJiYENMTAwMTEwMTEwMTEwMTEwMTEwMTEwMTEwMTEwMfEjISGhQqnUVqJ8JakTvyRK3UqxPvnZz/bz+wDYmkwmHwC/wB/wR3wDYBjG/ZRSz/OeQghhjDGKorhomoZt26iqCsuyiOMY27axbZt13zEMQzlNU1mWperruq6rpmkq27ZVWZYVx3Ecx7HSNE1l27ZqGIaq67qmaZqqqup1bFmWGoahaZqmnue9Bc/zVBiGqmmaapqmKoriNYZhqDAMVdM0Vdd1PxvDMPQ4jtW2bTUMQ1VVVb8sjuM4juN4jm3b1vM89X3fdV33NUxT13Vd13Vdz3me57qu67qu67quq3me57oeIYRwXdd1Xdd1Xdd1Xdd1Pc/zXNd1Xdd1Xdd1Xdf1PM9zXdf1PM9zXdd1Pc/zXNf1PM9zXdd1Pc/zXNf1PM9zXdd1Pc/zXNd1Pc/zXNd1Xc/zPNd1Xc/zPNd1Xc/zPNd1Xc/zPNd1Xc/zPNd1Xc/zPNd1Xc/zPNd1Xc/zPNd1Xc/zPNd1Xc/zPNf1PM9zXdf1PM9zXdf1PM9zXdf1PM9zXdf1PM9zXNfzPM91Xc/zPNd1Pc/zXNd1Xc/zPNf1PM9zXdf1PM9zXdf1PM9zXNf1PM/zXNeTPM9zXdfzPM91Xc/zPNd1Pc/zXNf1PM9zXdfzPM91Xc/zPNf1PM9zXdfzPM91Xc/zPNd1Pc/zXNf1PM9zXdfzPM91Xc/zPNd1Pc/zXNf1PM9zXdfzPM91Xc/zPNf1PM9zXE8yTdN1Xdd1Xdd1Xdd1Xc/zPNd1Xc/zPNd1Xc/zXNd1Pc/zXNf1PM9zXdfzPM91Xc/zPNd1Pc9zXdfzPM91Xc/zXNd1Pc/zXNf1PM9zXdfzPNf1PM9zXNfzPM91Pc/zXNf1PM9zXdfzPM91Xc/zPNd1Pc9zXdfzPNf1PM9zXNfzPM91Xc/zPNf1PM9zXdfzPNf1PM9zXc/zPM/1PM9zXdfzPNd1Pc9zXdfzPNd1Pc9zXdfzPM91Pc/zXNf1PM9zXdfzPNd1Pc9zXNfzPM91Xc/zPNf1PM9zXdfzPNf1PM9zXc/zPNd1Pc/zXNf1PM9zXdfzPM91Pc/zXNf1PM9zXdfzPNf1PM9zXNf1PM9zXdfzPNf1PM9zXdfzPNf1PM9zXdfzPM91Pc/zXNf1PM9zXdfzPNd1Pc/zXNf1PM9zXd95nud5nud5nud5nud5nud5nud5nud5nud5nud5nuc/sFwuHwB/wB/xf3xfZ3OzCyJsME0AAAAASUVORK5CYII=">
+    <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAAB0klEQVR4nO2WPU7DMBSA3wQJiYENMTAwMTEwMTEwMTEwMTEwMTEwMTEwMTEwMTEwMfEjISGhQqnUVqJ8JakTvyRK3UqxPvnZz/bz+wDYmkwmHwC/wB/wR3wDYBjG/ZRSz/OeQghhjDGKojheroZt26iqCsuyiOMY27axbZt13zEMQzlNU1mWperruq6rpmkq27ZVWZYVx3Ecx7HSNE1l27ZqGIaq67qmaZqqqup1bFmWGoahaZqmnue9Bc/zVBiGqmmaapqmKoriNYZhqDAMVdM0Vdd1PxvDMPQ4jtW2bTUMQ1VVVb8sjuM4juN4jm3b1vM89X3fdV33NUxT13Vd13Vdz3me57qu67qu67quq3me57oeIYRwXdd1Xdd1Xdd1Xdd1Pc/zXNd1Xdd1Xdd1Xdf1PM9zXdf1PM9zXdd1Pc/zXNf1PM9zXdd1Pc/zXNf1PM9zXdd1Pc/zXNd1Pc/zXNd1Xc/zPNd1Xc/zPNd1Xc/zPNd1Xc/zPNd1Xc/zPNd1Xc/zPNd1Xc/zPNd1Xc/zPNd1Xc/zPNd1Xc/zPNf1PM9zXdf1PM9zXdf1PM9zXdf1PM9zXdf1PM9zXNfzPM91Xc/zPNd1Pc/zXNd1Xc/zPNf1PM9zXdf1PM9zXdf1PM9zXNf1PM/zXNeTPM9zXdfzPM91Xc/zPNd1Pc/zXNf1PM9zXdfzPM91Xc/zPNf1PM9zXdfzPM91Xc/zPNd1Pc/zXNf1PM9zXdfzPM91Xc/zPNd1Pc/zXNf1PM9zXdfzPM91Xc/zPNf1Pc/zXNf1PM9zXE8yTdN1Xdd1Xdd1Xdd1Xc/zPNd1Xc/zPNd1Xc/zXNd1Pc/zXNf1PM9zXdfzPM91Xc/zPNd1Pc9zXdfzPM91Xc/zPNd1Pc/zXNf1PM9zXdfzPNf1PM9zXNfzPM91Pc/zXNf1PM9zXdfzPM91Xc/zPNd1Pc9zXdfzPNf1PM9zXNfzPM91Xc/zPNf1PM9zXdfzPNf1PM9zXc/zPM/1PM9zXdfzPNd1Pc9zXdfzPNd1Pc9zXdfzPM91Pc/zXNf1PM9zXdfzPNd1Pc9zXNfzPM91Xc/zPNf1PM9zXdfzPNf1PM9zXc/zPNd1Pc/zXNf1PM9zXdfzPM91Pc/zXNf1PM9zXdfzPNf1PM9zXNf1PM9zXdfzPNf1PM9zXdfzPNf1PM9zXdfzPM91Pc/zXNf1PM9zXdfzPNd1Pc/zXNf1PM9zXd95nud5nud5nud5nud5nud5nud5nud5nud5nud5nuc/sFwuHwB/wB/xf3xfZ3OzCyJsME0AAAAASUVORK5CYII=">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
         <div class="app-header">
             <h1>💰 SplitSpesa</h1>
-            <p>Dividi spese equamente o con percentuali personalizzate</p>
+            <p>Dividi spese con amici</p>
         </div>
 
         <div class="card">
@@ -25,19 +25,40 @@
                 <input type="number" id="persone" min="1" step="1" placeholder="es. 4" autocomplete="off">
             </div>
 
-            <button id="generaPersoneBtn" class="btn-primary">Genera persone</button>
-        </div>
-
-        <div id="personeContainer" class="persone-container" style="display: none;">
-            <div class="card">
-                <h3>👤 Imposta percentuali / quote</h3>
-                <p class="info-text">Lascia vuoto per uguale ripartizione. La somma delle % deve essere 100%</p>
-                <div id="personeList"></div>
-                <div id="percentualeAlert" class="alert" style="display: none;"></div>
-                <button id="calcolaBtn" class="btn-success">🧮 Calcola spese</button>
+            <!-- SCELTA MODALITÀ PRIMA -->
+            <div class="form-group">
+                <label>🎯 Modalità di divisione</label>
+                <div class="radio-group">
+                    <label class="radio-label">
+                        <input type="radio" name="modalita" value="uguali" checked> 
+                        <span>⚡ Tutti uguali</span>
+                        <small>Divisione equa automatica</small>
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="modalita" value="personalizzata"> 
+                        <span>📊 Personalizzata</span>
+                        <small>Imposta percentuali diverse</small>
+                    </label>
+                </div>
             </div>
+
+            <button id="generaBtn" class="btn-primary">Continua →</button>
         </div>
 
+        <!-- Sezione modifica nomi (solo per personalizzata) -->
+        <div id="personalizzataSection" class="card" style="display: none;">
+            <h3>✏️ Modifica nomi e percentuali</h3>
+            <p class="info-text">
+                Lascia % vuota per divisione automatica sulla parte restante.<br>
+                La somma delle % inserite può essere ≤ 100.
+            </p>
+            <div id="personeListPersonalizzata"></div>
+            <div id="percentualeAlert" class="alert" style="display: none;"></div>
+            <button id="calcolaPersonalizzataBtn" class="btn-success">🧮 Calcola</button>
+            <button id="annullaPersonalizzataBtn" class="btn-outline" style="margin-top: 10px;">← Indietro</button>
+        </div>
+
+        <!-- SEZIONE RISULTATI -->
         <div id="risultatiContainer" class="risultati-container" style="display: none;">
             <div class="card">
                 <h3>📋 Risultati</h3>
