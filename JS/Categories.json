@@ -584,6 +584,10 @@
         {
           "name": "Timer Pomodoro",
           "link": "Site/Utilities/Timer_Pomodoro/index.html"
+        },
+        {
+          "name":"Calcolo righe di codice",
+          "link":"Site/Utilities/Calcolo_righe_di_codice/index.html"
         }
       ]
     }
