@@ -4,6 +4,8 @@
 
 - **[Barcode Generator](Barcode_Generator)**
 - **[Calcolatore di Prezzi con Sconto e Aumento e calcolo percentuale](Calcolatore_Sconto_Aumento)**
+- **[Calcolatore Spese](Calcolatore_Spese)**
+**[Calcolo righe di codice](Calcolo_righe_di_codice)**
 - **[Conversioni unità di misura](Convertitore_unità_di_Misura)**
 - **[Cronometro timer](Cronometro_timer)**
 - **[Gestione Auto](Gestione_Auto)**

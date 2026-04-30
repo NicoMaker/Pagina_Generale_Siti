@@ -588,6 +588,10 @@
         {
           "name":"Calcolo righe di codice",
           "link":"Site/Utilities/Calcolo_righe_di_codice/index.html"
+        },
+        {
+          "name":"Calcolatore di spese",
+          "link":"Site/Utilities/Calcolatore_Spese/index.html"
         }
       ]
     }
