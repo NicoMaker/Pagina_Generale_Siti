@@ -1,557 +1,468 @@
-// Estensioni dei file di codice
+// ---- CONSTANTS ----
 const EXTENSIONS_CODICE = new Set([
-    'js', 'jsx', 'ts', 'tsx', 'mjs', 'cjs',
-    'py', 'rb', 'php', 'java', 'kt', 'kts', 'scala',
-    'c', 'cpp', 'h', 'hpp', 'cc', 'cxx',
-    'cs', 'fs', 'fsx',
-    'go', 'rs', 'swift', 'm', 'mm',
-    'html', 'htm', 'css', 'scss', 'sass', 'less',
-    'vue', 'svelte', 'astro',
-    'json', 'yaml', 'yml', 'xml', 'toml',
-    'sh', 'bash', 'zsh', 'fish', 'ps1', 'bat',
-    'sql', 'graphql', 'gql',
-    'md', 'markdown', 'txt'
+  'js','jsx','ts','tsx','mjs','cjs',
+  'py','rb','php','java','kt','kts','scala',
+  'c','cpp','h','hpp','cc','cxx',
+  'cs','fs','fsx',
+  'go','rs','swift','m','mm',
+  'html','htm','css','scss','sass','less',
+  'vue','svelte','astro',
+  'json','yaml','yml','xml','toml',
+  'sh','bash','zsh','fish','ps1','bat',
+  'sql','graphql','gql',
+  'md','markdown','txt'
 ]);
 
-let fileTree = {}; // Struttura ad albero dei file
-let totalStats = {
-    files: 0,
-    lines: 0,
-    size: 0
-};
+// ---- STATE ----
+let fileTree = {};  // { rootName: { __files__: [], subFolder: { ... } } }
 
-// DOM elementi
-const uploadArea = document.getElementById('uploadArea');
-const fileInput = document.getElementById('fileInput');
-const folderInput = document.getElementById('folderInput');
-const escludiVuote = document.getElementById('escludiVuote');
+// ---- DOM REFS ----
+const dropzone      = document.getElementById('dropzone');
+const fileInput     = document.getElementById('fileInput');
+const folderInput   = document.getElementById('folderInput');
+const escludiVuote  = document.getElementById('escludiVuote');
 const escludiCommenti = document.getElementById('escludiCommenti');
-const soloCodice = document.getElementById('soloCodice');
-const searchFilter = document.getElementById('searchFilter');
+const soloCodice    = document.getElementById('soloCodice');
+const searchFilter  = document.getElementById('searchFilter');
 
-// Eventi drag & drop
-uploadArea.addEventListener('dragover', (e) => {
-    e.preventDefault();
-    uploadArea.classList.add('drag-over');
+// ---- DRAG & DROP ----
+dropzone.addEventListener('dragover', e => {
+  e.preventDefault();
+  dropzone.classList.add('drag-over');
 });
 
-uploadArea.addEventListener('dragleave', () => {
-    uploadArea.classList.remove('drag-over');
+dropzone.addEventListener('dragleave', e => {
+  if (!dropzone.contains(e.relatedTarget)) dropzone.classList.remove('drag-over');
 });
 
-uploadArea.addEventListener('drop', async (e) => {
-    e.preventDefault();
-    uploadArea.classList.remove('drag-over');
-    
-    const items = e.dataTransfer.items;
-    const files = [];
-    
-    for (let i = 0; i < items.length; i++) {
-        const entry = items[i].webkitGetAsEntry();
-        if (entry) {
-            const allFiles = await getAllFilesFromEntry(entry);
-            files.push(...allFiles);
-        }
-    }
-    
-    if (files.length > 0) {
-        processFiles(files);
-    }
+dropzone.addEventListener('drop', async e => {
+  e.preventDefault();
+  dropzone.classList.remove('drag-over');
+  const items = Array.from(e.dataTransfer.items);
+  const files = [];
+  for (const item of items) {
+    const entry = item.webkitGetAsEntry && item.webkitGetAsEntry();
+    if (entry) files.push(...await getAllFilesFromEntry(entry));
+  }
+  if (files.length) await processFiles(files, 'drop');
 });
 
-fileInput.addEventListener('change', (e) => {
-    const files = Array.from(e.target.files);
-    processFiles(files);
-    fileInput.value = '';
+fileInput.addEventListener('change', async e => {
+  const files = Array.from(e.target.files);
+  if (files.length) await processFiles(files, 'files');
+  fileInput.value = '';
 });
 
-folderInput.addEventListener('change', (e) => {
-    const files = Array.from(e.target.files);
-    processFiles(files);
-    folderInput.value = '';
+folderInput.addEventListener('change', async e => {
+  const files = Array.from(e.target.files);
+  if (files.length) await processFiles(files, 'folder');
+  folderInput.value = '';
 });
 
-// Legge ricorsivamente tutti i file da una directory
+// ---- FILE READING ----
 async function getAllFilesFromEntry(entry, path = '') {
-    const files = [];
-    
-    if (entry.isFile) {
-        const file = await new Promise((resolve) => {
-            entry.file(resolve);
-        });
-        file.relativePath = path ? `${path}/${entry.name}` : entry.name;
-        files.push(file);
-    } else if (entry.isDirectory) {
-        const reader = entry.createReader();
-        const entries = await new Promise((resolve) => {
-            reader.readEntries(resolve);
-        });
-        
-        for (const subEntry of entries) {
-            const subPath = path ? `${path}/${entry.name}` : entry.name;
-            const subFiles = await getAllFilesFromEntry(subEntry, subPath);
-            files.push(...subFiles);
-        }
-    }
-    
-    return files;
+  const files = [];
+  if (entry.isFile) {
+    const file = await new Promise(res => entry.file(res));
+    file.relativePath = path ? `${path}/${entry.name}` : entry.name;
+    files.push(file);
+  } else if (entry.isDirectory) {
+    const subPath = path ? `${path}/${entry.name}` : entry.name;
+    const reader = entry.createReader();
+    const entries = await readAllEntries(reader);
+    for (const sub of entries) files.push(...await getAllFilesFromEntry(sub, subPath));
+  }
+  return files;
 }
 
-// Processa i file selezionati
-async function processFiles(files) {
-    showLoading();
-    
-    const newFileTree = {};
-    let processedCount = 0;
-    
-    for (const file of files) {
-        const pathParts = file.relativePath ? file.relativePath.split('/') : [file.name];
-        const fileName = pathParts.pop();
-        const folderPath = pathParts.join('/');
-        
-        // Filtra per estensione se necessario
-        const ext = fileName.split('.').pop().toLowerCase();
-        if (soloCodice.checked && !EXTENSIONS_CODICE.has(ext)) {
-            continue;
-        }
-        
-        const content = await readFileContent(file);
-        const lines = countLines(content);
-        const size = file.size;
-        
-        addFileToTree(newFileTree, folderPath, fileName, {
-            name: fileName,
-            path: folderPath,
-            lines: lines,
-            size: size,
-            content: content,
-            fullPath: file.relativePath || file.name
-        });
-        
-        processedCount++;
-        if (processedCount % 10 === 0) {
-            await delay(0); // Permette all'UI di aggiornarsi
-        }
+function readAllEntries(reader) {
+  return new Promise(resolve => {
+    const all = [];
+    function read() {
+      reader.readEntries(entries => {
+        if (!entries.length) resolve(all);
+        else { all.push(...entries); read(); }
+      });
     }
-    
-    fileTree = newFileTree;
-    updateFileTree();
-    calculateTotalStats();
-    hideLoading();
+    read();
+  });
 }
 
-// Legge il contenuto del file
 function readFileContent(file) {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = (e) => resolve(e.target.result);
-        reader.onerror = (e) => reject(e);
-        reader.readAsText(file, 'UTF-8');
-    });
+  return new Promise((res, rej) => {
+    const r = new FileReader();
+    r.onload = e => res(e.target.result);
+    r.onerror = rej;
+    r.readAsText(file, 'UTF-8');
+  });
 }
 
-// Conta le righe di un file
-function countLines(content) {
-    const excludeEmpty = escludiVuote.checked;
-    const excludeComments = escludiCommenti.checked;
-    
-    const lines = content.split('\n');
-    let validLines = 0;
-    let inMultilineComment = false;
-    
-    for (let line of lines) {
-        const trimmedLine = line.trim();
-        
-        if (excludeComments) {
-            if (trimmedLine.includes('/*') && !trimmedLine.includes('*/')) {
-                inMultilineComment = true;
-                continue;
-            }
-            if (trimmedLine.includes('*/')) {
-                inMultilineComment = false;
-                continue;
-            }
-            if (inMultilineComment) continue;
-        }
-        
-        if (excludeEmpty && trimmedLine === '') continue;
-        
-        if (excludeComments) {
-            if (trimmedLine.startsWith('//') || 
-                trimmedLine.startsWith('#') ||
-                trimmedLine.startsWith('--') ||
-                trimmedLine.startsWith('%') ||
-                trimmedLine.startsWith('<!--')) {
-                continue;
-            }
-        }
-        
-        validLines++;
-    }
-    
-    return validLines;
-}
+// ---- PROCESS FILES ----
+async function processFiles(files, sourceType) {
+  showLoading();
+  const sourceName = getSourceName(files, sourceType);
+  const branch = {};
+  let count = 0;
 
-// Aggiunge un file alla struttura ad albero
-function addFileToTree(tree, folderPath, fileName, fileData) {
-    if (!folderPath || folderPath === '') {
-        if (!tree['__files__']) tree['__files__'] = [];
-        tree['__files__'].push(fileData);
-        return;
-    }
-    
-    const parts = folderPath.split('/');
-    let current = tree;
-    
-    for (const part of parts) {
-        if (!current[part]) {
-            current[part] = {
-                '__files__': [],
-                '__stats__': { files: 0, lines: 0, size: 0 }
-            };
-        }
-        current = current[part];
-    }
-    
-    if (!current['__files__']) current['__files__'] = [];
-    current['__files__'].push(fileData);
-}
-
-// Aggiorna la visualizzazione ad albero
-function updateFileTree() {
-    const container = document.getElementById('fileTree');
-    container.innerHTML = '';
-    
-    if (Object.keys(fileTree).length === 0) {
-        container.innerHTML = '<div class="empty-message">📂 Nessun file selezionato<br>Seleziona uno o più file o un\'intera cartella per iniziare</div>';
-        return;
-    }
-    
-    const treeElement = createTreeElement(fileTree, '');
-    container.appendChild(treeElement);
-}
-
-// Crea l'elemento dell'albero
-function createTreeElement(node, path) {
-    const div = document.createElement('div');
-    div.className = 'tree-node';
-    
-    const folders = Object.keys(node).filter(k => k !== '__files__' && k !== '__stats__');
-    const files = node['__files__'] || [];
-    
-    // Calcola statistiche della cartella
-    const stats = calculateNodeStats(node);
-    
-    // Crea header per la cartella se ci sono sottocartelle o file
-    if (folders.length > 0 || files.length > 0) {
-        const header = document.createElement('div');
-        header.className = 'tree-node-header';
-        
-        const toggle = document.createElement('span');
-        toggle.className = 'tree-node-toggle';
-        toggle.textContent = '📂';
-        toggle.style.cursor = 'pointer';
-        
-        const icon = document.createElement('span');
-        icon.className = 'tree-node-icon';
-        icon.textContent = path === '' ? '📁' : '📁';
-        
-        const name = document.createElement('span');
-        name.className = 'tree-node-name';
-        name.textContent = path === '' ? '📁 Radice' : path.split('/').pop();
-        
-        const statsSpan = document.createElement('span');
-        statsSpan.className = 'tree-node-stats';
-        statsSpan.textContent = `${stats.files} file, ${stats.lines.toLocaleString()} righe`;
-        
-        header.appendChild(toggle);
-        header.appendChild(icon);
-        header.appendChild(name);
-        header.appendChild(statsSpan);
-        
-        const childrenDiv = document.createElement('div');
-        childrenDiv.className = 'tree-node-children';
-        
-        // Aggiungi sottocartelle
-        for (const folder of folders) {
-            const subPath = path ? `${path}/${folder}` : folder;
-            const childElement = createTreeElement(node[folder], subPath);
-            childrenDiv.appendChild(childElement);
-        }
-        
-        // Aggiungi file
-        for (const file of files) {
-            if (matchesFilter(file.name)) {
-                const fileElement = createFileElement(file);
-                childrenDiv.appendChild(fileElement);
-            }
-        }
-        
-        header.onclick = (e) => {
-            e.stopPropagation();
-            const isOpen = childrenDiv.classList.contains('open');
-            if (isOpen) {
-                childrenDiv.classList.remove('open');
-                toggle.textContent = '📁';
-            } else {
-                childrenDiv.classList.add('open');
-                toggle.textContent = '📂';
-            }
-        };
-        
-        div.appendChild(header);
-        div.appendChild(childrenDiv);
-        
-        // Apri la root di default
-        if (path === '') {
-            childrenDiv.classList.add('open');
-            toggle.textContent = '📂';
-        }
-    }
-    
-    return div;
-}
-
-// Calcola statistiche di un nodo
-function calculateNodeStats(node) {
-    let files = 0;
-    let lines = 0;
-    let size = 0;
-    
-    const fileList = node['__files__'] || [];
-    for (const file of fileList) {
-        files++;
-        lines += file.lines;
-        size += file.size;
-    }
-    
-    const folders = Object.keys(node).filter(k => k !== '__files__' && k !== '__stats__');
-    for (const folder of folders) {
-        const subStats = calculateNodeStats(node[folder]);
-        files += subStats.files;
-        lines += subStats.lines;
-        size += subStats.size;
-    }
-    
-    return { files, lines, size };
-}
-
-// Crea elemento per un file
-function createFileElement(file) {
-    const div = document.createElement('div');
-    div.className = 'file-item';
-    
-    const icon = getFileIcon(file.name);
-    
-    const iconSpan = document.createElement('span');
-    iconSpan.className = 'file-icon';
-    iconSpan.textContent = icon;
-    
-    const nameSpan = document.createElement('span');
-    nameSpan.className = 'file-name';
-    nameSpan.textContent = file.name;
-    nameSpan.title = file.fullPath;
-    
-    const linesSpan = document.createElement('span');
-    linesSpan.className = 'file-lines';
-    let linesClass = 'normal';
-    if (file.lines > 1000) linesClass = 'high';
-    else if (file.lines > 500) linesClass = 'medium';
-    else if (file.lines > 100) linesClass = 'low';
-    linesSpan.className = `file-lines ${linesClass}`;
-    linesSpan.textContent = `${file.lines.toLocaleString()} righe`;
-    
-    const removeSpan = document.createElement('span');
-    removeSpan.className = 'file-remove';
-    removeSpan.textContent = '✖';
-    removeSpan.onclick = (e) => {
-        e.stopPropagation();
-        removeFile(file.fullPath);
-    };
-    
-    div.appendChild(iconSpan);
-    div.appendChild(nameSpan);
-    div.appendChild(linesSpan);
-    div.appendChild(removeSpan);
-    
-    return div;
-}
-
-// Ottieni icona per tipo di file
-function getFileIcon(fileName) {
+  for (const file of files) {
+    const relPath = file.relativePath || file.webkitRelativePath || file.name;
+    const pathParts = relPath.split('/').filter(Boolean);
+    const fileName = pathParts[pathParts.length - 1];
     const ext = fileName.split('.').pop().toLowerCase();
-    const icons = {
-        js: '📜', jsx: '⚛️', ts: '🔷', tsx: '⚛️',
-        py: '🐍', java: '☕', cpp: '⚙️', c: '🔧',
-        html: '🌐', css: '🎨', scss: '🎨',
-        json: '📦', xml: '📋', yaml: '📝', yml: '📝',
-        md: '📖', txt: '📄', php: '🐘', rb: '💎',
-        go: '🐹', rs: '🦀', swift: '🐦', kt: '🎯',
-        sql: '🗄️', sh: '🐚', vue: '🖖'
-    };
-    return icons[ext] || '📄';
-}
+    if (soloCodice.checked && !EXTENSIONS_CODICE.has(ext)) continue;
 
-// Filtra i file
-function matchesFilter(fileName) {
-    const filter = searchFilter.value.toLowerCase();
-    if (!filter) return true;
-    return fileName.toLowerCase().includes(filter);
-}
+    let content;
+    try { content = await readFileContent(file); } catch(e) { continue; }
 
-// Calcola statistiche totali
-function calculateTotalStats() {
-    totalStats = { files: 0, lines: 0, size: 0 };
-    
-    function calculate(node) {
-        const files = node['__files__'] || [];
-        for (const file of files) {
-            totalStats.files++;
-            totalStats.lines += file.lines;
-            totalStats.size += file.size;
-        }
-        
-        const folders = Object.keys(node).filter(k => k !== '__files__' && k !== '__stats__');
-        for (const folder of folders) {
-            calculate(node[folder]);
-        }
+    const lines = countLines(content);
+    const folders = pathParts.slice(0, -1);
+    let node = branch;
+    for (const f of folders) {
+      if (!node[f]) node[f] = { __files__: [] };
+      node = node[f];
     }
-    
-    calculate(fileTree);
-    
-    // Aggiorna UI
-    document.getElementById('totalFiles').textContent = totalStats.files;
-    document.getElementById('totalLines').textContent = totalStats.lines.toLocaleString();
-    document.getElementById('avgLines').textContent = totalStats.files > 0 ? 
-        Math.round(totalStats.lines / totalStats.files).toLocaleString() : 0;
-    document.getElementById('totalSize').textContent = formatBytes(totalStats.size);
-    document.getElementById('stats').style.display = 'grid';
-    
-    // Aggiorna titolo
-    document.title = `📊 ${totalStats.lines.toLocaleString()} righe - Contatore Righe`;
+    if (!node.__files__) node.__files__ = [];
+    node.__files__.push({ name: fileName, fullPath: relPath, lines, size: file.size, content });
+
+    count++;
+    if (count % 20 === 0) await delay(0);
+  }
+
+  if (count === 0) {
+    hideLoading();
+    showToast('⚠ Nessun file di codice trovato');
+    return;
+  }
+
+  // Merge into global tree (handle duplicate names)
+  let name = sourceName;
+  let i = 2;
+  while (fileTree[name]) { name = `${sourceName} (${i++})`; }
+  fileTree[name] = branch;
+
+  renderSources();
+  renderTree();
+  updateStats();
+  hideLoading();
+  showToast(`✓ ${count} file caricati da "${name}"`);
 }
 
-// Rimuovi un file
-function removeFile(filePath) {
-    function removeFromTree(node, pathParts) {
-        if (pathParts.length === 1) {
-            const files = node['__files__'] || [];
-            const index = files.findIndex(f => f.fullPath === filePath);
-            if (index !== -1) files.splice(index, 1);
-            return true;
-        }
-        
-        const folder = pathParts[0];
-        if (node[folder]) {
-            removeFromTree(node[folder], pathParts.slice(1));
-            // Se la cartella è vuota, rimuovila
-            const remainingFiles = node[folder]['__files__'] || [];
-            const remainingFolders = Object.keys(node[folder]).filter(k => k !== '__files__' && k !== '__stats__');
-            if (remainingFiles.length === 0 && remainingFolders.length === 0) {
-                delete node[folder];
-            }
-        }
-        return true;
+function getSourceName(files, sourceType) {
+  if (sourceType === 'folder') {
+    const rel = files[0].webkitRelativePath || files[0].relativePath || files[0].name;
+    return rel.split('/')[0] || 'cartella';
+  }
+  if (sourceType === 'drop') {
+    const rel = files[0].relativePath || files[0].name;
+    return rel.split('/')[0] || 'drop';
+  }
+  return `file (${files.length})`;
+}
+
+// ---- LINE COUNTING ----
+function countLines(content) {
+  const exEmpty    = escludiVuote.checked;
+  const exComments = escludiCommenti.checked;
+  const lines = content.split('\n');
+  let count = 0;
+  let inMulti = false;
+
+  for (const raw of lines) {
+    const t = raw.trim();
+    if (exComments) {
+      if (!inMulti && t.includes('/*') && !t.includes('*/')) { inMulti = true; continue; }
+      if (inMulti) { if (t.includes('*/')) inMulti = false; continue; }
+      if (t.startsWith('//') || t.startsWith('#') || t.startsWith('--') ||
+          t.startsWith('%') || t.startsWith('<!--')) continue;
     }
-    
-    const pathParts = filePath.split('/');
-    const fileName = pathParts.pop();
-    const folderPath = pathParts.join('/');
-    
-    if (folderPath) {
-        const parts = folderPath.split('/');
-        removeFromTree(fileTree, parts);
-    } else {
-        const files = fileTree['__files__'] || [];
-        const index = files.findIndex(f => f.name === fileName);
-        if (index !== -1) files.splice(index, 1);
+    if (exEmpty && t === '') continue;
+    count++;
+  }
+  return count;
+}
+
+// ---- STATS ----
+function calcNodeStats(node, filter = '') {
+  let files = 0, lines = 0, size = 0;
+  const fl = (node.__files__ || []).filter(f => !filter || f.name.toLowerCase().includes(filter));
+  for (const f of fl) { files++; lines += f.lines; size += f.size; }
+  for (const k of Object.keys(node).filter(k => k !== '__files__')) {
+    const s = calcNodeStats(node[k], filter);
+    files += s.files; lines += s.lines; size += s.size;
+  }
+  return { files, lines, size };
+}
+
+function updateStats() {
+  let files = 0, lines = 0, size = 0;
+  for (const root of Object.keys(fileTree)) {
+    const s = calcNodeStats(fileTree[root]);
+    files += s.files; lines += s.lines; size += s.size;
+  }
+
+  document.getElementById('totalFiles').textContent = files.toLocaleString();
+  document.getElementById('totalLines').textContent = lines.toLocaleString();
+  document.getElementById('avgLines').textContent   = files > 0 ? Math.round(lines / files).toLocaleString() : '0';
+  document.getElementById('totalSize').textContent  = formatBytes(size);
+
+  const statsRow = document.getElementById('statsRow');
+  if (files > 0) statsRow.classList.remove('hidden');
+  else statsRow.classList.add('hidden');
+
+  document.title = files > 0 ? `{ ${lines.toLocaleString()} ln }` : '{ lines }';
+}
+
+// ---- RENDER TREE ----
+function renderTree() {
+  const container = document.getElementById('fileTree');
+  const filter = searchFilter.value.toLowerCase();
+  container.innerHTML = '';
+
+  const keys = Object.keys(fileTree);
+  if (!keys.length) {
+    container.innerHTML = `
+      <div class="empty-state">
+        <span class="empty-icon">◻</span>
+        <div class="empty-text">Nessun file caricato.<br>Puoi trascinare <strong>più cartelle contemporaneamente.</strong></div>
+      </div>`;
+    return;
+  }
+
+  for (const rootName of keys) {
+    const el = renderNode(fileTree[rootName], rootName, 0, filter, true);
+    if (el) container.appendChild(el);
+  }
+}
+
+function renderNode(node, name, depth, filter, isRoot = false) {
+  const folders = Object.keys(node).filter(k => k !== '__files__');
+  const files   = (node.__files__ || []).filter(f => !filter || f.name.toLowerCase().includes(filter));
+  const stats   = calcNodeStats(node, filter);
+  if (stats.files === 0 && filter) return null;
+
+  const wrap = document.createElement('div');
+  wrap.className = `tree-folder depth-${Math.min(depth, 3)}`;
+
+  const header = document.createElement('div');
+  header.className = 'folder-header';
+
+  const arrow = document.createElement('span');
+  arrow.className = 'folder-arrow open';
+  arrow.textContent = '▶';
+
+  const icon = document.createElement('span');
+  icon.className = 'folder-icon';
+  icon.textContent = isRoot ? '⬡' : '◈';
+
+  const nameSp = document.createElement('span');
+  nameSp.className = 'folder-name';
+  nameSp.textContent = name;
+
+  const badge = document.createElement('span');
+  badge.className = 'folder-badge';
+  badge.textContent = `${stats.lines.toLocaleString()} ln`;
+
+  const countSp = document.createElement('span');
+  countSp.className = 'folder-count';
+  countSp.textContent = `${stats.files}f`;
+
+  header.append(arrow, icon, nameSp, badge, countSp);
+
+  const children = document.createElement('div');
+  children.className = 'folder-children open';
+
+  for (const sub of folders) {
+    const child = renderNode(node[sub], sub, depth + 1, filter);
+    if (child) children.appendChild(child);
+  }
+  for (const file of files) children.appendChild(renderFile(file));
+
+  header.onclick = () => {
+    const open = children.classList.toggle('open');
+    arrow.classList.toggle('open', open);
+  };
+
+  wrap.append(header, children);
+  return wrap;
+}
+
+function renderFile(file) {
+  const div = document.createElement('div');
+  div.className = 'file-item';
+
+  const icon = document.createElement('span');
+  icon.className = 'file-icon';
+  icon.textContent = getIcon(file.name);
+
+  const name = document.createElement('span');
+  name.className = 'file-name';
+  name.textContent = file.name;
+  name.title = file.fullPath;
+
+  const cls = file.lines > 1000 ? 'badge-vhigh'
+            : file.lines > 500  ? 'badge-high'
+            : file.lines > 100  ? 'badge-mid'
+            : file.lines > 0    ? 'badge-low'
+            : 'badge-normal';
+  const badge = document.createElement('span');
+  badge.className = `file-badge ${cls}`;
+  badge.textContent = file.lines.toLocaleString();
+
+  const remove = document.createElement('span');
+  remove.className = 'file-remove';
+  remove.textContent = '✕';
+  remove.onclick = e => { e.stopPropagation(); removeFile(file.fullPath); };
+
+  div.append(icon, name, badge, remove);
+  return div;
+}
+
+// ---- SOURCE CHIPS ----
+function renderSources() {
+  const wrap = document.getElementById('sourcesWrap');
+  const keys = Object.keys(fileTree);
+  if (!keys.length) { wrap.classList.add('hidden'); return; }
+  wrap.classList.remove('hidden');
+  wrap.innerHTML = '';
+
+  for (const key of keys) {
+    const chip = document.createElement('div');
+    chip.className = 'source-chip';
+    chip.innerHTML = `<span style="opacity:0.5;font-size:10px">⬡</span> ${key}`;
+    const rm = document.createElement('span');
+    rm.className = 'source-chip-remove';
+    rm.textContent = '✕';
+    rm.onclick = () => removeSource(key);
+    chip.appendChild(rm);
+    wrap.appendChild(chip);
+  }
+}
+
+// ---- REMOVE ----
+function removeSource(name) {
+  delete fileTree[name];
+  renderSources();
+  renderTree();
+  updateStats();
+}
+
+function removeFile(fullPath) {
+  function remove(node) {
+    if (node.__files__) {
+      const idx = node.__files__.findIndex(f => f.fullPath === fullPath);
+      if (idx !== -1) { node.__files__.splice(idx, 1); return true; }
     }
-    
-    updateFileTree();
-    calculateTotalStats();
+    for (const k of Object.keys(node).filter(k => k !== '__files__')) {
+      if (remove(node[k])) return true;
+    }
+    return false;
+  }
+
+  for (const root of Object.keys(fileTree)) remove(fileTree[root]);
+
+  // Prune empty branches
+  function pruneEmpty(node) {
+    for (const k of Object.keys(node).filter(k => k !== '__files__')) {
+      pruneEmpty(node[k]);
+      const sub = node[k];
+      const hasFiles = (sub.__files__ || []).length > 0;
+      const hasSubs  = Object.keys(sub).filter(k => k !== '__files__').length > 0;
+      if (!hasFiles && !hasSubs) delete node[k];
+    }
+  }
+
+  for (const root of Object.keys(fileTree)) {
+    pruneEmpty(fileTree[root]);
+    if (calcNodeStats(fileTree[root]).files === 0) delete fileTree[root];
+  }
+
+  renderSources();
+  renderTree();
+  updateStats();
 }
 
-// Utility: formatta bytes
-function formatBytes(bytes) {
-    if (bytes === 0) return '0 Bytes';
-    const k = 1024;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-}
-
-// Utility: delay
-function delay(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-
-// Mostra loading
-function showLoading() {
-    const container = document.getElementById('fileTree');
-    container.innerHTML = '<div class="loading"><div class="spinner"></div><p>Caricamento file in corso...</p></div>';
-}
-
-function hideLoading() {
-    // Il loading viene rimosso quando updateFileTree viene chiamato
-}
-
-// Funzioni globali
+// ---- GLOBAL ACTIONS ----
 function ricalcola() {
-    if (Object.keys(fileTree).length > 0) {
-        // Ricostruisci l'albero ricalcolando le righe
-        const newFileTree = {};
-        
-        function processNode(node) {
-            const files = node['__files__'] || [];
-            for (const file of files) {
-                const newLines = countLines(file.content);
-                file.lines = newLines;
-            }
-            
-            const folders = Object.keys(node).filter(k => k !== '__files__' && k !== '__stats__');
-            for (const folder of folders) {
-                processNode(node[folder]);
-            }
-        }
-        
-        processNode(fileTree);
-        updateFileTree();
-        calculateTotalStats();
-    }
+  function recalc(node) {
+    for (const f of (node.__files__ || [])) f.lines = countLines(f.content);
+    for (const k of Object.keys(node).filter(k => k !== '__files__')) recalc(node[k]);
+  }
+  for (const root of Object.keys(fileTree)) recalc(fileTree[root]);
+  renderTree();
+  updateStats();
+  showToast('↺ Ricalcolato');
 }
 
 function rimuoviTutti() {
-    if (confirm(`Sei sicuro di voler rimuovere tutti i ${totalStats.files} file?`)) {
-        fileTree = {};
-        updateFileTree();
-        calculateTotalStats();
-        document.title = '📊 Contatore Righe di Codice';
-    }
+  if (!Object.keys(fileTree).length) return;
+  if (!confirm('Rimuovere tutti i file caricati?')) return;
+  fileTree = {};
+  renderSources();
+  renderTree();
+  updateStats();
 }
 
 function espandiTutti() {
-    document.querySelectorAll('.tree-node-children').forEach(el => {
-        el.classList.add('open');
-    });
-    document.querySelectorAll('.tree-node-toggle').forEach(el => {
-        el.textContent = '📂';
-    });
+  document.querySelectorAll('.folder-children').forEach(el => el.classList.add('open'));
+  document.querySelectorAll('.folder-arrow').forEach(el => el.classList.add('open'));
 }
 
 function comprimiTutti() {
-    document.querySelectorAll('.tree-node-children').forEach(el => {
-        el.classList.remove('open');
-    });
-    document.querySelectorAll('.tree-node-toggle').forEach(el => {
-        el.textContent = '📁';
-    });
+  document.querySelectorAll('.folder-children').forEach(el => el.classList.remove('open'));
+  document.querySelectorAll('.folder-arrow').forEach(el => el.classList.remove('open'));
 }
 
-// Event listeners
+// ---- ICONS ----
+function getIcon(n) {
+  const ext = n.split('.').pop().toLowerCase();
+  const map = {
+    js:'◈', jsx:'⚛', ts:'◆', tsx:'⚛', mjs:'◈', cjs:'◈',
+    py:'🐍', java:'☕', cpp:'⚙', c:'⚙', h:'⚙', hpp:'⚙',
+    cs:'◆', go:'◈', rs:'◈', swift:'◈', kt:'◈', rb:'◆',
+    html:'◉', htm:'◉', css:'◎', scss:'◎', sass:'◎', less:'◎',
+    vue:'▲', svelte:'▲', astro:'▲',
+    json:'{}', xml:'</>', yaml:'—', yml:'—', toml:'—',
+    md:'≡', txt:'≡', markdown:'≡',
+    sh:'$', bash:'$', zsh:'$', ps1:'$', bat:'$',
+    sql:'▦', graphql:'◈', gql:'◈',
+    php:'◈'
+  };
+  return map[ext] || '◦';
+}
+
+// ---- UTILITIES ----
+function formatBytes(b) {
+  if (!b) return '0 B';
+  const k = 1024, s = ['B','KB','MB','GB'];
+  const i = Math.floor(Math.log(b) / Math.log(k));
+  return (b / Math.pow(k, i)).toFixed(i ? 1 : 0) + ' ' + s[i];
+}
+
+function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+function showLoading() {
+  document.getElementById('fileTree').innerHTML = `
+    <div class="loading-state">
+      <div class="spinner"></div>
+      <div style="font-size:13px;color:var(--text-dim)">Caricamento in corso...</div>
+    </div>`;
+}
+
+function hideLoading() { /* sostituito da renderTree */ }
+
+// ---- EVENT LISTENERS ----
 escludiVuote.addEventListener('change', ricalcola);
 escludiCommenti.addEventListener('change', ricalcola);
-searchFilter.addEventListener('input', () => {
-    updateFileTree();
-});
+soloCodice.addEventListener('change', ricalcola);
+searchFilter.addEventListener('input', renderTree);
 
-console.log('App pronta! 🎉');
+console.log('{ lines } pronto 🎉');

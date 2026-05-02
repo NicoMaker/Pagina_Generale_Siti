@@ -1,93 +1,132 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contatore Righe di Codice</title>
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23667eea'/%3E%3Ctext x='50' y='72' font-size='60' text-anchor='middle' fill='white'%3E📊%3C/text%3E%3C/svg%3E">
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lines — Contatore Righe di Codice</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,500;0,9..40,700;1,9..40,300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>
-                <span class="header-icon">📊</span>
-                Contatore Righe di Codice
-                <span class="header-icon">💻</span>
-            </h1>
-            <p>Seleziona file o un'intera cartella per contare le righe di codice</p>
+
+<div class="layout">
+  <nav class="topbar">
+    <div class="logo">
+      <span class="logo-mark">{ lines }</span>
+      <span class="logo-sub">Code Counter v2</span>
+    </div>
+    <div class="topbar-actions">
+      <button class="btn btn-ghost btn-icon" onclick="ricalcola()">↺ Ricalcola</button>
+      <button class="btn btn-danger" onclick="rimuoviTutti()">✕ Svuota</button>
+    </div>
+  </nav>
+
+  <div class="main">
+
+    <!-- LEFT SIDEBAR -->
+    <aside>
+      <div class="panel">
+        <div class="panel-header">
+          <span class="panel-title">Importa</span>
         </div>
 
-        <div class="content">
-            <div class="upload-section">
-                <div class="upload-area" id="uploadArea">
-                    <div class="upload-icon">📁</div>
-                    <h3>Trascina file/cartella qui o clicca sotto</h3>
-                    <p style="margin-top: 10px; color: #666;">Supporta file singoli, multipli o intere cartelle</p>
-                    <div class="button-group">
-                        <button class="btn" onclick="document.getElementById('fileInput').click()">
-                            📄 Seleziona File
-                        </button>
-                        <button class="btn" onclick="document.getElementById('folderInput').click()">
-                            📂 Seleziona Cartella
-                        </button>
-                    </div>
-                    <input type="file" id="fileInput" multiple style="display: none;">
-                    <input type="file" id="folderInput" webkitdirectory directory multiple style="display: none;">
-                </div>
-            </div>
+        <div class="dropzone-wrap">
+          <div class="dropzone" id="dropzone">
+            <span class="dz-icon">⬆</span>
+            <div class="dz-title">Trascina qui</div>
+            <div class="dz-sub">file, cartelle, o più cartelle insieme</div>
+          </div>
 
-            <div class="options">
-                <label>
-                    <input type="checkbox" id="escludiVuote" checked>
-                    Escludi righe vuote
-                </label>
-                <label>
-                    <input type="checkbox" id="escludiCommenti" checked>
-                    Escludi commenti (//, #, /* */)
-                </label>
-                <label>
-                    <input type="checkbox" id="soloCodice" checked>
-                    Solo file di codice (filtra estensioni)
-                </label>
-                <button class="btn btn-secondary" onclick="ricalcola()">🔄 Ricalcola</button>
-                <button class="btn btn-secondary" onclick="rimuoviTutti()">🗑️ Rimuovi tutti</button>
-            </div>
+          <div class="btn-row">
+            <button class="btn btn-primary" onclick="document.getElementById('fileInput').click()">
+              ＋ File
+            </button>
+            <button class="btn btn-primary" onclick="document.getElementById('folderInput').click()">
+              ＋ Cartella
+            </button>
+          </div>
 
-            <div id="stats" class="stats" style="display: none;">
-                <div class="stat-card">
-                    <div class="stat-number" id="totalFiles">0</div>
-                    <div class="stat-label">File Analizzati</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" id="totalLines">0</div>
-                    <div class="stat-label">Righe di Codice Totali</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" id="avgLines">0</div>
-                    <div class="stat-label">Media Righe/File</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" id="totalSize">0</div>
-                    <div class="stat-label">Dimensione Totale</div>
-                </div>
-            </div>
-
-            <div class="filter-bar">
-                <input type="text" id="searchFilter" placeholder="🔍 Filtra file..." class="search-input">
-                <button class="btn-small" onclick="espandiTutti()">📂 Espandi tutti</button>
-                <button class="btn-small" onclick="comprimiTutti()">📁 Comprimi tutti</button>
-            </div>
-
-            <div id="fileTree" class="file-tree">
-                <div class="empty-message">
-                    📂 Nessun file selezionato<br>
-                    Seleziona uno o più file o un'intera cartella per iniziare
-                </div>
-            </div>
+          <div class="sources-wrap hidden" id="sourcesWrap"></div>
         </div>
+
+        <div class="progress-bar" id="progressBar"></div>
+
+        <div class="options-section">
+          <label class="opt-label">
+            <input type="checkbox" id="escludiVuote" checked>
+            <span class="toggle"></span>
+            Escludi righe vuote
+          </label>
+          <label class="opt-label">
+            <input type="checkbox" id="escludiCommenti" checked>
+            <span class="toggle"></span>
+            Escludi commenti
+          </label>
+          <label class="opt-label">
+            <input type="checkbox" id="soloCodice" checked>
+            <span class="toggle"></span>
+            Solo file di codice
+          </label>
+        </div>
+      </div>
+    </aside>
+
+    <!-- RIGHT CONTENT -->
+    <div>
+      <!-- STATS -->
+      <div class="stats-row hidden" id="statsRow">
+        <div class="stat-card">
+          <div class="stat-n" id="totalFiles">0</div>
+          <div class="stat-lbl">File analizzati</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-n" id="totalLines">0</div>
+          <div class="stat-lbl">Righe di codice</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-n" id="avgLines">0</div>
+          <div class="stat-lbl">Media / file</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-n" id="totalSize">0</div>
+          <div class="stat-lbl">Dimensione totale</div>
+        </div>
+      </div>
+
+      <!-- TREE PANEL -->
+      <div class="panel tree-panel">
+        <div class="panel-header">
+          <span class="panel-title">Struttura File</span>
+          <div style="display:flex;gap:6px;">
+            <button class="btn btn-icon btn-ghost" style="font-size:11px;padding:5px 10px;" onclick="espandiTutti()">Espandi ↓</button>
+            <button class="btn btn-icon btn-ghost" style="font-size:11px;padding:5px 10px;" onclick="comprimiTutti()">Comprimi ↑</button>
+          </div>
+        </div>
+
+        <div class="tree-toolbar">
+          <div class="search-wrap">
+            <input class="search-box" id="searchFilter" placeholder="Filtra file..." type="text">
+          </div>
+        </div>
+
+        <div class="file-tree-container" id="fileTree">
+          <div class="empty-state">
+            <span class="empty-icon">◻</span>
+            <div class="empty-text">Nessun file caricato.<br>Puoi trascinare <strong>più cartelle contemporaneamente.</strong></div>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <script src="script.js"></script>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<input type="file" id="fileInput" multiple>
+<input type="file" id="folderInput" webkitdirectory directory multiple>
+
+<script src="script.js"></script>
 </body>
 </html>
