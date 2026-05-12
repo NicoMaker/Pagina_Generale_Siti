@@ -1,4 +1,4 @@
-// ---- CONSTANTS ----
+// ── CONSTANTS ──
 const EXTENSIONS_CODICE = new Set([
   'js','jsx','ts','tsx','mjs','cjs',
   'py','rb','php','java','kt','kts','scala',
@@ -13,19 +13,19 @@ const EXTENSIONS_CODICE = new Set([
   'md','markdown','txt'
 ]);
 
-// ---- STATE ----
-let fileTree = {};  // { rootName: { __files__: [], subFolder: { ... } } }
+// ── STATE ──
+let fileTree = {};
 
-// ---- DOM REFS ----
-const dropzone      = document.getElementById('dropzone');
-const fileInput     = document.getElementById('fileInput');
-const folderInput   = document.getElementById('folderInput');
-const escludiVuote  = document.getElementById('escludiVuote');
+// ── DOM REFS ──
+const dropzone        = document.getElementById('dropzone');
+const fileInput       = document.getElementById('fileInput');
+const folderInput     = document.getElementById('folderInput');
+const escludiVuote    = document.getElementById('escludiVuote');
 const escludiCommenti = document.getElementById('escludiCommenti');
-const soloCodice    = document.getElementById('soloCodice');
-const searchFilter  = document.getElementById('searchFilter');
+const soloCodice      = document.getElementById('soloCodice');
+const searchFilter    = document.getElementById('searchFilter');
 
-// ---- DRAG & DROP ----
+// ── DRAG & DROP ──
 dropzone.addEventListener('dragover', e => {
   e.preventDefault();
   dropzone.classList.add('drag-over');
@@ -59,7 +59,7 @@ folderInput.addEventListener('change', async e => {
   folderInput.value = '';
 });
 
-// ---- FILE READING ----
+// ── FILE READING ──
 async function getAllFilesFromEntry(entry, path = '') {
   const files = [];
   if (entry.isFile) {
@@ -97,17 +97,19 @@ function readFileContent(file) {
   });
 }
 
-// ---- PROCESS FILES ----
+// ── PROCESS FILES ──
 async function processFiles(files, sourceType) {
   showLoading();
+
   const sourceName = getSourceName(files, sourceType);
   const branch = {};
   let count = 0;
 
   for (const file of files) {
     const relPath = file.relativePath || file.webkitRelativePath || file.name;
-    const pathParts = relPath.split('/').filter(Boolean);
-    const fileName = pathParts[pathParts.length - 1];
+    const parts = relPath.split('/').filter(Boolean);
+
+    const fileName = parts[parts.length - 1];
     const ext = fileName.split('.').pop().toLowerCase();
     if (soloCodice.checked && !EXTENSIONS_CODICE.has(ext)) continue;
 
@@ -115,7 +117,15 @@ async function processFiles(files, sourceType) {
     try { content = await readFileContent(file); } catch(e) { continue; }
 
     const lines = countLines(content);
-    const folders = pathParts.slice(0, -1);
+
+    // ── BUG FIX ──
+    // Se il primo segmento del path coincide col nome della source, lo saltiamo.
+    // Questo evita pippo → { pippo: { ... } } che mostrerebbe "pippo pippo".
+    let folders = parts.slice(0, -1);
+    if (folders.length > 0 && folders[0] === sourceName) {
+      folders = folders.slice(1);
+    }
+
     let node = branch;
     for (const f of folders) {
       if (!node[f]) node[f] = { __files__: [] };
@@ -129,12 +139,12 @@ async function processFiles(files, sourceType) {
   }
 
   if (count === 0) {
-    hideLoading();
+    renderTree();
     showToast('⚠ Nessun file di codice trovato');
     return;
   }
 
-  // Merge into global tree (handle duplicate names)
+  // Deduplica nome source
   let name = sourceName;
   let i = 2;
   while (fileTree[name]) { name = `${sourceName} (${i++})`; }
@@ -143,8 +153,7 @@ async function processFiles(files, sourceType) {
   renderSources();
   renderTree();
   updateStats();
-  hideLoading();
-  showToast(`✓ ${count} file caricati da "${name}"`);
+  showToast(`✓ ${count} file da "${name}"`);
 }
 
 function getSourceName(files, sourceType) {
@@ -159,7 +168,7 @@ function getSourceName(files, sourceType) {
   return `file (${files.length})`;
 }
 
-// ---- LINE COUNTING ----
+// ── LINE COUNTING ──
 function countLines(content) {
   const exEmpty    = escludiVuote.checked;
   const exComments = escludiCommenti.checked;
@@ -181,7 +190,7 @@ function countLines(content) {
   return count;
 }
 
-// ---- STATS ----
+// ── STATS ──
 function calcNodeStats(node, filter = '') {
   let files = 0, lines = 0, size = 0;
   const fl = (node.__files__ || []).filter(f => !filter || f.name.toLowerCase().includes(filter));
@@ -212,7 +221,7 @@ function updateStats() {
   document.title = files > 0 ? `{ ${lines.toLocaleString()} ln }` : '{ lines }';
 }
 
-// ---- RENDER TREE ----
+// ── RENDER TREE ──
 function renderTree() {
   const container = document.getElementById('fileTree');
   const filter = searchFilter.value.toLowerCase();
@@ -222,7 +231,7 @@ function renderTree() {
   if (!keys.length) {
     container.innerHTML = `
       <div class="empty-state">
-        <span class="empty-icon">◻</span>
+        <div class="empty-icon">&#9633;</div>
         <div class="empty-text">Nessun file caricato.<br>Puoi trascinare <strong>più cartelle contemporaneamente.</strong></div>
       </div>`;
     return;
@@ -303,7 +312,8 @@ function renderFile(file) {
             : file.lines > 500  ? 'badge-high'
             : file.lines > 100  ? 'badge-mid'
             : file.lines > 0    ? 'badge-low'
-            : 'badge-normal';
+            : 'badge-zero';
+
   const badge = document.createElement('span');
   badge.className = `file-badge ${cls}`;
   badge.textContent = file.lines.toLocaleString();
@@ -311,13 +321,14 @@ function renderFile(file) {
   const remove = document.createElement('span');
   remove.className = 'file-remove';
   remove.textContent = '✕';
+  remove.title = 'Rimuovi file';
   remove.onclick = e => { e.stopPropagation(); removeFile(file.fullPath); };
 
   div.append(icon, name, badge, remove);
   return div;
 }
 
-// ---- SOURCE CHIPS ----
+// ── SOURCE CHIPS ──
 function renderSources() {
   const wrap = document.getElementById('sourcesWrap');
   const keys = Object.keys(fileTree);
@@ -328,17 +339,22 @@ function renderSources() {
   for (const key of keys) {
     const chip = document.createElement('div');
     chip.className = 'source-chip';
-    chip.innerHTML = `<span style="opacity:0.5;font-size:10px">⬡</span> ${key}`;
+    chip.innerHTML = `<span style="opacity:0.5">⬡</span> ${escHtml(key)}`;
     const rm = document.createElement('span');
     rm.className = 'source-chip-remove';
     rm.textContent = '✕';
+    rm.title = `Rimuovi "${key}"`;
     rm.onclick = () => removeSource(key);
     chip.appendChild(rm);
     wrap.appendChild(chip);
   }
 }
 
-// ---- REMOVE ----
+function escHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+// ── REMOVE ──
 function removeSource(name) {
   delete fileTree[name];
   renderSources();
@@ -357,10 +373,8 @@ function removeFile(fullPath) {
     }
     return false;
   }
-
   for (const root of Object.keys(fileTree)) remove(fileTree[root]);
 
-  // Prune empty branches
   function pruneEmpty(node) {
     for (const k of Object.keys(node).filter(k => k !== '__files__')) {
       pruneEmpty(node[k]);
@@ -370,7 +384,6 @@ function removeFile(fullPath) {
       if (!hasFiles && !hasSubs) delete node[k];
     }
   }
-
   for (const root of Object.keys(fileTree)) {
     pruneEmpty(fileTree[root]);
     if (calcNodeStats(fileTree[root]).files === 0) delete fileTree[root];
@@ -381,7 +394,7 @@ function removeFile(fullPath) {
   updateStats();
 }
 
-// ---- GLOBAL ACTIONS ----
+// ── GLOBAL ACTIONS ──
 function ricalcola() {
   function recalc(node) {
     for (const f of (node.__files__ || [])) f.lines = countLines(f.content);
@@ -412,7 +425,7 @@ function comprimiTutti() {
   document.querySelectorAll('.folder-arrow').forEach(el => el.classList.remove('open'));
 }
 
-// ---- ICONS ----
+// ── ICONS ──
 function getIcon(n) {
   const ext = n.split('.').pop().toLowerCase();
   const map = {
@@ -424,13 +437,12 @@ function getIcon(n) {
     json:'{}', xml:'</>', yaml:'—', yml:'—', toml:'—',
     md:'≡', txt:'≡', markdown:'≡',
     sh:'$', bash:'$', zsh:'$', ps1:'$', bat:'$',
-    sql:'▦', graphql:'◈', gql:'◈',
-    php:'◈'
+    sql:'▦', graphql:'◈', gql:'◈', php:'◈'
   };
   return map[ext] || '◦';
 }
 
-// ---- UTILITIES ----
+// ── UTILITIES ──
 function formatBytes(b) {
   if (!b) return '0 B';
   const k = 1024, s = ['B','KB','MB','GB'];
@@ -453,16 +465,14 @@ function showLoading() {
   document.getElementById('fileTree').innerHTML = `
     <div class="loading-state">
       <div class="spinner"></div>
-      <div style="font-size:13px;color:var(--text-dim)">Caricamento in corso...</div>
+      <div style="font-size:12px;font-family:var(--mono);color:var(--dim)">Caricamento...</div>
     </div>`;
 }
 
-function hideLoading() { /* sostituito da renderTree */ }
-
-// ---- EVENT LISTENERS ----
+// ── LISTENERS ──
 escludiVuote.addEventListener('change', ricalcola);
 escludiCommenti.addEventListener('change', ricalcola);
 soloCodice.addEventListener('change', ricalcola);
 searchFilter.addEventListener('input', renderTree);
 
-console.log('{ lines } pronto 🎉');
+console.log('{ lines } v2 ready ✓');
