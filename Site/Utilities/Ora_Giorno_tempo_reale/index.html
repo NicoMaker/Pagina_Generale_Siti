@@ -2,21 +2,26 @@
 <html lang="it">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=3.0, user-scalable=yes"/>
-    <meta name="apple-mobile-web-app-capable" content="yes"/>
-    <meta name="mobile-web-app-capable" content="yes"/>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=3.0, user-scalable=yes"
+    />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
     <title>Orologio</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com"/>
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
-    <link rel="stylesheet" href="styles.css"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <div class="bg-orb bg-orb--1"></div>
     <div class="bg-orb bg-orb--2"></div>
 
     <div class="clock-container">
-
       <header class="header">
         <div class="header__dot"></div>
         <span class="header__label">orologio</span>
@@ -24,13 +29,25 @@
       </header>
 
       <div class="mode-tabs">
-        <button class="mode-tab active" id="tab-digital" onclick="switchMode('digital')">Digitale</button>
-        <button class="mode-tab" id="tab-analog" onclick="switchMode('analog')">Analogico</button>
+        <button
+          class="mode-tab active"
+          id="tab-digital"
+          onclick="switchMode('digital')"
+        >
+          Digitale
+        </button>
+        <button class="mode-tab" id="tab-analog" onclick="switchMode('analog')">
+          Analogico
+        </button>
       </div>
 
       <div class="fmt-pills">
-        <button class="fmt-pill" id="pill-12" onclick="setFmt('12')">12 ore</button>
-        <button class="fmt-pill" id="pill-24" onclick="setFmt('24')">24 ore</button>
+        <button class="fmt-pill" id="pill-12" onclick="setFmt('12')">
+          12 ore
+        </button>
+        <button class="fmt-pill" id="pill-24" onclick="setFmt('24')">
+          24 ore
+        </button>
       </div>
 
       <!-- DIGITALE -->
@@ -42,58 +59,115 @@
 
       <!-- ANALOGICO -->
       <div class="analog-panel" id="analog-panel">
-        <svg class="clock-svg" id="clock-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <svg
+          class="clock-svg"
+          id="clock-svg"
+          viewBox="0 0 200 200"
+          xmlns="http://www.w3.org/2000/svg"
+        >
           <defs>
             <radialGradient id="faceGrad" cx="40%" cy="35%">
-              <stop offset="0%" stop-color="#1e1b30"/>
-              <stop offset="100%" stop-color="#0c0a1a"/>
+              <stop offset="0%" stop-color="#1e1b30" />
+              <stop offset="100%" stop-color="#0c0a1a" />
             </radialGradient>
             <radialGradient id="glowGrad" cx="50%" cy="50%">
-              <stop offset="0%" stop-color="#7c3aed" stop-opacity="0.2"/>
-              <stop offset="70%" stop-color="#7c3aed" stop-opacity="0"/>
+              <stop offset="0%" stop-color="#7c3aed" stop-opacity="0.2" />
+              <stop offset="70%" stop-color="#7c3aed" stop-opacity="0" />
             </radialGradient>
           </defs>
 
           <!-- Quadrante -->
-          <circle cx="100" cy="100" r="97" fill="url(#faceGrad)" stroke="#6d28d9" stroke-width="1.5"/>
-          <circle cx="100" cy="100" r="92" fill="url(#glowGrad)"/>
-          <circle cx="100" cy="100" r="88" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="0.5"/>
+          <circle
+            cx="100"
+            cy="100"
+            r="97"
+            fill="url(#faceGrad)"
+            stroke="#6d28d9"
+            stroke-width="1.5"
+          />
+          <circle cx="100" cy="100" r="92" fill="url(#glowGrad)" />
+          <circle
+            cx="100"
+            cy="100"
+            r="88"
+            fill="none"
+            stroke="rgba(255,255,255,0.05)"
+            stroke-width="0.5"
+          />
 
           <!-- Tacche e numeri (JS) -->
           <g id="ticks-g"></g>
 
           <!-- LANCETTE — nessun filter attr, colori solidi vividi -->
-          <line id="hour-h"
-            x1="100" y1="115" x2="100" y2="50"
-            stroke="#ffffff" stroke-width="6" stroke-linecap="round"/>
+          <line
+            id="hour-h"
+            x1="100"
+            y1="115"
+            x2="100"
+            y2="50"
+            stroke="#ffffff"
+            stroke-width="6"
+            stroke-linecap="round"
+          />
 
-          <line id="min-h"
-            x1="100" y1="118" x2="100" y2="32"
-            stroke="#a78bfa" stroke-width="4" stroke-linecap="round"/>
+          <line
+            id="min-h"
+            x1="100"
+            y1="118"
+            x2="100"
+            y2="32"
+            stroke="#a78bfa"
+            stroke-width="4"
+            stroke-linecap="round"
+          />
 
-          <line id="sec-h"
-            x1="100" y1="125" x2="100" y2="22"
-            stroke="#2dd4bf" stroke-width="2.5" stroke-linecap="round"/>
+          <line
+            id="sec-h"
+            x1="100"
+            y1="125"
+            x2="100"
+            y2="22"
+            stroke="#2dd4bf"
+            stroke-width="2.5"
+            stroke-linecap="round"
+          />
 
           <!-- Contrappeso secondi -->
-          <line id="sec-tail"
-            x1="100" y1="125" x2="100" y2="135"
-            stroke="#2dd4bf" stroke-width="2.5" stroke-linecap="round"/>
+          <line
+            id="sec-tail"
+            x1="100"
+            y1="125"
+            x2="100"
+            y2="135"
+            stroke="#2dd4bf"
+            stroke-width="2.5"
+            stroke-linecap="round"
+          />
 
           <!-- Label AM/PM dentro il quadrante -->
-          <text id="a-ampm-svg"
-            x="100" y="148"
+          <text
+            id="a-ampm-svg"
+            x="100"
+            y="148"
             text-anchor="middle"
             dominant-baseline="central"
             font-family="'DM Mono', monospace"
             font-size="8"
             font-weight="500"
             fill="#2dd4bf"
-            letter-spacing="2"></text>
+            letter-spacing="2"
+          ></text>
 
           <!-- Centro -->
-          <circle cx="100" cy="100" r="7" fill="#0c0a1a" stroke="#a78bfa" stroke-width="2.5"/>
-          <circle cx="100" cy="100" r="3.5" fill="#a78bfa"/>
+          <circle
+            cx="100"
+            cy="100"
+            r="7"
+            fill="#0c0a1a"
+            stroke="#a78bfa"
+            stroke-width="2.5"
+          />
+          <circle cx="100" cy="100" r="3.5" fill="#a78bfa" />
         </svg>
 
         <div class="analog-date" id="a-date">caricamento...</div>
@@ -101,20 +175,46 @@
 
         <div class="legend">
           <span class="legend-item">
-            <span class="legend-bar" style="width:16px;height:4px;background:#ffffff;border-radius:2px;display:inline-block"></span>
+            <span
+              class="legend-bar"
+              style="
+                width: 16px;
+                height: 4px;
+                background: #ffffff;
+                border-radius: 2px;
+                display: inline-block;
+              "
+            ></span>
             ore
           </span>
           <span class="legend-item">
-            <span class="legend-bar" style="width:12px;height:3px;background:#a78bfa;border-radius:2px;display:inline-block"></span>
+            <span
+              class="legend-bar"
+              style="
+                width: 12px;
+                height: 3px;
+                background: #a78bfa;
+                border-radius: 2px;
+                display: inline-block;
+              "
+            ></span>
             minuti
           </span>
           <span class="legend-item">
-            <span class="legend-bar" style="width:10px;height:2px;background:#2dd4bf;border-radius:1px;display:inline-block"></span>
+            <span
+              class="legend-bar"
+              style="
+                width: 10px;
+                height: 2px;
+                background: #2dd4bf;
+                border-radius: 1px;
+                display: inline-block;
+              "
+            ></span>
             secondi
           </span>
         </div>
       </div>
-
     </div>
 
     <script src="script.js"></script>

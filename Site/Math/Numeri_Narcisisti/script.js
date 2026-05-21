@@ -31,7 +31,10 @@
     if (L > 1) {
       let ok = false;
       for (let d = 1; d <= 9; d++)
-        if (counts[d] > 0) { ok = true; break; }
+        if (counts[d] > 0) {
+          ok = true;
+          break;
+        }
       if (!ok) return null;
     }
     const sumBig = sumFromCounts(counts, L);
@@ -56,7 +59,8 @@
       }
       if (digitIdx > 9) return;
 
-      let minF = 0n, maxF = 0n;
+      let minF = 0n,
+        maxF = 0n;
       for (let i = 0; i < remaining; i++) {
         minF += powers[digitIdx][L];
         maxF += powers[9][L];
@@ -83,7 +87,7 @@
     const uniq = new Map();
     for (const n of results) uniq.set(n.toString(), n);
     return Array.from(uniq.values()).sort((a, b) =>
-      a < b ? -1 : a > b ? 1 : 0
+      a < b ? -1 : a > b ? 1 : 0,
     );
   }
 
@@ -104,10 +108,10 @@
 
   /* ---- DOM ---- */
   const lengthInput = document.getElementById("lengthInput");
-  const searchBtn   = document.getElementById("searchBtn");
-  const container   = document.getElementById("narcListContainer");
-  const statusText  = document.getElementById("statusText");
-  const timeBadge   = document.getElementById("timeBadge");
+  const searchBtn = document.getElementById("searchBtn");
+  const container = document.getElementById("narcListContainer");
+  const statusText = document.getElementById("statusText");
+  const timeBadge = document.getElementById("timeBadge");
   const timeElapsed = document.getElementById("timeElapsed");
 
   function setStatus(text, ms = null) {
@@ -178,7 +182,7 @@
     const c = numbers.length;
     setStatus(
       `Trovat${c === 1 ? "o" : "i"} <strong>${c}</strong> numero${c === 1 ? "" : "i"} narcisista${c === 1 ? "" : "i"} con ${L} cifre`,
-      elapsedMs
+      elapsedMs,
     );
   }
 
@@ -216,7 +220,10 @@
 
   searchBtn.addEventListener("click", performSearch);
   lengthInput.addEventListener("keypress", (e) => {
-    if (e.key === "Enter") { e.preventDefault(); performSearch(); }
+    if (e.key === "Enter") {
+      e.preventDefault();
+      performSearch();
+    }
   });
   lengthInput.value = "";
 })();
@@ -225,10 +232,10 @@
    MODAL — Info / Come funziona
    ============================================= */
 (function () {
-  const backdrop   = document.getElementById("modalBackdrop");
-  const infoBtn    = document.getElementById("infoBtn");
-  const closeBtn   = document.getElementById("modalClose");
-  const exGrid     = document.getElementById("examplesGrid");
+  const backdrop = document.getElementById("modalBackdrop");
+  const infoBtn = document.getElementById("infoBtn");
+  const closeBtn = document.getElementById("modalClose");
+  const exGrid = document.getElementById("examplesGrid");
   const checkerInp = document.getElementById("checkerInput");
   const checkerBtn = document.getElementById("checkerBtn");
   const checkerRes = document.getElementById("checkerResult");
@@ -248,14 +255,18 @@
 
   infoBtn.addEventListener("click", openModal);
   closeBtn.addEventListener("click", closeModal);
-  backdrop.addEventListener("click", (e) => { if (e.target === backdrop) closeModal(); });
-  document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeModal(); });
+  backdrop.addEventListener("click", (e) => {
+    if (e.target === backdrop) closeModal();
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeModal();
+  });
 
   const EXAMPLES = [
-    { n: "153",   k: 3, digits: [1,5,3],     tag: "3 cifre · il più famoso" },
-    { n: "370",   k: 3, digits: [3,7,0],     tag: "3 cifre" },
-    { n: "9474",  k: 4, digits: [9,4,7,4],   tag: "4 cifre" },
-    { n: "54748", k: 5, digits: [5,4,7,4,8], tag: "5 cifre" },
+    { n: "153", k: 3, digits: [1, 5, 3], tag: "3 cifre · il più famoso" },
+    { n: "370", k: 3, digits: [3, 7, 0], tag: "3 cifre" },
+    { n: "9474", k: 4, digits: [9, 4, 7, 4], tag: "4 cifre" },
+    { n: "54748", k: 5, digits: [5, 4, 7, 4, 8], tag: "5 cifre" },
   ];
 
   function pow(base, exp) {
@@ -278,8 +289,8 @@
     const body = document.createElement("div");
     body.className = "ex-card-body";
     const terms = ex.digits.map((d) => `${d}<sup>${ex.k}</sup>`).join(" + ");
-    const vals  = ex.digits.map((d) => pow(d, ex.k).toString());
-    const sum   = vals.reduce((a, v) => a + BigInt(v), 0n).toString();
+    const vals = ex.digits.map((d) => pow(d, ex.k).toString());
+    const sum = vals.reduce((a, v) => a + BigInt(v), 0n).toString();
     body.innerHTML = `
       <div class="ex-row"><span class="hi">Cifre:</span> &nbsp;${ex.digits.join(", ")} &nbsp;(k = ${ex.k})</div>
       <div class="ex-row"><span class="hi">Potenze:</span> &nbsp;${terms} = ${vals.join(" + ")}</div>
@@ -309,10 +320,10 @@
     }
     const k = str.length;
     const digits = str.split("").map(Number);
-    const vals   = digits.map((d) => pow(d, k));
-    const total  = vals.reduce((a, v) => a + v, 0n);
+    const vals = digits.map((d) => pow(d, k));
+    const total = vals.reduce((a, v) => a + v, 0n);
     const isNarc = total.toString() === str;
-    const termsHTML  = digits.map((d) => `${d}<sup>${k}</sup>`).join(" + ");
+    const termsHTML = digits.map((d) => `${d}<sup>${k}</sup>`).join(" + ");
     const valsJoined = vals.map((v) => v.toString()).join(" + ");
     if (isNarc) {
       checkerRes.className = "checker-result is-narc";
@@ -325,6 +336,9 @@
 
   checkerBtn.addEventListener("click", checkNumber);
   checkerInp.addEventListener("keypress", (e) => {
-    if (e.key === "Enter") { e.preventDefault(); checkNumber(); }
+    if (e.key === "Enter") {
+      e.preventDefault();
+      checkNumber();
+    }
   });
 })();
