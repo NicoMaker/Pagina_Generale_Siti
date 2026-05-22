@@ -807,3 +807,51 @@ input[type="file"] {
     transform: translateY(0);
   }
 }
+
+/* ── X SEMPRE ROSSA ── */
+.file-remove {
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.13s;
+  border: 1px solid transparent;
+  /* SEMPRE ROSSO */
+  color: #ff5050 !important;
+  opacity: 0.7;
+}
+.file-remove:hover {
+  background: rgba(255, 77, 77, 0.22) !important;
+  border-color: rgba(255, 77, 77, 0.5) !important;
+  color: #ff3333 !important;
+  opacity: 1;
+}
+
+.folder-remove {
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.13s;
+  flex-shrink: 0;
+  border: 1px solid transparent;
+  /* SEMPRE ROSSO */
+  color: #ff5050 !important;
+  opacity: 0.7;
+}
+.folder-remove:hover {
+  background: rgba(255, 77, 77, 0.22) !important;
+  border-color: rgba(255, 77, 77, 0.5) !important;
+  color: #ff3333 !important;
+  opacity: 1;
+}

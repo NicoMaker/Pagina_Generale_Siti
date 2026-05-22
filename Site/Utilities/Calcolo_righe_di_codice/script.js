@@ -691,3 +691,76 @@ searchFilter.addEventListener("input", renderTree);
 loadExtensions().then(() => {
   console.log("{ lines } v2 ready ✓");
 });
+
+function updateStats() {
+  let files = 0,
+    lines = 0,
+    size = 0;
+  for (const root of Object.keys(fileTree)) {
+    const s = calcNodeStats(fileTree[root]);
+    files += s.files;
+    lines += s.lines;
+    size += s.size;
+  }
+
+  document.getElementById("totalFiles").textContent = files.toLocaleString();
+  document.getElementById("totalLines").textContent = lines.toLocaleString();
+  document.getElementById("avgLines").textContent =
+    files > 0 ? Math.round(lines / files).toLocaleString() : "0";
+  document.getElementById("totalSize").textContent = formatBytes(size);
+
+  const statsRow = document.getElementById("statsRow");
+  if (files > 0) statsRow.classList.remove("hidden");
+  else statsRow.classList.add("hidden");
+
+  // ── MODIFICA QUI: logo mostra "lines: numero" ──
+  const logoMark = document.querySelector(".logo-mark");
+  if (logoMark) {
+    if (files > 0) {
+      logoMark.innerHTML = `lines: ${lines.toLocaleString()}`;
+      document.title = `lines: ${lines.toLocaleString()} — { lines }`;
+    } else {
+      logoMark.innerHTML = "{ lines }";
+      document.title = "{ lines }";
+    }
+  }
+}
+
+function updateStats() {
+  let files = 0,
+    lines = 0,
+    size = 0;
+  for (const root of Object.keys(fileTree)) {
+    const s = calcNodeStats(fileTree[root]);
+    files += s.files;
+    lines += s.lines;
+    size += s.size;
+  }
+
+  document.getElementById("totalFiles").textContent = files.toLocaleString();
+  document.getElementById("totalLines").textContent = lines.toLocaleString();
+  document.getElementById("avgLines").textContent =
+    files > 0 ? Math.round(lines / files).toLocaleString() : "0";
+  document.getElementById("totalSize").textContent = formatBytes(size);
+
+  const statsRow = document.getElementById("statsRow");
+  if (files > 0) statsRow.classList.remove("hidden");
+  else statsRow.classList.add("hidden");
+
+  // ── LOGO: "lines: numero" ──
+  const logoMark = document.querySelector(".logo-mark");
+  if (logoMark) {
+    if (files > 0) {
+      logoMark.innerHTML = `lines: ${lines.toLocaleString()}`;
+    } else {
+      logoMark.innerHTML = "{ lines }";
+    }
+  }
+
+  // ── TITOLO BROWSER: solo il numero ──
+  if (files > 0) {
+    document.title = `${lines.toLocaleString()}`;
+  } else {
+    document.title = "{ lines }";
+  }
+}
