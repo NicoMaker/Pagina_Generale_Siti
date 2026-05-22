@@ -686,6 +686,7 @@ body::after {
   background: var(--surf2);
 }
 
+/* ── X SEMPRE ROSSA ── */
 .file-remove {
   width: 18px;
   height: 18px;
@@ -695,22 +696,17 @@ body::after {
   border-radius: 4px;
   font-size: 12px;
   font-weight: 600;
-  color: var(--muted);
   cursor: pointer;
-  opacity: 0.45;
   transition: all 0.13s;
   border: 1px solid transparent;
-}
-.file-item:hover .file-remove {
-  opacity: 1;
-  color: #ff5050;
-  border-color: rgba(255, 77, 77, 0.3);
-  background: rgba(255, 77, 77, 0.08);
+  color: #ff5050 !important;
+  opacity: 0.7;
 }
 .file-remove:hover {
   background: rgba(255, 77, 77, 0.22) !important;
   border-color: rgba(255, 77, 77, 0.5) !important;
   color: #ff3333 !important;
+  opacity: 1;
 }
 
 .folder-remove {
@@ -722,23 +718,18 @@ body::after {
   border-radius: 4px;
   font-size: 12px;
   font-weight: 600;
-  color: var(--muted);
   cursor: pointer;
-  opacity: 0.45;
   transition: all 0.13s;
   flex-shrink: 0;
   border: 1px solid transparent;
-}
-.folder-header:hover .folder-remove {
-  opacity: 1;
-  color: #ff5050;
-  border-color: rgba(255, 77, 77, 0.3);
-  background: rgba(255, 77, 77, 0.08);
+  color: #ff5050 !important;
+  opacity: 0.7;
 }
 .folder-remove:hover {
   background: rgba(255, 77, 77, 0.22) !important;
   border-color: rgba(255, 77, 77, 0.5) !important;
   color: #ff3333 !important;
+  opacity: 1;
 }
 
 /* ── LOADING ── */
@@ -806,52 +797,4 @@ input[type="file"] {
     opacity: 1;
     transform: translateY(0);
   }
-}
-
-/* ── X SEMPRE ROSSA ── */
-.file-remove {
-  width: 18px;
-  height: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 4px;
-  font-size: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.13s;
-  border: 1px solid transparent;
-  /* SEMPRE ROSSO */
-  color: #ff5050 !important;
-  opacity: 0.7;
-}
-.file-remove:hover {
-  background: rgba(255, 77, 77, 0.22) !important;
-  border-color: rgba(255, 77, 77, 0.5) !important;
-  color: #ff3333 !important;
-  opacity: 1;
-}
-
-.folder-remove {
-  width: 18px;
-  height: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 4px;
-  font-size: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.13s;
-  flex-shrink: 0;
-  border: 1px solid transparent;
-  /* SEMPRE ROSSO */
-  color: #ff5050 !important;
-  opacity: 0.7;
-}
-.folder-remove:hover {
-  background: rgba(255, 77, 77, 0.22) !important;
-  border-color: rgba(255, 77, 77, 0.5) !important;
-  color: #ff3333 !important;
-  opacity: 1;
 }
