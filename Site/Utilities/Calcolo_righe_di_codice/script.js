@@ -345,12 +345,12 @@ function renderTree() {
   }
 
   for (const rootName of keys) {
-    const el = renderNode(fileTree[rootName], rootName, 0, filter, true);
+    const el = renderNode(fileTree[rootName], rootName, 0, filter, true, [rootName]);
     if (el) container.appendChild(el);
   }
 }
 
-function renderNode(node, name, depth, filter, isRoot = false) {
+function renderNode(node, name, depth, filter, isRoot = false, nodePath = []) {
   const folders = Object.keys(node).filter((k) => k !== "__files__");
   const files = (node.__files__ || []).filter(
     (f) => !filter || f.name.toLowerCase().includes(filter),
@@ -384,13 +384,22 @@ function renderNode(node, name, depth, filter, isRoot = false) {
   countSp.className = "folder-count";
   countSp.textContent = `${stats.files}f`;
 
-  header.append(arrow, icon, nameSp, badge, countSp);
+  const removeBtn = document.createElement("span");
+  removeBtn.className = "folder-remove";
+  removeBtn.textContent = "✕";
+  removeBtn.title = `Rimuovi cartella "${name}"`;
+  removeBtn.onclick = (e) => {
+    e.stopPropagation();
+    removeFolder(nodePath);
+  };
+
+  header.append(arrow, icon, nameSp, badge, countSp, removeBtn);
 
   const children = document.createElement("div");
   children.className = "folder-children open";
 
   for (const sub of folders) {
-    const child = renderNode(node[sub], sub, depth + 1, filter);
+    const child = renderNode(node[sub], sub, depth + 1, filter, false, [...nodePath, sub]);
     if (child) children.appendChild(child);
   }
   for (const file of files) children.appendChild(renderFile(file));
@@ -513,6 +522,36 @@ function removeFile(fullPath) {
     if (calcNodeStats(fileTree[root]).files === 0) delete fileTree[root];
   }
 
+  renderSources();
+  renderTree();
+  updateStats();
+}
+
+function removeFolder(folderPath) {
+  // folderPath: array of keys like ["rootName", "sub", "subsub"]
+  // or just ["rootName"] to remove a root source
+  if (folderPath.length === 1) {
+    delete fileTree[folderPath[0]];
+  } else {
+    let node = fileTree[folderPath[0]];
+    for (let i = 1; i < folderPath.length - 1; i++) {
+      if (!node || !node[folderPath[i]]) return;
+      node = node[folderPath[i]];
+    }
+    delete node[folderPath[folderPath.length - 1]];
+    // prune empty parents
+    function pruneEmpty(node) {
+      for (const k of Object.keys(node).filter((k) => k !== "__files__")) {
+        pruneEmpty(node[k]);
+        const sub = node[k];
+        const hasFiles = (sub.__files__ || []).length > 0;
+        const hasSubs = Object.keys(sub).filter((k) => k !== "__files__").length > 0;
+        if (!hasFiles && !hasSubs) delete node[k];
+      }
+    }
+    pruneEmpty(fileTree[folderPath[0]]);
+    if (calcNodeStats(fileTree[folderPath[0]]).files === 0) delete fileTree[folderPath[0]];
+  }
   renderSources();
   renderTree();
   updateStats();
