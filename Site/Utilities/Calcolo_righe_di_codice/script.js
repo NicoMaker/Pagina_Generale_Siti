@@ -15,63 +15,6 @@ async function loadExtensions() {
   } catch (e) {
     // Fallback hardcoded nel caso il JSON non sia raggiungibile
     console.warn("extensions.json non trovato, uso fallback.", e);
-    EXTENSIONS_CODICE = new Set([
-      "js",
-      "jsx",
-      "ts",
-      "tsx",
-      "mjs",
-      "cjs",
-      "py",
-      "rb",
-      "php",
-      "java",
-      "kt",
-      "kts",
-      "scala",
-      "c",
-      "cpp",
-      "h",
-      "hpp",
-      "cc",
-      "cxx",
-      "cs",
-      "fs",
-      "fsx",
-      "go",
-      "rs",
-      "swift",
-      "m",
-      "mm",
-      "html",
-      "htm",
-      "css",
-      "scss",
-      "sass",
-      "less",
-      "vue",
-      "svelte",
-      "astro",
-      "json",
-      "yaml",
-      "yml",
-      "xml",
-      "toml",
-      "sh",
-      "bash",
-      "zsh",
-      "fish",
-      "ps1",
-      "bat",
-      "sql",
-      "graphql",
-      "gql",
-      "md",
-      "markdown",
-      "txt",
-      "mmd",
-      "mermaid",
-    ]);
   }
 }
 
@@ -304,7 +247,6 @@ function calcNodeStats(node, filter = "") {
   return { files, lines, size };
 }
 
-
 // ── RENDER TREE ──
 function renderTree() {
   const container = document.getElementById("fileTree");
@@ -322,7 +264,9 @@ function renderTree() {
   }
 
   for (const rootName of keys) {
-    const el = renderNode(fileTree[rootName], rootName, 0, filter, true, [rootName]);
+    const el = renderNode(fileTree[rootName], rootName, 0, filter, true, [
+      rootName,
+    ]);
     if (el) container.appendChild(el);
   }
 }
@@ -376,7 +320,10 @@ function renderNode(node, name, depth, filter, isRoot = false, nodePath = []) {
   children.className = "folder-children open";
 
   for (const sub of folders) {
-    const child = renderNode(node[sub], sub, depth + 1, filter, false, [...nodePath, sub]);
+    const child = renderNode(node[sub], sub, depth + 1, filter, false, [
+      ...nodePath,
+      sub,
+    ]);
     if (child) children.appendChild(child);
   }
   for (const file of files) children.appendChild(renderFile(file));
@@ -522,12 +469,14 @@ function removeFolder(folderPath) {
         pruneEmpty(node[k]);
         const sub = node[k];
         const hasFiles = (sub.__files__ || []).length > 0;
-        const hasSubs = Object.keys(sub).filter((k) => k !== "__files__").length > 0;
+        const hasSubs =
+          Object.keys(sub).filter((k) => k !== "__files__").length > 0;
         if (!hasFiles && !hasSubs) delete node[k];
       }
     }
     pruneEmpty(fileTree[folderPath[0]]);
-    if (calcNodeStats(fileTree[folderPath[0]]).files === 0) delete fileTree[folderPath[0]];
+    if (calcNodeStats(fileTree[folderPath[0]]).files === 0)
+      delete fileTree[folderPath[0]];
   }
   renderSources();
   renderTree();
