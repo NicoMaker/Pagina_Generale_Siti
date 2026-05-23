@@ -5,36 +5,28 @@ class Calculator {
     this.initSlider();
     this.currentOperation = "subtract";
     this.isResultVisible = false;
-
-    // Inizializza tutti gli input decimali
     this.initDecimalInputs();
   }
 
   initElements() {
-    // Modalità
     this.modeBtns = document.querySelectorAll(".mode-btn");
     this.finalPriceMode = document.getElementById("final-price-mode");
     this.percentageMode = document.getElementById("percentage-mode");
 
-    // Input
     this.basePrice = document.getElementById("base-price");
     this.priceBefore = document.getElementById("price-before");
     this.priceAfter = document.getElementById("price-after");
 
-    // Slider
     this.slider = document.getElementById("percentage-slider");
     this.sliderTrack = document.getElementById("slider-track");
     this.percentageDisplay = document.getElementById("percentage-display");
     this.percentageInput = document.getElementById("percentage-input");
 
-    // Operazioni
     this.operationBtns = document.querySelectorAll(".operation-btn");
 
-    // Bottoni calcolo
     this.calcFinalBtn = document.getElementById("calculate-final");
     this.calcPercentageBtn = document.getElementById("calculate-percentage");
 
-    // Risultato
     this.result = document.getElementById("result");
     this.resultTitle = document.getElementById("result-title");
     this.resultValue = document.getElementById("result-value");
@@ -44,184 +36,240 @@ class Calculator {
     this.shareBtn = document.getElementById("share-result");
   }
 
-  // Inizializza tutti gli input che devono accettare decimali con virgola
+  // ─── INPUT ────────────────────────────────────────────────────────────────
+
   initDecimalInputs() {
-    const decimalInputs = document.querySelectorAll(".decimal-input");
-
-    decimalInputs.forEach((input) => {
-      // Gestisce l'input in tempo reale
-      input.addEventListener("input", (e) => this.handleDecimalInput(e));
-
-      // Formatta quando perde il focus
-      input.addEventListener("blur", (e) => this.formatDecimalOnBlur(e));
-
-      // Gestisce i tasti speciali
-      input.addEventListener("keydown", (e) => this.handleDecimalKeydown(e));
+    const priceInputs = [this.basePrice, this.priceBefore, this.priceAfter];
+    priceInputs.forEach((input) => {
+      if (!input) return;
+      input.addEventListener("keydown", (e) => this.handlePriceKeydown(e));
+      input.addEventListener("input", (e) => this.formatPriceRealtime(e));
+      input.addEventListener("blur", (e) => this.formatPriceOnBlur(e));
     });
+
+    this.percentageInput.addEventListener("keydown", (e) =>
+      this.handlePctKeydown(e),
+    );
+    this.percentageInput.addEventListener("input", (e) =>
+      this.handlePctInput(e),
+    );
+    this.percentageInput.addEventListener("blur", (e) =>
+      this.formatPctOnBlur(e),
+    );
   }
 
-  // Gestisce l'input in tempo reale
-  handleDecimalInput(e) {
-    const input = e.target;
-    let value = input.value;
+  handlePriceKeydown(e) {
+    const nav = [
+      "Backspace",
+      "Delete",
+      "ArrowLeft",
+      "ArrowRight",
+      "Tab",
+      "Home",
+      "End",
+      "Enter",
+    ];
+    if (nav.includes(e.key)) return;
+    if (e.ctrlKey || e.metaKey) return;
 
-    // Sostituisce la virgola con un punto per il parsing
-    let cursorPos = input.selectionStart;
-    let oldLength = value.length;
-
-    // Permette solo numeri, virgola e punto
-    value = value.replace(/[^\d,.]/g, "");
-
-    // Gestisce la virgola come separatore decimale
-    if (value.includes(",")) {
-      // Se c'è più di una virgola, rimuovi le extra
-      const parts = value.split(",");
-      if (parts.length > 2) {
-        value = parts[0] + "," + parts.slice(1).join("");
+    // Punto o virgola → inserisci virgola decimale (se non c'è già)
+    if (e.key === "." || e.key === ",") {
+      e.preventDefault();
+      const input = e.target;
+      const raw = input.value.replace(/\./g, "");
+      if (!raw.includes(",")) {
+        const s = input.selectionStart;
+        const v = input.value;
+        const newVal =
+          v.substring(0, s) + "," + v.substring(input.selectionEnd);
+        input.value = newVal;
+        input.setSelectionRange(s + 1, s + 1);
+        input.dispatchEvent(new Event("input"));
       }
-
-      // Limita a 2 decimali dopo la virgola
-      const decimalParts = value.split(",");
-      if (decimalParts[1] && decimalParts[1].length > 2) {
-        value = decimalParts[0] + "," + decimalParts[1].substring(0, 2);
-
-        // Aggiusta la posizione del cursore
-        if (cursorPos > oldLength) {
-          cursorPos = value.length;
-        }
-      }
-    }
-
-    // Gestisce il punto come separatore delle migliaia (lo rimuoviamo)
-    value = value.replace(/\./g, "");
-
-    input.value = value;
-
-    // Ripristina la posizione del cursore
-    if (cursorPos <= value.length) {
-      input.setSelectionRange(cursorPos, cursorPos);
-    }
-  }
-
-  // Formatta con 2 decimali quando si perde il focus
-  formatDecimalOnBlur(e) {
-    const input = e.target;
-    let value = input.value.trim();
-
-    if (value === "") {
       return;
     }
 
-    // Converti la virgola in punto per il parsing
-    let numStr = value.replace(",", ".");
-    let num = parseFloat(numStr);
+    if (!/^\d$/.test(e.key)) {
+      e.preventDefault();
+      return;
+    }
 
-    if (!isNaN(num)) {
-      // Arrotonda a 2 decimali
-      num = Math.round(num * 100) / 100;
-
-      // Formatta con virgola
-      input.value = this.formatNumberWithComma(num);
-    } else {
-      input.value = "";
+    // Blocca più di 2 decimali (solo se cursore è nella parte decimale e non c'è selezione)
+    const input = e.target;
+    const commaIdx = input.value.indexOf(",");
+    if (commaIdx !== -1) {
+      const s = input.selectionStart;
+      const afterComma = input.value.substring(commaIdx + 1).length;
+      if (s > commaIdx && s === input.selectionEnd && afterComma >= 2) {
+        e.preventDefault();
+      }
     }
   }
 
-  // Gestisce tasti speciali
-  handleDecimalKeydown(e) {
+  formatPriceRealtime(e) {
+    const input = e.target;
+    const raw = input.value;
+    const cursor = input.selectionStart;
+
+    const commaIdx = raw.indexOf(",");
+    let intPart, decPart, hasComma;
+
+    if (commaIdx !== -1) {
+      hasComma = true;
+      intPart = raw.substring(0, commaIdx).replace(/\./g, "");
+      decPart = raw
+        .substring(commaIdx + 1)
+        .replace(/\D/g, "")
+        .substring(0, 2);
+    } else {
+      hasComma = false;
+      intPart = raw.replace(/\./g, "");
+      decPart = "";
+    }
+
+    // Rimuovi zeri iniziali
+    intPart = intPart.replace(/^0+(\d)/, "$1");
+
+    // Aggiungi punti migliaia
+    const intFormatted = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    const newVal = hasComma ? intFormatted + "," + decPart : intFormatted;
+
+    if (newVal === raw) return;
+
+    // Aggiusta cursore: conta punti aggiunti/rimossi prima del cursore
+    const dotsBefore = (raw.substring(0, cursor).match(/\./g) || []).length;
+    const newCursorApprox =
+      cursor - dotsBefore + (intFormatted.match(/\./g) || []).length;
+    // Ricalcola più precisamente contando i punti nel nuovo valore fino alla stessa posizione raw
+    const rawBefore = raw.substring(0, cursor).replace(/\./g, "");
+    let newCursor = 0;
+    let counted = 0;
+    for (let i = 0; i < newVal.length; i++) {
+      if (newVal[i] !== ".") counted++;
+      if (counted >= rawBefore.length && rawBefore.length > 0) {
+        newCursor = i + 1;
+        break;
+      }
+      newCursor = i + 1;
+    }
+    if (rawBefore.length === 0) newCursor = 0;
+
+    input.value = newVal;
+    input.setSelectionRange(newCursor, newCursor);
+  }
+
+  formatPriceOnBlur(e) {
+    const input = e.target;
+    const raw = input.value.trim();
+    if (raw === "") return;
+    const num = this.parseItalianNumber(raw);
+    input.value = isNaN(num) ? "" : this.formatNumberWithComma(num);
+  }
+
+  // ─── PERCENTUALE ──────────────────────────────────────────────────────────
+
+  handlePctKeydown(e) {
+    const nav = [
+      "Backspace",
+      "Delete",
+      "ArrowLeft",
+      "ArrowRight",
+      "Tab",
+      "Home",
+      "End",
+      "Enter",
+    ];
+    if (nav.includes(e.key)) return;
+    if (e.ctrlKey || e.metaKey) return;
+
+    if (e.key === "." || e.key === ",") {
+      e.preventDefault();
+      const input = e.target;
+      if (!input.value.includes(",")) {
+        const s = input.selectionStart;
+        const v = input.value;
+        input.value = v.substring(0, s) + "," + v.substring(input.selectionEnd);
+        input.setSelectionRange(s + 1, s + 1);
+        input.dispatchEvent(new Event("input"));
+      }
+      return;
+    }
+
+    if (!/^\d$/.test(e.key)) {
+      e.preventDefault();
+      return;
+    }
+
     const input = e.target;
 
-    // Previeni più virgole
-    if (e.key === "," || e.key === ".") {
-      if (input.value.includes(",") || input.value.includes(".")) {
+    // Blocca più di 2 decimali
+    const commaIdx = input.value.indexOf(",");
+    if (commaIdx !== -1) {
+      const s = input.selectionStart;
+      const afterComma = input.value.substring(commaIdx + 1).length;
+      if (s > commaIdx && s === input.selectionEnd && afterComma >= 2) {
         e.preventDefault();
-      }
-
-      // Sostituisci il punto con virgola
-      if (e.key === ".") {
-        e.preventDefault();
-
-        // Inserisci virgola
-        const start = input.selectionStart;
-        const end = input.selectionEnd;
-        const value = input.value;
-
-        input.value = value.substring(0, start) + "," + value.substring(end);
-        input.setSelectionRange(start + 1, start + 1);
+        return;
       }
     }
 
-    // Previeni lettere e caratteri speciali
-    if (
-      e.key.length === 1 &&
-      !/[0-9,]/.test(e.key) &&
-      e.key !== "," &&
-      e.key !== "."
-    ) {
+    // Simula il valore che avrebbe il campo dopo la pressione del tasto
+    const s = input.selectionStart;
+    const end = input.selectionEnd;
+    const simulated =
+      input.value.substring(0, s) + e.key + input.value.substring(end);
+    const simulatedNum = this.parseItalianNumber(simulated);
+    if (simulatedNum > 100) {
       e.preventDefault();
     }
   }
 
-  // Formatta un numero con la virgola (2 decimali)
-  formatNumberWithComma(num) {
-    if (isNaN(num)) return "0,00";
+  handlePctInput(e) {
+    const input = e.target;
+    const value = this.parseItalianNumber(input.value);
+    if (isNaN(value)) return;
+    const clamped = Math.min(100, Math.max(0, value));
 
-    // Arrotonda a 2 decimali
-    num = Math.round(num * 100) / 100;
+    // Se supera 100, forza il campo a "100" subito
+    if (value > 100) {
+      input.value = "100";
+      input.setSelectionRange(3, 3);
+    }
 
-    // Separa parte intera e decimale
-    let [integer, decimal] = num.toString().split(".");
-    decimal = decimal ? decimal.padEnd(2, "0").substring(0, 2) : "00";
-
-    // Aggiungi separatore delle migliaia
-    integer = integer.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-
-    return `${integer},${decimal}`;
+    this.slider.value = clamped;
+    this.sliderTrack.style.width = `${clamped}%`;
+    this.updateSliderColor();
+    this.percentageDisplay.textContent = this.formatNumberWithComma(clamped);
   }
 
-  // Converte una stringa con virgola in numero
-  parseItalianNumber(str) {
-    if (!str || str === "") return 0;
-
-    // Rimuovi punti separatori delle migliaia e sostituisci virgola con punto
-    const cleaned = str.replace(/\./g, "").replace(",", ".");
-    return parseFloat(cleaned) || 0;
+  formatPctOnBlur(e) {
+    const input = e.target;
+    const value = this.parseItalianNumber(input.value);
+    const clamped = isNaN(value) ? 0 : Math.min(100, Math.max(0, value));
+    input.value = this.formatNumberWithComma(clamped);
+    this.percentageDisplay.textContent = this.formatNumberWithComma(clamped);
+    this.slider.value = clamped;
+    this.sliderTrack.style.width = `${clamped}%`;
+    this.updateSliderColor();
   }
+
+  // ─── SLIDER ───────────────────────────────────────────────────────────────
 
   bindEvents() {
-    // Switch modalità
     this.modeBtns.forEach((btn) => {
       btn.addEventListener("click", () => this.switchMode(btn.dataset.mode));
     });
 
-    // Operazioni (sconto/aumento)
     this.operationBtns.forEach((btn) => {
       btn.addEventListener("click", () =>
         this.switchOperation(btn.dataset.operation),
       );
     });
 
-    // Slider e input percentuale
     this.slider.addEventListener("input", (e) =>
       this.updatePercentageFromSlider(e.target.value),
     );
 
-    this.percentageInput.addEventListener("input", (e) => {
-      // L'input è già gestito da handleDecimalInput
-      // Qui aggiorniamo solo lo slider
-      const value = this.parseItalianNumber(e.target.value);
-      const clamped = Math.min(100, Math.max(0, value));
-      this.updatePercentageFromInput(clamped);
-    });
-
-    this.percentageInput.addEventListener("blur", (e) => {
-      const value = this.parseItalianNumber(e.target.value);
-      const clamped = Math.min(100, Math.max(0, value));
-      this.percentageInput.value = this.formatNumberWithComma(clamped);
-      this.percentageDisplay.textContent = this.formatNumberWithComma(clamped);
-    });
-
-    // Calcoli
     this.calcFinalBtn.addEventListener("click", () =>
       this.calculateFinalPrice(),
     );
@@ -229,29 +277,26 @@ class Calculator {
       this.calculatePercentage(),
     );
 
-    // Azioni risultato
     this.newCalcBtn.addEventListener("click", () => this.resetCalculator());
     this.copyBtn.addEventListener("click", () => this.copyResult());
     this.shareBtn.addEventListener("click", () => this.shareResult());
 
-    // Input validation
     [this.basePrice, this.priceBefore, this.priceAfter].forEach((input) => {
-      if (input) {
-        input.addEventListener("keypress", (e) => {
-          if (e.key === "Enter") {
-            if (this.finalPriceMode.classList.contains("active")) {
-              this.calculateFinalPrice();
-            } else {
-              this.calculatePercentage();
-            }
+      if (!input) return;
+      input.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") {
+          if (this.finalPriceMode.classList.contains("active")) {
+            this.calculateFinalPrice();
+          } else {
+            this.calculatePercentage();
           }
-        });
-      }
+        }
+      });
     });
   }
 
   initSlider() {
-    this.updatePercentageFromInput(0);
+    this.updatePercentageFromSlider(0);
   }
 
   updatePercentageFromSlider(value) {
@@ -278,17 +323,12 @@ class Calculator {
     }
   }
 
-  switchMode(mode) {
-    // Aggiorna bottoni
-    this.modeBtns.forEach((btn) => {
-      if (btn.dataset.mode === mode) {
-        btn.classList.add("active");
-      } else {
-        btn.classList.remove("active");
-      }
-    });
+  // ─── MODALITÀ ─────────────────────────────────────────────────────────────
 
-    // Mostra modalità corretta
+  switchMode(mode) {
+    this.modeBtns.forEach((btn) => {
+      btn.classList.toggle("active", btn.dataset.mode === mode);
+    });
     if (mode === "final-price") {
       this.finalPriceMode.classList.add("active");
       this.percentageMode.classList.remove("active");
@@ -296,23 +336,18 @@ class Calculator {
       this.finalPriceMode.classList.remove("active");
       this.percentageMode.classList.add("active");
     }
-
     this.resetCalculator();
   }
 
   switchOperation(operation) {
     this.currentOperation = operation;
-
     this.operationBtns.forEach((btn) => {
-      if (btn.dataset.operation === operation) {
-        btn.classList.add("active");
-      } else {
-        btn.classList.remove("active");
-      }
+      btn.classList.toggle("active", btn.dataset.operation === operation);
     });
-
     this.updateSliderColor();
   }
+
+  // ─── CALCOLI ──────────────────────────────────────────────────────────────
 
   async calculateFinalPrice() {
     const baseValue = this.basePrice.value.trim();
@@ -354,11 +389,9 @@ class Calculator {
     const beforeValue = this.priceBefore.value.trim();
     const afterValue = this.priceAfter.value.trim();
 
-    if (!beforeValue || !afterValue) {
-      if (!beforeValue) this.shakeElement(this.priceBefore);
-      if (!afterValue) this.shakeElement(this.priceAfter);
-      return;
-    }
+    if (!beforeValue) this.shakeElement(this.priceBefore);
+    if (!afterValue) this.shakeElement(this.priceAfter);
+    if (!beforeValue || !afterValue) return;
 
     this.showLoading(this.calcPercentageBtn);
     await this.sleep(300);
@@ -389,25 +422,41 @@ class Calculator {
     this.hideLoading(this.calcPercentageBtn);
   }
 
+  // ─── FORMATTAZIONE ────────────────────────────────────────────────────────
+
   formatCurrency(value) {
     return "€ " + this.formatNumberWithComma(value);
   }
 
+  formatNumberWithComma(num) {
+    if (isNaN(num)) return "0,00";
+    num = Math.round(num * 100) / 100;
+    let [integer, decimal] = num.toString().split(".");
+    decimal = decimal ? decimal.padEnd(2, "0").substring(0, 2) : "00";
+    integer = integer.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    return `${integer},${decimal}`;
+  }
+
+  parseItalianNumber(str) {
+    if (!str || str.trim() === "") return 0;
+    const cleaned = str.replace(/\./g, "").replace(",", ".");
+    return parseFloat(cleaned) || 0;
+  }
+
+  // ─── RISULTATO ────────────────────────────────────────────────────────────
+
   showResult(title, value, details) {
     this.resultTitle.textContent = title;
     this.resultValue.textContent = value;
-
     this.resultDetails.innerHTML = details
       .map(
         (d) => `
-      <div class="result-detail">
-        <span>${d.label}</span>
-        <span class="result-detail-value">${d.value}</span>
-      </div>
-    `,
+        <div class="result-detail">
+          <span>${d.label}</span>
+          <span class="result-detail-value">${d.value}</span>
+        </div>`,
       )
       .join("");
-
     this.result.classList.add("show");
     this.isResultVisible = true;
   }
@@ -415,42 +464,31 @@ class Calculator {
   resetCalculator() {
     this.result.classList.remove("show");
     this.isResultVisible = false;
-
-    // Reset campi
     if (this.basePrice) this.basePrice.value = "";
     if (this.priceBefore) this.priceBefore.value = "";
     if (this.priceAfter) this.priceAfter.value = "";
-
-    // Reset slider
-    this.updatePercentageFromInput(0);
+    this.updatePercentageFromSlider(0);
   }
 
   async copyResult() {
     const text = this.generateResultText();
-
     try {
       await navigator.clipboard.writeText(text);
       this.showToast("Copiato!", this.copyBtn);
-    } catch (err) {
+    } catch {
       this.showToast("Errore", this.copyBtn, "error");
     }
   }
 
   async shareResult() {
     const text = this.generateResultText();
-
     if (navigator.share) {
       try {
-        await navigator.share({
-          title: "Risultato calcolo",
-          text: text,
-        });
-      } catch (err) {
-        this.copyResult();
-      }
-    } else {
-      this.copyResult();
+        await navigator.share({ title: "Risultato calcolo", text });
+        return;
+      } catch {}
     }
+    this.copyResult();
   }
 
   generateResultText() {
@@ -464,11 +502,11 @@ class Calculator {
           `• ${d.querySelector("span:first-child").textContent}: ${d.querySelector(".result-detail-value").textContent}`,
       )
       .join("\n");
-
     return `📊 ${title}\n✅ ${value}\n\n${details}\n\n— Calcolato con CalcolatorePrezzi`;
   }
 
-  // Utility
+  // ─── UTILITY ──────────────────────────────────────────────────────────────
+
   shakeElement(element) {
     if (!element) return;
     element.style.animation = "shake 0.4s ease-in-out";
@@ -496,10 +534,8 @@ class Calculator {
   showToast(message, element, type = "success") {
     const originalHTML = element.innerHTML;
     const icon = type === "success" ? "fa-check" : "fa-exclamation";
-
     element.innerHTML = `<i class="fa-solid ${icon}"></i><span>${message}</span>`;
     element.classList.add("toast-active");
-
     setTimeout(() => {
       element.innerHTML = originalHTML;
       element.classList.remove("toast-active");
@@ -507,7 +543,6 @@ class Calculator {
   }
 
   showError(message) {
-    // Implementazione semplice - puoi personalizzare
     alert(message);
   }
 
@@ -516,59 +551,42 @@ class Calculator {
   }
 }
 
-// Aggiungi animazioni CSS
+// ─── CSS animazioni ────────────────────────────────────────────────────────
 const style = document.createElement("style");
 style.textContent = `
   @keyframes shake {
     0%, 100% { transform: translateX(0); }
-    20% { transform: translateX(-5px); }
-    40% { transform: translateX(5px); }
-    60% { transform: translateX(-3px); }
-    80% { transform: translateX(3px); }
+    20%       { transform: translateX(-5px); }
+    40%       { transform: translateX(5px); }
+    60%       { transform: translateX(-3px); }
+    80%       { transform: translateX(3px); }
   }
-  
-  .loading {
-    opacity: 0.7;
-    pointer-events: none;
-    position: relative;
-  }
-  
+  .loading { opacity: 0.7; pointer-events: none; position: relative; }
   .loading::after {
     content: '';
     position: absolute;
-    width: 20px;
-    height: 20px;
+    width: 20px; height: 20px;
     border: 2px solid transparent;
     border-top-color: currentColor;
     border-radius: 50%;
     animation: spin 0.8s linear infinite;
     right: var(--space-md);
   }
-  
-  @keyframes spin {
-    to { transform: rotate(360deg); }
-  }
-  
+  @keyframes spin { to { transform: rotate(360deg); } }
   .toast-active {
     background: var(--success) !important;
     color: var(--text-inverse) !important;
     transition: all var(--transition-fast);
   }
-  
-  .toast-active i {
-    animation: pop 0.3s ease;
-  }
-  
+  .toast-active i { animation: pop 0.3s ease; }
   @keyframes pop {
-    0% { transform: scale(0); }
-    50% { transform: scale(1.2); }
+    0%   { transform: scale(0); }
+    50%  { transform: scale(1.2); }
     100% { transform: scale(1); }
   }
 `;
-
 document.head.appendChild(style);
 
-// Inizializza al caricamento del DOM
 document.addEventListener("DOMContentLoaded", () => {
   new Calculator();
 });
