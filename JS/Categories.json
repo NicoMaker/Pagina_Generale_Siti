@@ -416,6 +416,10 @@
         {
           "name": "Password Analyzer",
           "link": "Site/Password/Password_Analyzer/index.html"
+        },
+        {
+          "name":"PassVault—Health Dashboard",
+          "link": "Site/Password/PassVault—Health_Dashboard/index.html"
         }
       ]
     },

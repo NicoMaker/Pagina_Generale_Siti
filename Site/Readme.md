@@ -17,7 +17,7 @@
 - **[Olimpiadi](Olympics/Readme.md)** [1 Progetto]
 - **[Opzioni con le Frasi](Opzioni_Con_Le_Frasi/Readme.md)** [8 Progetti]
 - **[Pasqua](Pasqua/Readme.md)** [2 Progetti]
-- **[Password](Password/Readme.md)** [2 Progetti]
+- **[Password](Password/Readme.md)** [3 Progetti]
 - **[Pokemon](https://github.com/NicoMaker/PokeApi)** [1 Progetto]
 - **[Random](Random/Readme.md)** [13 Progetti]
 - **[Salute](Salute/Readme.md)** [4 Progetti]
