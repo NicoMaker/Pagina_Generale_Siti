@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>✨ Genera Nomi</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      rel="icon"
+      href="https://tse1.mm.bing.net/th/id/OIP.r4_dGgrMCMaLVk-yNrGQDAHaH6?rs=1&pid=ImgDetMain&o=7&rm=3"
+      type="image/jpg"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="title">✨ Genera Nomi</h1>
+      <p class="subtitle">
+        Crea facilmente file di testo con nomi personalizzati
+      </p>
+
+      <div class="input-group">
+        <label for="numNomi">Quanti nomi vuoi generare?</label>
+        <div class="input-container">
+          <input
+            type="number"
+            id="numNomi"
+            placeholder="Inserisci un numero (1-100)"
+            min="1"
+            max="100"
+            value=""
+          />
+        </div>
+      </div>
+
+      <button class="generate-btn" onclick="generaFile()">
+        <span class="icon">🚀</span>
+        <span class="btn-text">Genera File Nomi</span>
+      </button>
+
+      <div id="message"></div>
+    </div>
+
+    <script src="JS/script.js"></script>
+  </body>
+</html>

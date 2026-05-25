@@ -15,6 +15,7 @@
 - **[Punteggi UX Design](Punteggi_UX_Design)**
 - **[Rotella Movimentata](Rotella%20Movimentata)**
 - **[Ruota della Fortuna](Ruota_Fortuna)**
+- **[Ruota della fortuna nome](Ruota_Della_Fortuna_nome)**
 - **[Ruota della Fortuna Nazioni e Nomi](Ruota_Fortuna_2)**
 - **[Sasso Carta Forbice](Sasso_Carta_Forbice)**
 - **[Scacchi](Scacchi)**

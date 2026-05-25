@@ -215,6 +215,10 @@
         {
           "name": "Yahtzee",
           "link": "Site/Giochi/Yahtzee/index.html"
+        },
+                {
+          "name": "Ruota della Fortuna Nomi",
+          "link": "Site/Giochi/Ruota_Della_Fortuna_nome/index.html"
         }
       ]
     },
