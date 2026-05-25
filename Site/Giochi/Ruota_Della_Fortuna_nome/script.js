@@ -19,8 +19,10 @@ class NotificationSystem {
     notification.className = `notification ${type}`;
     const icons = { success: "✅", error: "❌", warning: "⚠️", info: "ℹ️" };
     const titles = {
-      success: title || "Successo", error: title || "Errore",
-      warning: title || "Attenzione", info: title || "Informazione",
+      success: title || "Successo",
+      error: title || "Errore",
+      warning: title || "Attenzione",
+      info: title || "Informazione",
     };
     notification.innerHTML = `
       <div class="notification-header">
@@ -28,19 +30,24 @@ class NotificationSystem {
         <button class="notification-close">✕</button>
       </div>
       <div class="notification-message">${message}</div>`;
-    notification.querySelector(".notification-close").addEventListener("click", () => this.remove(notification));
+    notification
+      .querySelector(".notification-close")
+      .addEventListener("click", () => this.remove(notification));
     return notification;
   }
 
   remove(notification) {
     notification.classList.remove("show");
     setTimeout(() => {
-      if (notification.parentNode) notification.parentNode.removeChild(notification);
+      if (notification.parentNode)
+        notification.parentNode.removeChild(notification);
       this.notifications = this.notifications.filter((n) => n !== notification);
     }, 400);
   }
 
-  clear() { this.notifications.forEach((n) => this.remove(n)); }
+  clear() {
+    this.notifications.forEach((n) => this.remove(n));
+  }
 }
 
 // Custom Modal System
@@ -56,9 +63,12 @@ class ModalSystem {
 
   bindEvents() {
     this.closeBtn.addEventListener("click", () => this.hide());
-    this.overlay.addEventListener("click", (e) => { if (e.target === this.overlay) this.hide(); });
+    this.overlay.addEventListener("click", (e) => {
+      if (e.target === this.overlay) this.hide();
+    });
     document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && this.overlay.classList.contains("show")) this.hide();
+      if (e.key === "Escape" && this.overlay.classList.contains("show"))
+        this.hide();
     });
   }
 
@@ -89,10 +99,19 @@ class ModalSystem {
   confirm(message, title = "Conferma") {
     return new Promise((resolve) => {
       this.show({
-        title, body: message,
+        title,
+        body: message,
         buttons: [
-          { text: "Annulla", class: "btn-secondary", action: () => resolve(false) },
-          { text: "Conferma", class: "btn-danger", action: () => resolve(true) },
+          {
+            text: "Annulla",
+            class: "btn-secondary",
+            action: () => resolve(false),
+          },
+          {
+            text: "Conferma",
+            class: "btn-danger",
+            action: () => resolve(true),
+          },
         ],
       });
     });
@@ -105,11 +124,19 @@ class ModalSystem {
         title,
         body: `<p>${message}</p><input type="text" id="${inputId}" class="modal-input" value="${defaultValue}" placeholder="Inserisci valore...">`,
         buttons: [
-          { text: "Annulla", class: "btn-secondary", action: () => resolve(null) },
-          { text: "Conferma", class: "btn-primary", action: () => {
+          {
+            text: "Annulla",
+            class: "btn-secondary",
+            action: () => resolve(null),
+          },
+          {
+            text: "Conferma",
+            class: "btn-primary",
+            action: () => {
               const input = document.getElementById(inputId);
               resolve(input ? input.value.trim() || null : null);
-          }},
+            },
+          },
         ],
       });
       setTimeout(() => {
@@ -117,7 +144,10 @@ class ModalSystem {
         if (!input) return;
         input.focus();
         input.addEventListener("keydown", (e) => {
-          if (e.key === "Enter") { resolve(input.value.trim() || null); this.hide(); }
+          if (e.key === "Enter") {
+            resolve(input.value.trim() || null);
+            this.hide();
+          }
         });
       }, 100);
     });
@@ -126,8 +156,15 @@ class ModalSystem {
   alert(message, title = "Avviso", type = "info") {
     return new Promise((resolve) => {
       this.show({
-        title, body: message,
-        buttons: [{ text: "OK", class: type === "error" ? "btn-danger" : "btn-primary", action: () => resolve(true) }],
+        title,
+        body: message,
+        buttons: [
+          {
+            text: "OK",
+            class: type === "error" ? "btn-danger" : "btn-primary",
+            action: () => resolve(true),
+          },
+        ],
       });
     });
   }
@@ -160,16 +197,38 @@ class WheelOfFortune {
   }
 
   bindEvents() {
-    document.getElementById("addNameBtn").addEventListener("click", () => this.addName());
-    document.getElementById("nameInput").addEventListener("keypress", (e) => { if (e.key === "Enter") this.addName(); });
-    document.getElementById("spinButton").addEventListener("click", () => this.spinWheel());
-    document.getElementById("clearAllBtn").addEventListener("click", () => this.clearAll());
-    document.getElementById("fileInput").addEventListener("change", (e) => this.loadFile(e));
-    document.getElementById("loadFileBtn").addEventListener("click", () => document.getElementById("fileInput").click());
-    document.getElementById("exportTxtBtn").addEventListener("click", () => this.exportTxt());
-    document.getElementById("exportJsonBtn")?.addEventListener("click", () => this.exportJson());
-    document.getElementById("clearHistoryBtn").addEventListener("click", () => this.clearHistory());
-    document.getElementById("shareWhatsAppBtn")?.addEventListener("click", () => this.shareOnWhatsApp());
+    document
+      .getElementById("addNameBtn")
+      .addEventListener("click", () => this.addName());
+    document.getElementById("nameInput").addEventListener("keypress", (e) => {
+      if (e.key === "Enter") this.addName();
+    });
+    document
+      .getElementById("spinButton")
+      .addEventListener("click", () => this.spinWheel());
+    document
+      .getElementById("clearAllBtn")
+      .addEventListener("click", () => this.clearAll());
+    document
+      .getElementById("fileInput")
+      .addEventListener("change", (e) => this.loadFile(e));
+    document
+      .getElementById("loadFileBtn")
+      .addEventListener("click", () =>
+        document.getElementById("fileInput").click(),
+      );
+    document
+      .getElementById("exportTxtBtn")
+      .addEventListener("click", () => this.exportTxt());
+    document
+      .getElementById("exportJsonBtn")
+      ?.addEventListener("click", () => this.exportJson());
+    document
+      .getElementById("clearHistoryBtn")
+      .addEventListener("click", () => this.clearHistory());
+    document
+      .getElementById("shareWhatsAppBtn")
+      ?.addEventListener("click", () => this.shareOnWhatsApp());
 
     // Already Extracted overlay close
     document.getElementById("aeCloseBtn")?.addEventListener("click", () => {
@@ -180,13 +239,21 @@ class WheelOfFortune {
     });
 
     // Player field
-    document.getElementById("playerEditBtn").addEventListener("click", () => this.openPlayerEdit());
-    document.getElementById("playerSaveBtn").addEventListener("click", () => this.savePlayerName());
-    document.getElementById("playerCancelBtn").addEventListener("click", () => this.closePlayerEdit());
-    document.getElementById("currentPlayerInput").addEventListener("keydown", (e) => {
-      if (e.key === "Enter") this.savePlayerName();
-      if (e.key === "Escape") this.closePlayerEdit();
-    });
+    document
+      .getElementById("playerEditBtn")
+      .addEventListener("click", () => this.openPlayerEdit());
+    document
+      .getElementById("playerSaveBtn")
+      .addEventListener("click", () => this.savePlayerName());
+    document
+      .getElementById("playerCancelBtn")
+      .addEventListener("click", () => this.closePlayerEdit());
+    document
+      .getElementById("currentPlayerInput")
+      .addEventListener("keydown", (e) => {
+        if (e.key === "Enter") this.savePlayerName();
+        if (e.key === "Escape") this.closePlayerEdit();
+      });
   }
 
   // ── LOCAL STORAGE ──────────────────────────────────────────────────────────
@@ -218,7 +285,8 @@ class WheelOfFortune {
   generateColors(count) {
     const colors = [];
     const hueStep = 360 / count;
-    for (let i = 0; i < count; i++) colors.push(`hsl(${i * hueStep}, 70%, 60%)`);
+    for (let i = 0; i < count; i++)
+      colors.push(`hsl(${i * hueStep}, 70%, 60%)`);
     return colors;
   }
 
@@ -227,9 +295,18 @@ class WheelOfFortune {
   async addName() {
     const input = document.getElementById("nameInput");
     const name = input.value.trim();
-    if (this.names.length >= 100) { notifications.show("Puoi inserire al massimo 100 nomi!", "warning"); return; }
-    if (!name) { notifications.show("Inserisci un nome valido", "warning"); return; }
-    if (this.names.includes(name)) { notifications.show("Questo nome è già presente nella lista", "warning"); return; }
+    if (this.names.length >= 100) {
+      notifications.show("Puoi inserire al massimo 100 nomi!", "warning");
+      return;
+    }
+    if (!name) {
+      notifications.show("Inserisci un nome valido", "warning");
+      return;
+    }
+    if (this.names.includes(name)) {
+      notifications.show("Questo nome è già presente nella lista", "warning");
+      return;
+    }
     this.names.push(name);
     input.value = "";
     this.updateWheel();
@@ -240,12 +317,28 @@ class WheelOfFortune {
   }
 
   async editName(index) {
-    if (this.isSpinning) { notifications.show("Non puoi modificare i nomi mentre la ruota gira", "warning"); return; }
+    if (this.isSpinning) {
+      notifications.show(
+        "Non puoi modificare i nomi mentre la ruota gira",
+        "warning",
+      );
+      return;
+    }
     const currentName = this.names[index];
-    const newName = await modal.prompt("Modifica nome:", currentName, "✏️ Modifica Nome");
+    const newName = await modal.prompt(
+      "Modifica nome:",
+      currentName,
+      "✏️ Modifica Nome",
+    );
     if (newName === null) return;
-    if (!newName) { notifications.show("Il nome non può essere vuoto", "warning"); return; }
-    if (this.names.includes(newName) && newName !== currentName) { notifications.show("Questo nome è già presente nella lista", "warning"); return; }
+    if (!newName) {
+      notifications.show("Il nome non può essere vuoto", "warning");
+      return;
+    }
+    if (this.names.includes(newName) && newName !== currentName) {
+      notifications.show("Questo nome è già presente nella lista", "warning");
+      return;
+    }
     this.names[index] = newName;
     this.updateWheel();
     this.updateNamesList();
@@ -255,9 +348,18 @@ class WheelOfFortune {
   }
 
   async deleteName(index) {
-    if (this.isSpinning) { notifications.show("Non puoi eliminare partecipanti mentre la ruota sta girando", "warning"); return; }
+    if (this.isSpinning) {
+      notifications.show(
+        "Non puoi eliminare partecipanti mentre la ruota sta girando",
+        "warning",
+      );
+      return;
+    }
     const name = this.names[index];
-    const confirmed = await modal.confirm(`Sei sicuro di voler eliminare "${name}" dalla lista?`, "Elimina Nome");
+    const confirmed = await modal.confirm(
+      `Sei sicuro di voler eliminare "${name}" dalla lista?`,
+      "Elimina Nome",
+    );
     if (confirmed) {
       this.names.splice(index, 1);
       this.updateWheel();
@@ -269,11 +371,20 @@ class WheelOfFortune {
   }
 
   async clearAll() {
-    if (this.isSpinning) { notifications.show("Attendi che la ruota finisca di girare prima di resettare", "warning"); return; }
-    if (this.names.length === 0) { notifications.show("La lista è già vuota", "info"); return; }
+    if (this.isSpinning) {
+      notifications.show(
+        "Attendi che la ruota finisca di girare prima di resettare",
+        "warning",
+      );
+      return;
+    }
+    if (this.names.length === 0) {
+      notifications.show("La lista è già vuota", "info");
+      return;
+    }
     const confirmed = await modal.confirm(
       `Sei sicuro di voler cancellare tutti i ${this.names.length} nomi? Questa azione non può essere annullata.`,
-      "Cancella Tutto"
+      "Cancella Tutto",
     );
     if (confirmed) {
       const count = this.names.length;
@@ -292,21 +403,37 @@ class WheelOfFortune {
     const svg = document.getElementById("wheelSvg");
     svg.innerHTML = "";
     if (this.names.length === 0) {
-      const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-      circle.setAttribute("cx", "200"); circle.setAttribute("cy", "200"); circle.setAttribute("r", "180");
-      circle.setAttribute("fill", "#e1e5e9"); circle.setAttribute("stroke", "#ccc"); circle.setAttribute("stroke-width", "3");
+      const circle = document.createElementNS(
+        "http://www.w3.org/2000/svg",
+        "circle",
+      );
+      circle.setAttribute("cx", "200");
+      circle.setAttribute("cy", "200");
+      circle.setAttribute("r", "180");
+      circle.setAttribute("fill", "#e1e5e9");
+      circle.setAttribute("stroke", "#ccc");
+      circle.setAttribute("stroke-width", "3");
       svg.appendChild(circle);
-      const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
-      text.setAttribute("x", "200"); text.setAttribute("y", "200");
-      text.setAttribute("text-anchor", "middle"); text.setAttribute("dominant-baseline", "middle");
-      text.setAttribute("fill", "#999"); text.setAttribute("font-size", "18"); text.setAttribute("font-weight", "bold");
+      const text = document.createElementNS(
+        "http://www.w3.org/2000/svg",
+        "text",
+      );
+      text.setAttribute("x", "200");
+      text.setAttribute("y", "200");
+      text.setAttribute("text-anchor", "middle");
+      text.setAttribute("dominant-baseline", "middle");
+      text.setAttribute("fill", "#999");
+      text.setAttribute("font-size", "18");
+      text.setAttribute("font-weight", "bold");
       text.textContent = "Aggiungi nomi";
       svg.appendChild(text);
       return;
     }
 
     const colors = this.generateColors(this.names.length);
-    const centerX = 200, centerY = 200, radius = 180;
+    const centerX = 200,
+      centerY = 200,
+      radius = 180;
     const angleStep = 360 / this.names.length;
 
     this.names.forEach((name, index) => {
@@ -314,29 +441,53 @@ class WheelOfFortune {
       const endAngle = (index + 1) * angleStep;
       const startRad = (startAngle * Math.PI) / 180;
       const endRad = (endAngle * Math.PI) / 180;
-      const x1 = centerX + radius * Math.cos(startRad), y1 = centerY + radius * Math.sin(startRad);
-      const x2 = centerX + radius * Math.cos(endRad), y2 = centerY + radius * Math.sin(endRad);
+      const x1 = centerX + radius * Math.cos(startRad),
+        y1 = centerY + radius * Math.sin(startRad);
+      const x2 = centerX + radius * Math.cos(endRad),
+        y2 = centerY + radius * Math.sin(endRad);
       const largeArcFlag = angleStep > 180 ? 1 : 0;
 
-      const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-      path.setAttribute("d", `M ${centerX} ${centerY} L ${x1} ${y1} A ${radius} ${radius} 0 ${largeArcFlag} 1 ${x2} ${y2} Z`);
-      path.setAttribute("fill", colors[index]); path.setAttribute("stroke", "white"); path.setAttribute("stroke-width", "3");
+      const path = document.createElementNS(
+        "http://www.w3.org/2000/svg",
+        "path",
+      );
+      path.setAttribute(
+        "d",
+        `M ${centerX} ${centerY} L ${x1} ${y1} A ${radius} ${radius} 0 ${largeArcFlag} 1 ${x2} ${y2} Z`,
+      );
+      path.setAttribute("fill", colors[index]);
+      path.setAttribute("stroke", "white");
+      path.setAttribute("stroke-width", "3");
       path.classList.add("wheel-section");
       svg.appendChild(path);
 
       const textAngle = startAngle + angleStep / 2;
       const textRadius = radius * 0.7;
-      const textX = centerX + textRadius * Math.cos((textAngle * Math.PI) / 180);
-      const textY = centerY + textRadius * Math.sin((textAngle * Math.PI) / 180);
+      const textX =
+        centerX + textRadius * Math.cos((textAngle * Math.PI) / 180);
+      const textY =
+        centerY + textRadius * Math.sin((textAngle * Math.PI) / 180);
 
-      const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
-      text.setAttribute("x", textX); text.setAttribute("y", textY);
-      text.setAttribute("text-anchor", "middle"); text.setAttribute("dominant-baseline", "middle");
-      text.setAttribute("fill", "white"); text.setAttribute("font-size", Math.min(14, 150 / this.names.length + 8));
-      text.setAttribute("font-weight", "bold"); text.setAttribute("paint-order", "stroke");
-      text.setAttribute("stroke", "black"); text.setAttribute("stroke-width", "0.8");
-      text.setAttribute("transform", `rotate(${textAngle}, ${textX}, ${textY})`);
-      text.textContent = name.length > 10 ? name.substring(0, 10) + "..." : name;
+      const text = document.createElementNS(
+        "http://www.w3.org/2000/svg",
+        "text",
+      );
+      text.setAttribute("x", textX);
+      text.setAttribute("y", textY);
+      text.setAttribute("text-anchor", "middle");
+      text.setAttribute("dominant-baseline", "middle");
+      text.setAttribute("fill", "white");
+      text.setAttribute("font-size", Math.min(14, 150 / this.names.length + 8));
+      text.setAttribute("font-weight", "bold");
+      text.setAttribute("paint-order", "stroke");
+      text.setAttribute("stroke", "black");
+      text.setAttribute("stroke-width", "0.8");
+      text.setAttribute(
+        "transform",
+        `rotate(${textAngle}, ${textX}, ${textY})`,
+      );
+      text.textContent =
+        name.length > 10 ? name.substring(0, 10) + "..." : name;
       text.classList.add("wheel-text");
       svg.appendChild(text);
     });
@@ -354,9 +505,13 @@ class WheelOfFortune {
         </div>`;
       return;
     }
-    namesList.innerHTML = this.names.map((name, index) => {
-      const safe = name.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-      return `
+    namesList.innerHTML = this.names
+      .map((name, index) => {
+        const safe = name
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;");
+        return `
         <div class="name-item" id="name-item-${index}">
           <span class="name-number">${index + 1}.</span>
           <span class="name-label">${safe}</span>
@@ -365,7 +520,8 @@ class WheelOfFortune {
             <button class="btn btn-danger btn-small" onclick="wheel.deleteName(${index})" title="Elimina nome">🗑️</button>
           </div>
         </div>`;
-    }).join("");
+      })
+      .join("");
   }
 
   // ── PLAYER FIELD ───────────────────────────────────────────────────────────
@@ -376,7 +532,8 @@ class WheelOfFortune {
     document.getElementById("playerEditRow").style.display = "flex";
     const input = document.getElementById("currentPlayerInput");
     input.value = this.currentPlayerName || "";
-    input.focus(); input.select();
+    input.focus();
+    input.select();
   }
 
   savePlayerName() {
@@ -399,7 +556,9 @@ class WheelOfFortune {
   }
 
   lockPlayerField(locked) {
-    document.getElementById("playerField").classList.toggle("player-locked", locked);
+    document
+      .getElementById("playerField")
+      .classList.toggle("player-locked", locked);
     document.getElementById("playerEditBtn").disabled = locked;
     this.closePlayerEdit();
   }
@@ -407,43 +566,65 @@ class WheelOfFortune {
   // ── SPIN ───────────────────────────────────────────────────────────────────
 
   spinWheel() {
-    if (this.names.length === 0) { notifications.show("Aggiungi almeno un nome prima di girare la ruota!", "warning"); return; }
-    if (this.isSpinning) { notifications.show("La ruota sta già girando!", "info"); return; }
+    if (this.names.length === 0) {
+      notifications.show(
+        "Aggiungi almeno un nome prima di girare la ruota!",
+        "warning",
+      );
+      return;
+    }
+    if (this.isSpinning) {
+      notifications.show("La ruota sta già girando!", "info");
+      return;
+    }
 
     this.isSpinning = true;
     const spinButton = document.getElementById("spinButton");
     spinButton.disabled = true;
     spinButton.textContent = "🔄 Girando...";
     this.lockPlayerField(true);
-    document.querySelectorAll(".btn-danger, .btn-secondary").forEach((btn) => (btn.disabled = true));
+    document
+      .querySelectorAll(".btn-danger, .btn-secondary")
+      .forEach((btn) => (btn.disabled = true));
     document.getElementById("clearAllBtn").disabled = true;
 
     const svg = document.getElementById("wheelSvg");
     const winnerIndex = Math.floor(Math.random() * this.names.length);
     const anglePerSegment = 360 / this.names.length;
-    const stopAngle = 360 - (winnerIndex * anglePerSegment + anglePerSegment / 2);
-    svg.style.setProperty("--spin-rotation", (10 * 360 + stopAngle) + "deg");
+    const stopAngle =
+      360 - (winnerIndex * anglePerSegment + anglePerSegment / 2);
+    svg.style.setProperty("--spin-rotation", 10 * 360 + stopAngle + "deg");
     svg.classList.add("spinning");
     notifications.show("La ruota sta girando... 🎲", "info", "In corso", 4000);
 
     setTimeout(() => {
       const winner = this.names[winnerIndex];
-      const playerName = this.currentPlayerName || `Giocatore ${this.playerCounter}`;
+      const playerName =
+        this.currentPlayerName || `Giocatore ${this.playerCounter}`;
       this.showResult(winner, playerName);
       this.addToHistory(playerName, winner);
       this.playerCounter++;
       this.currentPlayerName = "";
       localStorage.setItem("currentPlayerName", "");
       this.updatePlayerDisplay();
-      svg.querySelectorAll(".wheel-section").forEach((p, i) => p.classList.toggle("winner", i === winnerIndex));
+      svg
+        .querySelectorAll(".wheel-section")
+        .forEach((p, i) => p.classList.toggle("winner", i === winnerIndex));
       this.isSpinning = false;
       spinButton.disabled = false;
       spinButton.textContent = "🎲 Gira la Ruota!";
       this.lockPlayerField(false);
-      document.querySelectorAll(".btn-danger, .btn-secondary").forEach((btn) => (btn.disabled = false));
+      document
+        .querySelectorAll(".btn-danger, .btn-secondary")
+        .forEach((btn) => (btn.disabled = false));
       document.getElementById("clearAllBtn").disabled = false;
       svg.classList.remove("spinning");
-      notifications.show(`🎉 Estratto: ${winner}!`, "success", "Estrazione completata!", 8000);
+      notifications.show(
+        `🎉 Estratto: ${winner}!`,
+        "success",
+        "Estrazione completata!",
+        8000,
+      );
     }, 4000);
   }
 
@@ -463,26 +644,43 @@ class WheelOfFortune {
 
   addToHistory(playerName, result) {
     const entry = {
-      playerName, result,
-      time: new Date().toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" }),
+      playerName,
+      result,
+      time: new Date().toLocaleTimeString("it-IT", {
+        hour: "2-digit",
+        minute: "2-digit",
+      }),
     };
-    const alreadyExtracted = this.extractionHistory.some((e) => e.result === result);
+    const alreadyExtracted = this.extractionHistory.some(
+      (e) => e.result === result,
+    );
     this.extractionHistory.unshift(entry);
     this.renderHistory();
     if (alreadyExtracted) {
-      const prevEntry = this.extractionHistory.find((e, i) => i > 0 && e.result === result);
-      setTimeout(() => this.showAlreadyExtracted(playerName, result, prevEntry), 500);
+      const prevEntry = this.extractionHistory.find(
+        (e, i) => i > 0 && e.result === result,
+      );
+      setTimeout(
+        () => this.showAlreadyExtracted(playerName, result, prevEntry),
+        500,
+      );
     }
   }
 
   renderHistory() {
     const container = document.getElementById("extractionHistory");
     const list = document.getElementById("historyList");
-    if (this.extractionHistory.length === 0) { container.style.display = "none"; return; }
+    if (this.extractionHistory.length === 0) {
+      container.style.display = "none";
+      return;
+    }
     container.style.display = "block";
-    list.innerHTML = this.extractionHistory.map((e, i) => {
-      const isDuplicate = this.extractionHistory.filter((h) => h.result === e.result).length > 1;
-      return `
+    list.innerHTML = this.extractionHistory
+      .map((e, i) => {
+        const isDuplicate =
+          this.extractionHistory.filter((h) => h.result === e.result).length >
+          1;
+        return `
         <div class="history-item${isDuplicate ? " history-duplicate" : ""}">
           <span class="history-num">${this.extractionHistory.length - i}</span>
           <span class="history-player">👤
@@ -495,17 +693,22 @@ class WheelOfFortune {
           <button class="btn btn-wa-row btn-small" onclick="wheel.shareRowWhatsApp(${i})" title="Invia su WhatsApp">${WA_SVG}</button>
           <button class="btn btn-danger btn-small" onclick="wheel.deleteHistoryItem(${i})">🗑️</button>
         </div>`;
-    }).join("");
+      })
+      .join("");
   }
 
   async editHistoryPlayer(index) {
     const entry = this.extractionHistory[index];
     const newName = await modal.prompt(
       "Modifica il nome del fantallenatore per questa estrazione:",
-      entry.playerName, "✏️ Modifica Partecipante"
+      entry.playerName,
+      "✏️ Modifica Partecipante",
     );
     if (newName === null) return;
-    if (!newName.trim()) { notifications.show("Il nome non può essere vuoto", "warning"); return; }
+    if (!newName.trim()) {
+      notifications.show("Il nome non può essere vuoto", "warning");
+      return;
+    }
     this.extractionHistory[index].playerName = newName.trim();
     this.renderHistory();
     notifications.show(`Nome aggiornato in "${newName.trim()}"`, "success");
@@ -519,7 +722,10 @@ class WheelOfFortune {
   }
 
   shareOnWhatsApp() {
-    if (this.extractionHistory.length === 0) { notifications.show("Nessuna estrazione da condividere!", "warning"); return; }
+    if (this.extractionHistory.length === 0) {
+      notifications.show("Nessuna estrazione da condividere!", "warning");
+      return;
+    }
     let text = "🎯 *Storico Estrazioni - Ruota della Fortuna*\n\n";
     [...this.extractionHistory].reverse().forEach((e, i) => {
       text += `${i + 1}. 👤 ${e.playerName} → ⚽ ${e.result} (${e.time})\n`;
@@ -537,7 +743,8 @@ class WheelOfFortune {
     this.extractionHistory = [];
     this.playerCounter = 1;
     this.currentPlayerName = "";
-    document.getElementById("currentPlayerInput").placeholder = "Nome giocatore...";
+    document.getElementById("currentPlayerInput").placeholder =
+      "Nome giocatore...";
     this.renderHistory();
   }
 
@@ -557,11 +764,18 @@ class WheelOfFortune {
     document.getElementById("aeResultName").textContent = `⚽ ${result}`;
 
     confetti.innerHTML = "";
-    const colors = ["#ff6b6b", "#ffd93d", "#6bcb77", "#4d96ff", "#c77dff", "#ff9f1c"];
+    const colors = [
+      "#ff6b6b",
+      "#ffd93d",
+      "#6bcb77",
+      "#4d96ff",
+      "#c77dff",
+      "#ff9f1c",
+    ];
     for (let i = 0; i < 40; i++) {
       const c = document.createElement("div");
       c.className = "ae-confetti-piece";
-      c.style.cssText = `left:${Math.random()*100}%;background:${colors[Math.floor(Math.random()*colors.length)]};animation-delay:${Math.random()*1.5}s;animation-duration:${1.5+Math.random()*1.5}s;width:${6+Math.random()*8}px;height:${6+Math.random()*8}px;border-radius:${Math.random()>.5?"50%":"2px"}`;
+      c.style.cssText = `left:${Math.random() * 100}%;background:${colors[Math.floor(Math.random() * colors.length)]};animation-delay:${Math.random() * 1.5}s;animation-duration:${1.5 + Math.random() * 1.5}s;width:${6 + Math.random() * 8}px;height:${6 + Math.random() * 8}px;border-radius:${Math.random() > 0.5 ? "50%" : "2px"}`;
       confetti.appendChild(c);
     }
     overlay.classList.add("show");
@@ -582,20 +796,40 @@ class WheelOfFortune {
           const data = JSON.parse(content);
           newNames = Array.isArray(data) ? data : data.names || [];
         } else {
-          newNames = content.split("\n").map((n) => n.trim()).filter(Boolean);
+          newNames = content
+            .split("\n")
+            .map((n) => n.trim())
+            .filter(Boolean);
         }
-        if (newNames.length === 0) { notifications.show("Il file non contiene nomi validi", "warning"); return; }
+        if (newNames.length === 0) {
+          notifications.show("Il file non contiene nomi validi", "warning");
+          return;
+        }
         const uniqueNames = newNames.filter((n) => !this.names.includes(n));
         const namesToAdd = uniqueNames.slice(0, 100 - this.names.length);
-        if (namesToAdd.length === 0) { notifications.show("Tutti i nomi nel file sono già presenti nella lista", "info"); return; }
+        if (namesToAdd.length === 0) {
+          notifications.show(
+            "Tutti i nomi nel file sono già presenti nella lista",
+            "info",
+          );
+          return;
+        }
         this.names = [...this.names, ...namesToAdd];
-        this.updateWheel(); this.updateNamesList(); this.saveToLocalStorage(); this.hideResult();
+        this.updateWheel();
+        this.updateNamesList();
+        this.saveToLocalStorage();
+        this.hideResult();
         let message = `${namesToAdd.length} nomi caricati con successo!`;
-        if (uniqueNames.length > namesToAdd.length) message += ` (Limite di 100 nomi raggiunto)`;
-        if (newNames.length > uniqueNames.length) message += ` (${newNames.length - uniqueNames.length} duplicati ignorati)`;
+        if (uniqueNames.length > namesToAdd.length)
+          message += ` (Limite di 100 nomi raggiunto)`;
+        if (newNames.length > uniqueNames.length)
+          message += ` (${newNames.length - uniqueNames.length} duplicati ignorati)`;
         notifications.show(message, "success", "File Caricato");
       } catch (err) {
-        notifications.show("Errore nel caricamento del file. Controlla il formato.", "error");
+        notifications.show(
+          "Errore nel caricamento del file. Controlla il formato.",
+          "error",
+        );
       }
     };
     reader.readAsText(file);
@@ -603,26 +837,55 @@ class WheelOfFortune {
   }
 
   exportTxt() {
-    if (this.names.length === 0) { notifications.show("Nessun nome da esportare!", "warning"); return; }
+    if (this.names.length === 0) {
+      notifications.show("Nessun nome da esportare!", "warning");
+      return;
+    }
     try {
       const blob = new Blob([this.names.join("\n")], { type: "text/plain" });
       const a = document.createElement("a");
-      a.href = URL.createObjectURL(blob); a.download = "nomi_ruota_fortuna.txt"; a.click();
+      a.href = URL.createObjectURL(blob);
+      a.download = "nomi_ruota_fortuna.txt";
+      a.click();
       URL.revokeObjectURL(a.href);
-      notifications.show(`${this.names.length} nomi esportati in formato TXT`, "success");
-    } catch (err) { notifications.show("Errore durante l'esportazione del file TXT", "error"); }
+      notifications.show(
+        `${this.names.length} nomi esportati in formato TXT`,
+        "success",
+      );
+    } catch (err) {
+      notifications.show("Errore durante l'esportazione del file TXT", "error");
+    }
   }
 
   exportJson() {
-    if (this.names.length === 0) { notifications.show("Nessun nome da esportare!", "warning"); return; }
+    if (this.names.length === 0) {
+      notifications.show("Nessun nome da esportare!", "warning");
+      return;
+    }
     try {
-      const data = { names: this.names, exported: new Date().toISOString(), count: this.names.length };
-      const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+      const data = {
+        names: this.names,
+        exported: new Date().toISOString(),
+        count: this.names.length,
+      };
+      const blob = new Blob([JSON.stringify(data, null, 2)], {
+        type: "application/json",
+      });
       const a = document.createElement("a");
-      a.href = URL.createObjectURL(blob); a.download = "nomi_ruota_fortuna.json"; a.click();
+      a.href = URL.createObjectURL(blob);
+      a.download = "nomi_ruota_fortuna.json";
+      a.click();
       URL.revokeObjectURL(a.href);
-      notifications.show(`${this.names.length} nomi esportati in formato JSON`, "success");
-    } catch (err) { notifications.show("Errore durante l'esportazione del file JSON", "error"); }
+      notifications.show(
+        `${this.names.length} nomi esportati in formato JSON`,
+        "success",
+      );
+    } catch (err) {
+      notifications.show(
+        "Errore durante l'esportazione del file JSON",
+        "error",
+      );
+    }
   }
 }
 
@@ -633,10 +896,14 @@ window.wheel = wheel;
 setTimeout(() => {
   notifications.show(
     "Benvenuto nella Ruota della Fortuna! Aggiungi alcuni nomi e inizia a giocare.",
-    "info", "Benvenuto! 🎯", 6000
+    "info",
+    "Benvenuto! 🎯",
+    6000,
   );
 }, 1000);
 
-document.getElementById("generateNamesBtn").addEventListener("click", function () {
-  window.open("Generazione_Nomi_TXT/index.html", "_blank");
-});
+document
+  .getElementById("generateNamesBtn")
+  .addEventListener("click", function () {
+    window.open("Generazione_Nomi_TXT/index.html", "_blank");
+  });

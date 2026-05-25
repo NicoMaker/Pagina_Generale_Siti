@@ -1340,7 +1340,7 @@ body::before {
 
 /* ── WHATSAPP BUTTON ────────────────────── */
 .btn-whatsapp {
-  background: linear-gradient(135deg, #25D366, #128C7E);
+  background: linear-gradient(135deg, #25d366, #128c7e);
   color: white;
   border: none;
   display: inline-flex;
@@ -1401,7 +1401,7 @@ body::before {
 .already-extracted-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.85);
+  background: rgba(0, 0, 0, 0.85);
   backdrop-filter: blur(12px);
   z-index: 20000;
   display: flex;
@@ -1425,7 +1425,9 @@ body::before {
   width: 92%;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 0 60px rgba(245, 158, 11, 0.3), 0 30px 80px rgba(0,0,0,0.6);
+  box-shadow:
+    0 0 60px rgba(245, 158, 11, 0.3),
+    0 30px 80px rgba(0, 0, 0, 0.6);
   transform: scale(0.7) translateY(60px);
   transition: all 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
@@ -1440,8 +1442,8 @@ body::before {
     45deg,
     transparent,
     transparent 10px,
-    rgba(245,158,11,0.03) 10px,
-    rgba(245,158,11,0.03) 20px
+    rgba(245, 158, 11, 0.03) 10px,
+    rgba(245, 158, 11, 0.03) 20px
   );
   pointer-events: none;
 }
@@ -1457,8 +1459,14 @@ body::before {
   animation: aeFall linear forwards;
 }
 @keyframes aeFall {
-  0% { transform: translateY(-10px) rotate(0deg); opacity: 1; }
-  100% { transform: translateY(500px) rotate(720deg); opacity: 0; }
+  0% {
+    transform: translateY(-10px) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(500px) rotate(720deg);
+    opacity: 0;
+  }
 }
 .ae-badge {
   display: inline-block;
@@ -1481,7 +1489,9 @@ body::before {
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 0 30px rgba(239,68,68,0.5), 0 8px 24px rgba(0,0,0,0.4);
+  box-shadow:
+    0 0 30px rgba(239, 68, 68, 0.5),
+    0 8px 24px rgba(0, 0, 0, 0.4);
   animation: aePulse 1.5s ease-in-out infinite;
   position: relative;
 }
@@ -1493,14 +1503,23 @@ body::before {
   right: -2px;
 }
 @keyframes aePulse {
-  0%,100% { box-shadow: 0 0 30px rgba(239,68,68,0.5), 0 8px 24px rgba(0,0,0,0.4); }
-  50% { box-shadow: 0 0 50px rgba(239,68,68,0.8), 0 8px 32px rgba(0,0,0,0.5); }
+  0%,
+  100% {
+    box-shadow:
+      0 0 30px rgba(239, 68, 68, 0.5),
+      0 8px 24px rgba(0, 0, 0, 0.4);
+  }
+  50% {
+    box-shadow:
+      0 0 50px rgba(239, 68, 68, 0.8),
+      0 8px 32px rgba(0, 0, 0, 0.5);
+  }
 }
 .ae-jersey-number {
   font-size: 2.2rem;
   font-weight: 900;
   color: white;
-  text-shadow: 0 2px 6px rgba(0,0,0,0.5);
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
   font-variant-numeric: tabular-nums;
 }
 .ae-title {
@@ -1512,7 +1531,7 @@ body::before {
 }
 .ae-subtitle {
   font-size: 0.85rem;
-  color: rgba(255,255,255,0.6);
+  color: rgba(255, 255, 255, 0.6);
   margin-bottom: 1.2rem;
 }
 .ae-player-name {
@@ -1533,7 +1552,7 @@ body::before {
 }
 .ae-desc {
   font-size: 0.82rem;
-  color: rgba(255,255,255,0.45);
+  color: rgba(255, 255, 255, 0.45);
   margin-bottom: 1.6rem;
 }
 .ae-close-btn {
@@ -1552,7 +1571,7 @@ body::before {
 .ae-close-btn:hover {
   filter: brightness(1.15);
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(245,158,11,0.4);
+  box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4);
 }
 
 /* ── NAME LIST: label + edit button ─────── */
@@ -1584,7 +1603,7 @@ body::before {
 
 /* ── PER-ROW WHATSAPP BUTTON ─────────────── */
 .btn-wa-row {
-  background: linear-gradient(135deg, #25D366, #128C7E);
+  background: linear-gradient(135deg, #25d366, #128c7e);
   color: white;
   border: none;
   display: inline-flex;
@@ -1599,5 +1618,5 @@ body::before {
 .btn-wa-row:hover {
   filter: brightness(1.2);
   transform: scale(1.1);
-  box-shadow: 0 3px 10px rgba(37,211,102,0.45);
+  box-shadow: 0 3px 10px rgba(37, 211, 102, 0.45);
 }

@@ -216,7 +216,7 @@
           "name": "Yahtzee",
           "link": "Site/Giochi/Yahtzee/index.html"
         },
-                {
+        {
           "name": "Ruota della Fortuna Nomi",
           "link": "Site/Giochi/Ruota_Della_Fortuna_nome/index.html"
         }
@@ -418,7 +418,7 @@
           "link": "Site/Password/Password_Analyzer/index.html"
         },
         {
-          "name":"PassVault—Health Dashboard",
+          "name": "PassVault—Health Dashboard",
           "link": "Site/Password/PassVault—Health_Dashboard/index.html"
         }
       ]

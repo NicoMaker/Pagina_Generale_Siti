@@ -1,226 +1,313 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="it">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PassVault — Health Dashboard</title>
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='12' fill='%230a0a0a'/><rect x='20' y='28' width='24' height='18' rx='3' fill='none' stroke='%2300ff88' stroke-width='2.5'/><path d='M24 28v-6a8 8 0 0 1 16 0v6' fill='none' stroke='%2300ff88' stroke-width='2.5' stroke-linecap='round'/><circle cx='32' cy='37' r='2.5' fill='%2300ff88'/><line x1='32' y1='39.5' x2='32' y2='42' stroke='%2300ff88' stroke-width='2' stroke-linecap='round'/></svg>">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css">
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PassVault — Health Dashboard</title>
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='12' fill='%230a0a0a'/><rect x='20' y='28' width='24' height='18' rx='3' fill='none' stroke='%2300ff88' stroke-width='2.5'/><path d='M24 28v-6a8 8 0 0 1 16 0v6' fill='none' stroke='%2300ff88' stroke-width='2.5' stroke-linecap='round'/><circle cx='32' cy='37' r='2.5' fill='%2300ff88'/><line x1='32' y1='39.5' x2='32' y2='42' stroke='%2300ff88' stroke-width='2' stroke-linecap='round'/></svg>"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header>
+      <div class="logo">
+        <div class="logo-icon">🔐</div>
+        <div class="logo-text">Pass<span>Vault</span></div>
+      </div>
+      <div class="header-status">
+        <div class="status-dot"></div>
+        SECURE SESSION ATTIVO
+      </div>
+    </header>
 
-<header>
-  <div class="logo">
-    <div class="logo-icon">🔐</div>
-    <div class="logo-text">Pass<span>Vault</span></div>
-  </div>
-  <div class="header-status">
-    <div class="status-dot"></div>
-    SECURE SESSION ATTIVO
-  </div>
-</header>
+    <div class="container">
+      <!-- TABS -->
+      <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('vault')">
+          🗄 VAULT
+        </button>
+        <button class="tab-btn" onclick="switchTab('dashboard')">
+          📊 DASHBOARD
+        </button>
+        <button class="tab-btn" onclick="switchTab('tips')">💡 CONSIGLI</button>
+      </div>
 
-<div class="container">
-
-  <!-- TABS -->
-  <div class="tabs">
-    <button class="tab-btn active" onclick="switchTab('vault')">🗄 VAULT</button>
-    <button class="tab-btn" onclick="switchTab('dashboard')">📊 DASHBOARD</button>
-    <button class="tab-btn" onclick="switchTab('tips')">💡 CONSIGLI</button>
-  </div>
-
-  <!-- ═══════ VAULT PANEL ═══════ -->
-  <div id="tab-vault" class="panel active">
-
-    <div class="card" style="margin-bottom:20px">
-      <div class="card-title">// AGGIUNGI CREDENZIALE</div>
-      <div class="add-form">
-        <div class="field">
-          <label>Sito / Servizio</label>
-          <input type="text" id="inp-site" placeholder="es. Gmail, Netflix…">
-        </div>
-        <div class="field">
-          <label>Username / Email</label>
-          <input type="text" id="inp-user" placeholder="es. mario@email.com">
-        </div>
-        <div class="field">
-          <label>Password</label>
-          <div class="pw-wrapper">
-            <input type="password" id="inp-pass" placeholder="••••••••••" oninput="previewStrength(this.value)">
-            <button class="pw-toggle" onclick="toggleVis('inp-pass', this)">👁</button>
+      <!-- ═══════ VAULT PANEL ═══════ -->
+      <div id="tab-vault" class="panel active">
+        <div class="card" style="margin-bottom: 20px">
+          <div class="card-title">// AGGIUNGI CREDENZIALE</div>
+          <div class="add-form">
+            <div class="field">
+              <label>Sito / Servizio</label>
+              <input
+                type="text"
+                id="inp-site"
+                placeholder="es. Gmail, Netflix…"
+              />
+            </div>
+            <div class="field">
+              <label>Username / Email</label>
+              <input
+                type="text"
+                id="inp-user"
+                placeholder="es. mario@email.com"
+              />
+            </div>
+            <div class="field">
+              <label>Password</label>
+              <div class="pw-wrapper">
+                <input
+                  type="password"
+                  id="inp-pass"
+                  placeholder="••••••••••"
+                  oninput="previewStrength(this.value)"
+                />
+                <button class="pw-toggle" onclick="toggleVis('inp-pass', this)">
+                  👁
+                </button>
+              </div>
+              <div class="strength-bar" id="strength-preview">
+                <div class="strength-seg" id="s1"></div>
+                <div class="strength-seg" id="s2"></div>
+                <div class="strength-seg" id="s3"></div>
+                <div class="strength-seg" id="s4"></div>
+              </div>
+            </div>
+            <button class="btn btn-primary" onclick="addEntry()">
+              + AGGIUNGI
+            </button>
           </div>
-          <div class="strength-bar" id="strength-preview">
-            <div class="strength-seg" id="s1"></div>
-            <div class="strength-seg" id="s2"></div>
-            <div class="strength-seg" id="s3"></div>
-            <div class="strength-seg" id="s4"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            // PASSWORD SALVATE — <span id="count-label">0 voci</span>
+          </div>
+          <div class="vault-header">
+            <span>SITO</span>
+            <span>PASSWORD</span>
+            <span>FORZA</span>
+            <span></span>
+          </div>
+          <div id="vault-list">
+            <div class="vault-empty">
+              <span class="empty-icon">🔒</span>
+              Il vault è vuoto.<br />Aggiungi la tua prima credenziale.
+            </div>
           </div>
         </div>
-        <button class="btn btn-primary" onclick="addEntry()">+ AGGIUNGI</button>
+      </div>
+
+      <!-- ═══════ DASHBOARD PANEL ═══════ -->
+      <div id="tab-dashboard" class="panel">
+        <div class="dash-grid">
+          <div class="stat-card green">
+            <div class="stat-label">Totale Voci</div>
+            <div class="stat-value" id="d-total">0</div>
+            <div class="stat-sub">nel vault</div>
+          </div>
+          <div class="stat-card green">
+            <div class="stat-label">Password Forti</div>
+            <div class="stat-value" id="d-strong">0</div>
+            <div class="stat-sub">sicure</div>
+          </div>
+          <div class="stat-card yellow">
+            <div class="stat-label">Password Medie</div>
+            <div class="stat-value" id="d-medium">0</div>
+            <div class="stat-sub">da migliorare</div>
+          </div>
+          <div class="stat-card red">
+            <div class="stat-label">Password Deboli</div>
+            <div class="stat-value" id="d-weak">0</div>
+            <div class="stat-sub">a rischio</div>
+          </div>
+        </div>
+
+        <div class="score-section">
+          <div class="score-card card">
+            <div class="card-title" style="align-self: flex-start">
+              // HEALTH SCORE
+            </div>
+            <div class="score-ring">
+              <svg viewBox="0 0 120 120">
+                <circle class="ring-bg" cx="60" cy="60" r="54" />
+                <circle
+                  class="ring-fill"
+                  id="score-ring-fill"
+                  cx="60"
+                  cy="60"
+                  r="54"
+                />
+              </svg>
+              <div class="score-center">
+                <div class="score-number" id="score-num">—</div>
+                <div class="score-pct">/100</div>
+              </div>
+            </div>
+            <div class="score-grade" id="score-grade">–</div>
+            <div class="score-label" id="score-desc">Aggiungi password</div>
+          </div>
+
+          <div class="bar-card">
+            <div class="card-title">// DISTRIBUZIONE FORZA</div>
+            <div class="bar-list" id="bar-list">
+              <div class="bar-item">
+                <div class="bar-meta">
+                  <span class="bar-name">🟢 Forte</span
+                  ><span class="bar-count" id="b-strong-n">0</span>
+                </div>
+                <div class="bar-track">
+                  <div
+                    class="bar-fill"
+                    id="b-strong"
+                    style="background: var(--green)"
+                  ></div>
+                </div>
+              </div>
+              <div class="bar-item">
+                <div class="bar-meta">
+                  <span class="bar-name">🟡 Media</span
+                  ><span class="bar-count" id="b-medium-n">0</span>
+                </div>
+                <div class="bar-track">
+                  <div
+                    class="bar-fill"
+                    id="b-medium"
+                    style="background: var(--yellow)"
+                  ></div>
+                </div>
+              </div>
+              <div class="bar-item">
+                <div class="bar-meta">
+                  <span class="bar-name">🔴 Debole</span
+                  ><span class="bar-count" id="b-weak-n">0</span>
+                </div>
+                <div class="bar-track">
+                  <div
+                    class="bar-fill"
+                    id="b-weak"
+                    style="background: var(--red)"
+                  ></div>
+                </div>
+              </div>
+              <div class="bar-item">
+                <div class="bar-meta">
+                  <span class="bar-name">🔁 Duplicate</span
+                  ><span class="bar-count" id="b-dup-n">0</span>
+                </div>
+                <div class="bar-track">
+                  <div
+                    class="bar-fill"
+                    id="b-dup"
+                    style="background: var(--blue)"
+                  ></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">// RILEVATORE DUPLICATI</div>
+          <div id="dup-list">
+            <div class="no-dup">✓ Nessuna password duplicata rilevata</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════ TIPS PANEL ═══════ -->
+      <div id="tab-tips" class="panel">
+        <div class="tips-grid">
+          <div class="tip-card">
+            <div class="tip-icon">📏</div>
+            <div>
+              <div class="tip-title">Lunghezza prima di tutto</div>
+              <div class="tip-body">
+                Una password di 16+ caratteri è esponenzialmente più sicura di
+                una breve con simboli speciali. Usa frasi mnemoniche come base:
+                3 parole casuali + numeri.
+              </div>
+              <span class="tip-tag">BEST PRACTICE</span>
+            </div>
+          </div>
+
+          <div class="tip-card">
+            <div class="tip-icon">🎲</div>
+            <div>
+              <div class="tip-title">Unicità per ogni account</div>
+              <div class="tip-body">
+                Se un sito subisce un data breach e riutilizzi la stessa
+                password, tutti i tuoi account sono compromessi. Ogni servizio
+                deve avere la sua password unica.
+              </div>
+              <span class="tip-tag">SICUREZZA</span>
+            </div>
+          </div>
+
+          <div class="tip-card">
+            <div class="tip-icon">🔑</div>
+            <div>
+              <div class="tip-title">Attiva il 2FA ovunque</div>
+              <div class="tip-body">
+                L'autenticazione a due fattori (TOTP, SMS, chiave hardware)
+                aggiunge uno strato che rende inutile la password anche se
+                rubata. Priorità: Google, banca, email.
+              </div>
+              <span class="tip-tag">2FA</span>
+            </div>
+          </div>
+
+          <div class="tip-card">
+            <div class="tip-icon">🚫</div>
+            <div>
+              <div class="tip-title">Cosa NON usare mai</div>
+              <div class="tip-body">
+                Evita: nome, data di nascita, "password123", sequenze di
+                tastiera (qwerty, 12345), parole del dizionario senza modifiche.
+                Sono le prime provate in un attacco brute-force.
+              </div>
+              <span class="tip-tag">ERRORI COMUNI</span>
+            </div>
+          </div>
+
+          <div class="tip-card">
+            <div class="tip-icon">🔄</div>
+            <div>
+              <div class="tip-title">Cambia dopo un breach</div>
+              <div class="tip-body">
+                Controlla periodicamente il tuo indirizzo email su
+                HaveIBeenPwned.com. Se è in un leak noto, cambia subito la
+                password di tutti i siti dove usavi quelle credenziali.
+              </div>
+              <span class="tip-tag">MONITORAGGIO</span>
+            </div>
+          </div>
+
+          <div class="tip-card">
+            <div class="tip-icon">🧮</div>
+            <div>
+              <div class="tip-title">La formula vincente</div>
+              <div class="tip-body">
+                Combinazione ideale: minimo 14 caratteri, lettere maiuscole e
+                minuscole, numeri, simboli (!@#$%) e nessuna parola di senso
+                compiuto. Usa un password manager per ricordarle.
+              </div>
+              <span class="tip-tag">FORMULA</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
-    <div class="card">
-      <div class="card-title">// PASSWORD SALVATE — <span id="count-label">0 voci</span></div>
-      <div class="vault-header">
-        <span>SITO</span>
-        <span>PASSWORD</span>
-        <span>FORZA</span>
-        <span></span>
-      </div>
-      <div id="vault-list">
-        <div class="vault-empty">
-          <span class="empty-icon">🔒</span>
-          Il vault è vuoto.<br>Aggiungi la tua prima credenziale.
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- ═══════ DASHBOARD PANEL ═══════ -->
-  <div id="tab-dashboard" class="panel">
-
-    <div class="dash-grid">
-      <div class="stat-card green">
-        <div class="stat-label">Totale Voci</div>
-        <div class="stat-value" id="d-total">0</div>
-        <div class="stat-sub">nel vault</div>
-      </div>
-      <div class="stat-card green">
-        <div class="stat-label">Password Forti</div>
-        <div class="stat-value" id="d-strong">0</div>
-        <div class="stat-sub">sicure</div>
-      </div>
-      <div class="stat-card yellow">
-        <div class="stat-label">Password Medie</div>
-        <div class="stat-value" id="d-medium">0</div>
-        <div class="stat-sub">da migliorare</div>
-      </div>
-      <div class="stat-card red">
-        <div class="stat-label">Password Deboli</div>
-        <div class="stat-value" id="d-weak">0</div>
-        <div class="stat-sub">a rischio</div>
-      </div>
-    </div>
-
-    <div class="score-section">
-      <div class="score-card card">
-        <div class="card-title" style="align-self:flex-start">// HEALTH SCORE</div>
-        <div class="score-ring">
-          <svg viewBox="0 0 120 120">
-            <circle class="ring-bg" cx="60" cy="60" r="54"/>
-            <circle class="ring-fill" id="score-ring-fill" cx="60" cy="60" r="54"/>
-          </svg>
-          <div class="score-center">
-            <div class="score-number" id="score-num">—</div>
-            <div class="score-pct">/100</div>
-          </div>
-        </div>
-        <div class="score-grade" id="score-grade">–</div>
-        <div class="score-label" id="score-desc">Aggiungi password</div>
-      </div>
-
-      <div class="bar-card">
-        <div class="card-title">// DISTRIBUZIONE FORZA</div>
-        <div class="bar-list" id="bar-list">
-          <div class="bar-item">
-            <div class="bar-meta"><span class="bar-name">🟢 Forte</span><span class="bar-count" id="b-strong-n">0</span></div>
-            <div class="bar-track"><div class="bar-fill" id="b-strong" style="background:var(--green)"></div></div>
-          </div>
-          <div class="bar-item">
-            <div class="bar-meta"><span class="bar-name">🟡 Media</span><span class="bar-count" id="b-medium-n">0</span></div>
-            <div class="bar-track"><div class="bar-fill" id="b-medium" style="background:var(--yellow)"></div></div>
-          </div>
-          <div class="bar-item">
-            <div class="bar-meta"><span class="bar-name">🔴 Debole</span><span class="bar-count" id="b-weak-n">0</span></div>
-            <div class="bar-track"><div class="bar-fill" id="b-weak" style="background:var(--red)"></div></div>
-          </div>
-          <div class="bar-item">
-            <div class="bar-meta"><span class="bar-name">🔁 Duplicate</span><span class="bar-count" id="b-dup-n">0</span></div>
-            <div class="bar-track"><div class="bar-fill" id="b-dup" style="background:var(--blue)"></div></div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-title">// RILEVATORE DUPLICATI</div>
-      <div id="dup-list">
-        <div class="no-dup">✓ Nessuna password duplicata rilevata</div>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- ═══════ TIPS PANEL ═══════ -->
-  <div id="tab-tips" class="panel">
-    <div class="tips-grid">
-
-      <div class="tip-card">
-        <div class="tip-icon">📏</div>
-        <div>
-          <div class="tip-title">Lunghezza prima di tutto</div>
-          <div class="tip-body">Una password di 16+ caratteri è esponenzialmente più sicura di una breve con simboli speciali. Usa frasi mnemoniche come base: 3 parole casuali + numeri.</div>
-          <span class="tip-tag">BEST PRACTICE</span>
-        </div>
-      </div>
-
-      <div class="tip-card">
-        <div class="tip-icon">🎲</div>
-        <div>
-          <div class="tip-title">Unicità per ogni account</div>
-          <div class="tip-body">Se un sito subisce un data breach e riutilizzi la stessa password, tutti i tuoi account sono compromessi. Ogni servizio deve avere la sua password unica.</div>
-          <span class="tip-tag">SICUREZZA</span>
-        </div>
-      </div>
-
-      <div class="tip-card">
-        <div class="tip-icon">🔑</div>
-        <div>
-          <div class="tip-title">Attiva il 2FA ovunque</div>
-          <div class="tip-body">L'autenticazione a due fattori (TOTP, SMS, chiave hardware) aggiunge uno strato che rende inutile la password anche se rubata. Priorità: Google, banca, email.</div>
-          <span class="tip-tag">2FA</span>
-        </div>
-      </div>
-
-      <div class="tip-card">
-        <div class="tip-icon">🚫</div>
-        <div>
-          <div class="tip-title">Cosa NON usare mai</div>
-          <div class="tip-body">Evita: nome, data di nascita, "password123", sequenze di tastiera (qwerty, 12345), parole del dizionario senza modifiche. Sono le prime provate in un attacco brute-force.</div>
-          <span class="tip-tag">ERRORI COMUNI</span>
-        </div>
-      </div>
-
-      <div class="tip-card">
-        <div class="tip-icon">🔄</div>
-        <div>
-          <div class="tip-title">Cambia dopo un breach</div>
-          <div class="tip-body">Controlla periodicamente il tuo indirizzo email su HaveIBeenPwned.com. Se è in un leak noto, cambia subito la password di tutti i siti dove usavi quelle credenziali.</div>
-          <span class="tip-tag">MONITORAGGIO</span>
-        </div>
-      </div>
-
-      <div class="tip-card">
-        <div class="tip-icon">🧮</div>
-        <div>
-          <div class="tip-title">La formula vincente</div>
-          <div class="tip-body">Combinazione ideale: minimo 14 caratteri, lettere maiuscole e minuscole, numeri, simboli (!@#$%) e nessuna parola di senso compiuto. Usa un password manager per ricordarle.</div>
-          <span class="tip-tag">FORMULA</span>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-</div>
-
-<!-- TOAST -->
-<div id="toast" class="toast">✓ Copiato negli appunti!</div>
-
-
-</body>
+    <!-- TOAST -->
+    <div id="toast" class="toast">✓ Copiato negli appunti!</div>
+  </body>
 </html>
