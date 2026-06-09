@@ -776,8 +776,34 @@ document.getElementById("urlInput").addEventListener("keydown", (e) => {
   if (e.key === "Enter") confermaImportUrl();
 });
 
+// ── THEME ──
+function applyTheme(theme) {
+  const root = document.documentElement;
+  const btn = document.getElementById("themeToggle");
+  if (theme === "light") {
+    root.setAttribute("data-theme", "light");
+    if (btn) { btn.textContent = "☾"; btn.title = "Passa al tema scuro"; }
+  } else {
+    root.removeAttribute("data-theme");
+    if (btn) { btn.textContent = "☀"; btn.title = "Passa al tema chiaro"; }
+  }
+}
+
+function toggleTheme() {
+  const isLight = document.documentElement.getAttribute("data-theme") === "light";
+  const next = isLight ? "dark" : "light";
+  applyTheme(next);
+  try { localStorage.setItem("lines-theme", next); } catch(e) {}
+}
+
 // ── BOOT ──
 loadExtensions().then(() => { console.log("{ lines } v3 ready ✓"); });
+
+// Restore saved theme
+try {
+  const saved = localStorage.getItem("lines-theme");
+  if (saved) applyTheme(saved);
+} catch(e) {}
 
 function updateStats() {
   let files = 0, lines = 0, size = 0;
