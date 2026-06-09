@@ -55,6 +55,19 @@
                 </button>
               </div>
 
+              <!-- URL IMPORT BUTTON -->
+              <button class="btn btn-url" onclick="apriModalUrl()">
+                <span class="btn-url-icon">⬡</span>
+                Importa da URL
+              </button>
+
+              <div class="url-providers">
+                <span class="provider-badge github">GitHub</span>
+                <span class="provider-badge gitlab">GitLab</span>
+                <span class="provider-badge bitbucket">Bitbucket</span>
+                <span class="provider-badge codeberg">Codeberg</span>
+              </div>
+
               <div class="sources-wrap hidden" id="sourcesWrap"></div>
 
               <div class="options-section">
@@ -128,6 +141,78 @@
               </div>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── URL IMPORT MODAL ── -->
+    <div class="modal-backdrop hidden" id="urlModal">
+      <div class="modal">
+        <div class="modal-header">
+          <span class="modal-title">Importa da Repository Remoto</span>
+          <button class="modal-close" onclick="chiudiModalUrl()">✕</button>
+        </div>
+        <div class="modal-body">
+          <div class="modal-providers">
+            <span class="provider-pill github">GitHub</span>
+            <span class="provider-pill gitlab">GitLab</span>
+            <span class="provider-pill bitbucket">Bitbucket</span>
+            <span class="provider-pill codeberg">Codeberg</span>
+          </div>
+
+          <label class="field-label">URL del repository</label>
+          <input
+            class="field-input"
+            id="urlInput"
+            type="text"
+            placeholder="https://github.com/owner/repo"
+            autocomplete="off"
+            spellcheck="false"
+          />
+
+          <div class="url-examples">
+            <div class="example-row">
+              <span class="example-badge gh">GH</span>
+              <span class="example-text">https://github.com/owner/repo/tree/main/src</span>
+            </div>
+            <div class="example-row">
+              <span class="example-badge gl">GL</span>
+              <span class="example-text">https://gitlab.com/owner/repo/-/tree/main</span>
+            </div>
+            <div class="example-row">
+              <span class="example-badge bb">BB</span>
+              <span class="example-text">https://bitbucket.org/owner/repo</span>
+            </div>
+            <div class="example-row">
+              <span class="example-badge cb">CB</span>
+              <span class="example-text">https://codeberg.org/owner/repo</span>
+            </div>
+          </div>
+
+          <div class="token-section">
+            <label class="field-label">
+              Token di accesso
+              <span class="field-hint">opzionale — per repo privati o rate limit</span>
+            </label>
+            <input
+              class="field-input field-mono"
+              id="urlToken"
+              type="password"
+              placeholder="ghp_... / glpat-... / token..."
+              autocomplete="off"
+            />
+            <div class="token-note">
+              Il token rimane nel browser e non viene mai inviato altrove.
+            </div>
+          </div>
+
+          <div class="modal-error" id="urlError"></div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-ghost" onclick="chiudiModalUrl()">Annulla</button>
+          <button class="btn btn-import" onclick="confermaImportUrl()">
+            ⬇ Importa
+          </button>
         </div>
       </div>
     </div>
