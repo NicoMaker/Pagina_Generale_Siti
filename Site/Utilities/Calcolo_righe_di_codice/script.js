@@ -7,7 +7,9 @@ async function loadExtensions() {
     if (!res.ok) throw new Error("fetch failed");
     const config = await res.json();
     EXTENSIONS_CODICE = new Set(Object.values(config).flat());
-    console.log(`{ lines } — caricate ${EXTENSIONS_CODICE.size} estensioni da extensions.json ✓`);
+    console.log(
+      `{ lines } — caricate ${EXTENSIONS_CODICE.size} estensioni da extensions.json ✓`,
+    );
   } catch (e) {
     console.warn("extensions.json non trovato, uso fallback.", e);
   }
@@ -32,7 +34,8 @@ dropzone.addEventListener("dragover", (e) => {
 });
 
 dropzone.addEventListener("dragleave", (e) => {
-  if (!dropzone.contains(e.relatedTarget)) dropzone.classList.remove("drag-over");
+  if (!dropzone.contains(e.relatedTarget))
+    dropzone.classList.remove("drag-over");
 });
 
 dropzone.addEventListener("drop", async (e) => {
@@ -70,7 +73,8 @@ async function getAllFilesFromEntry(entry, path = "") {
     const subPath = path ? `${path}/${entry.name}` : entry.name;
     const reader = entry.createReader();
     const entries = await readAllEntries(reader);
-    for (const sub of entries) files.push(...(await getAllFilesFromEntry(sub, subPath)));
+    for (const sub of entries)
+      files.push(...(await getAllFilesFromEntry(sub, subPath)));
   }
   return files;
 }
@@ -81,7 +85,10 @@ function readAllEntries(reader) {
     function read() {
       reader.readEntries((entries) => {
         if (!entries.length) resolve(all);
-        else { all.push(...entries); read(); }
+        else {
+          all.push(...entries);
+          read();
+        }
       });
     }
     read();
@@ -112,11 +119,16 @@ async function processFiles(files, sourceType) {
     if (soloCodice.checked && !EXTENSIONS_CODICE.has(ext)) continue;
 
     let content;
-    try { content = await readFileContent(file); } catch (e) { continue; }
+    try {
+      content = await readFileContent(file);
+    } catch (e) {
+      continue;
+    }
 
     const lines = countLines(content);
     let folders = parts.slice(0, -1);
-    if (folders.length > 0 && folders[0] === sourceName) folders = folders.slice(1);
+    if (folders.length > 0 && folders[0] === sourceName)
+      folders = folders.slice(1);
 
     let node = branch;
     for (const f of folders) {
@@ -124,7 +136,13 @@ async function processFiles(files, sourceType) {
       node = node[f];
     }
     if (!node.__files__) node.__files__ = [];
-    node.__files__.push({ name: fileName, fullPath: relPath, lines, size: file.size, content });
+    node.__files__.push({
+      name: fileName,
+      fullPath: relPath,
+      lines,
+      size: file.size,
+      content,
+    });
     count++;
     if (count % 20 === 0) await delay(0);
   }
@@ -148,7 +166,8 @@ async function processFiles(files, sourceType) {
 
 function getSourceName(files, sourceType) {
   if (sourceType === "folder") {
-    const rel = files[0].webkitRelativePath || files[0].relativePath || files[0].name;
+    const rel =
+      files[0].webkitRelativePath || files[0].relativePath || files[0].name;
     return rel.split("/")[0] || "cartella";
   }
   if (sourceType === "drop") {
@@ -170,20 +189,56 @@ function parseRepoUrl(url) {
   url = url.trim().replace(/\.git$/, "");
 
   // GitHub: https://github.com/owner/repo[/tree/branch[/path]]
-  let m = url.match(/^https?:\/\/github\.com\/([^/]+)\/([^/]+?)(?:\/tree\/([^/]+)(?:\/(.+))?)?$/);
-  if (m) return { provider: "github", owner: m[1], repo: m[2], branch: m[3] || null, subpath: m[4] || "" };
+  let m = url.match(
+    /^https?:\/\/github\.com\/([^/]+)\/([^/]+?)(?:\/tree\/([^/]+)(?:\/(.+))?)?$/,
+  );
+  if (m)
+    return {
+      provider: "github",
+      owner: m[1],
+      repo: m[2],
+      branch: m[3] || null,
+      subpath: m[4] || "",
+    };
 
   // GitLab: https://gitlab.com/owner/repo[/-/tree/branch[/path]]
-  m = url.match(/^https?:\/\/gitlab\.com\/([^/]+(?:\/[^/]+)*)\/([^/]+?)(?:\/-\/tree\/([^/]+)(?:\/(.+))?)?$/);
-  if (m) return { provider: "gitlab", owner: m[1], repo: m[2], branch: m[3] || null, subpath: m[4] || "" };
+  m = url.match(
+    /^https?:\/\/gitlab\.com\/([^/]+(?:\/[^/]+)*)\/([^/]+?)(?:\/-\/tree\/([^/]+)(?:\/(.+))?)?$/,
+  );
+  if (m)
+    return {
+      provider: "gitlab",
+      owner: m[1],
+      repo: m[2],
+      branch: m[3] || null,
+      subpath: m[4] || "",
+    };
 
   // Bitbucket: https://bitbucket.org/owner/repo[/src/branch[/path]]
-  m = url.match(/^https?:\/\/bitbucket\.org\/([^/]+)\/([^/]+?)(?:\/src\/([^/]+)(?:\/(.+))?)?$/);
-  if (m) return { provider: "bitbucket", owner: m[1], repo: m[2], branch: m[3] || null, subpath: m[4] || "" };
+  m = url.match(
+    /^https?:\/\/bitbucket\.org\/([^/]+)\/([^/]+?)(?:\/src\/([^/]+)(?:\/(.+))?)?$/,
+  );
+  if (m)
+    return {
+      provider: "bitbucket",
+      owner: m[1],
+      repo: m[2],
+      branch: m[3] || null,
+      subpath: m[4] || "",
+    };
 
   // Codeberg: https://codeberg.org/owner/repo[/src/branch/branch[/path]]
-  m = url.match(/^https?:\/\/codeberg\.org\/([^/]+)\/([^/]+?)(?:\/src\/branch\/([^/]+)(?:\/(.+))?)?$/);
-  if (m) return { provider: "codeberg", owner: m[1], repo: m[2], branch: m[3] || null, subpath: m[4] || "" };
+  m = url.match(
+    /^https?:\/\/codeberg\.org\/([^/]+)\/([^/]+?)(?:\/src\/branch\/([^/]+)(?:\/(.+))?)?$/,
+  );
+  if (m)
+    return {
+      provider: "codeberg",
+      owner: m[1],
+      repo: m[2],
+      branch: m[3] || null,
+      subpath: m[4] || "",
+    };
 
   return null;
 }
@@ -191,7 +246,9 @@ function parseRepoUrl(url) {
 async function importFromUrl(url, tokenOverride) {
   const parsed = parseRepoUrl(url);
   if (!parsed) {
-    showToast("⚠ URL non riconosciuto. Supporto: GitHub, GitLab, Bitbucket, Codeberg");
+    showToast(
+      "⚠ URL non riconosciuto. Supporto: GitHub, GitLab, Bitbucket, Codeberg",
+    );
     return;
   }
 
@@ -199,15 +256,24 @@ async function importFromUrl(url, tokenOverride) {
   modal.classList.add("hidden");
   showLoading();
 
-  const token = tokenOverride || document.getElementById("urlToken").value.trim() || null;
+  const token =
+    tokenOverride || document.getElementById("urlToken").value.trim() || null;
 
   try {
     let virtualFiles = [];
     switch (parsed.provider) {
-      case "github":    virtualFiles = await fetchGitHub(parsed, token); break;
-      case "gitlab":    virtualFiles = await fetchGitLab(parsed, token); break;
-      case "bitbucket": virtualFiles = await fetchBitbucket(parsed, token); break;
-      case "codeberg":  virtualFiles = await fetchCodeberg(parsed, token); break;
+      case "github":
+        virtualFiles = await fetchGitHub(parsed, token);
+        break;
+      case "gitlab":
+        virtualFiles = await fetchGitLab(parsed, token);
+        break;
+      case "bitbucket":
+        virtualFiles = await fetchBitbucket(parsed, token);
+        break;
+      case "codeberg":
+        virtualFiles = await fetchCodeberg(parsed, token);
+        break;
     }
     await processVirtualFiles(virtualFiles, parsed);
   } catch (err) {
@@ -225,7 +291,10 @@ async function fetchGitHub(parsed, token) {
   // Resolve default branch if not specified
   let branch = parsed.branch;
   if (!branch) {
-    const meta = await apiFetch(`https://api.github.com/repos/${parsed.owner}/${parsed.repo}`, headers);
+    const meta = await apiFetch(
+      `https://api.github.com/repos/${parsed.owner}/${parsed.repo}`,
+      headers,
+    );
     branch = meta.default_branch || "main";
   }
 
@@ -234,11 +303,12 @@ async function fetchGitHub(parsed, token) {
   const treeUrl = `https://api.github.com/repos/${parsed.owner}/${parsed.repo}/git/trees/${branch}?recursive=1`;
   const treeData = await apiFetch(treeUrl, headers);
 
-  if (!treeData.tree) throw new Error("Repo non trovato o privato (serve token)");
+  if (!treeData.tree)
+    throw new Error("Repo non trovato o privato (serve token)");
 
   const sub = parsed.subpath ? parsed.subpath.replace(/\/$/, "") + "/" : "";
   const blobs = treeData.tree.filter(
-    (item) => item.type === "blob" && (!sub || item.path.startsWith(sub))
+    (item) => item.type === "blob" && (!sub || item.path.startsWith(sub)),
   );
 
   const virtualFiles = [];
@@ -247,9 +317,16 @@ async function fetchGitHub(parsed, token) {
     if (soloCodice.checked && !EXTENSIONS_CODICE.has(ext)) continue;
 
     const rawUrl = `https://raw.githubusercontent.com/${parsed.owner}/${parsed.repo}/${branch}/${blob.path}`;
-    const content = await fetchRaw(rawUrl, token ? { Authorization: `Bearer ${token}` } : {});
+    const content = await fetchRaw(
+      rawUrl,
+      token ? { Authorization: `Bearer ${token}` } : {},
+    );
     const relPath = sub ? blob.path.slice(sub.length) : blob.path;
-    virtualFiles.push({ path: relPath, content, size: blob.size || content.length });
+    virtualFiles.push({
+      path: relPath,
+      content,
+      size: blob.size || content.length,
+    });
   }
   return virtualFiles;
 }
@@ -262,7 +339,10 @@ async function fetchGitLab(parsed, token) {
   const projectId = encodeURIComponent(`${parsed.owner}/${parsed.repo}`);
   let branch = parsed.branch;
   if (!branch) {
-    const meta = await apiFetch(`https://gitlab.com/api/v4/projects/${projectId}`, headers);
+    const meta = await apiFetch(
+      `https://gitlab.com/api/v4/projects/${projectId}`,
+      headers,
+    );
     branch = meta.default_branch || "main";
   }
 
@@ -274,7 +354,8 @@ async function fetchGitLab(parsed, token) {
     const qPath = subpath ? `&path=${encodeURIComponent(subpath)}` : "";
     const url = `https://gitlab.com/api/v4/projects/${projectId}/repository/tree?recursive=true&per_page=100&page=${page}&ref=${branch}${qPath}`;
     const data = await apiFetch(url, headers);
-    if (!Array.isArray(data)) throw new Error("GitLab: repo non trovato o privato (serve token)");
+    if (!Array.isArray(data))
+      throw new Error("GitLab: repo non trovato o privato (serve token)");
     const blobs = data.filter((i) => i.type === "blob");
     allFiles.push(...blobs);
     if (data.length < 100) break;
@@ -288,7 +369,9 @@ async function fetchGitLab(parsed, token) {
 
     const rawUrl = `https://gitlab.com/api/v4/projects/${projectId}/repository/files/${encodeURIComponent(item.path)}/raw?ref=${branch}`;
     const content = await fetchRaw(rawUrl, headers);
-    const relPath = subpath ? item.path.slice(subpath.length).replace(/^\//, "") : item.path;
+    const relPath = subpath
+      ? item.path.slice(subpath.length).replace(/^\//, "")
+      : item.path;
     virtualFiles.push({ path: relPath, content, size: content.length });
   }
   return virtualFiles;
@@ -301,7 +384,10 @@ async function fetchBitbucket(parsed, token) {
 
   let branch = parsed.branch;
   if (!branch) {
-    const meta = await apiFetch(`https://api.bitbucket.org/2.0/repositories/${parsed.owner}/${parsed.repo}`, headers);
+    const meta = await apiFetch(
+      `https://api.bitbucket.org/2.0/repositories/${parsed.owner}/${parsed.repo}`,
+      headers,
+    );
     branch = meta.mainbranch?.name || "main";
   }
 
@@ -336,7 +422,10 @@ async function fetchCodeberg(parsed, token) {
 
   let branch = parsed.branch;
   if (!branch) {
-    const meta = await apiFetch(`https://codeberg.org/api/v1/repos/${parsed.owner}/${parsed.repo}`, headers);
+    const meta = await apiFetch(
+      `https://codeberg.org/api/v1/repos/${parsed.owner}/${parsed.repo}`,
+      headers,
+    );
     branch = meta.default_branch || "main";
   }
 
@@ -345,7 +434,9 @@ async function fetchCodeberg(parsed, token) {
 
   const items = treeData.tree || [];
   const sub = parsed.subpath ? parsed.subpath.replace(/\/$/, "") + "/" : "";
-  const blobs = items.filter((i) => i.type === "blob" && (!sub || i.path.startsWith(sub)));
+  const blobs = items.filter(
+    (i) => i.type === "blob" && (!sub || i.path.startsWith(sub)),
+  );
 
   const virtualFiles = [];
   for (const item of blobs) {
@@ -383,7 +474,13 @@ async function processVirtualFiles(virtualFiles, parsed) {
       node = node[f];
     }
     if (!node.__files__) node.__files__ = [];
-    node.__files__.push({ name: fileName, fullPath: vf.path, lines, size: vf.size, content: vf.content });
+    node.__files__.push({
+      name: fileName,
+      fullPath: vf.path,
+      lines,
+      size: vf.size,
+      content: vf.content,
+    });
     count++;
     if (count % 20 === 0) await delay(0);
   }
@@ -404,9 +501,12 @@ async function processVirtualFiles(virtualFiles, parsed) {
 async function apiFetch(url, headers = {}) {
   const res = await fetch(url, { headers });
   if (!res.ok) {
-    const msg = res.status === 403 ? "Rate limit o accesso negato (prova con un token)" :
-                res.status === 404 ? "Repository non trovato (privato? prova con un token)" :
-                `HTTP ${res.status}`;
+    const msg =
+      res.status === 403
+        ? "Rate limit o accesso negato (prova con un token)"
+        : res.status === 404
+          ? "Repository non trovato (privato? prova con un token)"
+          : `HTTP ${res.status}`;
     throw new Error(msg);
   }
   return res.json();
@@ -436,10 +536,14 @@ async function confermaImportUrl() {
   const token = document.getElementById("urlToken").value.trim();
   const errEl = document.getElementById("urlError");
 
-  if (!url) { errEl.textContent = "Inserisci un URL valido."; return; }
+  if (!url) {
+    errEl.textContent = "Inserisci un URL valido.";
+    return;
+  }
   const parsed = parseRepoUrl(url);
   if (!parsed) {
-    errEl.textContent = "URL non riconosciuto. Esempio: https://github.com/owner/repo";
+    errEl.textContent =
+      "URL non riconosciuto. Esempio: https://github.com/owner/repo";
     return;
   }
   errEl.textContent = "";
@@ -457,9 +561,22 @@ function countLines(content) {
   for (const raw of lines) {
     const t = raw.trim();
     if (exComments) {
-      if (!inMulti && t.includes("/*") && !t.includes("*/")) { inMulti = true; continue; }
-      if (inMulti) { if (t.includes("*/")) inMulti = false; continue; }
-      if (t.startsWith("//") || t.startsWith("#") || t.startsWith("--") || t.startsWith("%") || t.startsWith("<!--")) continue;
+      if (!inMulti && t.includes("/*") && !t.includes("*/")) {
+        inMulti = true;
+        continue;
+      }
+      if (inMulti) {
+        if (t.includes("*/")) inMulti = false;
+        continue;
+      }
+      if (
+        t.startsWith("//") ||
+        t.startsWith("#") ||
+        t.startsWith("--") ||
+        t.startsWith("%") ||
+        t.startsWith("<!--")
+      )
+        continue;
     }
     if (exEmpty && t === "") continue;
     count++;
@@ -469,12 +586,22 @@ function countLines(content) {
 
 // ── STATS ──
 function calcNodeStats(node, filter = "") {
-  let files = 0, lines = 0, size = 0;
-  const fl = (node.__files__ || []).filter((f) => !filter || f.name.toLowerCase().includes(filter));
-  for (const f of fl) { files++; lines += f.lines; size += f.size; }
+  let files = 0,
+    lines = 0,
+    size = 0;
+  const fl = (node.__files__ || []).filter(
+    (f) => !filter || f.name.toLowerCase().includes(filter),
+  );
+  for (const f of fl) {
+    files++;
+    lines += f.lines;
+    size += f.size;
+  }
   for (const k of Object.keys(node).filter((k) => k !== "__files__")) {
     const s = calcNodeStats(node[k], filter);
-    files += s.files; lines += s.lines; size += s.size;
+    files += s.files;
+    lines += s.lines;
+    size += s.size;
   }
   return { files, lines, size };
 }
@@ -496,14 +623,18 @@ function renderTree() {
   }
 
   for (const rootName of keys) {
-    const el = renderNode(fileTree[rootName], rootName, 0, filter, true, [rootName]);
+    const el = renderNode(fileTree[rootName], rootName, 0, filter, true, [
+      rootName,
+    ]);
     if (el) container.appendChild(el);
   }
 }
 
 function renderNode(node, name, depth, filter, isRoot = false, nodePath = []) {
   const folders = Object.keys(node).filter((k) => k !== "__files__");
-  const files = (node.__files__ || []).filter((f) => !filter || f.name.toLowerCase().includes(filter));
+  const files = (node.__files__ || []).filter(
+    (f) => !filter || f.name.toLowerCase().includes(filter),
+  );
   const stats = calcNodeStats(node, filter);
   if (stats.files === 0 && filter) return null;
 
@@ -537,7 +668,10 @@ function renderNode(node, name, depth, filter, isRoot = false, nodePath = []) {
   removeBtn.className = "folder-remove";
   removeBtn.textContent = "✕";
   removeBtn.title = `Rimuovi cartella "${name}"`;
-  removeBtn.onclick = (e) => { e.stopPropagation(); removeFolder(nodePath); };
+  removeBtn.onclick = (e) => {
+    e.stopPropagation();
+    removeFolder(nodePath);
+  };
 
   header.append(arrow, icon, nameSp, badge, countSp, removeBtn);
 
@@ -545,7 +679,10 @@ function renderNode(node, name, depth, filter, isRoot = false, nodePath = []) {
   children.className = "folder-children open";
 
   for (const sub of folders) {
-    const child = renderNode(node[sub], sub, depth + 1, filter, false, [...nodePath, sub]);
+    const child = renderNode(node[sub], sub, depth + 1, filter, false, [
+      ...nodePath,
+      sub,
+    ]);
     if (child) children.appendChild(child);
   }
   for (const file of files) children.appendChild(renderFile(file));
@@ -573,10 +710,15 @@ function renderFile(file) {
   name.title = file.fullPath;
 
   const cls =
-    file.lines > 1000 ? "badge-vhigh" :
-    file.lines > 500  ? "badge-high"  :
-    file.lines > 100  ? "badge-mid"   :
-    file.lines > 0    ? "badge-low"   : "badge-zero";
+    file.lines > 1000
+      ? "badge-vhigh"
+      : file.lines > 500
+        ? "badge-high"
+        : file.lines > 100
+          ? "badge-mid"
+          : file.lines > 0
+            ? "badge-low"
+            : "badge-zero";
 
   const badge = document.createElement("span");
   badge.className = `file-badge ${cls}`;
@@ -586,7 +728,10 @@ function renderFile(file) {
   remove.className = "file-remove";
   remove.textContent = "✕";
   remove.title = "Rimuovi file";
-  remove.onclick = (e) => { e.stopPropagation(); removeFile(file.fullPath); };
+  remove.onclick = (e) => {
+    e.stopPropagation();
+    removeFile(file.fullPath);
+  };
 
   div.append(icon, name, badge, remove);
   return div;
@@ -596,7 +741,10 @@ function renderFile(file) {
 function renderSources() {
   const wrap = document.getElementById("sourcesWrap");
   const keys = Object.keys(fileTree);
-  if (!keys.length) { wrap.classList.add("hidden"); return; }
+  if (!keys.length) {
+    wrap.classList.add("hidden");
+    return;
+  }
   wrap.classList.remove("hidden");
   wrap.innerHTML = "";
 
@@ -631,7 +779,10 @@ function removeFile(fullPath) {
   function remove(node) {
     if (node.__files__) {
       const idx = node.__files__.findIndex((f) => f.fullPath === fullPath);
-      if (idx !== -1) { node.__files__.splice(idx, 1); return true; }
+      if (idx !== -1) {
+        node.__files__.splice(idx, 1);
+        return true;
+      }
     }
     for (const k of Object.keys(node).filter((k) => k !== "__files__"))
       if (remove(node[k])) return true;
@@ -644,7 +795,8 @@ function removeFile(fullPath) {
       pruneEmpty(node[k]);
       const sub = node[k];
       const hasFiles = (sub.__files__ || []).length > 0;
-      const hasSubs = Object.keys(sub).filter((k) => k !== "__files__").length > 0;
+      const hasSubs =
+        Object.keys(sub).filter((k) => k !== "__files__").length > 0;
       if (!hasFiles && !hasSubs) delete node[k];
     }
   }
@@ -673,12 +825,14 @@ function removeFolder(folderPath) {
         pruneEmpty(node[k]);
         const sub = node[k];
         const hasFiles = (sub.__files__ || []).length > 0;
-        const hasSubs = Object.keys(sub).filter((k) => k !== "__files__").length > 0;
+        const hasSubs =
+          Object.keys(sub).filter((k) => k !== "__files__").length > 0;
         if (!hasFiles && !hasSubs) delete node[k];
       }
     }
     pruneEmpty(fileTree[folderPath[0]]);
-    if (calcNodeStats(fileTree[folderPath[0]]).files === 0) delete fileTree[folderPath[0]];
+    if (calcNodeStats(fileTree[folderPath[0]]).files === 0)
+      delete fileTree[folderPath[0]];
   }
   renderSources();
   renderTree();
@@ -689,7 +843,8 @@ function removeFolder(folderPath) {
 function ricalcola() {
   function recalc(node) {
     for (const f of node.__files__ || []) f.lines = countLines(f.content);
-    for (const k of Object.keys(node).filter((k) => k !== "__files__")) recalc(node[k]);
+    for (const k of Object.keys(node).filter((k) => k !== "__files__"))
+      recalc(node[k]);
   }
   for (const root of Object.keys(fileTree)) recalc(fileTree[root]);
   renderTree();
@@ -707,28 +862,73 @@ function rimuoviTutti() {
 }
 
 function espandiTutti() {
-  document.querySelectorAll(".folder-children").forEach((el) => el.classList.add("open"));
-  document.querySelectorAll(".folder-arrow").forEach((el) => el.classList.add("open"));
+  document
+    .querySelectorAll(".folder-children")
+    .forEach((el) => el.classList.add("open"));
+  document
+    .querySelectorAll(".folder-arrow")
+    .forEach((el) => el.classList.add("open"));
 }
 
 function comprimiTutti() {
-  document.querySelectorAll(".folder-children").forEach((el) => el.classList.remove("open"));
-  document.querySelectorAll(".folder-arrow").forEach((el) => el.classList.remove("open"));
+  document
+    .querySelectorAll(".folder-children")
+    .forEach((el) => el.classList.remove("open"));
+  document
+    .querySelectorAll(".folder-arrow")
+    .forEach((el) => el.classList.remove("open"));
 }
 
 // ── ICONS ──
 function getIcon(n) {
   const ext = n.split(".").pop().toLowerCase();
   const map = {
-    js: "◈", jsx: "⚛", ts: "◆", tsx: "⚛", mjs: "◈", cjs: "◈",
-    py: "🐍", java: "☕", cpp: "⚙", c: "⚙", h: "⚙", hpp: "⚙",
-    cs: "◆", go: "◈", rs: "◈", swift: "◈", kt: "◈", rb: "◆",
-    html: "◉", htm: "◉", css: "◎", scss: "◎", sass: "◎", less: "◎",
-    vue: "▲", svelte: "▲", astro: "▲",
-    json: "{}", xml: "</>", yaml: "—", yml: "—", toml: "—",
-    md: "≡", txt: "≡", markdown: "≡", mmd: "⬡", mermaid: "⬡",
-    sh: "$", bash: "$", zsh: "$", ps1: "$", bat: "$",
-    sql: "▦", graphql: "◈", gql: "◈", php: "◈",
+    js: "◈",
+    jsx: "⚛",
+    ts: "◆",
+    tsx: "⚛",
+    mjs: "◈",
+    cjs: "◈",
+    py: "🐍",
+    java: "☕",
+    cpp: "⚙",
+    c: "⚙",
+    h: "⚙",
+    hpp: "⚙",
+    cs: "◆",
+    go: "◈",
+    rs: "◈",
+    swift: "◈",
+    kt: "◈",
+    rb: "◆",
+    html: "◉",
+    htm: "◉",
+    css: "◎",
+    scss: "◎",
+    sass: "◎",
+    less: "◎",
+    vue: "▲",
+    svelte: "▲",
+    astro: "▲",
+    json: "{}",
+    xml: "</>",
+    yaml: "—",
+    yml: "—",
+    toml: "—",
+    md: "≡",
+    txt: "≡",
+    markdown: "≡",
+    mmd: "⬡",
+    mermaid: "⬡",
+    sh: "$",
+    bash: "$",
+    zsh: "$",
+    ps1: "$",
+    bat: "$",
+    sql: "▦",
+    graphql: "◈",
+    gql: "◈",
+    php: "◈",
   };
   return map[ext] || "◦";
 }
@@ -736,12 +936,15 @@ function getIcon(n) {
 // ── UTILITIES ──
 function formatBytes(b) {
   if (!b) return "0 B";
-  const k = 1024, s = ["B", "KB", "MB", "GB"];
+  const k = 1024,
+    s = ["B", "KB", "MB", "GB"];
   const i = Math.floor(Math.log(b) / Math.log(k));
   return (b / Math.pow(k, i)).toFixed(i ? 1 : 0) + " " + s[i];
 }
 
-function delay(ms) { return new Promise((r) => setTimeout(r, ms)); }
+function delay(ms) {
+  return new Promise((r) => setTimeout(r, ms));
+}
 
 let toastTimer;
 function showToast(msg) {
@@ -782,39 +985,55 @@ function applyTheme(theme) {
   const btn = document.getElementById("themeToggle");
   if (theme === "light") {
     root.setAttribute("data-theme", "light");
-    if (btn) { btn.textContent = "☾"; btn.title = "Passa al tema scuro"; }
+    if (btn) {
+      btn.textContent = "☾";
+      btn.title = "Passa al tema scuro";
+    }
   } else {
     root.removeAttribute("data-theme");
-    if (btn) { btn.textContent = "☀"; btn.title = "Passa al tema chiaro"; }
+    if (btn) {
+      btn.textContent = "☀";
+      btn.title = "Passa al tema chiaro";
+    }
   }
 }
 
 function toggleTheme() {
-  const isLight = document.documentElement.getAttribute("data-theme") === "light";
+  const isLight =
+    document.documentElement.getAttribute("data-theme") === "light";
   const next = isLight ? "dark" : "light";
   applyTheme(next);
-  try { localStorage.setItem("lines-theme", next); } catch(e) {}
+  try {
+    localStorage.setItem("lines-theme", next);
+  } catch (e) {}
 }
 
 // ── BOOT ──
-loadExtensions().then(() => { console.log("{ lines } v3 ready ✓"); });
+loadExtensions().then(() => {
+  console.log("{ lines } v3 ready ✓");
+});
 
 // Restore saved theme
 try {
   const saved = localStorage.getItem("lines-theme");
   if (saved) applyTheme(saved);
-} catch(e) {}
+} catch (e) {}
 
 function updateStats() {
-  let files = 0, lines = 0, size = 0;
+  let files = 0,
+    lines = 0,
+    size = 0;
   for (const root of Object.keys(fileTree)) {
     const s = calcNodeStats(fileTree[root]);
-    files += s.files; lines += s.lines; size += s.size;
+    files += s.files;
+    lines += s.lines;
+    size += s.size;
   }
 
   document.getElementById("totalFiles").textContent = files.toLocaleString();
   document.getElementById("totalLines").textContent = lines.toLocaleString();
-  document.getElementById("avgLines").textContent = files > 0 ? Math.round(lines / files).toLocaleString() : "0";
+  document.getElementById("avgLines").textContent =
+    files > 0 ? Math.round(lines / files).toLocaleString() : "0";
   document.getElementById("totalSize").textContent = formatBytes(size);
 
   const statsRow = document.getElementById("statsRow");
@@ -823,6 +1042,7 @@ function updateStats() {
 
   const logoMark = document.getElementById("logoCounter");
   if (logoMark) {
-    logoMark.innerHTML = files > 0 ? `lines: ${lines.toLocaleString()}` : "{ lines }";
+    logoMark.innerHTML =
+      files > 0 ? `lines: ${lines.toLocaleString()}` : "{ lines }";
   }
 }

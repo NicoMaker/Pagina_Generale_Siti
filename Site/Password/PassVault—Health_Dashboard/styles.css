@@ -919,7 +919,8 @@ header {
     font-size: 12px;
   }
 
-  .vault-item > div:nth-child(3) { /* health badge */
+  .vault-item > div:nth-child(3) {
+    /* health badge */
     grid-column: 2;
     grid-row: 1;
     display: flex;

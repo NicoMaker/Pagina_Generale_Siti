@@ -18,7 +18,14 @@
           <span class="logo-mark" id="logoCounter">{ lines }</span>
         </div>
         <div class="topbar-actions">
-          <button class="btn-theme" id="themeToggle" title="Cambia tema" onclick="toggleTheme()">☀</button>
+          <button
+            class="btn-theme"
+            id="themeToggle"
+            title="Cambia tema"
+            onclick="toggleTheme()"
+          >
+            ☀
+          </button>
           <button class="btn btn-ghost" onclick="ricalcola()">
             &#8635; Ricalcola
           </button>
@@ -174,11 +181,15 @@
           <div class="url-examples">
             <div class="example-row">
               <span class="example-badge gh">GH</span>
-              <span class="example-text">https://github.com/owner/repo/tree/main/src</span>
+              <span class="example-text"
+                >https://github.com/owner/repo/tree/main/src</span
+              >
             </div>
             <div class="example-row">
               <span class="example-badge gl">GL</span>
-              <span class="example-text">https://gitlab.com/owner/repo/-/tree/main</span>
+              <span class="example-text"
+                >https://gitlab.com/owner/repo/-/tree/main</span
+              >
             </div>
             <div class="example-row">
               <span class="example-badge bb">BB</span>
@@ -193,7 +204,9 @@
           <div class="token-section">
             <label class="field-label">
               Token di accesso
-              <span class="field-hint">opzionale — per repo privati o rate limit</span>
+              <span class="field-hint"
+                >opzionale — per repo privati o rate limit</span
+              >
             </label>
             <input
               class="field-input field-mono"
@@ -210,7 +223,9 @@
           <div class="modal-error" id="urlError"></div>
         </div>
         <div class="modal-footer">
-          <button class="btn btn-ghost" onclick="chiudiModalUrl()">Annulla</button>
+          <button class="btn btn-ghost" onclick="chiudiModalUrl()">
+            Annulla
+          </button>
           <button class="btn btn-import" onclick="confermaImportUrl()">
             ⬇ Importa
           </button>
