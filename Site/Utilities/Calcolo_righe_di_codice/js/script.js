@@ -671,9 +671,13 @@ function renderNode(node, name, depth, filter, isRoot = false, nodePath = []) {
 
   const fnSp = document.createElement("span");
   fnSp.className = "folder-fn-count";
-  fnSp.title = `${stats.fns} funzioni in questa cartella`;
+  fnSp.title = `${stats.fns} funzioni — clicca per vedere nella tab Funzioni`;
   fnSp.innerHTML = `<span class="fn-chip-icon">ƒ</span>${stats.fns}`;
   if (stats.fns === 0) fnSp.style.display = "none";
+  fnSp.onclick = (e) => {
+    e.stopPropagation();
+    apriCartellaNellaTabFn(nodePath);
+  };
 
   const removeBtn = document.createElement("span");
   removeBtn.className = "folder-remove";
@@ -1045,6 +1049,27 @@ function toggleTheme() {
 
 let activeTab = "files";
 
+
+// ── OPEN FOLDER IN FUNCTIONS TAB ────────────────────────────────────
+function apriCartellaNellaTabFn(nodePath) {
+  // Collect all file paths that belong to this folder (at any depth)
+  const all = collectAllFunctions();
+  const prefix = nodePath.join("/");
+  const filesInFolder = [...new Set(
+    all
+      .filter(r => r.filePath === prefix || r.filePath.startsWith(prefix + "/"))
+      .map(r => r.filePath)
+  )];
+  if (!filesInFolder.length) return;
+
+  // Set file filter to exactly these files
+  fnFullFileFilter.clear();
+  filesInFolder.forEach(f => fnFullFileFilter.add(f));
+
+  // Switch to functions tab
+  switchTab("functions");
+}
+
 function switchTab(tab) {
   activeTab = tab;
   document
@@ -1250,7 +1275,7 @@ function renderFnFull() {
       </div>
       <div class="frc-kind"><span class="fn-kind ${kindCls}">${escHtml(r.kind)}</span></div>
       <div class="frc-name" title="${escHtml(r.fnName)}">${escHtml(r.fnName)}</div>
-      <div class="frc-file" title="${escHtml(r.filePath)}">${escHtml(r.filePath.split("/").slice(-2).join("/"))}</div>
+      <div class="frc-file" title="${escHtml(r.filePath)}">${escHtml(r.filePath)}</div>
       <div class="frc-range">${r.startLine}–${r.endLine} <span style="color:var(--border3)">(${r.linesRaw})</span></div>
       <div class="frc-bar-wrap">
         <div class="fn-full-bar-track"><div class="fn-full-bar" style="width:${barPct}%"></div></div>

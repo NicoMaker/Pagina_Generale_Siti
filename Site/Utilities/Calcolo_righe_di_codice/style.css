@@ -699,7 +699,12 @@ body::after {
   border: 1px solid rgba(110,106,255,0.25);
   border-radius: 4px;
   padding: 1px 5px;
-  cursor: default;
+  cursor: pointer;
+  transition: background 0.13s, color 0.13s;
+}
+.folder-fn-count:hover {
+  background: rgba(110,106,255,0.28);
+  color: var(--a1);
 }
 .folder-fn-count .fn-chip-icon {
   color: var(--a1);
@@ -1484,6 +1489,20 @@ input[type="file"] {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  cursor: default;
+}
+/* Mostra percorso completo al hover della riga */
+.fn-full-row:hover .frc-file {
+  overflow: visible;
+  white-space: normal;
+  word-break: break-all;
+  background: var(--surf3);
+  border-radius: 3px;
+  padding: 2px 4px;
+  margin: -2px -4px;
+  position: relative;
+  z-index: 2;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.18);
 }
 
 .frc-range {
