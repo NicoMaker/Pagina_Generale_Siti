@@ -1090,6 +1090,7 @@ function collectAllFunctions() {
 
 let fnFullSortMode = "lines"; // "lines" | "name" | "file" | "kind"
 let fnFullKindFilter = new Set(); // empty = show all
+let fnFullFileFilter = new Set(); // empty = show all files
 
 function toggleFnFullSort(mode) {
   fnFullSortMode = mode;
@@ -1124,6 +1125,7 @@ function renderFnFull() {
     statsBar.innerHTML = "";
     if (summary) summary.innerHTML = "";
     renderKindFilters([]);
+    renderFileFilter([]);
     return;
   }
 
@@ -1131,11 +1133,16 @@ function renderFnFull() {
   const allKinds = [...new Set(all.map(r => r.kind))].sort();
   renderKindFilters(allKinds);
 
-  // Text + kind filter
+  // File filter list
+  const allFiles = [...new Set(all.map(r => r.filePath))].sort();
+  renderFileFilter(allFiles);
+
+  // Text + kind + file filter
   const textFilter = (searchEl ? searchEl.value : "").toLowerCase().trim();
   let rows = all.filter(r => {
     const kindOk = fnFullKindFilter.size === 0 || fnFullKindFilter.has(r.kind);
-    if (!kindOk) return false;
+    const fileOk = fnFullFileFilter.size === 0 || fnFullFileFilter.has(r.filePath);
+    if (!kindOk || !fileOk) return false;
     if (!textFilter) return true;
     return r.fnName.toLowerCase().includes(textFilter) ||
            r.filePath.toLowerCase().includes(textFilter) ||
@@ -1148,7 +1155,7 @@ function renderFnFull() {
   else if (fnFullSortMode === "file") rows = rows.slice().sort((a,b) => a.filePath.localeCompare(b.filePath) || b.linesFiltered - a.linesFiltered);
   else if (fnFullSortMode === "kind") rows = rows.slice().sort((a,b) => a.kind.localeCompare(b.kind) || b.linesFiltered - a.linesFiltered);
 
-  // Stats
+  // Stats (always on full set, not filtered)
   const totalLines = all.reduce((s,r) => s + r.linesFiltered, 0);
   const avgLines   = all.length ? Math.round(totalLines / all.length) : 0;
   const maxLines   = all.length ? Math.max(...all.map(r => r.linesFiltered)) : 0;
@@ -1212,9 +1219,6 @@ function renderKindFilters(kinds) {
     pill.onclick = () => {
       if (fnFullKindFilter.has(kind)) {
         fnFullKindFilter.delete(kind);
-        if (fnFullKindFilter.size === 0) {
-          // all deselected → show all
-        }
       } else {
         fnFullKindFilter.add(kind);
       }
@@ -1230,6 +1234,139 @@ function renderKindFilters(kinds) {
   all.textContent = "tutti";
   all.onclick = () => { fnFullKindFilter.clear(); renderFnFull(); };
   container.prepend(all);
+}
+
+// ── FILE FILTER DROPDOWN ─────────────────────────────────────────────
+
+let fnFileDropdownOpen = false;
+
+function renderFileFilter(files) {
+  const wrapper = document.getElementById("fnFileFilterWrap");
+  if (!wrapper) return;
+
+  if (!files.length) {
+    wrapper.innerHTML = "";
+    return;
+  }
+
+  const activeCount = fnFullFileFilter.size;
+  const label = activeCount === 0
+    ? "Tutti i file"
+    : activeCount === 1
+      ? [...fnFullFileFilter][0].split("/").pop()
+      : `${activeCount} file selezionati`;
+
+  // Collect fn counts per file
+  const all = collectAllFunctions();
+  const fnCountPerFile = {};
+  all.forEach(r => { fnCountPerFile[r.filePath] = (fnCountPerFile[r.filePath] || 0) + 1; });
+
+  // Search term inside dropdown
+  const prevSearch = wrapper.querySelector(".fn-file-search")?.value || "";
+
+  wrapper.innerHTML = `
+    <div class="fn-file-filter-btn${activeCount > 0 ? " ff-active" : ""}" id="fnFileBtn" onclick="toggleFileDropdown()">
+      <span class="ff-icon">&#9636;</span>
+      <span class="ff-label" id="ffLabel">${escHtml(label)}</span>
+      <span class="ff-arrow${fnFileDropdownOpen ? " open" : ""}">&#8964;</span>
+      ${activeCount > 0 ? `<span class="ff-clear" onclick="event.stopPropagation();clearFileFilter()" title="Rimuovi filtro file">✕</span>` : ""}
+    </div>
+    <div class="fn-file-dropdown${fnFileDropdownOpen ? "" : " hidden"}" id="fnFileDropdown">
+      <div class="fn-file-search-wrap">
+        <input class="fn-file-search search-box" id="fnFileSearch" placeholder="&#9906; Cerca file..." type="text" value="${escHtml(prevSearch)}" oninput="filterFileList()" />
+      </div>
+      <div class="fn-file-list" id="fnFileList"></div>
+      <div class="fn-file-actions">
+        <button class="btn btn-xs" onclick="selectAllFiles()">Seleziona tutti</button>
+        <button class="btn btn-xs" onclick="clearFileFilter()">Deseleziona tutti</button>
+      </div>
+    </div>`;
+
+  renderFileList(files, fnCountPerFile, prevSearch);
+
+  // Close dropdown on outside click
+  if (fnFileDropdownOpen) {
+    setTimeout(() => {
+      document.addEventListener("click", closeFileDropdownOutside, { once: true });
+    }, 0);
+  }
+}
+
+function renderFileList(files, fnCountPerFile, searchTerm) {
+  const listEl = document.getElementById("fnFileList");
+  if (!listEl) return;
+  const term = (searchTerm || "").toLowerCase();
+  const visible = term ? files.filter(f => f.toLowerCase().includes(term)) : files;
+
+  listEl.innerHTML = "";
+  visible.forEach(fp => {
+    const isActive = fnFullFileFilter.size === 0 || fnFullFileFilter.has(fp);
+    const isChecked = fnFullFileFilter.has(fp);
+    const count = fnCountPerFile[fp] || 0;
+    const shortName = fp.split("/").pop();
+    const dir = fp.includes("/") ? fp.substring(0, fp.lastIndexOf("/")) : "";
+
+    const item = document.createElement("div");
+    item.className = `fn-file-item${isChecked ? " ff-checked" : ""}`;
+    item.onclick = () => toggleFileItem(fp);
+    item.innerHTML = `
+      <span class="ff-checkbox${isChecked ? " checked" : ""}"></span>
+      <span class="ff-item-name" title="${escHtml(fp)}">${escHtml(shortName)}</span>
+      ${dir ? `<span class="ff-item-dir">${escHtml(dir)}</span>` : ""}
+      <span class="ff-item-count">${count} fn</span>`;
+    listEl.appendChild(item);
+  });
+
+  if (!visible.length) {
+    listEl.innerHTML = `<div class="fn-empty" style="padding:12px 14px;font-size:11px;">Nessun file trovato</div>`;
+  }
+}
+
+function filterFileList() {
+  const search = document.getElementById("fnFileSearch")?.value || "";
+  const all = collectAllFunctions();
+  const files = [...new Set(all.map(r => r.filePath))].sort();
+  const fnCountPerFile = {};
+  all.forEach(r => { fnCountPerFile[r.filePath] = (fnCountPerFile[r.filePath] || 0) + 1; });
+  renderFileList(files, fnCountPerFile, search);
+}
+
+function toggleFileItem(fp) {
+  if (fnFullFileFilter.has(fp)) {
+    fnFullFileFilter.delete(fp);
+  } else {
+    fnFullFileFilter.add(fp);
+  }
+  renderFnFull();
+}
+
+function toggleFileDropdown() {
+  fnFileDropdownOpen = !fnFileDropdownOpen;
+  renderFnFull();
+  if (fnFileDropdownOpen) {
+    setTimeout(() => document.getElementById("fnFileSearch")?.focus(), 50);
+  }
+}
+
+function closeFileDropdownOutside(e) {
+  const wrap = document.getElementById("fnFileFilterWrap");
+  if (wrap && !wrap.contains(e.target)) {
+    fnFileDropdownOpen = false;
+    renderFnFull();
+  }
+}
+
+function clearFileFilter() {
+  fnFullFileFilter.clear();
+  fnFileDropdownOpen = false;
+  renderFnFull();
+}
+
+function selectAllFiles() {
+  const all = collectAllFunctions();
+  const files = [...new Set(all.map(r => r.filePath))];
+  fnFullFileFilter.clear();
+  renderFnFull();
 }
 
 document.addEventListener("DOMContentLoaded", () => {

@@ -1456,6 +1456,197 @@ input[type="file"] {
   background: rgba(110,106,255,0.08);
 }
 
+.fn-full-filter-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.fn-full-kind-filters {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  min-width: 0;
+}
+
+/* ── FILE FILTER DROPDOWN ── */
+.fn-file-filter-wrap {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.fn-file-filter-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--surf3);
+  border: 1px solid var(--border2);
+  border-radius: var(--r-sm);
+  padding: 5px 10px;
+  font-size: 12px;
+  font-family: var(--sans);
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.15s;
+  user-select: none;
+  white-space: nowrap;
+  min-width: 140px;
+}
+.fn-file-filter-btn:hover {
+  border-color: var(--a1);
+  color: var(--text);
+}
+.fn-file-filter-btn.ff-active {
+  border-color: var(--a1);
+  color: var(--a1);
+  background: rgba(110,106,255,0.08);
+}
+
+.ff-icon {
+  font-size: 11px;
+  opacity: 0.7;
+}
+.ff-label {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 160px;
+}
+.ff-arrow {
+  font-size: 10px;
+  opacity: 0.5;
+  transition: transform 0.15s;
+  display: inline-block;
+}
+.ff-arrow.open {
+  transform: rotate(180deg);
+}
+.ff-clear {
+  font-size: 10px;
+  color: var(--muted);
+  margin-left: 2px;
+  padding: 0 2px;
+  border-radius: 3px;
+  transition: color 0.13s;
+  flex-shrink: 0;
+}
+.ff-clear:hover {
+  color: #ff5050;
+}
+
+.fn-file-dropdown {
+  position: absolute;
+  top: calc(100% + 5px);
+  right: 0;
+  width: 320px;
+  background: var(--surf);
+  border: 1px solid var(--border2);
+  border-radius: var(--r);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.35);
+  z-index: 200;
+  overflow: hidden;
+  animation: slideUp 0.15s ease;
+}
+
+.fn-file-search-wrap {
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--border);
+}
+.fn-file-search {
+  font-size: 12px;
+  padding: 6px 10px;
+}
+
+.fn-file-list {
+  max-height: 260px;
+  overflow-y: auto;
+  padding: 4px 0;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border2) transparent;
+}
+.fn-file-list::-webkit-scrollbar { width: 3px; }
+.fn-file-list::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+
+.fn-file-item {
+  display: grid;
+  grid-template-columns: 18px 1fr auto auto;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: background 0.12s;
+  font-size: 12px;
+}
+.fn-file-item:hover {
+  background: var(--surf2);
+}
+.fn-file-item.ff-checked {
+  background: rgba(110,106,255,0.05);
+}
+
+.ff-checkbox {
+  width: 13px;
+  height: 13px;
+  border: 1px solid var(--border2);
+  border-radius: 3px;
+  background: var(--surf2);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.13s;
+}
+.ff-checkbox.checked {
+  background: var(--a1);
+  border-color: var(--a1);
+}
+.ff-checkbox.checked::after {
+  content: "✓";
+  font-size: 9px;
+  color: #fff;
+  line-height: 1;
+}
+
+.ff-item-name {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 500;
+}
+
+.ff-item-dir {
+  display: none; /* shown on hover via title */
+}
+
+.ff-item-count {
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--a1);
+  background: rgba(110,106,255,0.1);
+  border: 1px solid rgba(110,106,255,0.18);
+  padding: 1px 5px;
+  border-radius: 3px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.fn-file-actions {
+  display: flex;
+  gap: 6px;
+  padding: 7px 10px;
+  border-top: 1px solid var(--border);
+  background: var(--surf2);
+}
+.fn-file-actions .btn-xs {
+  flex: 1;
+  justify-content: center;
+}
+
 /* ── THEME TOGGLE ── */
 .btn-theme {
   width: 36px;
