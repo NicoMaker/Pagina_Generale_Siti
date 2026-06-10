@@ -695,15 +695,17 @@ body::after {
   font-size: 10px;
   font-weight: 600;
   color: var(--a2);
-  background: rgba(110,106,255,0.12);
-  border: 1px solid rgba(110,106,255,0.25);
+  background: rgba(110, 106, 255, 0.12);
+  border: 1px solid rgba(110, 106, 255, 0.25);
   border-radius: 4px;
   padding: 1px 5px;
   cursor: pointer;
-  transition: background 0.13s, color 0.13s;
+  transition:
+    background 0.13s,
+    color 0.13s;
 }
 .folder-fn-count:hover {
-  background: rgba(110,106,255,0.28);
+  background: rgba(110, 106, 255, 0.28);
   color: var(--a1);
 }
 .folder-fn-count .fn-chip-icon {
@@ -1502,7 +1504,7 @@ input[type="file"] {
   margin: -2px -4px;
   position: relative;
   z-index: 2;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
 }
 
 .frc-range {

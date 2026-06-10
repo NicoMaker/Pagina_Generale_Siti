@@ -1049,22 +1049,25 @@ function toggleTheme() {
 
 let activeTab = "files";
 
-
 // ── OPEN FOLDER IN FUNCTIONS TAB ────────────────────────────────────
 function apriCartellaNellaTabFn(nodePath) {
   // Collect all file paths that belong to this folder (at any depth)
   const all = collectAllFunctions();
   const prefix = nodePath.join("/");
-  const filesInFolder = [...new Set(
-    all
-      .filter(r => r.filePath === prefix || r.filePath.startsWith(prefix + "/"))
-      .map(r => r.filePath)
-  )];
+  const filesInFolder = [
+    ...new Set(
+      all
+        .filter(
+          (r) => r.filePath === prefix || r.filePath.startsWith(prefix + "/"),
+        )
+        .map((r) => r.filePath),
+    ),
+  ];
   if (!filesInFolder.length) return;
 
   // Set file filter to exactly these files
   fnFullFileFilter.clear();
-  filesInFolder.forEach(f => fnFullFileFilter.add(f));
+  filesInFolder.forEach((f) => fnFullFileFilter.add(f));
 
   // Switch to functions tab
   switchTab("functions");
