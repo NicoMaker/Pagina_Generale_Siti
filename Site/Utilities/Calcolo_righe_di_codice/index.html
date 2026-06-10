@@ -125,10 +125,18 @@
 
           <!-- ── TAB BAR ── -->
           <div class="content-tabs" id="contentTabs">
-            <button class="ctab ctab-active" id="tabFiles" onclick="switchTab('files')">
+            <button
+              class="ctab ctab-active"
+              id="tabFiles"
+              onclick="switchTab('files')"
+            >
               <span class="ctab-icon">&#9783;</span> Struttura File
             </button>
-            <button class="ctab" id="tabFunctions" onclick="switchTab('functions')">
+            <button
+              class="ctab"
+              id="tabFunctions"
+              onclick="switchTab('functions')"
+            >
               <span class="ctab-icon">ƒ</span> Funzioni
               <span class="ctab-badge hidden" id="tabFnBadge"></span>
             </button>
@@ -175,10 +183,34 @@
                 <span class="panel-title">ƒ &nbsp;Tutte le Funzioni</span>
                 <div class="header-btns">
                   <span class="fn-panel-summary" id="fnFullSummary"></span>
-                  <button class="btn btn-xs" onclick="toggleFnFullSort('lines')" id="btnSortLines">Righe ↓</button>
-                  <button class="btn btn-xs" onclick="toggleFnFullSort('name')" id="btnSortName">Nome</button>
-                  <button class="btn btn-xs" onclick="toggleFnFullSort('file')" id="btnSortFile">File</button>
-                  <button class="btn btn-xs" onclick="toggleFnFullSort('kind')" id="btnSortKind">Tipo</button>
+                  <button
+                    class="btn btn-xs"
+                    onclick="toggleFnFullSort('lines')"
+                    id="btnSortLines"
+                  >
+                    Righe ↓
+                  </button>
+                  <button
+                    class="btn btn-xs"
+                    onclick="toggleFnFullSort('name')"
+                    id="btnSortName"
+                  >
+                    Nome
+                  </button>
+                  <button
+                    class="btn btn-xs"
+                    onclick="toggleFnFullSort('file')"
+                    id="btnSortFile"
+                  >
+                    File
+                  </button>
+                  <button
+                    class="btn btn-xs"
+                    onclick="toggleFnFullSort('kind')"
+                    id="btnSortKind"
+                  >
+                    Tipo
+                  </button>
                 </div>
               </div>
 
@@ -210,7 +242,9 @@
               <div class="fn-full-container" id="fnFullList">
                 <div class="empty-state">
                   <div class="empty-icon">ƒ</div>
-                  <div class="empty-text">Carica dei file di codice per vedere le funzioni rilevate.</div>
+                  <div class="empty-text">
+                    Carica dei file di codice per vedere le funzioni rilevate.
+                  </div>
                 </div>
               </div>
             </div>
@@ -311,7 +345,9 @@
     <div class="modal-backdrop hidden" id="fnModal">
       <div class="modal fn-modal">
         <div class="modal-header">
-          <span class="modal-title">ƒ &nbsp;<span id="fnModalTitle"></span></span>
+          <span class="modal-title"
+            >ƒ &nbsp;<span id="fnModalTitle"></span
+          ></span>
           <button class="modal-close" onclick="chiudiFunzioniModal()">✕</button>
         </div>
         <div class="fn-modal-stats" id="fnModalStats"></div>

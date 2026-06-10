@@ -1041,10 +1041,18 @@ let activeTab = "files";
 
 function switchTab(tab) {
   activeTab = tab;
-  document.getElementById("paneFiles").classList.toggle("hidden", tab !== "files");
-  document.getElementById("paneFunctions").classList.toggle("hidden", tab !== "functions");
-  document.getElementById("tabFiles").classList.toggle("ctab-active", tab === "files");
-  document.getElementById("tabFunctions").classList.toggle("ctab-active", tab === "functions");
+  document
+    .getElementById("paneFiles")
+    .classList.toggle("hidden", tab !== "files");
+  document
+    .getElementById("paneFunctions")
+    .classList.toggle("hidden", tab !== "functions");
+  document
+    .getElementById("tabFiles")
+    .classList.toggle("ctab-active", tab === "files");
+  document
+    .getElementById("tabFunctions")
+    .classList.toggle("ctab-active", tab === "functions");
   if (tab === "functions") renderFnFull();
 }
 
@@ -1060,9 +1068,14 @@ function collectAllFunctions() {
   const all = [];
   function walk(node, pathParts) {
     for (const f of node.__files__ || []) {
-      const filePath = pathParts.length ? pathParts.join("/") + "/" + f.name : f.name;
+      const filePath = pathParts.length
+        ? pathParts.join("/") + "/" + f.name
+        : f.name;
       for (const fn of f.functions || []) {
-        const slice = f.content.split("\n").slice(fn.startLine - 1, fn.endLine).join("\n");
+        const slice = f.content
+          .split("\n")
+          .slice(fn.startLine - 1, fn.endLine)
+          .join("\n");
         const linesFiltered = countLines(slice);
         all.push({
           fnName: fn.name,
@@ -1076,7 +1089,7 @@ function collectAllFunctions() {
         });
       }
     }
-    for (const k of Object.keys(node).filter(k => k !== "__files__")) {
+    for (const k of Object.keys(node).filter((k) => k !== "__files__")) {
       walk(node[k], [...pathParts, k]);
     }
   }
@@ -1094,19 +1107,21 @@ let fnFullFileFilter = new Set(); // empty = show all files
 
 function toggleFnFullSort(mode) {
   fnFullSortMode = mode;
-  ["lines","name","file","kind"].forEach(m => {
-    const btn = document.getElementById("btnSort" + m.charAt(0).toUpperCase() + m.slice(1));
+  ["lines", "name", "file", "kind"].forEach((m) => {
+    const btn = document.getElementById(
+      "btnSort" + m.charAt(0).toUpperCase() + m.slice(1),
+    );
     if (btn) btn.classList.toggle("sort-active", m === mode);
   });
   renderFnFull();
 }
 
 function renderFnFull() {
-  const listEl  = document.getElementById("fnFullList");
+  const listEl = document.getElementById("fnFullList");
   const summary = document.getElementById("fnFullSummary");
   const statsBar = document.getElementById("fnFullStatsBar");
   const searchEl = document.getElementById("fnFullSearch");
-  const badge   = document.getElementById("tabFnBadge");
+  const badge = document.getElementById("tabFnBadge");
 
   const all = collectAllFunctions();
 
@@ -1130,38 +1145,60 @@ function renderFnFull() {
   }
 
   // Kind filter pills
-  const allKinds = [...new Set(all.map(r => r.kind))].sort();
+  const allKinds = [...new Set(all.map((r) => r.kind))].sort();
   renderKindFilters(allKinds);
 
   // File filter list
-  const allFiles = [...new Set(all.map(r => r.filePath))].sort();
+  const allFiles = [...new Set(all.map((r) => r.filePath))].sort();
   renderFileFilter(allFiles);
 
   // Text + kind + file filter
   const textFilter = (searchEl ? searchEl.value : "").toLowerCase().trim();
-  let rows = all.filter(r => {
+  let rows = all.filter((r) => {
     const kindOk = fnFullKindFilter.size === 0 || fnFullKindFilter.has(r.kind);
-    const fileOk = fnFullFileFilter.size === 0 || fnFullFileFilter.has(r.filePath);
+    const fileOk =
+      fnFullFileFilter.size === 0 || fnFullFileFilter.has(r.filePath);
     if (!kindOk || !fileOk) return false;
     if (!textFilter) return true;
-    return r.fnName.toLowerCase().includes(textFilter) ||
-           r.filePath.toLowerCase().includes(textFilter) ||
-           r.kind.toLowerCase().includes(textFilter);
+    return (
+      r.fnName.toLowerCase().includes(textFilter) ||
+      r.filePath.toLowerCase().includes(textFilter) ||
+      r.kind.toLowerCase().includes(textFilter)
+    );
   });
 
   // Sort
-  if (fnFullSortMode === "lines") rows = rows.slice().sort((a,b) => b.linesFiltered - a.linesFiltered);
-  else if (fnFullSortMode === "name") rows = rows.slice().sort((a,b) => a.fnName.localeCompare(b.fnName));
-  else if (fnFullSortMode === "file") rows = rows.slice().sort((a,b) => a.filePath.localeCompare(b.filePath) || b.linesFiltered - a.linesFiltered);
-  else if (fnFullSortMode === "kind") rows = rows.slice().sort((a,b) => a.kind.localeCompare(b.kind) || b.linesFiltered - a.linesFiltered);
+  if (fnFullSortMode === "lines")
+    rows = rows.slice().sort((a, b) => b.linesFiltered - a.linesFiltered);
+  else if (fnFullSortMode === "name")
+    rows = rows.slice().sort((a, b) => a.fnName.localeCompare(b.fnName));
+  else if (fnFullSortMode === "file")
+    rows = rows
+      .slice()
+      .sort(
+        (a, b) =>
+          a.filePath.localeCompare(b.filePath) ||
+          b.linesFiltered - a.linesFiltered,
+      );
+  else if (fnFullSortMode === "kind")
+    rows = rows
+      .slice()
+      .sort(
+        (a, b) =>
+          a.kind.localeCompare(b.kind) || b.linesFiltered - a.linesFiltered,
+      );
 
   // Stats (always on full set, not filtered)
-  const totalLines = all.reduce((s,r) => s + r.linesFiltered, 0);
-  const avgLines   = all.length ? Math.round(totalLines / all.length) : 0;
-  const maxLines   = all.length ? Math.max(...all.map(r => r.linesFiltered)) : 0;
-  const sortedForMedian = all.map(r => r.linesFiltered).sort((a,b) => a-b);
-  const median = sortedForMedian.length ? sortedForMedian[Math.floor(sortedForMedian.length/2)] : 0;
-  const uniqueFiles = new Set(all.map(r => r.filePath)).size;
+  const totalLines = all.reduce((s, r) => s + r.linesFiltered, 0);
+  const avgLines = all.length ? Math.round(totalLines / all.length) : 0;
+  const maxLines = all.length
+    ? Math.max(...all.map((r) => r.linesFiltered))
+    : 0;
+  const sortedForMedian = all.map((r) => r.linesFiltered).sort((a, b) => a - b);
+  const median = sortedForMedian.length
+    ? sortedForMedian[Math.floor(sortedForMedian.length / 2)]
+    : 0;
+  const uniqueFiles = new Set(all.map((r) => r.filePath)).size;
 
   statsBar.innerHTML = `
     <div class="fn-full-stat sv-total"><span class="fn-full-stat-value">${all.length.toLocaleString()}</span><span class="fn-full-stat-label">Funzioni</span></div>
@@ -1170,10 +1207,13 @@ function renderFnFull() {
     <div class="fn-full-stat sv-max"><span class="fn-full-stat-value">${maxLines}</span><span class="fn-full-stat-label">Max ln</span></div>
     <div class="fn-full-stat sv-files"><span class="fn-full-stat-value">${uniqueFiles}</span><span class="fn-full-stat-label">File con fn</span></div>`;
 
-  if (summary) summary.innerHTML = `<span class="fn-panel-count">${rows.length.toLocaleString()} / ${all.length.toLocaleString()} funzioni</span>`;
+  if (summary)
+    summary.innerHTML = `<span class="fn-panel-count">${rows.length.toLocaleString()} / ${all.length.toLocaleString()} funzioni</span>`;
 
   // Render rows
-  const rowMaxLines = rows.length ? Math.max(...rows.map(r => r.linesFiltered)) : 1;
+  const rowMaxLines = rows.length
+    ? Math.max(...rows.map((r) => r.linesFiltered))
+    : 1;
 
   listEl.innerHTML = "";
 
@@ -1182,9 +1222,17 @@ function renderFnFull() {
     return;
   }
 
-  rows.forEach(r => {
-    const barPct = rowMaxLines > 0 ? Math.max(2, Math.round((r.linesFiltered / rowMaxLines) * 100)) : 2;
-    const lCls   = r.linesFiltered > 100 ? "fn-lb-high" : r.linesFiltered > 30 ? "fn-lb-mid" : "fn-lb-low";
+  rows.forEach((r) => {
+    const barPct =
+      rowMaxLines > 0
+        ? Math.max(2, Math.round((r.linesFiltered / rowMaxLines) * 100))
+        : 2;
+    const lCls =
+      r.linesFiltered > 100
+        ? "fn-lb-high"
+        : r.linesFiltered > 30
+          ? "fn-lb-mid"
+          : "fn-lb-low";
     const kindCls = kindColor(r.kind);
 
     const row = document.createElement("div");
@@ -1211,7 +1259,7 @@ function renderKindFilters(kinds) {
   container.innerHTML = "";
   if (!kinds.length) return;
 
-  kinds.forEach(kind => {
+  kinds.forEach((kind) => {
     const pill = document.createElement("span");
     pill.className = `fn-kind-pill ${kindColor(kind)}${fnFullKindFilter.size === 0 || fnFullKindFilter.has(kind) ? " active" : ""}`;
     pill.textContent = kind;
@@ -1230,9 +1278,13 @@ function renderKindFilters(kinds) {
   // "Tutti" reset pill
   const all = document.createElement("span");
   all.className = `fn-kind-pill${fnFullKindFilter.size === 0 ? " active" : ""}`;
-  all.style.cssText = "background:var(--surf3);color:var(--muted);border-color:var(--border2);";
+  all.style.cssText =
+    "background:var(--surf3);color:var(--muted);border-color:var(--border2);";
   all.textContent = "tutti";
-  all.onclick = () => { fnFullKindFilter.clear(); renderFnFull(); };
+  all.onclick = () => {
+    fnFullKindFilter.clear();
+    renderFnFull();
+  };
   container.prepend(all);
 }
 
@@ -1250,16 +1302,19 @@ function renderFileFilter(files) {
   }
 
   const activeCount = fnFullFileFilter.size;
-  const label = activeCount === 0
-    ? "Tutti i file"
-    : activeCount === 1
-      ? [...fnFullFileFilter][0].split("/").pop()
-      : `${activeCount} file selezionati`;
+  const label =
+    activeCount === 0
+      ? "Tutti i file"
+      : activeCount === 1
+        ? [...fnFullFileFilter][0].split("/").pop()
+        : `${activeCount} file selezionati`;
 
   // Collect fn counts per file
   const all = collectAllFunctions();
   const fnCountPerFile = {};
-  all.forEach(r => { fnCountPerFile[r.filePath] = (fnCountPerFile[r.filePath] || 0) + 1; });
+  all.forEach((r) => {
+    fnCountPerFile[r.filePath] = (fnCountPerFile[r.filePath] || 0) + 1;
+  });
 
   // Search term inside dropdown
   const prevSearch = wrapper.querySelector(".fn-file-search")?.value || "";
@@ -1287,7 +1342,9 @@ function renderFileFilter(files) {
   // Close dropdown on outside click
   if (fnFileDropdownOpen) {
     setTimeout(() => {
-      document.addEventListener("click", closeFileDropdownOutside, { once: true });
+      document.addEventListener("click", closeFileDropdownOutside, {
+        once: true,
+      });
     }, 0);
   }
 }
@@ -1296,10 +1353,12 @@ function renderFileList(files, fnCountPerFile, searchTerm) {
   const listEl = document.getElementById("fnFileList");
   if (!listEl) return;
   const term = (searchTerm || "").toLowerCase();
-  const visible = term ? files.filter(f => f.toLowerCase().includes(term)) : files;
+  const visible = term
+    ? files.filter((f) => f.toLowerCase().includes(term))
+    : files;
 
   listEl.innerHTML = "";
-  visible.forEach(fp => {
+  visible.forEach((fp) => {
     const isActive = fnFullFileFilter.size === 0 || fnFullFileFilter.has(fp);
     const isChecked = fnFullFileFilter.has(fp);
     const count = fnCountPerFile[fp] || 0;
@@ -1325,9 +1384,11 @@ function renderFileList(files, fnCountPerFile, searchTerm) {
 function filterFileList() {
   const search = document.getElementById("fnFileSearch")?.value || "";
   const all = collectAllFunctions();
-  const files = [...new Set(all.map(r => r.filePath))].sort();
+  const files = [...new Set(all.map((r) => r.filePath))].sort();
   const fnCountPerFile = {};
-  all.forEach(r => { fnCountPerFile[r.filePath] = (fnCountPerFile[r.filePath] || 0) + 1; });
+  all.forEach((r) => {
+    fnCountPerFile[r.filePath] = (fnCountPerFile[r.filePath] || 0) + 1;
+  });
   renderFileList(files, fnCountPerFile, search);
 }
 
@@ -1364,7 +1425,7 @@ function clearFileFilter() {
 
 function selectAllFiles() {
   const all = collectAllFunctions();
-  const files = [...new Set(all.map(r => r.filePath))];
+  const files = [...new Set(all.map((r) => r.filePath))];
   fnFullFileFilter.clear();
   renderFnFull();
 }
@@ -1382,7 +1443,7 @@ document.addEventListener("DOMContentLoaded", () => {
 function apriFunzioniModal(file) {
   const modal = document.getElementById("fnModal");
   const title = document.getElementById("fnModalTitle");
-  const list  = document.getElementById("fnModalList");
+  const list = document.getElementById("fnModalList");
   const stats = document.getElementById("fnModalStats");
   const search = document.getElementById("fnModalSearch");
 
@@ -1394,7 +1455,7 @@ function apriFunzioniModal(file) {
   function renderList(filter) {
     list.innerHTML = "";
     const filtered = filter
-      ? fns.filter(f => f.name.toLowerCase().includes(filter.toLowerCase()))
+      ? fns.filter((f) => f.name.toLowerCase().includes(filter.toLowerCase()))
       : fns;
 
     if (!filtered.length) {
@@ -1404,7 +1465,7 @@ function apriFunzioniModal(file) {
 
     // Re-count lines per function respecting current filters
     const fileLines = file.content.split("\n");
-    const counted = filtered.map(fn => {
+    const counted = filtered.map((fn) => {
       const slice = fileLines.slice(fn.startLine - 1, fn.endLine).join("\n");
       return { ...fn, linesFiltered: countLines(slice) };
     });
@@ -1415,9 +1476,17 @@ function apriFunzioniModal(file) {
     counted.forEach((fn) => {
       const row = document.createElement("div");
       row.className = "fn-row";
-      const barPct = maxFiltered > 0 ? Math.max(4, Math.round((fn.linesFiltered / maxFiltered) * 100)) : 4;
+      const barPct =
+        maxFiltered > 0
+          ? Math.max(4, Math.round((fn.linesFiltered / maxFiltered) * 100))
+          : 4;
       const kindClass = kindColor(fn.kind);
-      const lCls = fn.linesFiltered > 100 ? "fn-lb-high" : fn.linesFiltered > 30 ? "fn-lb-mid" : "fn-lb-low";
+      const lCls =
+        fn.linesFiltered > 100
+          ? "fn-lb-high"
+          : fn.linesFiltered > 30
+            ? "fn-lb-mid"
+            : "fn-lb-low";
 
       row.innerHTML = `
         <div class="fn-row-top">
@@ -1433,7 +1502,7 @@ function apriFunzioniModal(file) {
 
   // Stats (re-count all functions through countLines filter)
   const fileLines = file.content.split("\n");
-  const allCounted = fns.map(fn => {
+  const allCounted = fns.map((fn) => {
     const slice = fileLines.slice(fn.startLine - 1, fn.endLine).join("\n");
     return countLines(slice);
   });
@@ -1502,7 +1571,7 @@ function updateStats() {
     files += s.files;
     lines += s.lines;
     size += s.size;
-    fns  += s.fns;
+    fns += s.fns;
   }
 
   document.getElementById("totalFiles").textContent = files.toLocaleString();
@@ -1529,8 +1598,10 @@ function updateStats() {
     const all = collectAllFunctions();
     const badge = document.getElementById("tabFnBadge");
     if (badge) {
-      if (all.length) { badge.textContent = all.length.toLocaleString(); badge.classList.remove("hidden"); }
-      else badge.classList.add("hidden");
+      if (all.length) {
+        badge.textContent = all.length.toLocaleString();
+        badge.classList.remove("hidden");
+      } else badge.classList.add("hidden");
     }
   }
 }
