@@ -123,58 +123,102 @@
             </div>
           </div>
 
-          <div class="panel tree-panel">
-            <div class="panel-header">
-              <span class="panel-title">Struttura File</span>
-              <div class="header-btns">
-                <button class="btn btn-xs" onclick="espandiTutti()">
-                  Espandi &#8595;
-                </button>
-                <button class="btn btn-xs" onclick="comprimiTutti()">
-                  Comprimi &#8593;
-                </button>
+          <!-- ── TAB BAR ── -->
+          <div class="content-tabs" id="contentTabs">
+            <button class="ctab ctab-active" id="tabFiles" onclick="switchTab('files')">
+              <span class="ctab-icon">&#9783;</span> Struttura File
+            </button>
+            <button class="ctab" id="tabFunctions" onclick="switchTab('functions')">
+              <span class="ctab-icon">ƒ</span> Funzioni
+              <span class="ctab-badge hidden" id="tabFnBadge"></span>
+            </button>
+          </div>
+
+          <!-- ── FILE TREE TAB ── -->
+          <div class="tab-pane" id="paneFiles">
+            <div class="panel tree-panel">
+              <div class="panel-header">
+                <span class="panel-title">Struttura File</span>
+                <div class="header-btns">
+                  <button class="btn btn-xs" onclick="espandiTutti()">
+                    Espandi &#8595;
+                  </button>
+                  <button class="btn btn-xs" onclick="comprimiTutti()">
+                    Comprimi &#8593;
+                  </button>
+                </div>
               </div>
-            </div>
-            <div class="tree-toolbar">
-              <input
-                class="search-box"
-                id="searchFilter"
-                placeholder="&#9906;  Filtra file..."
-                type="text"
-              />
-            </div>
-            <div class="file-tree-container" id="fileTree">
-              <div class="empty-state">
-                <div class="empty-icon">&#9633;</div>
-                <div class="empty-text">
-                  Nessun file caricato.<br />Puoi trascinare
-                  <strong>più cartelle contemporaneamente.</strong>
+              <div class="tree-toolbar">
+                <input
+                  class="search-box"
+                  id="searchFilter"
+                  placeholder="&#9906;  Filtra file..."
+                  type="text"
+                />
+              </div>
+              <div class="file-tree-container" id="fileTree">
+                <div class="empty-state">
+                  <div class="empty-icon">&#9633;</div>
+                  <div class="empty-text">
+                    Nessun file caricato.<br />Puoi trascinare
+                    <strong>più cartelle contemporaneamente.</strong>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- ── FUNCTIONS PANEL ── -->
-          <div class="panel fn-panel hidden" id="fnPanel">
-            <div class="panel-header">
-              <span class="panel-title">ƒ &nbsp;Funzioni</span>
-              <div class="header-btns">
-                <span class="fn-panel-summary" id="fnPanelSummary"></span>
-                <button class="btn btn-xs" onclick="toggleFnSort()">
-                  <span id="fnSortLabel">Ordina: righe ↓</span>
-                </button>
+          <!-- ── FUNCTIONS FULL TAB ── -->
+          <div class="tab-pane hidden" id="paneFunctions">
+            <div class="panel fn-full-panel">
+              <div class="panel-header">
+                <span class="panel-title">ƒ &nbsp;Tutte le Funzioni</span>
+                <div class="header-btns">
+                  <span class="fn-panel-summary" id="fnFullSummary"></span>
+                  <button class="btn btn-xs" onclick="toggleFnFullSort('lines')" id="btnSortLines">Righe ↓</button>
+                  <button class="btn btn-xs" onclick="toggleFnFullSort('name')" id="btnSortName">Nome</button>
+                  <button class="btn btn-xs" onclick="toggleFnFullSort('file')" id="btnSortFile">File</button>
+                  <button class="btn btn-xs" onclick="toggleFnFullSort('kind')" id="btnSortKind">Tipo</button>
+                </div>
+              </div>
+
+              <!-- Sub-stats bar -->
+              <div class="fn-full-statsbar" id="fnFullStatsBar"></div>
+
+              <div class="tree-toolbar fn-full-toolbar">
+                <input
+                  class="search-box"
+                  id="fnFullSearch"
+                  placeholder="&#9906;  Filtra per nome, file, tipo..."
+                  type="text"
+                />
+                <div class="fn-full-kind-filters" id="fnKindFilters"></div>
+              </div>
+
+              <div class="fn-full-table-header">
+                <span class="fth-lines">Righe</span>
+                <span class="fth-kind">Tipo</span>
+                <span class="fth-name">Nome Funzione</span>
+                <span class="fth-file">File</span>
+                <span class="fth-range">Range</span>
+                <span class="fth-bar"></span>
+              </div>
+
+              <div class="fn-full-container" id="fnFullList">
+                <div class="empty-state">
+                  <div class="empty-icon">ƒ</div>
+                  <div class="empty-text">Carica dei file di codice per vedere le funzioni rilevate.</div>
+                </div>
               </div>
             </div>
-            <div class="tree-toolbar fn-panel-toolbar">
-              <input
-                class="search-box"
-                id="fnPanelSearch"
-                placeholder="&#9906;  Filtra funzioni, file..."
-                type="text"
-              />
-            </div>
-            <div class="fn-panel-container" id="fnPanelList">
-            </div>
+          </div>
+
+          <!-- ── OLD INLINE FUNCTIONS PANEL (hidden, kept for backward compat) ── -->
+          <div class="hidden" id="fnPanel">
+            <div id="fnPanelSummary"></div>
+            <span id="fnSortLabel"></span>
+            <input id="fnPanelSearch" type="text" />
+            <div id="fnPanelList"></div>
           </div>
         </div>
       </div>

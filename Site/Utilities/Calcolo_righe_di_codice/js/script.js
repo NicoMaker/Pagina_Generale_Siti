@@ -1035,17 +1035,26 @@ function toggleTheme() {
   } catch (e) {}
 }
 
-// ── FUNCTIONS PANEL ─────────────────────────────────────────────────
+// ── TAB SWITCHER ────────────────────────────────────────────────────
 
-let fnSortMode = "lines"; // "lines" | "name" | "file"
+let activeTab = "files";
 
-function toggleFnSort() {
-  const modes = ["lines", "name", "file"];
-  fnSortMode = modes[(modes.indexOf(fnSortMode) + 1) % modes.length];
-  const labels = { lines: "Ordina: righe ↓", name: "Ordina: nome A–Z", file: "Ordina: file" };
-  document.getElementById("fnSortLabel").textContent = labels[fnSortMode];
-  renderFnPanel();
+function switchTab(tab) {
+  activeTab = tab;
+  document.getElementById("paneFiles").classList.toggle("hidden", tab !== "files");
+  document.getElementById("paneFunctions").classList.toggle("hidden", tab !== "functions");
+  document.getElementById("tabFiles").classList.toggle("ctab-active", tab === "files");
+  document.getElementById("tabFunctions").classList.toggle("ctab-active", tab === "functions");
+  if (tab === "functions") renderFnFull();
 }
+
+// ── FUNCTIONS PANEL (legacy stubs – kept so updateStats doesn't crash) ──
+
+let fnSortMode = "lines";
+function toggleFnSort() {}
+function renderFnPanel() {}
+
+// ── COLLECT ALL FUNCTIONS ────────────────────────────────────────────
 
 function collectAllFunctions() {
   const all = [];
@@ -1077,66 +1086,158 @@ function collectAllFunctions() {
   return all;
 }
 
-function renderFnPanel() {
-  const panel = document.getElementById("fnPanel");
-  const listEl = document.getElementById("fnPanelList");
-  const summary = document.getElementById("fnPanelSummary");
-  const searchEl = document.getElementById("fnPanelSearch");
+// ── FULL FUNCTIONS VIEW ──────────────────────────────────────────────
+
+let fnFullSortMode = "lines"; // "lines" | "name" | "file" | "kind"
+let fnFullKindFilter = new Set(); // empty = show all
+
+function toggleFnFullSort(mode) {
+  fnFullSortMode = mode;
+  ["lines","name","file","kind"].forEach(m => {
+    const btn = document.getElementById("btnSort" + m.charAt(0).toUpperCase() + m.slice(1));
+    if (btn) btn.classList.toggle("sort-active", m === mode);
+  });
+  renderFnFull();
+}
+
+function renderFnFull() {
+  const listEl  = document.getElementById("fnFullList");
+  const summary = document.getElementById("fnFullSummary");
+  const statsBar = document.getElementById("fnFullStatsBar");
+  const searchEl = document.getElementById("fnFullSearch");
+  const badge   = document.getElementById("tabFnBadge");
 
   const all = collectAllFunctions();
 
+  // Update badge
+  if (badge) {
+    if (all.length) {
+      badge.textContent = all.length.toLocaleString();
+      badge.classList.remove("hidden");
+    } else {
+      badge.classList.add("hidden");
+    }
+  }
+
   if (!all.length) {
-    panel.classList.add("hidden");
+    listEl.innerHTML = `<div class="empty-state"><div class="empty-icon">ƒ</div><div class="empty-text">Carica dei file di codice per vedere le funzioni rilevate.</div></div>`;
+    statsBar.innerHTML = "";
+    if (summary) summary.innerHTML = "";
+    renderKindFilters([]);
     return;
   }
-  panel.classList.remove("hidden");
 
-  const filter = (searchEl ? searchEl.value : "").toLowerCase();
+  // Kind filter pills
+  const allKinds = [...new Set(all.map(r => r.kind))].sort();
+  renderKindFilters(allKinds);
 
-  let rows = filter
-    ? all.filter(r =>
-        r.fnName.toLowerCase().includes(filter) ||
-        r.filePath.toLowerCase().includes(filter) ||
-        r.kind.toLowerCase().includes(filter)
-      )
-    : all;
+  // Text + kind filter
+  const textFilter = (searchEl ? searchEl.value : "").toLowerCase().trim();
+  let rows = all.filter(r => {
+    const kindOk = fnFullKindFilter.size === 0 || fnFullKindFilter.has(r.kind);
+    if (!kindOk) return false;
+    if (!textFilter) return true;
+    return r.fnName.toLowerCase().includes(textFilter) ||
+           r.filePath.toLowerCase().includes(textFilter) ||
+           r.kind.toLowerCase().includes(textFilter);
+  });
 
-  if (fnSortMode === "lines") rows = rows.slice().sort((a, b) => b.linesFiltered - a.linesFiltered);
-  else if (fnSortMode === "name") rows = rows.slice().sort((a, b) => a.fnName.localeCompare(b.fnName));
-  else rows = rows.slice().sort((a, b) => a.filePath.localeCompare(b.filePath) || b.linesFiltered - a.linesFiltered);
+  // Sort
+  if (fnFullSortMode === "lines") rows = rows.slice().sort((a,b) => b.linesFiltered - a.linesFiltered);
+  else if (fnFullSortMode === "name") rows = rows.slice().sort((a,b) => a.fnName.localeCompare(b.fnName));
+  else if (fnFullSortMode === "file") rows = rows.slice().sort((a,b) => a.filePath.localeCompare(b.filePath) || b.linesFiltered - a.linesFiltered);
+  else if (fnFullSortMode === "kind") rows = rows.slice().sort((a,b) => a.kind.localeCompare(b.kind) || b.linesFiltered - a.linesFiltered);
 
-  const maxLines = rows.length ? rows.reduce((m, r) => Math.max(m, r.linesFiltered), 0) : 1;
-  const avgLines = rows.length ? Math.round(rows.reduce((s, r) => s + r.linesFiltered, 0) / rows.length) : 0;
+  // Stats
+  const totalLines = all.reduce((s,r) => s + r.linesFiltered, 0);
+  const avgLines   = all.length ? Math.round(totalLines / all.length) : 0;
+  const maxLines   = all.length ? Math.max(...all.map(r => r.linesFiltered)) : 0;
+  const sortedForMedian = all.map(r => r.linesFiltered).sort((a,b) => a-b);
+  const median = sortedForMedian.length ? sortedForMedian[Math.floor(sortedForMedian.length/2)] : 0;
+  const uniqueFiles = new Set(all.map(r => r.filePath)).size;
 
-  summary.innerHTML = `<span class="fn-panel-count">${rows.length} funzioni · media ${avgLines} ln</span>`;
+  statsBar.innerHTML = `
+    <div class="fn-full-stat sv-total"><span class="fn-full-stat-value">${all.length.toLocaleString()}</span><span class="fn-full-stat-label">Funzioni</span></div>
+    <div class="fn-full-stat sv-avg"><span class="fn-full-stat-value">${avgLines}</span><span class="fn-full-stat-label">Media ln</span></div>
+    <div class="fn-full-stat sv-med"><span class="fn-full-stat-value">${median}</span><span class="fn-full-stat-label">Mediana ln</span></div>
+    <div class="fn-full-stat sv-max"><span class="fn-full-stat-value">${maxLines}</span><span class="fn-full-stat-label">Max ln</span></div>
+    <div class="fn-full-stat sv-files"><span class="fn-full-stat-value">${uniqueFiles}</span><span class="fn-full-stat-label">File con fn</span></div>`;
+
+  if (summary) summary.innerHTML = `<span class="fn-panel-count">${rows.length.toLocaleString()} / ${all.length.toLocaleString()} funzioni</span>`;
+
+  // Render rows
+  const rowMaxLines = rows.length ? Math.max(...rows.map(r => r.linesFiltered)) : 1;
 
   listEl.innerHTML = "";
+
+  if (!rows.length) {
+    listEl.innerHTML = `<div class="fn-empty">Nessuna funzione corrisponde al filtro</div>`;
+    return;
+  }
+
   rows.forEach(r => {
-    const barPct = maxLines > 0 ? Math.max(2, Math.round((r.linesFiltered / maxLines) * 100)) : 2;
-    const lCls = r.linesFiltered > 100 ? "fn-lb-high" : r.linesFiltered > 30 ? "fn-lb-mid" : "fn-lb-low";
+    const barPct = rowMaxLines > 0 ? Math.max(2, Math.round((r.linesFiltered / rowMaxLines) * 100)) : 2;
+    const lCls   = r.linesFiltered > 100 ? "fn-lb-high" : r.linesFiltered > 30 ? "fn-lb-mid" : "fn-lb-low";
     const kindCls = kindColor(r.kind);
 
     const row = document.createElement("div");
-    row.className = "fn-panel-row";
+    row.className = "fn-full-row";
     row.innerHTML = `
-      <div class="fn-panel-row-main">
-        <span class="fn-panel-lines ${lCls}">${r.linesFiltered}</span>
-        <span class="fn-panel-lines-unit">ln</span>
-        <span class="fn-kind ${kindCls}">${escHtml(r.kind)}</span>
-        <span class="fn-panel-name">${escHtml(r.fnName)}</span>
+      <div class="frc-lines">
+        <span class="frc-lines-n ${lCls}">${r.linesFiltered}</span>
+        <span class="frc-lines-u">ln</span>
       </div>
-      <div class="fn-panel-row-meta">
-        <span class="fn-panel-file" title="${escHtml(r.filePath)}">${escHtml(r.filePath)}</span>
-        <span class="fn-panel-linerange">:${r.startLine}–${r.endLine}</span>
-      </div>
-      <div class="fn-bar-track fn-panel-bar-track"><div class="fn-bar" style="width:${barPct}%"></div></div>`;
+      <div class="frc-kind"><span class="fn-kind ${kindCls}">${escHtml(r.kind)}</span></div>
+      <div class="frc-name" title="${escHtml(r.fnName)}">${escHtml(r.fnName)}</div>
+      <div class="frc-file" title="${escHtml(r.filePath)}">${escHtml(r.filePath)}</div>
+      <div class="frc-range">${r.startLine}–${r.endLine} <span style="color:var(--border3)">(${r.linesRaw})</span></div>
+      <div class="frc-bar-wrap">
+        <div class="fn-full-bar-track"><div class="fn-full-bar" style="width:${barPct}%"></div></div>
+      </div>`;
     listEl.appendChild(row);
   });
 }
 
+function renderKindFilters(kinds) {
+  const container = document.getElementById("fnKindFilters");
+  if (!container) return;
+  container.innerHTML = "";
+  if (!kinds.length) return;
+
+  kinds.forEach(kind => {
+    const pill = document.createElement("span");
+    pill.className = `fn-kind-pill ${kindColor(kind)}${fnFullKindFilter.size === 0 || fnFullKindFilter.has(kind) ? " active" : ""}`;
+    pill.textContent = kind;
+    pill.title = `Filtra per tipo: ${kind}`;
+    pill.onclick = () => {
+      if (fnFullKindFilter.has(kind)) {
+        fnFullKindFilter.delete(kind);
+        if (fnFullKindFilter.size === 0) {
+          // all deselected → show all
+        }
+      } else {
+        fnFullKindFilter.add(kind);
+      }
+      renderFnFull();
+    };
+    container.appendChild(pill);
+  });
+
+  // "Tutti" reset pill
+  const all = document.createElement("span");
+  all.className = `fn-kind-pill${fnFullKindFilter.size === 0 ? " active" : ""}`;
+  all.style.cssText = "background:var(--surf3);color:var(--muted);border-color:var(--border2);";
+  all.textContent = "tutti";
+  all.onclick = () => { fnFullKindFilter.clear(); renderFnFull(); };
+  container.prepend(all);
+}
+
 document.addEventListener("DOMContentLoaded", () => {
-  const s = document.getElementById("fnPanelSearch");
-  if (s) s.addEventListener("input", renderFnPanel);
+  const s = document.getElementById("fnFullSearch");
+  if (s) s.addEventListener("input", renderFnFull);
+  // init sort button state
+  const btn = document.getElementById("btnSortLines");
+  if (btn) btn.classList.add("sort-active");
 });
 
 // ── FUNCTIONS MODAL ──────────────────────────────────────────────────
@@ -1284,5 +1385,15 @@ function updateStats() {
       files > 0 ? `lines: ${lines.toLocaleString()}` : "{ lines }";
   }
 
-  renderFnPanel();
+  // Update the functions tab (badge + content if active)
+  if (activeTab === "functions") renderFnFull();
+  else {
+    // Update badge count without full render
+    const all = collectAllFunctions();
+    const badge = document.getElementById("tabFnBadge");
+    if (badge) {
+      if (all.length) { badge.textContent = all.length.toLocaleString(); badge.classList.remove("hidden"); }
+      else badge.classList.add("hidden");
+    }
+  }
 }
