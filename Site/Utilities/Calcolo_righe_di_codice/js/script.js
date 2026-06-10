@@ -142,6 +142,7 @@ async function processFiles(files, sourceType) {
       lines,
       size: file.size,
       content,
+      functions: parseFunctions(content, fileName),
     });
     count++;
     if (count % 20 === 0) await delay(0);
@@ -480,6 +481,7 @@ async function processVirtualFiles(virtualFiles, parsed) {
       lines,
       size: vf.size,
       content: vf.content,
+      functions: parseFunctions(vf.content, fileName),
     });
     count++;
     if (count % 20 === 0) await delay(0);
@@ -588,7 +590,8 @@ function countLines(content) {
 function calcNodeStats(node, filter = "") {
   let files = 0,
     lines = 0,
-    size = 0;
+    size = 0,
+    fns = 0;
   const fl = (node.__files__ || []).filter(
     (f) => !filter || f.name.toLowerCase().includes(filter),
   );
@@ -596,14 +599,16 @@ function calcNodeStats(node, filter = "") {
     files++;
     lines += f.lines;
     size += f.size;
+    fns += (f.functions || []).length;
   }
   for (const k of Object.keys(node).filter((k) => k !== "__files__")) {
     const s = calcNodeStats(node[k], filter);
     files += s.files;
     lines += s.lines;
     size += s.size;
+    fns += s.fns;
   }
-  return { files, lines, size };
+  return { files, lines, size, fns };
 }
 
 // ── RENDER TREE ──
@@ -724,6 +729,22 @@ function renderFile(file) {
   badge.className = `file-badge ${cls}`;
   badge.textContent = file.lines.toLocaleString();
 
+  // ── Functions button ──
+  const fns = file.functions || [];
+  if (fns.length > 0) {
+    const fnBtn = document.createElement("span");
+    fnBtn.className = "fn-chip";
+    fnBtn.title = `${fns.length} funzioni — clicca per dettagli`;
+    fnBtn.innerHTML = `<span class="fn-chip-icon">ƒ</span>${fns.length}`;
+    fnBtn.onclick = (e) => {
+      e.stopPropagation();
+      apriFunzioniModal(file);
+    };
+    div.append(icon, name, badge, fnBtn);
+  } else {
+    div.append(icon, name, badge);
+  }
+
   const remove = document.createElement("span");
   remove.className = "file-remove";
   remove.textContent = "✕";
@@ -733,7 +754,7 @@ function renderFile(file) {
     removeFile(file.fullPath);
   };
 
-  div.append(icon, name, badge, remove);
+  div.appendChild(remove);
   return div;
 }
 
@@ -842,7 +863,10 @@ function removeFolder(folderPath) {
 // ── GLOBAL ACTIONS ──
 function ricalcola() {
   function recalc(node) {
-    for (const f of node.__files__ || []) f.lines = countLines(f.content);
+    for (const f of node.__files__ || []) {
+      f.lines = countLines(f.content);
+      f.functions = parseFunctions(f.content, f.name);
+    }
     for (const k of Object.keys(node).filter((k) => k !== "__files__"))
       recalc(node[k]);
   }
@@ -969,9 +993,12 @@ escludiCommenti.addEventListener("change", ricalcola);
 soloCodice.addEventListener("change", ricalcola);
 searchFilter.addEventListener("input", renderTree);
 
-// Close modal on backdrop click
+// Close modals on backdrop click
 document.getElementById("urlModal").addEventListener("click", (e) => {
   if (e.target === document.getElementById("urlModal")) chiudiModalUrl();
+});
+document.getElementById("fnModal").addEventListener("click", (e) => {
+  if (e.target === document.getElementById("fnModal")) chiudiFunzioniModal();
 });
 
 // Enter key in URL input
@@ -1008,6 +1035,214 @@ function toggleTheme() {
   } catch (e) {}
 }
 
+// ── FUNCTIONS PANEL ─────────────────────────────────────────────────
+
+let fnSortMode = "lines"; // "lines" | "name" | "file"
+
+function toggleFnSort() {
+  const modes = ["lines", "name", "file"];
+  fnSortMode = modes[(modes.indexOf(fnSortMode) + 1) % modes.length];
+  const labels = { lines: "Ordina: righe ↓", name: "Ordina: nome A–Z", file: "Ordina: file" };
+  document.getElementById("fnSortLabel").textContent = labels[fnSortMode];
+  renderFnPanel();
+}
+
+function collectAllFunctions() {
+  const all = [];
+  function walk(node, pathParts) {
+    for (const f of node.__files__ || []) {
+      const filePath = pathParts.length ? pathParts.join("/") + "/" + f.name : f.name;
+      for (const fn of f.functions || []) {
+        const slice = f.content.split("\n").slice(fn.startLine - 1, fn.endLine).join("\n");
+        const linesFiltered = countLines(slice);
+        all.push({
+          fnName: fn.name,
+          kind: fn.kind,
+          startLine: fn.startLine,
+          endLine: fn.endLine,
+          linesFiltered,
+          linesRaw: fn.endLine - fn.startLine + 1,
+          fileName: f.name,
+          filePath,
+        });
+      }
+    }
+    for (const k of Object.keys(node).filter(k => k !== "__files__")) {
+      walk(node[k], [...pathParts, k]);
+    }
+  }
+  for (const root of Object.keys(fileTree)) {
+    walk(fileTree[root], [root]);
+  }
+  return all;
+}
+
+function renderFnPanel() {
+  const panel = document.getElementById("fnPanel");
+  const listEl = document.getElementById("fnPanelList");
+  const summary = document.getElementById("fnPanelSummary");
+  const searchEl = document.getElementById("fnPanelSearch");
+
+  const all = collectAllFunctions();
+
+  if (!all.length) {
+    panel.classList.add("hidden");
+    return;
+  }
+  panel.classList.remove("hidden");
+
+  const filter = (searchEl ? searchEl.value : "").toLowerCase();
+
+  let rows = filter
+    ? all.filter(r =>
+        r.fnName.toLowerCase().includes(filter) ||
+        r.filePath.toLowerCase().includes(filter) ||
+        r.kind.toLowerCase().includes(filter)
+      )
+    : all;
+
+  if (fnSortMode === "lines") rows = rows.slice().sort((a, b) => b.linesFiltered - a.linesFiltered);
+  else if (fnSortMode === "name") rows = rows.slice().sort((a, b) => a.fnName.localeCompare(b.fnName));
+  else rows = rows.slice().sort((a, b) => a.filePath.localeCompare(b.filePath) || b.linesFiltered - a.linesFiltered);
+
+  const maxLines = rows.length ? rows.reduce((m, r) => Math.max(m, r.linesFiltered), 0) : 1;
+  const avgLines = rows.length ? Math.round(rows.reduce((s, r) => s + r.linesFiltered, 0) / rows.length) : 0;
+
+  summary.innerHTML = `<span class="fn-panel-count">${rows.length} funzioni · media ${avgLines} ln</span>`;
+
+  listEl.innerHTML = "";
+  rows.forEach(r => {
+    const barPct = maxLines > 0 ? Math.max(2, Math.round((r.linesFiltered / maxLines) * 100)) : 2;
+    const lCls = r.linesFiltered > 100 ? "fn-lb-high" : r.linesFiltered > 30 ? "fn-lb-mid" : "fn-lb-low";
+    const kindCls = kindColor(r.kind);
+
+    const row = document.createElement("div");
+    row.className = "fn-panel-row";
+    row.innerHTML = `
+      <div class="fn-panel-row-main">
+        <span class="fn-panel-lines ${lCls}">${r.linesFiltered}</span>
+        <span class="fn-panel-lines-unit">ln</span>
+        <span class="fn-kind ${kindCls}">${escHtml(r.kind)}</span>
+        <span class="fn-panel-name">${escHtml(r.fnName)}</span>
+      </div>
+      <div class="fn-panel-row-meta">
+        <span class="fn-panel-file" title="${escHtml(r.filePath)}">${escHtml(r.filePath)}</span>
+        <span class="fn-panel-linerange">:${r.startLine}–${r.endLine}</span>
+      </div>
+      <div class="fn-bar-track fn-panel-bar-track"><div class="fn-bar" style="width:${barPct}%"></div></div>`;
+    listEl.appendChild(row);
+  });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const s = document.getElementById("fnPanelSearch");
+  if (s) s.addEventListener("input", renderFnPanel);
+});
+
+// ── FUNCTIONS MODAL ──────────────────────────────────────────────────
+
+function apriFunzioniModal(file) {
+  const modal = document.getElementById("fnModal");
+  const title = document.getElementById("fnModalTitle");
+  const list  = document.getElementById("fnModalList");
+  const stats = document.getElementById("fnModalStats");
+  const search = document.getElementById("fnModalSearch");
+
+  title.textContent = file.name;
+  search.value = "";
+
+  const fns = (file.functions || []).slice().sort((a, b) => b.lines - a.lines);
+
+  function renderList(filter) {
+    list.innerHTML = "";
+    const filtered = filter
+      ? fns.filter(f => f.name.toLowerCase().includes(filter.toLowerCase()))
+      : fns;
+
+    if (!filtered.length) {
+      list.innerHTML = `<div class="fn-empty">Nessuna funzione trovata</div>`;
+      return;
+    }
+
+    // Re-count lines per function respecting current filters
+    const fileLines = file.content.split("\n");
+    const counted = filtered.map(fn => {
+      const slice = fileLines.slice(fn.startLine - 1, fn.endLine).join("\n");
+      return { ...fn, linesFiltered: countLines(slice) };
+    });
+    // Re-sort by filtered count for accurate bar
+    counted.sort((a, b) => b.linesFiltered - a.linesFiltered);
+    const maxFiltered = counted[0] ? counted[0].linesFiltered : 1;
+
+    counted.forEach((fn) => {
+      const row = document.createElement("div");
+      row.className = "fn-row";
+      const barPct = maxFiltered > 0 ? Math.max(4, Math.round((fn.linesFiltered / maxFiltered) * 100)) : 4;
+      const kindClass = kindColor(fn.kind);
+      const lCls = fn.linesFiltered > 100 ? "fn-lb-high" : fn.linesFiltered > 30 ? "fn-lb-mid" : "fn-lb-low";
+
+      row.innerHTML = `
+        <div class="fn-row-top">
+          <span class="fn-kind ${kindClass}">${escHtml(fn.kind)}</span>
+          <span class="fn-name">${escHtml(fn.name)}</span>
+          <span class="fn-lines-num ${lCls}">${fn.linesFiltered}</span><span class="fn-lines-unit">ln</span>
+        </div>
+        <div class="fn-row-meta">righe ${fn.startLine}–${fn.endLine} &nbsp;·&nbsp; totali ${fn.endLine - fn.startLine + 1}</div>
+        <div class="fn-bar-track"><div class="fn-bar" style="width:${barPct}%"></div></div>`;
+      list.appendChild(row);
+    });
+  }
+
+  // Stats (re-count all functions through countLines filter)
+  const fileLines = file.content.split("\n");
+  const allCounted = fns.map(fn => {
+    const slice = fileLines.slice(fn.startLine - 1, fn.endLine).join("\n");
+    return countLines(slice);
+  });
+  const totalFnLines = allCounted.reduce((s, n) => s + n, 0);
+  const maxFn = allCounted.length ? Math.max(...allCounted) : 0;
+  const avg = fns.length ? Math.round(totalFnLines / fns.length) : 0;
+  stats.innerHTML = `
+    <span class="fn-stat"><b>${fns.length}</b> funzioni</span>
+    <span class="fn-stat-sep">·</span>
+    <span class="fn-stat">media <b>${avg}</b> ln</span>
+    <span class="fn-stat-sep">·</span>
+    <span class="fn-stat">max <b>${maxFn}</b> ln</span>`;
+
+  renderList("");
+  search.oninput = () => renderList(search.value);
+
+  modal.classList.remove("hidden");
+  setTimeout(() => search.focus(), 60);
+}
+
+function chiudiFunzioniModal() {
+  document.getElementById("fnModal").classList.add("hidden");
+}
+
+function kindColor(kind) {
+  const map = {
+    function: "kc-fn",
+    arrow: "kc-arrow",
+    method: "kc-method",
+    fun: "kc-fun",
+    func: "kc-fun",
+    def: "kc-def",
+    fn: "kc-fn",
+    sub: "kc-sub",
+    defp: "kc-defp",
+    class_method: "kc-method",
+  };
+  return map[kind] || "kc-fn";
+}
+
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") {
+    chiudiFunzioniModal();
+    chiudiModalUrl();
+  }
+});
+
 // ── BOOT ──
 loadExtensions().then(() => {
   console.log("{ lines } v3 ready ✓");
@@ -1022,12 +1257,14 @@ try {
 function updateStats() {
   let files = 0,
     lines = 0,
-    size = 0;
+    size = 0,
+    fns = 0;
   for (const root of Object.keys(fileTree)) {
     const s = calcNodeStats(fileTree[root]);
     files += s.files;
     lines += s.lines;
     size += s.size;
+    fns  += s.fns;
   }
 
   document.getElementById("totalFiles").textContent = files.toLocaleString();
@@ -1035,6 +1272,7 @@ function updateStats() {
   document.getElementById("avgLines").textContent =
     files > 0 ? Math.round(lines / files).toLocaleString() : "0";
   document.getElementById("totalSize").textContent = formatBytes(size);
+  document.getElementById("totalFunctions").textContent = fns.toLocaleString();
 
   const statsRow = document.getElementById("statsRow");
   if (files > 0) statsRow.classList.remove("hidden");
@@ -1045,4 +1283,6 @@ function updateStats() {
     logoMark.innerHTML =
       files > 0 ? `lines: ${lines.toLocaleString()}` : "{ lines }";
   }
+
+  renderFnPanel();
 }

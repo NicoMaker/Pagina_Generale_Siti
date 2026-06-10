@@ -117,6 +117,10 @@
               <div class="stat-n" id="totalSize">0</div>
               <div class="stat-lbl">Dimensione totale</div>
             </div>
+            <div class="stat-card c5">
+              <div class="stat-n" id="totalFunctions">0</div>
+              <div class="stat-lbl">Funzioni rilevate</div>
+            </div>
           </div>
 
           <div class="panel tree-panel">
@@ -147,6 +151,29 @@
                   <strong>più cartelle contemporaneamente.</strong>
                 </div>
               </div>
+            </div>
+          </div>
+
+          <!-- ── FUNCTIONS PANEL ── -->
+          <div class="panel fn-panel hidden" id="fnPanel">
+            <div class="panel-header">
+              <span class="panel-title">ƒ &nbsp;Funzioni</span>
+              <div class="header-btns">
+                <span class="fn-panel-summary" id="fnPanelSummary"></span>
+                <button class="btn btn-xs" onclick="toggleFnSort()">
+                  <span id="fnSortLabel">Ordina: righe ↓</span>
+                </button>
+              </div>
+            </div>
+            <div class="tree-toolbar fn-panel-toolbar">
+              <input
+                class="search-box"
+                id="fnPanelSearch"
+                placeholder="&#9906;  Filtra funzioni, file..."
+                type="text"
+              />
+            </div>
+            <div class="fn-panel-container" id="fnPanelList">
             </div>
           </div>
         </div>
@@ -233,9 +260,30 @@
       </div>
     </div>
 
+    <!-- ── FUNCTIONS MODAL ── -->
+    <div class="modal-backdrop hidden" id="fnModal">
+      <div class="modal fn-modal">
+        <div class="modal-header">
+          <span class="modal-title">ƒ &nbsp;<span id="fnModalTitle"></span></span>
+          <button class="modal-close" onclick="chiudiFunzioniModal()">✕</button>
+        </div>
+        <div class="fn-modal-stats" id="fnModalStats"></div>
+        <div class="fn-modal-search">
+          <input
+            class="search-box"
+            id="fnModalSearch"
+            type="text"
+            placeholder="&#9906;  Filtra funzioni..."
+          />
+        </div>
+        <div class="fn-modal-list" id="fnModalList"></div>
+      </div>
+    </div>
+
     <div class="toast" id="toast"></div>
     <input type="file" id="fileInput" multiple />
     <input type="file" id="folderInput" webkitdirectory directory multiple />
-    <script src="script.js"></script>
+    <script src="js/function-parser.js"></script>
+    <script src="js/script.js"></script>
   </body>
 </html>
