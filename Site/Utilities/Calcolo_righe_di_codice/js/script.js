@@ -663,7 +663,7 @@ function renderNode(node, name, depth, filter, isRoot = false, nodePath = []) {
 
   const badge = document.createElement("span");
   badge.className = "folder-badge";
-  badge.textContent = `${stats.lines.toLocaleString()} ln`;
+  badge.textContent = `${stats.lines.toLocaleString("it-IT")} ln`;
 
   const countSp = document.createElement("span");
   countSp.className = "folder-count";
@@ -727,7 +727,7 @@ function renderFile(file) {
 
   const badge = document.createElement("span");
   badge.className = `file-badge ${cls}`;
-  badge.textContent = file.lines.toLocaleString();
+  badge.textContent = file.lines.toLocaleString("it-IT");
 
   // ── Functions button ──
   const fns = file.functions || [];
@@ -1128,7 +1128,7 @@ function renderFnFull() {
   // Update badge
   if (badge) {
     if (all.length) {
-      badge.textContent = all.length.toLocaleString();
+      badge.textContent = all.length.toLocaleString("it-IT");
       badge.classList.remove("hidden");
     } else {
       badge.classList.add("hidden");
@@ -1201,14 +1201,14 @@ function renderFnFull() {
   const uniqueFiles = new Set(all.map((r) => r.filePath)).size;
 
   statsBar.innerHTML = `
-    <div class="fn-full-stat sv-total"><span class="fn-full-stat-value">${all.length.toLocaleString()}</span><span class="fn-full-stat-label">Funzioni</span></div>
+    <div class="fn-full-stat sv-total"><span class="fn-full-stat-value">${all.length.toLocaleString("it-IT")}</span><span class="fn-full-stat-label">Funzioni</span></div>
     <div class="fn-full-stat sv-avg"><span class="fn-full-stat-value">${avgLines}</span><span class="fn-full-stat-label">Media ln</span></div>
     <div class="fn-full-stat sv-med"><span class="fn-full-stat-value">${median}</span><span class="fn-full-stat-label">Mediana ln</span></div>
     <div class="fn-full-stat sv-max"><span class="fn-full-stat-value">${maxLines}</span><span class="fn-full-stat-label">Max ln</span></div>
     <div class="fn-full-stat sv-files"><span class="fn-full-stat-value">${uniqueFiles}</span><span class="fn-full-stat-label">File con fn</span></div>`;
 
   if (summary)
-    summary.innerHTML = `<span class="fn-panel-count">${rows.length.toLocaleString()} / ${all.length.toLocaleString()} funzioni</span>`;
+    summary.innerHTML = `<span class="fn-panel-count">${rows.length.toLocaleString("it-IT")} / ${all.length.toLocaleString("it-IT")} funzioni</span>`;
 
   // Render rows
   const rowMaxLines = rows.length
@@ -1359,8 +1359,8 @@ function renderFileList(files, fnCountPerFile, searchTerm) {
 
   listEl.innerHTML = "";
   visible.forEach((fp) => {
-    const isActive = fnFullFileFilter.size === 0 || fnFullFileFilter.has(fp);
-    const isChecked = fnFullFileFilter.has(fp);
+    // When set is empty it means "all selected" — show all as checked
+    const isChecked = fnFullFileFilter.size === 0 || fnFullFileFilter.has(fp);
     const count = fnCountPerFile[fp] || 0;
     const shortName = fp.split("/").pop();
     const dir = fp.includes("/") ? fp.substring(0, fp.lastIndexOf("/")) : "";
@@ -1393,10 +1393,24 @@ function filterFileList() {
 }
 
 function toggleFileItem(fp) {
-  if (fnFullFileFilter.has(fp)) {
+  if (fnFullFileFilter.size === 0) {
+    // "All selected" state — deselecting one means populate set with all except this
+    const allFns = collectAllFunctions();
+    const allFiles = [...new Set(allFns.map((r) => r.filePath))];
+    allFiles.forEach((f) => {
+      if (f !== fp) fnFullFileFilter.add(f);
+    });
+  } else if (fnFullFileFilter.has(fp)) {
     fnFullFileFilter.delete(fp);
+    // If now empty again it means all are selected — canonical empty = all
   } else {
     fnFullFileFilter.add(fp);
+    // If all files are now selected, collapse back to empty = "all" canonical state
+    const allFns = collectAllFunctions();
+    const allFiles = [...new Set(allFns.map((r) => r.filePath))];
+    if (allFiles.every((f) => fnFullFileFilter.has(f))) {
+      fnFullFileFilter.clear();
+    }
   }
   renderFnFull();
 }
@@ -1424,9 +1438,8 @@ function clearFileFilter() {
 }
 
 function selectAllFiles() {
-  const all = collectAllFunctions();
-  const files = [...new Set(all.map((r) => r.filePath))];
   fnFullFileFilter.clear();
+  fnFileDropdownOpen = false;
   renderFnFull();
 }
 
@@ -1574,12 +1587,15 @@ function updateStats() {
     fns += s.fns;
   }
 
-  document.getElementById("totalFiles").textContent = files.toLocaleString();
-  document.getElementById("totalLines").textContent = lines.toLocaleString();
+  document.getElementById("totalFiles").textContent =
+    files.toLocaleString("it-IT");
+  document.getElementById("totalLines").textContent =
+    lines.toLocaleString("it-IT");
   document.getElementById("avgLines").textContent =
-    files > 0 ? Math.round(lines / files).toLocaleString() : "0";
+    files > 0 ? Math.round(lines / files).toLocaleString("it-IT") : "0";
   document.getElementById("totalSize").textContent = formatBytes(size);
-  document.getElementById("totalFunctions").textContent = fns.toLocaleString();
+  document.getElementById("totalFunctions").textContent =
+    fns.toLocaleString("it-IT");
 
   const statsRow = document.getElementById("statsRow");
   if (files > 0) statsRow.classList.remove("hidden");
@@ -1588,7 +1604,7 @@ function updateStats() {
   const logoMark = document.getElementById("logoCounter");
   if (logoMark) {
     logoMark.innerHTML =
-      files > 0 ? `lines: ${lines.toLocaleString()}` : "{ lines }";
+      files > 0 ? `lines: ${lines.toLocaleString("it-IT")}` : "{ lines }";
   }
 
   // Update the functions tab (badge + content if active)
@@ -1599,7 +1615,7 @@ function updateStats() {
     const badge = document.getElementById("tabFnBadge");
     if (badge) {
       if (all.length) {
-        badge.textContent = all.length.toLocaleString();
+        badge.textContent = all.length.toLocaleString("it-IT");
         badge.classList.remove("hidden");
       } else badge.classList.add("hidden");
     }
