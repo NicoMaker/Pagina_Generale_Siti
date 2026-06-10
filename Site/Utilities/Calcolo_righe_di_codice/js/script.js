@@ -669,6 +669,12 @@ function renderNode(node, name, depth, filter, isRoot = false, nodePath = []) {
   countSp.className = "folder-count";
   countSp.textContent = `${stats.files}f`;
 
+  const fnSp = document.createElement("span");
+  fnSp.className = "folder-fn-count";
+  fnSp.title = `${stats.fns} funzioni in questa cartella`;
+  fnSp.innerHTML = `<span class="fn-chip-icon">ƒ</span>${stats.fns}`;
+  if (stats.fns === 0) fnSp.style.display = "none";
+
   const removeBtn = document.createElement("span");
   removeBtn.className = "folder-remove";
   removeBtn.textContent = "✕";
@@ -678,7 +684,7 @@ function renderNode(node, name, depth, filter, isRoot = false, nodePath = []) {
     removeFolder(nodePath);
   };
 
-  header.append(arrow, icon, nameSp, badge, countSp, removeBtn);
+  header.append(arrow, icon, nameSp, badge, countSp, fnSp, removeBtn);
 
   const children = document.createElement("div");
   children.className = "folder-children open";
@@ -1244,7 +1250,7 @@ function renderFnFull() {
       </div>
       <div class="frc-kind"><span class="fn-kind ${kindCls}">${escHtml(r.kind)}</span></div>
       <div class="frc-name" title="${escHtml(r.fnName)}">${escHtml(r.fnName)}</div>
-      <div class="frc-file" title="${escHtml(r.filePath)}">${escHtml(r.filePath)}</div>
+      <div class="frc-file" title="${escHtml(r.filePath)}">${escHtml(r.filePath.split("/").slice(-2).join("/"))}</div>
       <div class="frc-range">${r.startLine}–${r.endLine} <span style="color:var(--border3)">(${r.linesRaw})</span></div>
       <div class="frc-bar-wrap">
         <div class="fn-full-bar-track"><div class="fn-full-bar" style="width:${barPct}%"></div></div>

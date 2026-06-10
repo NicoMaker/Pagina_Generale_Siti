@@ -690,6 +690,22 @@ body::after {
   color: var(--dim);
 }
 
+.folder-fn-count {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--a2);
+  background: rgba(110,106,255,0.12);
+  border: 1px solid rgba(110,106,255,0.25);
+  border-radius: 4px;
+  padding: 1px 5px;
+  cursor: default;
+}
+.folder-fn-count .fn-chip-icon {
+  color: var(--a1);
+  margin-right: 2px;
+}
+
 .folder-children {
   margin-left: 18px;
   padding-left: 10px;
@@ -1346,7 +1362,7 @@ input[type="file"] {
 /* Table header */
 .fn-full-table-header {
   display: grid;
-  grid-template-columns: 72px 68px 1fr 220px 90px 120px;
+  grid-template-columns: 72px 68px 1fr minmax(180px, 1.5fr) 90px 120px;
   gap: 6px;
   padding: 6px 14px 6px 18px;
   border-bottom: 1px solid var(--border);
@@ -1361,7 +1377,7 @@ input[type="file"] {
 
 @media (max-width: 1100px) {
   .fn-full-table-header {
-    grid-template-columns: 72px 68px 1fr 160px 80px 80px;
+    grid-template-columns: 72px 68px 1fr minmax(140px, 1.2fr) 80px 80px;
   }
 }
 @media (max-width: 860px) {
@@ -1396,7 +1412,7 @@ input[type="file"] {
 /* Full row */
 .fn-full-row {
   display: grid;
-  grid-template-columns: 72px 68px 1fr 220px 90px 120px;
+  grid-template-columns: 72px 68px 1fr minmax(180px, 1.5fr) 90px 120px;
   gap: 6px;
   align-items: center;
   background: var(--surf2);
@@ -1415,7 +1431,7 @@ input[type="file"] {
 
 @media (max-width: 1100px) {
   .fn-full-row {
-    grid-template-columns: 72px 68px 1fr 160px 80px 80px;
+    grid-template-columns: 72px 68px 1fr minmax(140px, 1.2fr) 80px 80px;
   }
 }
 @media (max-width: 860px) {
