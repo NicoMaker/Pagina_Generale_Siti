@@ -33,6 +33,9 @@
           <button class="btn btn-dl" onclick="scaricaTuttiFile()">
             ⬇ Scarica tutto
           </button>
+          <button class="btn btn-dl-sel" onclick="apriModalScarica()">
+            ⬇ Selezione
+          </button>
           <button class="btn btn-danger" onclick="rimuoviTutti()">
             &#10005; Svuota
           </button>
@@ -404,6 +407,59 @@
         <div class="code-modal-meta" id="codeModalMeta"></div>
         <div class="code-modal-body">
           <pre class="code-modal-pre" id="codeModalPre"></pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── DOWNLOAD SELECTION MODAL ── -->
+    <div class="modal-backdrop hidden" id="dlSelModal">
+      <div class="modal dl-sel-modal">
+        <div class="modal-header">
+          <span class="modal-title">⬇ &nbsp;Scarica selezione</span>
+          <button class="modal-close" onclick="chiudiModalScarica()">✕</button>
+        </div>
+        <div class="dl-sel-body">
+
+          <!-- MODE TABS -->
+          <div class="dl-sel-tabs">
+            <button class="dl-tab dl-tab-active" id="dlTabFiles" onclick="switchDlTab('files')">
+              <span class="ctab-icon">&#9783;</span> File
+            </button>
+            <button class="dl-tab" id="dlTabFunctions" onclick="switchDlTab('functions')">
+              <span class="ctab-icon">ƒ</span> Funzioni
+            </button>
+          </div>
+
+          <!-- ── FILES PANE ── -->
+          <div class="dl-pane" id="dlPaneFiles">
+            <div class="dl-sel-toolbar">
+              <input class="search-box dl-search" id="dlFileSearch" placeholder="&#9906;  Filtra file..." type="text" oninput="renderDlFileList()" />
+              <div class="dl-sel-actions">
+                <button class="btn btn-xs" onclick="dlSelectAllFiles(true)">Seleziona tutti</button>
+                <button class="btn btn-xs" onclick="dlSelectAllFiles(false)">Deseleziona tutti</button>
+              </div>
+            </div>
+            <div class="dl-sel-summary" id="dlFileSummary"></div>
+            <div class="dl-file-list" id="dlFileList"></div>
+          </div>
+
+          <!-- ── FUNCTIONS PANE ── -->
+          <div class="dl-pane hidden" id="dlPaneFunctions">
+            <div class="dl-sel-toolbar">
+              <input class="search-box dl-search" id="dlFnSearch" placeholder="&#9906;  Filtra funzioni..." type="text" oninput="renderDlFnList()" />
+              <div class="dl-sel-actions">
+                <button class="btn btn-xs" onclick="dlSelectAllFns(true)">Seleziona tutte</button>
+                <button class="btn btn-xs" onclick="dlSelectAllFns(false)">Deseleziona tutte</button>
+              </div>
+            </div>
+            <div class="dl-sel-summary" id="dlFnSummary"></div>
+            <div class="dl-fn-list" id="dlFnList"></div>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-ghost" onclick="chiudiModalScarica()">Annulla</button>
+          <button class="btn btn-import" id="dlSelConfirmBtn" onclick="eseguiDownloadSelezione()">⬇ Scarica selezionati</button>
         </div>
       </div>
     </div>
