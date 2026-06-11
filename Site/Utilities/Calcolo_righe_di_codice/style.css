@@ -2276,3 +2276,17 @@ input[type="file"] {
   color: var(--a1);
   text-decoration: underline;
 }
+
+/* ── DOWNLOAD BUTTON ──────────────────────────────────────────────── */
+.btn-dl {
+  background: linear-gradient(135deg, rgba(0,229,160,0.12), rgba(0,229,160,0.06));
+  color: var(--a3);
+  border: 1px solid rgba(0,229,160,0.25);
+  font-size: 11px;
+  white-space: nowrap;
+}
+.btn-dl:hover {
+  background: var(--a3);
+  color: #000;
+  border-color: var(--a3);
+}

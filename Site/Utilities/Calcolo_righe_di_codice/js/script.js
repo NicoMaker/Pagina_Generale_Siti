@@ -1505,6 +1505,7 @@ document.addEventListener("DOMContentLoaded", () => {
 // ── FUNCTIONS MODAL ──────────────────────────────────────────────────
 
 function apriFunzioniModal(file) {
+  _fnModalFile = file;
   const modal = document.getElementById("fnModal");
   const title = document.getElementById("fnModalTitle");
   const list = document.getElementById("fnModalList");
@@ -1676,6 +1677,10 @@ function apriFileModal(file) {
     }).catch(() => showToast("⚠ Copia non riuscita"));
   };
 
+  // Download
+  const dlBtn = document.getElementById("fileModalDlBtn");
+  dlBtn.onclick = () => _scaricaFileCorrente(file.name, file.content);
+
   modal.classList.remove("hidden");
   codeEl.scrollTop = 0;
 }
@@ -1724,12 +1729,142 @@ function apriCodiceModal(fnName, kind, filePath, fileContent, startLine, endLine
     }).catch(() => showToast("⚠ Copia non riuscita"));
   };
 
+  // Download
+  const dlBtn = document.getElementById("codeModalDlBtn");
+  dlBtn.onclick = () => _scaricaFunzione(fnName, fileContent, startLine, endLine, filePath);
+
   modal.classList.remove("hidden");
   codeEl.scrollTop = 0;
 }
 
 function chiudiCodiceModal() {
   document.getElementById("codeModal").classList.add("hidden");
+}
+
+// ── DOWNLOAD HELPERS ─────────────────────────────────────────────────
+
+/** Trigger a browser file download */
+function dlBlob(content, filename, mime = "text/plain") {
+  const blob = new Blob([content], { type: mime });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 2000);
+}
+
+/** Collect all files from fileTree as flat array of { path, content } */
+function collectAllFiles() {
+  const result = [];
+  function walk(node, parts) {
+    for (const f of node.__files__ || []) {
+      result.push({ path: parts.length ? parts.join("/") + "/" + f.name : f.name, content: f.content, file: f });
+    }
+    for (const k of Object.keys(node).filter(k => k !== "__files__"))
+      walk(node[k], [...parts, k]);
+  }
+  for (const root of Object.keys(fileTree)) walk(fileTree[root], [root]);
+  return result;
+}
+
+/** Download a single function's code — called from codeModal */
+function _scaricaFunzione(fnName, fileContent, startLine, endLine, filePath) {
+  const lines = fileContent.split("\n").slice(startLine - 1, endLine);
+  const minIndent = lines.filter(l => l.trim()).reduce((m, l) => Math.min(m, l.match(/^(\s*)/)[1].length), Infinity);
+  const dedented = lines.map(l => l.slice(minIndent === Infinity ? 0 : minIndent));
+  const ext = filePath.split(".").pop() || "txt";
+  const safeName = fnName.replace(/[^a-zA-Z0-9_\-]/g, "_");
+  dlBlob(dedented.join("\n"), `${safeName}.${ext}`);
+  showToast(`⬇ Scaricato ${safeName}.${ext}`);
+}
+
+/** Download the file currently open in fileModal */
+function _scaricaFileCorrente(name, content) {
+  dlBlob(content, name);
+  showToast(`⬇ Scaricato ${name}`);
+}
+
+/** Download all functions of a single file as a .txt report (called from fnModal) */
+let _fnModalFile = null; // set when fnModal opens
+
+function scaricaFunzioniFile() {
+  if (!_fnModalFile) return;
+  const file = _fnModalFile;
+  const fns = (file.functions || []).slice().sort((a, b) => b.lines - a.lines);
+  if (!fns.length) { showToast("⚠ Nessuna funzione da scaricare"); return; }
+  const lines = file.content.split("\n");
+  const parts = [`// ── Funzioni di: ${file.name} ── ${fns.length} funzioni\n`];
+  fns.forEach((fn, i) => {
+    const slice = lines.slice(fn.startLine - 1, fn.endLine);
+    const minI = slice.filter(l => l.trim()).reduce((m, l) => Math.min(m, l.match(/^(\s*)/)[1].length), Infinity);
+    const code = slice.map(l => l.slice(minI === Infinity ? 0 : minI)).join("\n");
+    parts.push(`\n// [${ i + 1 }] ${fn.kind} ${fn.name}  (righe ${fn.startLine}–${fn.endLine})\n${code}\n`);
+  });
+  const baseName = file.name.replace(/\.[^.]+$/, "");
+  dlBlob(parts.join("\n"), `${baseName}_functions.txt`);
+  showToast(`⬇ Scaricato ${baseName}_functions.txt`);
+}
+
+/** Download ALL visible/filtered functions from the fn full tab */
+async function scaricaTutteFunzioni() {
+  const all = collectAllFunctions();
+  if (!all.length) { showToast("⚠ Nessuna funzione da scaricare"); return; }
+
+  // Group by file for neat ZIP structure
+  const byFile = {};
+  all.forEach(r => {
+    if (!byFile[r.filePath]) byFile[r.filePath] = [];
+    byFile[r.filePath].push(r);
+  });
+
+  if (typeof JSZip === "undefined") {
+    // Fallback: single txt
+    const parts = [`// ── Tutte le funzioni — ${fmtN(all.length)} totali\n`];
+    all.forEach((r, i) => {
+      const lines = (r.fileContent || "").split("\n").slice(r.startLine - 1, r.endLine);
+      const minI = lines.filter(l => l.trim()).reduce((m, l) => Math.min(m, l.match(/^(\s*)/)[1].length), Infinity);
+      const code = lines.map(l => l.slice(minI === Infinity ? 0 : minI)).join("\n");
+      parts.push(`\n// [${ i + 1 }] ${r.kind} ${r.fnName}  —  ${r.filePath}  (righe ${r.startLine}–${r.endLine})\n${code}\n`);
+    });
+    dlBlob(parts.join("\n"), "all_functions.txt");
+    showToast(`⬇ Scaricato all_functions.txt (${fmtN(all.length)} funzioni)`);
+    return;
+  }
+
+  const zip = new JSZip();
+  const fnFolder = zip.folder("functions");
+  Object.entries(byFile).forEach(([fp, fns]) => {
+    const parts = [`// ── ${fp} — ${fns.length} funzioni\n`];
+    fns.sort((a, b) => a.startLine - b.startLine).forEach((r, i) => {
+      const lines = (r.fileContent || "").split("\n").slice(r.startLine - 1, r.endLine);
+      const minI = lines.filter(l => l.trim()).reduce((m, l) => Math.min(m, l.match(/^(\s*)/)[1].length), Infinity);
+      const code = lines.map(l => l.slice(minI === Infinity ? 0 : minI)).join("\n");
+      parts.push(`\n// [${i + 1}] ${r.kind} ${r.fnName}  (righe ${r.startLine}–${r.endLine})\n${code}\n`);
+    });
+    const safeFile = fp.replace(/[\/\\]/g, "__").replace(/[^a-zA-Z0-9._\-]/g, "_");
+    fnFolder.file(`${safeFile}.txt`, parts.join("\n"));
+  });
+  const blob = await zip.generateAsync({ type: "blob" });
+  dlBlob(blob, "functions.zip", "application/zip");
+  showToast(`⬇ Scaricato functions.zip (${fmtN(all.length)} funzioni)`);
+}
+
+/** Download ALL loaded files as a ZIP */
+async function scaricaTuttiFile() {
+  const allFiles = collectAllFiles();
+  if (!allFiles.length) { showToast("⚠ Nessun file da scaricare"); return; }
+
+  if (typeof JSZip === "undefined") {
+    showToast("⚠ JSZip non caricato — impossibile creare ZIP");
+    return;
+  }
+
+  const zip = new JSZip();
+  allFiles.forEach(({ path, content }) => zip.file(path, content));
+  const blob = await zip.generateAsync({ type: "blob" });
+  dlBlob(blob, "progetto.zip", "application/zip");
+  showToast(`⬇ Scaricato progetto.zip (${fmtN(allFiles.length)} file)`);
 }
 
 // ── BOOT ──

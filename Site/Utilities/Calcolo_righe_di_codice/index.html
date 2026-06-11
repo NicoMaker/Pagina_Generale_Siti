@@ -10,6 +10,7 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="style.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
   </head>
   <body>
     <div class="layout">
@@ -28,6 +29,9 @@
           </button>
           <button class="btn btn-ghost" onclick="ricalcola()">
             &#8635; Ricalcola
+          </button>
+          <button class="btn btn-dl" onclick="scaricaTuttiFile()">
+            ⬇ Scarica tutto
           </button>
           <button class="btn btn-danger" onclick="rimuoviTutti()">
             &#10005; Svuota
@@ -183,6 +187,7 @@
                 <span class="panel-title">ƒ &nbsp;Tutte le Funzioni</span>
                 <div class="header-btns">
                   <span class="fn-panel-summary" id="fnFullSummary"></span>
+                  <button class="btn btn-xs btn-dl" onclick="scaricaTutteFunzioni()">⬇ Scarica tutte</button>
                   <button
                     class="btn btn-xs"
                     onclick="toggleFnFullSort('lines')"
@@ -348,7 +353,10 @@
           <span class="modal-title"
             >ƒ &nbsp;<span id="fnModalTitle"></span
           ></span>
-          <button class="modal-close" onclick="chiudiFunzioniModal()">✕</button>
+          <div class="code-modal-header-actions">
+            <button class="btn btn-xs btn-dl" id="fnModalDlBtn" onclick="scaricaFunzioniFile()">⬇ Scarica funzioni</button>
+            <button class="modal-close" onclick="chiudiFunzioniModal()">✕</button>
+          </div>
         </div>
         <div class="fn-modal-stats" id="fnModalStats"></div>
         <div class="fn-modal-search">
@@ -370,6 +378,7 @@
           <span class="modal-title"><span id="fileModalTitle"></span></span>
           <div class="code-modal-header-actions">
             <button class="btn btn-xs btn-fn-modal" id="fileModalFnBtn" style="display:none"></button>
+            <button class="btn btn-xs btn-dl" id="fileModalDlBtn">⬇ Scarica</button>
             <button class="btn btn-xs" id="fileModalCopy">⎘ Copia</button>
             <button class="modal-close" onclick="chiudiFileModal()">✕</button>
           </div>
@@ -387,6 +396,7 @@
         <div class="modal-header">
           <span class="modal-title">ƒ &nbsp;<span id="codeModalTitle"></span></span>
           <div class="code-modal-header-actions">
+            <button class="btn btn-xs btn-dl" id="codeModalDlBtn">⬇ Scarica funzione</button>
             <button class="btn btn-xs" id="codeModalCopy">⎘ Copia</button>
             <button class="modal-close" onclick="chiudiCodiceModal()">✕</button>
           </div>
