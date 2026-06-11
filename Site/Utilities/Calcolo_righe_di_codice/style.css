@@ -2166,10 +2166,10 @@ input[type="file"] {
   margin-left: 44px;
 }
 
-/* ── CODE VIEWER MODAL ────────────────────────────────────────────── */
+/* ── CODE / FILE VIEWER MODALS ───────────────────────────────────────── */
 
 .code-modal {
-  width: min(860px, 96vw);
+  width: min(900px, 96vw);
   max-height: 88vh;
   display: flex;
   flex-direction: column;
@@ -2179,6 +2179,17 @@ input[type="file"] {
   display: flex;
   align-items: center;
   gap: 8px;
+}
+
+.btn-fn-modal {
+  background: var(--surf3);
+  color: var(--a1);
+  border-color: var(--border2);
+  font-size: 11px;
+}
+.btn-fn-modal:hover {
+  background: var(--a1);
+  color: #fff;
 }
 
 .code-modal-meta {
@@ -2217,7 +2228,7 @@ input[type="file"] {
 
 .code-modal-pre {
   margin: 0;
-  padding: 16px 0 20px;
+  padding: 14px 0 20px;
   font-family: var(--mono);
   font-size: 12.5px;
   line-height: 1.65;
@@ -2229,45 +2240,39 @@ input[type="file"] {
   display: flex;
   min-width: 0;
 }
-
 .cm-line:hover {
   background: rgba(110, 106, 255, 0.06);
 }
-
 .cm-ln {
   flex-shrink: 0;
-  width: 52px;
-  padding: 0 16px 0 20px;
+  width: 54px;
+  padding: 0 14px 0 20px;
   text-align: right;
   color: var(--dim);
   user-select: none;
   font-size: 11px;
   line-height: inherit;
 }
-
 .cm-code {
   flex: 1;
   padding-right: 24px;
   white-space: pre;
   overflow-x: visible;
-  word-break: normal;
 }
 
-/* Clickable rows */
-.fn-full-row-clickable {
+/* Clickable rows — fn and file tree */
+.fn-clickable {
   cursor: pointer;
-  transition: background 0.12s;
+  transition: background 0.1s;
 }
-
-.fn-full-row-clickable:hover {
+.fn-clickable:hover {
   background: var(--surf3) !important;
 }
 
-.fn-row-clickable {
+.file-item-clickable {
   cursor: pointer;
-  transition: background 0.12s;
 }
-
-.fn-row-clickable:hover {
-  background: var(--surf3) !important;
+.file-item-clickable:hover .file-name {
+  color: var(--a1);
+  text-decoration: underline;
 }

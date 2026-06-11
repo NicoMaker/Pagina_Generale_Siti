@@ -363,6 +363,24 @@
       </div>
     </div>
 
+    <!-- ── FILE VIEWER MODAL ── -->
+    <div class="modal-backdrop hidden" id="fileModal">
+      <div class="modal code-modal">
+        <div class="modal-header">
+          <span class="modal-title"><span id="fileModalTitle"></span></span>
+          <div class="code-modal-header-actions">
+            <button class="btn btn-xs btn-fn-modal" id="fileModalFnBtn" style="display:none"></button>
+            <button class="btn btn-xs" id="fileModalCopy">⎘ Copia</button>
+            <button class="modal-close" onclick="chiudiFileModal()">✕</button>
+          </div>
+        </div>
+        <div class="code-modal-meta" id="fileModalMeta"></div>
+        <div class="code-modal-body">
+          <pre class="code-modal-pre" id="fileModalPre"></pre>
+        </div>
+      </div>
+    </div>
+
     <!-- ── CODE VIEWER MODAL ── -->
     <div class="modal-backdrop hidden" id="codeModal">
       <div class="modal code-modal">

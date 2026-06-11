@@ -663,7 +663,7 @@ function renderNode(node, name, depth, filter, isRoot = false, nodePath = []) {
 
   const badge = document.createElement("span");
   badge.className = "folder-badge";
-  badge.textContent = `${stats.lines.toLocaleString("it-IT")} ln`;
+  badge.textContent = `${fmtN(stats.lines)} ln`;
 
   const countSp = document.createElement("span");
   countSp.className = "folder-count";
@@ -713,7 +713,9 @@ function renderNode(node, name, depth, filter, isRoot = false, nodePath = []) {
 
 function renderFile(file) {
   const div = document.createElement("div");
-  div.className = "file-item";
+  div.className = "file-item file-item-clickable";
+  div.title = "Clicca per vedere il file";
+  div.onclick = () => apriFileModal(file);
 
   const icon = document.createElement("span");
   icon.className = "file-icon";
@@ -737,7 +739,7 @@ function renderFile(file) {
 
   const badge = document.createElement("span");
   badge.className = `file-badge ${cls}`;
-  badge.textContent = file.lines.toLocaleString("it-IT");
+  badge.textContent = fmtN(file.lines);
 
   // ── Functions button ──
   const fns = file.functions || [];
@@ -748,6 +750,7 @@ function renderFile(file) {
     fnBtn.innerHTML = `<span class="fn-chip-icon">ƒ</span>${fns.length}`;
     fnBtn.onclick = (e) => {
       e.stopPropagation();
+      chiudiFileModal();
       apriFunzioniModal(file);
     };
     div.append(icon, name, badge, fnBtn);
@@ -968,6 +971,11 @@ function getIcon(n) {
 }
 
 // ── UTILITIES ──
+function fmtN(n) {
+  // Always use dot as thousands separator (Italian style)
+  return String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+}
+
 function formatBytes(b) {
   if (!b) return "0 B";
   const k = 1024,
@@ -1009,6 +1017,9 @@ document.getElementById("urlModal").addEventListener("click", (e) => {
 });
 document.getElementById("fnModal").addEventListener("click", (e) => {
   if (e.target === document.getElementById("fnModal")) chiudiFunzioniModal();
+});
+document.getElementById("fileModal").addEventListener("click", (e) => {
+  if (e.target === document.getElementById("fileModal")) chiudiFileModal();
 });
 document.getElementById("codeModal").addEventListener("click", (e) => {
   if (e.target === document.getElementById("codeModal")) chiudiCodiceModal();
@@ -1166,7 +1177,7 @@ function renderFnFull() {
   // Update badge
   if (badge) {
     if (all.length) {
-      badge.textContent = all.length.toLocaleString("it-IT");
+      badge.textContent = fmtN(all.length);
       badge.classList.remove("hidden");
     } else {
       badge.classList.add("hidden");
@@ -1239,14 +1250,14 @@ function renderFnFull() {
   const uniqueFiles = new Set(all.map((r) => r.filePath)).size;
 
   statsBar.innerHTML = `
-    <div class="fn-full-stat sv-total"><span class="fn-full-stat-value">${all.length.toLocaleString("it-IT")}</span><span class="fn-full-stat-label">Funzioni</span></div>
+    <div class="fn-full-stat sv-total"><span class="fn-full-stat-value">${fmtN(all.length)}</span><span class="fn-full-stat-label">Funzioni</span></div>
     <div class="fn-full-stat sv-avg"><span class="fn-full-stat-value">${avgLines}</span><span class="fn-full-stat-label">Media ln</span></div>
     <div class="fn-full-stat sv-med"><span class="fn-full-stat-value">${median}</span><span class="fn-full-stat-label">Mediana ln</span></div>
     <div class="fn-full-stat sv-max"><span class="fn-full-stat-value">${maxLines}</span><span class="fn-full-stat-label">Max ln</span></div>
     <div class="fn-full-stat sv-files"><span class="fn-full-stat-value">${uniqueFiles}</span><span class="fn-full-stat-label">File con fn</span></div>`;
 
   if (summary)
-    summary.innerHTML = `<span class="fn-panel-count">${rows.length.toLocaleString("it-IT")} / ${all.length.toLocaleString("it-IT")} funzioni</span>`;
+    summary.innerHTML = `<span class="fn-panel-count">${fmtN(rows.length)} / ${fmtN(all.length)} funzioni</span>`;
 
   // Render rows
   const rowMaxLines = rows.length
@@ -1274,7 +1285,7 @@ function renderFnFull() {
     const kindCls = kindColor(r.kind);
 
     const row = document.createElement("div");
-    row.className = "fn-full-row fn-full-row-clickable";
+    row.className = "fn-full-row fn-clickable";
     row.title = "Clicca per vedere il codice";
     row.innerHTML = `
       <div class="frc-lines">
@@ -1528,6 +1539,8 @@ function apriFunzioniModal(file) {
 
     counted.forEach((fn) => {
       const row = document.createElement("div");
+      row.className = "fn-row fn-clickable";
+      row.title = "Clicca per vedere il codice";
       const barPct =
         maxFiltered > 0
           ? Math.max(4, Math.round((fn.linesFiltered / maxFiltered) * 100))
@@ -1540,8 +1553,6 @@ function apriFunzioniModal(file) {
             ? "fn-lb-mid"
             : "fn-lb-low";
 
-      row.className = "fn-row fn-row-clickable";
-      row.title = "Clicca per vedere il codice";
       row.innerHTML = `
         <div class="fn-row-top">
           <span class="fn-kind ${kindClass}">${escHtml(fn.kind)}</span>
@@ -1550,7 +1561,10 @@ function apriFunzioniModal(file) {
         </div>
         <div class="fn-row-meta">righe ${fn.startLine}–${fn.endLine} &nbsp;·&nbsp; totali ${fn.endLine - fn.startLine + 1}</div>
         <div class="fn-bar-track"><div class="fn-bar" style="width:${barPct}%"></div></div>`;
-      row.onclick = () => apriCodiceModal(fn.name, fn.kind, file.name, file.content, fn.startLine, fn.endLine);
+      row.onclick = () => {
+        chiudiFunzioniModal();
+        apriCodiceModal(fn.name, fn.kind, file.name, file.content, fn.startLine, fn.endLine);
+      };
       list.appendChild(row);
     });
   }
@@ -1602,9 +1616,73 @@ document.addEventListener("keydown", (e) => {
   if (e.key === "Escape") {
     chiudiFunzioniModal();
     chiudiModalUrl();
-    chiudiCodiceModal();
   }
 });
+
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") {
+    chiudiCodiceModal();
+    chiudiFileModal();
+    chiudiFunzioniModal();
+    chiudiModalUrl();
+  }
+});
+
+// ── FILE VIEWER MODAL ─────────────────────────────────────────────────
+
+function apriFileModal(file) {
+  const modal = document.getElementById("fileModal");
+  const titleEl = document.getElementById("fileModalTitle");
+  const metaEl = document.getElementById("fileModalMeta");
+  const codeEl = document.getElementById("fileModalPre");
+  const copyBtn = document.getElementById("fileModalCopy");
+  const fnBtn = document.getElementById("fileModalFnBtn");
+
+  titleEl.textContent = file.name;
+
+  const totalRaw = file.content.split("\n").length;
+  metaEl.innerHTML = `
+    <span class="code-modal-file">${escHtml(file.fullPath)}</span>
+    <span class="code-modal-range">${fmtN(file.lines)} righe · ${fmtN(totalRaw)} totali · ${formatBytes(file.size)}</span>`;
+
+  // Build numbered lines
+  const lines = file.content.split("\n");
+  codeEl.innerHTML = "";
+  lines.forEach((lineText, i) => {
+    const lineEl = document.createElement("div");
+    lineEl.className = "cm-line";
+    lineEl.innerHTML = `<span class="cm-ln">${i + 1}</span><span class="cm-code">${escHtml(lineText) || " "}</span>`;
+    codeEl.appendChild(lineEl);
+  });
+
+  // Functions button
+  const fns = file.functions || [];
+  if (fns.length > 0) {
+    fnBtn.style.display = "";
+    fnBtn.textContent = `ƒ ${fns.length} funzioni`;
+    fnBtn.onclick = () => {
+      chiudiFileModal();
+      apriFunzioniModal(file);
+    };
+  } else {
+    fnBtn.style.display = "none";
+  }
+
+  // Copy
+  copyBtn.onclick = () => {
+    navigator.clipboard.writeText(file.content).then(() => {
+      copyBtn.textContent = "✓ Copiato!";
+      setTimeout(() => (copyBtn.textContent = "⎘ Copia"), 1800);
+    }).catch(() => showToast("⚠ Copia non riuscita"));
+  };
+
+  modal.classList.remove("hidden");
+  codeEl.scrollTop = 0;
+}
+
+function chiudiFileModal() {
+  document.getElementById("fileModal").classList.add("hidden");
+}
 
 // ── CODE VIEWER MODAL ────────────────────────────────────────────────
 
@@ -1618,42 +1696,32 @@ function apriCodiceModal(fnName, kind, filePath, fileContent, startLine, endLine
   const lines = fileContent.split("\n");
   const slice = lines.slice(startLine - 1, endLine);
 
-  // Dedent: remove common leading whitespace
+  // Dedent
   const minIndent = slice
     .filter((l) => l.trim().length > 0)
-    .reduce((min, l) => {
-      const m = l.match(/^(\s*)/);
-      return Math.min(min, m ? m[1].length : min);
-    }, Infinity);
+    .reduce((min, l) => Math.min(min, l.match(/^(\s*)/)[1].length), Infinity);
   const dedented = slice.map((l) => l.slice(minIndent === Infinity ? 0 : minIndent));
 
   titleEl.textContent = fnName;
-
   const kindCls = kindColor(kind);
   metaEl.innerHTML = `
     <span class="fn-kind ${kindCls}">${escHtml(kind)}</span>
     <span class="code-modal-file">${escHtml(filePath)}</span>
-    <span class="code-modal-range">righe ${startLine}–${endLine}</span>`;
+    <span class="code-modal-range">righe ${fmtN(startLine)}–${fmtN(endLine)} · ${fmtN(endLine - startLine + 1)} totali</span>`;
 
-  // Build numbered lines HTML
   codeEl.innerHTML = "";
   dedented.forEach((lineText, i) => {
-    const lineNum = startLine + i;
     const lineEl = document.createElement("div");
     lineEl.className = "cm-line";
-    lineEl.innerHTML = `<span class="cm-ln">${lineNum}</span><span class="cm-code">${escHtml(lineText) || " "}</span>`;
+    lineEl.innerHTML = `<span class="cm-ln">${startLine + i}</span><span class="cm-code">${escHtml(lineText) || " "}</span>`;
     codeEl.appendChild(lineEl);
   });
 
-  // Copy button
   copyBtn.onclick = () => {
-    const text = dedented.join("\n");
-    navigator.clipboard.writeText(text).then(() => {
+    navigator.clipboard.writeText(dedented.join("\n")).then(() => {
       copyBtn.textContent = "✓ Copiato!";
       setTimeout(() => (copyBtn.textContent = "⎘ Copia"), 1800);
-    }).catch(() => {
-      showToast("⚠ Copia non riuscita");
-    });
+    }).catch(() => showToast("⚠ Copia non riuscita"));
   };
 
   modal.classList.remove("hidden");
@@ -1689,14 +1757,14 @@ function updateStats() {
   }
 
   document.getElementById("totalFiles").textContent =
-    files.toLocaleString("it-IT");
+    fmtN(files);
   document.getElementById("totalLines").textContent =
-    lines.toLocaleString("it-IT");
+    fmtN(lines);
   document.getElementById("avgLines").textContent =
-    files > 0 ? Math.round(lines / files).toLocaleString("it-IT") : "0";
+    files > 0 ? fmtN(Math.round(lines / files)) : "0";
   document.getElementById("totalSize").textContent = formatBytes(size);
   document.getElementById("totalFunctions").textContent =
-    fns.toLocaleString("it-IT");
+    fmtN(fns);
 
   const statsRow = document.getElementById("statsRow");
   if (files > 0) statsRow.classList.remove("hidden");
@@ -1705,7 +1773,7 @@ function updateStats() {
   const logoMark = document.getElementById("logoCounter");
   if (logoMark) {
     logoMark.innerHTML =
-      files > 0 ? `lines: ${lines.toLocaleString("it-IT")}` : "{ lines }";
+      files > 0 ? `lines: ${fmtN(lines)}` : "{ lines }";
   }
 
   // Update the functions tab (badge + content if active)
@@ -1716,7 +1784,7 @@ function updateStats() {
     const badge = document.getElementById("tabFnBadge");
     if (badge) {
       if (all.length) {
-        badge.textContent = all.length.toLocaleString("it-IT");
+        badge.textContent = fmtN(all.length);
         badge.classList.remove("hidden");
       } else badge.classList.add("hidden");
     }
