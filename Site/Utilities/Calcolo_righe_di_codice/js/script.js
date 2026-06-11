@@ -1010,6 +1010,9 @@ document.getElementById("urlModal").addEventListener("click", (e) => {
 document.getElementById("fnModal").addEventListener("click", (e) => {
   if (e.target === document.getElementById("fnModal")) chiudiFunzioniModal();
 });
+document.getElementById("codeModal").addEventListener("click", (e) => {
+  if (e.target === document.getElementById("codeModal")) chiudiCodiceModal();
+});
 
 // Enter key in URL input
 document.getElementById("urlInput").addEventListener("keydown", (e) => {
@@ -1120,6 +1123,7 @@ function collectAllFunctions() {
           linesRaw: fn.endLine - fn.startLine + 1,
           fileName: f.name,
           filePath,
+          fileContent: f.content,
         });
       }
     }
@@ -1270,7 +1274,8 @@ function renderFnFull() {
     const kindCls = kindColor(r.kind);
 
     const row = document.createElement("div");
-    row.className = "fn-full-row";
+    row.className = "fn-full-row fn-full-row-clickable";
+    row.title = "Clicca per vedere il codice";
     row.innerHTML = `
       <div class="frc-lines">
         <span class="frc-lines-n ${lCls}">${r.linesFiltered}</span>
@@ -1283,6 +1288,7 @@ function renderFnFull() {
       <div class="frc-bar-wrap">
         <div class="fn-full-bar-track"><div class="fn-full-bar" style="width:${barPct}%"></div></div>
       </div>`;
+    row.onclick = () => apriCodiceModal(r.fnName, r.kind, r.filePath, r.fileContent, r.startLine, r.endLine);
     listEl.appendChild(row);
   });
 }
@@ -1522,7 +1528,6 @@ function apriFunzioniModal(file) {
 
     counted.forEach((fn) => {
       const row = document.createElement("div");
-      row.className = "fn-row";
       const barPct =
         maxFiltered > 0
           ? Math.max(4, Math.round((fn.linesFiltered / maxFiltered) * 100))
@@ -1535,6 +1540,8 @@ function apriFunzioniModal(file) {
             ? "fn-lb-mid"
             : "fn-lb-low";
 
+      row.className = "fn-row fn-row-clickable";
+      row.title = "Clicca per vedere il codice";
       row.innerHTML = `
         <div class="fn-row-top">
           <span class="fn-kind ${kindClass}">${escHtml(fn.kind)}</span>
@@ -1543,6 +1550,7 @@ function apriFunzioniModal(file) {
         </div>
         <div class="fn-row-meta">righe ${fn.startLine}–${fn.endLine} &nbsp;·&nbsp; totali ${fn.endLine - fn.startLine + 1}</div>
         <div class="fn-bar-track"><div class="fn-bar" style="width:${barPct}%"></div></div>`;
+      row.onclick = () => apriCodiceModal(fn.name, fn.kind, file.name, file.content, fn.startLine, fn.endLine);
       list.appendChild(row);
     });
   }
@@ -1594,8 +1602,67 @@ document.addEventListener("keydown", (e) => {
   if (e.key === "Escape") {
     chiudiFunzioniModal();
     chiudiModalUrl();
+    chiudiCodiceModal();
   }
 });
+
+// ── CODE VIEWER MODAL ────────────────────────────────────────────────
+
+function apriCodiceModal(fnName, kind, filePath, fileContent, startLine, endLine) {
+  const modal = document.getElementById("codeModal");
+  const titleEl = document.getElementById("codeModalTitle");
+  const metaEl = document.getElementById("codeModalMeta");
+  const codeEl = document.getElementById("codeModalPre");
+  const copyBtn = document.getElementById("codeModalCopy");
+
+  const lines = fileContent.split("\n");
+  const slice = lines.slice(startLine - 1, endLine);
+
+  // Dedent: remove common leading whitespace
+  const minIndent = slice
+    .filter((l) => l.trim().length > 0)
+    .reduce((min, l) => {
+      const m = l.match(/^(\s*)/);
+      return Math.min(min, m ? m[1].length : min);
+    }, Infinity);
+  const dedented = slice.map((l) => l.slice(minIndent === Infinity ? 0 : minIndent));
+
+  titleEl.textContent = fnName;
+
+  const kindCls = kindColor(kind);
+  metaEl.innerHTML = `
+    <span class="fn-kind ${kindCls}">${escHtml(kind)}</span>
+    <span class="code-modal-file">${escHtml(filePath)}</span>
+    <span class="code-modal-range">righe ${startLine}–${endLine}</span>`;
+
+  // Build numbered lines HTML
+  codeEl.innerHTML = "";
+  dedented.forEach((lineText, i) => {
+    const lineNum = startLine + i;
+    const lineEl = document.createElement("div");
+    lineEl.className = "cm-line";
+    lineEl.innerHTML = `<span class="cm-ln">${lineNum}</span><span class="cm-code">${escHtml(lineText) || " "}</span>`;
+    codeEl.appendChild(lineEl);
+  });
+
+  // Copy button
+  copyBtn.onclick = () => {
+    const text = dedented.join("\n");
+    navigator.clipboard.writeText(text).then(() => {
+      copyBtn.textContent = "✓ Copiato!";
+      setTimeout(() => (copyBtn.textContent = "⎘ Copia"), 1800);
+    }).catch(() => {
+      showToast("⚠ Copia non riuscita");
+    });
+  };
+
+  modal.classList.remove("hidden");
+  codeEl.scrollTop = 0;
+}
+
+function chiudiCodiceModal() {
+  document.getElementById("codeModal").classList.add("hidden");
+}
 
 // ── BOOT ──
 loadExtensions().then(() => {

@@ -363,6 +363,23 @@
       </div>
     </div>
 
+    <!-- ── CODE VIEWER MODAL ── -->
+    <div class="modal-backdrop hidden" id="codeModal">
+      <div class="modal code-modal">
+        <div class="modal-header">
+          <span class="modal-title">ƒ &nbsp;<span id="codeModalTitle"></span></span>
+          <div class="code-modal-header-actions">
+            <button class="btn btn-xs" id="codeModalCopy">⎘ Copia</button>
+            <button class="modal-close" onclick="chiudiCodiceModal()">✕</button>
+          </div>
+        </div>
+        <div class="code-modal-meta" id="codeModalMeta"></div>
+        <div class="code-modal-body">
+          <pre class="code-modal-pre" id="codeModalPre"></pre>
+        </div>
+      </div>
+    </div>
+
     <div class="toast" id="toast"></div>
     <input type="file" id="fileInput" multiple />
     <input type="file" id="folderInput" webkitdirectory directory multiple />
