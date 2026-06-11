@@ -185,6 +185,13 @@
 
           <!-- ── FUNCTIONS FULL TAB ── -->
           <div class="tab-pane hidden" id="paneFunctions">
+            <!-- Floating selection action bar -->
+            <div class="fn-sel-bar hidden" id="fnSelBar">
+              <span class="fn-sel-bar-count" id="fnSelBarCount"></span>
+              <button class="btn btn-xs" onclick="fnSelectAllVisible()">Seleziona tutte visibili</button>
+              <button class="btn btn-xs" onclick="fnClearSelection()">Deseleziona tutte</button>
+              <button class="btn btn-xs btn-dl" onclick="scaricaFunzioniSelezionate()">⬇ Scarica selezionate</button>
+            </div>
             <div class="panel fn-full-panel">
               <div class="panel-header">
                 <span class="panel-title">ƒ &nbsp;Tutte le Funzioni</span>
@@ -239,6 +246,9 @@
               </div>
 
               <div class="fn-full-table-header">
+                <span class="fth-chk" title="Seleziona/deseleziona tutte">
+                  <span class="fn-hdr-checkbox" id="fnHdrCheckbox" onclick="fnToggleSelectAll()"></span>
+                </span>
                 <span class="fth-lines">Righe</span>
                 <span class="fth-kind">Tipo</span>
                 <span class="fth-name">Nome Funzione</span>

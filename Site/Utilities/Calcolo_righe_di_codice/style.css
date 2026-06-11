@@ -1369,7 +1369,7 @@ input[type="file"] {
 /* Table header */
 .fn-full-table-header {
   display: grid;
-  grid-template-columns: 72px 68px 1fr minmax(180px, 1.5fr) 90px 120px;
+  grid-template-columns: 28px 72px 68px 1fr minmax(180px, 1.5fr) 90px 120px;
   gap: 6px;
   padding: 6px 14px 6px 18px;
   border-bottom: 1px solid var(--border);
@@ -1384,12 +1384,12 @@ input[type="file"] {
 
 @media (max-width: 1100px) {
   .fn-full-table-header {
-    grid-template-columns: 72px 68px 1fr minmax(140px, 1.2fr) 80px 80px;
+    grid-template-columns: 28px 72px 68px 1fr minmax(140px, 1.2fr) 80px 80px;
   }
 }
 @media (max-width: 860px) {
   .fn-full-table-header {
-    grid-template-columns: 60px 60px 1fr 100px 70px 60px;
+    grid-template-columns: 28px 60px 60px 1fr 100px 70px 60px;
   }
   .fn-full-panel .fth-range {
     display: none;
@@ -1419,7 +1419,7 @@ input[type="file"] {
 /* Full row */
 .fn-full-row {
   display: grid;
-  grid-template-columns: 72px 68px 1fr minmax(180px, 1.5fr) 90px 120px;
+  grid-template-columns: 28px 72px 68px 1fr minmax(180px, 1.5fr) 90px 120px;
   gap: 6px;
   align-items: center;
   background: var(--surf2);
@@ -1435,15 +1435,22 @@ input[type="file"] {
   border-color: var(--border2);
   background: var(--surf3);
 }
+.fn-full-row.fn-row-selected {
+  border-color: rgba(110,106,255,0.4);
+  background: rgba(110,106,255,0.07);
+}
+.fn-full-row.fn-row-selected:hover {
+  background: rgba(110,106,255,0.11);
+}
 
 @media (max-width: 1100px) {
   .fn-full-row {
-    grid-template-columns: 72px 68px 1fr minmax(140px, 1.2fr) 80px 80px;
+    grid-template-columns: 28px 72px 68px 1fr minmax(140px, 1.2fr) 80px 80px;
   }
 }
 @media (max-width: 860px) {
   .fn-full-row {
-    grid-template-columns: 60px 60px 1fr 100px 70px 60px;
+    grid-template-columns: 28px 60px 60px 1fr 100px 70px 60px;
   }
   .fn-full-row .frc-range {
     display: none;
@@ -2471,3 +2478,91 @@ input[type="file"] {
   margin-left: auto;
 }
 .dl-group-toggle:hover { text-decoration: underline; }
+
+/* ── INLINE FUNCTION SELECTION ───────────────────────────────────── */
+
+/* Header checkbox */
+.fth-chk {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.fn-hdr-checkbox {
+  width: 15px;
+  height: 15px;
+  border: 1px solid var(--border3);
+  border-radius: 3px;
+  background: var(--surf3);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  color: transparent;
+  transition: background 0.12s, border-color 0.12s, color 0.12s;
+  flex-shrink: 0;
+}
+.fn-hdr-checkbox:hover { border-color: var(--a1); }
+.fn-hdr-checkbox.all-checked {
+  background: var(--a1);
+  border-color: var(--a1);
+  color: #fff;
+}
+.fn-hdr-checkbox.some-checked {
+  background: var(--surf3);
+  border-color: var(--a1);
+  color: var(--a1);
+}
+
+/* Row checkbox */
+.frc-chk {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.fn-row-checkbox {
+  width: 15px;
+  height: 15px;
+  border: 1px solid var(--border2);
+  border-radius: 3px;
+  background: var(--surf);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  color: transparent;
+  transition: background 0.12s, border-color 0.12s, color 0.12s;
+  flex-shrink: 0;
+}
+.fn-row-checkbox:hover { border-color: var(--a1); }
+.fn-full-row.fn-row-selected .fn-row-checkbox {
+  background: var(--a1);
+  border-color: var(--a1);
+  color: #fff;
+}
+
+/* Floating selection bar */
+.fn-sel-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--surf2);
+  border: 1px solid rgba(110,106,255,0.3);
+  border-radius: var(--r);
+  padding: 8px 14px;
+  margin-bottom: 8px;
+  animation: fnSelBarIn 0.18s ease;
+}
+.fn-sel-bar.hidden { display: none; }
+@keyframes fnSelBarIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fn-sel-bar-count {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--a1);
+  font-weight: 600;
+  flex: 1;
+}

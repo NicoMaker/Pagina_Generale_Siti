@@ -1283,11 +1283,14 @@ function renderFnFull() {
           ? "fn-lb-mid"
           : "fn-lb-low";
     const kindCls = kindColor(r.kind);
+    const key = fnInlineKey(r);
+    const isSel = fnInlineSelection.has(key);
 
     const row = document.createElement("div");
-    row.className = "fn-full-row fn-clickable";
+    row.className = `fn-full-row fn-clickable${isSel ? " fn-row-selected" : ""}`;
     row.title = "Clicca per vedere il codice";
     row.innerHTML = `
+      <div class="frc-chk"><div class="fn-row-checkbox" title="Seleziona funzione">${isSel ? "✓" : ""}</div></div>
       <div class="frc-lines">
         <span class="frc-lines-n ${lCls}">${r.linesFiltered}</span>
         <span class="frc-lines-u">ln</span>
@@ -1299,9 +1302,25 @@ function renderFnFull() {
       <div class="frc-bar-wrap">
         <div class="fn-full-bar-track"><div class="fn-full-bar" style="width:${barPct}%"></div></div>
       </div>`;
+
+    // Checkbox click: toggle selection, don't open modal
+    row.querySelector(".fn-row-checkbox").addEventListener("click", (e) => {
+      e.stopPropagation();
+      if (fnInlineSelection.has(key)) fnInlineSelection.delete(key);
+      else fnInlineSelection.add(key);
+      updateFnSelBar();
+      // update just this row visually
+      row.classList.toggle("fn-row-selected", fnInlineSelection.has(key));
+      row.querySelector(".fn-row-checkbox").textContent = fnInlineSelection.has(key) ? "✓" : "";
+      updateFnHdrCheckbox(rows);
+    });
+
     row.onclick = () => apriCodiceModal(r.fnName, r.kind, r.filePath, r.fileContent, r.startLine, r.endLine);
     listEl.appendChild(row);
   });
+
+  updateFnHdrCheckbox(rows);
+  updateFnSelBar();
 }
 
 function renderKindFilters(kinds) {
@@ -2211,3 +2230,140 @@ async function _scaricaFunzioniSelezionate() {
 document.getElementById('dlSelModal').addEventListener('click', (e) => {
   if (e.target === document.getElementById('dlSelModal')) chiudiModalScarica();
 });
+
+// ══════════════════════════════════════════════════════════════════════
+// ── INLINE FUNCTION SELECTION (tab Funzioni) ───────────────────────────
+// ══════════════════════════════════════════════════════════════════════
+
+let fnInlineSelection = new Set(); // keys of selected rows
+
+function fnInlineKey(r) {
+  return `${r.filePath}::${r.fnName}::${r.startLine}`;
+}
+
+/** Update the floating selection bar visibility + count */
+function updateFnSelBar() {
+  const bar = document.getElementById('fnSelBar');
+  const countEl = document.getElementById('fnSelBarCount');
+  if (!bar) return;
+  const n = fnInlineSelection.size;
+  if (n === 0) {
+    bar.classList.add('hidden');
+  } else {
+    bar.classList.remove('hidden');
+    countEl.textContent = `${fmtN(n)} ${n === 1 ? 'funzione selezionata' : 'funzioni selezionate'}`;
+  }
+}
+
+/** Update the header checkbox state (unchecked / indeterminate / all) */
+function updateFnHdrCheckbox(visibleRows) {
+  const el = document.getElementById('fnHdrCheckbox');
+  if (!el) return;
+  const total = visibleRows.length;
+  const selected = visibleRows.filter(r => fnInlineSelection.has(fnInlineKey(r))).length;
+  el.classList.remove('all-checked', 'some-checked');
+  el.textContent = '';
+  if (total > 0 && selected === total) {
+    el.classList.add('all-checked');
+    el.textContent = '✓';
+  } else if (selected > 0) {
+    el.classList.add('some-checked');
+    el.textContent = '–';
+  }
+}
+
+/** Header checkbox: toggle all visible rows */
+function fnToggleSelectAll() {
+  const allFns = collectAllFunctions();
+  // Rebuild visible rows using current filters (same logic as renderFnFull)
+  const searchEl = document.getElementById('fnFullSearch');
+  const textFilter = (searchEl ? searchEl.value : '').toLowerCase().trim();
+  let rows = allFns.filter(r => {
+    const kindOk = fnFullKindFilter.size === 0 || fnFullKindFilter.has(r.kind);
+    const fileOk = fnFullFileFilter.size === 0 || fnFullFileFilter.has(r.filePath);
+    if (!kindOk || !fileOk) return false;
+    if (!textFilter) return true;
+    return r.fnName.toLowerCase().includes(textFilter) ||
+           r.filePath.toLowerCase().includes(textFilter) ||
+           r.kind.toLowerCase().includes(textFilter);
+  });
+
+  const allSelected = rows.every(r => fnInlineSelection.has(fnInlineKey(r)));
+  if (allSelected) {
+    rows.forEach(r => fnInlineSelection.delete(fnInlineKey(r)));
+  } else {
+    rows.forEach(r => fnInlineSelection.add(fnInlineKey(r)));
+  }
+  renderFnFull();
+}
+
+/** Select all currently visible rows */
+function fnSelectAllVisible() {
+  const allFns = collectAllFunctions();
+  const searchEl = document.getElementById('fnFullSearch');
+  const textFilter = (searchEl ? searchEl.value : '').toLowerCase().trim();
+  let rows = allFns.filter(r => {
+    const kindOk = fnFullKindFilter.size === 0 || fnFullKindFilter.has(r.kind);
+    const fileOk = fnFullFileFilter.size === 0 || fnFullFileFilter.has(r.filePath);
+    if (!kindOk || !fileOk) return false;
+    if (!textFilter) return true;
+    return r.fnName.toLowerCase().includes(textFilter) ||
+           r.filePath.toLowerCase().includes(textFilter) ||
+           r.kind.toLowerCase().includes(textFilter);
+  });
+  rows.forEach(r => fnInlineSelection.add(fnInlineKey(r)));
+  renderFnFull();
+}
+
+/** Clear all inline selection */
+function fnClearSelection() {
+  fnInlineSelection.clear();
+  renderFnFull();
+}
+
+/** Download only the inline-selected functions */
+async function scaricaFunzioniSelezionate() {
+  if (!fnInlineSelection.size) { showToast('⚠ Nessuna funzione selezionata'); return; }
+
+  const allFns = collectAllFunctions();
+  const sel = allFns.filter(r => fnInlineSelection.has(fnInlineKey(r)));
+
+  if (sel.length === 1) {
+    const r = sel[0];
+    _scaricaFunzione(r.fnName, r.fileContent, r.startLine, r.endLine, r.filePath);
+    return;
+  }
+
+  if (typeof JSZip === 'undefined') {
+    const parts = [`// ── Funzioni selezionate — ${fmtN(sel.length)} totali\n`];
+    sel.forEach((r, i) => {
+      const lines = (r.fileContent || '').split('\n').slice(r.startLine - 1, r.endLine);
+      const minI = lines.filter(l => l.trim()).reduce((m, l) => Math.min(m, l.match(/^(\s*)/)[1].length), Infinity);
+      const code = lines.map(l => l.slice(minI === Infinity ? 0 : minI)).join('\n');
+      parts.push(`\n// [${i+1}] ${r.kind} ${r.fnName}  —  ${r.filePath}  (righe ${r.startLine}–${r.endLine})\n${code}\n`);
+    });
+    dlBlob(parts.join('\n'), 'funzioni_selezionate.txt');
+    showToast(`⬇ Scaricato funzioni_selezionate.txt (${fmtN(sel.length)} funzioni)`);
+    return;
+  }
+
+  const zip = new JSZip();
+  const byFile = {};
+  sel.forEach(r => { if (!byFile[r.filePath]) byFile[r.filePath] = []; byFile[r.filePath].push(r); });
+
+  Object.entries(byFile).forEach(([fp, fns]) => {
+    const parts = [`// ── ${fp} — ${fns.length} funzioni selezionate\n`];
+    fns.sort((a, b) => a.startLine - b.startLine).forEach((r, i) => {
+      const lines = (r.fileContent || '').split('\n').slice(r.startLine - 1, r.endLine);
+      const minI = lines.filter(l => l.trim()).reduce((m, l) => Math.min(m, l.match(/^(\s*)/)[1].length), Infinity);
+      const code = lines.map(l => l.slice(minI === Infinity ? 0 : minI)).join('\n');
+      parts.push(`\n// [${i+1}] ${r.kind} ${r.fnName}  (righe ${r.startLine}–${r.endLine})\n${code}\n`);
+    });
+    const safeFile = fp.replace(/[\/\\]/g, '__').replace(/[^a-zA-Z0-9._\-]/g, '_');
+    zip.file(`${safeFile}.txt`, parts.join('\n'));
+  });
+
+  const blob = await zip.generateAsync({ type: 'blob' });
+  dlBlob(blob, 'funzioni_selezionate.zip', 'application/zip');
+  showToast(`⬇ Scaricato funzioni_selezionate.zip (${fmtN(sel.length)} funzioni)`);
+}
