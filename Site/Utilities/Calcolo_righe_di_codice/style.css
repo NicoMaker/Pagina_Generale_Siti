@@ -1436,11 +1436,11 @@ input[type="file"] {
   background: var(--surf3);
 }
 .fn-full-row.fn-row-selected {
-  border-color: rgba(110,106,255,0.4);
-  background: rgba(110,106,255,0.07);
+  border-color: rgba(110, 106, 255, 0.4);
+  background: rgba(110, 106, 255, 0.07);
 }
 .fn-full-row.fn-row-selected:hover {
-  background: rgba(110,106,255,0.11);
+  background: rgba(110, 106, 255, 0.11);
 }
 
 @media (max-width: 1100px) {
@@ -2286,9 +2286,13 @@ input[type="file"] {
 
 /* ── DOWNLOAD BUTTON ──────────────────────────────────────────────── */
 .btn-dl {
-  background: linear-gradient(135deg, rgba(0,229,160,0.12), rgba(0,229,160,0.06));
+  background: linear-gradient(
+    135deg,
+    rgba(0, 229, 160, 0.12),
+    rgba(0, 229, 160, 0.06)
+  );
   color: var(--a3);
-  border: 1px solid rgba(0,229,160,0.25);
+  border: 1px solid rgba(0, 229, 160, 0.25);
   font-size: 11px;
   white-space: nowrap;
 }
@@ -2299,9 +2303,13 @@ input[type="file"] {
 }
 /* ── DOWNLOAD SELECTION BUTTON ────────────────────────────────────── */
 .btn-dl-sel {
-  background: linear-gradient(135deg, rgba(110,106,255,0.12), rgba(110,106,255,0.06));
+  background: linear-gradient(
+    135deg,
+    rgba(110, 106, 255, 0.12),
+    rgba(110, 106, 255, 0.06)
+  );
   color: var(--a1);
-  border: 1px solid rgba(110,106,255,0.25);
+  border: 1px solid rgba(110, 106, 255, 0.25);
   font-size: 11px;
   white-space: nowrap;
 }
@@ -2347,9 +2355,14 @@ input[type="file"] {
   display: flex;
   align-items: center;
   gap: 5px;
-  transition: color 0.15s, background 0.15s;
+  transition:
+    color 0.15s,
+    background 0.15s;
 }
-.dl-tab:hover { color: var(--text); background: var(--surf3); }
+.dl-tab:hover {
+  color: var(--text);
+  background: var(--surf3);
+}
 .dl-tab-active {
   color: var(--a1);
   background: var(--surf2);
@@ -2365,7 +2378,9 @@ input[type="file"] {
   overflow: hidden;
   padding: 14px 18px 0;
 }
-.dl-pane.hidden { display: none; }
+.dl-pane.hidden {
+  display: none;
+}
 
 .dl-sel-toolbar {
   display: flex;
@@ -2374,9 +2389,15 @@ input[type="file"] {
   margin-bottom: 8px;
   flex-wrap: wrap;
 }
-.dl-search { flex: 1; min-width: 160px; }
+.dl-search {
+  flex: 1;
+  min-width: 160px;
+}
 
-.dl-sel-actions { display: flex; gap: 6px; }
+.dl-sel-actions {
+  display: flex;
+  gap: 6px;
+}
 
 .dl-sel-summary {
   font-size: 11px;
@@ -2407,9 +2428,15 @@ input[type="file"] {
   transition: background 0.12s;
   user-select: none;
 }
-.dl-row:last-child { border-bottom: none; }
-.dl-row:hover { background: var(--surf2); }
-.dl-row.dl-checked { background: rgba(110,106,255,0.06); }
+.dl-row:last-child {
+  border-bottom: none;
+}
+.dl-row:hover {
+  background: var(--surf2);
+}
+.dl-row.dl-checked {
+  background: rgba(110, 106, 255, 0.06);
+}
 
 .dl-checkbox {
   width: 15px;
@@ -2422,7 +2449,9 @@ input[type="file"] {
   justify-content: center;
   font-size: 10px;
   flex-shrink: 0;
-  transition: background 0.12s, border-color 0.12s;
+  transition:
+    background 0.12s,
+    border-color 0.12s;
   color: transparent;
 }
 .dl-row.dl-checked .dl-checkbox {
@@ -2431,7 +2460,11 @@ input[type="file"] {
   color: #fff;
 }
 
-.dl-row-icon { font-size: 12px; opacity: 0.6; flex-shrink: 0; }
+.dl-row-icon {
+  font-size: 12px;
+  opacity: 0.6;
+  flex-shrink: 0;
+}
 
 .dl-row-name {
   flex: 1;
@@ -2477,7 +2510,9 @@ input[type="file"] {
   font-size: 10px;
   margin-left: auto;
 }
-.dl-group-toggle:hover { text-decoration: underline; }
+.dl-group-toggle:hover {
+  text-decoration: underline;
+}
 
 /* ── INLINE FUNCTION SELECTION ───────────────────────────────────── */
 
@@ -2499,10 +2534,15 @@ input[type="file"] {
   justify-content: center;
   font-size: 9px;
   color: transparent;
-  transition: background 0.12s, border-color 0.12s, color 0.12s;
+  transition:
+    background 0.12s,
+    border-color 0.12s,
+    color 0.12s;
   flex-shrink: 0;
 }
-.fn-hdr-checkbox:hover { border-color: var(--a1); }
+.fn-hdr-checkbox:hover {
+  border-color: var(--a1);
+}
 .fn-hdr-checkbox.all-checked {
   background: var(--a1);
   border-color: var(--a1);
@@ -2532,10 +2572,15 @@ input[type="file"] {
   justify-content: center;
   font-size: 9px;
   color: transparent;
-  transition: background 0.12s, border-color 0.12s, color 0.12s;
+  transition:
+    background 0.12s,
+    border-color 0.12s,
+    color 0.12s;
   flex-shrink: 0;
 }
-.fn-row-checkbox:hover { border-color: var(--a1); }
+.fn-row-checkbox:hover {
+  border-color: var(--a1);
+}
 .fn-full-row.fn-row-selected .fn-row-checkbox {
   background: var(--a1);
   border-color: var(--a1);
@@ -2548,16 +2593,24 @@ input[type="file"] {
   align-items: center;
   gap: 8px;
   background: var(--surf2);
-  border: 1px solid rgba(110,106,255,0.3);
+  border: 1px solid rgba(110, 106, 255, 0.3);
   border-radius: var(--r);
   padding: 8px 14px;
   margin-bottom: 8px;
   animation: fnSelBarIn 0.18s ease;
 }
-.fn-sel-bar.hidden { display: none; }
+.fn-sel-bar.hidden {
+  display: none;
+}
 @keyframes fnSelBarIn {
-  from { opacity: 0; transform: translateY(-6px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 .fn-sel-bar-count {
   font-family: var(--mono);
