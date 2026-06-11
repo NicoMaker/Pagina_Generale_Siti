@@ -688,7 +688,24 @@ function renderNode(node, name, depth, filter, isRoot = false, nodePath = []) {
     removeFolder(nodePath);
   };
 
-  header.append(arrow, icon, nameSp, badge, countSp, fnSp, removeBtn);
+  // Folder checkbox — selects/deselects all files inside this folder
+  const folderChk = document.createElement("span");
+  folderChk.className = "folder-checkbox";
+  const folderFiles = collectFilesInNode(node);
+  const selCount = folderFiles.filter(f => fileInlineSelection.has(f.fullPath)).length;
+  folderChk.textContent = selCount === folderFiles.length && folderFiles.length > 0 ? "✓" : selCount > 0 ? "–" : "";
+  folderChk.classList.toggle("fchk-all", selCount === folderFiles.length && folderFiles.length > 0);
+  folderChk.classList.toggle("fchk-some", selCount > 0 && selCount < folderFiles.length);
+  folderChk.title = "Seleziona/deseleziona tutti i file in questa cartella";
+  folderChk.addEventListener("click", (e) => {
+    e.stopPropagation();
+    const allSel = folderFiles.every(f => fileInlineSelection.has(f.fullPath));
+    folderFiles.forEach(f => allSel ? fileInlineSelection.delete(f.fullPath) : fileInlineSelection.add(f.fullPath));
+    updateFileSelBar();
+    renderTree();
+  });
+
+  header.append(arrow, icon, nameSp, badge, countSp, fnSp, folderChk, removeBtn);
 
   const children = document.createElement("div");
   children.className = "folder-children open";
@@ -713,9 +730,24 @@ function renderNode(node, name, depth, filter, isRoot = false, nodePath = []) {
 
 function renderFile(file) {
   const div = document.createElement("div");
-  div.className = "file-item file-item-clickable";
+  const isSel = fileInlineSelection.has(file.fullPath);
+  div.className = `file-item file-item-clickable${isSel ? " file-item-selected" : ""}`;
   div.title = "Clicca per vedere il file";
   div.onclick = () => apriFileModal(file);
+
+  // Checkbox
+  const chk = document.createElement("span");
+  chk.className = "file-row-checkbox";
+  chk.title = "Seleziona file";
+  chk.textContent = isSel ? "✓" : "";
+  chk.addEventListener("click", (e) => {
+    e.stopPropagation();
+    if (fileInlineSelection.has(file.fullPath)) fileInlineSelection.delete(file.fullPath);
+    else fileInlineSelection.add(file.fullPath);
+    div.classList.toggle("file-item-selected", fileInlineSelection.has(file.fullPath));
+    chk.textContent = fileInlineSelection.has(file.fullPath) ? "✓" : "";
+    updateFileSelBar();
+  });
 
   const icon = document.createElement("span");
   icon.className = "file-icon";
@@ -753,9 +785,9 @@ function renderFile(file) {
       chiudiFileModal();
       apriFunzioniModal(file);
     };
-    div.append(icon, name, badge, fnBtn);
+    div.append(chk, icon, name, badge, fnBtn);
   } else {
-    div.append(icon, name, badge);
+    div.append(chk, icon, name, badge);
   }
 
   const remove = document.createElement("span");
@@ -1311,23 +1343,11 @@ function renderFnFull() {
       updateFnSelBar();
       // update just this row visually
       row.classList.toggle("fn-row-selected", fnInlineSelection.has(key));
-      row.querySelector(".fn-row-checkbox").textContent = fnInlineSelection.has(
-        key,
-      )
-        ? "✓"
-        : "";
+      row.querySelector(".fn-row-checkbox").textContent = fnInlineSelection.has(key) ? "✓" : "";
       updateFnHdrCheckbox(rows);
     });
 
-    row.onclick = () =>
-      apriCodiceModal(
-        r.fnName,
-        r.kind,
-        r.filePath,
-        r.fileContent,
-        r.startLine,
-        r.endLine,
-      );
+    row.onclick = () => apriCodiceModal(r.fnName, r.kind, r.filePath, r.fileContent, r.startLine, r.endLine);
     listEl.appendChild(row);
   });
 
@@ -1595,14 +1615,7 @@ function apriFunzioniModal(file) {
         <div class="fn-bar-track"><div class="fn-bar" style="width:${barPct}%"></div></div>`;
       row.onclick = () => {
         chiudiFunzioniModal();
-        apriCodiceModal(
-          fn.name,
-          fn.kind,
-          file.name,
-          file.content,
-          fn.startLine,
-          fn.endLine,
-        );
+        apriCodiceModal(fn.name, fn.kind, file.name, file.content, fn.startLine, fn.endLine);
       };
       list.appendChild(row);
     });
@@ -1709,13 +1722,10 @@ function apriFileModal(file) {
 
   // Copy
   copyBtn.onclick = () => {
-    navigator.clipboard
-      .writeText(file.content)
-      .then(() => {
-        copyBtn.textContent = "✓ Copiato!";
-        setTimeout(() => (copyBtn.textContent = "⎘ Copia"), 1800);
-      })
-      .catch(() => showToast("⚠ Copia non riuscita"));
+    navigator.clipboard.writeText(file.content).then(() => {
+      copyBtn.textContent = "✓ Copiato!";
+      setTimeout(() => (copyBtn.textContent = "⎘ Copia"), 1800);
+    }).catch(() => showToast("⚠ Copia non riuscita"));
   };
 
   // Download
@@ -1732,14 +1742,7 @@ function chiudiFileModal() {
 
 // ── CODE VIEWER MODAL ────────────────────────────────────────────────
 
-function apriCodiceModal(
-  fnName,
-  kind,
-  filePath,
-  fileContent,
-  startLine,
-  endLine,
-) {
+function apriCodiceModal(fnName, kind, filePath, fileContent, startLine, endLine) {
   const modal = document.getElementById("codeModal");
   const titleEl = document.getElementById("codeModalTitle");
   const metaEl = document.getElementById("codeModalMeta");
@@ -1753,9 +1756,7 @@ function apriCodiceModal(
   const minIndent = slice
     .filter((l) => l.trim().length > 0)
     .reduce((min, l) => Math.min(min, l.match(/^(\s*)/)[1].length), Infinity);
-  const dedented = slice.map((l) =>
-    l.slice(minIndent === Infinity ? 0 : minIndent),
-  );
+  const dedented = slice.map((l) => l.slice(minIndent === Infinity ? 0 : minIndent));
 
   titleEl.textContent = fnName;
   const kindCls = kindColor(kind);
@@ -1773,19 +1774,15 @@ function apriCodiceModal(
   });
 
   copyBtn.onclick = () => {
-    navigator.clipboard
-      .writeText(dedented.join("\n"))
-      .then(() => {
-        copyBtn.textContent = "✓ Copiato!";
-        setTimeout(() => (copyBtn.textContent = "⎘ Copia"), 1800);
-      })
-      .catch(() => showToast("⚠ Copia non riuscita"));
+    navigator.clipboard.writeText(dedented.join("\n")).then(() => {
+      copyBtn.textContent = "✓ Copiato!";
+      setTimeout(() => (copyBtn.textContent = "⎘ Copia"), 1800);
+    }).catch(() => showToast("⚠ Copia non riuscita"));
   };
 
   // Download
   const dlBtn = document.getElementById("codeModalDlBtn");
-  dlBtn.onclick = () =>
-    _scaricaFunzione(fnName, fileContent, startLine, endLine, filePath);
+  dlBtn.onclick = () => _scaricaFunzione(fnName, fileContent, startLine, endLine, filePath);
 
   modal.classList.remove("hidden");
   codeEl.scrollTop = 0;
@@ -1813,13 +1810,9 @@ function collectAllFiles() {
   const result = [];
   function walk(node, parts) {
     for (const f of node.__files__ || []) {
-      result.push({
-        path: parts.length ? parts.join("/") + "/" + f.name : f.name,
-        content: f.content,
-        file: f,
-      });
+      result.push({ path: parts.length ? parts.join("/") + "/" + f.name : f.name, content: f.content, file: f });
     }
-    for (const k of Object.keys(node).filter((k) => k !== "__files__"))
+    for (const k of Object.keys(node).filter(k => k !== "__files__"))
       walk(node[k], [...parts, k]);
   }
   for (const root of Object.keys(fileTree)) walk(fileTree[root], [root]);
@@ -1829,12 +1822,8 @@ function collectAllFiles() {
 /** Download a single function's code — called from codeModal */
 function _scaricaFunzione(fnName, fileContent, startLine, endLine, filePath) {
   const lines = fileContent.split("\n").slice(startLine - 1, endLine);
-  const minIndent = lines
-    .filter((l) => l.trim())
-    .reduce((m, l) => Math.min(m, l.match(/^(\s*)/)[1].length), Infinity);
-  const dedented = lines.map((l) =>
-    l.slice(minIndent === Infinity ? 0 : minIndent),
-  );
+  const minIndent = lines.filter(l => l.trim()).reduce((m, l) => Math.min(m, l.match(/^(\s*)/)[1].length), Infinity);
+  const dedented = lines.map(l => l.slice(minIndent === Infinity ? 0 : minIndent));
   const ext = filePath.split(".").pop() || "txt";
   const safeName = fnName.replace(/[^a-zA-Z0-9_\-]/g, "_");
   dlBlob(dedented.join("\n"), `${safeName}.${ext}`);
@@ -1854,23 +1843,14 @@ function scaricaFunzioniFile() {
   if (!_fnModalFile) return;
   const file = _fnModalFile;
   const fns = (file.functions || []).slice().sort((a, b) => b.lines - a.lines);
-  if (!fns.length) {
-    showToast("⚠ Nessuna funzione da scaricare");
-    return;
-  }
+  if (!fns.length) { showToast("⚠ Nessuna funzione da scaricare"); return; }
   const lines = file.content.split("\n");
   const parts = [`// ── Funzioni di: ${file.name} ── ${fns.length} funzioni\n`];
   fns.forEach((fn, i) => {
     const slice = lines.slice(fn.startLine - 1, fn.endLine);
-    const minI = slice
-      .filter((l) => l.trim())
-      .reduce((m, l) => Math.min(m, l.match(/^(\s*)/)[1].length), Infinity);
-    const code = slice
-      .map((l) => l.slice(minI === Infinity ? 0 : minI))
-      .join("\n");
-    parts.push(
-      `\n// [${i + 1}] ${fn.kind} ${fn.name}  (righe ${fn.startLine}–${fn.endLine})\n${code}\n`,
-    );
+    const minI = slice.filter(l => l.trim()).reduce((m, l) => Math.min(m, l.match(/^(\s*)/)[1].length), Infinity);
+    const code = slice.map(l => l.slice(minI === Infinity ? 0 : minI)).join("\n");
+    parts.push(`\n// [${ i + 1 }] ${fn.kind} ${fn.name}  (righe ${fn.startLine}–${fn.endLine})\n${code}\n`);
   });
   const baseName = file.name.replace(/\.[^.]+$/, "");
   dlBlob(parts.join("\n"), `${baseName}_functions.txt`);
@@ -1880,14 +1860,11 @@ function scaricaFunzioniFile() {
 /** Download ALL visible/filtered functions from the fn full tab */
 async function scaricaTutteFunzioni() {
   const all = collectAllFunctions();
-  if (!all.length) {
-    showToast("⚠ Nessuna funzione da scaricare");
-    return;
-  }
+  if (!all.length) { showToast("⚠ Nessuna funzione da scaricare"); return; }
 
   // Group by file for neat ZIP structure
   const byFile = {};
-  all.forEach((r) => {
+  all.forEach(r => {
     if (!byFile[r.filePath]) byFile[r.filePath] = [];
     byFile[r.filePath].push(r);
   });
@@ -1896,18 +1873,10 @@ async function scaricaTutteFunzioni() {
     // Fallback: single txt
     const parts = [`// ── Tutte le funzioni — ${fmtN(all.length)} totali\n`];
     all.forEach((r, i) => {
-      const lines = (r.fileContent || "")
-        .split("\n")
-        .slice(r.startLine - 1, r.endLine);
-      const minI = lines
-        .filter((l) => l.trim())
-        .reduce((m, l) => Math.min(m, l.match(/^(\s*)/)[1].length), Infinity);
-      const code = lines
-        .map((l) => l.slice(minI === Infinity ? 0 : minI))
-        .join("\n");
-      parts.push(
-        `\n// [${i + 1}] ${r.kind} ${r.fnName}  —  ${r.filePath}  (righe ${r.startLine}–${r.endLine})\n${code}\n`,
-      );
+      const lines = (r.fileContent || "").split("\n").slice(r.startLine - 1, r.endLine);
+      const minI = lines.filter(l => l.trim()).reduce((m, l) => Math.min(m, l.match(/^(\s*)/)[1].length), Infinity);
+      const code = lines.map(l => l.slice(minI === Infinity ? 0 : minI)).join("\n");
+      parts.push(`\n// [${ i + 1 }] ${r.kind} ${r.fnName}  —  ${r.filePath}  (righe ${r.startLine}–${r.endLine})\n${code}\n`);
     });
     dlBlob(parts.join("\n"), "all_functions.txt");
     showToast(`⬇ Scaricato all_functions.txt (${fmtN(all.length)} funzioni)`);
@@ -1918,25 +1887,13 @@ async function scaricaTutteFunzioni() {
   const fnFolder = zip.folder("functions");
   Object.entries(byFile).forEach(([fp, fns]) => {
     const parts = [`// ── ${fp} — ${fns.length} funzioni\n`];
-    fns
-      .sort((a, b) => a.startLine - b.startLine)
-      .forEach((r, i) => {
-        const lines = (r.fileContent || "")
-          .split("\n")
-          .slice(r.startLine - 1, r.endLine);
-        const minI = lines
-          .filter((l) => l.trim())
-          .reduce((m, l) => Math.min(m, l.match(/^(\s*)/)[1].length), Infinity);
-        const code = lines
-          .map((l) => l.slice(minI === Infinity ? 0 : minI))
-          .join("\n");
-        parts.push(
-          `\n// [${i + 1}] ${r.kind} ${r.fnName}  (righe ${r.startLine}–${r.endLine})\n${code}\n`,
-        );
-      });
-    const safeFile = fp
-      .replace(/[\/\\]/g, "__")
-      .replace(/[^a-zA-Z0-9._\-]/g, "_");
+    fns.sort((a, b) => a.startLine - b.startLine).forEach((r, i) => {
+      const lines = (r.fileContent || "").split("\n").slice(r.startLine - 1, r.endLine);
+      const minI = lines.filter(l => l.trim()).reduce((m, l) => Math.min(m, l.match(/^(\s*)/)[1].length), Infinity);
+      const code = lines.map(l => l.slice(minI === Infinity ? 0 : minI)).join("\n");
+      parts.push(`\n// [${i + 1}] ${r.kind} ${r.fnName}  (righe ${r.startLine}–${r.endLine})\n${code}\n`);
+    });
+    const safeFile = fp.replace(/[\/\\]/g, "__").replace(/[^a-zA-Z0-9._\-]/g, "_");
     fnFolder.file(`${safeFile}.txt`, parts.join("\n"));
   });
   const blob = await zip.generateAsync({ type: "blob" });
@@ -1947,10 +1904,7 @@ async function scaricaTutteFunzioni() {
 /** Download ALL loaded files as a ZIP */
 async function scaricaTuttiFile() {
   const allFiles = collectAllFiles();
-  if (!allFiles.length) {
-    showToast("⚠ Nessun file da scaricare");
-    return;
-  }
+  if (!allFiles.length) { showToast("⚠ Nessun file da scaricare"); return; }
 
   if (typeof JSZip === "undefined") {
     showToast("⚠ JSZip non caricato — impossibile creare ZIP");
@@ -1988,12 +1942,15 @@ function updateStats() {
     fns += s.fns;
   }
 
-  document.getElementById("totalFiles").textContent = fmtN(files);
-  document.getElementById("totalLines").textContent = fmtN(lines);
+  document.getElementById("totalFiles").textContent =
+    fmtN(files);
+  document.getElementById("totalLines").textContent =
+    fmtN(lines);
   document.getElementById("avgLines").textContent =
     files > 0 ? fmtN(Math.round(lines / files)) : "0";
   document.getElementById("totalSize").textContent = formatBytes(size);
-  document.getElementById("totalFunctions").textContent = fmtN(fns);
+  document.getElementById("totalFunctions").textContent =
+    fmtN(fns);
 
   const statsRow = document.getElementById("statsRow");
   if (files > 0) statsRow.classList.remove("hidden");
@@ -2001,7 +1958,8 @@ function updateStats() {
 
   const logoMark = document.getElementById("logoCounter");
   if (logoMark) {
-    logoMark.innerHTML = files > 0 ? `lines: ${fmtN(lines)}` : "{ lines }";
+    logoMark.innerHTML =
+      files > 0 ? `lines: ${fmtN(lines)}` : "{ lines }";
   }
 
   // Update the functions tab (badge + content if active)
@@ -2022,32 +1980,29 @@ function updateStats() {
 // ── DOWNLOAD SELECTION MODAL ──────────────────────────────────────────
 // ══════════════════════════════════════════════════════════════════════
 
-let dlActivetab = "files";
-let dlFileSelection = new Set(); // selected file fullPaths
-let dlFnSelection = new Set(); // selected fn keys (filePath+':'+fnName+':'+startLine)
+let dlActivetab = 'files';
+let dlFileSelection = new Set();   // selected file fullPaths
+let dlFnSelection = new Set();     // selected fn keys (filePath+':'+fnName+':'+startLine)
 
 function apriModalScarica() {
   const allFiles = collectAllFiles();
-  if (!allFiles.length) {
-    showToast("⚠ Nessun file caricato");
-    return;
-  }
+  if (!allFiles.length) { showToast('⚠ Nessun file caricato'); return; }
 
   // Default: select all
-  dlFileSelection = new Set(allFiles.map((f) => f.path));
+  dlFileSelection = new Set(allFiles.map(f => f.path));
   const allFns = collectAllFunctions();
   dlFnSelection = new Set(allFns.map(fnKey));
 
-  dlActivetab = "files";
-  switchDlTab("files");
+  dlActivetab = 'files';
+  switchDlTab('files');
   renderDlFileList();
   renderDlFnList();
 
-  document.getElementById("dlSelModal").classList.remove("hidden");
+  document.getElementById('dlSelModal').classList.remove('hidden');
 }
 
 function chiudiModalScarica() {
-  document.getElementById("dlSelModal").classList.add("hidden");
+  document.getElementById('dlSelModal').classList.add('hidden');
 }
 
 function fnKey(r) {
@@ -2056,65 +2011,50 @@ function fnKey(r) {
 
 function switchDlTab(tab) {
   dlActivetab = tab;
-  document
-    .getElementById("dlPaneFiles")
-    .classList.toggle("hidden", tab !== "files");
-  document
-    .getElementById("dlPaneFunctions")
-    .classList.toggle("hidden", tab !== "functions");
-  document
-    .getElementById("dlTabFiles")
-    .classList.toggle("dl-tab-active", tab === "files");
-  document
-    .getElementById("dlTabFunctions")
-    .classList.toggle("dl-tab-active", tab !== "files");
+  document.getElementById('dlPaneFiles').classList.toggle('hidden', tab !== 'files');
+  document.getElementById('dlPaneFunctions').classList.toggle('hidden', tab !== 'functions');
+  document.getElementById('dlTabFiles').classList.toggle('dl-tab-active', tab === 'files');
+  document.getElementById('dlTabFunctions').classList.toggle('dl-tab-active', tab !== 'files');
   updateDlConfirmBtn();
 }
 
 function updateDlConfirmBtn() {
-  const btn = document.getElementById("dlSelConfirmBtn");
-  const count =
-    dlActivetab === "files" ? dlFileSelection.size : dlFnSelection.size;
-  btn.textContent = `⬇ Scarica ${fmtN(count)} ${dlActivetab === "files" ? "file" : "funzioni"}`;
+  const btn = document.getElementById('dlSelConfirmBtn');
+  const count = dlActivetab === 'files' ? dlFileSelection.size : dlFnSelection.size;
+  btn.textContent = `⬇ Scarica ${fmtN(count)} ${dlActivetab === 'files' ? 'file' : 'funzioni'}`;
   btn.disabled = count === 0;
 }
 
 // ── FILE LIST ────────────────────────────────────────────────────────
 
 function renderDlFileList() {
-  const container = document.getElementById("dlFileList");
-  const summary = document.getElementById("dlFileSummary");
-  const filter = (
-    document.getElementById("dlFileSearch").value || ""
-  ).toLowerCase();
+  const container = document.getElementById('dlFileList');
+  const summary = document.getElementById('dlFileSummary');
+  const filter = (document.getElementById('dlFileSearch').value || '').toLowerCase();
   const allFiles = collectAllFiles();
-  const visible = filter
-    ? allFiles.filter((f) => f.path.toLowerCase().includes(filter))
-    : allFiles;
+  const visible = filter ? allFiles.filter(f => f.path.toLowerCase().includes(filter)) : allFiles;
 
   // Group by source root
   const groups = {};
   for (const f of visible) {
-    const root = f.path.split("/")[0] || "—";
+    const root = f.path.split('/')[0] || '—';
     if (!groups[root]) groups[root] = [];
     groups[root].push(f);
   }
 
-  container.innerHTML = "";
+  container.innerHTML = '';
   for (const [root, files] of Object.entries(groups)) {
-    const gh = document.createElement("div");
-    gh.className = "dl-group-header";
-    const selCount = files.filter((f) => dlFileSelection.has(f.path)).length;
+    const gh = document.createElement('div');
+    gh.className = 'dl-group-header';
+    const selCount = files.filter(f => dlFileSelection.has(f.path)).length;
     gh.innerHTML = `<span>⬡ ${escHtml(root)}</span><span style="color:var(--a1);margin-left:4px">${selCount}/${files.length}</span>`;
-    const tog = document.createElement("span");
-    tog.className = "dl-group-toggle";
-    const allSel = files.every((f) => dlFileSelection.has(f.path));
-    tog.textContent = allSel ? "Deseleziona gruppo" : "Seleziona gruppo";
+    const tog = document.createElement('span');
+    tog.className = 'dl-group-toggle';
+    const allSel = files.every(f => dlFileSelection.has(f.path));
+    tog.textContent = allSel ? 'Deseleziona gruppo' : 'Seleziona gruppo';
     tog.onclick = (e) => {
       e.stopPropagation();
-      files.forEach((f) =>
-        allSel ? dlFileSelection.delete(f.path) : dlFileSelection.add(f.path),
-      );
+      files.forEach(f => allSel ? dlFileSelection.delete(f.path) : dlFileSelection.add(f.path));
       renderDlFileList();
       updateDlConfirmBtn();
     };
@@ -2122,15 +2062,15 @@ function renderDlFileList() {
     container.appendChild(gh);
 
     for (const f of files) {
-      const row = document.createElement("div");
+      const row = document.createElement('div');
       const checked = dlFileSelection.has(f.path);
-      row.className = `dl-row${checked ? " dl-checked" : ""}`;
-      const relPath = f.path.split("/").slice(1).join("/") || f.path;
-      const lines = f.file ? fmtN(f.file.lines) + " ln" : "";
-      const size = f.file ? formatBytes(f.file.size) : "";
+      row.className = `dl-row${checked ? ' dl-checked' : ''}`;
+      const relPath = f.path.split('/').slice(1).join('/') || f.path;
+      const lines = f.file ? fmtN(f.file.lines) + ' ln' : '';
+      const size = f.file ? formatBytes(f.file.size) : '';
       const icon = getIcon(f.path);
       row.innerHTML = `
-        <div class="dl-checkbox">${checked ? "✓" : ""}</div>
+        <div class="dl-checkbox">${checked ? '✓' : ''}</div>
         <span class="dl-row-icon">${icon}</span>
         <span class="dl-row-name" title="${escHtml(f.path)}">${escHtml(relPath)}</span>
         <span class="dl-row-meta">${lines} · ${size}</span>`;
@@ -2145,8 +2085,7 @@ function renderDlFileList() {
   }
 
   if (!visible.length) {
-    container.innerHTML =
-      '<div class="fn-empty" style="padding:20px;text-align:center;color:var(--muted)">Nessun file corrisponde al filtro</div>';
+    container.innerHTML = '<div class="fn-empty" style="padding:20px;text-align:center;color:var(--muted)">Nessun file corrisponde al filtro</div>';
   }
 
   summary.textContent = `${fmtN(dlFileSelection.size)} / ${fmtN(allFiles.length)} file selezionati`;
@@ -2154,16 +2093,10 @@ function renderDlFileList() {
 }
 
 function dlSelectAllFiles(sel) {
-  const filter = (
-    document.getElementById("dlFileSearch").value || ""
-  ).toLowerCase();
+  const filter = (document.getElementById('dlFileSearch').value || '').toLowerCase();
   const allFiles = collectAllFiles();
-  const visible = filter
-    ? allFiles.filter((f) => f.path.toLowerCase().includes(filter))
-    : allFiles;
-  visible.forEach((f) =>
-    sel ? dlFileSelection.add(f.path) : dlFileSelection.delete(f.path),
-  );
+  const visible = filter ? allFiles.filter(f => f.path.toLowerCase().includes(filter)) : allFiles;
+  visible.forEach(f => sel ? dlFileSelection.add(f.path) : dlFileSelection.delete(f.path));
   renderDlFileList();
   updateDlConfirmBtn();
 }
@@ -2171,19 +2104,12 @@ function dlSelectAllFiles(sel) {
 // ── FUNCTION LIST ────────────────────────────────────────────────────
 
 function renderDlFnList() {
-  const container = document.getElementById("dlFnList");
-  const summary = document.getElementById("dlFnSummary");
-  const filter = (
-    document.getElementById("dlFnSearch").value || ""
-  ).toLowerCase();
+  const container = document.getElementById('dlFnList');
+  const summary = document.getElementById('dlFnSummary');
+  const filter = (document.getElementById('dlFnSearch').value || '').toLowerCase();
   const allFns = collectAllFunctions();
   const visible = filter
-    ? allFns.filter(
-        (r) =>
-          r.fnName.toLowerCase().includes(filter) ||
-          r.filePath.toLowerCase().includes(filter) ||
-          r.kind.toLowerCase().includes(filter),
-      )
+    ? allFns.filter(r => r.fnName.toLowerCase().includes(filter) || r.filePath.toLowerCase().includes(filter) || r.kind.toLowerCase().includes(filter))
     : allFns;
 
   // Group by file
@@ -2193,21 +2119,19 @@ function renderDlFnList() {
     groups[r.filePath].push(r);
   }
 
-  container.innerHTML = "";
+  container.innerHTML = '';
   for (const [fp, fns] of Object.entries(groups)) {
-    const gh = document.createElement("div");
-    gh.className = "dl-group-header";
-    const selCount = fns.filter((r) => dlFnSelection.has(fnKey(r))).length;
+    const gh = document.createElement('div');
+    gh.className = 'dl-group-header';
+    const selCount = fns.filter(r => dlFnSelection.has(fnKey(r))).length;
     gh.innerHTML = `<span style="font-family:var(--mono)">${escHtml(fp)}</span><span style="color:var(--a1);margin-left:4px">${selCount}/${fns.length}</span>`;
-    const tog = document.createElement("span");
-    tog.className = "dl-group-toggle";
-    const allSel = fns.every((r) => dlFnSelection.has(fnKey(r)));
-    tog.textContent = allSel ? "Deseleziona gruppo" : "Seleziona gruppo";
+    const tog = document.createElement('span');
+    tog.className = 'dl-group-toggle';
+    const allSel = fns.every(r => dlFnSelection.has(fnKey(r)));
+    tog.textContent = allSel ? 'Deseleziona gruppo' : 'Seleziona gruppo';
     tog.onclick = (e) => {
       e.stopPropagation();
-      fns.forEach((r) =>
-        allSel ? dlFnSelection.delete(fnKey(r)) : dlFnSelection.add(fnKey(r)),
-      );
+      fns.forEach(r => allSel ? dlFnSelection.delete(fnKey(r)) : dlFnSelection.add(fnKey(r)));
       renderDlFnList();
       updateDlConfirmBtn();
     };
@@ -2217,11 +2141,11 @@ function renderDlFnList() {
     for (const r of fns) {
       const key = fnKey(r);
       const checked = dlFnSelection.has(key);
-      const row = document.createElement("div");
-      row.className = `dl-row${checked ? " dl-checked" : ""}`;
+      const row = document.createElement('div');
+      row.className = `dl-row${checked ? ' dl-checked' : ''}`;
       const kindCls = kindColor(r.kind);
       row.innerHTML = `
-        <div class="dl-checkbox">${checked ? "✓" : ""}</div>
+        <div class="dl-checkbox">${checked ? '✓' : ''}</div>
         <span class="fn-kind dl-row-kind ${kindCls}" style="font-size:9px">${escHtml(r.kind)}</span>
         <span class="dl-row-name" title="${escHtml(r.fnName)}">${escHtml(r.fnName)}</span>
         <span class="dl-row-meta">${r.linesFiltered} ln · ${r.startLine}–${r.endLine}</span>`;
@@ -2236,8 +2160,7 @@ function renderDlFnList() {
   }
 
   if (!visible.length) {
-    container.innerHTML =
-      '<div class="fn-empty" style="padding:20px;text-align:center;color:var(--muted)">Nessuna funzione corrisponde al filtro</div>';
+    container.innerHTML = '<div class="fn-empty" style="padding:20px;text-align:center;color:var(--muted)">Nessuna funzione corrisponde al filtro</div>';
   }
 
   summary.textContent = `${fmtN(dlFnSelection.size)} / ${fmtN(allFns.length)} funzioni selezionate`;
@@ -2245,21 +2168,12 @@ function renderDlFnList() {
 }
 
 function dlSelectAllFns(sel) {
-  const filter = (
-    document.getElementById("dlFnSearch").value || ""
-  ).toLowerCase();
+  const filter = (document.getElementById('dlFnSearch').value || '').toLowerCase();
   const allFns = collectAllFunctions();
   const visible = filter
-    ? allFns.filter(
-        (r) =>
-          r.fnName.toLowerCase().includes(filter) ||
-          r.filePath.toLowerCase().includes(filter) ||
-          r.kind.toLowerCase().includes(filter),
-      )
+    ? allFns.filter(r => r.fnName.toLowerCase().includes(filter) || r.filePath.toLowerCase().includes(filter) || r.kind.toLowerCase().includes(filter))
     : allFns;
-  visible.forEach((r) =>
-    sel ? dlFnSelection.add(fnKey(r)) : dlFnSelection.delete(fnKey(r)),
-  );
+  visible.forEach(r => sel ? dlFnSelection.add(fnKey(r)) : dlFnSelection.delete(fnKey(r)));
   renderDlFnList();
   updateDlConfirmBtn();
 }
@@ -2267,7 +2181,7 @@ function dlSelectAllFns(sel) {
 // ── EXECUTE DOWNLOAD ─────────────────────────────────────────────────
 
 async function eseguiDownloadSelezione() {
-  if (dlActivetab === "files") {
+  if (dlActivetab === 'files') {
     await _scaricaFileSelezionati();
   } else {
     await _scaricaFunzioniSelezionate();
@@ -2276,117 +2190,77 @@ async function eseguiDownloadSelezione() {
 }
 
 async function _scaricaFileSelezionati() {
-  if (!dlFileSelection.size) {
-    showToast("⚠ Nessun file selezionato");
-    return;
-  }
+  if (!dlFileSelection.size) { showToast('⚠ Nessun file selezionato'); return; }
 
   const allFiles = collectAllFiles();
-  const sel = allFiles.filter((f) => dlFileSelection.has(f.path));
+  const sel = allFiles.filter(f => dlFileSelection.has(f.path));
 
   if (sel.length === 1) {
-    dlBlob(sel[0].content, sel[0].path.split("/").pop());
-    showToast(`⬇ Scaricato ${sel[0].path.split("/").pop()}`);
+    dlBlob(sel[0].content, sel[0].path.split('/').pop());
+    showToast(`⬇ Scaricato ${sel[0].path.split('/').pop()}`);
     return;
   }
 
-  if (typeof JSZip === "undefined") {
-    showToast("⚠ JSZip non caricato");
-    return;
+  if (typeof JSZip === 'undefined') {
+    showToast('⚠ JSZip non caricato'); return;
   }
   const zip = new JSZip();
   sel.forEach(({ path, content }) => zip.file(path, content));
-  const blob = await zip.generateAsync({ type: "blob" });
-  dlBlob(blob, "selezione_file.zip", "application/zip");
+  const blob = await zip.generateAsync({ type: 'blob' });
+  dlBlob(blob, 'selezione_file.zip', 'application/zip');
   showToast(`⬇ Scaricato selezione_file.zip (${fmtN(sel.length)} file)`);
 }
 
 async function _scaricaFunzioniSelezionate() {
-  if (!dlFnSelection.size) {
-    showToast("⚠ Nessuna funzione selezionata");
-    return;
-  }
+  if (!dlFnSelection.size) { showToast('⚠ Nessuna funzione selezionata'); return; }
 
   const allFns = collectAllFunctions();
-  const sel = allFns.filter((r) => dlFnSelection.has(fnKey(r)));
+  const sel = allFns.filter(r => dlFnSelection.has(fnKey(r)));
 
   if (sel.length === 1) {
     const r = sel[0];
-    _scaricaFunzione(
-      r.fnName,
-      r.fileContent,
-      r.startLine,
-      r.endLine,
-      r.filePath,
-    );
+    _scaricaFunzione(r.fnName, r.fileContent, r.startLine, r.endLine, r.filePath);
     return;
   }
 
-  if (typeof JSZip === "undefined") {
+  if (typeof JSZip === 'undefined') {
     // Fallback: single txt
     const parts = [`// ── Selezione funzioni — ${fmtN(sel.length)} totali\n`];
     sel.forEach((r, i) => {
-      const lines = (r.fileContent || "")
-        .split("\n")
-        .slice(r.startLine - 1, r.endLine);
-      const minI = lines
-        .filter((l) => l.trim())
-        .reduce((m, l) => Math.min(m, l.match(/^(\s*)/)[1].length), Infinity);
-      const code = lines
-        .map((l) => l.slice(minI === Infinity ? 0 : minI))
-        .join("\n");
-      parts.push(
-        `\n// [${i + 1}] ${r.kind} ${r.fnName}  —  ${r.filePath}  (righe ${r.startLine}–${r.endLine})\n${code}\n`,
-      );
+      const lines = (r.fileContent || '').split('\n').slice(r.startLine - 1, r.endLine);
+      const minI = lines.filter(l => l.trim()).reduce((m, l) => Math.min(m, l.match(/^(\s*)/)[1].length), Infinity);
+      const code = lines.map(l => l.slice(minI === Infinity ? 0 : minI)).join('\n');
+      parts.push(`\n// [${i + 1}] ${r.kind} ${r.fnName}  —  ${r.filePath}  (righe ${r.startLine}–${r.endLine})\n${code}\n`);
     });
-    dlBlob(parts.join("\n"), "selezione_funzioni.txt");
-    showToast(
-      `⬇ Scaricato selezione_funzioni.txt (${fmtN(sel.length)} funzioni)`,
-    );
+    dlBlob(parts.join('\n'), 'selezione_funzioni.txt');
+    showToast(`⬇ Scaricato selezione_funzioni.txt (${fmtN(sel.length)} funzioni)`);
     return;
   }
 
   const zip = new JSZip();
   const byFile = {};
-  sel.forEach((r) => {
-    if (!byFile[r.filePath]) byFile[r.filePath] = [];
-    byFile[r.filePath].push(r);
-  });
+  sel.forEach(r => { if (!byFile[r.filePath]) byFile[r.filePath] = []; byFile[r.filePath].push(r); });
 
   Object.entries(byFile).forEach(([fp, fns]) => {
     const parts = [`// ── ${fp} — ${fns.length} funzioni selezionate\n`];
-    fns
-      .sort((a, b) => a.startLine - b.startLine)
-      .forEach((r, i) => {
-        const lines = (r.fileContent || "")
-          .split("\n")
-          .slice(r.startLine - 1, r.endLine);
-        const minI = lines
-          .filter((l) => l.trim())
-          .reduce((m, l) => Math.min(m, l.match(/^(\s*)/)[1].length), Infinity);
-        const code = lines
-          .map((l) => l.slice(minI === Infinity ? 0 : minI))
-          .join("\n");
-        parts.push(
-          `\n// [${i + 1}] ${r.kind} ${r.fnName}  (righe ${r.startLine}–${r.endLine})\n${code}\n`,
-        );
-      });
-    const safeFile = fp
-      .replace(/[\/\\]/g, "__")
-      .replace(/[^a-zA-Z0-9._\-]/g, "_");
-    zip.file(`funzioni_selezionate/${safeFile}.txt`, parts.join("\n"));
+    fns.sort((a, b) => a.startLine - b.startLine).forEach((r, i) => {
+      const lines = (r.fileContent || '').split('\n').slice(r.startLine - 1, r.endLine);
+      const minI = lines.filter(l => l.trim()).reduce((m, l) => Math.min(m, l.match(/^(\s*)/)[1].length), Infinity);
+      const code = lines.map(l => l.slice(minI === Infinity ? 0 : minI)).join('\n');
+      parts.push(`\n// [${i + 1}] ${r.kind} ${r.fnName}  (righe ${r.startLine}–${r.endLine})\n${code}\n`);
+    });
+    const safeFile = fp.replace(/[\/\\]/g, '__').replace(/[^a-zA-Z0-9._\-]/g, '_');
+    zip.file(`funzioni_selezionate/${safeFile}.txt`, parts.join('\n'));
   });
 
-  const blob = await zip.generateAsync({ type: "blob" });
-  dlBlob(blob, "selezione_funzioni.zip", "application/zip");
-  showToast(
-    `⬇ Scaricato selezione_funzioni.zip (${fmtN(sel.length)} funzioni)`,
-  );
+  const blob = await zip.generateAsync({ type: 'blob' });
+  dlBlob(blob, 'selezione_funzioni.zip', 'application/zip');
+  showToast(`⬇ Scaricato selezione_funzioni.zip (${fmtN(sel.length)} funzioni)`);
 }
 
 // Close download modal on backdrop click
-document.getElementById("dlSelModal").addEventListener("click", (e) => {
-  if (e.target === document.getElementById("dlSelModal")) chiudiModalScarica();
+document.getElementById('dlSelModal').addEventListener('click', (e) => {
+  if (e.target === document.getElementById('dlSelModal')) chiudiModalScarica();
 });
 
 // ══════════════════════════════════════════════════════════════════════
@@ -2401,34 +2275,32 @@ function fnInlineKey(r) {
 
 /** Update the floating selection bar visibility + count */
 function updateFnSelBar() {
-  const bar = document.getElementById("fnSelBar");
-  const countEl = document.getElementById("fnSelBarCount");
+  const bar = document.getElementById('fnSelBar');
+  const countEl = document.getElementById('fnSelBarCount');
   if (!bar) return;
   const n = fnInlineSelection.size;
   if (n === 0) {
-    bar.classList.add("hidden");
+    bar.classList.add('hidden');
   } else {
-    bar.classList.remove("hidden");
-    countEl.textContent = `${fmtN(n)} ${n === 1 ? "funzione selezionata" : "funzioni selezionate"}`;
+    bar.classList.remove('hidden');
+    countEl.textContent = `${fmtN(n)} ${n === 1 ? 'funzione selezionata' : 'funzioni selezionate'}`;
   }
 }
 
 /** Update the header checkbox state (unchecked / indeterminate / all) */
 function updateFnHdrCheckbox(visibleRows) {
-  const el = document.getElementById("fnHdrCheckbox");
+  const el = document.getElementById('fnHdrCheckbox');
   if (!el) return;
   const total = visibleRows.length;
-  const selected = visibleRows.filter((r) =>
-    fnInlineSelection.has(fnInlineKey(r)),
-  ).length;
-  el.classList.remove("all-checked", "some-checked");
-  el.textContent = "";
+  const selected = visibleRows.filter(r => fnInlineSelection.has(fnInlineKey(r))).length;
+  el.classList.remove('all-checked', 'some-checked');
+  el.textContent = '';
   if (total > 0 && selected === total) {
-    el.classList.add("all-checked");
-    el.textContent = "✓";
+    el.classList.add('all-checked');
+    el.textContent = '✓';
   } else if (selected > 0) {
-    el.classList.add("some-checked");
-    el.textContent = "–";
+    el.classList.add('some-checked');
+    el.textContent = '–';
   }
 }
 
@@ -2436,26 +2308,23 @@ function updateFnHdrCheckbox(visibleRows) {
 function fnToggleSelectAll() {
   const allFns = collectAllFunctions();
   // Rebuild visible rows using current filters (same logic as renderFnFull)
-  const searchEl = document.getElementById("fnFullSearch");
-  const textFilter = (searchEl ? searchEl.value : "").toLowerCase().trim();
-  let rows = allFns.filter((r) => {
+  const searchEl = document.getElementById('fnFullSearch');
+  const textFilter = (searchEl ? searchEl.value : '').toLowerCase().trim();
+  let rows = allFns.filter(r => {
     const kindOk = fnFullKindFilter.size === 0 || fnFullKindFilter.has(r.kind);
-    const fileOk =
-      fnFullFileFilter.size === 0 || fnFullFileFilter.has(r.filePath);
+    const fileOk = fnFullFileFilter.size === 0 || fnFullFileFilter.has(r.filePath);
     if (!kindOk || !fileOk) return false;
     if (!textFilter) return true;
-    return (
-      r.fnName.toLowerCase().includes(textFilter) ||
-      r.filePath.toLowerCase().includes(textFilter) ||
-      r.kind.toLowerCase().includes(textFilter)
-    );
+    return r.fnName.toLowerCase().includes(textFilter) ||
+           r.filePath.toLowerCase().includes(textFilter) ||
+           r.kind.toLowerCase().includes(textFilter);
   });
 
-  const allSelected = rows.every((r) => fnInlineSelection.has(fnInlineKey(r)));
+  const allSelected = rows.every(r => fnInlineSelection.has(fnInlineKey(r)));
   if (allSelected) {
-    rows.forEach((r) => fnInlineSelection.delete(fnInlineKey(r)));
+    rows.forEach(r => fnInlineSelection.delete(fnInlineKey(r)));
   } else {
-    rows.forEach((r) => fnInlineSelection.add(fnInlineKey(r)));
+    rows.forEach(r => fnInlineSelection.add(fnInlineKey(r)));
   }
   renderFnFull();
 }
@@ -2463,21 +2332,18 @@ function fnToggleSelectAll() {
 /** Select all currently visible rows */
 function fnSelectAllVisible() {
   const allFns = collectAllFunctions();
-  const searchEl = document.getElementById("fnFullSearch");
-  const textFilter = (searchEl ? searchEl.value : "").toLowerCase().trim();
-  let rows = allFns.filter((r) => {
+  const searchEl = document.getElementById('fnFullSearch');
+  const textFilter = (searchEl ? searchEl.value : '').toLowerCase().trim();
+  let rows = allFns.filter(r => {
     const kindOk = fnFullKindFilter.size === 0 || fnFullKindFilter.has(r.kind);
-    const fileOk =
-      fnFullFileFilter.size === 0 || fnFullFileFilter.has(r.filePath);
+    const fileOk = fnFullFileFilter.size === 0 || fnFullFileFilter.has(r.filePath);
     if (!kindOk || !fileOk) return false;
     if (!textFilter) return true;
-    return (
-      r.fnName.toLowerCase().includes(textFilter) ||
-      r.filePath.toLowerCase().includes(textFilter) ||
-      r.kind.toLowerCase().includes(textFilter)
-    );
+    return r.fnName.toLowerCase().includes(textFilter) ||
+           r.filePath.toLowerCase().includes(textFilter) ||
+           r.kind.toLowerCase().includes(textFilter);
   });
-  rows.forEach((r) => fnInlineSelection.add(fnInlineKey(r)));
+  rows.forEach(r => fnInlineSelection.add(fnInlineKey(r)));
   renderFnFull();
 }
 
@@ -2489,83 +2355,121 @@ function fnClearSelection() {
 
 /** Download only the inline-selected functions */
 async function scaricaFunzioniSelezionate() {
-  if (!fnInlineSelection.size) {
-    showToast("⚠ Nessuna funzione selezionata");
-    return;
-  }
+  if (!fnInlineSelection.size) { showToast('⚠ Nessuna funzione selezionata'); return; }
 
   const allFns = collectAllFunctions();
-  const sel = allFns.filter((r) => fnInlineSelection.has(fnInlineKey(r)));
+  const sel = allFns.filter(r => fnInlineSelection.has(fnInlineKey(r)));
 
   if (sel.length === 1) {
     const r = sel[0];
-    _scaricaFunzione(
-      r.fnName,
-      r.fileContent,
-      r.startLine,
-      r.endLine,
-      r.filePath,
-    );
+    _scaricaFunzione(r.fnName, r.fileContent, r.startLine, r.endLine, r.filePath);
     return;
   }
 
-  if (typeof JSZip === "undefined") {
+  if (typeof JSZip === 'undefined') {
     const parts = [`// ── Funzioni selezionate — ${fmtN(sel.length)} totali\n`];
     sel.forEach((r, i) => {
-      const lines = (r.fileContent || "")
-        .split("\n")
-        .slice(r.startLine - 1, r.endLine);
-      const minI = lines
-        .filter((l) => l.trim())
-        .reduce((m, l) => Math.min(m, l.match(/^(\s*)/)[1].length), Infinity);
-      const code = lines
-        .map((l) => l.slice(minI === Infinity ? 0 : minI))
-        .join("\n");
-      parts.push(
-        `\n// [${i + 1}] ${r.kind} ${r.fnName}  —  ${r.filePath}  (righe ${r.startLine}–${r.endLine})\n${code}\n`,
-      );
+      const lines = (r.fileContent || '').split('\n').slice(r.startLine - 1, r.endLine);
+      const minI = lines.filter(l => l.trim()).reduce((m, l) => Math.min(m, l.match(/^(\s*)/)[1].length), Infinity);
+      const code = lines.map(l => l.slice(minI === Infinity ? 0 : minI)).join('\n');
+      parts.push(`\n// [${i+1}] ${r.kind} ${r.fnName}  —  ${r.filePath}  (righe ${r.startLine}–${r.endLine})\n${code}\n`);
     });
-    dlBlob(parts.join("\n"), "funzioni_selezionate.txt");
-    showToast(
-      `⬇ Scaricato funzioni_selezionate.txt (${fmtN(sel.length)} funzioni)`,
-    );
+    dlBlob(parts.join('\n'), 'funzioni_selezionate.txt');
+    showToast(`⬇ Scaricato funzioni_selezionate.txt (${fmtN(sel.length)} funzioni)`);
     return;
   }
 
   const zip = new JSZip();
   const byFile = {};
-  sel.forEach((r) => {
-    if (!byFile[r.filePath]) byFile[r.filePath] = [];
-    byFile[r.filePath].push(r);
-  });
+  sel.forEach(r => { if (!byFile[r.filePath]) byFile[r.filePath] = []; byFile[r.filePath].push(r); });
 
   Object.entries(byFile).forEach(([fp, fns]) => {
     const parts = [`// ── ${fp} — ${fns.length} funzioni selezionate\n`];
-    fns
-      .sort((a, b) => a.startLine - b.startLine)
-      .forEach((r, i) => {
-        const lines = (r.fileContent || "")
-          .split("\n")
-          .slice(r.startLine - 1, r.endLine);
-        const minI = lines
-          .filter((l) => l.trim())
-          .reduce((m, l) => Math.min(m, l.match(/^(\s*)/)[1].length), Infinity);
-        const code = lines
-          .map((l) => l.slice(minI === Infinity ? 0 : minI))
-          .join("\n");
-        parts.push(
-          `\n// [${i + 1}] ${r.kind} ${r.fnName}  (righe ${r.startLine}–${r.endLine})\n${code}\n`,
-        );
-      });
-    const safeFile = fp
-      .replace(/[\/\\]/g, "__")
-      .replace(/[^a-zA-Z0-9._\-]/g, "_");
-    zip.file(`${safeFile}.txt`, parts.join("\n"));
+    fns.sort((a, b) => a.startLine - b.startLine).forEach((r, i) => {
+      const lines = (r.fileContent || '').split('\n').slice(r.startLine - 1, r.endLine);
+      const minI = lines.filter(l => l.trim()).reduce((m, l) => Math.min(m, l.match(/^(\s*)/)[1].length), Infinity);
+      const code = lines.map(l => l.slice(minI === Infinity ? 0 : minI)).join('\n');
+      parts.push(`\n// [${i+1}] ${r.kind} ${r.fnName}  (righe ${r.startLine}–${r.endLine})\n${code}\n`);
+    });
+    const safeFile = fp.replace(/[\/\\]/g, '__').replace(/[^a-zA-Z0-9._\-]/g, '_');
+    zip.file(`${safeFile}.txt`, parts.join('\n'));
   });
 
-  const blob = await zip.generateAsync({ type: "blob" });
-  dlBlob(blob, "funzioni_selezionate.zip", "application/zip");
-  showToast(
-    `⬇ Scaricato funzioni_selezionate.zip (${fmtN(sel.length)} funzioni)`,
-  );
+  const blob = await zip.generateAsync({ type: 'blob' });
+  dlBlob(blob, 'funzioni_selezionate.zip', 'application/zip');
+  showToast(`⬇ Scaricato funzioni_selezionate.zip (${fmtN(sel.length)} funzioni)`);
+}
+
+// ══════════════════════════════════════════════════════════════════════
+// ── INLINE FILE SELECTION (tab File) ─────────────────────────────────
+// ══════════════════════════════════════════════════════════════════════
+
+let fileInlineSelection = new Set(); // fullPaths of selected files
+
+/** Collect all file objects within a node (recursively) */
+function collectFilesInNode(node) {
+  const result = [];
+  for (const f of node.__files__ || []) result.push(f);
+  for (const k of Object.keys(node).filter(k => k !== "__files__"))
+    result.push(...collectFilesInNode(node[k]));
+  return result;
+}
+
+/** Collect all file objects across the whole fileTree */
+function collectAllFileObjects() {
+  const result = [];
+  for (const root of Object.keys(fileTree))
+    result.push(...collectFilesInNode(fileTree[root]));
+  return result;
+}
+
+function updateFileSelBar() {
+  const bar = document.getElementById('fileSelBar');
+  const countEl = document.getElementById('fileSelBarCount');
+  if (!bar) return;
+  const n = fileInlineSelection.size;
+  if (n === 0) {
+    bar.classList.add('hidden');
+  } else {
+    bar.classList.remove('hidden');
+    countEl.textContent = `${fmtN(n)} ${n === 1 ? 'file selezionato' : 'file selezionati'}`;
+  }
+}
+
+function fileSelectAllVisible() {
+  const filter = document.getElementById('searchFilter').value.toLowerCase();
+  const all = collectAllFileObjects();
+  const visible = filter ? all.filter(f => f.name.toLowerCase().includes(filter)) : all;
+  visible.forEach(f => fileInlineSelection.add(f.fullPath));
+  updateFileSelBar();
+  renderTree();
+}
+
+function fileClearSelection() {
+  fileInlineSelection.clear();
+  updateFileSelBar();
+  renderTree();
+}
+
+async function scaricaFileSelezionatiInline() {
+  if (!fileInlineSelection.size) { showToast('⚠ Nessun file selezionato'); return; }
+
+  const allFiles = collectAllFiles();
+  const sel = allFiles.filter(f => fileInlineSelection.has(f.file?.fullPath || f.path));
+
+  if (!sel.length) { showToast('⚠ Nessun file selezionato'); return; }
+
+  if (sel.length === 1) {
+    dlBlob(sel[0].content, sel[0].path.split('/').pop());
+    showToast(`⬇ Scaricato ${sel[0].path.split('/').pop()}`);
+    return;
+  }
+
+  if (typeof JSZip === 'undefined') { showToast('⚠ JSZip non caricato'); return; }
+
+  const zip = new JSZip();
+  sel.forEach(({ path, content }) => zip.file(path, content));
+  const blob = await zip.generateAsync({ type: 'blob' });
+  dlBlob(blob, 'file_selezionati.zip', 'application/zip');
+  showToast(`⬇ Scaricato file_selezionati.zip (${fmtN(sel.length)} file)`);
 }

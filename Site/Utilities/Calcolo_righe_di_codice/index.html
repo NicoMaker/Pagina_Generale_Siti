@@ -151,6 +151,13 @@
 
           <!-- ── FILE TREE TAB ── -->
           <div class="tab-pane" id="paneFiles">
+            <!-- Floating file selection bar -->
+            <div class="fn-sel-bar hidden" id="fileSelBar">
+              <span class="fn-sel-bar-count" id="fileSelBarCount"></span>
+              <button class="btn btn-xs" onclick="fileSelectAllVisible()">Seleziona tutti visibili</button>
+              <button class="btn btn-xs" onclick="fileClearSelection()">Deseleziona tutti</button>
+              <button class="btn btn-xs btn-dl" onclick="scaricaFileSelezionatiInline()">⬇ Scarica selezionati</button>
+            </div>
             <div class="panel tree-panel">
               <div class="panel-header">
                 <span class="panel-title">Struttura File</span>
@@ -188,30 +195,16 @@
             <!-- Floating selection action bar -->
             <div class="fn-sel-bar hidden" id="fnSelBar">
               <span class="fn-sel-bar-count" id="fnSelBarCount"></span>
-              <button class="btn btn-xs" onclick="fnSelectAllVisible()">
-                Seleziona tutte visibili
-              </button>
-              <button class="btn btn-xs" onclick="fnClearSelection()">
-                Deseleziona tutte
-              </button>
-              <button
-                class="btn btn-xs btn-dl"
-                onclick="scaricaFunzioniSelezionate()"
-              >
-                ⬇ Scarica selezionate
-              </button>
+              <button class="btn btn-xs" onclick="fnSelectAllVisible()">Seleziona tutte visibili</button>
+              <button class="btn btn-xs" onclick="fnClearSelection()">Deseleziona tutte</button>
+              <button class="btn btn-xs btn-dl" onclick="scaricaFunzioniSelezionate()">⬇ Scarica selezionate</button>
             </div>
             <div class="panel fn-full-panel">
               <div class="panel-header">
                 <span class="panel-title">ƒ &nbsp;Tutte le Funzioni</span>
                 <div class="header-btns">
                   <span class="fn-panel-summary" id="fnFullSummary"></span>
-                  <button
-                    class="btn btn-xs btn-dl"
-                    onclick="scaricaTutteFunzioni()"
-                  >
-                    ⬇ Scarica tutte
-                  </button>
+                  <button class="btn btn-xs btn-dl" onclick="scaricaTutteFunzioni()">⬇ Scarica tutte</button>
                   <button
                     class="btn btn-xs"
                     onclick="toggleFnFullSort('lines')"
@@ -261,11 +254,7 @@
 
               <div class="fn-full-table-header">
                 <span class="fth-chk" title="Seleziona/deseleziona tutte">
-                  <span
-                    class="fn-hdr-checkbox"
-                    id="fnHdrCheckbox"
-                    onclick="fnToggleSelectAll()"
-                  ></span>
+                  <span class="fn-hdr-checkbox" id="fnHdrCheckbox" onclick="fnToggleSelectAll()"></span>
                 </span>
                 <span class="fth-lines">Righe</span>
                 <span class="fth-kind">Tipo</span>
@@ -385,16 +374,8 @@
             >ƒ &nbsp;<span id="fnModalTitle"></span
           ></span>
           <div class="code-modal-header-actions">
-            <button
-              class="btn btn-xs btn-dl"
-              id="fnModalDlBtn"
-              onclick="scaricaFunzioniFile()"
-            >
-              ⬇ Scarica funzioni
-            </button>
-            <button class="modal-close" onclick="chiudiFunzioniModal()">
-              ✕
-            </button>
+            <button class="btn btn-xs btn-dl" id="fnModalDlBtn" onclick="scaricaFunzioniFile()">⬇ Scarica funzioni</button>
+            <button class="modal-close" onclick="chiudiFunzioniModal()">✕</button>
           </div>
         </div>
         <div class="fn-modal-stats" id="fnModalStats"></div>
@@ -416,14 +397,8 @@
         <div class="modal-header">
           <span class="modal-title"><span id="fileModalTitle"></span></span>
           <div class="code-modal-header-actions">
-            <button
-              class="btn btn-xs btn-fn-modal"
-              id="fileModalFnBtn"
-              style="display: none"
-            ></button>
-            <button class="btn btn-xs btn-dl" id="fileModalDlBtn">
-              ⬇ Scarica
-            </button>
+            <button class="btn btn-xs btn-fn-modal" id="fileModalFnBtn" style="display:none"></button>
+            <button class="btn btn-xs btn-dl" id="fileModalDlBtn">⬇ Scarica</button>
             <button class="btn btn-xs" id="fileModalCopy">⎘ Copia</button>
             <button class="modal-close" onclick="chiudiFileModal()">✕</button>
           </div>
@@ -439,13 +414,9 @@
     <div class="modal-backdrop hidden" id="codeModal">
       <div class="modal code-modal">
         <div class="modal-header">
-          <span class="modal-title"
-            >ƒ &nbsp;<span id="codeModalTitle"></span
-          ></span>
+          <span class="modal-title">ƒ &nbsp;<span id="codeModalTitle"></span></span>
           <div class="code-modal-header-actions">
-            <button class="btn btn-xs btn-dl" id="codeModalDlBtn">
-              ⬇ Scarica funzione
-            </button>
+            <button class="btn btn-xs btn-dl" id="codeModalDlBtn">⬇ Scarica funzione</button>
             <button class="btn btn-xs" id="codeModalCopy">⎘ Copia</button>
             <button class="modal-close" onclick="chiudiCodiceModal()">✕</button>
           </div>
@@ -465,20 +436,13 @@
           <button class="modal-close" onclick="chiudiModalScarica()">✕</button>
         </div>
         <div class="dl-sel-body">
+
           <!-- MODE TABS -->
           <div class="dl-sel-tabs">
-            <button
-              class="dl-tab dl-tab-active"
-              id="dlTabFiles"
-              onclick="switchDlTab('files')"
-            >
+            <button class="dl-tab dl-tab-active" id="dlTabFiles" onclick="switchDlTab('files')">
               <span class="ctab-icon">&#9783;</span> File
             </button>
-            <button
-              class="dl-tab"
-              id="dlTabFunctions"
-              onclick="switchDlTab('functions')"
-            >
+            <button class="dl-tab" id="dlTabFunctions" onclick="switchDlTab('functions')">
               <span class="ctab-icon">ƒ</span> Funzioni
             </button>
           </div>
@@ -486,20 +450,10 @@
           <!-- ── FILES PANE ── -->
           <div class="dl-pane" id="dlPaneFiles">
             <div class="dl-sel-toolbar">
-              <input
-                class="search-box dl-search"
-                id="dlFileSearch"
-                placeholder="&#9906;  Filtra file..."
-                type="text"
-                oninput="renderDlFileList()"
-              />
+              <input class="search-box dl-search" id="dlFileSearch" placeholder="&#9906;  Filtra file..." type="text" oninput="renderDlFileList()" />
               <div class="dl-sel-actions">
-                <button class="btn btn-xs" onclick="dlSelectAllFiles(true)">
-                  Seleziona tutti
-                </button>
-                <button class="btn btn-xs" onclick="dlSelectAllFiles(false)">
-                  Deseleziona tutti
-                </button>
+                <button class="btn btn-xs" onclick="dlSelectAllFiles(true)">Seleziona tutti</button>
+                <button class="btn btn-xs" onclick="dlSelectAllFiles(false)">Deseleziona tutti</button>
               </div>
             </div>
             <div class="dl-sel-summary" id="dlFileSummary"></div>
@@ -509,37 +463,20 @@
           <!-- ── FUNCTIONS PANE ── -->
           <div class="dl-pane hidden" id="dlPaneFunctions">
             <div class="dl-sel-toolbar">
-              <input
-                class="search-box dl-search"
-                id="dlFnSearch"
-                placeholder="&#9906;  Filtra funzioni..."
-                type="text"
-                oninput="renderDlFnList()"
-              />
+              <input class="search-box dl-search" id="dlFnSearch" placeholder="&#9906;  Filtra funzioni..." type="text" oninput="renderDlFnList()" />
               <div class="dl-sel-actions">
-                <button class="btn btn-xs" onclick="dlSelectAllFns(true)">
-                  Seleziona tutte
-                </button>
-                <button class="btn btn-xs" onclick="dlSelectAllFns(false)">
-                  Deseleziona tutte
-                </button>
+                <button class="btn btn-xs" onclick="dlSelectAllFns(true)">Seleziona tutte</button>
+                <button class="btn btn-xs" onclick="dlSelectAllFns(false)">Deseleziona tutte</button>
               </div>
             </div>
             <div class="dl-sel-summary" id="dlFnSummary"></div>
             <div class="dl-fn-list" id="dlFnList"></div>
           </div>
+
         </div>
         <div class="modal-footer">
-          <button class="btn btn-ghost" onclick="chiudiModalScarica()">
-            Annulla
-          </button>
-          <button
-            class="btn btn-import"
-            id="dlSelConfirmBtn"
-            onclick="eseguiDownloadSelezione()"
-          >
-            ⬇ Scarica selezionati
-          </button>
+          <button class="btn btn-ghost" onclick="chiudiModalScarica()">Annulla</button>
+          <button class="btn btn-import" id="dlSelConfirmBtn" onclick="eseguiDownloadSelezione()">⬇ Scarica selezionati</button>
         </div>
       </div>
     </div>
