@@ -76,7 +76,12 @@
       </div>
 
       <div class="main">
-        <aside class="sidebar">
+        <aside class="sidebar" id="mobileSidebar">
+          <!-- Mobile toggle: visible only on mobile -->
+          <button class="sidebar-toggle-btn" id="sidebarToggleBtn" onclick="toggleSidebar()">
+            <span>⬆ Importa file</span>
+            <span class="sidebar-toggle-arrow">▼</span>
+          </button>
           <div class="panel">
             <div class="panel-header">
               <span class="panel-title">Importa</span>
@@ -611,6 +616,17 @@
           menu.classList.add('hidden');
         }
       });
+
+      function toggleSidebar() {
+        const sidebar = document.getElementById('mobileSidebar');
+        const btn = document.getElementById('sidebarToggleBtn');
+        sidebar.classList.toggle('sidebar-open');
+        btn.classList.toggle('open');
+        const label = btn.querySelector('span:first-child');
+        label.textContent = sidebar.classList.contains('sidebar-open')
+          ? '✕ Chiudi importa'
+          : '⬆ Importa file';
+      }
     </script>
   </body>
 </html>

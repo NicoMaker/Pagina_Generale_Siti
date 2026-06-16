@@ -2982,3 +2982,67 @@ input[type="file"] {
     font-size: 16px;
   }
 }
+
+/* ── MOBILE SIDEBAR COLLAPSIBLE ── */
+
+@media (max-width: 768px) {
+  /* Content viene prima, sidebar dopo */
+  .main {
+    display: flex;
+    flex-direction: column;
+  }
+  .sidebar {
+    order: 2;
+  }
+  .content {
+    order: 1;
+  }
+
+  /* Bottone toggle sidebar */
+  .sidebar-toggle-btn {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    padding: 11px 16px;
+    background: var(--surf);
+    border: 1px solid var(--border2);
+    border-radius: var(--r);
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--muted);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.18s;
+  }
+  .sidebar-toggle-btn:hover {
+    border-color: var(--a1);
+    color: var(--a1);
+  }
+  .sidebar-toggle-arrow {
+    font-size: 10px;
+    transition: transform 0.22s;
+    display: inline-block;
+  }
+  .sidebar-toggle-btn.open .sidebar-toggle-arrow {
+    transform: rotate(180deg);
+  }
+
+  /* Il panel nascosto di default su mobile */
+  .sidebar .panel {
+    display: none;
+    margin-top: 8px;
+    animation: slideUp 0.2s ease;
+  }
+  .sidebar.sidebar-open .panel {
+    display: block;
+  }
+}
+
+@media (min-width: 769px) {
+  .sidebar-toggle-btn {
+    display: none;
+  }
+}
