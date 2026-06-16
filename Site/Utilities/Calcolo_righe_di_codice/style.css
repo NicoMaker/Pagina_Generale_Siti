@@ -1768,6 +1768,63 @@ input[type="file"] {
   transform: rotate(20deg);
 }
 
+/* ── HAMBURGER & MOBILE MENU ── */
+.topbar-mobile {
+  display: none;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-hamburger {
+  width: 36px;
+  height: 36px;
+  background: var(--surf2);
+  border: 1px solid var(--border2);
+  border-radius: var(--r-sm);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 0;
+  transition: all 0.15s;
+}
+.btn-hamburger:hover {
+  border-color: var(--a1);
+}
+.btn-hamburger span {
+  display: block;
+  width: 16px;
+  height: 2px;
+  background: var(--muted);
+  border-radius: 2px;
+  transition: background 0.15s;
+}
+.btn-hamburger:hover span {
+  background: var(--a1);
+}
+
+.mobile-menu {
+  background: var(--surf);
+  border: 1px solid var(--border2);
+  border-radius: var(--r);
+  padding: 10px;
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  animation: slideUp 0.18s ease;
+}
+.mobile-menu .btn {
+  justify-content: center;
+  width: 100%;
+}
+.w-full {
+  width: 100%;
+  justify-content: center;
+}
+
 /* light mode overrides for hardcoded rgba values */
 [data-theme="light"] .dropzone {
   background: var(--surf2);
@@ -2687,4 +2744,241 @@ input[type="file"] {
 .folder-checkbox.fchk-some {
   border-color: var(--a3);
   color: var(--a3);
+}
+
+/* ═══════════════════════════════════════════════════════ */
+/* ── FULL RESPONSIVE OVERRIDES ── */
+/* ═══════════════════════════════════════════════════════ */
+
+/* ── 1024px: compact topbar ── */
+@media (max-width: 1024px) {
+  .layout {
+    padding: 0 16px 40px;
+  }
+  .topbar-actions .btn-ghost {
+    display: none; /* hide Ricalcola in topbar on mid screens, still in mobile menu */
+  }
+}
+
+/* ── 768px: switch to mobile layout ── */
+@media (max-width: 768px) {
+  /* Show hamburger, hide desktop actions */
+  .topbar-actions {
+    display: none;
+  }
+  .topbar-mobile {
+    display: flex;
+  }
+
+  /* Topbar */
+  .topbar {
+    padding: 14px 0 16px;
+    margin-bottom: 12px;
+  }
+  .logo-mark {
+    font-size: 17px;
+  }
+
+  /* Layout: single column */
+  .main {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  /* Sidebar: compact dropzone */
+  .dropzone {
+    padding: 20px 12px;
+  }
+  .dz-icon {
+    font-size: 22px;
+  }
+
+  /* Stats: 2 columns */
+  .stats-row {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  .stat-card {
+    padding: 12px 14px 10px;
+  }
+  .stat-n {
+    font-size: 20px;
+  }
+
+  /* Tabs */
+  .ctab {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+
+  /* Panel header: allow wrap */
+  .panel-header-wrap {
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 10px 14px;
+  }
+  .header-btns-wrap {
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+
+  /* Functions table: mobile grid */
+  .fn-full-table-header,
+  .fn-full-row {
+    grid-template-columns: 26px 56px 56px 1fr !important;
+  }
+  .fth-file,
+  .frc-file,
+  .fth-range,
+  .frc-range,
+  .fth-bar,
+  .frc-bar-wrap,
+  .fth-hide-sm,
+  .fth-hide-md {
+    display: none !important;
+  }
+
+  /* File tree container: taller on mobile */
+  .file-tree-container {
+    max-height: 400px;
+  }
+
+  /* Code modal: full screen on mobile */
+  .code-modal,
+  .fn-modal,
+  .dl-sel-modal {
+    width: 100%;
+    max-width: 100%;
+    max-height: 92vh;
+    border-radius: 14px 14px 0 0;
+  }
+  .modal-backdrop {
+    align-items: flex-end;
+    padding: 0;
+  }
+  .modal {
+    max-width: 100%;
+    border-radius: 14px 14px 0 0;
+  }
+
+  /* Fn full container height */
+  .fn-full-container {
+    max-height: calc(100vh - 420px);
+  }
+
+  /* Download modal */
+  .dl-sel-modal {
+    max-height: 86vh;
+  }
+
+  /* Selection bars: stack on mobile */
+  .fn-sel-bar {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  /* Modal header actions: compact */
+  .code-modal-header-actions {
+    gap: 5px;
+  }
+  .code-modal-meta {
+    padding: 6px 14px 8px;
+    font-size: 11px;
+  }
+}
+
+/* ── 480px: very small screens ── */
+@media (max-width: 480px) {
+  .layout {
+    padding: 0 10px 30px;
+  }
+
+  /* Stats: single column */
+  .stats-row {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 6px;
+  }
+  .stat-n {
+    font-size: 18px;
+  }
+  .stat-lbl {
+    font-size: 9px;
+  }
+
+  /* Tabs: icons only labels shrink */
+  .ctab-label {
+    display: none;
+  }
+  .ctab {
+    padding: 8px 14px;
+  }
+
+  /* Dropzone */
+  .dropzone {
+    padding: 16px 10px;
+  }
+  .dz-title {
+    font-size: 12px;
+  }
+
+  /* Btn row */
+  .btn-row .btn {
+    font-size: 11px;
+    padding: 7px 10px;
+  }
+
+  /* Functions table: very compact */
+  .fn-full-table-header,
+  .fn-full-row {
+    grid-template-columns: 22px 50px 50px 1fr !important;
+    padding: 6px 8px;
+    gap: 4px;
+  }
+  .frc-lines-n {
+    font-size: 14px;
+  }
+
+  /* Panel header */
+  .panel-header {
+    padding: 10px 12px;
+  }
+  .panel-title {
+    font-size: 9px;
+  }
+
+  /* Modal header */
+  .modal-header {
+    padding: 14px 14px 12px;
+  }
+  .modal-body {
+    padding: 14px;
+    gap: 12px;
+  }
+  .modal-footer {
+    padding: 10px 14px;
+  }
+
+  /* url examples: truncate */
+  .example-text {
+    font-size: 9px;
+  }
+
+  /* Source chips */
+  .url-providers {
+    gap: 4px;
+  }
+  .provider-badge {
+    font-size: 8px;
+    padding: 2px 5px;
+  }
+
+  /* fn full statsbar */
+  .fn-full-statsbar {
+    gap: 12px;
+    padding: 8px 12px;
+  }
+  .fn-full-stat-value {
+    font-size: 16px;
+  }
 }
