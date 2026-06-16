@@ -2850,6 +2850,7 @@ input[type="file"] {
   .dl-sel-modal {
     width: 100%;
     max-width: 100%;
+    height: 92vh;
     max-height: 92vh;
     border-radius: 14px 14px 0 0;
   }
@@ -2862,6 +2863,15 @@ input[type="file"] {
     border-radius: 14px 14px 0 0;
   }
 
+  /* fn-modal list: fill remaining space */
+  .fn-modal {
+    height: 92vh;
+  }
+  .fn-modal-list {
+    flex: 1;
+    min-height: 0;
+  }
+
   /* Fn full container height */
   .fn-full-container {
     max-height: calc(100vh - 420px);
@@ -2869,6 +2879,7 @@ input[type="file"] {
 
   /* Download modal */
   .dl-sel-modal {
+    height: 86vh;
     max-height: 86vh;
   }
 
