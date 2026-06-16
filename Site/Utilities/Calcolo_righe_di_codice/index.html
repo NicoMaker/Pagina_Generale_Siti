@@ -53,7 +53,12 @@
           >
             ☀
           </button>
-          <button class="btn-hamburger" id="hamburgerBtn" onclick="toggleMobileMenu()" aria-label="Menu">
+          <button
+            class="btn-hamburger"
+            id="hamburgerBtn"
+            onclick="toggleMobileMenu()"
+            aria-label="Menu"
+          >
             <span></span><span></span><span></span>
           </button>
         </div>
@@ -61,16 +66,40 @@
 
       <!-- Mobile dropdown menu -->
       <div class="mobile-menu hidden" id="mobileMenu">
-        <button class="btn btn-ghost w-full" onclick="ricalcola(); toggleMobileMenu()">
+        <button
+          class="btn btn-ghost w-full"
+          onclick="
+            ricalcola();
+            toggleMobileMenu();
+          "
+        >
           &#8635; Ricalcola
         </button>
-        <button class="btn btn-dl w-full" onclick="scaricaTuttiFile(); toggleMobileMenu()">
+        <button
+          class="btn btn-dl w-full"
+          onclick="
+            scaricaTuttiFile();
+            toggleMobileMenu();
+          "
+        >
           ⬇ Scarica tutto
         </button>
-        <button class="btn btn-dl-sel w-full" onclick="apriModalScarica(); toggleMobileMenu()">
+        <button
+          class="btn btn-dl-sel w-full"
+          onclick="
+            apriModalScarica();
+            toggleMobileMenu();
+          "
+        >
           ⬇ Selezione
         </button>
-        <button class="btn btn-danger w-full" onclick="rimuoviTutti(); toggleMobileMenu()">
+        <button
+          class="btn btn-danger w-full"
+          onclick="
+            rimuoviTutti();
+            toggleMobileMenu();
+          "
+        >
           &#10005; Svuota
         </button>
       </div>
@@ -78,7 +107,11 @@
       <div class="main">
         <aside class="sidebar" id="mobileSidebar">
           <!-- Mobile toggle: visible only on mobile -->
-          <button class="sidebar-toggle-btn" id="sidebarToggleBtn" onclick="toggleSidebar()">
+          <button
+            class="sidebar-toggle-btn"
+            id="sidebarToggleBtn"
+            onclick="toggleSidebar()"
+          >
             <span>⬆ Importa file</span>
             <span class="sidebar-toggle-arrow">▼</span>
           </button>
@@ -175,14 +208,16 @@
               id="tabFiles"
               onclick="switchTab('files')"
             >
-              <span class="ctab-icon">&#9783;</span> <span class="ctab-label">Struttura File</span>
+              <span class="ctab-icon">&#9783;</span>
+              <span class="ctab-label">Struttura File</span>
             </button>
             <button
               class="ctab"
               id="tabFunctions"
               onclick="switchTab('functions')"
             >
-              <span class="ctab-icon">ƒ</span> <span class="ctab-label">Funzioni</span>
+              <span class="ctab-icon">ƒ</span>
+              <span class="ctab-label">Funzioni</span>
               <span class="ctab-badge hidden" id="tabFnBadge"></span>
             </button>
           </div>
@@ -603,30 +638,6 @@
     <input type="file" id="folderInput" webkitdirectory directory multiple />
     <script src="js/function-parser.js"></script>
     <script src="js/script.js"></script>
-    <script>
-      function toggleMobileMenu() {
-        const menu = document.getElementById('mobileMenu');
-        menu.classList.toggle('hidden');
-      }
-      // Close mobile menu on outside click
-      document.addEventListener('click', function(e) {
-        const btn = document.getElementById('hamburgerBtn');
-        const menu = document.getElementById('mobileMenu');
-        if (!btn.contains(e.target) && !menu.contains(e.target)) {
-          menu.classList.add('hidden');
-        }
-      });
-
-      function toggleSidebar() {
-        const sidebar = document.getElementById('mobileSidebar');
-        const btn = document.getElementById('sidebarToggleBtn');
-        sidebar.classList.toggle('sidebar-open');
-        btn.classList.toggle('open');
-        const label = btn.querySelector('span:first-child');
-        label.textContent = sidebar.classList.contains('sidebar-open')
-          ? '✕ Chiudi importa'
-          : '⬆ Importa file';
-      }
-    </script>
+    <script src="js/hamburger_mobile.js"></script>
   </body>
 </html>
