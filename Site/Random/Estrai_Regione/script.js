@@ -62,14 +62,14 @@ function calculateTotalProvinces(regioni) {
   return regioni.reduce((total, regione) => total + regione.province.length, 0);
 }
 
-// Calculate percentage of a value relative to a total
+// Calculate percentage of a value relative to a total (returns number)
 function calculatePercent(value, total) {
-  return ((value / total) * 100).toFixed(2);
+  return (value / total) * 100;
 }
 
-// Calculate population density
+// Calculate population density (returns number)
 function calculateDensity(population, area) {
-  return (population / area).toFixed(2);
+  return population / area;
 }
 
 // Select a random region
@@ -77,9 +77,18 @@ function selectRandomRegione(regioni) {
   return regioni[Math.floor(Math.random() * regioni.length)];
 }
 
-// Format a number with thousands separators
+// Format a number with thousands separators (Italian style: dot for thousands, comma for decimals if any)
 function formatNumber(number) {
-  return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  // Use toLocaleString for Italian formatting
+  return number.toLocaleString('it-IT');
+}
+
+// Format a decimal number with 2 decimal places using comma as decimal separator
+function formatDecimal(number) {
+  return number.toLocaleString('it-IT', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  });
 }
 
 // Handle the generate button click
@@ -174,6 +183,14 @@ function generateRegioneHTML(
     regione;
   const numeroProvince = province.length;
 
+  // Format numbers for display (with comma decimals)
+  const estensioneFormattata = formatNumber(estensione_km2);
+  const popolazioneFormattata = formatNumber(popolazione);
+  const densitaFormattata = formatDecimal(densitaRegione);
+  const percentualeEstensioneFormattata = formatDecimal(percentualeEstensione);
+  const percentualePopolazioneFormattata = formatDecimal(percentualePopolazione);
+  const percentualeProvinceFormattata = formatDecimal(percentualeProvince);
+
   // Generate provinces list with numbers and icons
   const provinceHTML = province
     .sort()
@@ -224,9 +241,9 @@ function generateRegioneHTML(
             </svg>
             Superficie
           </div>
-          <div class="stat-value">${formatNumber(estensione_km2)} km²</div>
+          <div class="stat-value">${estensioneFormattata} km²</div>
           <div class="stat-detail">
-            <span>${percentualeEstensione}% dell'Italia</span>
+            <span>${percentualeEstensioneFormattata}% dell'Italia</span>
             <div class="percentage-bar">
               <div class="percentage-fill" style="width: ${percentualeEstensione}%"></div>
             </div>
@@ -243,9 +260,9 @@ function generateRegioneHTML(
             </svg>
             Popolazione
           </div>
-          <div class="stat-value">${formatNumber(popolazione)}</div>
+          <div class="stat-value">${popolazioneFormattata}</div>
           <div class="stat-detail">
-            <span>${percentualePopolazione}% dell'Italia</span>
+            <span>${percentualePopolazioneFormattata}% dell'Italia</span>
             <div class="percentage-bar">
               <div class="percentage-fill" style="width: ${percentualePopolazione}%"></div>
             </div>
@@ -260,7 +277,7 @@ function generateRegioneHTML(
             </svg>
             Densità
           </div>
-          <div class="stat-value">${densitaRegione} ab/km²</div>
+          <div class="stat-value">${densitaFormattata} ab/km²</div>
         </div>
       </div>
       
@@ -274,7 +291,7 @@ function generateRegioneHTML(
         </div>
         
         <div class="province-percentage">
-          <span>${percentualeProvince}% del totale nazionale</span>
+          <span>${percentualeProvinceFormattata}% del totale nazionale</span>
           <div class="percentage-bar">
             <div class="percentage-fill" style="width: ${percentualeProvince}%"></div>
           </div>
