@@ -4,25 +4,18 @@ const extractedRegions = [];
 const MAX_HISTORY = 8;
 
 // Initialize the application
-document.addEventListener("DOMContentLoaded", initialize);
-
-async function initialize() {
+const initialize = async () => {
   try {
-    // Load regions data
     regionsData = await loadRegioni();
-
-    // Add event listeners
     document
       .getElementById("generateButton")
       .addEventListener("click", handleGenerateButtonClick);
 
-    // Calculate totals for display
     const totalEstensione = calculateTotalValues(regionsData, "estensione_km2");
     const totalPopolazione = calculateTotalValues(regionsData, "popolazione");
     const totalRegioni = regionsData.length;
     const totalProvince = calculateTotalProvinces(regionsData);
 
-    // Update total stats display
     document.getElementById("total-population").textContent =
       formatNumber(totalPopolazione) + " abitanti";
     document.getElementById("total-area").textContent =
@@ -35,76 +28,61 @@ async function initialize() {
       "Si è verificato un errore durante l'inizializzazione dell'applicazione.",
     );
   }
-}
+};
 
 // Load regions data from JSON file
-async function loadRegioni() {
+const loadRegioni = async () => {
   try {
     const response = await fetch("configurazioni.json");
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
+    if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
     return await response.json();
   } catch (error) {
     console.error("Error loading regions:", error);
     showErrorMessage("Impossibile caricare i dati delle regioni.");
     return [];
   }
-}
+};
 
 // Calculate total values for a specific key across all regions
-function calculateTotalValues(regioni, key) {
-  return regioni.reduce((total, regione) => total + regione[key], 0);
-}
+const calculateTotalValues = (regioni, key) =>
+  regioni.reduce((total, regione) => total + regione[key], 0);
 
 // Calculate total number of provinces
-function calculateTotalProvinces(regioni) {
-  return regioni.reduce((total, regione) => total + regione.province.length, 0);
-}
+const calculateTotalProvinces = (regioni) =>
+  regioni.reduce((total, regione) => total + regione.province.length, 0);
 
 // Calculate percentage of a value relative to a total (returns number)
-function calculatePercent(value, total) {
-  return (value / total) * 100;
-}
+const calculatePercent = (value, total) => (value / total) * 100;
 
 // Calculate population density (returns number)
-function calculateDensity(population, area) {
-  return population / area;
-}
+const calculateDensity = (population, area) => population / area;
 
 // Select a random region
-function selectRandomRegione(regioni) {
-  return regioni[Math.floor(Math.random() * regioni.length)];
-}
+const selectRandomRegione = (regioni) =>
+  regioni[Math.floor(Math.random() * regioni.length)];
 
 // Format a number with thousands separators (Italian style: dot for thousands, comma for decimals if any)
-function formatNumber(number) {
-  // Use toLocaleString for Italian formatting
-  return number.toLocaleString('it-IT');
-}
+const formatNumber = (number) => number.toLocaleString("it-IT");
 
 // Format a decimal number with 2 decimal places using comma as decimal separator
-function formatDecimal(number) {
-  return number.toLocaleString('it-IT', {
+const formatDecimal = (number) =>
+  number.toLocaleString("it-IT", {
     minimumFractionDigits: 2,
-    maximumFractionDigits: 2
+    maximumFractionDigits: 2,
   });
-}
 
 // Handle the generate button click
-function handleGenerateButtonClick() {
+const handleGenerateButtonClick = () => {
   const totalEstensione = calculateTotalValues(regionsData, "estensione_km2");
   const totalPopolazione = calculateTotalValues(regionsData, "popolazione");
   const totalProvince = calculateTotalProvinces(regionsData);
 
-  // Add pulse animation to the button
   const button = document.getElementById("generateButton");
   button.classList.add("pulse");
   setTimeout(() => {
     button.classList.remove("pulse");
   }, 500);
 
-  // Create a shuffling effect
   let counter = 0;
   const maxIterations = 10;
   const intervalId = setInterval(() => {
@@ -116,7 +94,6 @@ function handleGenerateButtonClick() {
       true,
     );
     counter++;
-
     if (counter >= maxIterations) {
       clearInterval(intervalId);
       const finalRegion = displayRandomRegione(
@@ -129,16 +106,16 @@ function handleGenerateButtonClick() {
       addToHistory(finalRegion);
     }
   }, 100);
-}
+};
 
 // Display a random region
-function displayRandomRegione(
+const displayRandomRegione = (
   regioni,
   totalEstensione,
   totalPopolazione,
   totalProvince,
   isShuffling,
-) {
+) => {
   const regioneCasuale = selectRandomRegione(regioni);
   const percentualeEstensione = calculatePercent(
     regioneCasuale.estensione_km2,
@@ -168,189 +145,151 @@ function displayRandomRegione(
 
   updateUI(regioneHTML);
   return regioneCasuale;
-}
+};
 
-// Generate HTML for a region
-function generateRegioneHTML(
+// Generate HTML for a region (one‑liner arrow with template literal)
+const generateRegioneHTML = (
   regione,
   percentualeEstensione,
   percentualePopolazione,
   densitaRegione,
   percentualeProvince,
   isShuffling,
-) {
-  const { nome, immagine, capoluogo, estensione_km2, popolazione, province } =
-    regione;
-  const numeroProvince = province.length;
-
-  // Format numbers for display (with comma decimals)
-  const estensioneFormattata = formatNumber(estensione_km2);
-  const popolazioneFormattata = formatNumber(popolazione);
-  const densitaFormattata = formatDecimal(densitaRegione);
-  const percentualeEstensioneFormattata = formatDecimal(percentualeEstensione);
-  const percentualePopolazioneFormattata = formatDecimal(percentualePopolazione);
-  const percentualeProvinceFormattata = formatDecimal(percentualeProvince);
-
-  // Generate provinces list with numbers and icons
-  const provinceHTML = province
-    .sort()
-    .map(
-      (provincia, index) => `
-      <div class="province-item">
-        <div class="province-number">${index + 1}</div>
-        <div class="province-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="province-svg">
+) => `
+  <div class="region-content ${isShuffling ? "" : "fade-in"}">
+    <div class="region-header">
+      <div class="region-title">
+        <h2 class="region-name">${regione.nome}</h2>
+        <div class="region-capital">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="capital-icon">
             <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
             <polyline points="9 22 9 12 15 12 15 22"></polyline>
           </svg>
-        </div>
-        <div class="province-name">${provincia}</div>
-      </div>
-    `,
-    )
-    .join("");
-
-  // Apply animation class based on whether we're shuffling or showing the final result
-  const animationClass = isShuffling ? "" : "fade-in";
-
-  return `
-    <div class="region-content ${animationClass}">
-      <div class="region-header">
-        <div class="region-title">
-          <h2 class="region-name">${nome}</h2>
-          <div class="region-capital">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="capital-icon">
-              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-              <polyline points="9 22 9 12 15 12 15 22"></polyline>
-            </svg>
-            Capoluogo: ${capoluogo}
-          </div>
-        </div>
-      </div>
-      
-      <div class="region-image-container">
-        <img src="Img/${immagine}" alt="${nome}" class="region-image" onerror="this.src='https://via.placeholder.com/300x200.png?text=${encodeURIComponent(nome)}'">
-      </div>
-      
-      <div class="region-stats">
-        <div class="stat-item">
-          <div class="stat-label">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="stat-icon">
-              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-              <circle cx="12" cy="10" r="3"></circle>
-            </svg>
-            Superficie
-          </div>
-          <div class="stat-value">${estensioneFormattata} km²</div>
-          <div class="stat-detail">
-            <span>${percentualeEstensioneFormattata}% dell'Italia</span>
-            <div class="percentage-bar">
-              <div class="percentage-fill" style="width: ${percentualeEstensione}%"></div>
-            </div>
-          </div>
-        </div>
-        
-        <div class="stat-item">
-          <div class="stat-label">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="stat-icon">
-              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-              <circle cx="9" cy="7" r="4"></circle>
-              <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-              <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-            </svg>
-            Popolazione
-          </div>
-          <div class="stat-value">${popolazioneFormattata}</div>
-          <div class="stat-detail">
-            <span>${percentualePopolazioneFormattata}% dell'Italia</span>
-            <div class="percentage-bar">
-              <div class="percentage-fill" style="width: ${percentualePopolazione}%"></div>
-            </div>
-          </div>
-        </div>
-        
-        <div class="stat-item">
-          <div class="stat-label">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="stat-icon">
-              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-              <circle cx="12" cy="7" r="4"></circle>
-            </svg>
-            Densità
-          </div>
-          <div class="stat-value">${densitaFormattata} ab/km²</div>
-        </div>
-      </div>
-      
-      <div class="region-provinces">
-        <div class="provinces-header">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="provinces-icon">
-            <path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"></path>
-            <circle cx="12" cy="10" r="3"></circle>
-          </svg>
-          <h3 class="provinces-title">Province (${numeroProvince})</h3>
-        </div>
-        
-        <div class="province-percentage">
-          <span>${percentualeProvinceFormattata}% del totale nazionale</span>
-          <div class="percentage-bar">
-            <div class="percentage-fill" style="width: ${percentualeProvince}%"></div>
-          </div>
-        </div>
-        
-        <div class="provinces-grid">
-          ${provinceHTML}
+          Capoluogo: ${regione.capoluogo}
         </div>
       </div>
     </div>
-  `;
-}
+    
+    <div class="region-image-container">
+      <img src="Img/${regione.immagine}" alt="${regione.nome}" class="region-image" onerror="this.src='https://via.placeholder.com/300x200.png?text=${encodeURIComponent(regione.nome)}'">
+    </div>
+    
+    <div class="region-stats">
+      <div class="stat-item">
+        <div class="stat-label">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="stat-icon">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+            <circle cx="12" cy="10" r="3"></circle>
+          </svg>
+          Superficie
+        </div>
+        <div class="stat-value">${formatNumber(regione.estensione_km2)} km²</div>
+        <div class="stat-detail">
+          <span>${formatDecimal(percentualeEstensione)}% dell'Italia</span>
+          <div class="percentage-bar">
+            <div class="percentage-fill" style="width: ${percentualeEstensione}%"></div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="stat-item">
+        <div class="stat-label">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="stat-icon">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+            <circle cx="9" cy="7" r="4"></circle>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+          </svg>
+          Popolazione
+        </div>
+        <div class="stat-value">${formatNumber(regione.popolazione)}</div>
+        <div class="stat-detail">
+          <span>${formatDecimal(percentualePopolazione)}% dell'Italia</span>
+          <div class="percentage-bar">
+            <div class="percentage-fill" style="width: ${percentualePopolazione}%"></div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="stat-item">
+        <div class="stat-label">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="stat-icon">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+          Densità
+        </div>
+        <div class="stat-value">${formatDecimal(densitaRegione)} ab/km²</div>
+      </div>
+    </div>
+    
+    <div class="region-provinces">
+      <div class="provinces-header">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="provinces-icon">
+          <path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"></path>
+          <circle cx="12" cy="10" r="3"></circle>
+        </svg>
+        <h3 class="provinces-title">Province (${regione.province.length})</h3>
+      </div>
+      
+      <div class="province-percentage">
+        <span>${formatDecimal(percentualeProvince)}% del totale nazionale</span>
+        <div class="percentage-bar">
+          <div class="percentage-fill" style="width: ${percentualeProvince}%"></div>
+        </div>
+      </div>
+      
+      <div class="provinces-grid">
+        ${regione.province
+          .sort()
+          .map(
+            (provincia, index) => `
+          <div class="province-item">
+            <div class="province-number">${index + 1}</div>
+            <div class="province-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="province-svg">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+              </svg>
+            </div>
+            <div class="province-name">${provincia}</div>
+          </div>
+        `,
+          )
+          .join("")}
+      </div>
+    </div>
+  </div>
+`;
 
 // Update the UI with the generated HTML
-function updateUI(html) {
-  const outputElement = document.getElementById("output");
-  outputElement.innerHTML = html;
-}
+const updateUI = (html) => (document.getElementById("output").innerHTML = html);
 
 // Add a region to the history
-function addToHistory(region) {
-  // Don't add duplicates consecutively
-  if (extractedRegions.length > 0 && extractedRegions[0].nome === region.nome) {
+const addToHistory = (region) => {
+  if (extractedRegions.length > 0 && extractedRegions[0].nome === region.nome)
     return;
-  }
-
-  // Add to beginning of array
   extractedRegions.unshift(region);
-
-  // Limit history size
-  if (extractedRegions.length > MAX_HISTORY) {
-    extractedRegions.pop();
-  }
-
-  // Update history display
+  if (extractedRegions.length > MAX_HISTORY) extractedRegions.pop();
   updateHistoryDisplay();
-}
+};
 
 // Update the history display
-function updateHistoryDisplay() {
+const updateHistoryDisplay = () => {
   const historyContainer = document.getElementById("history");
   historyContainer.innerHTML = "";
-
   if (extractedRegions.length === 0) {
     historyContainer.innerHTML =
       "<p class='no-history'>Nessuna regione estratta</p>";
     return;
   }
-
   extractedRegions.forEach((region) => {
     const historyItem = document.createElement("div");
     historyItem.className = "history-item";
-
     historyItem.innerHTML = `
       <img src="Img/${region.immagine}" alt="${region.nome}" class="history-image" onerror="this.src='https://via.placeholder.com/150x100.png?text=${encodeURIComponent(region.nome)}'">
       <div class="history-name">${region.nome}</div>
     `;
-
-    // Add click event to display this region again
     historyItem.addEventListener("click", () => {
       const totalEstensione = calculateTotalValues(
         regionsData,
@@ -358,7 +297,6 @@ function updateHistoryDisplay() {
       );
       const totalPopolazione = calculateTotalValues(regionsData, "popolazione");
       const totalProvince = calculateTotalProvinces(regionsData);
-
       const percentualeEstensione = calculatePercent(
         region.estensione_km2,
         totalEstensione,
@@ -375,7 +313,6 @@ function updateHistoryDisplay() {
         region.province.length,
         totalProvince,
       );
-
       const regioneHTML = generateRegioneHTML(
         region,
         percentualeEstensione,
@@ -384,21 +321,20 @@ function updateHistoryDisplay() {
         percentualeProvince,
         false,
       );
-
       updateUI(regioneHTML);
     });
-
     historyContainer.appendChild(historyItem);
   });
-}
+};
 
 // Show error message
-function showErrorMessage(message) {
-  const outputElement = document.getElementById("output");
-  outputElement.innerHTML = `
-    <div class="error-message">
-      <div class="error-icon">⚠️</div>
-      <p>${message}</p>
-    </div>
-  `;
-}
+const showErrorMessage = (message) =>
+  (document.getElementById("output").innerHTML = `
+  <div class="error-message">
+    <div class="error-icon">⚠️</div>
+    <p>${message}</p>
+  </div>
+`);
+
+// Start the app
+document.addEventListener("DOMContentLoaded", initialize);
