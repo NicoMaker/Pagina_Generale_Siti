@@ -1,6 +1,6 @@
 ### Guida Utente - Pagina Generale Siti di Nico Maker
 
-## Indice dei Contenuti
+## Indice dei Contenuti 
 
 1. [Introduzione](#introduzione)
 2. [Navigazione del Sito](#navigazione-del-sito)
