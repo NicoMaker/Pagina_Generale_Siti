@@ -10,6 +10,7 @@
 - **[Genera 4 Lettere](Generated_4_Letters)**
 - **[Genera 4 Numeri](Generated_4_Numbers)**
 - **[Gestione Turni](Gestione_Turni)**
+- **[Impiccato](Impiccato)**
 - **[Pac-Man](Pac-Man)**
 - **[Punteggi](Punteggi)**
 - **[Punteggi UX Design](Punteggi_UX_Design)**
@@ -23,6 +24,7 @@
 - **[Slot Machine UX](Slot_Macchine_UX)**
 - **[Snake Game](Snakegame)**
 - **[Solitario](Solitario)**
+- **[Sudoku](Sudoku)**
 - **[Tombola](Tombola)**
 - **[Tris](Tris)**
 - **[Tris versione 2](Tris2)**

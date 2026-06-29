@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sudoku</title>
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%236c63ff'/%3E%3Crect x='4' y='4' width='10' height='10' rx='2' fill='white' opacity='.9'/%3E%3Crect x='18' y='4' width='10' height='10' rx='2' fill='white' opacity='.9'/%3E%3Crect x='4' y='18' width='10' height='10' rx='2' fill='white' opacity='.9'/%3E%3Crect x='18' y='18' width='10' height='10' rx='2' fill='%23a78bfa' opacity='.9'/%3E%3C/svg%3E"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- MODALE REGOLE -->
+    <div
+      id="rules-overlay"
+      class="overlay hidden"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="rules-title"
+    >
+      <div class="modal">
+        <div class="modal-header">
+          <h2 id="rules-title">📖 Come si gioca</h2>
+          <button class="close-btn" onclick="closeRules()" aria-label="Chiudi">
+            ✕
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="rule-block">
+            <div class="rule-icon">🎯</div>
+            <div>
+              <h3>Obiettivo</h3>
+              <p>
+                Riempi ogni cella vuota con un simbolo valido senza ripetizioni
+                in righe, colonne o blocchi.
+              </p>
+            </div>
+          </div>
+          <div class="rule-block">
+            <div class="rule-icon">🔢</div>
+            <div>
+              <h3>Modalità griglia</h3>
+              <p>
+                <b>4×4</b> usa 1–4 · <b>6×6</b> usa 1–6 · <b>9×9</b> usa 1–9 ·
+                <b>16×16</b> usa 1–9 e A–F
+              </p>
+            </div>
+          </div>
+          <div class="rule-block">
+            <div class="rule-icon">✏️</div>
+            <div>
+              <h3>Modalità Note</h3>
+              <p>
+                Segna i candidati in piccolo senza confermarli. Premi
+                <kbd>N</kbd> per alternare.
+              </p>
+            </div>
+          </div>
+          <div class="rule-block">
+            <div class="rule-icon">💡</div>
+            <div>
+              <h3>Suggerimenti</h3>
+              <p>
+                Hai 3 suggerimenti per partita. Seleziona una cella e premi
+                Suggerisci.
+              </p>
+            </div>
+          </div>
+          <div class="rule-block">
+            <div class="rule-icon">⌨️</div>
+            <div>
+              <h3>Tastiera</h3>
+              <ul>
+                <li>
+                  <kbd>1</kbd>–<kbd>9</kbd> / <kbd>A</kbd>–<kbd>F</kbd> —
+                  inserisci
+                </li>
+                <li><kbd>N</kbd> — alterna Numero / Note</li>
+                <li><kbd>Backspace</kbd> — cancella</li>
+                <li><kbd>↑↓←→</kbd> — naviga</li>
+                <li><kbd>Space</kbd> — pausa</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-primary" onclick="closeRules()">
+            Inizia a giocare
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- APP -->
+    <div id="app">
+      <!-- TOPBAR -->
+      <header class="topbar">
+        <div class="brand">
+          <div class="logo-mark">
+            <svg
+              viewBox="0 0 22 22"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <rect
+                x="1"
+                y="1"
+                width="8"
+                height="8"
+                rx="2"
+                fill="white"
+                opacity=".9"
+              />
+              <rect
+                x="13"
+                y="1"
+                width="8"
+                height="8"
+                rx="2"
+                fill="white"
+                opacity=".9"
+              />
+              <rect
+                x="1"
+                y="13"
+                width="8"
+                height="8"
+                rx="2"
+                fill="white"
+                opacity=".9"
+              />
+              <rect
+                x="13"
+                y="13"
+                width="8"
+                height="8"
+                rx="2"
+                fill="#a78bfa"
+                opacity=".9"
+              />
+            </svg>
+          </div>
+          <div class="brand-text">
+            <h1>Sudoku</h1>
+            <p>Logica pura · multi-griglia</p>
+          </div>
+        </div>
+        <button class="btn-rules" onclick="openRules()">
+          <svg
+            width="13"
+            height="13"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <circle cx="12" cy="12" r="10" />
+            <path d="M12 16v-4" />
+            <path d="M12 8h.01" />
+          </svg>
+          Regole
+        </button>
+      </header>
+
+      <!-- CONTROL STRIP -->
+      <div class="control-strip">
+        <div class="ctrl-group">
+          <span class="ctrl-label">Griglia</span>
+          <select id="size-sel" onchange="onSizeChange()">
+            <option value="4">4×4</option>
+            <option value="6">6×6</option>
+            <option value="9" selected>9×9</option>
+            <option value="16">16×16</option>
+          </select>
+        </div>
+        <div class="ctrl-sep"></div>
+        <div class="ctrl-group">
+          <span class="ctrl-label">Difficoltà</span>
+          <select id="diff-sel">
+            <option value="easy">Facile</option>
+            <option value="medium" selected>Medio</option>
+            <option value="hard">Difficile</option>
+            <option value="expert">Esperto</option>
+          </select>
+        </div>
+        <div class="action-btns">
+          <button class="cbtn cbtn-start" id="btn-start" onclick="startGame()">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+              <polygon points="5,3 19,12 5,21" />
+            </svg>
+            Inizia
+          </button>
+          <button
+            class="cbtn cbtn-pause"
+            id="btn-pause"
+            onclick="togglePause()"
+            disabled
+          >
+            <svg
+              width="12"
+              height="12"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              id="pause-icon"
+            >
+              <rect x="6" y="4" width="4" height="16" />
+              <rect x="14" y="4" width="4" height="16" />
+            </svg>
+            <span id="pause-label">Pausa</span>
+          </button>
+          <button
+            class="cbtn cbtn-restart"
+            id="btn-restart"
+            onclick="restartGame()"
+            disabled
+          >
+            <svg
+              width="12"
+              height="12"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+              <path d="M3 3v5h5" />
+            </svg>
+            Ricomincia
+          </button>
+        </div>
+      </div>
+
+      <!-- STATS -->
+      <div class="stats-strip">
+        <div class="stat-pill sp-time">
+          <span class="si">⏱</span>
+          <span class="sv" id="s-time">0:00</span>
+          <span class="sl">Tempo</span>
+        </div>
+        <div class="stat-pill sp-err">
+          <span class="si">✗</span>
+          <span class="sv" id="s-mistakes">0</span>
+          <span class="sl">Errori</span>
+        </div>
+        <div class="stat-pill sp-hint">
+          <span class="si">💡</span>
+          <span class="sv" id="s-hints">3</span>
+          <span class="sl">Suggerimenti</span>
+        </div>
+        <div class="stat-pill sp-diff">
+          <span class="si">🎯</span>
+          <span class="sv" id="s-diff">—</span>
+          <span class="sl">Difficoltà</span>
+        </div>
+      </div>
+
+      <!-- GAME -->
+      <main class="game-area">
+        <div class="board-wrap" id="board-wrap">
+          <table id="board" role="grid" aria-label="Griglia Sudoku"></table>
+
+          <div class="board-overlay pause-overlay hidden" id="pause-overlay">
+            <div class="overlay-icon">⏸</div>
+            <p class="overlay-text">Partita in pausa</p>
+            <button class="btn-primary" onclick="togglePause()">
+              Riprendi
+            </button>
+          </div>
+          <div class="board-overlay start-overlay" id="start-overlay">
+            <div class="overlay-icon">🎲</div>
+            <p class="overlay-text">
+              Scegli griglia e difficoltà, poi premi <strong>Inizia</strong>
+            </p>
+            <button class="btn-primary" onclick="startGame()">
+              Inizia ora
+            </button>
+          </div>
+          <div class="board-overlay win-banner hidden" id="win-banner">
+            <div class="overlay-icon">🏆</div>
+            <div class="win-title">Completato!</div>
+            <div class="win-stats">
+              <span class="win-stat" id="win-time"></span>
+              <span class="win-stat" id="win-mistakes"></span>
+            </div>
+            <button class="btn-primary" onclick="startGame()">
+              Nuova partita
+            </button>
+          </div>
+        </div>
+
+        <!-- SIDEBAR (nascosta all'avvio) -->
+        <div class="sidebar" id="sidebar">
+          <!-- Modalità -->
+          <div class="sidebar-card">
+            <div class="card-label">Inserimento</div>
+            <div class="mode-row">
+              <button
+                class="mode-btn active"
+                id="mode-num"
+                onclick="setMode('num')"
+              >
+                🔢 Numero
+              </button>
+              <button class="mode-btn" id="mode-note" onclick="setMode('note')">
+                ✏️ Note <kbd>N</kbd>
+              </button>
+            </div>
+          </div>
+
+          <!-- Numpad -->
+          <div class="sidebar-card">
+            <div class="card-label">Tastierino</div>
+            <div id="numpad" class="numpad"></div>
+            <button class="erase-btn" onclick="eraseCell()">
+              <svg
+                width="13"
+                height="13"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M20 20H7L3 16l10-10 7 7-3.5 3.5" />
+                <path d="M6.5 17.5l6-6" />
+              </svg>
+              Cancella
+            </button>
+          </div>
+
+          <!-- Hint -->
+          <div class="sidebar-card">
+            <div class="card-label">Azioni</div>
+            <button class="hint-btn" onclick="useHint()" id="hint-btn">
+              💡 Suggerisci (<span id="hints-count">3</span>)
+            </button>
+          </div>
+
+          <!-- Counter -->
+          <div class="sidebar-card">
+            <div class="card-label">Numeri rimasti</div>
+            <div id="num-counter" class="num-counter"></div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

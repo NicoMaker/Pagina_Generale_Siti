@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Impiccato</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🪢</text></svg>"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="game-container" role="main">
+      <h1>
+        🪢 Impiccato
+        <span>classico</span>
+      </h1>
+      <div class="subtitle">
+        Un giocatore scrive la parola (<strong
+          >prime e ultima lettera sempre visibili</strong
+        >). <br />
+        <span class="warning"
+          >⚠️ Le lettere usate si colorano solo per 30 secondi, poi tornano
+          neutre. Riutilizzarle costa un errore!</span
+        >
+      </div>
+
+      <!-- ====== FASE 1 – INSERIMENTO PAROLA ====== -->
+      <div class="word-setup" id="wordSetup">
+        <label for="secretWordInput">✏️ Inserisci la parola segreta</label>
+        <div class="word-input-row">
+          <input
+            type="text"
+            id="secretWordInput"
+            placeholder="es. GATTO"
+            maxlength="20"
+            autocomplete="off"
+            autofocus
+          />
+          <button id="startGameBtn">▶ Inizia</button>
+        </div>
+        <div class="error-msg" id="setupError"></div>
+        <p style="font-size: 0.8rem; color: #999; margin-top: 6px">
+          Solo lettere (A-Z). Minimo <strong>4</strong> lettere.
+        </p>
+      </div>
+
+      <!-- ====== FASE 2 – GIOCO ====== -->
+      <div class="game-area" id="gameArea">
+        <div class="hangman-wrap">
+          <canvas id="hangmanCanvas" width="280" height="320"></canvas>
+        </div>
+
+        <div class="word-display" id="wordDisplay"></div>
+
+        <div class="wrong-letters" id="wrongLetters">
+          <span>❌ &nbsp; </span>
+        </div>
+
+        <div class="keyboard" id="keyboard"></div>
+
+        <div class="action-row">
+          <button id="guessWordBtn" class="btn-primary">
+            🔍 Indovina parola intera
+          </button>
+          <button id="resetGameBtn" class="btn-danger">⟳ Nuova partita</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== MODALE RISULTATO ====== -->
+    <div class="modal-overlay" id="resultModal">
+      <div class="modal-box">
+        <div class="emoji-big" id="resultEmoji">🎉</div>
+        <h2 id="resultTitle">Hai vinto!</h2>
+        <p id="resultDesc">Hai indovinato la parola.</p>
+        <div class="word-reveal" id="resultWord">PAROLA</div>
+        <button id="resultPlayAgainBtn">🔄 Gioca ancora</button>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

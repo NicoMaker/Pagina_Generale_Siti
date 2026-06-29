@@ -219,6 +219,14 @@
         {
           "name": "Ruota della Fortuna Nomi",
           "link": "Site/Giochi/Ruota_Della_Fortuna_nome/index.html"
+        },
+        {
+          "name": "Impiccato",
+          "link": "Site/Giochi/Impiccato/index.html"
+        },
+        {
+          "name": "Sudoku",
+          "link": "Site/GiochiSudoku/index.html"
         }
       ]
     },
