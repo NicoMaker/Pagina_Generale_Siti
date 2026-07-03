@@ -45,11 +45,11 @@
       h = canvas.height;
     ctx.clearRect(0, 0, w, h);
 
-    ctx.fillStyle = "#fcf9f6";
+    ctx.fillStyle = "#12151c";
     ctx.fillRect(0, 0, w, h);
 
     ctx.lineWidth = 3;
-    ctx.strokeStyle = "#2c3e50";
+    ctx.strokeStyle = "#ece4d3";
     ctx.lineCap = "round";
     ctx.lineJoin = "round";
 
@@ -68,10 +68,12 @@
     ctx.lineTo(150, 30);
     ctx.stroke();
 
+    ctx.strokeStyle = "#c69a4b";
     ctx.beginPath();
     ctx.moveTo(150, 30);
     ctx.lineTo(150, 70);
     ctx.stroke();
+    ctx.strokeStyle = "#ece4d3";
 
     if (errors >= 1) {
       ctx.beginPath();
@@ -110,7 +112,7 @@
     }
 
     if (state.gameOver && state.wrongCount >= state.maxWrong) {
-      ctx.strokeStyle = "#c0392b";
+      ctx.strokeStyle = "#c1523f";
       ctx.lineWidth = 2.5;
       ctx.beginPath();
       ctx.moveTo(138, 82);

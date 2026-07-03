@@ -1,4 +1,11 @@
-/* ----- RESET & VARIABILI ----- */
+/* ==========================================================
+   IMPICCATO — tema "Fascicolo del boia"
+   Palette d'inchiostro notturno, accenti color canapa,
+   tastiera da macchina per scrivere, cornice da manifesto.
+   ========================================================== */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap");
+
 * {
   margin: 0;
   padding: 0;
@@ -6,85 +13,122 @@
 }
 
 :root {
-  --bg: #f5f0eb;
-  --card: #ffffff;
-  --primary: #2c3e50;
-  --accent: #e67e22;
-  --danger: #c0392b;
-  --success: #27ae60;
-  --gray: #95a5a6;
-  --shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
-  --radius: 20px;
-  --font: "Segoe UI", Roboto, system-ui, sans-serif;
+  --ink: #12151c;
+  --surface: #1b202b;
+  --surface-2: #232a37;
+  --line: #343d4d;
+  --parchment: #ece4d3;
+  --parchment-dim: #9aa1b0;
+  --rope: #c69a4b;
+  --rope-bright: #e0b463;
+  --danger: #c1523f;
+  --danger-dim: #7a3128;
+  --success: #74a06a;
+
+  --radius-lg: 22px;
+  --radius-md: 14px;
+  --radius-sm: 9px;
+
+  --shadow-deep: 0 24px 60px rgba(0, 0, 0, 0.45);
+  --shadow-soft: 0 6px 18px rgba(0, 0, 0, 0.3);
+
+  --font-display: "Fraunces", Georgia, serif;
+  --font-body: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", "Courier New", monospace;
 }
 
 body {
-  background: var(--bg);
-  font-family: var(--font);
+  background: var(--ink);
+  background-image:
+    radial-gradient(circle at 15% 0%, rgba(198, 154, 75, 0.08), transparent 45%),
+    radial-gradient(circle at 100% 100%, rgba(198, 154, 75, 0.05), transparent 50%);
+  font-family: var(--font-body);
+  color: var(--parchment);
   min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 20px;
-  margin: 0;
-  background-image: radial-gradient(
-    circle at 10% 30%,
-    #f0e8e0 0%,
-    #e8e0d8 100%
-  );
+  padding: 32px 20px;
 }
 
+/* ----- CORNICE STILE MANIFESTO ----- */
 .game-container {
-  max-width: 700px;
+  position: relative;
+  max-width: 640px;
   width: 100%;
-  background: var(--card);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  padding: 30px 28px 38px;
-  transition: all 0.25s ease;
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-deep);
+  padding: 38px 36px 42px;
+  border: 1px solid var(--line);
+}
+.game-container::before {
+  content: "";
+  position: absolute;
+  inset: 10px;
+  border: 1px solid rgba(198, 154, 75, 0.35);
+  border-radius: calc(var(--radius-lg) - 8px);
+  pointer-events: none;
 }
 
 h1 {
-  font-size: 2rem;
-  font-weight: 700;
-  letter-spacing: -0.5px;
-  color: var(--primary);
+  font-family: var(--font-display);
+  font-size: 2.3rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--parchment);
   display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 12px;
+  align-items: baseline;
+  gap: 14px;
+  flex-wrap: wrap;
 }
 h1 span {
-  background: var(--accent);
-  color: #fff;
-  font-size: 1rem;
-  padding: 2px 14px;
+  font-family: var(--font-body);
+  background: transparent;
+  color: var(--rope);
+  border: 1px solid rgba(198, 154, 75, 0.5);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 4px 12px;
   border-radius: 40px;
-  font-weight: 500;
+}
+
+/* Divisore a corda disegnata a mano */
+.rope-divider {
+  width: 100%;
+  height: 14px;
+  margin: 14px 0 22px;
+  opacity: 0.8;
 }
 
 .subtitle {
-  color: var(--gray);
-  font-size: 0.95rem;
-  margin-bottom: 28px;
-  border-left: 4px solid var(--accent);
+  color: var(--parchment-dim);
+  font-size: 0.94rem;
+  line-height: 1.55;
+  margin-bottom: 26px;
+  border-left: 2px solid var(--rope);
   padding-left: 16px;
 }
 .subtitle strong {
-  color: var(--primary);
+  color: var(--parchment);
+  font-weight: 600;
 }
 .subtitle .warning {
-  color: #e67e22;
-  font-size: 0.9rem;
+  display: inline-block;
+  margin-top: 6px;
+  color: var(--rope-bright);
+  font-size: 0.86rem;
 }
 
 /* ----- AREA PAROLA SEGRETA ----- */
 .word-setup {
-  background: #f8f4f0;
-  border-radius: 16px;
-  padding: 20px 20px 24px;
-  margin-bottom: 30px;
-  transition: opacity 0.3s;
+  background: var(--surface-2);
+  border: 1px dashed var(--line);
+  border-radius: var(--radius-md);
+  padding: 22px 22px 26px;
+  margin-bottom: 28px;
 }
 .word-setup.hidden {
   display: none;
@@ -92,10 +136,10 @@ h1 span {
 
 .word-setup label {
   font-weight: 600;
-  color: var(--primary);
+  color: var(--parchment);
   display: block;
-  margin-bottom: 8px;
-  font-size: 0.95rem;
+  margin-bottom: 10px;
+  font-size: 0.92rem;
 }
 
 .word-input-row {
@@ -105,67 +149,73 @@ h1 span {
 }
 .word-input-row input {
   flex: 2 1 200px;
-  padding: 14px 18px;
-  border: 2px solid #ddd;
-  border-radius: 40px;
-  font-size: 1.1rem;
+  padding: 13px 18px;
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius-sm);
+  font-size: 1.05rem;
+  font-family: var(--font-mono);
   outline: none;
-  transition: border 0.2s;
-  background: #fff;
-  font-weight: 500;
-  letter-spacing: 0.5px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  background: var(--ink);
+  color: var(--parchment);
+  letter-spacing: 1px;
 }
-.word-input-row input:focus {
-  border-color: var(--accent);
+.word-input-row input:focus-visible {
+  border-color: var(--rope);
+  box-shadow: 0 0 0 3px rgba(198, 154, 75, 0.2);
 }
 .word-input-row input::placeholder {
-  color: #bbb;
-  font-weight: 400;
-  letter-spacing: 0;
+  color: #565f70;
+  letter-spacing: 0.5px;
 }
 
 .word-input-row button {
   flex: 0 0 auto;
-  padding: 14px 32px;
-  background: var(--accent);
-  color: #fff;
+  padding: 13px 28px;
+  background: var(--rope);
+  color: #1a1305;
   border: none;
-  border-radius: 40px;
-  font-size: 1rem;
-  font-weight: 600;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: 0.96rem;
+  font-weight: 700;
   cursor: pointer;
-  transition:
-    background 0.2s,
-    transform 0.1s;
-  box-shadow: 0 4px 8px rgba(230, 126, 34, 0.25);
+  transition: background 0.2s, transform 0.1s;
 }
 .word-input-row button:hover {
-  background: #d35400;
+  background: var(--rope-bright);
 }
 .word-input-row button:active {
   transform: scale(0.96);
+}
+.word-input-row button:focus-visible,
+.action-row button:focus-visible,
+.keyboard button:focus-visible,
+.modal-box button:focus-visible {
+  outline: 2px solid var(--rope-bright);
+  outline-offset: 2px;
 }
 
 .error-msg {
   color: var(--danger);
   font-size: 0.85rem;
-  margin-top: 8px;
+  margin-top: 10px;
   min-height: 1.4em;
 }
 
 /* ----- AREA DI GIOCO ----- */
 .game-area {
   display: none;
-  animation: fadeUp 0.4s ease;
 }
 .game-area.active {
   display: block;
+  animation: fadeUp 0.35s ease;
 }
 
 @keyframes fadeUp {
   0% {
     opacity: 0;
-    transform: translateY(18px);
+    transform: translateY(14px);
   }
   100% {
     opacity: 1;
@@ -177,117 +227,118 @@ h1 span {
 .hangman-wrap {
   display: flex;
   justify-content: center;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
 }
 #hangmanCanvas {
   width: 100%;
   max-width: 280px;
   height: auto;
   aspect-ratio: 280 / 320;
-  background: #fcf9f6;
-  border-radius: 24px;
-  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.04);
+  background: var(--ink);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--line);
   display: block;
 }
 
 /* ----- PAROLA NASCOSTA ----- */
 .word-display {
   text-align: center;
-  font-size: 2.6rem;
+  font-family: var(--font-mono);
+  font-size: 2.4rem;
   font-weight: 700;
-  letter-spacing: 10px;
-  color: var(--primary);
-  background: #f8f4f0;
-  padding: 16px 10px;
-  border-radius: 40px;
-  margin: 16px 0 18px;
-  font-family: "Courier New", monospace;
+  letter-spacing: 8px;
+  color: var(--parchment);
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  padding: 18px 10px;
+  border-radius: var(--radius-md);
+  margin: 18px 0 18px;
   word-break: break-all;
 }
 .word-display .char {
   display: inline-block;
-  min-width: 0.6em;
+  min-width: 0.65em;
   text-align: center;
 }
 .word-display .char.revealed {
-  color: var(--primary);
+  color: var(--rope-bright);
 }
 .word-display .char.hidden {
   color: transparent;
-  background: #d5d0ca;
-  border-radius: 6px;
+  background: var(--line);
+  border-radius: 4px;
   margin: 0 2px;
-  min-width: 0.7em;
+  min-width: 0.75em;
 }
 
 /* ----- LETTERE SBAGLIATE ----- */
 .wrong-letters {
   text-align: center;
-  font-size: 1.2rem;
+  font-family: var(--font-mono);
+  font-size: 1.05rem;
   color: var(--danger);
   min-height: 2.2rem;
   margin-bottom: 8px;
-  font-weight: 500;
+  font-weight: 600;
 }
 .wrong-letters span {
-  background: #fde8e5;
-  padding: 4px 14px;
+  background: rgba(193, 82, 63, 0.14);
+  border: 1px solid rgba(193, 82, 63, 0.35);
+  padding: 5px 16px;
   border-radius: 30px;
   display: inline-block;
 }
 
-/* ----- TASTIERA VIRTUALE (senza colori permanenti) ----- */
+/* ----- TASTIERA STILE MACCHINA PER SCRIVERE ----- */
 .keyboard {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 8px;
-  margin: 18px 0 14px;
+  margin: 20px 0 16px;
 }
 .keyboard button {
-  width: 44px;
-  height: 44px;
-  border: none;
-  border-radius: 12px;
-  background: #edebe9;
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: var(--primary);
+  width: 42px;
+  height: 46px;
+  border: 1px solid var(--line);
+  border-bottom-width: 3px;
+  border-radius: 8px;
+  background: var(--surface-2);
+  font-family: var(--font-mono);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--parchment);
   cursor: pointer;
-  transition:
-    background 0.2s,
-    transform 0.1s,
-    box-shadow 0.2s;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+  transition: background 0.15s, transform 0.08s, border-color 0.15s;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 .keyboard button:hover:not(:disabled) {
-  background: #d5d0ca;
+  background: #2c3444;
+  border-color: var(--rope);
 }
 .keyboard button:active:not(:disabled) {
-  transform: scale(0.92);
+  transform: translateY(2px);
+  border-bottom-width: 1px;
 }
 .keyboard button:disabled {
-  opacity: 0.5;
+  opacity: 0.4;
   cursor: not-allowed;
-  transform: none;
 }
 /* Colori temporanei (applicati via JS) */
 .keyboard button.temp-correct {
-  background: #27ae60 !important;
-  color: white !important;
-  box-shadow: 0 0 12px rgba(39, 174, 96, 0.4);
+  background: var(--success) !important;
+  border-color: var(--success) !important;
+  color: #0f1a0d !important;
 }
 .keyboard button.temp-wrong {
-  background: #c0392b !important;
-  color: white !important;
-  box-shadow: 0 0 12px rgba(192, 57, 43, 0.4);
+  background: var(--danger) !important;
+  border-color: var(--danger) !important;
+  color: #200907 !important;
 }
-/* Quando il gioco finisce, i tasti vengono disabilitati e perdono i colori temporanei */
 .keyboard button.game-ended {
-  opacity: 0.5;
+  opacity: 0.4;
   cursor: not-allowed;
 }
 
@@ -297,43 +348,42 @@ h1 span {
   flex-wrap: wrap;
   gap: 14px;
   justify-content: center;
-  margin-top: 18px;
+  margin-top: 22px;
 }
 .action-row button {
-  padding: 12px 28px;
-  border: none;
+  padding: 12px 26px;
+  border: 1px solid var(--line);
   border-radius: 40px;
-  font-size: 1rem;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
   font-weight: 600;
   cursor: pointer;
-  transition:
-    background 0.2s,
-    transform 0.1s;
-  background: #edebe9;
-  color: var(--primary);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  transition: background 0.2s, transform 0.1s, border-color 0.2s;
+  background: var(--surface-2);
+  color: var(--parchment);
 }
 .action-row button:hover {
-  background: #ddd8d2;
+  background: #2c3444;
+  border-color: var(--rope);
 }
 .action-row button:active {
   transform: scale(0.96);
 }
 .action-row .btn-primary {
-  background: var(--accent);
-  color: #fff;
-  box-shadow: 0 4px 10px rgba(230, 126, 34, 0.25);
+  background: var(--rope);
+  color: #1a1305;
+  border-color: var(--rope);
 }
 .action-row .btn-primary:hover {
-  background: #d35400;
+  background: var(--rope-bright);
 }
 .action-row .btn-danger {
-  background: var(--danger);
-  color: #fff;
-  box-shadow: 0 4px 10px rgba(192, 57, 43, 0.2);
+  background: transparent;
+  color: var(--danger);
+  border-color: var(--danger-dim);
 }
 .action-row .btn-danger:hover {
-  background: #a93226;
+  background: rgba(193, 82, 63, 0.12);
 }
 
 /* ----- MODALE RISULTATO ----- */
@@ -343,14 +393,14 @@ h1 span {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.45);
+  background: rgba(8, 10, 14, 0.72);
   backdrop-filter: blur(4px);
   display: none;
   justify-content: center;
   align-items: center;
   z-index: 1000;
   padding: 24px;
-  animation: fadeIn 0.3s ease;
+  animation: fadeIn 0.25s ease;
 }
 .modal-overlay.open {
   display: flex;
@@ -366,18 +416,19 @@ h1 span {
 }
 
 .modal-box {
-  background: #fff;
-  border-radius: var(--radius);
-  max-width: 440px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  max-width: 420px;
   width: 100%;
-  padding: 36px 32px 40px;
+  padding: 38px 32px 40px;
   text-align: center;
-  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
-  animation: scaleUp 0.3s ease;
+  box-shadow: var(--shadow-deep);
+  animation: scaleUp 0.25s ease;
 }
 @keyframes scaleUp {
   0% {
-    transform: scale(0.92);
+    transform: scale(0.94);
     opacity: 0;
   }
   100% {
@@ -387,94 +438,106 @@ h1 span {
 }
 
 .modal-box .emoji-big {
-  font-size: 4rem;
+  font-size: 3.6rem;
   line-height: 1.2;
 }
 .modal-box h2 {
-  font-size: 1.8rem;
-  margin: 8px 0 4px;
-  color: var(--primary);
+  font-family: var(--font-display);
+  font-size: 1.7rem;
+  font-weight: 600;
+  margin: 10px 0 6px;
+  color: var(--parchment);
 }
 .modal-box p {
-  color: #555;
-  font-size: 1.05rem;
+  color: var(--parchment-dim);
+  font-size: 1rem;
   margin: 8px 0 20px;
 }
 .modal-box .word-reveal {
-  background: #f4f0eb;
-  padding: 8px 16px;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  padding: 10px 18px;
   border-radius: 40px;
-  font-size: 1.6rem;
+  font-family: var(--font-mono);
+  font-size: 1.5rem;
   font-weight: 700;
+  color: var(--rope-bright);
   letter-spacing: 4px;
   display: inline-block;
-  margin-bottom: 20px;
-  font-family: "Courier New", monospace;
+  margin-bottom: 22px;
 }
 .modal-box button {
-  padding: 14px 44px;
+  padding: 13px 40px;
   border: none;
   border-radius: 40px;
-  background: var(--accent);
-  color: #fff;
-  font-size: 1.1rem;
-  font-weight: 600;
+  background: var(--rope);
+  color: #1a1305;
+  font-family: var(--font-body);
+  font-size: 1.02rem;
+  font-weight: 700;
   cursor: pointer;
   transition: background 0.2s;
-  box-shadow: 0 4px 12px rgba(230, 126, 34, 0.3);
 }
 .modal-box button:hover {
-  background: #d35400;
+  background: var(--rope-bright);
 }
 
 /* ----- RESPONSIVE ----- */
 @media (max-width: 540px) {
   .game-container {
-    padding: 20px 16px 28px;
+    padding: 26px 18px 30px;
   }
   h1 {
-    font-size: 1.6rem;
+    font-size: 1.7rem;
   }
   .word-display {
-    font-size: 2rem;
-    letter-spacing: 6px;
-    padding: 12px 8px;
+    font-size: 1.9rem;
+    letter-spacing: 5px;
+    padding: 14px 8px;
   }
   .keyboard button {
-    width: 38px;
-    height: 38px;
-    font-size: 1rem;
+    width: 36px;
+    height: 40px;
+    font-size: 0.92rem;
   }
   .word-input-row input {
-    font-size: 1rem;
+    font-size: 0.98rem;
     padding: 12px 16px;
   }
   .word-input-row button {
-    padding: 12px 24px;
-    font-size: 0.95rem;
+    padding: 12px 22px;
+    font-size: 0.92rem;
   }
   .modal-box {
-    padding: 28px 20px 32px;
+    padding: 30px 20px 32px;
   }
   .modal-box .word-reveal {
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     letter-spacing: 2px;
   }
 }
 
 @media (max-width: 400px) {
   .keyboard button {
-    width: 32px;
-    height: 32px;
-    font-size: 0.85rem;
-    border-radius: 8px;
+    width: 30px;
+    height: 36px;
+    font-size: 0.8rem;
+    border-radius: 6px;
   }
   .word-display {
-    font-size: 1.6rem;
-    letter-spacing: 4px;
+    font-size: 1.5rem;
+    letter-spacing: 3px;
   }
   .action-row button {
     padding: 10px 18px;
-    font-size: 0.9rem;
+    font-size: 0.88rem;
+  }
+}
+
+/* ----- MOVIMENTO RIDOTTO ----- */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
   }
 }
