@@ -40,8 +40,16 @@
 body {
   background: var(--ink);
   background-image:
-    radial-gradient(circle at 15% 0%, rgba(198, 154, 75, 0.08), transparent 45%),
-    radial-gradient(circle at 100% 100%, rgba(198, 154, 75, 0.05), transparent 50%);
+    radial-gradient(
+      circle at 15% 0%,
+      rgba(198, 154, 75, 0.08),
+      transparent 45%
+    ),
+    radial-gradient(
+      circle at 100% 100%,
+      rgba(198, 154, 75, 0.05),
+      transparent 50%
+    );
   font-family: var(--font-body);
   color: var(--parchment);
   min-height: 100vh;
@@ -155,7 +163,9 @@ h1 span {
   font-size: 1.05rem;
   font-family: var(--font-mono);
   outline: none;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
   background: var(--ink);
   color: var(--parchment);
   letter-spacing: 1px;
@@ -180,7 +190,9 @@ h1 span {
   font-size: 0.96rem;
   font-weight: 700;
   cursor: pointer;
-  transition: background 0.2s, transform 0.1s;
+  transition:
+    background 0.2s,
+    transform 0.1s;
 }
 .word-input-row button:hover {
   background: var(--rope-bright);
@@ -309,7 +321,10 @@ h1 span {
   font-weight: 700;
   color: var(--parchment);
   cursor: pointer;
-  transition: background 0.15s, transform 0.08s, border-color 0.15s;
+  transition:
+    background 0.15s,
+    transform 0.08s,
+    border-color 0.15s;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -358,7 +373,10 @@ h1 span {
   font-size: 0.95rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s, transform 0.1s, border-color 0.2s;
+  transition:
+    background 0.2s,
+    transform 0.1s,
+    border-color 0.2s;
   background: var(--surface-2);
   color: var(--parchment);
 }
