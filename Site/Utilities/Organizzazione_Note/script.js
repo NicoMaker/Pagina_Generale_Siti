@@ -405,8 +405,7 @@ function renderNotes() {
   updateSummary(filtered);
 
   if (filtered.length === 0) {
-    grid.innerHTML =
-      '<div class="empty-state">Nessuna nota trovata</div>';
+    grid.innerHTML = '<div class="empty-state">Nessuna nota trovata</div>';
     return;
   }
 
@@ -414,8 +413,7 @@ function renderNotes() {
     .map((note) => {
       const title = escapeHtml(note.title);
       const excerpt = escapeHtml(
-        note.content.substring(0, 150) +
-          (note.content.length > 150 ? "…" : ""),
+        note.content.substring(0, 150) + (note.content.length > 150 ? "…" : ""),
       );
       const tags = note.tags
         .map((tag) => `<span class="note-tag">#${escapeHtml(tag)}</span>`)
