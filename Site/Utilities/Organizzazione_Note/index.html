@@ -3,10 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Organizzatore di Note</title>
+    <title>Organizzazione Note</title>
+    <link
+      rel="preconnect"
+      href="https://fonts.googleapis.com"
+    />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap"
     />
     <link rel="stylesheet" href="styles.css" />
   </head>
@@ -16,40 +20,47 @@
       <header class="app-header">
         <div class="header-content">
           <div class="logo-section">
-            <h1>📝 Note Organizer</h1>
+            <span class="logo-mark" aria-hidden="true">§</span>
+            <h1>Organizzazione Note</h1>
           </div>
-          <button id="theme-toggle" class="theme-btn">🌙</button>
+          <button id="theme-toggle" class="theme-btn" aria-label="Cambia tema" title="Cambia tema">
+            <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.4M12 19.1v2.4M4.2 4.2l1.7 1.7M18.1 18.1l1.7 1.7M2.5 12h2.4M19.1 12h2.4M4.2 19.8l1.7-1.7M18.1 5.9l1.7-1.7"/></svg>
+            <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a6.8 6.8 0 0 0 10.5 10.5Z"/></svg>
+          </button>
         </div>
         <div class="search-container">
-          <span class="search-icon">🔍</span>
+          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
           <input
             type="text"
             id="search-input"
-            placeholder="Cerca nelle tue note..."
+            placeholder="Cerca titolo, contenuto o tag…"
           />
         </div>
       </header>
 
       <main class="app-content">
         <aside class="sidebar">
-          <h2>📊 Categorie</h2>
+          <h2>Categorie</h2>
           <div id="tag-list"></div>
         </aside>
 
         <section class="notes-container">
           <div class="notes-header">
-            <h2>✨ Le mie note</h2>
+            <div class="notes-heading">
+              <span class="eyebrow">Spazio di lavoro</span>
+              <h2>Le tue note</h2>
+            </div>
             <div class="notes-actions">
               <button id="add-note-btn" class="primary-button">
-                <span style="color: white">+</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
                 <span>Nuova nota</span>
               </button>
 
               <div class="delete-dropdown">
-                <button class="dropdown-toggle" id="delete-dropdown-btn">
-                  <span>🗑️</span>
-                  <span>Opzioni Elimina</span>
-                  <span>▼</span>
+                <button class="dropdown-toggle danger-toggle" id="delete-dropdown-btn">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 7h16M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2m-8 0 1 13a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2l1-13"/></svg>
+                  <span>Elimina</span>
+                  <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
                 </button>
                 <div class="dropdown-menu" id="delete-menu">
                   <div class="dropdown-item danger" data-action="delete-all">
@@ -82,19 +93,12 @@
 
               <div class="delete-dropdown">
                 <button
-                  class="dropdown-toggle"
+                  class="dropdown-toggle data-toggle"
                   id="data-dropdown-btn"
-                  style="
-                    background: linear-gradient(
-                      135deg,
-                      #10b981 0%,
-                      #059669 100%
-                    );
-                  "
                 >
-                  <span>🔄</span>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 12a9 9 0 1 1-2.6-6.4M21 4v5h-5"/></svg>
                   <span>Dati</span>
-                  <span>▼</span>
+                  <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
                 </button>
                 <div class="dropdown-menu" id="data-menu">
                   <label for="import-file-input" class="dropdown-item">
@@ -137,15 +141,15 @@
       <div id="modal-overlay" class="modal-overlay"></div>
 
       <div id="note-modal" class="modal">
-        <div style="padding: 2rem">
-          <h3 id="modal-title">✏️ Aggiungi nota</h3>
-          <div style="margin-top: 1.5rem">
-            <input type="text" id="note-title" placeholder="Titolo..." />
-            <textarea id="note-content" placeholder="Contenuto..."></textarea>
+        <div class="modal-inner">
+          <h3 id="modal-title">Aggiungi nota</h3>
+          <div class="modal-body">
+            <input type="text" id="note-title" placeholder="Titolo…" />
+            <textarea id="note-content" placeholder="Scrivi qui il contenuto…"></textarea>
             <input
               type="text"
               id="note-tags"
-              placeholder="Tag (separati da virgola)..."
+              placeholder="Tag, separati da virgola…"
             />
 
             <label class="modal-check-label">
@@ -159,51 +163,40 @@
               </label>
             </div>
           </div>
-          <div
-            style="
-              display: flex;
-              gap: 1rem;
-              margin-top: 1.5rem;
-              justify-content: flex-end;
-            "
-          >
+          <div class="modal-actions">
             <button
               id="delete-note"
-              class="primary-button hidden"
-              style="background: var(--danger-gradient); margin-right: auto"
+              class="primary-button ghost-danger hidden"
             >
-              🗑️ Elimina
+              Elimina
             </button>
             <button
               id="close-modal"
-              class="primary-button"
-              style="background: var(--action-color)"
+              class="primary-button secondary"
             >
               Annulla
             </button>
-            <button id="save-note" class="primary-button">💾 Salva</button>
+            <button id="save-note" class="primary-button">Salva nota</button>
           </div>
         </div>
       </div>
 
-      <div id="confirm-modal" class="modal">
-        <div style="padding: 2rem; text-align: center">
-          <h3>⚠️ Conferma eliminazione</h3>
-          <p id="confirm-message" style="margin: 1.5rem 0"></p>
-          <div style="display: flex; gap: 1rem; justify-content: center">
+      <div id="confirm-modal" class="modal confirm-modal">
+        <div class="modal-inner confirm-inner">
+          <h3>Confermi l'eliminazione?</h3>
+          <p id="confirm-message"></p>
+          <div class="modal-actions confirm-actions">
             <button
               id="cancel-delete"
-              class="primary-button"
-              style="background: var(--action-color)"
+              class="primary-button secondary"
             >
               Annulla
             </button>
             <button
               id="confirm-delete"
-              class="primary-button"
-              style="background: var(--danger-gradient)"
+              class="primary-button ghost-danger"
             >
-              🗑️ Elimina
+              Elimina
             </button>
           </div>
         </div>

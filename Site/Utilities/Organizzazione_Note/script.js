@@ -12,6 +12,12 @@ function loadNotes() {
 
 const saveNotes = () => localStorage.setItem("notes", JSON.stringify(notes));
 
+function escapeHtml(str) {
+  const div = document.createElement("div");
+  div.textContent = str;
+  return div.innerHTML;
+}
+
 function showToast(message, type = "info") {
   const toast = document.getElementById("toast");
   const toastMessage = document.getElementById("toast-message");
@@ -23,7 +29,6 @@ function showToast(message, type = "info") {
   toastMessage.innerHTML = `${icon} ${message}`;
 
   toast.classList.add("show");
-  // Assicurati che il messaggio non venga visualizzato in modalità desktop
   if (window.innerWidth > 600) {
     toast.style.right = "2rem";
   } else {
@@ -45,14 +50,12 @@ function downloadFile(content, filename, contentType) {
 
 // --- IMPORT/EXPORT LOGIC ---
 
-// Esporta in JSON
 document.getElementById("export-json-btn").addEventListener("click", () => {
   const data = JSON.stringify(notes, null, 2);
   downloadFile(data, "note_organizer.json", "application/json");
   showToast("Note esportate in JSON!", "success");
 });
 
-// Esporta in TXT
 document.getElementById("export-txt-btn").addEventListener("click", () => {
   const data = notes
     .map(
@@ -76,7 +79,6 @@ document.getElementById("export-txt-btn").addEventListener("click", () => {
   showToast("Note esportate in TXT!", "success");
 });
 
-// Importa da file
 document
   .getElementById("import-file-input")
   .addEventListener("change", (event) => {
@@ -90,14 +92,11 @@ document
         const content = e.target.result;
 
         if (file.name.endsWith(".json")) {
-          // Importa da JSON
           const parsedData = JSON.parse(content);
-          // Assicurati che sia un array di note e che le note abbiano le proprietà minime
           if (
             Array.isArray(parsedData) &&
             parsedData.every((n) => n.id && n.title)
           ) {
-            // Normalizza i dati e assicurati che ogni nota abbia un ID univoco
             importedNotes = parsedData.map((note) => ({
               id: note.id || Date.now().toString(),
               title: note.title || "Nota Senza Titolo",
@@ -112,7 +111,6 @@ document
             throw new Error("Formato JSON non valido per un array di note.");
           }
         } else if (file.name.endsWith(".txt")) {
-          // Importa da TXT (aggiunge un'unica nota con il contenuto)
           const newNote = {
             id: Date.now().toString(),
             title: `Importata da file TXT: ${file.name}`,
@@ -130,7 +128,6 @@ document
           );
         }
 
-        // Aggiunge le note importate all'inizio
         notes.unshift(...importedNotes);
         saveNotes();
         renderNotes();
@@ -139,11 +136,9 @@ document
           `${importedNotes.length} note importate con successo!`,
           "success",
         );
-        // Resetta l'input file per poter caricare lo stesso file di nuovo
         event.target.value = "";
       } catch (error) {
         showToast(`Errore durante l'importazione: ${error.message}`, "error");
-        // Resetta l'input file
         event.target.value = "";
       }
     };
@@ -160,13 +155,12 @@ document.getElementById("delete-note").addEventListener("click", () => {
   const confirmMsg = document.getElementById("confirm-message");
   const noteToDelete = notes.find((n) => n.id === currentNoteId);
 
-  confirmMsg.textContent = `Sei sicuro di voler eliminare la nota: "${noteToDelete.title}"?`;
+  confirmMsg.textContent = `Sei sicuro di voler eliminare la nota "${noteToDelete.title}"?`;
 
   document.getElementById("confirm-modal").classList.add("show");
   document.getElementById("modal-overlay").classList.add("show");
 });
 
-// Gestione del dropdown Opzioni Elimina
 document
   .querySelectorAll(".dropdown-menu:not(#data-menu) .dropdown-item")
   .forEach((item) => {
@@ -183,7 +177,7 @@ function openDeleteConfirmation() {
 
   switch (deleteAction) {
     case "delete-all":
-      confirmMsg.textContent = `Vuoi eliminare TUTTE le ${notes.length} note?`;
+      confirmMsg.textContent = `Vuoi eliminare tutte le ${notes.length} note?`;
       break;
     case "delete-all-completed":
       const allCompleted = notes.filter((n) => n.completed);
@@ -259,7 +253,7 @@ function closeConfirmModal() {
 
 document.getElementById("add-note-btn").addEventListener("click", () => {
   currentNoteId = null;
-  document.getElementById("modal-title").textContent = "✏️ Aggiungi nota";
+  document.getElementById("modal-title").textContent = "Aggiungi nota";
   document.getElementById("note-title").value = "";
   document.getElementById("note-content").value = "";
   document.getElementById("note-tags").value = "";
@@ -331,7 +325,7 @@ window.editNote = (id) => {
   if (!note) return;
 
   currentNoteId = id;
-  document.getElementById("modal-title").textContent = "✏️ Modifica nota";
+  document.getElementById("modal-title").textContent = "Modifica nota";
   document.getElementById("note-title").value = note.title;
   document.getElementById("note-content").value = note.content;
   document.getElementById("note-tags").value = note.tags.join(", ");
@@ -372,7 +366,6 @@ function updateSummary(filteredNotes) {
   const progressFill = document.getElementById("progress-fill");
   const progressEmoji = document.getElementById("progress-emoji");
 
-  // FILTRIAMO SOLO LE NOTE CHE SONO ATTIVITÀ (isTask: true)
   const taskNotes = filteredNotes.filter((n) => n.isTask);
 
   const totalTasks = taskNotes.length;
@@ -388,10 +381,9 @@ function updateSummary(filteredNotes) {
   const percentage =
     totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
 
-  // Applichiamo il grassetto come richiesto
   summaryText.innerHTML = `
-            Hai completato <strong>${completedTasks} </strong> di <strong>${totalTasks}</strong> attività filtrate.
-            <span style="font-weight: 800; color: var(--primary-color);">(${percentage}%)</span>
+            Hai completato <strong>${completedTasks}</strong> di <strong>${totalTasks}</strong> attività filtrate.
+            <span style="font-weight: 800; color: var(--accent);">(${percentage}%)</span>
         `;
 
   progressFill.style.width = `${percentage}%`;
@@ -410,58 +402,48 @@ function renderNotes() {
   const grid = document.getElementById("notes-grid");
   const filtered = filterNotes();
 
-  // Aggiorna il riepilogo solo con le attività
   updateSummary(filtered);
 
   if (filtered.length === 0) {
     grid.innerHTML =
-      '<div style="grid-column: 1/-1; text-align: center; padding: 3rem; color: var(--text-tertiary);">Nessuna nota trovata</div>';
+      '<div class="empty-state">Nessuna nota trovata</div>';
     return;
   }
 
   grid.innerHTML = filtered
-    .map(
-      (note) => `
+    .map((note) => {
+      const title = escapeHtml(note.title);
+      const excerpt = escapeHtml(
+        note.content.substring(0, 150) +
+          (note.content.length > 150 ? "…" : ""),
+      );
+      const tags = note.tags
+        .map((tag) => `<span class="note-tag">#${escapeHtml(tag)}</span>`)
+        .join("");
+      const taskStatus = note.isTask
+        ? `<div class="note-task-status ${
+            note.completed ? "done" : "pending"
+          }">${note.completed ? "✅ Completato" : "⏳ Da completare"}</div>`
+        : "";
+
+      return `
         <div class="note-card ${
           note.completed ? "completed" : ""
         }" onclick="editNote('${note.id}')">
-          <h3 style="font-size: 1.25rem; margin-bottom: 0.75rem;">
-             <strong style="${
-               note.completed
-                 ? "text-decoration: line-through; color: var(--text-secondary);"
-                 : "color: var(--text-primary);"
-             }">${note.title}</strong>
-          </h3>
-          <p style="color: var(--text-secondary); margin-bottom: 1rem;">${note.content.substring(
-            0,
-            150,
-          )}${note.content.length > 150 ? "..." : ""}</p>
-          <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.75rem;">
-            ${note.tags
-              .map(
-                (tag) =>
-                  `<span style="background: var(--bg-tertiary); padding: 0.25rem 0.75rem; border-radius: var(--radius-sm); font-size: 0.875rem; color: var(--text-primary); font-weight: 500;">#${tag}</span>`,
-              )
-              .join("")}
+          <div>
+            <h3 class="note-title ${note.completed ? "done" : ""}">${title}</h3>
+            <p class="note-excerpt">${excerpt}</p>
+            <div class="note-tags">${tags}</div>
           </div>
-          ${
-            note.isTask
-              ? `<div style="margin-top: auto; padding-top: 0.5rem; border-top: 1px solid var(--border-light); font-weight: 700; color: ${
-                  note.completed ? "var(--success-color)" : "#f59e0b"
-                };">${
-                  note.completed ? "✅ Completato" : "⏳ Da completare"
-                }</div>`
-              : ""
-          }
+          ${taskStatus}
         </div>
-      `,
-    )
+      `;
+    })
     .join("");
 }
 
 function renderTags() {
   const tagList = document.getElementById("tag-list");
-  // 1. Ottiene tutti i tag unici e conta quante note li contengono
   const tagCounts = notes
     .flatMap((n) => n.tags)
     .reduce((acc, tag) => {
@@ -471,19 +453,19 @@ function renderTags() {
 
   const allTags = Object.keys(tagCounts).sort();
 
-  // 2. Renderizza la lista con il conteggio
   tagList.innerHTML = allTags
     .map((tag) => {
       const count = tagCounts[tag];
       const isActive = activeTagFilters.includes(tag);
       const activeClass = isActive ? "active" : "";
+      const safeTag = escapeHtml(tag);
 
       return `
-          <div 
-            class="tag-item ${activeClass}" 
-            onclick="toggleTag('${tag}')"
+          <div
+            class="tag-item ${activeClass}"
+            onclick="toggleTag('${tag.replace(/'/g, "\\'")}')"
           >
-            <span>🏷️ ${tag}</span>
+            <span>${safeTag}</span>
             <span class="tag-count">${count}</span>
           </div>
         `;
@@ -514,7 +496,6 @@ const deleteDropdownMenu = document.getElementById("delete-menu");
 const dataDropdownBtn = document.getElementById("data-dropdown-btn");
 const dataDropdownMenu = document.getElementById("data-menu");
 
-// Gestione dei dropdown
 [
   [deleteDropdownBtn, deleteDropdownMenu],
   [dataDropdownBtn, dataDropdownMenu],
@@ -522,7 +503,6 @@ const dataDropdownMenu = document.getElementById("data-menu");
   if (btn) {
     btn.addEventListener("click", (e) => {
       e.stopPropagation();
-      // Chiudi l'altro dropdown se aperto
       const otherMenu =
         menu === deleteDropdownMenu ? dataDropdownMenu : deleteDropdownMenu;
       if (otherMenu) otherMenu.classList.remove("show");
