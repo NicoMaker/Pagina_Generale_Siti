@@ -4,29 +4,6 @@
 
 const MOBILE_MENU_CLOSE_MS = 180; // deve combaciare con @keyframes mobileMenuOut in style.css
 
-function toggleMobileMenu() {
-  const menu = document.getElementById("mobileMenu");
-  const btn = document.getElementById("hamburgerBtn");
-  if (!menu) return;
-
-  const isHidden = menu.classList.contains("hidden");
-
-  if (isHidden) {
-    // Apertura: rimuove hidden, l'animazione di ingresso è gestita dal CSS (slideUp)
-    menu.classList.remove("closing");
-    menu.classList.remove("hidden");
-    if (btn) btn.setAttribute("aria-expanded", "true");
-  } else {
-    // Chiusura: applica l'animazione di uscita, poi nasconde davvero
-    menu.classList.add("closing");
-    if (btn) btn.setAttribute("aria-expanded", "false");
-    window.setTimeout(() => {
-      menu.classList.add("hidden");
-      menu.classList.remove("closing");
-    }, MOBILE_MENU_CLOSE_MS);
-  }
-}
-
 // Chiude il menu mobile al click fuori
 document.addEventListener("click", function (e) {
   const btn = document.getElementById("hamburgerBtn");
@@ -61,5 +38,32 @@ function toggleSidebar() {
   const label = btn.querySelector("span:first-child");
   if (label) {
     label.textContent = isOpen ? "✕ Chiudi importa" : "⬆ Importa file";
+  }
+}
+
+function toggleMobileMenu() {
+  const menu = document.getElementById("mobileMenu");
+  const btn = document.getElementById("hamburgerBtn");
+  if (!menu) return;
+
+  const isHidden = menu.classList.contains("hidden");
+
+  if (isHidden) {
+    menu.classList.remove("closing");
+    menu.classList.remove("hidden");
+    if (btn) {
+      btn.classList.add("open");
+      btn.setAttribute("aria-expanded", "true");
+    }
+  } else {
+    menu.classList.add("closing");
+    if (btn) {
+      btn.classList.remove("open");
+      btn.setAttribute("aria-expanded", "false");
+    }
+    window.setTimeout(() => {
+      menu.classList.add("hidden");
+      menu.classList.remove("closing");
+    }, MOBILE_MENU_CLOSE_MS);
   }
 }
