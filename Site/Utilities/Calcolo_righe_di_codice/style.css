@@ -126,13 +126,35 @@ body::before {
 body::after {
   content: "";
   position: fixed;
-  width: 600px;
-  height: 600px;
-  background: radial-gradient(circle, var(--orb-color) 0%, transparent 70%);
-  top: -200px;
-  left: -200px;
+  width: 700px;
+  height: 700px;
+  background:
+    radial-gradient(circle at 30% 30%, var(--orb-color) 0%, transparent 60%),
+    radial-gradient(circle at 70% 70%, rgba(255, 95, 160, 0.05) 0%, transparent 55%);
+  top: -220px;
+  left: -220px;
   pointer-events: none;
   z-index: 0;
+  animation: orbFloat 22s var(--ease) infinite alternate;
+  will-change: transform;
+}
+
+@keyframes orbFloat {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(60px, 40px) scale(1.08);
+  }
+  100% {
+    transform: translate(-30px, 70px) scale(0.96);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body::after {
+    animation: none;
+  }
 }
 
 .layout {
@@ -205,6 +227,29 @@ body::after {
   border: 1px solid var(--border);
   border-radius: var(--r);
   overflow: hidden;
+  position: relative;
+  transition:
+    border-color 0.22s var(--ease),
+    box-shadow 0.22s var(--ease);
+}
+.panel::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(110, 106, 255, 0.35),
+    transparent
+  );
+  opacity: 0.7;
+  pointer-events: none;
+}
+.panel:hover {
+  border-color: var(--border2);
 }
 
 .panel-header {
@@ -244,7 +289,7 @@ body::after {
   padding: 30px 16px;
   text-align: center;
   cursor: pointer;
-  transition: all 0.22s ease;
+  transition: all 0.22s var(--ease);
   background: var(--surf2);
   position: relative;
   overflow: hidden;
@@ -255,10 +300,18 @@ body::after {
   position: absolute;
   inset: -2px;
   border-radius: var(--r);
-  background: linear-gradient(135deg, var(--a1), var(--a2));
+  background: conic-gradient(
+    from 0deg,
+    var(--a1),
+    var(--a2),
+    var(--a3),
+    var(--a4),
+    var(--a1)
+  );
   opacity: 0;
-  transition: opacity 0.22s;
+  transition: opacity 0.22s var(--ease);
   z-index: 0;
+  animation: dzSpin 4s linear infinite paused;
 }
 
 .dropzone > * {
@@ -277,6 +330,21 @@ body::after {
 }
 .dropzone.drag-over {
   transform: scale(1.015);
+  box-shadow: var(--shadow-md);
+}
+.dropzone.drag-over::before {
+  animation-play-state: running;
+}
+
+@keyframes dzSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dropzone::before {
+    animation: none !important;
+  }
 }
 
 .dz-icon {
@@ -285,11 +353,11 @@ body::after {
   margin-bottom: 8px;
   display: block;
   transition:
-    transform 0.22s,
+    transform 0.22s var(--ease-spring),
     color 0.22s;
 }
 .dropzone:hover .dz-icon {
-  transform: translateY(-3px);
+  transform: translateY(-4px) scale(1.08);
   color: var(--a1);
 }
 
@@ -937,14 +1005,17 @@ body::after {
   background: var(--surf);
   border: 1px solid var(--border2);
   border-radius: var(--r);
-  padding: 11px 16px;
+  padding: 11px 16px 11px 14px;
   font-size: 12px;
   font-family: var(--mono);
   color: var(--text);
-  box-shadow: 0 8px 40px var(--shadow-toast);
+  box-shadow:
+    0 8px 40px var(--shadow-toast),
+    0 0 0 1px rgba(110, 106, 255, 0.06);
+  border-left: 3px solid var(--a1);
   transform: translateY(70px);
   opacity: 0;
-  transition: all 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: all 0.3s var(--ease-spring);
   z-index: 9999;
 }
 .toast.show {
@@ -959,14 +1030,15 @@ body::after {
 .modal-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(6px);
+  background: rgba(0, 0, 0, 0.72);
+  backdrop-filter: blur(10px) saturate(1.2);
+  -webkit-backdrop-filter: blur(10px) saturate(1.2);
   z-index: 1000;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 20px;
-  animation: fadeIn 0.18s ease;
+  animation: fadeIn 0.2s var(--ease);
 }
 
 .modal {
@@ -977,8 +1049,9 @@ body::after {
   max-width: 520px;
   box-shadow:
     0 24px 80px var(--shadow-modal),
-    0 0 0 1px rgba(110, 106, 255, 0.08);
-  animation: slideUp 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+    0 0 0 1px rgba(110, 106, 255, 0.1),
+    0 0 60px rgba(110, 106, 255, 0.07);
+  animation: slideUp 0.26s var(--ease-spring);
   overflow: hidden;
 }
 
@@ -1207,18 +1280,18 @@ body::after {
   padding: 9px 20px;
   border-radius: var(--r-sm);
   cursor: pointer;
-  transition: all 0.18s;
+  transition: all 0.2s var(--ease-spring);
   display: inline-flex;
   align-items: center;
   gap: 6px;
+  box-shadow: 0 2px 10px rgba(110, 106, 255, 0.18);
 }
 .btn-import:hover {
-  opacity: 0.9;
-  transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(110, 106, 255, 0.3);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 10px 28px rgba(110, 106, 255, 0.38);
 }
 .btn-import:active {
-  transform: translateY(0);
+  transform: translateY(0) scale(0.98);
 }
 
 /* ── UTILITIES ── */
@@ -1290,10 +1363,12 @@ input[type="file"] {
   border-bottom: 2px solid transparent;
   margin-bottom: -1px;
   transition:
-    color 0.15s,
-    border-color 0.15s;
+    color 0.18s var(--ease),
+    background 0.18s var(--ease),
+    border-color 0.18s var(--ease);
   white-space: nowrap;
   border-radius: var(--r-sm) var(--r-sm) 0 0;
+  position: relative;
 }
 .ctab:hover {
   color: var(--text);
@@ -1302,7 +1377,22 @@ input[type="file"] {
 .ctab-active {
   color: var(--a1);
   border-bottom-color: var(--a1);
-  background: transparent;
+  background: linear-gradient(
+    180deg,
+    rgba(110, 106, 255, 0.1),
+    rgba(110, 106, 255, 0.02)
+  );
+}
+.ctab-active::after {
+  content: "";
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: -2px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--a1), var(--a2));
+  border-radius: 2px;
+  box-shadow: 0 0 8px rgba(110, 106, 255, 0.6);
 }
 .ctab-icon {
   font-size: 14px;
@@ -2448,11 +2538,19 @@ input[type="file"] {
   border: 1px solid rgba(0, 229, 160, 0.25);
   font-size: 11px;
   white-space: nowrap;
+  transition:
+    background 0.18s var(--ease),
+    color 0.18s var(--ease),
+    border-color 0.18s var(--ease),
+    box-shadow 0.18s var(--ease),
+    transform 0.15s var(--ease-spring);
 }
 .btn-dl:hover {
   background: var(--a3);
   color: #000;
   border-color: var(--a3);
+  box-shadow: 0 6px 18px rgba(0, 229, 160, 0.32);
+  transform: translateY(-1px);
 }
 /* ── DOWNLOAD SELECTION BUTTON ────────────────────────────────────── */
 .btn-dl-sel {
@@ -2465,11 +2563,19 @@ input[type="file"] {
   border: 1px solid rgba(110, 106, 255, 0.25);
   font-size: 11px;
   white-space: nowrap;
+  transition:
+    background 0.18s var(--ease),
+    color 0.18s var(--ease),
+    border-color 0.18s var(--ease),
+    box-shadow 0.18s var(--ease),
+    transform 0.15s var(--ease-spring);
 }
 .btn-dl-sel:hover {
   background: var(--a1);
   color: #fff;
   border-color: var(--a1);
+  box-shadow: 0 6px 18px rgba(110, 106, 255, 0.32);
+  transform: translateY(-1px);
 }
 
 /* ── DOWNLOAD SELECTION MODAL ─────────────────────────────────────── */
