@@ -130,7 +130,11 @@ body::after {
   height: 700px;
   background:
     radial-gradient(circle at 30% 30%, var(--orb-color) 0%, transparent 60%),
-    radial-gradient(circle at 70% 70%, rgba(255, 95, 160, 0.05) 0%, transparent 55%);
+    radial-gradient(
+      circle at 70% 70%,
+      rgba(255, 95, 160, 0.05) 0%,
+      transparent 55%
+    );
   top: -220px;
   left: -220px;
   pointer-events: none;
