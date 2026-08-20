@@ -365,18 +365,5 @@
   "nunjucks": ["njk", "nunjucks"],
   "smarty": ["tpl"],
   "velocity": ["vm", "vtl"],
-  "freemarker": ["ftl", "ftlh", "ftlx"],
-  "thymeleaf": ["html"],
-  "angular": ["ts", "html", "css", "scss"],
-  "react_native": ["jsx", "tsx"],
-  "expo": ["tsx", "jsx"],
-  "tauri": ["rs", "ts", "json"],
-  "wails": ["go", "svelte", "vue"],
-  "tamagui": ["tsx"],
-  "styled_components": ["tsx", "ts", "jsx", "js"],
-  "css_modules": ["module.css", "module.scss"],
-  "bem": ["css", "scss"],
-  "tailwind": ["css", "config.js"],
-  "unocss": ["css", "ts"],
-  "windicss": ["css"]
+  "freemarker": ["ftl", "ftlh", "ftlx"]
 }

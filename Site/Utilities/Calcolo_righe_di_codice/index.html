@@ -215,6 +215,29 @@
             </div>
           </div>
 
+          <!-- ── LANGUAGE PANEL ── -->
+          <div class="lang-panel hidden" id="langPanel">
+            <div class="lang-panel-header">
+              <div class="lang-panel-title-wrap">
+                <span class="lang-panel-icon">◈</span>
+                <span class="panel-title">Linguaggi importati</span>
+              </div>
+              <div class="lang-panel-actions">
+                <button class="btn btn-xs" onclick="clearLangFilter()">
+                  Mostra tutti
+                </button>
+              </div>
+            </div>
+            <div class="lang-filter-hint" id="langFilterHint"></div>
+            <div class="lang-chips" id="langChips"></div>
+            <div class="lang-breakdown" id="langBreakdown"></div>
+            <div class="lang-stats-table-wrap" id="langStatsTable"></div>
+            <div class="lang-filtered-files hidden" id="langFilteredFiles">
+              <div class="lang-filtered-header" id="langFilteredHeader"></div>
+              <div class="lang-filtered-list" id="langFilteredList"></div>
+            </div>
+          </div>
+
           <!-- ── TAB BAR ── -->
           <div class="content-tabs" id="contentTabs">
             <button
@@ -273,6 +296,7 @@
                   placeholder="&#9906;  Filtra file..."
                   type="text"
                 />
+                <div class="tree-lang-filter" id="treeLangFilter"></div>
               </div>
               <div class="file-tree-container" id="fileTree">
                 <div class="empty-state">

@@ -1,18 +1,688 @@
-// ── EXTENSIONS CONFIG ──
+// ── EXTENSIONS & LANGUAGE CONFIG ──
 let EXTENSIONS_CODICE = new Set();
+let EXT_TO_LANG = {};
+let LANG_CONFIG = {};
+let selectedLangFilter = new Set(); // vuoto = tutti i linguaggi
+
+const LANG_LABEL_OVERRIDES = {
+  c_family: "C/C++",
+  csharp: "C#",
+  fsharp: "F#",
+  objective_c: "Objective-C",
+  web_markup: "HTML",
+  web_style: "CSS/SCSS",
+  web_template: "Template",
+  web_component: "Vue/Svelte",
+  shell_posix: "Shell",
+  shell_windows: "PowerShell/CMD",
+  shell_misc: "Shell",
+  data_json: "JSON",
+  data_yaml: "YAML",
+  data_toml: "TOML",
+  data_xml: "XML",
+  data_tabular: "CSV/TSV",
+  data_config: "Config",
+  config_data: "Config",
+  data_serial: "Dati",
+  altro: "Altro",
+};
+
+/** Chiavi solo whitelist — non usate per rilevare il linguaggio del file */
+const LANG_SKIP_DETECTION = new Set([
+  "thymeleaf",
+  "ansible",
+  "kubernetes",
+  "android",
+  "api_spec",
+  "chef",
+  "julia_notebook",
+  "knitr",
+  "sweave",
+  "pluto",
+  "observable",
+  "wolfram",
+  "hlsl_unity",
+  "puppet_extra",
+  "jinja_extra",
+  "nunjucks",
+  "lock_files",
+  "config_editor",
+  "config_vcs",
+  "config_pkg",
+  "config_web",
+  "config_lint",
+  "package_managers",
+  "ci_cd",
+  "xcode",
+  "unity",
+  "unreal",
+  "binary_readable",
+  "log",
+  "patch",
+  "regex",
+  "cron",
+  "webmanifest",
+  "wasm_text",
+  "latex_extra",
+  "gettext",
+  "po_localization",
+  "powershell_dsc",
+  "puppet",
+  "saltstack",
+  "ansible_vault",
+  "packer",
+  "vagrant",
+  "jupyter",
+  "quarto",
+  "maxima",
+  "maple",
+  "gnuplot",
+  "gawk",
+  "tcss",
+]);
+
+/** Prima categoria che contiene l'estensione vince (evita sovrascritture tipo angular→html) */
+const LANG_DETECTION_ORDER = [
+  "javascript",
+  "typescript",
+  "python",
+  "ruby",
+  "php",
+  "java",
+  "kotlin",
+  "scala",
+  "groovy",
+  "clojure",
+  "c_family",
+  "csharp",
+  "fsharp",
+  "vb",
+  "go",
+  "rust",
+  "swift",
+  "objective_c",
+  "dart",
+  "elixir",
+  "erlang",
+  "haskell",
+  "ocaml",
+  "lua",
+  "perl",
+  "r",
+  "julia",
+  "nim",
+  "crystal",
+  "zig",
+  "d",
+  "fortran",
+  "cobol",
+  "pascal",
+  "ada",
+  "lisp",
+  "prolog",
+  "assembly",
+  "webassembly",
+  "solidity",
+  "vyper",
+  "move",
+  "gleam",
+  "mojo",
+  "v",
+  "odin",
+  "carbon",
+  "chapel",
+  "actionscript",
+  "coldfusion",
+  "hack",
+  "apex",
+  "matlab",
+  "octave",
+  "mathematica",
+  "sas",
+  "stata",
+  "spss",
+  "smalltalk",
+  "tcl",
+  "racket",
+  "scheme",
+  "idris",
+  "agda",
+  "coq",
+  "isabelle",
+  "lean",
+  "purescript",
+  "elm",
+  "reason",
+  "coffeescript",
+  "livescript",
+  "web_markup",
+  "web_style",
+  "web_template",
+  "web_component",
+  "astro",
+  "mjml",
+  "mdx",
+  "graphql",
+  "sql",
+  "nosql",
+  "shell_posix",
+  "shell_windows",
+  "shell_misc",
+  "makefile",
+  "build_tools",
+  "nix",
+  "dhall",
+  "terraform",
+  "docker",
+  "data_json",
+  "data_yaml",
+  "data_toml",
+  "data_xml",
+  "data_tabular",
+  "data_config",
+  "docs",
+  "diagram",
+  "notebook",
+  "webgl_shader",
+  "hlsl",
+  "metal",
+  "wgsl",
+  "proto",
+  "thrift",
+  "avro",
+  "capnp",
+  "flatbuffers",
+  "messagepack",
+  "qml",
+  "gdscript",
+  "bicep",
+  "smarty",
+  "velocity",
+  "freemarker",
+  "awk",
+  "sed",
+];
+
+/** Colori ufficiali GitHub Linguist (github.com/github-linguist/linguist) */
+const GITHUB_LANG_COLORS = {
+  javascript: "#f1e05a",
+  typescript: "#3178c6",
+  web_markup: "#e34c26",
+  web_style: "#663399",
+  web_template: "#e34c26",
+  web_component: "#41b883",
+  python: "#3572A5",
+  java: "#b07219",
+  c_family: "#555555",
+  csharp: "#178600",
+  fsharp: "#b845fc",
+  go: "#00ADD8",
+  rust: "#dea584",
+  ruby: "#701516",
+  php: "#4F5D95",
+  kotlin: "#A97BFF",
+  scala: "#c22d40",
+  swift: "#F05138",
+  dart: "#00B4AB",
+  elixir: "#6e4a7e",
+  erlang: "#B83998",
+  haskell: "#5e5086",
+  ocaml: "#3be133",
+  lua: "#000080",
+  perl: "#0298c3",
+  r: "#198CE7",
+  julia: "#a270ba",
+  nim: "#ffc200",
+  crystal: "#000100",
+  zig: "#ec915c",
+  groovy: "#4298b8",
+  clojure: "#db5855",
+  objective_c: "#438eff",
+  vb: "#945db7",
+  data_json: "#292929",
+  data_yaml: "#cb171e",
+  data_toml: "#9c4221",
+  data_xml: "#0060ac",
+  data_tabular: "#237346",
+  data_config: "#6e7681",
+  graphql: "#e10098",
+  sql: "#e38c00",
+  nosql: "#ed8b00",
+  shell_posix: "#89e051",
+  shell_windows: "#012456",
+  shell_misc: "#89e051",
+  makefile: "#427819",
+  docker: "#384d54",
+  terraform: "#5c4ee5",
+  nix: "#7e7eff",
+  docs: "#083fa1",
+  diagram: "#083fa1",
+  astro: "#ff5a03",
+  mjml: "#ff7846",
+  mdx: "#fcb32c",
+  notebook: "#DA5B0B",
+  solidity: "#AA6746",
+  assembly: "#6E4C13",
+  webassembly: "#04133b",
+  prolog: "#74283c",
+  lisp: "#3fb68b",
+  fortran: "#4d41b1",
+  pascal: "#E3F171",
+  ada: "#02f88c",
+  matlab: "#e16737",
+  vue: "#41b883",
+  svelte: "#ff3e00",
+  altro: "#6e7681",
+};
+
+const GITHUB_FALLBACK_COLORS = [
+  "#6e7681",
+  "#79bcc8",
+  "#0090ff",
+  "#ff6a00",
+  "#5a32a3",
+  "#2f74c0",
+  "#84a830",
+  "#ffa657",
+];
+
+const LANG_ICONS = {
+  javascript: "◈",
+  typescript: "◆",
+  python: "🐍",
+  java: "☕",
+  c_family: "⚙",
+  csharp: "◆",
+  go: "◈",
+  rust: "◈",
+  ruby: "◆",
+  php: "◈",
+  web_markup: "◉",
+  web_style: "◎",
+  data_json: "{}",
+  data_yaml: "—",
+  sql: "▦",
+  shell_posix: "$",
+  shell_windows: "$",
+  docs: "≡",
+  altro: "◦",
+};
+
+function buildExtToLang(config) {
+  const map = {};
+  const seen = new Set(LANG_DETECTION_ORDER);
+  const keys = [
+    ...LANG_DETECTION_ORDER,
+    ...Object.keys(config).filter(
+      (k) => !seen.has(k) && !LANG_SKIP_DETECTION.has(k),
+    ),
+  ];
+  for (const lang of keys) {
+    const exts = config[lang];
+    if (!exts || LANG_SKIP_DETECTION.has(lang)) continue;
+    for (const ext of exts) {
+      const key = ext.toLowerCase();
+      if (!map[key]) map[key] = lang;
+    }
+  }
+  return map;
+}
 
 async function loadExtensions() {
   try {
     const res = await fetch("extensions.json");
     if (!res.ok) throw new Error("fetch failed");
     const config = await res.json();
+    LANG_CONFIG = config;
     EXTENSIONS_CODICE = new Set(Object.values(config).flat());
+    EXT_TO_LANG = buildExtToLang(config);
     console.log(
-      `{ lines } — caricate ${EXTENSIONS_CODICE.size} estensioni da extensions.json ✓`,
+      `{ lines } — caricate ${EXTENSIONS_CODICE.size} estensioni, ${Object.keys(EXT_TO_LANG).length} mappature lingua ✓`,
     );
   } catch (e) {
     console.warn("extensions.json non trovato, uso fallback.", e);
   }
+}
+
+function getFileLang(fileName) {
+  const parts = fileName.split(".");
+  if (parts.length < 2) return "altro";
+  const ext = parts.pop().toLowerCase();
+  return EXT_TO_LANG[ext] || "altro";
+}
+
+function getLangLabel(lang) {
+  if (LANG_LABEL_OVERRIDES[lang]) return LANG_LABEL_OVERRIDES[lang];
+  return lang.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+}
+
+function getLangIcon(lang) {
+  return LANG_ICONS[lang] || getIcon("x." + (LANG_CONFIG[lang]?.[0] || "txt"));
+}
+
+function getLangColor(lang, sortedLangs) {
+  if (GITHUB_LANG_COLORS[lang]) return GITHUB_LANG_COLORS[lang];
+  if (sortedLangs) {
+    const idx = sortedLangs.indexOf(lang);
+    return GITHUB_FALLBACK_COLORS[idx % GITHUB_FALLBACK_COLORS.length];
+  }
+  return GITHUB_LANG_COLORS.altro;
+}
+
+function collectFilteredFilesFlat() {
+  const result = [];
+  function walk(node, parts) {
+    for (const f of node.__files__ || []) {
+      if (!fileMatchesLangFilter(f)) continue;
+      const path = parts.length ? parts.join("/") + "/" + f.name : f.name;
+      result.push({
+        file: f,
+        path,
+        lang: getFileLang(f.name),
+      });
+    }
+    for (const k of Object.keys(node).filter((k) => k !== "__files__"))
+      walk(node[k], [...parts, k]);
+  }
+  for (const root of Object.keys(fileTree)) walk(fileTree[root], [root]);
+  return result.sort(
+    (a, b) => b.file.lines - a.file.lines || a.path.localeCompare(b.path),
+  );
+}
+
+function fileMatchesLangFilter(file) {
+  if (selectedLangFilter.size === 0) return true;
+  return selectedLangFilter.has(getFileLang(file.name));
+}
+
+function collectLanguageStats() {
+  const stats = {};
+  function walk(node) {
+    for (const f of node.__files__ || []) {
+      const lang = getFileLang(f.name);
+      if (!stats[lang])
+        stats[lang] = { files: 0, lines: 0, size: 0, fns: 0 };
+      stats[lang].files++;
+      stats[lang].lines += f.lines;
+      stats[lang].size += f.size;
+      stats[lang].fns += (f.functions || []).length;
+    }
+    for (const k of Object.keys(node).filter((k) => k !== "__files__"))
+      walk(node[k]);
+  }
+  for (const root of Object.keys(fileTree)) walk(fileTree[root]);
+  return stats;
+}
+
+function toggleLangFilter(lang) {
+  if (selectedLangFilter.has(lang)) selectedLangFilter.delete(lang);
+  else selectedLangFilter.add(lang);
+  onLangFilterChange();
+}
+
+function selectOnlyLang(lang) {
+  selectedLangFilter.clear();
+  selectedLangFilter.add(lang);
+  onLangFilterChange();
+}
+
+function clearLangFilter() {
+  selectedLangFilter.clear();
+  onLangFilterChange();
+}
+
+function onLangFilterChange() {
+  renderLangPanel();
+  renderTreeLangFilter();
+  renderLangFilteredFiles();
+  renderTree();
+  updateStats();
+  if (activeTab === "functions") renderFnFull();
+}
+
+function renderTreeLangFilter() {
+  const el = document.getElementById("treeLangFilter");
+  if (!el) return;
+
+  const stats = collectLanguageStats();
+  const langs = Object.keys(stats).sort(
+    (a, b) => stats[b].lines - stats[a].lines,
+  );
+
+  if (!langs.length) {
+    el.innerHTML = "";
+    return;
+  }
+
+  el.innerHTML = "";
+  if (selectedLangFilter.size === 0) {
+    const note = document.createElement("span");
+    note.className = "tree-lang-note";
+    note.textContent = "Tutti i file · clicca un linguaggio per filtrare";
+    el.appendChild(note);
+  }
+  langs.forEach((lang) => {
+    const isOn =
+      selectedLangFilter.size === 0 || selectedLangFilter.has(lang);
+    const pill = document.createElement("button");
+    pill.type = "button";
+    pill.className = `tree-lang-pill${selectedLangFilter.has(lang) ? " active" : ""}${selectedLangFilter.size > 0 && !selectedLangFilter.has(lang) ? " dimmed" : ""}`;
+    pill.style.setProperty("--lang-color", getLangColor(lang, langs));
+    pill.textContent = getLangLabel(lang);
+    pill.title = `${getLangLabel(lang)} — clicca per filtrare`;
+    pill.onclick = () => toggleLangFilter(lang);
+    pill.ondblclick = (e) => {
+      e.preventDefault();
+      selectOnlyLang(lang);
+    };
+    el.appendChild(pill);
+  });
+}
+
+function renderLangPanel() {
+  const panel = document.getElementById("langPanel");
+  const chipsEl = document.getElementById("langChips");
+  const breakdownEl = document.getElementById("langBreakdown");
+  const hintEl = document.getElementById("langFilterHint");
+  if (!panel || !chipsEl || !breakdownEl) return;
+
+  const stats = collectLanguageStats();
+  const langs = Object.keys(stats).sort(
+    (a, b) => stats[b].lines - stats[a].lines,
+  );
+
+  if (!langs.length) {
+    panel.classList.add("hidden");
+    return;
+  }
+  panel.classList.remove("hidden");
+
+  const totalLines = langs.reduce((s, l) => s + stats[l].lines, 0);
+  const totalFiles = langs.reduce((s, l) => s + stats[l].files, 0);
+
+  if (hintEl) {
+    if (selectedLangFilter.size === 0) {
+      hintEl.innerHTML = `<span class="lang-hint-all">✓ Tutti i file visibili — ${langs.length} linguaggi rilevati · clicca per filtrare · doppio clic per uno solo</span>`;
+    } else {
+      const names = [...selectedLangFilter]
+        .map(getLangLabel)
+        .sort()
+        .join(", ");
+      hintEl.innerHTML = `<span class="lang-hint-filtered">Filtrato: <strong>${escHtml(names)}</strong> (${selectedLangFilter.size}/${langs.length})</span>
+        <button class="btn btn-xs lang-hint-clear" onclick="clearLangFilter()">Mostra tutti</button>`;
+    }
+  }
+
+  chipsEl.innerHTML = "";
+  langs.forEach((lang) => {
+    const s = stats[lang];
+    const pct = totalLines ? Math.round((s.lines / totalLines) * 1000) / 10 : 0;
+    const color = getLangColor(lang, langs);
+    const isActive =
+      selectedLangFilter.size === 0 || selectedLangFilter.has(lang);
+    const isSelected = selectedLangFilter.has(lang);
+
+    const chip = document.createElement("button");
+    chip.type = "button";
+    chip.className = `lang-chip${isSelected ? " lang-chip-selected" : ""}${selectedLangFilter.size > 0 && !isActive ? " lang-chip-dimmed" : ""}`;
+    chip.style.setProperty("--lang-color", color);
+    chip.title = `${getLangLabel(lang)} — ${s.files} file, ${fmtN(s.lines)} righe (${pct}%)`;
+    chip.innerHTML = `
+      <div class="lang-chip-top">
+        <span class="lang-chip-dot" style="background:${color}"></span>
+        <span class="lang-chip-name">${escHtml(getLangLabel(lang))}</span>
+      </div>
+      <span class="lang-chip-stats">
+        <span class="lang-chip-lines" style="color:${color}">${fmtN(s.lines)}</span>
+        <span class="lang-chip-meta">righe · ${fmtN(s.files)} file · ${pct}%</span>
+      </span>
+      <span class="lang-chip-bar"><span style="width:${pct}%;background:${color}"></span></span>`;
+
+    chip.onclick = () => toggleLangFilter(lang);
+    chip.ondblclick = (e) => {
+      e.preventDefault();
+      selectOnlyLang(lang);
+    };
+    chipsEl.appendChild(chip);
+  });
+
+  breakdownEl.innerHTML = "";
+  const barWrap = document.createElement("div");
+  barWrap.className = "lang-stacked-bar";
+  barWrap.title = "Distribuzione righe per linguaggio";
+  langs.forEach((lang) => {
+    const pct = totalLines ? (stats[lang].lines / totalLines) * 100 : 0;
+    if (pct < 0.05) return;
+    const seg = document.createElement("div");
+    seg.className = "lang-stacked-seg";
+    seg.style.width = pct + "%";
+    seg.style.background = getLangColor(lang, langs);
+    seg.title = `${getLangLabel(lang)}: ${pct.toFixed(1)}%`;
+    barWrap.appendChild(seg);
+  });
+  breakdownEl.appendChild(barWrap);
+
+  const legend = document.createElement("div");
+  legend.className = "lang-legend";
+  langs.slice(0, 8).forEach((lang) => {
+    const pct = totalLines
+      ? Math.round((stats[lang].lines / totalLines) * 1000) / 10
+      : 0;
+    const item = document.createElement("span");
+    item.className = "lang-legend-item";
+    item.innerHTML = `<span class="lang-legend-dot" style="background:${getLangColor(lang, langs)}"></span>${escHtml(getLangLabel(lang))} <strong>${fmtN(stats[lang].lines)}</strong> righe <em>(${pct}%)</em>`;
+    legend.appendChild(item);
+  });
+  if (langs.length > 8) {
+    const more = document.createElement("span");
+    more.className = "lang-legend-more";
+    more.textContent = `+${langs.length - 8} altri`;
+    legend.appendChild(more);
+  }
+  breakdownEl.appendChild(legend);
+  renderLangStatsTable(stats, langs, totalLines);
+  renderTreeLangFilter();
+  renderLangFilteredFiles();
+}
+
+function renderLangStatsTable(stats, langs, totalLines) {
+  const wrap = document.getElementById("langStatsTable");
+  if (!wrap) return;
+
+  const rows = langs
+    .map((lang) => {
+      const s = stats[lang];
+      const pct = totalLines ? (s.lines / totalLines) * 100 : 0;
+      const color = getLangColor(lang, langs);
+      const isSelected =
+        selectedLangFilter.size === 0 || selectedLangFilter.has(lang);
+      return { lang, s, pct, color, isSelected };
+    })
+    .sort((a, b) => b.s.lines - a.s.lines);
+
+  wrap.innerHTML = `
+    <div class="lang-table-header">
+      <span>Linguaggio</span>
+      <span>File</span>
+      <span>Righe</span>
+      <span>%</span>
+      <span></span>
+    </div>`;
+
+  rows.forEach(({ lang, s, pct, color, isSelected }) => {
+    const row = document.createElement("div");
+    row.className = `lang-table-row${selectedLangFilter.has(lang) ? " lang-row-selected" : ""}${selectedLangFilter.size > 0 && !isSelected ? " lang-row-dimmed" : ""}`;
+    row.style.setProperty("--lang-color", color);
+    row.innerHTML = `
+      <span class="ltr-lang">
+        <span class="lang-legend-dot" style="background:${color}"></span>
+        ${escHtml(getLangLabel(lang))}
+      </span>
+      <span class="ltr-files">${fmtN(s.files)}</span>
+      <span class="ltr-lines" style="color:${color}">${fmtN(s.lines)}</span>
+      <span class="ltr-pct">${pct.toFixed(1)}%</span>
+      <span class="ltr-bar"><span style="width:${Math.max(pct, 1)}%;background:${color}"></span></span>`;
+    row.onclick = () => toggleLangFilter(lang);
+    row.ondblclick = (e) => {
+      e.preventDefault();
+      selectOnlyLang(lang);
+    };
+    wrap.appendChild(row);
+  });
+}
+
+function renderLangFilteredFiles() {
+  const section = document.getElementById("langFilteredFiles");
+  const listEl = document.getElementById("langFilteredList");
+  const headerEl = document.getElementById("langFilteredHeader");
+  if (!section || !listEl) return;
+
+  if (selectedLangFilter.size === 0) {
+    section.classList.add("hidden");
+    listEl.innerHTML = "";
+    return;
+  }
+
+  const files = collectFilteredFilesFlat();
+  const search = (searchFilter?.value || "").toLowerCase().trim();
+  const visible = search
+    ? files.filter(
+        (f) =>
+          f.path.toLowerCase().includes(search) ||
+          f.file.name.toLowerCase().includes(search),
+      )
+    : files;
+
+  section.classList.remove("hidden");
+
+  const totalLines = visible.reduce((s, f) => s + f.file.lines, 0);
+  const langNames = [...selectedLangFilter].map(getLangLabel).sort().join(", ");
+
+  if (headerEl) {
+    headerEl.innerHTML = `
+      <span class="lang-filtered-title">File filtrati: <strong>${escHtml(langNames)}</strong></span>
+      <span class="lang-filtered-count">${fmtN(visible.length)} file · ${fmtN(totalLines)} righe</span>`;
+  }
+
+  if (!visible.length) {
+    listEl.innerHTML = `<div class="lang-filtered-empty">Nessun file corrisponde ai criteri selezionati</div>`;
+    return;
+  }
+
+  listEl.innerHTML = "";
+  visible.forEach(({ file, path, lang }) => {
+    const color = getLangColor(lang);
+    const item = document.createElement("div");
+    item.className = "lang-filtered-item";
+    item.title = "Clicca per aprire il file";
+    item.innerHTML = `
+      <span class="lang-legend-dot" style="background:${color}"></span>
+      <span class="lfi-name">${escHtml(file.name)}</span>
+      <span class="lfi-path">${escHtml(path)}</span>
+      <span class="lfi-lines" style="color:${color}">${fmtN(file.lines)} ln</span>`;
+    item.onclick = () => apriFileModal(file);
+    listEl.appendChild(item);
+  });
 }
 
 // ── STATE ──
@@ -587,13 +1257,15 @@ function countLines(content) {
 }
 
 // ── STATS ──
-function calcNodeStats(node, filter = "") {
+function calcNodeStats(node, filter = "", applyLangFilter = true) {
   let files = 0,
     lines = 0,
     size = 0,
     fns = 0;
   const fl = (node.__files__ || []).filter(
-    (f) => !filter || f.name.toLowerCase().includes(filter),
+    (f) =>
+      (!filter || f.name.toLowerCase().includes(filter)) &&
+      (!applyLangFilter || fileMatchesLangFilter(f)),
   );
   for (const f of fl) {
     files++;
@@ -638,10 +1310,13 @@ function renderTree() {
 function renderNode(node, name, depth, filter, isRoot = false, nodePath = []) {
   const folders = Object.keys(node).filter((k) => k !== "__files__");
   const files = (node.__files__ || []).filter(
-    (f) => !filter || f.name.toLowerCase().includes(filter),
+    (f) =>
+      (!filter || f.name.toLowerCase().includes(filter)) &&
+      fileMatchesLangFilter(f),
   );
   const stats = calcNodeStats(node, filter);
-  if (stats.files === 0 && filter) return null;
+  const hasActiveFilter = filter || selectedLangFilter.size > 0;
+  if (stats.files === 0 && hasActiveFilter) return null;
 
   const wrap = document.createElement("div");
   wrap.className = `tree-folder depth-${Math.min(depth, 3)}`;
@@ -790,6 +1465,13 @@ function renderFile(file) {
   name.textContent = file.name;
   name.title = file.fullPath;
 
+  const langTag = document.createElement("span");
+  langTag.className = "file-lang-tag";
+  const fileLang = getFileLang(file.name);
+  langTag.textContent = getLangLabel(fileLang);
+  langTag.title = `Linguaggio: ${getLangLabel(fileLang)}`;
+  langTag.style.setProperty("--lang-color", getLangColor(fileLang));
+
   const cls =
     file.lines > 1000
       ? "badge-vhigh"
@@ -817,9 +1499,9 @@ function renderFile(file) {
       chiudiFileModal();
       apriFunzioniModal(file);
     };
-    div.append(chk, icon, name, badge, fnBtn);
+    div.append(chk, icon, name, langTag, badge, fnBtn);
   } else {
-    div.append(chk, icon, name, badge);
+    div.append(chk, icon, name, langTag, badge);
   }
 
   const remove = document.createElement("span");
@@ -900,7 +1582,7 @@ function removeFile(fullPath) {
   }
   for (const root of Object.keys(fileTree)) {
     pruneEmpty(fileTree[root]);
-    if (calcNodeStats(fileTree[root]).files === 0) delete fileTree[root];
+    if (calcNodeStats(fileTree[root], "", false).files === 0) delete fileTree[root];
   }
 
   renderSources();
@@ -929,7 +1611,7 @@ function removeFolder(folderPath) {
       }
     }
     pruneEmpty(fileTree[folderPath[0]]);
-    if (calcNodeStats(fileTree[folderPath[0]]).files === 0)
+    if (calcNodeStats(fileTree[folderPath[0]], "", false).files === 0)
       delete fileTree[folderPath[0]];
   }
   renderSources();
@@ -957,6 +1639,7 @@ function rimuoviTutti() {
   if (!Object.keys(fileTree).length) return;
   if (!confirm("Rimuovere tutti i file caricati?")) return;
   fileTree = {};
+  selectedLangFilter.clear();
   renderSources();
   renderTree();
   updateStats();
@@ -1073,7 +1756,10 @@ function showLoading() {
 escludiVuote.addEventListener("change", ricalcola);
 escludiCommenti.addEventListener("change", ricalcola);
 soloCodice.addEventListener("change", ricalcola);
-searchFilter.addEventListener("input", renderTree);
+searchFilter.addEventListener("input", () => {
+  renderTree();
+  renderLangFilteredFiles();
+});
 
 // Close modals on backdrop click
 document.getElementById("urlModal").addEventListener("click", (e) => {
@@ -1180,6 +1866,7 @@ function collectAllFunctions() {
   const all = [];
   function walk(node, pathParts) {
     for (const f of node.__files__ || []) {
+      if (!fileMatchesLangFilter(f)) continue;
       const filePath = pathParts.length
         ? pathParts.join("/") + "/" + f.name
         : f.name;
@@ -1349,6 +2036,8 @@ function renderFnFull() {
     const kindCls = kindColor(r.kind);
     const key = fnInlineKey(r);
     const isSel = fnInlineSelection.has(key);
+    const fnLang = getFileLang(r.fileName);
+    const fnLangLabel = getLangLabel(fnLang);
 
     const row = document.createElement("div");
     row.className = `fn-full-row fn-clickable${isSel ? " fn-row-selected" : ""}`;
@@ -1361,7 +2050,10 @@ function renderFnFull() {
       </div>
       <div class="frc-kind"><span class="fn-kind ${kindCls}">${escHtml(r.kind)}</span></div>
       <div class="frc-name" title="${escHtml(r.fnName)}">${escHtml(r.fnName)}</div>
-      <div class="frc-file" title="${escHtml(r.filePath)}">${escHtml(r.filePath)}</div>
+      <div class="frc-file" title="${escHtml(r.filePath)}">
+        <span class="fn-lang-tag" style="--lang-color:${getLangColor(fnLang)}">${escHtml(fnLangLabel)}</span>
+        ${escHtml(r.filePath)}
+      </div>
       <div class="frc-range">${r.startLine}–${r.endLine} <span style="color:var(--border3)">(${r.linesRaw})</span></div>
       <div class="frc-bar-wrap">
         <div class="fn-full-bar-track"><div class="fn-full-bar" style="width:${barPct}%"></div></div>
@@ -1877,6 +2569,7 @@ function collectAllFiles() {
   const result = [];
   function walk(node, parts) {
     for (const f of node.__files__ || []) {
+      if (!fileMatchesLangFilter(f)) continue;
       result.push({
         path: parts.length ? parts.join("/") + "/" + f.name : f.name,
         content: f.content,
@@ -2030,7 +2723,7 @@ async function scaricaTuttiFile() {
 
 // ── BOOT ──
 loadExtensions().then(() => {
-  console.log("{ lines } v3 ready ✓");
+  console.log("{ lines } v4 ready ✓");
 });
 
 // Restore saved theme
@@ -2045,7 +2738,7 @@ function updateStats() {
     size = 0,
     fns = 0;
   for (const root of Object.keys(fileTree)) {
-    const s = calcNodeStats(fileTree[root]);
+    const s = calcNodeStats(fileTree[root], "", true);
     files += s.files;
     lines += s.lines;
     size += s.size;
@@ -2062,6 +2755,9 @@ function updateStats() {
   const statsRow = document.getElementById("statsRow");
   if (files > 0) statsRow.classList.remove("hidden");
   else statsRow.classList.add("hidden");
+
+  statsRow.classList.toggle("stats-filtered", selectedLangFilter.size > 0);
+  renderLangPanel();
 
   const logoMark = document.getElementById("logoCounter");
   if (logoMark) {
