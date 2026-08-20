@@ -400,8 +400,7 @@ function collectLanguageStats() {
   function walk(node) {
     for (const f of node.__files__ || []) {
       const lang = getFileLang(f.name);
-      if (!stats[lang])
-        stats[lang] = { files: 0, lines: 0, size: 0, fns: 0 };
+      if (!stats[lang]) stats[lang] = { files: 0, lines: 0, size: 0, fns: 0 };
       stats[lang].files++;
       stats[lang].lines += f.lines;
       stats[lang].size += f.size;
@@ -462,8 +461,7 @@ function renderTreeLangFilter() {
     el.appendChild(note);
   }
   langs.forEach((lang) => {
-    const isOn =
-      selectedLangFilter.size === 0 || selectedLangFilter.has(lang);
+    const isOn = selectedLangFilter.size === 0 || selectedLangFilter.has(lang);
     const pill = document.createElement("button");
     pill.type = "button";
     pill.className = `tree-lang-pill${selectedLangFilter.has(lang) ? " active" : ""}${selectedLangFilter.size > 0 && !selectedLangFilter.has(lang) ? " dimmed" : ""}`;
@@ -504,10 +502,7 @@ function renderLangPanel() {
     if (selectedLangFilter.size === 0) {
       hintEl.innerHTML = `<span class="lang-hint-all">✓ Tutti i file visibili — ${langs.length} linguaggi rilevati · clicca per filtrare · doppio clic per uno solo</span>`;
     } else {
-      const names = [...selectedLangFilter]
-        .map(getLangLabel)
-        .sort()
-        .join(", ");
+      const names = [...selectedLangFilter].map(getLangLabel).sort().join(", ");
       hintEl.innerHTML = `<span class="lang-hint-filtered">Filtrato: <strong>${escHtml(names)}</strong> (${selectedLangFilter.size}/${langs.length})</span>
         <button class="btn btn-xs lang-hint-clear" onclick="clearLangFilter()">Mostra tutti</button>`;
     }
@@ -1582,7 +1577,8 @@ function removeFile(fullPath) {
   }
   for (const root of Object.keys(fileTree)) {
     pruneEmpty(fileTree[root]);
-    if (calcNodeStats(fileTree[root], "", false).files === 0) delete fileTree[root];
+    if (calcNodeStats(fileTree[root], "", false).files === 0)
+      delete fileTree[root];
   }
 
   renderSources();

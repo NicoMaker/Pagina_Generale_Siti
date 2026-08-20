@@ -828,8 +828,13 @@ body::after {
 
 .lang-chip-selected {
   border-color: var(--lang-color, var(--a1));
-  background: color-mix(in srgb, var(--lang-color, var(--a1)) 12%, var(--surf2));
-  box-shadow: 0 0 0 1px color-mix(in srgb, var(--lang-color, var(--a1)) 25%, transparent);
+  background: color-mix(
+    in srgb,
+    var(--lang-color, var(--a1)) 12%,
+    var(--surf2)
+  );
+  box-shadow: 0 0 0 1px
+    color-mix(in srgb, var(--lang-color, var(--a1)) 25%, transparent);
 }
 
 .lang-chip-dimmed {
@@ -1003,7 +1008,11 @@ body::after {
 }
 
 .lang-table-row.lang-row-selected {
-  background: color-mix(in srgb, var(--lang-color, var(--a1)) 10%, var(--surf2));
+  background: color-mix(
+    in srgb,
+    var(--lang-color, var(--a1)) 10%,
+    var(--surf2)
+  );
 }
 
 .lang-table-row.lang-row-dimmed {
@@ -1187,7 +1196,11 @@ body::after {
 
 .tree-lang-pill.active {
   border-color: var(--lang-color, var(--a1));
-  background: color-mix(in srgb, var(--lang-color, var(--a1)) 15%, var(--surf2));
+  background: color-mix(
+    in srgb,
+    var(--lang-color, var(--a1)) 15%,
+    var(--surf2)
+  );
   color: var(--text);
 }
 
@@ -1208,9 +1221,14 @@ body::after {
   letter-spacing: 0.4px;
   padding: 2px 6px;
   border-radius: 4px;
-  background: color-mix(in srgb, var(--lang-color, var(--a1)) 18%, var(--surf3));
+  background: color-mix(
+    in srgb,
+    var(--lang-color, var(--a1)) 18%,
+    var(--surf3)
+  );
   color: var(--lang-color, var(--a1));
-  border: 1px solid color-mix(in srgb, var(--lang-color, var(--a1)) 30%, transparent);
+  border: 1px solid
+    color-mix(in srgb, var(--lang-color, var(--a1)) 30%, transparent);
   flex-shrink: 0;
   max-width: 72px;
   overflow: hidden;
@@ -1228,7 +1246,11 @@ body::after {
   padding: 1px 5px;
   border-radius: 3px;
   margin-right: 6px;
-  background: color-mix(in srgb, var(--lang-color, var(--a1)) 18%, var(--surf3));
+  background: color-mix(
+    in srgb,
+    var(--lang-color, var(--a1)) 18%,
+    var(--surf3)
+  );
   color: var(--lang-color, var(--a1));
   vertical-align: middle;
 }
