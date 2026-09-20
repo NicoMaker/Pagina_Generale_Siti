@@ -1,381 +1,539 @@
+/* ---------------------------------------------------------------
+   Orologio mondiale
+   Idea: il pannello a sinistra prende i colori del cielo del fuso
+   scelto (notte, alba, giorno, tramonto). Il resto resta neutro.
+   --------------------------------------------------------------- */
+
 :root {
-  --primary: #6366f1;
-  --primary-light: #818cf8;
-  --primary-dark: #4f46e5;
-  --secondary: #ec4899;
-  --secondary-light: #f472b6;
-  --secondary-dark: #db2777;
-  --accent: #10b981;
-  --accent-light: #34d399;
-  --accent-dark: #059669;
-  --background: #f8fafc;
-  --card-bg: #ffffff;
-  --text: #1e293b;
-  --text-light: #64748b;
-  --border: #e2e8f0;
-  --shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-  --transition: all 0.3s ease;
-  --radius: 16px;
-  --font-heading: "Montserrat", sans-serif;
-  --font-body: "Poppins", sans-serif;
+  --ink: #0f1b33;
+  --ink-soft: #4f5f7a;
+  --paper: #f3f5f8;
+  --line: #dae0ea;
+  --hover: #e9edf4;
+  --selected: #dce5f6;
+
+  /* Colori delle fasce del giorno (usati in timeline e pallini) */
+  --night: #262d80;
+  --dawn: #f6c9a8;
+  --day: #ffe7a3;
+  --dusk: #e27c8e;
+
+  --font: "Bricolage Grotesque", system-ui, -apple-system, "Segoe UI",
+    sans-serif;
+  --hw: 44px; /* larghezza di un'ora nella timeline */
+  --pad: clamp(20px, 4vw, 48px);
 }
 
-* {
-  margin: 0;
-  padding: 0;
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
 body {
-  font-family: var(--font-body);
-  background-color: var(--background);
-  color: var(--text);
-  line-height: 1.6;
-  min-height: 100vh;
-  overflow-x: hidden;
+  margin: 0;
+  font-family: var(--font);
+  color: var(--ink);
+  background: var(--paper);
+  line-height: 1.4;
+  -webkit-font-smoothing: antialiased;
 }
 
-.app-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem;
-  position: relative;
-  z-index: 1;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+h1,
+h2,
+p,
+ul {
+  margin: 0;
+  padding: 0;
 }
 
-/* Background Shapes */
-.background-shapes {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
-  overflow: hidden;
+button,
+input {
+  font: inherit;
+  color: inherit;
 }
 
-.shape {
+[hidden] {
+  display: none !important;
+}
+
+.sr-only {
   position: absolute;
-  border-radius: 50%;
-  filter: blur(60px);
-  opacity: 0.15;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
 }
 
-.shape-1 {
-  top: -100px;
-  right: -100px;
-  width: 500px;
-  height: 500px;
-  background: var(--primary-light);
+/* ---------------------------------------------------------------
+   Struttura
+   --------------------------------------------------------------- */
+.layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  min-height: 100vh;
 }
 
-.shape-2 {
-  bottom: -150px;
-  left: -150px;
-  width: 600px;
-  height: 600px;
-  background: var(--secondary-light);
+/* ---------------------------------------------------------------
+   Pannello del cielo
+   --------------------------------------------------------------- */
+.sky {
+  --bg: #bfddf2;
+  --fg: #0f1b33;
+  --fg-soft: #3a5273;
+  --edge: rgba(15, 27, 51, 0.28);
+
+  container-type: inline-size;
+  background-color: var(--bg);
+  color: var(--fg);
+  transition: background-color 0.8s ease, color 0.8s ease;
 }
 
-.shape-3 {
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 400px;
-  height: 400px;
-  background: var(--accent-light);
-  opacity: 0.05;
+.sky[data-phase="night"] {
+  --bg: #141a4a;
+  --fg: #eef0ff;
+  --fg-soft: #b5bbea;
+  --edge: rgba(238, 240, 255, 0.4);
 }
 
-/* Header Styles */
-header {
-  text-align: center;
-  margin-bottom: 2rem;
+.sky[data-phase="dawn"] {
+  --bg: #f4c2a6;
+  --fg: #2b1530;
+  --fg-soft: #5e3a48;
+  --edge: rgba(43, 21, 48, 0.3);
 }
 
-.app-title {
-  font-family: var(--font-heading);
-  color: var(--primary-dark);
-  font-size: 3rem;
-  margin-bottom: 0.5rem;
-  text-shadow: 3px 3px 0px rgba(0, 0, 0, 0.1);
-  letter-spacing: 2px;
+.sky[data-phase="day"] {
+  --bg: #bfddf2;
+  --fg: #0f1b33;
+  --fg-soft: #3a5273;
+  --edge: rgba(15, 27, 51, 0.28);
 }
 
-.app-subtitle {
-  color: var(--text-light);
-  font-size: 1.1rem;
-  font-weight: 300;
+.sky[data-phase="dusk"] {
+  --bg: #ec9a78;
+  --fg: #2a1233;
+  --fg-soft: #5b2e3e;
+  --edge: rgba(42, 18, 51, 0.32);
 }
 
-/* Main Content */
-main {
-  flex: 1;
+.sky-inner {
   display: flex;
   flex-direction: column;
-  gap: 3rem;
+  justify-content: space-between;
+  gap: clamp(20px, 3.5vh, 36px);
+  min-height: 100%;
+  padding: var(--pad);
+}
+
+.brand {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+/* Ora e città */
+.place {
+  display: flex;
+  flex-wrap: wrap;
   align-items: center;
+  gap: 0.5rem 1rem;
 }
 
-/* Clock Card */
-.clock-card {
-  width: 100%;
-  max-width: 600px;
-  background-color: var(--card-bg);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  padding: 2rem;
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-  transition: var(--transition);
-}
-
-.clock-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-}
-
-.time-display {
-  text-align: center;
-  padding: 1.5rem;
-  background-color: rgba(99, 102, 241, 0.05);
-  border-radius: var(--radius);
-  border: 1px solid rgba(99, 102, 241, 0.1);
-}
-
-.time {
-  font-family: var(--font-heading);
-  font-size: 3.5rem;
+.city {
+  font-size: 2.4rem;
+  font-size: clamp(1.9rem, 6cqi, 3rem);
   font-weight: 700;
-  color: var(--primary-dark);
-  margin-bottom: 0.5rem;
-  letter-spacing: 2px;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.utc {
+  border: 2px solid currentColor;
+  border-radius: 999px;
+  padding: 0.1em 0.75em;
+  font-size: 1.05rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.clock {
+  display: flex;
+  margin: 0.15em 0 0.1em;
+  font-size: 4.2rem;
+  font-size: min(18cqi, 8.5rem, 18vh);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  white-space: nowrap;
+}
+
+/* Ogni cifra ha larghezza fissa: l'orologio non "balla" */
+.dig {
+  display: inline-block;
+  width: 0.6em;
+  text-align: center;
+}
+
+.dig.sec {
+  opacity: 0.6;
+}
+
+.sep {
+  display: inline-block;
+  width: 0.3em;
+  text-align: center;
+  opacity: 0.5;
 }
 
 .date {
   font-size: 1.2rem;
-  color: var(--text);
-  margin-bottom: 0.5rem;
-}
-
-.timezone-info {
-  font-size: 1rem;
-  color: var(--text-light);
   font-weight: 500;
 }
 
-.timezone-selector {
+/* Differenza rispetto a te */
+.delta {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 1.25rem;
+  padding-top: 1.25rem;
+  border-top: 1.5px solid var(--edge);
+}
+
+.delta-value {
+  display: flex;
+  align-items: baseline;
+  gap: 0.45rem;
+  font-size: 2.4rem;
+  font-size: clamp(2.4rem, 9cqi, 4.2rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.delta-unit {
+  font-size: 0.36em;
+  font-weight: 500;
+  letter-spacing: 0;
+}
+
+.delta-text p:first-child {
+  font-weight: 600;
+}
+
+.delta-text p + p {
+  color: var(--fg-soft);
+}
+
+/* ---------------------------------------------------------------
+   Timeline: due giorni messi a confronto, allineati su "adesso"
+   --------------------------------------------------------------- */
+.timeline {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 14px;
+}
+
+.tl-row {
+  min-width: 0;
+}
+
+.tl-label {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 20px;
+  margin-bottom: 6px;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.tl-adesso {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.8rem;
+}
+
+.tl-time {
+  font-variant-numeric: tabular-nums;
+}
+
+.tl-window {
+  height: 56px;
+  overflow: hidden;
+  border-radius: 12px;
+  box-shadow: 0 0 0 1.5px var(--edge);
+}
+
+.tl-track {
+  display: flex;
+  width: max-content;
+  height: 100%;
+  will-change: transform;
+}
+
+.cell {
+  flex: 0 0 var(--hw);
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  align-items: flex-start;
+  justify-content: center;
+  padding-left: 7px;
+  border-left: 1px solid rgba(0, 0, 0, 0.08);
+  font-size: 0.85rem;
+  font-weight: 600;
+  line-height: 1.15;
 }
 
-.timezone-selector label {
+.cell.night {
+  background: var(--night);
+  color: #e3e6ff;
+}
+
+.cell.dawn {
+  background: var(--dawn);
+  color: #3a1f2d;
+}
+
+.cell.day {
+  background: var(--day);
+  color: #3b3210;
+}
+
+.cell.dusk {
+  background: var(--dusk);
+  color: #2e0f1c;
+}
+
+/* Mezzanotte: linea più marcata e giorno della settimana */
+.cell.mid {
+  border-left: 2px solid rgba(255, 255, 255, 0.55);
+}
+
+.cell-d {
+  font-size: 0.68rem;
   font-weight: 500;
-  color: var(--text);
+  opacity: 0.85;
 }
 
-.select-wrapper {
-  position: relative;
-}
-
-.select-wrapper select {
-  width: 100%;
-  padding: 1rem;
-  font-size: 1rem;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  background-color: var(--card-bg);
-  appearance: none;
-  cursor: pointer;
-  transition: var(--transition);
-}
-
-.select-wrapper select:focus {
-  outline: none;
-  border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
-}
-
-.select-arrow {
+.tl-now {
   position: absolute;
-  right: 1rem;
-  top: 50%;
-  transform: translateY(-50%);
+  top: 26px;
+  bottom: 0;
+  left: 50%;
+  width: 3px;
+  margin-left: -1.5px;
+  background: #fff;
+  border-radius: 2px;
+  box-shadow: 0 0 0 1.5px #0f1b33;
   pointer-events: none;
 }
 
-.select-arrow svg {
+/* ---------------------------------------------------------------
+   Elenco fusi orari
+   --------------------------------------------------------------- */
+.picker {
+  padding: 0 var(--pad) var(--pad);
+  background: var(--paper);
+}
+
+.picker-head {
+  z-index: 2;
+  padding: var(--pad) 0 16px;
+  background: var(--paper);
+}
+
+.picker-head h2 {
+  margin-bottom: 14px;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 48px;
+  padding: 0 14px;
+  background: #fff;
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+}
+
+.search:focus-within {
+  border-color: var(--ink);
+  box-shadow: 0 0 0 3px rgba(15, 27, 51, 0.15);
+}
+
+.search svg {
+  flex: none;
   width: 20px;
   height: 20px;
-  stroke: var(--text-light);
+  fill: none;
+  stroke: var(--ink-soft);
+  stroke-width: 2;
+  stroke-linecap: round;
 }
 
-.quick-timezones {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+.search input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  background: transparent;
+  border: 0;
+  outline: 0;
 }
 
-.quick-timezones h3 {
-  font-family: var(--font-heading);
-  font-size: 1.1rem;
-  color: var(--text);
+.search input::placeholder {
+  color: var(--ink-soft);
 }
 
-.timezone-buttons {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
+.zone-list {
+  list-style: none;
 }
 
-.timezone-button {
-  padding: 0.5rem 1rem;
-  background-color: var(--card-bg);
-  color: var(--text);
-  border: 1px solid var(--border);
-  border-radius: 50px;
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: var(--transition);
+.zone-list li {
+  border-bottom: 1px solid var(--line);
 }
 
-.timezone-button:hover {
-  background-color: rgba(99, 102, 241, 0.1);
-  border-color: var(--primary);
-}
-
-.timezone-button.active {
-  background-color: var(--primary);
-  color: white;
-  border-color: var(--primary);
-}
-
-/* Features Section */
-.features-section {
-  width: 100%;
-  max-width: 900px;
+.zone {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 2rem;
-  margin-top: 1rem;
-}
-
-.feature-card {
-  background-color: var(--card-bg);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  padding: 1.5rem;
-  display: flex;
-  flex-direction: column;
+  grid-template-columns: 14px 1fr auto;
   align-items: center;
-  text-align: center;
-  gap: 1rem;
-  transition: var(--transition);
+  gap: 14px;
+  width: 100%;
+  padding: 14px 12px;
+  text-align: left;
+  background: none;
+  border: 0;
+  cursor: pointer;
 }
 
-.feature-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+.zone:hover {
+  background: var(--hover);
 }
 
-.feature-icon {
-  width: 60px;
-  height: 60px;
-  background-color: rgba(99, 102, 241, 0.1);
+.zone:focus-visible {
+  outline: 3px solid var(--ink);
+  outline-offset: -3px;
+}
+
+.zone[aria-pressed="true"] {
+  background: var(--selected);
+  box-shadow: inset 4px 0 0 var(--ink);
+}
+
+.zone-phase {
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  box-shadow: 0 0 0 1.5px rgba(15, 27, 51, 0.25);
 }
 
-.feature-icon svg {
-  width: 30px;
-  height: 30px;
-  stroke: var(--primary);
+.zone-phase[data-phase="night"] {
+  background: var(--night);
+}
+.zone-phase[data-phase="dawn"] {
+  background: var(--dawn);
+}
+.zone-phase[data-phase="day"] {
+  background: var(--day);
+}
+.zone-phase[data-phase="dusk"] {
+  background: var(--dusk);
 }
 
-.feature-card h3 {
-  font-family: var(--font-heading);
-  font-size: 1.2rem;
-  color: var(--text);
+.zone-city {
+  display: block;
+  font-size: 1.05rem;
+  font-weight: 600;
 }
 
-.feature-card p {
-  color: var(--text-light);
-  font-size: 0.95rem;
-}
-
-/* Footer */
-footer {
-  margin-top: auto;
-  text-align: center;
-  color: var(--text-light);
+.zone-utc {
+  display: block;
   font-size: 0.9rem;
-  padding: 1rem 0;
+  color: var(--ink-soft);
 }
 
-.heart {
-  color: var(--secondary);
-  display: inline-block;
-  animation: heartbeat 1.5s infinite;
+.zone-me {
+  margin-left: 8px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 600;
+  vertical-align: middle;
 }
 
-@keyframes heartbeat {
-  0%,
-  100% {
-    transform: scale(1);
+.zone-side {
+  text-align: right;
+}
+
+.zone-time {
+  display: block;
+  font-size: 1.15rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.zone-delta {
+  display: block;
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+  font-variant-numeric: tabular-nums;
+}
+
+.empty {
+  padding: 24px 12px;
+  color: var(--ink-soft);
+}
+
+/* ---------------------------------------------------------------
+   Schermi grandi: pannello fisso a sinistra, elenco a destra
+   --------------------------------------------------------------- */
+@media (min-width: 1000px) {
+  .layout {
+    grid-template-columns: minmax(0, 1.2fr) minmax(380px, 1fr);
   }
-  50% {
-    transform: scale(1.2);
+
+  .sky {
+    position: sticky;
+    top: 0;
+    align-self: start;
+    height: 100vh;
+    height: 100dvh;
+  }
+
+  .sky-inner {
+    height: 100%;
+    overflow-y: auto;
+  }
+
+  .picker-head {
+    position: sticky;
+    top: 0;
   }
 }
 
-/* Responsive Styles */
-@media (max-width: 768px) {
-  .app-container {
-    padding: 1.5rem;
+@media (max-width: 600px) {
+  :root {
+    --hw: 36px;
   }
 
-  .app-title {
-    font-size: 2.5rem;
-  }
-
-  .time {
-    font-size: 2.5rem;
-  }
-
-  .date {
-    font-size: 1rem;
-  }
-
-  .features-section {
-    grid-template-columns: 1fr;
+  .delta {
+    gap: 1rem;
   }
 }
 
-@media (max-width: 480px) {
-  .app-container {
-    padding: 1rem;
-  }
-
-  .app-title {
-    font-size: 2rem;
-  }
-
-  .time {
-    font-size: 2rem;
-  }
-
-  .clock-card {
-    padding: 1.5rem;
-  }
-
-  .timezone-buttons {
-    justify-content: center;
+@media (prefers-reduced-motion: reduce) {
+  .sky {
+    transition: none;
   }
 }
