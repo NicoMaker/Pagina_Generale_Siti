@@ -18,8 +18,8 @@
   --day: #ffe7a3;
   --dusk: #e27c8e;
 
-  --font: "Bricolage Grotesque", system-ui, -apple-system, "Segoe UI",
-    sans-serif;
+  --font:
+    "Bricolage Grotesque", system-ui, -apple-system, "Segoe UI", sans-serif;
   --hw: 44px; /* larghezza di un'ora nella timeline */
   --pad: clamp(20px, 4vw, 48px);
 }
@@ -87,7 +87,9 @@ input {
   container-type: inline-size;
   background-color: var(--bg);
   color: var(--fg);
-  transition: background-color 0.8s ease, color 0.8s ease;
+  transition:
+    background-color 0.8s ease,
+    color 0.8s ease;
 }
 
 .sky[data-phase="night"] {

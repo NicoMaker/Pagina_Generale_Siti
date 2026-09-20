@@ -295,7 +295,9 @@ function selectZone(tz, { scroll = true } = {}) {
 
   // Su schermi stretti l'elenco è sotto il pannello: torno su a vedere il risultato
   if (scroll && window.matchMedia("(max-width: 999px)").matches) {
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const reduce = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
     window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
   }
 }
