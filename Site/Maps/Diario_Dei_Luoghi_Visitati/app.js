@@ -7,8 +7,7 @@ let places = load(),
   pending = null;
 const markers = new Map();
 let gpsMarker = null,
-  gpsWatchId = null,
-  routingControl = null;
+  gpsWatchId = null;
 const $ = (id) => document.getElementById(id);
 
 const map = L.map("map").setView([42.5, 12.5], 5);
@@ -50,6 +49,22 @@ const colorOf = (s) => {
   for (const c of s) h = (h * 31 + c.charCodeAt(0)) % 360;
   return `hsl(${h} 65% 55%)`;
 };
+
+/* ---------- data all'italiana ---------- */
+// da "2024-05-17" a "17/05/2024"
+function itDate(iso) {
+  if (!iso || !/^\d{4}-\d{2}-\d{2}$/.test(iso)) return iso || "";
+  const [y, m, d] = iso.split("-");
+  return `${d}/${m}/${y}`;
+}
+// da "17/05/2024" a "2024-05-17"
+function isoDate(it) {
+  if (!it) return "";
+  const m = it.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+  if (!m) return it;
+  const [, d, mo, y] = m;
+  return `${y}-${String(mo).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
+}
 
 /* ---------- controllo duplicati ---------- */
 const norm = (s) =>
@@ -100,7 +115,6 @@ function syncMarkers() {
       .bindTooltip(p.name);
     m.on("click", () => {
       select(p.id, false);
-      // Cliccando il marker vediamo bene dove siamo
       map.flyTo([p.lat, p.lng], Math.max(map.getZoom(), 15), {
         duration: 0.8,
       });
@@ -133,13 +147,12 @@ function render() {
       <div class="avatar" style="background:${colorOf(p.name)}">${esc(p.name[0].toUpperCase())}</div>
       <div>
         <h3>${esc(p.name)}</h3>
-        <div class="meta">${p.date ? esc(p.date) + " · " : ""}${p.rating ? `<span class="stars">${"★".repeat(p.rating)}</span> · ` : ""}${p.lat.toFixed(3)}, ${p.lng.toFixed(3)}</div>
+        <div class="meta">${p.date ? esc(itDate(p.date)) + " · " : ""}${p.rating ? `<span class="stars">${"★".repeat(p.rating)}</span> · ` : ""}${p.lat.toFixed(3)}, ${p.lng.toFixed(3)}</div>
         ${p.note ? `<p class="note">${esc(p.note)}</p>` : ""}
         <div class="btns">
           <button data-act="edit">Modifica</button>
           <button data-act="del" class="danger">Elimina</button>
           <button data-act="goto">Vai qui</button>
-          <button data-act="route">Naviga</button>
         </div>
       </div>
     </li>`,
@@ -181,12 +194,6 @@ $("list").addEventListener("click", (e) => {
     toast(`Vai a «${p.name}»`);
     return;
   }
-  if (act === "route") {
-    const p = places.find((x) => x.id === id);
-    if (!p) return;
-    startRouteTo(p);
-    return;
-  }
   select(id);
 });
 $("filter").addEventListener("input", render);
@@ -219,7 +226,9 @@ function openDialog(p, draft) {
   pending = p ? { lat: p.lat, lng: p.lng } : draft;
   $("dlgTitle").textContent = p ? "Modifica luogo" : "Nuovo luogo";
   $("fName").value = p ? p.name : draft.name || "";
-  $("fDate").value = p ? p.date : new Date().toISOString().slice(0, 10);
+  // Mostra la data in formato italiano nell'input di tipo date
+  const d = p ? p.date : new Date().toISOString().slice(0, 10);
+  $("fDate").value = d || "";
   $("fRate").value = p ? p.rating : 0;
   $("fNote").value = p ? p.note : "";
   $("fCoord").textContent =
@@ -233,7 +242,7 @@ $("form").addEventListener("submit", (e) => {
   e.preventDefault();
   const data = {
     name: $("fName").value.trim(),
-    date: $("fDate").value,
+    date: $("fDate").value, // resta in ISO per l'ordinamento
     rating: +$("fRate").value,
     note: $("fNote").value.trim(),
     lat: pending.lat,
@@ -357,7 +366,6 @@ function gpsError(err) {
 }
 $("btnGps").onclick = () => {
   if (!navigator.geolocation) return toast("GPS non supportato dal browser");
-  // Se già attivo, disattiva
   if (gpsWatchId !== null) {
     navigator.geolocation.clearWatch(gpsWatchId);
     gpsWatchId = null;
@@ -394,54 +402,6 @@ $("btnGps").onclick = () => {
   );
 };
 
-/* ---------- navigatore: da dove a dove ---------- */
-function startRouteTo(dest) {
-  if (!navigator.geolocation)
-    return toast("GPS non supportato, impossibile navigare");
-  toast("Calcolo percorso…");
-  navigator.geolocation.getCurrentPosition(
-    (pos) => {
-      const from = L.latLng(pos.coords.latitude, pos.coords.longitude);
-      const to = L.latLng(dest.lat, dest.lng);
-      if (routingControl) map.removeControl(routingControl);
-      routingControl = L.Routing.control({
-        waypoints: [from, to],
-        routeWhileDragging: false,
-        addWaypoints: false,
-        show: true,
-        lineOptions: {
-          styles: [{ color: "#5b5bf0", weight: 5, opacity: 0.8 }],
-        },
-        createMarker: function (i, wp) {
-          return L.marker(wp.latLng, {
-            icon: icon(i === 0 ? false : true),
-            draggable: false,
-          }).bindTooltip(i === 0 ? "Partenza" : dest.name);
-        },
-        router: L.Routing.osrmv1({
-          serviceUrl: "https://router.project-osrm.org/route/v1",
-        }),
-      }).addTo(map);
-      routingControl.on("routesfound", (e) => {
-        const r = e.routes[0];
-        const km = (r.summary.totalDistance / 1000).toFixed(1);
-        const min = Math.round(r.summary.totalTime / 60);
-        toast(`Percorso: ${km} km · ${min} min`);
-        map.fitBounds(r.bounds, { padding: [40, 40] });
-      });
-      // Se non c'è GPS, segnala
-      if (gpsWatchId === null) {
-        toast("Suggerimento: attiva 📍 GPS per vederti sulla mappa");
-      }
-    },
-    (err) => {
-      gpsError(err);
-      toast("Attiva il GPS per navigare");
-    },
-    { enableHighAccuracy: true, timeout: 15000 },
-  );
-}
-
 /* ---------- esporta / importa ---------- */
 function download(name, text, type) {
   const a = document.createElement("a");
@@ -450,7 +410,10 @@ function download(name, text, type) {
   a.click();
   URL.revokeObjectURL(a.href);
 }
-const stamp = () => new Date().toISOString().slice(0, 10);
+const stamp = () => {
+  const d = new Date();
+  return `${String(d.getDate()).padStart(2, "0")}-${String(d.getMonth() + 1).padStart(2, "0")}-${d.getFullYear()}`;
+};
 $("btnJson").onclick = () =>
   places.length
     ? download(
@@ -466,7 +429,7 @@ $("btnTxt").onclick = () =>
         places
           .map(
             (p, i) =>
-              `${i + 1}. ${p.name}\n   Data: ${p.date || "-"}\n   Valutazione: ${p.rating || "-"}\n   Coordinate: ${p.lat}, ${p.lng}\n   Note: ${p.note || "-"}`,
+              `${i + 1}. ${p.name}\n   Data: ${itDate(p.date) || "-"}\n   Valutazione: ${p.rating || "-"}\n   Coordinate: ${p.lat}, ${p.lng}\n   Note: ${p.note || "-"}`,
           )
           .join("\n\n"),
         "text/plain",
@@ -496,11 +459,14 @@ $("file").addEventListener("change", async (e) => {
         skipped++;
         return;
       }
+      // Accetta sia ISO sia formato italiano
+      let date = p.date || "";
+      if (/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(date)) date = isoDate(date);
       places.push({
         id: uid(),
         created: p.created || Date.now(),
         name: String(p.name),
-        date: p.date || "",
+        date,
         rating: +p.rating || 0,
         note: p.note || "",
         lat: +p.lat,
@@ -533,10 +499,6 @@ $("btnClear").onclick = () => {
     activeId = null;
     save();
     render();
-    if (routingControl) {
-      map.removeControl(routingControl);
-      routingControl = null;
-    }
   }
 };
 
