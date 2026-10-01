@@ -547,6 +547,10 @@
         {
           "name": "Distanza Città",
           "link": "Site/Maps/Distanza_Citta/index.html"
+        },
+        {
+          "name": "Diario dei Luoghi Visitati",
+          "link": "Site/Maps/Diario_Dei_Luoghi_Visitati/index.html"
         }
       ]
     },
@@ -608,10 +612,6 @@
         {
           "name": "Calcolatore di spese",
           "link": "Site/Utilities/Calcolatore_Spese/index.html"
-        },
-        {
-          "name": "Diario dei Luoghi Visitati",
-          "link": "Site/Utilities/Diario_Dei_Luoghi_Visitati/index.html"
         },
         {
           "name": "Convertitore Colori",
