@@ -4,7 +4,8 @@ const KEY = "diario-luoghi-v1",
 let places = load(),
   activeId = null,
   editingId = null,
-  pending = null;
+  pending = null,
+  pendingCat = "generico";
 const markers = new Map();
 let gpsMarker = null,
   gpsWatchId = null;
@@ -15,6 +16,25 @@ L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
   maxZoom: 19,
   attribution: "&copy; OpenStreetMap",
 }).addTo(map);
+
+/* ---------- categorie con icone ---------- */
+const CATS = {
+  generico: { ico: "📍", label: "Generico" },
+  casa: { ico: "🏠", label: "Casa" },
+  lavoro: { ico: "💼", label: "Lavoro" },
+  ristorante: { ico: "🍽️", label: "Ristorante" },
+  bar: { ico: "☕", label: "Bar" },
+  hotel: { ico: "🏨", label: "Hotel" },
+  spiaggia: { ico: "🏖️", label: "Spiaggia" },
+  montagna: { ico: "⛰️", label: "Montagna" },
+  monumento: { ico: "🏛️", label: "Monumento" },
+  shopping: { ico: "🛍️", label: "Shopping" },
+  sport: { ico: "⚽", label: "Sport" },
+  altro: { ico: "⭐", label: "Altro" },
+};
+const catOf = (c) => CATS[c] || CATS.generico;
+const catIco = (c) => catOf(c).ico;
+const catLabel = (c) => catOf(c).label;
 
 /* ---------- utilità ---------- */
 function load() {
@@ -65,10 +85,8 @@ function isoDate(it) {
 }
 
 /* ---------- nome del paese/comune ---------- */
-// Estrae sempre il nome del paese/comune dall'indirizzo di Nominatim
 function paeseFromAddress(addr) {
   if (!addr) return "";
-  // Ordine di preferenza: comune > città > villaggio > paese > municipio
   const keys = [
     "city",
     "town",
@@ -85,12 +103,9 @@ function paeseFromAddress(addr) {
   }
   return "";
 }
-// Estrae il nome del paese da una stringa display_name
 function paeseFromDisplay(dn) {
   if (!dn) return "";
   const parts = dn.split(",").map((s) => s.trim());
-  // Nominatim di solito: via, quartiere, comune, provincia, regione, stato
-  // Il comune è di solito il 3° o 4° elemento
   if (parts.length >= 3) return parts[2];
   if (parts.length >= 2) return parts[1];
   return parts[0] || "";
@@ -128,21 +143,26 @@ function alreadyThere(p) {
   select(p.id);
 }
 
-/* ---------- mappa: segnaposti ---------- */
-const icon = (sel) =>
-  L.divIcon({
+/* ---------- mappa: segnaposti con icona categoria ---------- */
+function iconFor(cat, sel) {
+  const ico = catIco(cat);
+  const cls = `pin cat-${cat}${sel ? " sel" : ""}`;
+  return L.divIcon({
     className: "",
-    html: `<div class="pin${sel ? " sel" : ""}"></div>`,
-    iconSize: [28, 28],
-    iconAnchor: [14, 28],
+    html: `<div class="${cls}"><span class="pin-ico">${ico}</span></div>`,
+    iconSize: [32, 32],
+    iconAnchor: [16, 32],
   });
+}
 function syncMarkers() {
   markers.forEach((m) => map.removeLayer(m));
   markers.clear();
   places.forEach((p) => {
-    const m = L.marker([p.lat, p.lng], { icon: icon(p.id === activeId) })
+    const m = L.marker([p.lat, p.lng], {
+      icon: iconFor(p.cat || "generico", p.id === activeId),
+    })
       .addTo(map)
-      .bindTooltip(p.name);
+      .bindTooltip(`${catIco(p.cat || "generico")} ${p.name}`);
     m.on("click", () => {
       select(p.id, false);
       map.flyTo([p.lat, p.lng], Math.max(map.getZoom(), 15), {
@@ -158,7 +178,9 @@ function render() {
   const q = $("filter").value.trim().toLowerCase(),
     sort = $("sort").value;
   const arr = places.filter((p) =>
-    (p.name + " " + p.note).toLowerCase().includes(q),
+    (p.name + " " + p.note + " " + catLabel(p.cat || "generico"))
+      .toLowerCase()
+      .includes(q),
   );
   if (sort === "name") arr.sort((a, b) => a.name.localeCompare(b.name));
   else if (sort === "date")
@@ -171,13 +193,14 @@ function render() {
     (places.length === 1 ? " luogo visitato" : " luoghi visitati");
   $("list").innerHTML = arr.length
     ? arr
-        .map(
-          (p) => `
+        .map((p) => {
+          const cat = p.cat || "generico";
+          return `
     <li class="item${p.id === activeId ? " active" : ""}" data-id="${p.id}">
-      <div class="avatar" style="background:${colorOf(p.name)}">${esc(p.name[0].toUpperCase())}</div>
+      <div class="avatar" style="background:${colorOf(p.name)}">${catIco(cat)}</div>
       <div>
-        <h3>${esc(p.name)}</h3>
-        <div class="meta">${p.date ? esc(itDate(p.date)) + " · " : ""}${p.rating ? `<span class="stars">${"★".repeat(p.rating)}</span> · ` : ""}${p.lat.toFixed(3)}, ${p.lng.toFixed(3)}</div>
+        <h3>${esc(p.name)} <span class="cat-mini" title="${esc(catLabel(cat))}">${catIco(cat)}</span></h3>
+        <div class="meta">${catLabel(cat)}${p.date ? " · " + esc(itDate(p.date)) : ""}${p.rating ? ` · <span class="stars">${"★".repeat(p.rating)}</span>` : ""} · ${p.lat.toFixed(3)}, ${p.lng.toFixed(3)}</div>
         ${p.note ? `<p class="note">${esc(p.note)}</p>` : ""}
         <div class="btns">
           <button data-act="edit">Modifica</button>
@@ -185,8 +208,8 @@ function render() {
           <button data-act="goto">Vai qui</button>
         </div>
       </div>
-    </li>`,
-        )
+    </li>`;
+        })
         .join("")
     : `<li class="empty">${places.length ? "Nessun risultato." : "Ancora nessun luogo. Cerca un posto o clicca sulla mappa per iniziare."}</li>`;
   syncMarkers();
@@ -245,6 +268,18 @@ document.querySelector(".seg").addEventListener("click", (e) => {
   if (b) setView(b.dataset.view);
 });
 
+/* ---------- selezione categoria ---------- */
+function setCat(cat) {
+  pendingCat = cat;
+  document
+    .querySelectorAll("#fCat .cat")
+    .forEach((b) => b.classList.toggle("on", b.dataset.cat === cat));
+}
+$("fCat").addEventListener("click", (e) => {
+  const b = e.target.closest(".cat");
+  if (b) setCat(b.dataset.cat);
+});
+
 /* ---------- scheda luogo ---------- */
 function startNew(draft) {
   const dup = findDup(draft.lat, draft.lng, draft.name);
@@ -260,6 +295,7 @@ function openDialog(p, draft) {
   $("fDate").value = d || "";
   $("fRate").value = p ? p.rating : 0;
   $("fNote").value = p ? p.note : "";
+  setCat(p ? p.cat || "generico" : draft.cat || "generico");
   $("fCoord").textContent =
     `Coordinate: ${pending.lat.toFixed(5)}, ${pending.lng.toFixed(5)}`;
   $("fErr").textContent = "";
@@ -274,6 +310,7 @@ $("form").addEventListener("submit", (e) => {
     date: $("fDate").value,
     rating: +$("fRate").value,
     note: $("fNote").value.trim(),
+    cat: pendingCat,
     lat: pending.lat,
     lng: pending.lng,
   };
@@ -300,7 +337,7 @@ $("form").addEventListener("submit", (e) => {
   toast("Luogo salvato");
 });
 
-/* ---------- clic sulla mappa: prende sempre il nome del paese ---------- */
+/* ---------- clic sulla mappa ---------- */
 map.on("click", async (e) => {
   const { lat, lng } = e.latlng;
   const near = findDup(lat, lng, "");
@@ -312,15 +349,14 @@ map.on("click", async (e) => {
         `https://nominatim.openstreetmap.org/reverse?format=jsonv2&zoom=10&addressdetails=1&accept-language=it&lat=${lat}&lon=${lng}`,
       )
     ).json();
-    // Prende SEMPRE il nome del paese/comune
     name = paeseFromAddress(j.address) || paeseFromDisplay(j.display_name);
   } catch {
-    /* offline: nome a mano */
+    /* offline */
   }
   startNew({ lat, lng, name });
 });
 
-/* ---------- ricerca: mostra sempre il paese ---------- */
+/* ---------- ricerca ---------- */
 async function search() {
   const q = $("q").value.trim();
   if (!q) return;
@@ -337,12 +373,10 @@ async function search() {
     ul.innerHTML = arr.length
       ? arr
           .map((x, i) => {
-            // Nome del paese/comune dall'indirizzo
             const paese =
               paeseFromAddress(x.address) ||
               x.name ||
               paeseFromDisplay(x.display_name);
-            // Mostra: Paese — resto dell'indirizzo
             const resto = (x.display_name || "")
               .split(",")
               .map((s) => s.trim())
@@ -373,7 +407,6 @@ function pickResult(li) {
     lng = +x.lon;
   $("results").hidden = true;
   $("q").value = "";
-  // Nome del paese/comune
   const paese =
     paeseFromAddress(x.address) || x.name || paeseFromDisplay(x.display_name);
   const dup = findDup(lat, lng, paese);
@@ -475,7 +508,7 @@ $("btnTxt").onclick = () =>
         places
           .map(
             (p, i) =>
-              `${i + 1}. ${p.name}\n   Data: ${itDate(p.date) || "-"}\n   Valutazione: ${p.rating || "-"}\n   Coordinate: ${p.lat}, ${p.lng}\n   Note: ${p.note || "-"}`,
+              `${i + 1}. ${catIco(p.cat || "generico")} ${p.name} [${catLabel(p.cat || "generico")}]\n   Data: ${itDate(p.date) || "-"}\n   Valutazione: ${p.rating || "-"}\n   Coordinate: ${p.lat}, ${p.lng}\n   Note: ${p.note || "-"}`,
           )
           .join("\n\n"),
         "text/plain",
@@ -514,6 +547,7 @@ $("file").addEventListener("change", async (e) => {
         date,
         rating: +p.rating || 0,
         note: p.note || "",
+        cat: CATS[p.cat] ? p.cat : "generico",
         lat: +p.lat,
         lng: +p.lng,
       });

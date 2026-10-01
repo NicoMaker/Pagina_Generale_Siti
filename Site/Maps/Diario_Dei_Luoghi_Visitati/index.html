@@ -82,6 +82,47 @@
       <form id="form">
         <h2 id="dlgTitle">Nuovo luogo</h2>
         <label>Nome<input id="fName" required maxlength="120" /></label>
+
+        <div class="cat-label">Categoria</div>
+        <div class="cat-grid" id="fCat">
+          <button type="button" data-cat="generico" class="cat on">
+            <span class="cat-ico">📍</span><span>Generico</span>
+          </button>
+          <button type="button" data-cat="casa" class="cat">
+            <span class="cat-ico">🏠</span><span>Casa</span>
+          </button>
+          <button type="button" data-cat="lavoro" class="cat">
+            <span class="cat-ico">💼</span><span>Lavoro</span>
+          </button>
+          <button type="button" data-cat="ristorante" class="cat">
+            <span class="cat-ico">🍽️</span><span>Ristorante</span>
+          </button>
+          <button type="button" data-cat="bar" class="cat">
+            <span class="cat-ico">☕</span><span>Bar</span>
+          </button>
+          <button type="button" data-cat="hotel" class="cat">
+            <span class="cat-ico">🏨</span><span>Hotel</span>
+          </button>
+          <button type="button" data-cat="spiaggia" class="cat">
+            <span class="cat-ico">🏖️</span><span>Spiaggia</span>
+          </button>
+          <button type="button" data-cat="montagna" class="cat">
+            <span class="cat-ico">⛰️</span><span>Montagna</span>
+          </button>
+          <button type="button" data-cat="monumento" class="cat">
+            <span class="cat-ico">🏛️</span><span>Monumento</span>
+          </button>
+          <button type="button" data-cat="shopping" class="cat">
+            <span class="cat-ico">🛍️</span><span>Shopping</span>
+          </button>
+          <button type="button" data-cat="sport" class="cat">
+            <span class="cat-ico">⚽</span><span>Sport</span>
+          </button>
+          <button type="button" data-cat="altro" class="cat">
+            <span class="cat-ico">⭐</span><span>Altro</span>
+          </button>
+        </div>
+
         <div class="row">
           <label>Data visita<input id="fDate" type="date" /></label>
           <label

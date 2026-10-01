@@ -264,12 +264,19 @@ button.danger {
   place-items: center;
   color: #fff;
   font-weight: 800;
-  font-size: 1.1rem;
+  font-size: 1.3rem;
+  background: var(--accent-soft);
 }
 .item h3 {
   margin: 0;
   font-size: 1rem;
   font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.item h3 .cat-mini {
+  font-size: 0.9rem;
 }
 .meta {
   color: var(--muted);
@@ -305,17 +312,57 @@ button.danger {
   border-radius: 14px;
 }
 .pin {
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
   background: var(--pin);
   border: 3px solid #fff;
   border-radius: 50% 50% 50% 0;
   transform: rotate(-45deg);
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.35);
+  display: grid;
+  place-items: center;
+}
+.pin .pin-ico {
+  transform: rotate(45deg);
+  font-size: 14px;
+  line-height: 1;
 }
 .pin.sel {
   background: var(--accent);
   transform: rotate(-45deg) scale(1.25);
+}
+.pin.cat-casa {
+  background: #2ecc71;
+}
+.pin.cat-lavoro {
+  background: #34495e;
+}
+.pin.cat-ristorante {
+  background: #e67e22;
+}
+.pin.cat-bar {
+  background: #8e44ad;
+}
+.pin.cat-hotel {
+  background: #2980b9;
+}
+.pin.cat-spiaggia {
+  background: #f1c40f;
+}
+.pin.cat-montagna {
+  background: #7f8c8d;
+}
+.pin.cat-monumento {
+  background: #c0392b;
+}
+.pin.cat-shopping {
+  background: #e91e63;
+}
+.pin.cat-sport {
+  background: #16a085;
+}
+.pin.cat-altro {
+  background: #f39c12;
 }
 .gps-marker {
   width: 20px;
@@ -349,7 +396,9 @@ dialog {
   border: 0;
   border-radius: 20px;
   padding: 24px;
-  width: min(460px, 92vw);
+  width: min(520px, 94vw);
+  max-height: 92vh;
+  overflow: auto;
   box-shadow: 0 24px 70px rgba(21, 26, 51, 0.4);
   color: var(--ink);
   font-family: var(--font);
@@ -373,6 +422,43 @@ dialog label > * {
   margin-top: 5px;
   font-weight: 400;
   color: var(--ink);
+}
+.cat-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--muted);
+  margin-top: 14px;
+  margin-bottom: 6px;
+}
+.cat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+}
+.cat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 8px 4px;
+  border-radius: 12px;
+  font-size: 0.7rem;
+  line-height: 1.1;
+  border: 1px solid var(--line);
+  background: #fff;
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--muted);
+}
+.cat .cat-ico {
+  font-size: 1.2rem;
+}
+.cat.on {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent-soft);
 }
 .row {
   display: grid;
@@ -463,6 +549,9 @@ dialog label > * {
   .actions-top button {
     padding: 7px 10px;
     font-size: 0.8rem;
+  }
+  .cat-grid {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 @media (prefers-reduced-motion: reduce) {
