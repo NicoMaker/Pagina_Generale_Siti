@@ -6,6 +6,9 @@ let places = load(),
   editingId = null,
   pending = null;
 const markers = new Map();
+let gpsMarker = null,
+  gpsWatchId = null,
+  routingControl = null;
 const $ = (id) => document.getElementById(id);
 
 const map = L.map("map").setView([42.5, 12.5], 5);
@@ -65,7 +68,6 @@ function meters(a, b) {
     Math.cos(rad(a.lat)) * Math.cos(rad(b.lat)) * Math.sin(dLng / 2) ** 2;
   return 2 * R * Math.asin(Math.sqrt(h));
 }
-// Duplicato = stesso punto (entro 150 m) oppure stesso nome entro 5 km
 function findDup(lat, lng, name, ignoreId) {
   return places.find(
     (p) =>
@@ -96,7 +98,13 @@ function syncMarkers() {
     const m = L.marker([p.lat, p.lng], { icon: icon(p.id === activeId) })
       .addTo(map)
       .bindTooltip(p.name);
-    m.on("click", () => select(p.id, false));
+    m.on("click", () => {
+      select(p.id, false);
+      // Cliccando il marker vediamo bene dove siamo
+      map.flyTo([p.lat, p.lng], Math.max(map.getZoom(), 15), {
+        duration: 0.8,
+      });
+    });
     markers.set(p.id, m);
   });
 }
@@ -127,7 +135,12 @@ function render() {
         <h3>${esc(p.name)}</h3>
         <div class="meta">${p.date ? esc(p.date) + " · " : ""}${p.rating ? `<span class="stars">${"★".repeat(p.rating)}</span> · ` : ""}${p.lat.toFixed(3)}, ${p.lng.toFixed(3)}</div>
         ${p.note ? `<p class="note">${esc(p.note)}</p>` : ""}
-        <div class="btns"><button data-act="edit">Modifica</button><button data-act="del" class="danger">Elimina</button></div>
+        <div class="btns">
+          <button data-act="edit">Modifica</button>
+          <button data-act="del" class="danger">Elimina</button>
+          <button data-act="goto">Vai qui</button>
+          <button data-act="route">Naviga</button>
+        </div>
       </div>
     </li>`,
         )
@@ -158,6 +171,20 @@ $("list").addEventListener("click", (e) => {
       render();
       toast("Luogo eliminato");
     }
+    return;
+  }
+  if (act === "goto") {
+    const p = places.find((x) => x.id === id);
+    if (!p) return;
+    select(id, false);
+    map.flyTo([p.lat, p.lng], 17, { duration: 1.2 });
+    toast(`Vai a «${p.name}»`);
+    return;
+  }
+  if (act === "route") {
+    const p = places.find((x) => x.id === id);
+    if (!p) return;
+    startRouteTo(p);
     return;
   }
   select(id);
@@ -313,6 +340,108 @@ document.addEventListener("click", (e) => {
   if (!e.target.closest(".search")) $("results").hidden = true;
 });
 
+/* ---------- GPS: leggi la mia posizione ---------- */
+const gpsIcon = L.divIcon({
+  className: "",
+  html: '<div class="gps-marker"></div>',
+  iconSize: [20, 20],
+  iconAnchor: [10, 10],
+});
+function gpsError(err) {
+  const msgs = {
+    1: "Permesso negato. Abilita la geolocalizzazione nel browser.",
+    2: "Posizione non disponibile. Controlla il GPS.",
+    3: "Timeout. Riprova.",
+  };
+  toast(msgs[err.code] || "Errore GPS");
+}
+$("btnGps").onclick = () => {
+  if (!navigator.geolocation) return toast("GPS non supportato dal browser");
+  // Se già attivo, disattiva
+  if (gpsWatchId !== null) {
+    navigator.geolocation.clearWatch(gpsWatchId);
+    gpsWatchId = null;
+    if (gpsMarker) {
+      map.removeLayer(gpsMarker);
+      gpsMarker = null;
+    }
+    toast("GPS disattivato");
+    $("btnGps").textContent = "📍 GPS";
+    return;
+  }
+  toast("Attivazione GPS…");
+  gpsWatchId = navigator.geolocation.watchPosition(
+    (pos) => {
+      const lat = pos.coords.latitude,
+        lng = pos.coords.longitude,
+        acc = pos.coords.accuracy;
+      if (!gpsMarker) {
+        gpsMarker = L.marker([lat, lng], {
+          icon: gpsIcon,
+          zIndexOffset: 1000,
+        })
+          .addTo(map)
+          .bindTooltip("Sei qui");
+        map.flyTo([lat, lng], 16, { duration: 1.2 });
+        $("btnGps").textContent = "🛑 GPS";
+        toast(`Sei qui (±${Math.round(acc)} m)`);
+      } else {
+        gpsMarker.setLatLng([lat, lng]);
+      }
+    },
+    gpsError,
+    { enableHighAccuracy: true, maximumAge: 2000, timeout: 15000 },
+  );
+};
+
+/* ---------- navigatore: da dove a dove ---------- */
+function startRouteTo(dest) {
+  if (!navigator.geolocation)
+    return toast("GPS non supportato, impossibile navigare");
+  toast("Calcolo percorso…");
+  navigator.geolocation.getCurrentPosition(
+    (pos) => {
+      const from = L.latLng(pos.coords.latitude, pos.coords.longitude);
+      const to = L.latLng(dest.lat, dest.lng);
+      if (routingControl) map.removeControl(routingControl);
+      routingControl = L.Routing.control({
+        waypoints: [from, to],
+        routeWhileDragging: false,
+        addWaypoints: false,
+        show: true,
+        lineOptions: {
+          styles: [{ color: "#5b5bf0", weight: 5, opacity: 0.8 }],
+        },
+        createMarker: function (i, wp) {
+          return L.marker(wp.latLng, {
+            icon: icon(i === 0 ? false : true),
+            draggable: false,
+          }).bindTooltip(i === 0 ? "Partenza" : dest.name);
+        },
+        router: L.Routing.osrmv1({
+          serviceUrl: "https://router.project-osrm.org/route/v1",
+        }),
+      }).addTo(map);
+      routingControl.on("routesfound", (e) => {
+        const r = e.routes[0];
+        const km = (r.summary.totalDistance / 1000).toFixed(1);
+        const min = Math.round(r.summary.totalTime / 60);
+        toast(`Percorso: ${km} km · ${min} min`);
+        map.fitBounds(r.bounds, { padding: [40, 40] });
+      });
+      // Se non c'è GPS, segnala
+      if (gpsWatchId === null) {
+        toast("Suggerimento: attiva 📍 GPS per vederti sulla mappa");
+      }
+    },
+    (err) => {
+      gpsError(err);
+      toast("Attiva il GPS per navigare");
+    },
+    { enableHighAccuracy: true, timeout: 15000 },
+  );
+}
+
 /* ---------- esporta / importa ---------- */
 function download(name, text, type) {
   const a = document.createElement("a");
@@ -404,6 +533,10 @@ $("btnClear").onclick = () => {
     activeId = null;
     save();
     render();
+    if (routingControl) {
+      map.removeControl(routingControl);
+      routingControl = null;
+    }
   }
 };
 
