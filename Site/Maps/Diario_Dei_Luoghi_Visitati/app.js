@@ -51,19 +51,49 @@ const colorOf = (s) => {
 };
 
 /* ---------- data all'italiana ---------- */
-// da "2024-05-17" a "17/05/2024"
 function itDate(iso) {
   if (!iso || !/^\d{4}-\d{2}-\d{2}$/.test(iso)) return iso || "";
   const [y, m, d] = iso.split("-");
   return `${d}/${m}/${y}`;
 }
-// da "17/05/2024" a "2024-05-17"
 function isoDate(it) {
   if (!it) return "";
   const m = it.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
   if (!m) return it;
   const [, d, mo, y] = m;
   return `${y}-${String(mo).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
+}
+
+/* ---------- nome del paese/comune ---------- */
+// Estrae sempre il nome del paese/comune dall'indirizzo di Nominatim
+function paeseFromAddress(addr) {
+  if (!addr) return "";
+  // Ordine di preferenza: comune > città > villaggio > paese > municipio
+  const keys = [
+    "city",
+    "town",
+    "village",
+    "municipality",
+    "hamlet",
+    "suburb",
+    "county",
+    "state",
+    "country",
+  ];
+  for (const k of keys) {
+    if (addr[k]) return addr[k];
+  }
+  return "";
+}
+// Estrae il nome del paese da una stringa display_name
+function paeseFromDisplay(dn) {
+  if (!dn) return "";
+  const parts = dn.split(",").map((s) => s.trim());
+  // Nominatim di solito: via, quartiere, comune, provincia, regione, stato
+  // Il comune è di solito il 3° o 4° elemento
+  if (parts.length >= 3) return parts[2];
+  if (parts.length >= 2) return parts[1];
+  return parts[0] || "";
 }
 
 /* ---------- controllo duplicati ---------- */
@@ -199,7 +229,7 @@ $("list").addEventListener("click", (e) => {
 $("filter").addEventListener("input", render);
 $("sort").addEventListener("change", render);
 
-/* ---------- vista (mappa+lista / solo lista) ---------- */
+/* ---------- vista ---------- */
 function setView(v) {
   $("app").dataset.view = v;
   document
@@ -226,7 +256,6 @@ function openDialog(p, draft) {
   pending = p ? { lat: p.lat, lng: p.lng } : draft;
   $("dlgTitle").textContent = p ? "Modifica luogo" : "Nuovo luogo";
   $("fName").value = p ? p.name : draft.name || "";
-  // Mostra la data in formato italiano nell'input di tipo date
   const d = p ? p.date : new Date().toISOString().slice(0, 10);
   $("fDate").value = d || "";
   $("fRate").value = p ? p.rating : 0;
@@ -242,7 +271,7 @@ $("form").addEventListener("submit", (e) => {
   e.preventDefault();
   const data = {
     name: $("fName").value.trim(),
-    date: $("fDate").value, // resta in ISO per l'ordinamento
+    date: $("fDate").value,
     rating: +$("fRate").value,
     note: $("fNote").value.trim(),
     lat: pending.lat,
@@ -271,7 +300,7 @@ $("form").addEventListener("submit", (e) => {
   toast("Luogo salvato");
 });
 
-/* ---------- clic sulla mappa ---------- */
+/* ---------- clic sulla mappa: prende sempre il nome del paese ---------- */
 map.on("click", async (e) => {
   const { lat, lng } = e.latlng;
   const near = findDup(lat, lng, "");
@@ -280,18 +309,18 @@ map.on("click", async (e) => {
   try {
     const j = await (
       await fetch(
-        `https://nominatim.openstreetmap.org/reverse?format=jsonv2&zoom=14&accept-language=it&lat=${lat}&lon=${lng}`,
+        `https://nominatim.openstreetmap.org/reverse?format=jsonv2&zoom=10&addressdetails=1&accept-language=it&lat=${lat}&lon=${lng}`,
       )
     ).json();
-    name =
-      j.name || (j.display_name || "").split(",").slice(0, 2).join(",").trim();
+    // Prende SEMPRE il nome del paese/comune
+    name = paeseFromAddress(j.address) || paeseFromDisplay(j.display_name);
   } catch {
     /* offline: nome a mano */
   }
   startNew({ lat, lng, name });
 });
 
-/* ---------- ricerca ---------- */
+/* ---------- ricerca: mostra sempre il paese ---------- */
 async function search() {
   const q = $("q").value.trim();
   if (!q) return;
@@ -301,16 +330,30 @@ async function search() {
   try {
     const arr = await (
       await fetch(
-        `https://nominatim.openstreetmap.org/search?format=jsonv2&limit=6&accept-language=it&q=${encodeURIComponent(q)}`,
+        `https://nominatim.openstreetmap.org/search?format=jsonv2&limit=8&addressdetails=1&accept-language=it&q=${encodeURIComponent(q)}`,
       )
     ).json();
     ul._data = arr;
     ul.innerHTML = arr.length
       ? arr
           .map((x, i) => {
-            const name = x.name || x.display_name.split(",")[0];
-            const dup = findDup(+x.lat, +x.lon, name);
-            return `<li tabindex="0" data-i="${i}" class="${dup ? "dup" : ""}"><span>${esc(x.display_name)}</span>${dup ? '<span class="tag">già inserito</span>' : ""}</li>`;
+            // Nome del paese/comune dall'indirizzo
+            const paese =
+              paeseFromAddress(x.address) ||
+              x.name ||
+              paeseFromDisplay(x.display_name);
+            // Mostra: Paese — resto dell'indirizzo
+            const resto = (x.display_name || "")
+              .split(",")
+              .map((s) => s.trim())
+              .filter((s) => s && s !== paese)
+              .slice(0, 3)
+              .join(", ");
+            const dup = findDup(+x.lat, +x.lon, paese);
+            return `<li tabindex="0" data-i="${i}" class="${dup ? "dup" : ""}">
+              <span><strong>${esc(paese)}</strong>${resto ? " — " + esc(resto) : ""}</span>
+              ${dup ? '<span class="tag">già inserito</span>' : ""}
+            </li>`;
           })
           .join("")
       : "<li>Nessun risultato.</li>";
@@ -330,10 +373,13 @@ function pickResult(li) {
     lng = +x.lon;
   $("results").hidden = true;
   $("q").value = "";
-  const dup = findDup(lat, lng, x.name || x.display_name.split(",")[0]);
+  // Nome del paese/comune
+  const paese =
+    paeseFromAddress(x.address) || x.name || paeseFromDisplay(x.display_name);
+  const dup = findDup(lat, lng, paese);
   if (dup) return alreadyThere(dup);
   if ($("app").dataset.view === "split") map.flyTo([lat, lng], 13);
-  startNew({ lat, lng, name: x.name || x.display_name.split(",")[0] });
+  startNew({ lat, lng, name: paese });
 }
 $("results").addEventListener("click", (e) => {
   const li = e.target.closest("li[data-i]");
@@ -349,7 +395,7 @@ document.addEventListener("click", (e) => {
   if (!e.target.closest(".search")) $("results").hidden = true;
 });
 
-/* ---------- GPS: leggi la mia posizione ---------- */
+/* ---------- GPS ---------- */
 const gpsIcon = L.divIcon({
   className: "",
   html: '<div class="gps-marker"></div>',
@@ -459,7 +505,6 @@ $("file").addEventListener("change", async (e) => {
         skipped++;
         return;
       }
-      // Accetta sia ISO sia formato italiano
       let date = p.date || "";
       if (/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(date)) date = isoDate(date);
       places.push({

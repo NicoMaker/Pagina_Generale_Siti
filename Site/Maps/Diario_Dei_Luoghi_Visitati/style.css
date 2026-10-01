@@ -317,7 +317,6 @@ button.danger {
   background: var(--accent);
   transform: rotate(-45deg) scale(1.25);
 }
-/* GPS marker */
 .gps-marker {
   width: 20px;
   height: 20px;
@@ -418,7 +417,6 @@ dialog label > * {
   transform: translate(-50%, 0);
 }
 
-/* Vista solo lista */
 .app[data-view="list"] {
   grid-template-columns: 1fr;
 }
