@@ -4,43 +4,59 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Convertitore di Colori</title>
+
+<!-- Favicon SVG inline (tua, ripulita dai metadata C2PA) -->
+<link rel="icon" type="image/svg+xml"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230f1720'/%3E%3Cg style='mix-blend-mode:screen'%3E%3Ccircle cx='25' cy='26' r='15' fill='%23ff3b4e'/%3E%3Ccircle cx='39' cy='26' r='15' fill='%232fe27a' style='mix-blend-mode:screen'/%3E%3Ccircle cx='32' cy='39' r='15' fill='%232f7bff' style='mix-blend-mode:screen'/%3E%3C/g%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <main>
-<h1>Convertitore di Colori</h1>
-<div id="sw" aria-live="polite"></div>
+  <h1>Convertitore di Colori</h1>
 
-<div class="card">
-<div class="row">
-<div><label for="pk">Selettore</label><input type="color" id="pk" value="#2a7de1"></div>
-<div class="f"><label for="hex">HEX</label><input type="text" id="hex" maxlength="7" value="#2a7de1"></div>
-</div>
-<div class="row">
-<div class="f"><label for="r">R</label><input type="number" id="r" min="0" max="255"></div>
-<div class="f"><label for="g">G</label><input type="number" id="g" min="0" max="255"></div>
-<div class="f"><label for="b">B</label><input type="number" id="b" min="0" max="255"></div>
-</div>
-<div class="row">
-<div class="f"><label for="h">H (0–360)</label><input type="number" id="h" min="0" max="360"></div>
-<div class="f"><label for="s">S %</label><input type="number" id="s" min="0" max="100"></div>
-<div class="f"><label for="l">L %</label><input type="number" id="l" min="0" max="100"></div>
-</div>
-</div>
+  <section id="sw">
+    <input type="color" id="pk" value="#2a7de1" aria-label="Scegli un colore">
+    <span class="hint">Tocca per scegliere</span>
+    <span id="big"></span>
+  </section>
 
-<div class="card">
-<div class="out"><span id="oh"></span><button data-c="oh">Copia</button></div>
-<div class="out"><span id="or"></span><button data-c="or">Copia</button></div>
-<div class="out"><span id="ol"></span><button data-c="ol">Copia</button></div>
-</div>
+  <div class="bar">
+    <div class="shades" id="shades" role="group" aria-label="Sfumature"></div>
+    <button id="rnd" type="button">Casuale</button>
+  </div>
 
-<div class="card">
-<label>Contrasto del testo (WCAG)</label>
-<div class="row">
-<span class="chip" id="cw">Bianco</span><span id="rw"></span>
-<span class="chip" id="cb" style="background:#000;color:#fff">Nero</span><span id="rb"></span>
-</div>
-</div>
+  <div class="grid">
+    <section class="card">
+      <h2>Valori</h2>
+      <div class="field"><label for="hex">HEX</label><input type="text" id="hex" maxlength="7" value="#2a7de1" spellcheck="false"></div>
+      <div class="trio">
+        <div class="field"><label for="r">R</label><input type="number" id="r" min="0" max="255"></div>
+        <div class="field"><label for="g">G</label><input type="number" id="g" min="0" max="255"></div>
+        <div class="field"><label for="b">B</label><input type="number" id="b" min="0" max="255"></div>
+      </div>
+      <div class="trio">
+        <div class="field"><label for="h">H°</label><input type="number" id="h" min="0" max="360"></div>
+        <div class="field"><label for="s">S %</label><input type="number" id="s" min="0" max="100"></div>
+        <div class="field"><label for="l">L %</label><input type="number" id="l" min="0" max="100"></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Copia</h2>
+      <div class="out"><code id="oh"></code><button data-c="oh" type="button">Copia</button></div>
+      <div class="out"><code id="or"></code><button data-c="or" type="button">Copia</button></div>
+      <div class="out"><code id="ol"></code><button data-c="ol" type="button">Copia</button></div>
+      <h2>Contrasto del testo</h2>
+      <div class="contrast">
+        <div class="ct" id="cw">Aa <small id="rw"></small></div>
+        <div class="ct" id="cb">Aa <small id="rb"></small></div>
+      </div>
+    </section>
+  </div>
 </main>
 <script src="script.js"></script>
 </body>

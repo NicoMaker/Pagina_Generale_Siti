@@ -5,7 +5,8 @@
 - **[Barcode Generator](Barcode_Generator)**
 - **[Calcolatore di Prezzi con Sconto e Aumento e calcolo percentuale](Calcolatore_Sconto_Aumento)**
 - **[Calcolatore Spese](Calcolatore_Spese)**
-  **[Calcolo righe di codice](Calcolo_righe_di_codice)**
+- **[Calcolo righe di codice](Calcolo_righe_di_codice)**
+- **[Convertitore Colori](Convertitore_di_Colori)
 - **[Conversioni unità di misura](Convertitore_unità_di_Misura)**
 - **[Cronometro timer](Cronometro_timer)**
 - **[Diario dei luoghi Visitati](Diario_Dei_Luoghi_Visitati)
