@@ -615,11 +615,7 @@ $("btnCsv").onclick = () => {
   });
   // BOM per Excel italiano
   const csv = "\uFEFF" + rows.join("\r\n");
-  download(
-    `diario-luoghi-${stamp()}.csv`,
-    csv,
-    "text/csv;charset=utf-8",
-  );
+  download(`diario-luoghi-${stamp()}.csv`, csv, "text/csv;charset=utf-8");
   toast(`${places.length} luoghi esportati in CSV (Excel)`);
 };
 
@@ -726,11 +722,7 @@ $("btnHtml").onclick = () => {
 </body>
 </html>`;
 
-  download(
-    `diario-luoghi-${stamp()}.html`,
-    html,
-    "text/html;charset=utf-8",
-  );
+  download(`diario-luoghi-${stamp()}.html`, html, "text/html;charset=utf-8");
   toast(`Diario esportato in HTML (mappa inclusa)`);
 };
 
