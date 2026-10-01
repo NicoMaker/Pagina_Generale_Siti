@@ -1,0 +1,214 @@
+'use strict';
+const KEY = 'diario-luoghi-v1', VKEY = 'diario-luoghi-view';
+let places = load(), activeId = null, editingId = null, pending = null;
+const markers = new Map();
+const $ = id => document.getElementById(id);
+
+const map = L.map('map').setView([42.5, 12.5], 5);
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '&copy; OpenStreetMap' }).addTo(map);
+
+/* ---------- utilità ---------- */
+function load() { try { return JSON.parse(localStorage.getItem(KEY)) || []; } catch { return []; } }
+function save() { localStorage.setItem(KEY, JSON.stringify(places)); }
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+function toast(msg) {
+  const t = $('toast'); t.textContent = msg; t.classList.add('show');
+  clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove('show'), 2800);
+}
+const colorOf = s => { let h = 0; for (const c of s) h = (h * 31 + c.charCodeAt(0)) % 360; return `hsl(${h} 65% 55%)`; };
+
+/* ---------- controllo duplicati ---------- */
+const norm = s => String(s).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]/g, '');
+function meters(a, b) {
+  const R = 6371000, rad = x => x * Math.PI / 180;
+  const dLat = rad(b.lat - a.lat), dLng = rad(b.lng - a.lng);
+  const h = Math.sin(dLat / 2) ** 2 + Math.cos(rad(a.lat)) * Math.cos(rad(b.lat)) * Math.sin(dLng / 2) ** 2;
+  return 2 * R * Math.asin(Math.sqrt(h));
+}
+// Duplicato = stesso punto (entro 150 m) oppure stesso nome entro 5 km
+function findDup(lat, lng, name, ignoreId) {
+  return places.find(p => p.id !== ignoreId && (
+    meters(p, { lat, lng }) < 150 ||
+    (name && norm(p.name) === norm(name) && meters(p, { lat, lng }) < 5000)));
+}
+function alreadyThere(p) {
+  toast(`«${p.name}» è già nella tua lista`);
+  select(p.id);
+}
+
+/* ---------- mappa: segnaposti ---------- */
+const icon = sel => L.divIcon({ className: '', html: `<div class="pin${sel ? ' sel' : ''}"></div>`, iconSize: [28, 28], iconAnchor: [14, 28] });
+function syncMarkers() {
+  markers.forEach(m => map.removeLayer(m)); markers.clear();
+  places.forEach(p => {
+    const m = L.marker([p.lat, p.lng], { icon: icon(p.id === activeId) }).addTo(map).bindTooltip(p.name);
+    m.on('click', () => select(p.id, false));
+    markers.set(p.id, m);
+  });
+}
+
+/* ---------- lista ---------- */
+function render() {
+  const q = $('filter').value.trim().toLowerCase(), sort = $('sort').value;
+  const arr = places.filter(p => (p.name + ' ' + p.note).toLowerCase().includes(q));
+  if (sort === 'name') arr.sort((a, b) => a.name.localeCompare(b.name));
+  else if (sort === 'date') arr.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+  else if (sort === 'rating') arr.sort((a, b) => b.rating - a.rating);
+  else arr.sort((a, b) => b.created - a.created);
+
+  $('count').textContent = places.length + (places.length === 1 ? ' luogo visitato' : ' luoghi visitati');
+  $('list').innerHTML = arr.length ? arr.map(p => `
+    <li class="item${p.id === activeId ? ' active' : ''}" data-id="${p.id}">
+      <div class="avatar" style="background:${colorOf(p.name)}">${esc(p.name[0].toUpperCase())}</div>
+      <div>
+        <h3>${esc(p.name)}</h3>
+        <div class="meta">${p.date ? esc(p.date) + ' · ' : ''}${p.rating ? `<span class="stars">${'★'.repeat(p.rating)}</span> · ` : ''}${p.lat.toFixed(3)}, ${p.lng.toFixed(3)}</div>
+        ${p.note ? `<p class="note">${esc(p.note)}</p>` : ''}
+        <div class="btns"><button data-act="edit">Modifica</button><button data-act="del" class="danger">Elimina</button></div>
+      </div>
+    </li>`).join('')
+    : `<li class="empty">${places.length ? 'Nessun risultato.' : 'Ancora nessun luogo. Cerca un posto o clicca sulla mappa per iniziare.'}</li>`;
+  syncMarkers();
+}
+function select(id, fly = true) {
+  activeId = id; render();
+  const p = places.find(x => x.id === id);
+  if (p && fly && $('app').dataset.view === 'split') map.flyTo([p.lat, p.lng], Math.max(map.getZoom(), 13));
+  document.querySelector(`.item[data-id="${id}"]`)?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+}
+$('list').addEventListener('click', e => {
+  const li = e.target.closest('.item'); if (!li) return;
+  const id = li.dataset.id, act = e.target.dataset.act;
+  if (act === 'edit') return openDialog(places.find(p => p.id === id));
+  if (act === 'del') {
+    if (confirm('Eliminare questo luogo?')) { places = places.filter(p => p.id !== id); save(); render(); toast('Luogo eliminato'); }
+    return;
+  }
+  select(id);
+});
+$('filter').addEventListener('input', render);
+$('sort').addEventListener('change', render);
+
+/* ---------- vista (mappa+lista / solo lista) ---------- */
+function setView(v) {
+  $('app').dataset.view = v;
+  document.querySelectorAll('.seg button').forEach(b => b.classList.toggle('on', b.dataset.view === v));
+  try { localStorage.setItem(VKEY, v); } catch {}
+  setTimeout(() => map.invalidateSize(), 50);
+}
+document.querySelector('.seg').addEventListener('click', e => { const b = e.target.closest('button'); if (b) setView(b.dataset.view); });
+
+/* ---------- scheda luogo ---------- */
+function startNew(draft) {
+  const dup = findDup(draft.lat, draft.lng, draft.name);
+  if (dup) return alreadyThere(dup);
+  openDialog(null, draft);
+}
+function openDialog(p, draft) {
+  editingId = p ? p.id : null;
+  pending = p ? { lat: p.lat, lng: p.lng } : draft;
+  $('dlgTitle').textContent = p ? 'Modifica luogo' : 'Nuovo luogo';
+  $('fName').value = p ? p.name : (draft.name || '');
+  $('fDate').value = p ? p.date : new Date().toISOString().slice(0, 10);
+  $('fRate').value = p ? p.rating : 0;
+  $('fNote').value = p ? p.note : '';
+  $('fCoord').textContent = `Coordinate: ${pending.lat.toFixed(5)}, ${pending.lng.toFixed(5)}`;
+  $('fErr').textContent = '';
+  $('dlg').showModal(); $('fName').focus();
+}
+$('fCancel').onclick = () => $('dlg').close();
+$('form').addEventListener('submit', e => {
+  e.preventDefault();
+  const data = { name: $('fName').value.trim(), date: $('fDate').value, rating: +$('fRate').value, note: $('fNote').value.trim(), lat: pending.lat, lng: pending.lng };
+  if (!data.name) return;
+  const dup = findDup(data.lat, data.lng, data.name, editingId);
+  if (dup) { $('fErr').textContent = `Già inserito: «${dup.name}». Non puoi aggiungere lo stesso luogo due volte.`; return; }
+  if (editingId) Object.assign(places.find(p => p.id === editingId), data);
+  else { const p = { id: uid(), created: Date.now(), ...data }; places.push(p); activeId = p.id; }
+  save(); render(); $('dlg').close(); toast('Luogo salvato');
+});
+
+/* ---------- clic sulla mappa ---------- */
+map.on('click', async e => {
+  const { lat, lng } = e.latlng;
+  const near = findDup(lat, lng, '');
+  if (near) return alreadyThere(near);
+  let name = '';
+  try {
+    const j = await (await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&zoom=14&accept-language=it&lat=${lat}&lon=${lng}`)).json();
+    name = j.name || (j.display_name || '').split(',').slice(0, 2).join(',').trim();
+  } catch { /* offline: nome a mano */ }
+  startNew({ lat, lng, name });
+});
+
+/* ---------- ricerca ---------- */
+async function search() {
+  const q = $('q').value.trim(); if (!q) return;
+  const ul = $('results'); ul.hidden = false; ul.innerHTML = '<li>Ricerca in corso…</li>';
+  try {
+    const arr = await (await fetch(`https://nominatim.openstreetmap.org/search?format=jsonv2&limit=6&accept-language=it&q=${encodeURIComponent(q)}`)).json();
+    ul._data = arr;
+    ul.innerHTML = arr.length ? arr.map((x, i) => {
+      const name = x.name || x.display_name.split(',')[0];
+      const dup = findDup(+x.lat, +x.lon, name);
+      return `<li tabindex="0" data-i="${i}" class="${dup ? 'dup' : ''}"><span>${esc(x.display_name)}</span>${dup ? '<span class="tag">già inserito</span>' : ''}</li>`;
+    }).join('') : '<li>Nessun risultato.</li>';
+  } catch { ul.innerHTML = '<li>Errore di rete. Riprova.</li>'; }
+}
+$('btnSearch').onclick = search;
+$('q').addEventListener('keydown', e => { if (e.key === 'Enter') search(); if (e.key === 'Escape') $('results').hidden = true; });
+function pickResult(li) {
+  const x = $('results')._data?.[li.dataset.i]; if (!x) return;
+  const lat = +x.lat, lng = +x.lon;
+  $('results').hidden = true; $('q').value = '';
+  const dup = findDup(lat, lng, x.name || x.display_name.split(',')[0]);
+  if (dup) return alreadyThere(dup);
+  if ($('app').dataset.view === 'split') map.flyTo([lat, lng], 13);
+  startNew({ lat, lng, name: x.name || x.display_name.split(',')[0] });
+}
+$('results').addEventListener('click', e => { const li = e.target.closest('li[data-i]'); if (li) pickResult(li); });
+$('results').addEventListener('keydown', e => { if (e.key === 'Enter') { const li = e.target.closest('li[data-i]'); if (li) pickResult(li); } });
+document.addEventListener('click', e => { if (!e.target.closest('.search')) $('results').hidden = true; });
+
+/* ---------- esporta / importa ---------- */
+function download(name, text, type) {
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([text], { type })); a.download = name; a.click(); URL.revokeObjectURL(a.href);
+}
+const stamp = () => new Date().toISOString().slice(0, 10);
+$('btnJson').onclick = () => places.length ? download(`luoghi-${stamp()}.json`, JSON.stringify({ version: 1, places }, null, 2), 'application/json') : toast('Non ci sono luoghi da esportare');
+$('btnTxt').onclick = () => places.length ? download(`luoghi-${stamp()}.txt`, places.map((p, i) =>
+  `${i + 1}. ${p.name}\n   Data: ${p.date || '-'}\n   Valutazione: ${p.rating || '-'}\n   Coordinate: ${p.lat}, ${p.lng}\n   Note: ${p.note || '-'}`).join('\n\n'), 'text/plain') : toast('Non ci sono luoghi da esportare');
+$('btnImport').onclick = () => $('file').click();
+$('file').addEventListener('change', async e => {
+  const f = e.target.files[0]; if (!f) return;
+  try {
+    const j = JSON.parse(await f.text());
+    const arr = Array.isArray(j) ? j : j.places;
+    if (!Array.isArray(arr)) throw 0;
+    const replace = places.length && confirm('OK = sostituisci i luoghi attuali\nAnnulla = unisci ai luoghi attuali (i duplicati vengono saltati)');
+    const base = replace ? [] : places.slice();
+    const backup = places; places = base;
+    let added = 0, skipped = 0;
+    arr.forEach(p => {
+      if (!p || !p.name || !isFinite(p.lat) || !isFinite(p.lng)) return;
+      if (findDup(+p.lat, +p.lng, p.name)) { skipped++; return; }
+      places.push({ id: uid(), created: p.created || Date.now(), name: String(p.name), date: p.date || '', rating: +p.rating || 0, note: p.note || '', lat: +p.lat, lng: +p.lng });
+      added++;
+    });
+    if (!added && !replace) places = backup;
+    save(); render();
+    if (places.length) map.fitBounds(places.map(p => [p.lat, p.lng]), { padding: [40, 40], maxZoom: 12 });
+    toast(`${added} importati${skipped ? `, ${skipped} già presenti` : ''}`);
+  } catch { toast('File JSON non valido'); }
+  e.target.value = '';
+});
+$('btnClear').onclick = () => {
+  if (places.length && confirm('Eliminare TUTTI i luoghi? Scarica prima un JSON se vuoi un backup.')) { places = []; activeId = null; save(); render(); }
+};
+
+/* ---------- avvio ---------- */
+render();
+setView(localStorage.getItem(VKEY) === 'list' ? 'list' : 'split');
+if (places.length) map.fitBounds(places.map(p => [p.lat, p.lng]), { padding: [40, 40], maxZoom: 10 });

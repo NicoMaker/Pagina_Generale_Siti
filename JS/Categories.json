@@ -608,6 +608,10 @@
         {
           "name": "Calcolatore di spese",
           "link": "Site/Utilities/Calcolatore_Spese/index.html"
+        },
+        {
+          "name":"Diario dei Luoghi Visitati",
+          "link":"Site/Utilities/Diario_Dei_Luoghi_Visitati/index.html"
         }
       ]
     }

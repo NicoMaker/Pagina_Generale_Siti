@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Diario dei luoghi</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%235b5bf0'/%3E%3Cstop offset='1' stop-color='%23ff5a6e'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='url(%23g)'/%3E%3Cpath d='M32 12c-8.8 0-16 7-16 15.6C16 39 32 53 32 53s16-14 16-25.4C48 19 40.8 12 32 12z' fill='white'/%3E%3Ccircle cx='32' cy='27.5' r='6.5' fill='%235b5bf0'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app" id="app" data-view="split">
+
+  <header class="top">
+    <div class="brand">
+      <span class="logo" aria-hidden="true"></span>
+      <div><h1>Diario dei luoghi</h1><p id="count">0 luoghi</p></div>
+    </div>
+    <div class="seg" role="tablist" aria-label="Vista">
+      <button data-view="split" class="on">Mappa + lista</button>
+      <button data-view="list">Solo lista</button>
+    </div>
+    <div class="actions-top">
+      <button id="btnJson">JSON</button>
+      <button id="btnTxt">TXT</button>
+      <button id="btnImport">Importa</button>
+      <button id="btnClear" class="danger">Svuota</button>
+      <input id="file" type="file" accept=".json,application/json" hidden>
+    </div>
+  </header>
+
+  <section class="panel">
+    <div class="search">
+      <input id="q" type="search" placeholder="Cerca un luogo da aggiungere…" autocomplete="off">
+      <button id="btnSearch" class="primary">Cerca</button>
+      <ul id="results" class="results" hidden></ul>
+    </div>
+    <p class="hint" id="hint">Oppure clicca sulla mappa per aggiungere un punto.</p>
+    <div class="tools">
+      <input id="filter" type="search" placeholder="Filtra i tuoi luoghi…">
+      <select id="sort">
+        <option value="recent">Più recenti</option>
+        <option value="date">Data visita</option>
+        <option value="rating">Valutazione</option>
+        <option value="name">Nome</option>
+      </select>
+    </div>
+    <ul id="list" class="list"></ul>
+  </section>
+
+  <main id="map" aria-label="Mappa"></main>
+</div>
+
+<dialog id="dlg">
+  <form id="form">
+    <h2 id="dlgTitle">Nuovo luogo</h2>
+    <label>Nome<input id="fName" required maxlength="120"></label>
+    <div class="row">
+      <label>Data visita<input id="fDate" type="date"></label>
+      <label>Valutazione
+        <select id="fRate"><option value="0">–</option><option value="1">★</option><option value="2">★★</option><option value="3">★★★</option><option value="4">★★★★</option><option value="5">★★★★★</option></select>
+      </label>
+    </div>
+    <label>Note<textarea id="fNote" rows="4" maxlength="1000" placeholder="Cosa ti è piaciuto?"></textarea></label>
+    <p id="fCoord" class="coord"></p>
+    <p id="fErr" class="err" role="alert"></p>
+    <div class="actions">
+      <button type="button" id="fCancel">Annulla</button>
+      <button type="submit" class="primary">Salva</button>
+    </div>
+  </form>
+</dialog>
+<div id="toast" role="status"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

@@ -8,6 +8,7 @@
   **[Calcolo righe di codice](Calcolo_righe_di_codice)**
 - **[Conversioni unità di misura](Convertitore_unità_di_Misura)**
 - **[Cronometro timer](Cronometro_timer)**
+- **[Diario dei luoghi Visitati](Diario_Dei_Luoghi_Visitati)
 - **[Gestione Auto](Gestione_Auto)**
 - **[Ora giorno tempo reale](Ora_giorno_tempo_reale)**
 - **[Organizzazione Note](Organizzazione_Note)**
