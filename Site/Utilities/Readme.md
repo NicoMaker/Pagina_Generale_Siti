@@ -6,7 +6,7 @@
 - **[Calcolatore di Prezzi con Sconto e Aumento e calcolo percentuale](Calcolatore_Sconto_Aumento)**
 - **[Calcolatore Spese](Calcolatore_Spese)**
 - **[Calcolo righe di codice](Calcolo_righe_di_codice)**
-- **[Convertitore Colori](Convertitore_di_Colori)
+- **[Convertitore Colori](Convertitore_di_colori)**
 - **[Conversioni unità di misura](Convertitore_unità_di_Misura)**
 - **[Cronometro timer](Cronometro_timer)**
 - **[Gestione Auto](Gestione_Auto)**
