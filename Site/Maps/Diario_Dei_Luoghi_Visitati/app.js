@@ -22,6 +22,13 @@ const CATS = {
   generico: { ico: "📍", label: "Generico" },
   casa: { ico: "🏠", label: "Casa" },
   lavoro: { ico: "💼", label: "Lavoro" },
+  viaggio: { ico: "✈️", label: "Viaggio" },
+  aereo: { ico: "🛫", label: "Aereo" },
+  treno: { ico: "🚆", label: "Treno" },
+  nave: { ico: "🚢", label: "Nave" },
+  auto: { ico: "🚗", label: "Auto" },
+  camper: { ico: "🚐", label: "Camper" },
+  bici: { ico: "🚲", label: "Bici" },
   ristorante: { ico: "🍽️", label: "Ristorante" },
   bar: { ico: "☕", label: "Bar" },
   hotel: { ico: "🏨", label: "Hotel" },
@@ -186,6 +193,12 @@ function render() {
   else if (sort === "date")
     arr.sort((a, b) => (b.date || "").localeCompare(a.date || ""));
   else if (sort === "rating") arr.sort((a, b) => b.rating - a.rating);
+  else if (sort === "cat")
+    arr.sort((a, b) =>
+      catLabel(a.cat || "generico").localeCompare(
+        catLabel(b.cat || "generico"),
+      ),
+    );
   else arr.sort((a, b) => b.created - a.created);
 
   $("count").textContent =
@@ -481,7 +494,7 @@ $("btnGps").onclick = () => {
   );
 };
 
-/* ---------- esporta / importa ---------- */
+/* ---------- download helpers ---------- */
 function download(name, text, type) {
   const a = document.createElement("a");
   a.href = URL.createObjectURL(new Blob([text], { type }));
@@ -493,27 +506,235 @@ const stamp = () => {
   const d = new Date();
   return `${String(d.getDate()).padStart(2, "0")}-${String(d.getMonth() + 1).padStart(2, "0")}-${d.getFullYear()}`;
 };
-$("btnJson").onclick = () =>
-  places.length
-    ? download(
-        `luoghi-${stamp()}.json`,
-        JSON.stringify({ version: 1, places }, null, 2),
-        "application/json",
-      )
-    : toast("Non ci sono luoghi da esportare");
-$("btnTxt").onclick = () =>
-  places.length
-    ? download(
-        `luoghi-${stamp()}.txt`,
-        places
-          .map(
-            (p, i) =>
-              `${i + 1}. ${catIco(p.cat || "generico")} ${p.name} [${catLabel(p.cat || "generico")}]\n   Data: ${itDate(p.date) || "-"}\n   Valutazione: ${p.rating || "-"}\n   Coordinate: ${p.lat}, ${p.lng}\n   Note: ${p.note || "-"}`,
-          )
-          .join("\n\n"),
-        "text/plain",
-      )
-    : toast("Non ci sono luoghi da esportare");
+
+/* ---------- JSON: include TUTTO (cat, icona, label, viaggio) ---------- */
+$("btnJson").onclick = () => {
+  if (!places.length) return toast("Non ci sono luoghi da esportare");
+  const data = {
+    version: 1,
+    exported: new Date().toISOString(),
+    total: places.length,
+    places: places.map((p) => ({
+      id: p.id,
+      created: p.created,
+      name: p.name,
+      category: p.cat || "generico",
+      categoryLabel: catLabel(p.cat || "generico"),
+      categoryIcon: catIco(p.cat || "generico"),
+      date: p.date,
+      dateIt: itDate(p.date),
+      rating: p.rating,
+      note: p.note,
+      lat: p.lat,
+      lng: p.lng,
+    })),
+  };
+  download(
+    `diario-luoghi-${stamp()}.json`,
+    JSON.stringify(data, null, 2),
+    "application/json",
+  );
+  toast(`${places.length} luoghi esportati in JSON`);
+};
+
+/* ---------- TXT: elenco completo con categoria ---------- */
+$("btnTxt").onclick = () => {
+  if (!places.length) return toast("Non ci sono luoghi da esportare");
+  const lines = [];
+  lines.push("DIARIO DEI LUOGHI");
+  lines.push(`Esportato il ${stamp()}`);
+  lines.push(`Totale: ${places.length} luoghi`);
+  lines.push("=".repeat(60));
+  lines.push("");
+
+  // Riepilogo per categoria
+  const counts = {};
+  places.forEach((p) => {
+    const c = p.cat || "generico";
+    counts[c] = (counts[c] || 0) + 1;
+  });
+  lines.push("RIEPILOGO PER CATEGORIA:");
+  Object.keys(counts).forEach((c) => {
+    lines.push(`  ${catIco(c)} ${catLabel(c)}: ${counts[c]}`);
+  });
+  lines.push("");
+  lines.push("=".repeat(60));
+  lines.push("");
+
+  places.forEach((p, i) => {
+    const c = p.cat || "generico";
+    lines.push(`${i + 1}. ${catIco(c)} ${p.name}`);
+    lines.push(`   Categoria: ${catLabel(c)}`);
+    lines.push(`   Data: ${itDate(p.date) || "-"}`);
+    lines.push(`   Valutazione: ${p.rating ? "★".repeat(p.rating) : "-"}`);
+    lines.push(`   Coordinate: ${p.lat}, ${p.lng}`);
+    lines.push(`   Note: ${p.note || "-"}`);
+    lines.push("");
+  });
+
+  download(
+    `diario-luoghi-${stamp()}.txt`,
+    lines.join("\n"),
+    "text/plain;charset=utf-8",
+  );
+  toast(`${places.length} luoghi esportati in TXT`);
+};
+
+/* ---------- CSV: apribile in Excel con categoria ---------- */
+$("btnCsv").onclick = () => {
+  if (!places.length) return toast("Non ci sono luoghi da esportare");
+  const q = (s) => `"${String(s ?? "").replace(/"/g, '""')}"`;
+  const rows = [
+    [
+      "N.",
+      "Icona",
+      "Categoria",
+      "Nome",
+      "Data",
+      "Valutazione",
+      "Latitudine",
+      "Longitudine",
+      "Note",
+    ].join(","),
+  ];
+  places.forEach((p, i) => {
+    const c = p.cat || "generico";
+    rows.push(
+      [
+        i + 1,
+        q(catIco(c)),
+        q(catLabel(c)),
+        q(p.name),
+        q(itDate(p.date)),
+        p.rating || "",
+        p.lat,
+        p.lng,
+        q(p.note),
+      ].join(","),
+    );
+  });
+  // BOM per Excel italiano
+  const csv = "\uFEFF" + rows.join("\r\n");
+  download(
+    `diario-luoghi-${stamp()}.csv`,
+    csv,
+    "text/csv;charset=utf-8",
+  );
+  toast(`${places.length} luoghi esportati in CSV (Excel)`);
+};
+
+/* ---------- HTML: pagina autonoma con mappa e diario ---------- */
+$("btnHtml").onclick = () => {
+  if (!places.length) return toast("Non ci sono luoghi da esportare");
+  const counts = {};
+  places.forEach((p) => {
+    const c = p.cat || "generico";
+    counts[c] = (counts[c] || 0) + 1;
+  });
+  const cats = Object.keys(counts)
+    .map(
+      (c) =>
+        `<span class="chip">${catIco(c)} ${catLabel(c)} · ${counts[c]}</span>`,
+    )
+    .join("");
+  const cards = places
+    .map((p) => {
+      const c = p.cat || "generico";
+      return `<div class="card">
+        <div class="ico">${catIco(c)}</div>
+        <div>
+          <p class="name">${esc(p.name)}</p>
+          <div class="meta">${catLabel(c)}${p.date ? " · " + itDate(p.date) : ""}${p.rating ? ` · <span class="stars">${"★".repeat(p.rating)}</span>` : ""} · ${p.lat.toFixed(4)}, ${p.lng.toFixed(4)}</div>
+          ${p.note ? `<p class="note">${esc(p.note)}</p>` : ""}
+        </div>
+      </div>`;
+    })
+    .join("");
+  const markersJs = JSON.stringify(
+    places.map((p) => ({
+      name: p.name,
+      cat: p.cat || "generico",
+      ico: catIco(p.cat || "generico"),
+      lat: p.lat,
+      lng: p.lng,
+    })),
+  );
+
+  const html = `<!doctype html>
+<html lang="it">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Diario dei luoghi – ${stamp()}</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+<style>
+  * { box-sizing: border-box; }
+  body { font-family: system-ui, "Segoe UI", sans-serif; margin: 0; background: #f3f4fb; color: #151a33; }
+  header { padding: 20px; background: #fff; box-shadow: 0 6px 20px rgba(21,26,51,.08); }
+  h1 { margin: 0 0 6px; font-size: 1.4rem; }
+  .sub { color: #6b7194; font-size: .9rem; }
+  #map { height: 55vh; margin: 20px; border-radius: 16px; box-shadow: 0 10px 30px rgba(21,26,51,.1); }
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 0 20px 40px; }
+  .cats { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 0; }
+  .chip { background: #eceafd; color: #5b5bf0; border-radius: 99px; padding: 4px 12px; font-size: .85rem; font-weight: 600; }
+  .card { background: #fff; border-radius: 16px; padding: 16px; margin-top: 14px; box-shadow: 0 6px 20px rgba(21,26,51,.08); display: grid; grid-template-columns: 44px 1fr; gap: 12px; }
+  .ico { width: 44px; height: 44px; border-radius: 13px; display: grid; place-items: center; font-size: 1.4rem; background: #eceafd; }
+  .name { font-weight: 700; font-size: 1.05rem; margin: 0; }
+  .meta { color: #6b7194; font-size: .82rem; margin-top: 2px; }
+  .stars { color: #f5a524; }
+  .note { margin: 8px 0 0; font-size: .9rem; white-space: pre-wrap; color: #3d4263; }
+  .leaflet-container { font-family: inherit; }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <h1>🗺️ Diario dei luoghi</h1>
+    <div class="sub">Esportato il ${stamp()} · ${places.length} luoghi</div>
+    <div class="cats">${cats}</div>
+  </div>
+</header>
+<div id="map"></div>
+<div class="wrap">${cards}</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"><\/script>
+<script>
+  var places = ${markersJs};
+  var map = L.map('map');
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; OpenStreetMap'
+  }).addTo(map);
+  if (places.length) {
+    var bounds = [];
+    places.forEach(function(p) {
+      var ico = L.divIcon({
+        className: '',
+        html: '<div style="width:30px;height:30px;background:#5b5bf0;border:3px solid #fff;border-radius:50% 50% 50% 0;transform:rotate(-45deg);display:grid;place-items:center;box-shadow:0 3px 8px rgba(0,0,0,.35)"><span style="transform:rotate(45deg);font-size:14px">' + p.ico + '</span></div>',
+        iconSize: [30, 30],
+        iconAnchor: [15, 30]
+      });
+      L.marker([p.lat, p.lng], { icon: ico })
+        .addTo(map)
+        .bindTooltip(p.ico + ' ' + p.name);
+      bounds.push([p.lat, p.lng]);
+    });
+    map.fitBounds(bounds, { padding: [40, 40], maxZoom: 12 });
+  } else {
+    map.setView([42.5, 12.5], 5);
+  }
+<\/script>
+</body>
+</html>`;
+
+  download(
+    `diario-luoghi-${stamp()}.html`,
+    html,
+    "text/html;charset=utf-8",
+  );
+  toast(`Diario esportato in HTML (mappa inclusa)`);
+};
+
+/* ---------- IMPORTA ---------- */
 $("btnImport").onclick = () => $("file").click();
 $("file").addEventListener("change", async (e) => {
   const f = e.target.files[0];
@@ -540,6 +761,7 @@ $("file").addEventListener("change", async (e) => {
       }
       let date = p.date || "";
       if (/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(date)) date = isoDate(date);
+      const cat = p.cat || p.category || "generico";
       places.push({
         id: uid(),
         created: p.created || Date.now(),
@@ -547,7 +769,7 @@ $("file").addEventListener("change", async (e) => {
         date,
         rating: +p.rating || 0,
         note: p.note || "",
-        cat: CATS[p.cat] ? p.cat : "generico",
+        cat: CATS[cat] ? cat : "generico",
         lat: +p.lat,
         lng: +p.lng,
       });
@@ -567,6 +789,8 @@ $("file").addEventListener("change", async (e) => {
   }
   e.target.value = "";
 });
+
+/* ---------- SVUOTA ---------- */
 $("btnClear").onclick = () => {
   if (
     places.length &&
@@ -578,6 +802,7 @@ $("btnClear").onclick = () => {
     activeId = null;
     save();
     render();
+    toast("Tutti i luoghi eliminati");
   }
 };
 

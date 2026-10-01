@@ -36,10 +36,12 @@
         </div>
         <div class="actions-top">
           <button id="btnGps" title="Mostra la mia posizione">📍 GPS</button>
-          <button id="btnJson">JSON</button>
-          <button id="btnTxt">TXT</button>
-          <button id="btnImport">Importa</button>
-          <button id="btnClear" class="danger">Svuota</button>
+          <button id="btnJson">⬇ JSON</button>
+          <button id="btnTxt">⬇ TXT</button>
+          <button id="btnCsv">⬇ CSV</button>
+          <button id="btnHtml">⬇ HTML</button>
+          <button id="btnImport">📂 Importa</button>
+          <button id="btnClear" class="danger">🗑 Svuota</button>
           <input id="file" type="file" accept=".json,application/json" hidden />
         </div>
       </header>
@@ -70,6 +72,7 @@
             <option value="date">Data visita</option>
             <option value="rating">Valutazione</option>
             <option value="name">Nome</option>
+            <option value="cat">Categoria</option>
           </select>
         </div>
         <ul id="list" class="list"></ul>
@@ -93,6 +96,27 @@
           </button>
           <button type="button" data-cat="lavoro" class="cat">
             <span class="cat-ico">💼</span><span>Lavoro</span>
+          </button>
+          <button type="button" data-cat="viaggio" class="cat">
+            <span class="cat-ico">✈️</span><span>Viaggio</span>
+          </button>
+          <button type="button" data-cat="aereo" class="cat">
+            <span class="cat-ico">🛫</span><span>Aereo</span>
+          </button>
+          <button type="button" data-cat="treno" class="cat">
+            <span class="cat-ico">🚆</span><span>Treno</span>
+          </button>
+          <button type="button" data-cat="nave" class="cat">
+            <span class="cat-ico">🚢</span><span>Nave</span>
+          </button>
+          <button type="button" data-cat="auto" class="cat">
+            <span class="cat-ico">🚗</span><span>Auto</span>
+          </button>
+          <button type="button" data-cat="camper" class="cat">
+            <span class="cat-ico">🚐</span><span>Camper</span>
+          </button>
+          <button type="button" data-cat="bici" class="cat">
+            <span class="cat-ico">🚲</span><span>Bici</span>
           </button>
           <button type="button" data-cat="ristorante" class="cat">
             <span class="cat-ico">🍽️</span><span>Ristorante</span>

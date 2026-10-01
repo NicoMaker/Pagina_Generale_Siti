@@ -337,6 +337,27 @@ button.danger {
 .pin.cat-lavoro {
   background: #34495e;
 }
+.pin.cat-viaggio {
+  background: #00bcd4;
+}
+.pin.cat-aereo {
+  background: #0288d1;
+}
+.pin.cat-treno {
+  background: #455a64;
+}
+.pin.cat-nave {
+  background: #0277bd;
+}
+.pin.cat-auto {
+  background: #d32f2f;
+}
+.pin.cat-camper {
+  background: #6d4c41;
+}
+.pin.cat-bici {
+  background: #689f38;
+}
 .pin.cat-ristorante {
   background: #e67e22;
 }
