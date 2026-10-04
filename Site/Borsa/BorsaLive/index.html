@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>📊 BorsaManager — Gestione Automatica</title>
+
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230b0f1a'/><rect x='20' y='55' width='10' height='25' rx='2' fill='%2300d97e'/><rect x='35' y='40' width='10' height='40' rx='2' fill='%2300d97e'/><rect x='50' y='25' width='10' height='55' rx='2' fill='%233b82f6'/><rect x='65' y='45' width='10' height='35' rx='2' fill='%23a855f7'/><circle cx='70' cy='20' r='6' fill='%23ffc107'/></svg>"
+    />
+
+    <link rel="stylesheet" href="styles.css" />
+
+  </head>
+  <body>
+    <!-- TOPBAR -->
+    <div class="topbar">
+      <div class="logo">
+        <div class="icon">📊</div>
+        Borsa<span>Manager</span>
+      </div>
+
+      <div class="status-pill">
+        <span class="dot"></span>
+        <span id="statusText">ROBOT ATTIVO</span>
+      </div>
+
+      <div class="stats-mini">
+        <div class="stat-mini">
+          <div class="lbl">Capitale</div>
+          <div class="val" id="topCapital">€10.000</div>
+        </div>
+        <div class="stat-mini">
+          <div class="lbl">P&L</div>
+          <div class="val" id="topPnl">+0.00%</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LAYOUT -->
+    <div class="layout">
+      <!-- COLONNA SINISTRA -->
+      <div style="display: flex; flex-direction: column; gap: 16px">
+        <!-- STRATEGY -->
+        <div class="panel">
+          <div class="mode-selector">
+            <button class="mode-btn active" onclick="setMode('balanced')">
+              ⚖️ Bilanciata
+            </button>
+            <button class="mode-btn" onclick="setMode('aggressive')">
+              🚀 Aggressiva
+            </button>
+            <button class="mode-btn" onclick="setMode('conservative')">
+              🛡️ Conservativa
+            </button>
+          </div>
+
+          <div class="panel-body">
+            <div class="strategy-card">
+              <div class="strategy-name" id="stratName">⚖️ Bilanciata</div>
+              <div class="strategy-desc" id="stratDesc">
+                Il robot cerca un equilibrio tra rischio e rendimento. Compra su
+                debolezza, vende su forza, mantiene il 30% in cash per le
+                opportunità.
+              </div>
+              <div class="strategy-tags" id="stratTags"></div>
+            </div>
+
+            <div class="stats-grid">
+              <div class="stat-box">
+                <div class="lbl">Operazioni</div>
+                <div class="val blue" id="statTrades">0</div>
+              </div>
+              <div class="stat-box">
+                <div class="lbl">Win rate</div>
+                <div class="val green" id="statWin">--</div>
+              </div>
+              <div class="stat-box">
+                <div class="lbl">Cash</div>
+                <div class="val" id="statCash">€10.000</div>
+              </div>
+              <div class="stat-box">
+                <div class="lbl">Posizioni</div>
+                <div class="val yellow" id="statPos">0</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- EQUITY CURVE -->
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title">📈 Curva del capitale</div>
+            <div style="font-size: 11px; color: var(--muted)" id="equityTime">
+              --:--:--
+            </div>
+          </div>
+          <div class="panel-body">
+            <div class="equity-chart">
+              <svg
+                id="equity"
+                viewBox="0 0 800 220"
+                preserveAspectRatio="none"
+              ></svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- POSITIONS -->
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title">💼 Posizioni aperte</div>
+            <div style="font-size: 11px; color: var(--muted)" id="posCount">
+              0
+            </div>
+          </div>
+          <div class="panel-body" id="positionsBody">
+            <div class="empty">
+              <span class="emoji">🎯</span>
+              Il robot sta analizzando il mercato...<br />
+              Aspetta che trovi la prima opportunità!
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- COLONNA DESTRA -->
+      <div style="display: flex; flex-direction: column; gap: 16px">
+        <!-- ACTIVITY -->
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title">🧠 Diario del robot</div>
+            <div style="font-size: 11px; color: var(--muted)">
+              ultimi eventi
+            </div>
+          </div>
+          <div class="panel-body" style="padding: 0">
+            <div class="activity-log" id="log"></div>
+          </div>
+          <div class="controls">
+            <button class="ctrl-btn" onclick="forceDecision()">
+              ⚡ Forza decisione
+            </button>
+            <button class="ctrl-btn" onclick="sellAll()">
+              💰 Liquida tutto
+            </button>
+            <button class="ctrl-btn danger" onclick="resetAll()">
+              🔄 Reset
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOAST -->
+    <div class="toast" id="toast"></div>
+  </body>
+
+  <script src="script.js"></script>
+</html>

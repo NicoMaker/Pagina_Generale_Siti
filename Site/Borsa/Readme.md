@@ -3,6 +3,7 @@
 # Borsa
 
 - **[Algoritmo di Taylor](Algoritmo_Taylor)**
+- **[Borsa Live](BorsaLive)
 - **[Cambi Valute](Cambi%20Valute)**
 - **[Dashboard Titoli](Dashboard_TItoli)**
 - **[Finanza e Statistica](https://github.com/NicoMaker/Finanza_e_Statistica)
