@@ -5,5 +5,6 @@
 - **[Algoritmo di Taylor](Algoritmo_Taylor)**
 - **[Cambi Valute](Cambi%20Valute)**
 - **[Dashboard Titoli](Dashboard_TItoli)**
+- **[Finanza e Statistica](https://github.com/NicoMaker/Finanza_e_Statistica)
 - **[Immunizzazione Finanziaria](Immunizzazione_Finanziaria)**
 - **[Valori Titoli di Borsa](Valore%20Titoli)**
