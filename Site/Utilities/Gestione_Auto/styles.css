@@ -1220,3 +1220,1482 @@ textarea::placeholder {
   color: var(--text-secondary);
   opacity: 0.6;
 }
+
+/* --- BACKUP E RIPRISTINO DATI --- */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.data-section {
+  padding-bottom: 1.25rem;
+  margin-bottom: 1.25rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.data-section:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.data-section h4 {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
+  color: var(--text-primary);
+}
+
+.data-section h4 i {
+  color: var(--accent-primary);
+}
+
+.data-hint {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.75rem;
+}
+
+.data-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.import-file-name {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  word-break: break-all;
+}
+
+.import-preview {
+  margin-top: 1rem;
+  padding: 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  background-color: var(--bg-primary);
+}
+
+.import-summary {
+  list-style: none;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-bottom: 1rem;
+}
+
+.import-summary li i {
+  width: 1.25rem;
+  color: var(--accent-primary);
+}
+
+.import-summary li.import-warning,
+.import-summary li.import-warning i {
+  color: var(--accent-warning);
+}
+
+.import-mode {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.import-mode-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  padding: 0.7rem 0.8rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  background-color: var(--bg-secondary);
+  cursor: pointer;
+}
+
+.import-mode-option:has(input:checked) {
+  border-color: var(--accent-primary);
+}
+
+.import-mode-option input {
+  margin-top: 0.3rem;
+  accent-color: var(--accent-primary);
+}
+
+.import-mode-option strong {
+  display: block;
+  font-size: 0.9rem;
+}
+
+.import-mode-option small {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+@media (max-width: 768px) {
+  .data-buttons .btn {
+    width: auto;
+    flex: 1 1 auto;
+  }
+}/* --- FONT E VARIABILI GLOBALI --- */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+
+:root {
+  --bg-primary: #f4f7fa;
+  --bg-secondary: #ffffff;
+  --text-primary: #1a202c;
+  --text-secondary: #4a5568;
+  --border-color: #e2e8f0;
+  --accent-primary: #4a90e2;
+  --accent-primary-hover: #357abd;
+  --accent-secondary: #f5f5f5;
+  --accent-secondary-hover: #e0e0e0;
+  --accent-danger: #e53e3e;
+  --accent-danger-hover: #c53030;
+  --accent-success: #38a169;
+  --accent-warning: #dd6b20;
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  --shadow-md:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --transition-speed: 0.3s;
+}
+
+[data-theme="dark"] {
+  --bg-primary: #1a202c;
+  --bg-secondary: #2d3748;
+  --text-primary: #edf2f7;
+  --text-secondary: #a0aec0;
+  --border-color: #4a5568;
+  --accent-primary: #63b3ed;
+  --accent-primary-hover: #4299e1;
+  --accent-secondary: #4a5568;
+  --accent-secondary-hover: #718096;
+  --accent-danger: #fc8181;
+  --accent-danger-hover: #f56565;
+}
+
+/* --- RESET E STILI DI BASE --- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.6;
+  transition:
+    background-color var(--transition-speed) ease,
+    color var(--transition-speed) ease;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* --- HEADER --- */
+.header {
+  background-color: var(--bg-secondary);
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo-section {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.logo-icon {
+  font-size: 2rem;
+  color: var(--accent-primary);
+}
+
+.logo-text h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.logo-text p {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.theme-toggle {
+  background: none;
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  padding: 0.5rem;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all var(--transition-speed) ease;
+}
+
+.theme-toggle:hover {
+  background-color: var(--accent-secondary);
+  color: var(--text-primary);
+}
+
+.theme-toggle .toggle-label {
+  display: none;
+}
+
+/* --- STATS --- */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.stat-card {
+  background-color: var(--bg-secondary);
+  padding: 1.5rem;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-speed) ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-md);
+}
+
+.stat-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.stat-label {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+}
+
+.stat-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.stat-icon {
+  font-size: 1.5rem;
+  padding: 1rem;
+  border-radius: 50%;
+  color: #fff;
+}
+
+.stat-icon-blue {
+  background-color: var(--accent-primary);
+}
+.stat-icon-green {
+  background-color: var(--accent-success);
+}
+.stat-icon-red {
+  background-color: var(--accent-danger);
+}
+
+/* --- ALERTS SECTION STYLES (MESSAGGIO BELLO) --- */
+.alerts-section {
+  background-color: var(--bg-secondary);
+  padding: 1.5rem;
+  border-radius: var(--radius-lg);
+  margin-top: 2rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.section-header h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.section-header .alert-icon {
+  color: var(--accent-warning);
+}
+
+.alerts-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.alert-message {
+  padding: 1rem 1.5rem;
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  box-shadow: var(--shadow-md);
+  font-weight: 500;
+  transition: transform 0.2s ease;
+  cursor: pointer; /* Rende chiaro che è cliccabile */
+}
+
+.alert-message:hover {
+  transform: translateY(-2px);
+}
+
+.alert-message .alert-icon {
+  font-size: 1.75rem;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.alert-message.warning {
+  background-color: var(--accent-warning);
+  color: #fff; /* Testo bianco per contrasto sul giallo/arancio */
+}
+
+/* Stile per i dettagli all'interno dell'alert */
+.alert-message-content strong {
+  font-weight: 700;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.alert-message-content p {
+  margin: 0;
+  font-size: 1rem;
+}
+
+/* Stile per la nota "clicca" */
+.alert-message-content small {
+  display: block;
+  font-size: 0.85rem;
+  opacity: 0.8;
+  margin-top: 0.25rem;
+}
+
+.alert-actions {
+  margin-left: auto; /* Spinge il pulsante a destra */
+  flex-shrink: 0;
+}
+
+/* --- VEHICLES SECTION --- */
+.vehicles-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 3rem;
+  margin-bottom: 1.5rem;
+}
+
+.vehicles-section-header h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.vehicles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.vehicle-card {
+  background-color: var(--bg-secondary);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: all var(--transition-speed) ease;
+}
+
+.vehicle-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-md);
+}
+
+/* Stili card veicolo migliorati */
+.vehicle-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center; /* Allineato al centro per i bottoni */
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.vehicle-card-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.vehicle-icon {
+  font-size: 1.5rem;
+  color: var(--accent-primary);
+  background-color: var(--accent-secondary);
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.vehicle-card-footer {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+  background-color: var(--bg-primary);
+  border-top: 1px solid var(--border-color);
+}
+
+.vehicle-card-info-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-secondary);
+}
+
+.vehicle-card-actions {
+  display: flex;
+  gap: 0.5rem;
+  padding: 1rem 1.5rem;
+}
+
+.btn-full {
+  flex: 1;
+}
+
+/* --- BOTTONI ICONA MOBILE FRIENDLY --- */
+.btn-icon {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 1.25rem;
+  padding: 0.5rem;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-speed) ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px; /* Target touch ottimale */
+  height: 44px; /* Target touch ottimale */
+  flex-shrink: 0;
+}
+
+.btn-icon:hover {
+  background-color: var(--accent-secondary);
+  transform: scale(1.1); /* Aggiunge un leggero ingrandimento */
+}
+
+.btn-icon.btn-danger {
+  color: var(
+    --accent-danger
+  ); /* Imposta il colore rosso di default per l'icona */
+  font-size: 1.4rem; /* Aumenta la dimensione dell'icona del cestino */
+}
+
+.btn-icon.btn-danger:hover {
+  background-color: var(
+    --accent-danger
+  ); /* Sfondo rosso al passaggio del mouse */
+  color: white; /* L'icona diventa bianca per contrasto */
+  transform: scale(1.25); /* Ingrandisce di più al passaggio del mouse */
+}
+
+.btn-icon.btn-secondary {
+  color: var(--accent-primary);
+}
+
+/* Stile per il contenitore delle azioni nella card veicolo (in alto) */
+.vehicle-header-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+/* Stile per le azioni di modifica/eliminazione della manutenzione (nel popup) */
+.maintenance-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* --- BOTTONI GENERALI --- */
+.btn {
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all var(--transition-speed) ease;
+}
+
+.btn-primary {
+  background-color: var(--accent-primary);
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: var(--accent-primary-hover);
+}
+
+.btn-secondary {
+  background-color: var(--accent-secondary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+}
+
+.btn-secondary:hover {
+  background-color: var(--accent-secondary-hover);
+}
+
+.btn-danger {
+  background-color: var(--accent-danger);
+  color: white;
+}
+
+.btn-danger:hover {
+  background-color: var(--accent-danger-hover);
+}
+
+.btn-success {
+  background-color: var(--accent-success);
+  color: white;
+}
+
+.btn-success:hover {
+  background-color: #2f855a; /* Una tonalità più scura di verde */
+}
+
+.btn-sm {
+  padding: 0.4rem 0.8rem;
+  font-size: 0.8rem;
+}
+
+/* --- EMPTY STATE --- */
+.empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  background-color: var(--bg-secondary);
+  border-radius: var(--radius-lg);
+  margin-top: 2rem;
+  display: none; /* Nascosto di default */
+}
+
+.empty-icon {
+  font-size: 4rem;
+  color: var(--text-secondary);
+  opacity: 0.5;
+  margin-bottom: 1.5rem;
+}
+
+.empty-state h3 {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.empty-state p {
+  color: var(--text-secondary);
+  margin-bottom: 1.5rem;
+}
+
+/* --- DIALOGHI (MODAL) --- */
+.dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity var(--transition-speed) ease,
+    visibility var(--transition-speed) ease;
+}
+
+.dialog-overlay.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.dialog {
+  background-color: var(--bg-secondary);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  width: 90%;
+  max-width: 500px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  transform: scale(0.95);
+  transition: transform var(--transition-speed) ease;
+}
+
+.dialog-overlay.show .dialog {
+  transform: scale(1);
+}
+
+.dialog-large {
+  max-width: 800px;
+}
+
+.dialog-header {
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+  flex-shrink: 0;
+}
+
+.dialog-header h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.dialog-subtitle {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.dialog-body {
+  padding: 1.5rem;
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+/* Su desktop, limitiamo l'altezza */
+@media (min-width: 768px) {
+  .dialog-body {
+    max-height: 70vh;
+  }
+}
+
+/* Su mobile, permettiamo lo scroll completo */
+@media (max-width: 767px) {
+  .dialog-overlay {
+    align-items: flex-start;
+    padding: 1rem 0.5rem;
+  }
+
+  .dialog {
+    max-height: calc(100vh - 2rem);
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .dialog-body {
+    max-height: calc(100vh - 300px);
+  }
+}
+
+.dialog-footer,
+.dialog-actions {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  background-color: var(--bg-primary);
+  border-bottom-left-radius: var(--radius-lg);
+  border-bottom-right-radius: var(--radius-lg);
+  flex-shrink: 0;
+}
+
+.dialog-actions {
+  justify-content: center;
+}
+
+/* --- FORM --- */
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-size: 1rem;
+  transition:
+    border-color var(--transition-speed) ease,
+    box-shadow var(--transition-speed) ease;
+  font-family: inherit;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.3);
+}
+
+.form-row {
+  display: flex;
+  gap: 1rem;
+}
+
+.form-row .form-group {
+  flex: 1;
+}
+
+/* --- DETTAGLI VEICOLO DIALOG --- */
+.update-km-card {
+  background-color: var(--bg-primary);
+  padding: 1rem;
+  border-radius: var(--radius-md);
+  margin-bottom: 2rem;
+}
+
+.update-km-controls {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.update-km-input {
+  flex-grow: 1;
+  padding: 0.75rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  background-color: var(--bg-secondary);
+}
+
+.maintenances-list-section h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.maintenance-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border-radius: var(--radius-md);
+  margin-bottom: 0.75rem;
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-color);
+}
+
+.maintenance-info {
+  flex-grow: 1;
+}
+
+.maintenance-info p {
+  font-weight: 600;
+}
+
+.maintenance-info span {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.maintenance-item.completed {
+  background-color: #e6fffa;
+  border-color: #b2f5ea;
+}
+
+[data-theme="dark"] .maintenance-item.completed {
+  background-color: #2c5282;
+  border-color: #4a5568;
+}
+
+.maintenance-item.completed .maintenance-info p {
+  text-decoration: line-through;
+  color: var(--text-secondary);
+}
+
+/* Stili dettagli manutenzione migliorati */
+.maintenance-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.maintenance-item-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.maintenance-item-header-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.maintenance-checkbox {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: var(--text-secondary);
+}
+
+.maintenance-checkbox .fa-check-circle {
+  color: var(--accent-success);
+}
+
+.maintenance-title.completed {
+  text-decoration: line-through;
+  color: var(--text-secondary);
+}
+
+.maintenance-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-left: 2.2rem; /* Allineato con il titolo */
+}
+
+.maintenance-detail-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.text-overdue {
+  color: var(--accent-danger);
+}
+.text-normal {
+  color: var(--text-secondary);
+}
+.maintenance-completed-date {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+/* --- RESPONSIVE DESIGN --- */
+@media (min-width: 768px) {
+  .theme-toggle .toggle-label {
+    display: inline;
+  }
+}
+
+@media (max-width: 768px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .vehicles-section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .vehicles-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dialog-footer,
+  .dialog-actions {
+    flex-direction: column-reverse;
+  }
+
+  .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    font-size: 14px;
+  }
+
+  .container {
+    padding: 0 15px;
+  }
+
+  .logo-text h1 {
+    font-size: 1.2rem;
+  }
+
+  .stat-value {
+    font-size: 1.5rem;
+  }
+
+  .stat-icon {
+    padding: 0.75rem;
+    font-size: 1.2rem;
+  }
+
+  .dialog {
+    width: 100%;
+    border-radius: 0;
+    max-height: 100vh;
+  }
+
+  .dialog-body {
+    max-height: calc(100vh - 250px);
+    overflow-y: auto;
+  }
+
+  .form-row {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .maintenance-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .maintenance-item-header {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  /* Adattamento mobile per gli alerts */
+  .alert-message {
+    flex-direction: row; /* Mantieni in riga */
+    align-items: center;
+    padding: 0.75rem 1rem;
+  }
+
+  .alert-message .alert-icon {
+    font-size: 1.5rem;
+  }
+}
+
+/* --- ANIMAZIONI --- */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.stat-card,
+.vehicle-card,
+.alert-item {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+/* Stile per l'icona di avviso attiva */
+#alertsIcon.active {
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(229, 62, 62, 0.7);
+  }
+  70% {
+    transform: scale(1.1);
+    box-shadow: 0 0 10px 20px rgba(229, 62, 62, 0);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(229, 62, 62, 0);
+  }
+}
+
+/* --- BOTTONI ICONA MOBILE FRIENDLY --- */
+.btn-icon {
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+  padding: 0.5rem;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-speed) ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+}
+
+.btn-icon:hover {
+  transform: scale(1.1);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-icon.btn-danger {
+  color: var(--accent-danger);
+  background-color: rgba(229, 62, 62, 0.1);
+  border-color: rgba(229, 62, 62, 0.2);
+  font-size: 1.15rem;
+}
+
+.btn-icon.btn-danger:hover {
+  background-color: var(--accent-danger);
+  color: white;
+  border-color: var(--accent-danger);
+  transform: scale(1.15);
+  box-shadow: 0 4px 12px rgba(229, 62, 62, 0.3);
+}
+
+.btn-icon.btn-secondary {
+  color: var(--accent-primary);
+  background-color: rgba(74, 144, 226, 0.1);
+  border-color: rgba(74, 144, 226, 0.2);
+}
+
+.btn-icon.btn-secondary:hover {
+  background-color: var(--accent-primary);
+  color: white;
+  border-color: var(--accent-primary);
+}
+
+/* --- LAYOUT BOTTONI NEI MODALI (MOBILE) --- */
+
+/* Assicura che i bottoni siano affiancati sul desktop e con un piccolo spazio */
+.dialog-footer {
+  display: flex;
+  justify-content: flex-end; /* Allinea a destra */
+  gap: 0.75rem; /* Spazio tra i bottoni */
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-color);
+}
+
+/* Regole per schermi piccoli (es. smartphone) */
+@media (max-width: 600px) {
+  .dialog-footer {
+    /* Impila i bottoni verticalmente e inverte l'ordine: */
+    /* Salva Modifiche (Primary) andrà sopra, Chiudi (Secondary) andrà sotto. */
+    flex-direction: column-reverse;
+  }
+
+  .dialog-footer button {
+    /* Rende i bottoni a larghezza piena per una migliore usabilità mobile */
+    width: 100%;
+  }
+}
+
+/* --- STILE CHECKBOX CUSTOM (SWITCH) --- */
+
+.form-group-checkbox {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.form-group-checkbox label {
+  margin-left: 0.5rem;
+  cursor: pointer;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+/* Stile per il gruppo dello switch */
+.custom-switch-group {
+  padding: 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  background-color: var(--bg-secondary);
+  box-shadow: var(--shadow-sm);
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  gap: 1rem;
+}
+
+/* Nasconde l'input checkbox standard */
+.custom-switch-input {
+  display: none;
+}
+
+/* Stile del contenitore dello switch (la pillola) */
+.custom-switch-label {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end; /* Sposta lo switch a destra */
+  gap: 1rem;
+  margin-left: 0;
+  flex-grow: 1; /* Permette alla label di occupare lo spazio rimanente */
+}
+
+.custom-switch-slider {
+  position: relative;
+  display: inline-block;
+  width: 100px; /* Larghezza maggiore per contenere il testo */
+  height: 34px;
+  border-radius: 17px; /* Forma a pillola */
+  background-color: var(--accent-danger); /* Colore quando è 'Non Completata' */
+  cursor: pointer;
+  transition: background-color 0.4s;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+/* Pseudoelemento che simula il "pomello" e il testo */
+.custom-switch-slider::after {
+  content: "NON COMPLETATA"; /* Testo predefinito */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 17px;
+  transition: transform 0.4s;
+}
+
+/* Cambia colore e testo quando è checked (Completata) */
+.custom-switch-input:checked + .custom-switch-label .custom-switch-slider {
+  background-color: var(--accent-success); /* Colore quando è 'Completata' */
+}
+
+.custom-switch-input:checked
+  + .custom-switch-label
+  .custom-switch-slider::after {
+  content: "COMPLETATA"; /* Testo quando è completata */
+  transform: none; /* Rimuove eventuali trasformazioni se volessimo animarlo */
+}
+
+/* Aggiunge un po' di spazio tra il testo "Stato:" e lo switch */
+.custom-switch-label span:first-child {
+  font-size: 1.1rem;
+}
+
+/* --- STILE CHECKBOX CUSTOM (SWITCH) --- */
+
+.form-group-checkbox {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.form-group-checkbox label {
+  margin-left: 0.5rem;
+  cursor: pointer;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+/* Stile per il gruppo dello switch */
+.custom-switch-group {
+  padding: 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg); /* Usiamo la variabile per la consistenza */
+  background-color: var(--bg-secondary);
+  box-shadow: var(--shadow-sm);
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  gap: 1rem;
+}
+
+/* Nasconde l'input checkbox standard */
+.custom-switch-input {
+  display: none;
+}
+
+/* Stile del contenitore dello switch (la pillola) */
+.custom-switch-label {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end; /* Sposta lo switch a destra */
+  gap: 1rem;
+  margin-left: 0;
+  flex-grow: 1; /* Permette alla label di occupare lo spazio rimanente */
+}
+
+.custom-switch-slider {
+  position: relative;
+  display: inline-block;
+  width: 130px; /* Aumentato leggermente la larghezza per il testo */
+  height: 34px;
+  border-radius: 17px; /* Forma a pillola */
+  background-color: var(--accent-danger); /* Colore quando è 'Non Completata' */
+  cursor: pointer;
+  transition: background-color 0.4s;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+/* Pseudoelemento che simula il "pomello" e il testo */
+.custom-switch-slider::after {
+  /* ⭐ AGGIORNATO: Capitalizzazione pulita */
+  content: "Non Completata";
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 17px;
+  transition: transform 0.4s;
+}
+
+/* Cambia colore e testo quando è checked (Completata) */
+.custom-switch-input:checked + .custom-switch-label .custom-switch-slider {
+  background-color: var(--accent-success); /* Colore quando è 'Completata' */
+}
+
+.custom-switch-input:checked
+  + .custom-switch-label
+  .custom-switch-slider::after {
+  /* ⭐ AGGIORNATO: Capitalizzazione pulita */
+  content: "Completata";
+  transform: none;
+}
+
+/* Aggiunge un po' di spazio tra il testo "Stato:" e lo switch */
+.custom-switch-label span:first-child {
+  font-size: 1.1rem;
+}
+/* --- VEHICLE CARD NOTES --- */
+.vehicle-card-notes {
+  padding: 0.75rem 1.5rem;
+  background-color: var(--bg-primary);
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.vehicle-card-notes i {
+  color: var(--accent-warning);
+  margin-top: 0.15rem;
+  flex-shrink: 0;
+}
+
+.vehicle-card-notes span {
+  flex: 1;
+}
+
+/* --- VEHICLE NOTES IN DETAILS DIALOG --- */
+#vehicleNotesDisplay {
+  padding: 1rem;
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+}
+
+#vehicleNotesDisplay label {
+  color: var(--text-primary);
+  font-size: 0.95rem;
+}
+
+#vehicleNotesText {
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+/* --- TEXTAREA STYLING --- */
+textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  font-family: inherit;
+  font-size: 1rem;
+  color: var(--text-primary);
+  background-color: var(--bg-secondary);
+  resize: vertical;
+  transition: border-color var(--transition-speed) ease;
+}
+
+textarea:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+}
+
+textarea::placeholder {
+  color: var(--text-secondary);
+  opacity: 0.6;
+}
+
+/* --- BACKUP E RIPRISTINO DATI --- */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.data-section {
+  padding-bottom: 1.25rem;
+  margin-bottom: 1.25rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.data-section:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.data-section h4 {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
+  color: var(--text-primary);
+}
+
+.data-section h4 i {
+  color: var(--accent-primary);
+}
+
+.data-hint {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.75rem;
+}
+
+.data-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.import-file-name {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  word-break: break-all;
+}
+
+.import-preview {
+  margin-top: 1rem;
+  padding: 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  background-color: var(--bg-primary);
+}
+
+.import-summary {
+  list-style: none;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-bottom: 1rem;
+}
+
+.import-summary li i {
+  width: 1.25rem;
+  color: var(--accent-primary);
+}
+
+.import-summary li.import-warning,
+.import-summary li.import-warning i {
+  color: var(--accent-warning);
+}
+
+.import-mode {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.import-mode-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  padding: 0.7rem 0.8rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  background-color: var(--bg-secondary);
+  cursor: pointer;
+}
+
+.import-mode-option:has(input:checked) {
+  border-color: var(--accent-primary);
+}
+
+.import-mode-option input {
+  margin-top: 0.3rem;
+  accent-color: var(--accent-primary);
+}
+
+.import-mode-option strong {
+  display: block;
+  font-size: 0.9rem;
+}
+
+.import-mode-option small {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+@media (max-width: 768px) {
+  .data-buttons .btn {
+    width: auto;
+    flex: 1 1 auto;
+  }
+}

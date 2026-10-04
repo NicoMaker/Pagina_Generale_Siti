@@ -32,6 +32,14 @@
           </div>
           <div class="header-actions">
             <button
+              id="dataToggle"
+              class="theme-toggle"
+              aria-label="Backup e ripristino dati"
+            >
+              <i class="fas fa-database"></i>
+              <span class="toggle-label">Dati</span>
+            </button>
+            <button
               id="themeToggle"
               class="theme-toggle"
               aria-label="Cambia tema"
@@ -363,6 +371,101 @@
             </button>
           </div>
         </form>
+      </div>
+    </div>
+
+    <div id="dialogData" class="dialog-overlay">
+      <div class="dialog">
+        <div class="dialog-header">
+          <h3>Backup e Ripristino</h3>
+          <p class="dialog-subtitle">
+            Esporta i tuoi dati o importali da un file JSON o TXT
+          </p>
+        </div>
+        <div class="dialog-body">
+          <section class="data-section">
+            <h4><i class="fas fa-download"></i> Esporta dati</h4>
+            <p class="data-hint">
+              Scarica tutti i veicoli e le manutenzioni. Il JSON è ideale per i
+              backup, il TXT è leggibile (e modificabile) a mano.
+            </p>
+            <div class="data-buttons">
+              <button type="button" class="btn btn-primary" id="btnExportJson">
+                <i class="fas fa-file-code"></i> Scarica JSON
+              </button>
+              <button type="button" class="btn btn-secondary" id="btnExportTxt">
+                <i class="fas fa-file-lines"></i> Scarica TXT
+              </button>
+            </div>
+          </section>
+
+          <section class="data-section">
+            <h4><i class="fas fa-upload"></i> Importa dati</h4>
+            <p class="data-hint">
+              Seleziona un file .json o .txt esportato da questa app.
+            </p>
+            <input
+              type="file"
+              id="importFileInput"
+              accept=".json,.txt,application/json,text/plain"
+              hidden
+            />
+            <div class="data-buttons">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                id="btnChooseImportFile"
+              >
+                <i class="fas fa-folder-open"></i> Scegli file...
+              </button>
+              <span id="importFileName" class="import-file-name"></span>
+            </div>
+
+            <div id="importPreview" class="import-preview" style="display: none">
+              <ul id="importSummary" class="import-summary"></ul>
+              <div class="import-mode">
+                <label class="import-mode-option">
+                  <input
+                    type="radio"
+                    name="importMode"
+                    value="merge"
+                    checked
+                  />
+                  <span>
+                    <strong>Unisci ai dati esistenti</strong>
+                    <small
+                      >I veicoli con la stessa targa vengono aggiornati, gli
+                      altri aggiunti. Nulla viene cancellato.</small
+                    >
+                  </span>
+                </label>
+                <label class="import-mode-option">
+                  <input type="radio" name="importMode" value="replace" />
+                  <span>
+                    <strong>Sostituisci tutti i dati</strong>
+                    <small
+                      >Elimina i dati attuali e usa solo quelli del
+                      file.</small
+                    >
+                  </span>
+                </label>
+              </div>
+            </div>
+          </section>
+        </div>
+        <div class="dialog-footer">
+          <button type="button" class="btn btn-secondary" id="btnCloseData">
+            Chiudi
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            id="btnConfirmImport"
+            disabled
+          >
+            <i class="fas fa-check"></i> Importa
+          </button>
+        </div>
       </div>
     </div>
 

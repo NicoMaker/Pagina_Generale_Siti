@@ -262,6 +262,7 @@ const dialogEditMaintenanceEl = document.getElementById(
   "dialogEditMaintenance",
 );
 const dialogConfirmEl = document.getElementById("dialogConfirm");
+const dialogDataEl = document.getElementById("dialogData");
 
 // Forms
 const formAddVehicleEl = document.getElementById("formAddVehicle");
@@ -516,9 +517,18 @@ function handleDeleteVehicle(vehicleId) {
   );
 }
 
-function showConfirmDialog(title, message, onConfirm) {
+function showConfirmDialog(
+  title,
+  message,
+  onConfirm,
+  confirmLabel = "Elimina",
+) {
   document.getElementById("confirmDialogTitle").textContent = title;
   document.getElementById("confirmDialogMessage").textContent = message;
+  const confirmBtn = document.getElementById("btnConfirmAction");
+  confirmBtn.style.display = "inline-flex";
+  confirmBtn.textContent = confirmLabel;
+  document.getElementById("btnCancelConfirm").textContent = "Annulla";
   dialogConfirmEl.classList.add("show");
 
   document.getElementById("btnConfirmAction").onclick = () => {
@@ -1061,6 +1071,7 @@ function setupDialogCloseHandlers() {
     dialogAddMaintenanceEl,
     dialogVehicleDetailsEl,
     dialogEditMaintenanceEl,
+    dialogDataEl,
     dialogConfirmEl,
   ];
 
@@ -1167,3 +1178,636 @@ function handleEditVehicle(vehicleId) {
   document.getElementById("vehicleNotes").value = vehicle.notes || "";
   dialogAddVehicleEl.classList.add("show");
 }
+
+// ====================================================================
+// ESPORTAZIONE / IMPORTAZIONE DATI (JSON e TXT)
+// ====================================================================
+const BACKUP_APP_NAME = "gestione-auto";
+const BACKUP_VERSION = 1;
+const MAX_IMPORT_SIZE = 10 * 1024 * 1024; // 10 MB
+
+let pendingImport = null; // Dati letti dal file, in attesa di conferma
+
+// ---------- Utilità ----------
+
+function generateId() {
+  return Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+}
+
+function dateStamp() {
+  const d = new Date();
+  const p = (n) => String(n).padStart(2, "0");
+  return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`;
+}
+
+function downloadFile(filename, content, mime) {
+  const blob = new Blob([content], { type: mime });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+function readFileAsText(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result));
+    reader.onerror = () => reject(new Error("Impossibile leggere il file."));
+    reader.readAsText(file, "UTF-8");
+  });
+}
+
+// Pulizia dei valori importati (i dati finiscono in innerHTML: niente < o >)
+function cleanText(value, max = 500) {
+  return String(value ?? "")
+    .replace(/[<>]/g, "")
+    .trim()
+    .slice(0, max);
+}
+
+function cleanId(value) {
+  const s = String(value ?? "").trim();
+  return /^[A-Za-z0-9_-]{1,64}$/.test(s) ? s : "";
+}
+
+function toInt(value) {
+  const n = parseInt(value, 10);
+  return Number.isFinite(n) ? n : null;
+}
+
+function toBool(value) {
+  return (
+    value === true || /^(s[iì]|true|1|yes|y)$/i.test(String(value ?? "").trim())
+  );
+}
+
+function toIso(value) {
+  if (!value) return null;
+  const t = Date.parse(value);
+  return Number.isNaN(t) ? null : new Date(t).toISOString();
+}
+
+function toDateOnly(value) {
+  const s = String(value ?? "").trim();
+  if (/^\d{4}-\d{2}-\d{2}/.test(s)) return s.slice(0, 10);
+  const iso = toIso(s);
+  return iso ? iso.slice(0, 10) : null;
+}
+
+// ---------- ESPORTAZIONE ----------
+
+function hasDataToExport() {
+  if (getVehicles().length === 0) {
+    showAlertDialog(
+      "Nessun dato da esportare",
+      "Non ci sono veicoli salvati. Aggiungi almeno un veicolo prima di esportare.",
+    );
+    return false;
+  }
+  return true;
+}
+
+function exportJson() {
+  if (!hasDataToExport()) return;
+
+  const payload = {
+    app: BACKUP_APP_NAME,
+    version: BACKUP_VERSION,
+    exportedAt: new Date().toISOString(),
+    vehicles: getVehicles(),
+    maintenances: getMaintenances(),
+  };
+
+  downloadFile(
+    `gestione-auto-backup-${dateStamp()}.json`,
+    JSON.stringify(payload, null, 2),
+    "application/json;charset=utf-8",
+  );
+}
+
+// Nel TXT i ritorni a capo e i backslash vengono "escapati" per restare su una riga
+const txtEscape = (v) =>
+  String(v ?? "")
+    .replace(/\\/g, "\\\\")
+    .replace(/\r?\n/g, "\\n");
+
+const txtUnescape = (s) =>
+  s.replace(/\\(\\|n)/g, (_, c) => (c === "n" ? "\n" : "\\"));
+
+function buildTxtExport() {
+  const vs = getVehicles();
+  const ms = getMaintenances();
+  const L = [];
+  const line = (indent, label, value) =>
+    L.push(`${indent}${label}: ${txtEscape(value)}`);
+
+  L.push("GESTIONE AUTO - ESPORTAZIONE DATI");
+  L.push(`Versione formato: ${BACKUP_VERSION}`);
+  L.push(`Esportato il: ${new Date().toISOString()}`);
+  L.push(`Veicoli: ${vs.length}`);
+  L.push(`Manutenzioni: ${ms.length}`);
+  L.push("");
+  L.push("# Puoi modificare questo file a mano e reimportarlo.");
+  L.push("# Non cambiare i nomi dei campi (la parte prima dei due punti).");
+  L.push("# Le date vanno scritte nel formato AAAA-MM-GG (es. 2026-03-15).");
+  L.push("");
+
+  vs.forEach((v) => {
+    L.push("=".repeat(60));
+    L.push("[VEICOLO]");
+    line("", "ID", v.id);
+    line("", "Marca", v.brand);
+    line("", "Modello", v.model);
+    line("", "Targa", v.plate);
+    line("", "Anno", v.year);
+    line("", "Km Attuali", v.currentKm ?? 0);
+    line("", "Note", v.notes);
+    line("", "Creato il", v.createdAt);
+
+    ms.filter((m) => m.vehicleId === v.id).forEach((m) => {
+      L.push("");
+      L.push("  [MANUTENZIONE]");
+      line("  ", "ID", m.id);
+      line("  ", "Tipo", m.type);
+      line("  ", "Scadenza", m.dueDate);
+      line("  ", "Km Scadenza", m.dueKm ?? "");
+      line("  ", "Giorni Preavviso", m.notifyDaysBefore ?? 7);
+      line("  ", "Note", m.notes);
+      line("  ", "Completata", m.completed ? "Sì" : "No");
+      line("  ", "Completata il", m.completedAt ?? "");
+      line("  ", "Creata il", m.createdAt);
+    });
+    L.push("");
+  });
+
+  L.push("=".repeat(60));
+  L.push("[FINE]");
+  return L.join("\n");
+}
+
+function exportTxt() {
+  if (!hasDataToExport()) return;
+  downloadFile(
+    `gestione-auto-backup-${dateStamp()}.txt`,
+    buildTxtExport(),
+    "text/plain;charset=utf-8",
+  );
+}
+
+// ---------- LETTURA / VALIDAZIONE FILE ----------
+
+function normalizeKey(key) {
+  return key
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+}
+
+const TXT_VEHICLE_FIELDS = {
+  id: "id",
+  marca: "brand",
+  modello: "model",
+  targa: "plate",
+  anno: "year",
+  "km attuali": "currentKm",
+  note: "notes",
+  "creato il": "createdAt",
+};
+
+const TXT_MAINTENANCE_FIELDS = {
+  id: "id",
+  tipo: "type",
+  scadenza: "dueDate",
+  "km scadenza": "dueKm",
+  "giorni preavviso": "notifyDaysBefore",
+  note: "notes",
+  completata: "completed",
+  "completata il": "completedAt",
+  "creata il": "createdAt",
+};
+
+function parseTxtBackup(text) {
+  const rawVehicles = [];
+  const rawMaintenances = [];
+  let curV = null;
+  let curM = null;
+
+  for (const rawLine of text.split(/\r?\n/)) {
+    const line = rawLine.trim();
+    if (!line || line.startsWith("#") || /^[=\-_*]{3,}$/.test(line)) continue;
+
+    const upper = line.toUpperCase();
+    if (upper === "[FINE]") break;
+
+    if (upper === "[VEICOLO]") {
+      curV = {};
+      curM = null;
+      rawVehicles.push(curV);
+      continue;
+    }
+
+    if (upper === "[MANUTENZIONE]") {
+      if (curV) {
+        curM = { _vehicle: curV };
+        rawMaintenances.push(curM);
+      } else {
+        curM = null;
+      }
+      continue;
+    }
+
+    const idx = line.indexOf(":");
+    if (idx < 1) continue;
+
+    const key = normalizeKey(line.slice(0, idx));
+    const value = txtUnescape(line.slice(idx + 1).trim());
+
+    if (curM) {
+      const field = TXT_MAINTENANCE_FIELDS[key];
+      if (field) curM[field] = value;
+    } else if (curV) {
+      const field = TXT_VEHICLE_FIELDS[key];
+      if (field) curV[field] = value;
+    }
+    // Righe di intestazione (fuori da un veicolo) vengono ignorate
+  }
+
+  // Collega le manutenzioni al veicolo "padre" (stessa regola di id usata nella normalizzazione)
+  rawMaintenances.forEach((m) => {
+    const index = rawVehicles.indexOf(m._vehicle);
+    m.vehicleId = cleanId(m._vehicle.id) || `tmp-${index}`;
+    delete m._vehicle;
+  });
+
+  return { rawVehicles, rawMaintenances };
+}
+
+function normalizeBackup(rawVehicles, rawMaintenances) {
+  const skipped = { vehicles: 0, maintenances: 0 };
+  const vehiclesOut = [];
+
+  rawVehicles.forEach((rv, i) => {
+    if (!rv || typeof rv !== "object") {
+      skipped.vehicles++;
+      return;
+    }
+    const brand = cleanText(rv.brand, 60);
+    const model = cleanText(rv.model, 60);
+    const plate = cleanText(rv.plate, 20).toUpperCase();
+
+    if (!brand || !model || !plate) {
+      skipped.vehicles++;
+      return;
+    }
+
+    const km = toInt(rv.currentKm);
+    vehiclesOut.push({
+      id: cleanId(rv.id) || `tmp-${i}`,
+      brand,
+      model,
+      plate,
+      year: toInt(rv.year) || "",
+      currentKm: km && km > 0 ? km : 0,
+      notes: cleanText(rv.notes, 1000),
+      createdAt: toIso(rv.createdAt) || new Date().toISOString(),
+    });
+  });
+
+  const vehicleIds = new Set(vehiclesOut.map((v) => v.id));
+  const maintenancesOut = [];
+
+  rawMaintenances.forEach((rm) => {
+    if (!rm || typeof rm !== "object") {
+      skipped.maintenances++;
+      return;
+    }
+    const vehicleId = cleanId(rm.vehicleId);
+    const dueDate = toDateOnly(rm.dueDate);
+
+    if (!vehicleId || !vehicleIds.has(vehicleId) || !dueDate) {
+      skipped.maintenances++;
+      return;
+    }
+
+    let type = cleanText(rm.type, 60);
+    let notes = cleanText(rm.notes, 1000);
+    const known = MAINTENANCE_TYPES.find(
+      (t) => t.toLowerCase() === type.toLowerCase(),
+    );
+    if (known) {
+      type = known;
+    } else {
+      if (type) {
+        notes = notes
+          ? `[Tipo originale: ${type}] ${notes}`
+          : `Tipo originale: ${type}`;
+      }
+      type = "Altro";
+    }
+
+    const dueKm = toInt(rm.dueKm);
+    const notify = toInt(rm.notifyDaysBefore);
+    const completed = toBool(rm.completed);
+
+    maintenancesOut.push({
+      id: cleanId(rm.id),
+      vehicleId,
+      type,
+      dueDate,
+      dueKm: dueKm && dueKm > 0 ? dueKm : null,
+      notifyDaysBefore: notify && notify >= 1 ? notify : 7,
+      notes,
+      completed,
+      completedAt: completed
+        ? toIso(rm.completedAt) || new Date().toISOString()
+        : null,
+      createdAt: toIso(rm.createdAt) || new Date().toISOString(),
+    });
+  });
+
+  return { vehicles: vehiclesOut, maintenances: maintenancesOut, skipped };
+}
+
+function parseBackupText(rawText) {
+  const text = rawText.replace(/^\uFEFF/, "");
+  const trimmed = text.trim();
+
+  if (!trimmed) throw new Error("Il file è vuoto.");
+
+  let format;
+  let rawVehicles;
+  let rawMaintenances;
+
+  if (trimmed.startsWith("{") || trimmed.startsWith("[")) {
+    format = "JSON";
+    let data;
+    try {
+      data = JSON.parse(trimmed);
+    } catch (e) {
+      throw new Error("Il file JSON non è valido (errore di sintassi).");
+    }
+    if (!data || Array.isArray(data) || !Array.isArray(data.vehicles)) {
+      throw new Error(
+        "Il file JSON non ha il formato atteso: manca l'elenco dei veicoli.",
+      );
+    }
+    rawVehicles = data.vehicles;
+    rawMaintenances = Array.isArray(data.maintenances)
+      ? data.maintenances
+      : [];
+  } else {
+    format = "TXT";
+    ({ rawVehicles, rawMaintenances } = parseTxtBackup(text));
+  }
+
+  const result = normalizeBackup(rawVehicles, rawMaintenances);
+
+  if (result.vehicles.length === 0) {
+    throw new Error(
+      "Nel file non è stato trovato nessun veicolo valido (servono almeno marca, modello e targa).",
+    );
+  }
+
+  return { format, ...result };
+}
+
+// ---------- APPLICAZIONE IMPORT ----------
+
+function applyImport(data, mode) {
+  const replace = mode === "replace";
+  const vs = replace ? [] : getVehicles();
+  const ms = replace ? [] : getMaintenances();
+  const usedIds = new Set([...vs.map((v) => v.id), ...ms.map((m) => m.id)]);
+
+  const newId = (preferred) => {
+    let id = preferred && !usedIds.has(preferred) ? preferred : generateId();
+    while (usedIds.has(id)) id = generateId();
+    usedIds.add(id);
+    return id;
+  };
+
+  const idMap = new Map(); // id nel file -> id locale
+  const stats = {
+    vehiclesAdded: 0,
+    vehiclesUpdated: 0,
+    maintenancesAdded: 0,
+    maintenancesUpdated: 0,
+    maintenancesSkipped: 0,
+  };
+
+  data.vehicles.forEach((iv) => {
+    const existing = vs.find((v) => v.plate === iv.plate);
+    if (existing) {
+      existing.brand = iv.brand;
+      existing.model = iv.model;
+      existing.year = iv.year || existing.year;
+      existing.notes = iv.notes || existing.notes || "";
+      // Il chilometraggio non viene mai abbassato
+      existing.currentKm = Math.max(existing.currentKm || 0, iv.currentKm || 0);
+      idMap.set(iv.id, existing.id);
+      stats.vehiclesUpdated++;
+    } else {
+      const id = newId(replace ? cleanId(iv.id) : "");
+      vs.push({
+        id,
+        brand: iv.brand,
+        model: iv.model,
+        plate: iv.plate,
+        year: iv.year,
+        currentKm: iv.currentKm,
+        notes: iv.notes,
+        createdAt: iv.createdAt,
+      });
+      idMap.set(iv.id, id);
+      stats.vehiclesAdded++;
+    }
+  });
+
+  data.maintenances.forEach((im) => {
+    const vehicleId = idMap.get(im.vehicleId);
+    if (!vehicleId) {
+      stats.maintenancesSkipped++;
+      return;
+    }
+
+    const existing = ms.find(
+      (m) =>
+        m.vehicleId === vehicleId &&
+        m.type === im.type &&
+        m.dueDate === im.dueDate &&
+        (m.dueKm || null) === (im.dueKm || null),
+    );
+
+    if (existing) {
+      existing.notifyDaysBefore = im.notifyDaysBefore;
+      existing.notes = im.notes;
+      existing.completed = im.completed;
+      existing.completedAt = im.completedAt;
+      stats.maintenancesUpdated++;
+    } else {
+      ms.push({
+        id: newId(replace ? im.id : ""),
+        vehicleId,
+        type: im.type,
+        dueDate: im.dueDate,
+        dueKm: im.dueKm,
+        notifyDaysBefore: im.notifyDaysBefore,
+        notes: im.notes,
+        completed: im.completed,
+        completedAt: im.completedAt,
+        createdAt: im.createdAt,
+      });
+      stats.maintenancesAdded++;
+    }
+  });
+
+  localStorage.setItem(DB_KEYS.VEHICLES, JSON.stringify(vs));
+  localStorage.setItem(DB_KEYS.MAINTENANCES, JSON.stringify(ms));
+  return stats;
+}
+
+// ---------- INTERFACCIA ----------
+
+function resetImportUI() {
+  pendingImport = null;
+  document.getElementById("importFileInput").value = "";
+  document.getElementById("importFileName").textContent = "";
+  document.getElementById("importPreview").style.display = "none";
+  document.getElementById("btnConfirmImport").disabled = true;
+  const mergeRadio = document.querySelector(
+    'input[name="importMode"][value="merge"]',
+  );
+  if (mergeRadio) mergeRadio.checked = true;
+}
+
+function openDataDialog() {
+  resetImportUI();
+  dialogDataEl.classList.add("show");
+}
+
+function closeDataDialog() {
+  dialogDataEl.classList.remove("show");
+  resetImportUI();
+}
+
+function showImportPreview(fileName, parsed) {
+  const existingPlates = new Set(getVehicles().map((v) => v.plate));
+  const alreadyPresent = parsed.vehicles.filter((v) =>
+    existingPlates.has(v.plate),
+  ).length;
+  const skippedTotal = parsed.skipped.vehicles + parsed.skipped.maintenances;
+
+  const items = [
+    `<li><i class="fas fa-file"></i> Formato rilevato: <strong>${parsed.format}</strong></li>`,
+    `<li><i class="fas fa-car"></i> Veicoli nel file: <strong>${parsed.vehicles.length}</strong>` +
+      (alreadyPresent > 0
+        ? ` (${alreadyPresent} già presenti, stessa targa)`
+        : "") +
+      `</li>`,
+    `<li><i class="fas fa-wrench"></i> Manutenzioni nel file: <strong>${parsed.maintenances.length}</strong></li>`,
+  ];
+
+  if (skippedTotal > 0) {
+    items.push(
+      `<li class="import-warning"><i class="fas fa-triangle-exclamation"></i> Elementi non validi ignorati: <strong>${skippedTotal}</strong></li>`,
+    );
+  }
+
+  document.getElementById("importFileName").textContent = fileName;
+  document.getElementById("importSummary").innerHTML = items.join("");
+  document.getElementById("importPreview").style.display = "block";
+  document.getElementById("btnConfirmImport").disabled = false;
+}
+
+async function handleImportFileSelected(event) {
+  const input = event.target;
+  const file = input.files && input.files[0];
+  if (!file) return;
+
+  try {
+    if (file.size > MAX_IMPORT_SIZE) {
+      throw new Error("Il file è troppo grande (massimo 10 MB).");
+    }
+    const text = await readFileAsText(file);
+    pendingImport = parseBackupText(text);
+    showImportPreview(file.name, pendingImport);
+  } catch (err) {
+    resetImportUI();
+    showAlertDialog(
+      "Errore Importazione",
+      err.message || "Impossibile importare il file.",
+    );
+  }
+}
+
+function runImport(mode) {
+  if (!pendingImport) return;
+
+  let stats;
+  try {
+    stats = applyImport(pendingImport, mode);
+  } catch (err) {
+    console.error(err);
+    showAlertDialog(
+      "Errore Importazione",
+      "Non è stato possibile salvare i dati (memoria del browser piena o non disponibile).",
+    );
+    return;
+  }
+
+  closeDataDialog();
+  currentVehicle = null;
+  currentMaintenance = null;
+  notifiedAlerts = new Set();
+  loadData();
+
+  const message =
+    `Veicoli: ${stats.vehiclesAdded} aggiunti, ${stats.vehiclesUpdated} aggiornati. ` +
+    `Manutenzioni: ${stats.maintenancesAdded} aggiunte, ${stats.maintenancesUpdated} aggiornate` +
+    (stats.maintenancesSkipped > 0
+      ? `, ${stats.maintenancesSkipped} ignorate.`
+      : ".");
+
+  // Piccolo ritardo: il dialog di conferma si chiude subito dopo la callback
+  setTimeout(() => showAlertDialog("Importazione completata", message), 50);
+}
+
+function handleConfirmImport() {
+  if (!pendingImport) return;
+  const checked = document.querySelector('input[name="importMode"]:checked');
+  const mode = checked ? checked.value : "merge";
+
+  if (mode === "replace") {
+    showConfirmDialog(
+      "Conferma Sostituzione Dati",
+      "Tutti i veicoli e le manutenzioni attuali verranno eliminati e sostituiti con quelli del file. L'operazione non può essere annullata. Se vuoi, esporta prima un backup. Continuare?",
+      () => runImport("replace"),
+      "Sostituisci",
+    );
+  } else {
+    runImport("merge");
+  }
+}
+
+// Listener
+document.getElementById("dataToggle").addEventListener("click", openDataDialog);
+document.getElementById("btnCloseData").addEventListener("click", closeDataDialog);
+document.getElementById("btnExportJson").addEventListener("click", exportJson);
+document.getElementById("btnExportTxt").addEventListener("click", exportTxt);
+document
+  .getElementById("btnChooseImportFile")
+  .addEventListener("click", () =>
+    document.getElementById("importFileInput").click(),
+  );
+document
+  .getElementById("importFileInput")
+  .addEventListener("change", handleImportFileSelected);
+document
+  .getElementById("btnConfirmImport")
+  .addEventListener("click", handleConfirmImport);
