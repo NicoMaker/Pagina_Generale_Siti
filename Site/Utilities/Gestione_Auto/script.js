@@ -1558,9 +1558,7 @@ function parseBackupText(rawText) {
       );
     }
     rawVehicles = data.vehicles;
-    rawMaintenances = Array.isArray(data.maintenances)
-      ? data.maintenances
-      : [];
+    rawMaintenances = Array.isArray(data.maintenances) ? data.maintenances : [];
   } else {
     format = "TXT";
     ({ rawVehicles, rawMaintenances } = parseTxtBackup(text));
@@ -1797,7 +1795,9 @@ function handleConfirmImport() {
 
 // Listener
 document.getElementById("dataToggle").addEventListener("click", openDataDialog);
-document.getElementById("btnCloseData").addEventListener("click", closeDataDialog);
+document
+  .getElementById("btnCloseData")
+  .addEventListener("click", closeDataDialog);
 document.getElementById("btnExportJson").addEventListener("click", exportJson);
 document.getElementById("btnExportTxt").addEventListener("click", exportTxt);
 document
