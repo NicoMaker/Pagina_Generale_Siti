@@ -1,804 +1,701 @@
-"use strict";
-const KEY = "diario-luoghi-v1",
-  VKEY = "diario-luoghi-view";
-let places = load(),
-  activeId = null,
-  editingId = null,
-  pending = null,
-  pendingCat = "generico";
-const markers = new Map();
-let gpsMarker = null,
-  gpsWatchId = null;
-const $ = (id) => document.getElementById(id);
+// Import Leaflet library
+const L = window.L;
 
-const map = L.map("map").setView([42.5, 12.5], 5);
-L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-  maxZoom: 19,
-  attribution: "&copy; OpenStreetMap",
+// Import leaflet-image library
+const leafletImage = window.leafletImage;
+
+// Local Storage Key
+const LOCAL_STORAGE_KEY = "distanceMapDataV2";
+
+// Initialize map
+const map = L.map("map").setView([41.9028, 12.4964], 6);
+
+L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+  attribution: "&copy; OpenStreetMap contributors",
 }).addTo(map);
 
-/* ---------- categorie con icone ---------- */
-const CATS = {
-  generico: { ico: "📍", label: "Generico", color: "#ff5a6e" },
-  casa: { ico: "🏠", label: "Casa", color: "#2ecc71" },
-  lavoro: { ico: "💼", label: "Lavoro", color: "#34495e" },
-  viaggio: { ico: "✈️", label: "Viaggio", color: "#00bcd4" },
-  aereo: { ico: "🛫", label: "Aereo", color: "#0288d1" },
-  treno: { ico: "🚆", label: "Treno", color: "#455a64" },
-  nave: { ico: "🚢", label: "Nave", color: "#0277bd" },
-  auto: { ico: "🚗", label: "Auto", color: "#d32f2f" },
-  camper: { ico: "🚐", label: "Camper", color: "#6d4c41" },
-  bici: { ico: "🚲", label: "Bici", color: "#689f38" },
-  ristorante: { ico: "🍽️", label: "Ristorante", color: "#e67e22" },
-  bar: { ico: "☕", label: "Bar", color: "#8e44ad" },
-  hotel: { ico: "🏨", label: "Hotel", color: "#2980b9" },
-  spiaggia: { ico: "🏖️", label: "Spiaggia", color: "#f1c40f" },
-  montagna: { ico: "⛰️", label: "Montagna", color: "#7f8c8d" },
-  monumento: { ico: "🏛️", label: "Monumento", color: "#c0392b" },
-  shopping: { ico: "🛍️", label: "Shopping", color: "#e91e63" },
-  sport: { ico: "⚽", label: "Sport", color: "#16a085" },
-  altro: { ico: "⭐", label: "Altro", color: "#f39c12" },
-};
-const catOf = (c) => CATS[c] || CATS.generico;
-const catIco = (c) => catOf(c).ico;
-const catLabel = (c) => catOf(c).label;
-const catColor = (c) => catOf(c).color;
+// Variables
+let currentMarkers = [];
+let allMarkers = []; // Contiene i riferimenti Leaflet
+let allLines = []; // Contiene i riferimenti Leaflet
+let distanceCount = 0;
+const distanceData = []; // Contiene i dati persistenti (JSON-friendly)
+let totalDistance = 0;
+let selectedColor = "#667eea";
 
-/* ---------- utilità ---------- */
-function load() {
-  try {
-    return JSON.parse(localStorage.getItem(KEY)) || [];
-  } catch {
-    return [];
-  }
-}
-function save() {
-  localStorage.setItem(KEY, JSON.stringify(places));
-}
-const uid = () =>
-  Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
-const esc = (s) =>
-  String(s ?? "").replace(
-    /[&<>"']/g,
-    (c) =>
-      ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[
-        c
-      ],
-  );
-function toast(msg) {
-  const t = $("toast");
-  t.textContent = msg;
-  t.classList.add("show");
-  clearTimeout(toast.t);
-  toast.t = setTimeout(() => t.classList.remove("show"), 2800);
-}
+// DOM Elements
+const sidebar = document.getElementById("sidebar");
+const sidebarToggle = document.getElementById("sidebarToggle");
+const colorPicker = document.getElementById("lineColor");
+const colorHex = document.getElementById("colorHex");
+const presetColors = document.querySelectorAll(".preset-color");
+const showIntermediatePlaces = document.getElementById(
+  "showIntermediatePlaces",
+);
+const animatedLines = document.getElementById("animatedLines");
+const loadingOverlay = document.getElementById("loadingOverlay");
 
-/* ---------- data all'italiana ---------- */
-function itDate(iso) {
-  if (!iso || !/^\d{4}-\d{2}-\d{2}$/.test(iso)) return iso || "";
-  const [y, m, d] = iso.split("-");
-  return `${d}/${m}/${y}`;
-}
-function isoDate(it) {
-  if (!it) return "";
-  const m = it.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
-  if (!m) return it;
-  const [, d, mo, y] = m;
-  return `${y}-${String(mo).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
-}
+let sidebarOpen = true;
 
-/* ---------- nome del paese/comune ---------- */
-function paeseFromAddress(addr) {
-  if (!addr) return "";
-  const keys = [
-    "city",
-    "town",
-    "village",
-    "municipality",
-    "hamlet",
-    "suburb",
-    "county",
-    "state",
-    "country",
-  ];
-  for (const k of keys) {
-    if (addr[k]) return addr[k];
-  }
-  return "";
-}
-function paeseFromDisplay(dn) {
-  if (!dn) return "";
-  const parts = dn.split(",").map((s) => s.trim());
-  if (parts.length >= 3) return parts[2];
-  if (parts.length >= 2) return parts[1];
-  return parts[0] || "";
-}
+// --- GESTIONE LOCAL STORAGE ---
 
-/* ---------- controllo duplicati ---------- */
-const norm = (s) =>
-  String(s)
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/[^a-z0-9]/g, "");
-function meters(a, b) {
-  const R = 6371000,
-    rad = (x) => (x * Math.PI) / 180;
-  const dLat = rad(b.lat - a.lat),
-    dLng = rad(b.lng - a.lng);
-  const h =
-    Math.sin(dLat / 2) ** 2 +
-    Math.cos(rad(a.lat)) * Math.cos(rad(b.lat)) * Math.sin(dLng / 2) ** 2;
-  return 2 * R * Math.asin(Math.sqrt(h));
-}
-function findDup(lat, lng, name, ignoreId) {
-  return places.find(
-    (p) =>
-      p.id !== ignoreId &&
-      (meters(p, { lat, lng }) < 150 ||
-        (name &&
-          norm(p.name) === norm(name) &&
-          meters(p, { lat, lng }) < 5000)),
-  );
-}
-function alreadyThere(p) {
-  toast(`«${p.name}» è già nella tua lista`);
-  select(p.id);
-}
-
-/* ---------- mappa: segnaposti con icona categoria ---------- */
-function iconFor(cat, sel) {
-  const ico = catIco(cat);
-  const color = catColor(cat);
-  const cls = `pin${sel ? " sel" : ""}`;
-  return L.divIcon({
-    className: "",
-    html: `<div class="${cls}" style="background:${color}"><span class="pin-ico">${ico}</span></div>`,
-    iconSize: [32, 32],
-    iconAnchor: [16, 32],
-  });
-}
-function syncMarkers() {
-  markers.forEach((m) => map.removeLayer(m));
-  markers.clear();
-  places.forEach((p) => {
-    const m = L.marker([p.lat, p.lng], {
-      icon: iconFor(p.cat || "generico", p.id === activeId),
-    })
-      .addTo(map)
-      .bindTooltip(`${catIco(p.cat || "generico")} ${p.name}`);
-    m.on("click", () => {
-      select(p.id, false);
-      map.flyTo([p.lat, p.lng], Math.max(map.getZoom(), 15), {
-        duration: 0.8,
-      });
-    });
-    markers.set(p.id, m);
-  });
-}
-
-/* ---------- lista ---------- */
-function render() {
-  const q = $("filter").value.trim().toLowerCase(),
-    sort = $("sort").value;
-  const arr = places.filter((p) =>
-    (p.name + " " + p.note + " " + catLabel(p.cat || "generico"))
-      .toLowerCase()
-      .includes(q),
-  );
-  if (sort === "name") arr.sort((a, b) => a.name.localeCompare(b.name));
-  else if (sort === "date")
-    arr.sort((a, b) => (b.date || "").localeCompare(a.date || ""));
-  else if (sort === "rating") arr.sort((a, b) => b.rating - a.rating);
-  else if (sort === "cat")
-    arr.sort((a, b) =>
-      catLabel(a.cat || "generico").localeCompare(
-        catLabel(b.cat || "generico"),
-      ),
-    );
-  else arr.sort((a, b) => b.created - a.created);
-
-  $("count").textContent =
-    places.length +
-    (places.length === 1 ? " luogo visitato" : " luoghi visitati");
-  $("list").innerHTML = arr.length
-    ? arr
-        .map((p) => {
-          const cat = p.cat || "generico";
-          return `
-    <li class="item${p.id === activeId ? " active" : ""}" data-id="${p.id}">
-      <div class="avatar" style="background:${catColor(cat)}">${catIco(cat)}</div>
-      <div>
-        <h3>${esc(p.name)} <span class="cat-mini" title="${esc(catLabel(cat))}">${catIco(cat)}</span></h3>
-        <div class="meta">${catLabel(cat)}${p.date ? " · " + esc(itDate(p.date)) : ""}${p.rating ? ` · <span class="stars">${"★".repeat(p.rating)}</span>` : ""} · ${p.lat.toFixed(3)}, ${p.lng.toFixed(3)}</div>
-        ${p.note ? `<p class="note">${esc(p.note)}</p>` : ""}
-        <div class="btns">
-          <button data-act="edit">Modifica</button>
-          <button data-act="del" class="danger">Elimina</button>
-          <button data-act="goto">Vai qui</button>
-        </div>
-      </div>
-    </li>`;
-        })
-        .join("")
-    : `<li class="empty">${places.length ? "Nessun risultato." : "Ancora nessun luogo. Cerca un posto o clicca sulla mappa per iniziare."}</li>`;
-  syncMarkers();
-}
-function select(id, fly = true) {
-  activeId = id;
-  render();
-  const p = places.find((x) => x.id === id);
-  if (p && fly && $("app").dataset.view === "split")
-    map.flyTo([p.lat, p.lng], Math.max(map.getZoom(), 13));
-  document
-    .querySelector(`.item[data-id="${id}"]`)
-    ?.scrollIntoView({ block: "nearest", behavior: "smooth" });
-}
-$("list").addEventListener("click", (e) => {
-  const li = e.target.closest(".item");
-  if (!li) return;
-  const id = li.dataset.id,
-    act = e.target.dataset.act;
-  if (act === "edit") return openDialog(places.find((p) => p.id === id));
-  if (act === "del") {
-    if (confirm("Eliminare questo luogo?")) {
-      places = places.filter((p) => p.id !== id);
-      save();
-      render();
-      toast("Luogo eliminato");
-    }
-    return;
-  }
-  if (act === "goto") {
-    const p = places.find((x) => x.id === id);
-    if (!p) return;
-    select(id, false);
-    map.flyTo([p.lat, p.lng], 17, { duration: 1.2 });
-    toast(`Vai a «${p.name}»`);
-    return;
-  }
-  select(id);
-});
-$("filter").addEventListener("input", render);
-$("sort").addEventListener("change", render);
-
-/* ---------- vista ---------- */
-function setView(v) {
-  $("app").dataset.view = v;
-  document
-    .querySelectorAll(".seg button")
-    .forEach((b) => b.classList.toggle("on", b.dataset.view === v));
-  try {
-    localStorage.setItem(VKEY, v);
-  } catch {}
-  setTimeout(() => map.invalidateSize(), 50);
-}
-document.querySelector(".seg").addEventListener("click", (e) => {
-  const b = e.target.closest("button");
-  if (b) setView(b.dataset.view);
-});
-
-/* ---------- selezione categoria ---------- */
-function setCat(cat) {
-  pendingCat = cat;
-  document
-    .querySelectorAll("#fCat .cat")
-    .forEach((b) => b.classList.toggle("on", b.dataset.cat === cat));
-}
-$("fCat").addEventListener("click", (e) => {
-  const b = e.target.closest(".cat");
-  if (b) setCat(b.dataset.cat);
-});
-
-/* ---------- scheda luogo ---------- */
-function startNew(draft) {
-  const dup = findDup(draft.lat, draft.lng, draft.name);
-  if (dup) return alreadyThere(dup);
-  openDialog(null, draft);
-}
-function openDialog(p, draft) {
-  editingId = p ? p.id : null;
-  pending = p ? { lat: p.lat, lng: p.lng } : draft;
-  $("dlgTitle").textContent = p ? "Modifica luogo" : "Nuovo luogo";
-  $("fName").value = p ? p.name : draft.name || "";
-  const d = p ? p.date : new Date().toISOString().slice(0, 10);
-  $("fDate").value = d || "";
-  $("fRate").value = p ? p.rating : 0;
-  $("fNote").value = p ? p.note : "";
-  setCat(p ? p.cat || "generico" : draft.cat || "generico");
-  $("fCoord").textContent =
-    `Coordinate: ${pending.lat.toFixed(5)}, ${pending.lng.toFixed(5)}`;
-  $("fErr").textContent = "";
-  $("dlg").showModal();
-  $("fName").focus();
-}
-$("fCancel").onclick = () => $("dlg").close();
-$("form").addEventListener("submit", (e) => {
-  e.preventDefault();
-  const data = {
-    name: $("fName").value.trim(),
-    date: $("fDate").value,
-    rating: +$("fRate").value,
-    note: $("fNote").value.trim(),
-    cat: pendingCat,
-    lat: pending.lat,
-    lng: pending.lng,
+function saveMapData() {
+  const dataToSave = {
+    distanceData: distanceData,
+    totalDistance: totalDistance,
+    // Salva la vista corrente della mappa per un'esperienza utente migliore
+    center: map.getCenter(),
+    zoom: map.getZoom(),
   };
-  if (!data.name) return;
-  const dup = findDup(data.lat, data.lng, data.name, editingId);
-  if (dup) {
-    $("fErr").textContent =
-      `Già inserito: «${dup.name}». Non puoi aggiungere lo stesso luogo due volte.`;
-    return;
+  try {
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(dataToSave));
+  } catch (e) {
+    console.error("Errore nel salvataggio in localStorage:", e);
   }
-  if (editingId)
-    Object.assign(
-      places.find((p) => p.id === editingId),
-      data,
-    );
-  else {
-    const p = { id: uid(), created: Date.now(), ...data };
-    places.push(p);
-    activeId = p.id;
+}
+
+function clearMapData() {
+  localStorage.removeItem(LOCAL_STORAGE_KEY);
+}
+
+function loadMapData() {
+  try {
+    const storedData = localStorage.getItem(LOCAL_STORAGE_KEY);
+    if (storedData) {
+      const parsedData = JSON.parse(storedData);
+
+      // 1. Ripristina i dati e il totale
+      totalDistance = parsedData.totalDistance || 0;
+      document.getElementById("totalKm").textContent = totalDistance.toFixed(2);
+      distanceData.length = 0; // Svuota l'array
+      if (parsedData.distanceData && Array.isArray(parsedData.distanceData)) {
+        distanceData.push(...parsedData.distanceData);
+        // Imposta l'ID per le nuove distanze
+        distanceCount =
+          distanceData.length > 0
+            ? Math.max(...distanceData.map((d) => d.id))
+            : 0;
+      } else {
+        distanceCount = 0;
+      }
+
+      // 2. Ricrea marker e linee
+      allMarkers = [];
+      allLines = [];
+      distanceData.forEach((entry) => {
+        const pointA = L.latLng(entry.startLat, entry.startLng);
+        const pointB = L.latLng(entry.endLat, entry.endLng);
+
+        // Funzione ausiliaria per creare e configurare il marker ricreato
+        const createAndConfigureMarker = (latlng, color, locationName) => {
+          const marker = createCustomMarker(latlng, color);
+          marker.addTo(map);
+          allMarkers.push(marker);
+
+          // Aggiunge il popup con le info
+          marker.bindPopup(
+            `<div style="text-align: center;">
+                            <strong style="color: ${color};">${locationName}</strong><br>
+                            <small>Lat: ${latlng.lat.toFixed(5)}<br>Lng: ${latlng.lng.toFixed(5)}</small>
+                        </div>`,
+          );
+
+          // Aggiunge la gestione click per la rimozione del marker (molto importante per il cleanup)
+          marker.on("click", function (e) {
+            e.originalEvent.stopPropagation();
+            // Trova e rimuovi la distanza associata.
+            // Questo è un po' più complesso dopo il caricamento, ma essenziale.
+            // Per semplicità, qui si rimuove solo il marker dalla mappa e dall'array allMarkers.
+            // L'eliminazione completa della distanza deve avvenire tramite il pulsante nel pannello laterale.
+            map.removeLayer(marker);
+            allMarkers = allMarkers.filter((m) => m !== marker);
+            // Per evitare confusione, non permettiamo la rimozione di marker persistenti dal click mappa.
+            // La rimozione definitiva avviene solo dal pannello laterale (delete-btn).
+          });
+
+          return marker;
+        };
+
+        // Ricrea Marker A e B
+        createAndConfigureMarker(pointA, entry.color, entry.locationA);
+        createAndConfigureMarker(pointB, entry.color, entry.locationB);
+
+        // Ricrea la Linea
+        const lineOptions = {
+          color: entry.color,
+          weight: 4,
+          opacity: 0.8,
+        };
+        const line = L.polyline([pointA, pointB], lineOptions).addTo(map);
+        allLines.push(line);
+
+        // Aggiunge la gestione click per la rimozione della linea
+        line.on("click", function (e) {
+          e.originalEvent.stopPropagation();
+          map.removeLayer(line);
+          allLines = allLines.filter((l) => l !== line);
+          // Anche qui, l'eliminazione completa della distanza deve avvenire tramite il pannello laterale.
+        });
+      });
+
+      // 3. Ripristina la vista della mappa
+      if (parsedData.center && parsedData.zoom) {
+        map.setView(parsedData.center, parsedData.zoom);
+      } else if (allMarkers.length > 0) {
+        const group = new L.featureGroup(allMarkers);
+        map.fitBounds(group.getBounds());
+      }
+
+      // 4. Aggiorna l'interfaccia
+      updateDistanceList();
+      return true;
+    }
+  } catch (e) {
+    console.error("Errore nel caricamento da localStorage. Reset:", e);
+    clearMapData(); // Pulisce dati corrotti
   }
-  save();
-  render();
-  $("dlg").close();
-  toast("Luogo salvato");
+  return false; // Nessun dato caricato
+}
+
+// --- FINE GESTIONE LOCAL STORAGE ---
+
+// Sidebar toggle functionality
+sidebarToggle.addEventListener("click", () => {
+  if (window.innerWidth <= 768) {
+    sidebar.classList.toggle("open");
+    const icon = sidebarToggle.querySelector("i");
+    icon.className = sidebar.classList.contains("open")
+      ? "fas fa-times"
+      : "fas fa-bars";
+  } else {
+    sidebar.classList.toggle("collapsed");
+    sidebarOpen = !sidebarOpen;
+    const icon = sidebarToggle.querySelector("i");
+    icon.className = sidebarOpen ? "fas fa-bars" : "fas fa-chevron-right";
+  }
+  // Forza Leaflet a ricalcolare le dimensioni se il container cambia
+  setTimeout(() => map.invalidateSize(), 300);
 });
 
-/* ---------- clic sulla mappa ---------- */
+// Color picker functionality
+colorPicker.addEventListener("input", (e) => {
+  selectedColor = e.target.value;
+  colorHex.value = selectedColor.toUpperCase();
+  updateActivePresetColor();
+});
+
+colorHex.addEventListener("input", (e) => {
+  const value = e.target.value;
+  if (/^#[0-9A-F]{6}$/i.test(value)) {
+    selectedColor = value;
+    colorPicker.value = selectedColor;
+    updateActivePresetColor();
+  }
+});
+
+// Preset colors functionality
+presetColors.forEach((preset) => {
+  preset.addEventListener("click", () => {
+    selectedColor = preset.dataset.color;
+    colorPicker.value = selectedColor;
+    colorHex.value = selectedColor.toUpperCase();
+    updateActivePresetColor();
+  });
+});
+
+function updateActivePresetColor() {
+  presetColors.forEach((preset) => {
+    preset.classList.toggle(
+      "active",
+      preset.dataset.color.toLowerCase() === selectedColor.toLowerCase(),
+    );
+  });
+}
+
+// Handle responsive behavior
+function handleResize() {
+  if (window.innerWidth > 768) {
+    sidebar.classList.remove("open");
+    const icon = sidebarToggle.querySelector("i");
+    icon.className = sidebarOpen ? "fas fa-bars" : "fas fa-chevron-right";
+  } else {
+    sidebar.classList.remove("collapsed");
+    const icon = sidebarToggle.querySelector("i");
+    icon.className = "fas fa-bars";
+  }
+}
+
+window.addEventListener("resize", handleResize);
+
+// Reset function
+function resetAll() {
+  allMarkers.forEach((m) => map.removeLayer(m));
+  allLines.forEach((l) => map.removeLayer(l));
+  currentMarkers = [];
+  allMarkers = [];
+  allLines = [];
+  distanceCount = 0;
+  distanceData.length = 0;
+  totalDistance = 0;
+  document.getElementById("totalKm").textContent = totalDistance.toFixed(2);
+  map.closePopup();
+  updateDistanceList();
+  clearMapData(); // Pulisce i dati salvati
+}
+
+// Reverse geocoding
+async function reverseGeocode(lat, lng) {
+  const url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}`;
+  try {
+    const res = await fetch(url);
+    const data = await res.json();
+    return (
+      data.address?.city ||
+      data.address?.town ||
+      data.address?.village ||
+      data.address?.hamlet ||
+      data.display_name ||
+      "Luogo sconosciuto"
+    );
+  } catch (err) {
+    return "Errore nel geocoding";
+  }
+}
+
+// Get intermediate places along the route
+async function getIntermediatePlaces(startLat, startLng, endLat, endLng) {
+  if (!showIntermediatePlaces.checked) return [];
+
+  const places = [];
+  const steps = 3; // Number of intermediate points to check
+
+  for (let i = 1; i < steps; i++) {
+    const ratio = i / steps;
+    const lat = startLat + (endLat - startLat) * ratio;
+    const lng = startLng + (endLng - startLng) * ratio;
+
+    try {
+      const place = await reverseGeocode(lat, lng);
+      if (
+        place &&
+        place !== "Luogo sconosciuto" &&
+        place !== "Errore nel geocoding"
+      ) {
+        // Extract city/town name from full address
+        const placeName = place.split(",")[0].trim();
+        if (!places.includes(placeName)) {
+          places.push(placeName);
+        }
+      }
+    } catch (err) {
+      console.log("Error getting intermediate place:", err);
+    }
+  }
+
+  return places;
+}
+
+// Show loading overlay
+function showLoading() {
+  loadingOverlay.classList.add("show");
+}
+
+// Hide loading overlay
+function hideLoading() {
+  loadingOverlay.classList.remove("show");
+}
+
+// Update distance list
+function updateDistanceList() {
+  const listContainer = document.getElementById("distanceList");
+
+  if (distanceData.length === 0) {
+    listContainer.innerHTML = `
+            <div class="empty-state">
+                <i class="fas fa-map-marker-alt"></i>
+                <p>Nessuna distanza calcolata</p>
+                <small>Inizia cliccando sulla mappa</small>
+            </div>
+        `;
+    return;
+  }
+
+  // Riordina per ID crescente per coerenza
+  distanceData.sort((a, b) => a.id - b.id);
+
+  listContainer.innerHTML = distanceData
+    .map((entry, index) => {
+      const intermediatePlacesHtml =
+        entry.intermediatePlaces && entry.intermediatePlaces.length > 0
+          ? `<div class="intermediate-places">
+                <div class="intermediate-title">
+                    <i class="fas fa-route"></i>
+                    Luoghi intermedi:
+                </div>
+                <div class="intermediate-list">${entry.intermediatePlaces.join(" → ")}</div>
+               </div>`
+          : "";
+
+      return `
+            <div class="distance-item" style="border-left-color: ${entry.color};">
+                <div class="distance-header">
+                    <div class="distance-number" style="background: ${entry.color};">${index + 1}</div>
+                    <button class="delete-btn" data-id="${entry.id}" title="Elimina">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+                <div class="distance-route">${entry.locationA} → ${entry.locationB}</div>
+                <div class="distance-value" style="color: ${entry.color};">
+                    <i class="fas fa-ruler"></i>
+                    ${entry.distanceFormatted} ${entry.unit}
+                </div>
+                ${intermediatePlacesHtml}
+            </div>
+        `;
+    })
+    .join("");
+}
+
+// Create custom marker
+function createCustomMarker(latlng, color = selectedColor) {
+  return L.marker(latlng, {
+    icon: L.divIcon({
+      className: "custom-marker",
+      html: `<div class="marker-icon" style="background: ${color}; border-color: white;"></div>`,
+      iconSize: [20, 20],
+      iconAnchor: [10, 10],
+    }),
+  });
+}
+
+// Map click event
 map.on("click", async (e) => {
   const { lat, lng } = e.latlng;
-  const near = findDup(lat, lng, "");
-  if (near) return alreadyThere(near);
-  let name = "";
-  try {
-    const j = await (
-      await fetch(
-        `https://nominatim.openstreetmap.org/reverse?format=jsonv2&zoom=10&addressdetails=1&accept-language=it&lat=${lat}&lon=${lng}`,
-      )
-    ).json();
-    name = paeseFromAddress(j.address) || paeseFromDisplay(j.display_name);
-  } catch {
-    /* offline */
-  }
-  startNew({ lat, lng, name });
-});
 
-/* ---------- ricerca ---------- */
-async function search() {
-  const q = $("q").value.trim();
-  if (!q) return;
-  const ul = $("results");
-  ul.hidden = false;
-  ul.innerHTML = "<li>Ricerca in corso…</li>";
-  try {
-    const arr = await (
-      await fetch(
-        `https://nominatim.openstreetmap.org/search?format=jsonv2&limit=8&addressdetails=1&accept-language=it&q=${encodeURIComponent(q)}`,
-      )
-    ).json();
-    ul._data = arr;
-    ul.innerHTML = arr.length
-      ? arr
-          .map((x, i) => {
-            const paese =
-              paeseFromAddress(x.address) ||
-              x.name ||
-              paeseFromDisplay(x.display_name);
-            const resto = (x.display_name || "")
-              .split(",")
-              .map((s) => s.trim())
-              .filter((s) => s && s !== paese)
-              .slice(0, 3)
-              .join(", ");
-            const dup = findDup(+x.lat, +x.lon, paese);
-            return `<li tabindex="0" data-i="${i}" class="${dup ? "dup" : ""}">
-              <span><strong>${esc(paese)}</strong>${resto ? " — " + esc(resto) : ""}</span>
-              ${dup ? '<span class="tag">già inserito</span>' : ""}
-            </li>`;
-          })
-          .join("")
-      : "<li>Nessun risultato.</li>";
-  } catch {
-    ul.innerHTML = "<li>Errore di rete. Riprova.</li>";
-  }
-}
-$("btnSearch").onclick = search;
-$("q").addEventListener("keydown", (e) => {
-  if (e.key === "Enter") search();
-  if (e.key === "Escape") $("results").hidden = true;
-});
-function pickResult(li) {
-  const x = $("results")._data?.[li.dataset.i];
-  if (!x) return;
-  const lat = +x.lat,
-    lng = +x.lon;
-  $("results").hidden = true;
-  $("q").value = "";
-  const paese =
-    paeseFromAddress(x.address) || x.name || paeseFromDisplay(x.display_name);
-  const dup = findDup(lat, lng, paese);
-  if (dup) return alreadyThere(dup);
-  if ($("app").dataset.view === "split") map.flyTo([lat, lng], 13);
-  startNew({ lat, lng, name: paese });
-}
-$("results").addEventListener("click", (e) => {
-  const li = e.target.closest("li[data-i]");
-  if (li) pickResult(li);
-});
-$("results").addEventListener("keydown", (e) => {
-  if (e.key === "Enter") {
-    const li = e.target.closest("li[data-i]");
-    if (li) pickResult(li);
-  }
-});
-document.addEventListener("click", (e) => {
-  if (!e.target.closest(".search")) $("results").hidden = true;
-});
+  const marker = createCustomMarker(e.latlng, selectedColor);
+  marker.addTo(map);
+  allMarkers.push(marker);
 
-/* ---------- GPS ---------- */
-const gpsIcon = L.divIcon({
-  className: "",
-  html: '<div class="gps-marker"></div>',
-  iconSize: [20, 20],
-  iconAnchor: [10, 10],
-});
-function gpsError(err) {
-  const msgs = {
-    1: "Permesso negato. Abilita la geolocalizzazione nel browser.",
-    2: "Posizione non disponibile. Controlla il GPS.",
-    3: "Timeout. Riprova.",
-  };
-  toast(msgs[err.code] || "Errore GPS");
-}
-$("btnGps").onclick = () => {
-  if (!navigator.geolocation) return toast("GPS non supportato dal browser");
-  if (gpsWatchId !== null) {
-    navigator.geolocation.clearWatch(gpsWatchId);
-    gpsWatchId = null;
-    if (gpsMarker) {
-      map.removeLayer(gpsMarker);
-      gpsMarker = null;
+  const locationName = await reverseGeocode(lat, lng);
+  marker
+    .bindPopup(
+      `<div style="text-align: center;">
+                <strong style="color: ${selectedColor};">${locationName}</strong><br>
+                <small>Lat: ${lat.toFixed(5)}<br>Lng: ${lng.toFixed(5)}</small>
+            </div>`,
+    )
+    .openPopup();
+
+  currentMarkers.push({ marker, locationName });
+
+  // Remove marker on click
+  marker.on("click", function (e) {
+    e.originalEvent.stopPropagation();
+    map.removeLayer(marker);
+    allMarkers = allMarkers.filter((m) => m !== marker);
+    currentMarkers = currentMarkers.filter((cm) => cm.marker !== marker);
+    // Nota: non salviamo su localStorage qui, aspettiamo che venga calcolata una distanza.
+  });
+
+  if (currentMarkers.length === 2) {
+    showLoading();
+
+    const pointA = currentMarkers[0].marker.getLatLng();
+    const pointB = currentMarkers[1].marker.getLatLng();
+    const locationA = currentMarkers[0].locationName;
+    const locationB = currentMarkers[1].locationName;
+
+    // Rimuovi i marker temporanei dalla mappa e da allMarkers
+    map.removeLayer(currentMarkers[0].marker);
+    allMarkers = allMarkers.filter((m) => m !== currentMarkers[0].marker);
+    map.removeLayer(currentMarkers[1].marker);
+    allMarkers = allMarkers.filter((m) => m !== currentMarkers[1].marker);
+
+    // Get intermediate places
+    const intermediatePlaces = await getIntermediatePlaces(
+      pointA.lat,
+      pointA.lng,
+      pointB.lat,
+      pointB.lng,
+    );
+
+    const lineOptions = {
+      color: selectedColor,
+      weight: 4,
+      opacity: 0.8,
+    };
+
+    if (animatedLines.checked) {
+      lineOptions.className = "animated-line";
+      lineOptions.dashArray = "10, 5";
     }
-    toast("GPS disattivato");
-    $("btnGps").textContent = "📍 GPS";
+
+    const line = L.polyline([pointA, pointB], lineOptions).addTo(map);
+    allLines.push(line);
+
+    line.on("click", function (e) {
+      e.originalEvent.stopPropagation();
+      map.removeLayer(line);
+      allLines = allLines.filter((l) => l !== line);
+    });
+
+    const distanceMeters = pointA.distanceTo(pointB);
+    let distance = distanceMeters / 1000;
+    let unit = "km";
+    if (distance < 1) {
+      distance = distanceMeters;
+      unit = "m";
+    }
+
+    const distanceFormatted = distance.toFixed(2);
+
+    const midPoint = L.latLng(
+      (pointA.lat + pointB.lat) / 2,
+      (pointA.lng + pointB.lng) / 2,
+    );
+
+    const intermediatePlacesText =
+      intermediatePlaces.length > 0
+        ? `<br><small style="color: #666;"><i class="fas fa-route"></i> Via: ${intermediatePlaces.join(", ")}</small>`
+        : "";
+
+    const popupText = `
+            <div style="text-align: center; padding: 8px;">
+                <i class="fas fa-ruler" style="color: ${selectedColor}; margin-right: 8px;"></i>
+                <strong style="color: ${selectedColor};">${distanceFormatted} ${unit}</strong>
+                ${intermediatePlacesText}
+            </div>
+        `;
+    L.popup().setLatLng(midPoint).setContent(popupText).openOn(map);
+
+    totalDistance += parseFloat(distanceFormatted);
+    document.getElementById("totalKm").textContent = totalDistance.toFixed(2);
+
+    distanceCount++;
+    distanceData.push({
+      id: distanceCount, // ID univoco per la persistenza
+      distanceFormatted,
+      unit,
+      locationA,
+      locationB,
+      startLat: pointA.lat.toFixed(5),
+      startLng: pointA.lng.toFixed(5),
+      endLat: pointB.lat.toFixed(5),
+      endLng: pointB.lng.toFixed(5),
+      color: selectedColor,
+      intermediatePlaces: intermediatePlaces,
+    });
+
+    // Ricrea i marker permanenti (solo lat/lng e color)
+    const permanentMarkerA = createCustomMarker(pointA, selectedColor);
+    permanentMarkerA.addTo(map);
+    allMarkers.push(permanentMarkerA);
+    permanentMarkerA.bindPopup(
+      `<div style="text-align: center;"><strong style="color: ${selectedColor};">${locationA}</strong><br><small>Lat: ${pointA.lat.toFixed(5)}<br>Lng: ${pointA.lng.toFixed(5)}</small></div>`,
+    );
+
+    const permanentMarkerB = createCustomMarker(pointB, selectedColor);
+    permanentMarkerB.addTo(map);
+    allMarkers.push(permanentMarkerB);
+    permanentMarkerB.bindPopup(
+      `<div style="text-align: center;"><strong style="color: ${selectedColor};">${locationB}</strong><br><small>Lat: ${pointB.lat.toFixed(5)}<br>Lng: ${pointB.lng.toFixed(5)}</small></div>`,
+    );
+
+    hideLoading();
+    updateDistanceList();
+    saveMapData(); // <--- SALVA I DATI
+    currentMarkers = [];
+  }
+
+  if (currentMarkers.length === 3) {
+    resetAll();
+  }
+});
+
+// Export CSV
+document.getElementById("exportCSV").addEventListener("click", () => {
+  if (distanceData.length === 0) {
+    alert("Nessuna distanza da esportare.");
     return;
   }
-  toast("Attivazione GPS…");
-  gpsWatchId = navigator.geolocation.watchPosition(
-    (pos) => {
-      const lat = pos.coords.latitude,
-        lng = pos.coords.longitude,
-        acc = pos.coords.accuracy;
-      if (!gpsMarker) {
-        gpsMarker = L.marker([lat, lng], {
-          icon: gpsIcon,
-          zIndexOffset: 1000,
-        })
-          .addTo(map)
-          .bindTooltip("Sei qui");
-        map.flyTo([lat, lng], 16, { duration: 1.2 });
-        $("btnGps").textContent = "🛑 GPS";
-        toast(`Sei qui (±${Math.round(acc)} m)`);
-      } else {
-        gpsMarker.setLatLng([lat, lng]);
-      }
-    },
-    gpsError,
-    { enableHighAccuracy: true, maximumAge: 2000, timeout: 15000 },
-  );
-};
 
-/* ---------- download helpers ---------- */
-function download(name, text, type) {
-  const a = document.createElement("a");
-  a.href = URL.createObjectURL(new Blob([text], { type }));
-  a.download = name;
-  a.click();
-  URL.revokeObjectURL(a.href);
-}
-const stamp = () => {
-  const d = new Date();
-  return `${String(d.getDate()).padStart(2, "0")}-${String(d.getMonth() + 1).padStart(2, "0")}-${d.getFullYear()}`;
-};
-
-/* ---------- JSON: include TUTTO (cat, icona, label, viaggio) ---------- */
-$("btnJson").onclick = () => {
-  if (!places.length) return toast("Non ci sono luoghi da esportare");
-  const data = {
-    version: 1,
-    exported: new Date().toISOString(),
-    total: places.length,
-    places: places.map((p) => ({
-      id: p.id,
-      created: p.created,
-      name: p.name,
-      category: p.cat || "generico",
-      categoryLabel: catLabel(p.cat || "generico"),
-      categoryIcon: catIco(p.cat || "generico"),
-      date: p.date,
-      dateIt: itDate(p.date),
-      rating: p.rating,
-      note: p.note,
-      lat: p.lat,
-      lng: p.lng,
-    })),
-  };
-  download(
-    `diario-luoghi-${stamp()}.json`,
-    JSON.stringify(data, null, 2),
-    "application/json",
-  );
-  toast(`${places.length} luoghi esportati in JSON`);
-};
-
-/* ---------- TXT: elenco completo con categoria ---------- */
-$("btnTxt").onclick = () => {
-  if (!places.length) return toast("Non ci sono luoghi da esportare");
-  const lines = [];
-  lines.push("DIARIO DEI LUOGHI");
-  lines.push(`Esportato il ${stamp()}`);
-  lines.push(`Totale: ${places.length} luoghi`);
-  lines.push("=".repeat(60));
-  lines.push("");
-
-  const counts = {};
-  places.forEach((p) => {
-    const c = p.cat || "generico";
-    counts[c] = (counts[c] || 0) + 1;
-  });
-  lines.push("RIEPILOGO PER CATEGORIA:");
-  Object.keys(counts).forEach((c) => {
-    lines.push(`  ${catIco(c)} ${catLabel(c)}: ${counts[c]}`);
-  });
-  lines.push("");
-  lines.push("=".repeat(60));
-  lines.push("");
-
-  places.forEach((p, i) => {
-    const c = p.cat || "generico";
-    lines.push(`${i + 1}. ${catIco(c)} ${p.name}`);
-    lines.push(`   Categoria: ${catLabel(c)}`);
-    lines.push(`   Data: ${itDate(p.date) || "-"}`);
-    lines.push(`   Valutazione: ${p.rating ? "★".repeat(p.rating) : "-"}`);
-    lines.push(`   Coordinate: ${p.lat}, ${p.lng}`);
-    lines.push(`   Note: ${p.note || "-"}`);
-    lines.push("");
-  });
-
-  download(
-    `diario-luoghi-${stamp()}.txt`,
-    lines.join("\n"),
-    "text/plain;charset=utf-8",
-  );
-  toast(`${places.length} luoghi esportati in TXT`);
-};
-
-/* ---------- CSV: apribile in Excel con categoria ---------- */
-$("btnCsv").onclick = () => {
-  if (!places.length) return toast("Non ci sono luoghi da esportare");
-  const q = (s) => `"${String(s ?? "").replace(/"/g, '""')}"`;
-  const rows = [
+  const csvContent = [
     [
-      "N.",
-      "Icona",
-      "Categoria",
-      "Nome",
-      "Data",
-      "Valutazione",
-      "Latitudine",
-      "Longitudine",
-      "Note",
-    ].join(","),
-  ];
-  places.forEach((p, i) => {
-    const c = p.cat || "generico";
-    rows.push(
-      [
-        i + 1,
-        q(catIco(c)),
-        q(catLabel(c)),
-        q(p.name),
-        q(itDate(p.date)),
-        p.rating || "",
-        p.lat,
-        p.lng,
-        q(p.note),
-      ].join(","),
-    );
+      "ID",
+      "Luogo A",
+      "Luogo B",
+      "Distanza",
+      "Unità di Misura",
+      "Lat A",
+      "Lng A",
+      "Lat B",
+      "Lng B",
+      "Colore",
+      "Luoghi Intermedi",
+    ],
+    ...distanceData.map((d) => [
+      d.id,
+      `"${d.locationA}"`, // Aggiungo virgolette per gestire i nomi con virgole
+      `"${d.locationB}"`,
+      d.distanceFormatted,
+      d.unit,
+      d.startLat,
+      d.startLng,
+      d.endLat,
+      d.endLng,
+      d.color,
+      `"${d.intermediatePlaces ? d.intermediatePlaces.join("; ") : ""}"`,
+    ]),
+  ]
+    .map((row) => row.join(","))
+    .join("\n");
+
+  const blob = new Blob([csvContent], {
+    type: "text/csv;charset=utf-8;",
   });
-  const csv = "\uFEFF" + rows.join("\r\n");
-  download(`diario-luoghi-${stamp()}.csv`, csv, "text/csv;charset=utf-8");
-  toast(`${places.length} luoghi esportati in CSV (Excel)`);
-};
+  const url = URL.createObjectURL(blob);
 
-/* ---------- HTML: pagina autonoma con mappa e diario ---------- */
-$("btnHtml").onclick = () => {
-  if (!places.length) return toast("Non ci sono luoghi da esportare");
-  const counts = {};
-  places.forEach((p) => {
-    const c = p.cat || "generico";
-    counts[c] = (counts[c] || 0) + 1;
-  });
-  const cats = Object.keys(counts)
-    .map(
-      (c) =>
-        `<span class="chip">${catIco(c)} ${catLabel(c)} · ${counts[c]}</span>`,
-    )
-    .join("");
-  const cards = places
-    .map((p) => {
-      const c = p.cat || "generico";
-      return `<div class="card">
-        <div class="ico" style="background:${catColor(c)}22">${catIco(c)}</div>
-        <div>
-          <p class="name">${esc(p.name)}</p>
-          <div class="meta">${catLabel(c)}${p.date ? " · " + itDate(p.date) : ""}${p.rating ? ` · <span class="stars">${"★".repeat(p.rating)}</span>` : ""} · ${p.lat.toFixed(4)}, ${p.lng.toFixed(4)}</div>
-          ${p.note ? `<p class="note">${esc(p.note)}</p>` : ""}
-        </div>
-      </div>`;
-    })
-    .join("");
-  const markersJs = JSON.stringify(
-    places.map((p) => ({
-      name: p.name,
-      cat: p.cat || "generico",
-      ico: catIco(p.cat || "generico"),
-      color: catColor(p.cat || "generico"),
-      lat: p.lat,
-      lng: p.lng,
-    })),
-  );
-
-  const html = `<!doctype html>
-<html lang="it">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Diario dei luoghi – ${stamp()}</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
-<style>
-  * { box-sizing: border-box; }
-  body { font-family: system-ui, "Segoe UI", sans-serif; margin: 0; background: #f3f4fb; color: #151a33; }
-  header { padding: 20px; background: #fff; box-shadow: 0 6px 20px rgba(21,26,51,.08); }
-  h1 { margin: 0 0 6px; font-size: 1.4rem; }
-  .sub { color: #6b7194; font-size: .9rem; }
-  #map { height: 55vh; margin: 20px; border-radius: 16px; box-shadow: 0 10px 30px rgba(21,26,51,.1); }
-  .wrap { max-width: 1100px; margin: 0 auto; padding: 0 20px 40px; }
-  .cats { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 0; }
-  .chip { background: #eceafd; color: #5b5bf0; border-radius: 99px; padding: 4px 12px; font-size: .85rem; font-weight: 600; }
-  .card { background: #fff; border-radius: 16px; padding: 16px; margin-top: 14px; box-shadow: 0 6px 20px rgba(21,26,51,.08); display: grid; grid-template-columns: 44px 1fr; gap: 12px; }
-  .ico { width: 44px; height: 44px; border-radius: 13px; display: grid; place-items: center; font-size: 1.4rem; background: #eceafd; }
-  .name { font-weight: 700; font-size: 1.05rem; margin: 0; }
-  .meta { color: #6b7194; font-size: .82rem; margin-top: 2px; }
-  .stars { color: #f5a524; }
-  .note { margin: 8px 0 0; font-size: .9rem; white-space: pre-wrap; color: #3d4263; }
-  .leaflet-container { font-family: inherit; }
-</style>
-</head>
-<body>
-<header>
-  <div class="wrap">
-    <h1>🗺️ Diario dei luoghi</h1>
-    <div class="sub">Esportato il ${stamp()} · ${places.length} luoghi</div>
-    <div class="cats">${cats}</div>
-  </div>
-</header>
-<div id="map"></div>
-<div class="wrap">${cards}</div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"><\/script>
-<script>
-  var places = ${markersJs};
-  var map = L.map('map');
-  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
-    attribution: '&copy; OpenStreetMap'
-  }).addTo(map);
-  if (places.length) {
-    var bounds = [];
-    places.forEach(function(p) {
-      var ico = L.divIcon({
-        className: '',
-        html: '<div style="width:30px;height:30px;background:' + p.color + ';border:3px solid #fff;border-radius:50% 50% 50% 0;transform:rotate(-45deg);display:grid;place-items:center;box-shadow:0 3px 8px rgba(0,0,0,.35)"><span style="transform:rotate(45deg);font-size:14px">' + p.ico + '</span></div>',
-        iconSize: [30, 30],
-        iconAnchor: [15, 30]
-      });
-      L.marker([p.lat, p.lng], { icon: ico })
-        .addTo(map)
-        .bindTooltip(p.ico + ' ' + p.name);
-      bounds.push([p.lat, p.lng]);
-    });
-    map.fitBounds(bounds, { padding: [40, 40], maxZoom: 12 });
-  } else {
-    map.setView([42.5, 12.5], 5);
-  }
-<\/script>
-</body>
-</html>`;
-
-  download(`diario-luoghi-${stamp()}.html`, html, "text/html;charset=utf-8");
-  toast(`Diario esportato in HTML (mappa inclusa)`);
-};
-
-/* ---------- IMPORTA ---------- */
-$("btnImport").onclick = () => $("file").click();
-$("file").addEventListener("change", async (e) => {
-  const f = e.target.files[0];
-  if (!f) return;
-  try {
-    const j = JSON.parse(await f.text());
-    const arr = Array.isArray(j) ? j : j.places;
-    if (!Array.isArray(arr)) throw 0;
-    const replace =
-      places.length &&
-      confirm(
-        "OK = sostituisci i luoghi attuali\nAnnulla = unisci ai luoghi attuali (i duplicati vengono saltati)",
-      );
-    const base = replace ? [] : places.slice();
-    const backup = places;
-    places = base;
-    let added = 0,
-      skipped = 0;
-    arr.forEach((p) => {
-      if (!p || !p.name || !isFinite(p.lat) || !isFinite(p.lng)) return;
-      if (findDup(+p.lat, +p.lng, p.name)) {
-        skipped++;
-        return;
-      }
-      let date = p.date || "";
-      if (/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(date)) date = isoDate(date);
-      const cat = p.cat || p.category || "generico";
-      places.push({
-        id: uid(),
-        created: p.created || Date.now(),
-        name: String(p.name),
-        date,
-        rating: +p.rating || 0,
-        note: p.note || "",
-        cat: CATS[cat] ? cat : "generico",
-        lat: +p.lat,
-        lng: +p.lng,
-      });
-      added++;
-    });
-    if (!added && !replace) places = backup;
-    save();
-    render();
-    if (places.length)
-      map.fitBounds(
-        places.map((p) => [p.lat, p.lng]),
-        { padding: [40, 40], maxZoom: 12 },
-      );
-    toast(`${added} importati${skipped ? `, ${skipped} già presenti` : ""}`);
-  } catch {
-    toast("File JSON non valido");
-  }
-  e.target.value = "";
+  const link = document.createElement("a");
+  link.setAttribute("href", url);
+  link.setAttribute("download", "distanze_con_luoghi.csv");
+  link.click();
 });
 
-/* ---------- SVUOTA ---------- */
-$("btnClear").onclick = () => {
-  if (
-    places.length &&
-    confirm(
-      "Eliminare TUTTI i luoghi? Scarica prima un JSON se vuoi un backup.",
-    )
-  ) {
-    places = [];
-    activeId = null;
-    save();
-    render();
-    toast("Tutti i luoghi eliminati");
-  }
-};
+// Save map (Image export)
+document.getElementById("saveMap").addEventListener("click", () => {
+  const button = document.getElementById("saveMap");
+  const originalContent = button.innerHTML;
+  button.innerHTML = '<div class="loading"></div> Salvando...';
+  button.disabled = true;
 
-/* ---------- avvio ---------- */
-render();
-setView(localStorage.getItem(VKEY) === "list" ? "list" : "split");
-if (places.length)
-  map.fitBounds(
-    places.map((p) => [p.lat, p.lng]),
-    { padding: [40, 40], maxZoom: 10 },
-  );
+  leafletImage(map, function (err, canvas) {
+    if (err) {
+      alert("Errore durante il salvataggio immagine.");
+      button.innerHTML = originalContent;
+      button.disabled = false;
+      return;
+    }
+
+    const img = canvas.toDataURL("image/png");
+    const link = document.createElement("a");
+    link.href = img;
+    link.download = "mappa_distanze.png";
+    link.click();
+
+    button.innerHTML = originalContent;
+    button.disabled = false;
+  });
+});
+
+// Reset button
+document.getElementById("resetButton").addEventListener("click", resetAll);
+
+// Delete distance entries (gestione più precisa della rimozione)
+document.getElementById("distanceList").addEventListener("click", (e) => {
+  if (e.target.closest(".delete-btn")) {
+    const deleteBtn = e.target.closest(".delete-btn");
+    const idToRemove = parseInt(deleteBtn.getAttribute("data-id"));
+
+    const index = distanceData.findIndex((d) => d.id === idToRemove);
+    if (index === -1) return;
+
+    const distanceToRemove = distanceData[index];
+
+    // Rimuovi i marker e le linee corrispondenti
+    // Usiamo la precisione per trovare i layer Leaflet che corrispondono ai dati
+
+    // Funzione per trovare e rimuovere marker per coordinate
+    const findAndRemoveMarker = (lat, lng) => {
+      const markerIndex = allMarkers.findIndex(
+        (m) =>
+          m.getLatLng().lat.toFixed(5) === lat &&
+          m.getLatLng().lng.toFixed(5) === lng,
+      );
+      if (markerIndex > -1) {
+        const marker = allMarkers.splice(markerIndex, 1)[0];
+        map.removeLayer(marker);
+      }
+    };
+
+    // Rimuovi Marker A
+    findAndRemoveMarker(distanceToRemove.startLat, distanceToRemove.startLng);
+    // Rimuovi Marker B
+    findAndRemoveMarker(distanceToRemove.endLat, distanceToRemove.endLng);
+
+    // Rimuovi Linea (usa le coordinate della linea)
+    const lineIndex = allLines.findIndex((l) => {
+      const latlngs = l.getLatLngs();
+      const startMatch = latlngs.some(
+        (ll) =>
+          ll.lat.toFixed(5) === distanceToRemove.startLat &&
+          ll.lng.toFixed(5) === distanceToRemove.startLng,
+      );
+      const endMatch = latlngs.some(
+        (ll) =>
+          ll.lat.toFixed(5) === distanceToRemove.endLat &&
+          ll.lng.toFixed(5) === distanceToRemove.endLng,
+      );
+      return startMatch && endMatch;
+    });
+
+    if (lineIndex > -1) {
+      const lineToRemove = allLines.splice(lineIndex, 1)[0];
+      map.removeLayer(lineToRemove);
+    }
+
+    // Aggiorna total distance
+    totalDistance -= parseFloat(distanceToRemove.distanceFormatted);
+    document.getElementById("totalKm").textContent = totalDistance.toFixed(2);
+
+    // Rimuovi dall'array dei dati
+    distanceData.splice(index, 1);
+
+    updateDistanceList();
+    saveMapData(); // <--- SALVA DOPO LA RIMOZIONE
+  }
+});
+
+// Close sidebar on mobile when clicking map
+map.on("click", () => {
+  if (window.innerWidth <= 768 && sidebar.classList.contains("open")) {
+    sidebar.classList.remove("open");
+    const icon = sidebarToggle.querySelector("i");
+    icon.className = "fas fa-bars";
+  }
+});
+
+// Initialize and Load Data
+if (!loadMapData()) {
+  // Se non ci sono dati salvati, inizializza normalmente
+  updateDistanceList();
+}
+updateActivePresetColor();
+
+// Validate hex color input
+colorHex.addEventListener("keypress", (e) => {
+  const char = String.fromCharCode(e.which);
+  if (!/[0-9A-Fa-f#]/.test(char)) {
+    e.preventDefault();
+  }
+});
+
+// Format hex input
+colorHex.addEventListener("blur", (e) => {
+  let value = e.target.value.trim();
+  if (value && !value.startsWith("#")) {
+    value = "#" + value;
+  }
+  if (value.length === 4) {
+    // Convert #RGB to #RRGGBB
+    value =
+      "#" + value[1] + value[1] + value[2] + value[2] + value[3] + value[3];
+  }
+  if (/^#[0-9A-F]{6}$/i.test(value)) {
+    e.target.value = value.toUpperCase();
+    selectedColor = value;
+    colorPicker.value = selectedColor;
+    updateActivePresetColor();
+  } else if (value !== "") {
+    e.target.value = selectedColor.toUpperCase();
+  }
+});
