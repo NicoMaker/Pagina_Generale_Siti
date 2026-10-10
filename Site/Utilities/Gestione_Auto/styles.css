@@ -1070,3 +1070,171 @@ textarea::placeholder {
     font-size: 1.7rem;
   }
 }
+
+/* ---------- DIALOG ---------- */
+.dialog-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  background: rgba(8, 12, 24, 0.55);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity var(--ease),
+    visibility var(--ease);
+}
+.dialog-overlay.show {
+  opacity: 1;
+  visibility: visible;
+}
+.dialog {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 520px;
+  max-height: 90vh;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  transform: translateY(16px) scale(0.97);
+  transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.3, 1.2);
+}
+.dialog-overlay.show .dialog {
+  transform: none;
+}
+.dialog-large {
+  max-width: 760px;
+}
+.dialog-content-form {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  flex: 1;
+}
+/* FIX di sicurezza: qualsiasi form figlio diretto di .dialog
+   eredita il layout flex corretto, anche se dimentichi la classe */
+.dialog > form {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  flex: 1;
+}
+.dialog-header {
+  flex-shrink: 0;
+  padding: 1.4rem 1.6rem 1rem;
+  border-bottom: 1px solid var(--border);
+}
+.dialog-header h3 {
+  font-size: 1.2rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+.dialog-subtitle {
+  font-size: 0.85rem;
+  color: var(--text-2);
+  margin-top: 0.15rem;
+}
+.dialog-body {
+  padding: 1.3rem 1.6rem;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  flex: 1;
+  min-height: 0;
+}
+.dialog-footer,
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  padding: 1rem 1.6rem;
+  background: var(--surface-2);
+  border-top: 1px solid var(--border);
+  flex-shrink: 0;
+  /* Safe-area per iPhone con notch/home indicator */
+  padding-bottom: max(1rem, env(safe-area-inset-bottom));
+}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 768px) {
+  .container {
+    padding: 0 16px;
+  }
+  .vehicles-section-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .vehicles-grid {
+    grid-template-columns: 1fr;
+  }
+  .logo-text p {
+    display: none;
+  }
+  .alert-message {
+    flex-wrap: wrap;
+  }
+  .alert-actions {
+    width: 100%;
+  }
+  .alert-actions .btn {
+    width: 100%;
+  }
+  .update-km-controls {
+    flex-direction: column;
+  }
+}
+@media (max-width: 600px) {
+  .dialog-overlay {
+    align-items: flex-end;
+    padding: 0;
+  }
+  .dialog {
+    max-width: 100%;
+    max-height: 94vh;
+    /* Usa dvh dove supportato per evitare problemi con la barra URL mobile */
+    max-height: 94dvh;
+    border-radius: 24px 24px 0 0;
+    transform: translateY(100%);
+    /* Assicura che il dialog non superi mai lo schermo */
+    overflow: hidden;
+  }
+  .dialog-body {
+    /* Un po' meno padding per guadagnare spazio verticale */
+    padding: 1.1rem 1.2rem;
+  }
+  .dialog-header {
+    padding: 1.2rem 1.2rem 0.9rem;
+  }
+  .dialog-footer,
+  .dialog-actions {
+    /* Footer sempre visibile in fondo, mai scrollabile via */
+    flex-shrink: 0;
+    padding: 0.9rem 1.2rem;
+    padding-bottom: max(0.9rem, env(safe-area-inset-bottom));
+    flex-direction: column-reverse;
+  }
+  .dialog-footer .btn,
+  .dialog-actions .btn {
+    width: 100%;
+  }
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+  .maintenance-details {
+    margin-left: 0;
+  }
+  .maintenance-item-header {
+    flex-direction: column;
+  }
+  .stat-value {
+    font-size: 1.7rem;
+  }
+}
