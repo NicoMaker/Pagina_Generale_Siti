@@ -447,7 +447,7 @@ function renderVehicles() {
                     </div>
                     <div class="vehicle-info">
                         <h3>${vehicle.brand} ${vehicle.model}</h3>
-                        <p>${vehicle.plate}</p>
+                        <p><i class="fas fa-id-card"></i> ${vehicle.plate}</p>
                     </div>
                 </div>
                 <div class="vehicle-header-actions">
