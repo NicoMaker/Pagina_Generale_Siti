@@ -55,6 +55,19 @@
         }
       ]
     },
+    "Motori": {
+      "icon": "fa-flag-checkered",
+      "projects": [
+        {
+          "name": "Risultati F1 2026",
+          "link": "https://nicomaker.github.io/Report_F1_2026/"
+        },
+        {
+          "name": "Risultati MotoGP 2026",
+          "link": "https://nicomaker.github.io/Report_MotoGP_2026/"
+        }
+      ]
+    },
     "Astronomia": {
       "icon": "fa-meteor",
       "projects": [
