@@ -1,199 +1,161 @@
-// Wait for DOM to be fully loaded
-document.addEventListener("DOMContentLoaded", () => {
-  // Add event listener for Enter key on input
-  document.getElementById("number").addEventListener("keypress", (e) => {
-    if (e.key === "Enter") {
-      checkPrime();
-    }
-  });
+const MAX_VALUE = 1e12;
+const nf = new Intl.NumberFormat("it-IT");
 
-  // Add focus and blur event listeners for input animation
-  const numberInput = document.getElementById("number");
+const $ = (selector) => document.querySelector(selector);
 
-  numberInput.addEventListener("focus", () => {
-    numberInput.parentElement.classList.add("focused");
-  });
+const form = $("#prime-form");
+const input = $("#number");
+const result = $("#result");
+const badge = $("#result-badge");
+const resultNumber = $("#result-number");
+const resultText = $("#result-text");
+const factorizationBox = $("#factorization");
+const factorizationValue = $("#factorization-value");
+const divisorsBox = $("#divisors");
+const divisorsList = $("#divisors-list");
 
-  numberInput.addEventListener("blur", () => {
-    numberInput.parentElement.classList.remove("focused");
-  });
-});
+$("#year").textContent = new Date().getFullYear();
 
-// Set example number in the input field
-function setExample(number) {
-  const numberInput = document.getElementById("number");
-  numberInput.value = number;
+/* ---------- Matematica ---------- */
 
-  // Add a subtle flash animation to the input
-  numberInput.classList.add("flash");
-  setTimeout(() => {
-    numberInput.classList.remove("flash");
-  }, 300);
-
-  checkPrime();
-}
-
-// Check if a number is prime
-function checkPrime() {
-  const numberInput = document.getElementById("number");
-  const number = Number.parseInt(numberInput.value);
-  const resultContainer = document.getElementById("result-container");
-  const resultBadge = document.getElementById("result-badge");
-  const resultNumber = document.getElementById("result-number");
-  const result = document.getElementById("result");
-  const divisorsContainer = document.getElementById("divisors-container");
-  const divisorsList = document.getElementById("divisors-list");
-  const button = document.getElementById("check-button");
-
-  // Hide previous results with a smooth transition
-  resultContainer.classList.remove("visible");
-  divisorsContainer.classList.remove("visible");
-
-  // Validate input
-  if (isNaN(number) || number === "") {
-    showError("Inserisci un numero valido");
-    return;
+/** Test di primalità per tentativi (6k ± 1). */
+function isPrime(n) {
+  if (n < 2) return false;
+  if (n < 4) return true;
+  if (n % 2 === 0 || n % 3 === 0) return false;
+  for (let i = 5; i * i <= n; i += 6) {
+    if (n % i === 0 || n % (i + 2) === 0) return false;
   }
-
-  if (number < 2) {
-    showError("Il numero deve essere maggiore di 1");
-    return;
-  }
-
-  // Show loading state
-  button.innerHTML =
-    '<span class="loading"></span><span class="button-text">Verificando...</span>';
-  button.disabled = true;
-
-  // Use setTimeout to create a small delay for better UX
-  setTimeout(() => {
-    const { isPrime, divisors } = getPrimeStatus(number);
-
-    // Display result
-    resultNumber.textContent = formatNumber(number);
-
-    if (isPrime) {
-      resultBadge.textContent = "PRIMO";
-      resultBadge.className = "";
-      resultBadge.classList.add("prime");
-      result.textContent = `${formatNumber(
-        number,
-      )} è un numero primo! È divisibile solo per 1 e per se stesso.`;
-    } else {
-      resultBadge.textContent = "COMPOSTO";
-      resultBadge.className = "";
-      resultBadge.classList.add("not-prime");
-      result.textContent = `${formatNumber(number)} non è un numero primo. Ha ${
-        divisors.length
-      } divisori.`;
-    }
-
-    // Display divisors with staggered animation
-    divisorsList.innerHTML = "";
-    divisors.forEach((divisor, index) => {
-      const divisorElement = document.createElement("span");
-      divisorElement.classList.add("divisor");
-      divisorElement.style.animationDelay = `${index * 50}ms`;
-
-      // Highlight prime factors
-      if (isPrimeFactor(divisor) && divisor !== 1) {
-        divisorElement.classList.add("prime-factor");
-      }
-
-      divisorElement.textContent = formatNumber(divisor);
-      divisorsList.appendChild(divisorElement);
-    });
-
-    // Show result with animation
-    resultContainer.style.display = "block";
-
-    // Use setTimeout to ensure CSS transitions work properly
-    setTimeout(() => {
-      resultContainer.classList.add("visible");
-
-      // Show divisors container after a short delay
-      setTimeout(() => {
-        divisorsContainer.style.display = "block";
-
-        setTimeout(() => {
-          divisorsContainer.classList.add("visible");
-        }, 50);
-      }, 300);
-    }, 50);
-
-    // Reset button
-    button.innerHTML =
-      '<span class="button-text">Verifica</span><span class="button-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></span>';
-    button.disabled = false;
-  }, 800); // Delay for better UX
-}
-
-// Format large numbers with thousands separators
-function formatNumber(num) {
-  return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-}
-
-// Check if a number is prime
-function isPrimeFactor(num) {
-  if (num <= 1) return false;
-  if (num <= 3) return true;
-  if (num % 2 === 0 || num % 3 === 0) return false;
-
-  for (let i = 5; i * i <= num; i += 6) {
-    if (num % i === 0 || num % (i + 2) === 0) return false;
-  }
-
   return true;
 }
 
-// Get prime status and divisors
-function getPrimeStatus(number) {
-  const divisors = [];
+/** Restituisce tutti i divisori di n in ordine crescente. */
+function getDivisors(n) {
+  const small = [];
+  const large = [];
+  for (let i = 1; i * i <= n; i++) {
+    if (n % i !== 0) continue;
+    small.push(i);
+    if (i !== n / i) large.push(n / i);
+  }
+  return [...small, ...large.reverse()];
+}
 
-  // Find all divisors more efficiently
-  for (let i = 1; i <= Math.sqrt(number); i++) {
-    if (number % i === 0) {
-      divisors.push(i);
-
-      // Add the pair divisor if it's different
-      if (i !== number / i) {
-        divisors.push(number / i);
-      }
+/** Scomposizione in fattori primi: Map(primo → esponente). */
+function factorize(n) {
+  const factors = new Map();
+  for (let p = 2; p * p <= n; p += p === 2 ? 1 : 2) {
+    while (n % p === 0) {
+      factors.set(p, (factors.get(p) ?? 0) + 1);
+      n /= p;
     }
   }
-
-  // Sort divisors in ascending order
-  divisors.sort((a, b) => a - b);
-
-  // A prime number has exactly 2 divisors: 1 and itself
-  const isPrime = divisors.length === 2;
-
-  return { isPrime, divisors };
+  if (n > 1) factors.set(n, (factors.get(n) ?? 0) + 1);
+  return factors;
 }
 
-// Show error message
+/* ---------- Rendering ---------- */
+
+const SUPERSCRIPTS = "⁰¹²³⁴⁵⁶⁷⁸⁹";
+const toSuperscript = (num) =>
+  [...String(num)].map((d) => SUPERSCRIPTS[Number(d)]).join("");
+
+function formatFactorization(factors) {
+  return [...factors]
+    .map(([p, e]) => nf.format(p) + (e > 1 ? toSuperscript(e) : ""))
+    .join(" × ");
+}
+
+function showResult({ state, label, number = "", text }) {
+  badge.textContent = label;
+  badge.dataset.state = state;
+  resultNumber.textContent = number;
+  resultText.textContent = text;
+  factorizationBox.hidden = true;
+  divisorsBox.hidden = true;
+
+  // Riavvia l'animazione di comparsa
+  result.hidden = false;
+  result.style.animation = "none";
+  void result.offsetWidth;
+  result.style.animation = "";
+}
+
 function showError(message) {
-  const resultContainer = document.getElementById("result-container");
-  const resultBadge = document.getElementById("result-badge");
-  const resultNumber = document.getElementById("result-number");
-  const result = document.getElementById("result");
-  const divisorsContainer = document.getElementById("divisors-container");
-
-  resultBadge.textContent = "ERRORE";
-  resultBadge.className = "";
-  resultBadge.classList.add("not-prime");
-  resultNumber.textContent = "";
-  result.textContent = message;
-
-  // Show error with animation
-  resultContainer.style.display = "block";
-
-  setTimeout(() => {
-    resultContainer.classList.add("visible");
-  }, 50);
-
-  divisorsContainer.classList.remove("visible");
-  setTimeout(() => {
-    divisorsContainer.style.display = "none";
-  }, 300);
+  showResult({ state: "error", label: "Errore", text: message });
 }
+
+function renderDivisors(divisors) {
+  divisorsList.replaceChildren(
+    ...divisors.map((divisor, index) => {
+      const li = document.createElement("li");
+      li.className = "chip";
+      li.style.setProperty("--i", index);
+      li.classList.toggle("is-prime", isPrime(divisor));
+      li.textContent = nf.format(divisor);
+      return li;
+    }),
+  );
+  divisorsBox.hidden = false;
+}
+
+function checkPrime() {
+  const raw = input.value.trim();
+  const number = Number(raw);
+
+  if (raw === "" || !Number.isFinite(number)) {
+    return showError("Inserisci un numero valido.");
+  }
+  if (!Number.isInteger(number)) {
+    return showError("Inserisci un numero intero.");
+  }
+  if (number < 2) {
+    return showError("Il numero deve essere maggiore di 1.");
+  }
+  if (number > MAX_VALUE) {
+    return showError(
+      `Per ora gestisco numeri fino a ${nf.format(MAX_VALUE)}.`,
+    );
+  }
+
+  const divisors = getDivisors(number);
+  const prime = divisors.length === 2;
+
+  showResult({
+    state: prime ? "prime" : "composite",
+    label: prime ? "Primo" : "Composto",
+    number: nf.format(number),
+    text: prime
+      ? `${nf.format(number)} è un numero primo! È divisibile solo per 1 e per se stesso.`
+      : `${nf.format(number)} non è un numero primo. Ha ${divisors.length} divisori.`,
+  });
+
+  if (!prime) {
+    factorizationValue.textContent = formatFactorization(factorize(number));
+    factorizationBox.hidden = false;
+  }
+  renderDivisors(divisors);
+}
+
+/* ---------- Eventi ---------- */
+
+form.addEventListener("submit", (event) => {
+  event.preventDefault();
+  checkPrime();
+});
+
+// Esempi: delegazione degli eventi, niente onclick inline
+document.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-example]");
+  if (!button) return;
+
+  input.value = button.dataset.example;
+  input.classList.remove("flash");
+  void input.offsetWidth;
+  input.classList.add("flash");
+  input.addEventListener("animationend", () => input.classList.remove("flash"), {
+    once: true,
+  });
+
+  checkPrime();
+});
