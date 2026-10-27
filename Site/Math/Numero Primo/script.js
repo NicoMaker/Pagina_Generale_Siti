@@ -113,9 +113,7 @@ function checkPrime() {
     return showError("Il numero deve essere maggiore di 1.");
   }
   if (number > MAX_VALUE) {
-    return showError(
-      `Per ora gestisco numeri fino a ${nf.format(MAX_VALUE)}.`,
-    );
+    return showError(`Per ora gestisco numeri fino a ${nf.format(MAX_VALUE)}.`);
   }
 
   const divisors = getDivisors(number);
@@ -153,9 +151,13 @@ document.addEventListener("click", (event) => {
   input.classList.remove("flash");
   void input.offsetWidth;
   input.classList.add("flash");
-  input.addEventListener("animationend", () => input.classList.remove("flash"), {
-    once: true,
-  });
+  input.addEventListener(
+    "animationend",
+    () => input.classList.remove("flash"),
+    {
+      once: true,
+    },
+  );
 
   checkPrime();
 });

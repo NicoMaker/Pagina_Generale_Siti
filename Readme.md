@@ -230,7 +230,7 @@ Il portfolio include numerose categorie di progetti, ciascuna con la propria ico
 | Info Paesi/Stati     | 🌍    | Informazioni geografiche su paesi e stati                |
 | Matematica           | 🧮    | Strumenti di calcolo e applicazioni matematiche          |
 | Mappe                | 🗺️    | Applicazioni per la visualizzazione di mappe e dati      |
-| Motori	             | 🏁	   | Progetti e strumenti legati al mondo dei motori          |
+| Motori               | 🏁    | Progetti e strumenti legati al mondo dei motori          |
 | Natale               | 🎄    | Progetti a tema natalizio                                |
 | Olimpiadi            | 🏆    | Applicazioni per le olimpiadi                            |
 | Opzioni con le Frasi | 💬    | Strumenti per la manipolazione del testo                 |
