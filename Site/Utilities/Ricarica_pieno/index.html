@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0f766e">
+  <meta name="color-scheme" content="light dark">
+  <title>Ricarica Pieno – Diario rifornimenti</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%9B%BD%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-screen="garage">
+<div class="app">
+
+  <header class="topbar">
+    <button id="btnBack" class="back" type="button" hidden aria-label="Torna ai veicoli"><span aria-hidden="true">‹</span> Veicoli</button>
+
+    <div class="brand" id="brand"><span class="brand-logo" aria-hidden="true">⛽</span><span>Ricarica Pieno</span></div>
+    <strong id="topTitle" class="top-title" hidden>Backup e impostazioni</strong>
+
+    <button id="vehiclePill" class="vpill" type="button" hidden title="Cambia veicolo">
+      <span class="vp-ico" id="vpIcon" aria-hidden="true">🚗</span>
+      <span class="vp-text"><b id="vpName"></b><small id="vpPlate"></small></span>
+      <span class="vp-chev" aria-hidden="true">⇄</span>
+    </button>
+
+    <button id="btnGear" class="btn icon ghost" type="button" title="Backup e impostazioni" aria-label="Backup e impostazioni">⚙️</button>
+  </header>
+
+  <nav class="tabs" id="tabs" aria-label="Sezioni" hidden>
+    <button type="button" data-tab="dash" class="active"><span class="ico" aria-hidden="true">🏠</span><span>Home</span></button>
+    <button type="button" data-tab="add" class="fab" aria-label="Nuovo rifornimento"><span class="ico" aria-hidden="true">⛽</span><span>Rifornisci</span></button>
+    <button type="button" data-tab="history"><span class="ico" aria-hidden="true">🧾</span><span>Storico</span></button>
+    <button type="button" data-tab="stats"><span class="ico" aria-hidden="true">📊</span><span>Statistiche</span></button>
+    <button type="button" data-tab="settings"><span class="ico" aria-hidden="true">⚙️</span><span>Dati</span></button>
+  </nav>
+
+  <main>
+    <!-- ============ GARAGE ============ -->
+    <section id="view-garage" class="view active">
+      <div class="garage-head">
+        <h1>I tuoi veicoli</h1>
+        <p>Auto, moto, scooter, furgoni, barche… Scegli un veicolo o aggiungine uno nuovo.</p>
+      </div>
+      <label class="searchbar" id="gSearchWrap"><span aria-hidden="true">🔍</span>
+        <input type="search" id="gSearch" placeholder="Cerca veicolo, targa o rifornimento…" autocomplete="off" aria-label="Cerca"></label>
+      <div id="garageGrid" class="garage-grid"></div>
+    </section>
+
+    <!-- ============ DASHBOARD ============ -->
+    <section id="view-dash" class="view">
+      <div id="dashBody"></div>
+    </section>
+
+    <!-- ============ STORICO ============ -->
+    <section id="view-history" class="view">
+      <div class="section-head">
+        <h2>Storico rifornimenti</h2>
+        <span class="muted small" id="historyCount"></span>
+      </div>
+      <label class="searchbar"><span aria-hidden="true">🔍</span>
+        <input type="search" id="hSearch" placeholder="Cerca per data, km, litri, prezzo, note…" autocomplete="off" aria-label="Cerca nello storico"></label>
+      <div class="chips" id="hFilters">
+        <button type="button" data-f="all" class="chip active">Tutti</button>
+        <button type="button" data-f="full" class="chip">Pieni</button>
+        <button type="button" data-f="partial" class="chip">Parziali</button>
+        <button type="button" data-f="fvg" class="chip">Con sconto FVG</button>
+      </div>
+      <div id="historyList" class="history"></div>
+    </section>
+
+    <!-- ============ STATISTICHE ============ -->
+    <section id="view-stats" class="view">
+      <div class="section-head">
+        <h2>Statistiche</h2>
+        <span class="muted small" id="statsVehicle"></span>
+      </div>
+      <div id="statsBody"></div>
+    </section>
+
+    <!-- ============ DATI / IMPOSTAZIONI ============ -->
+    <section id="view-settings" class="view">
+      <div class="section-head"><h2>Backup e impostazioni</h2></div>
+      <div class="grid-2 top">
+        <div class="card">
+          <h2>Preferenze</h2>
+          <label class="field"><span>Sconto FVG predefinito (€ per litro)</span>
+            <input type="text" id="sDiscount" inputmode="decimal"></label>
+          <p class="hint">Viene proposto ogni volta che attivi lo sconto FVG; puoi modificarlo nel singolo rifornimento.</p>
+          <div class="field"><span>Tema</span>
+            <div class="theme-grid" id="themeGrid" role="radiogroup" aria-label="Tema"></div></div>
+        </div>
+
+        <div class="card">
+          <h2>Esporta</h2>
+          <p class="hint">I dati restano solo su questo dispositivo. Scarica un backup JSON per conservarli o spostarli su un altro dispositivo.</p>
+          <div class="btn-col">
+            <button type="button" class="btn primary" id="btnExportAll">⬇ Esporta tutto (JSON)</button>
+            <button type="button" class="btn" id="btnExportOne">⬇ Solo veicolo attivo (JSON)</button>
+            <button type="button" class="btn" id="btnExportCsv">⬇ Veicolo attivo in CSV (Excel)</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Importa</h2>
+          <label class="field"><span>Modalità</span>
+            <select id="importMode">
+              <option value="merge">Unisci ai dati esistenti</option>
+              <option value="replace">Sostituisci tutto</option>
+            </select></label>
+          <label class="btn file-btn">⬆ Scegli file JSON
+            <input type="file" id="importFile" accept="application/json,.json" hidden></label>
+          <p class="hint">«Unisci» aggiunge solo veicoli e rifornimenti non ancora presenti.</p>
+          <hr>
+          <button type="button" class="btn danger" id="btnReset">Cancella tutti i dati</button>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<!-- ============ MODALE RIFORNIMENTO ============ -->
+<dialog id="refuelDialog" class="sheet" aria-labelledby="formTitle">
+  <button type="button" class="sheet-close" id="rClose" aria-label="Chiudi">✕</button>
+  <div class="sheet-body grid-2">
+              <form id="refuelForm" class="card" novalidate autocomplete="off">
+          <h2 id="formTitle">Nuovo rifornimento</h2>
+          <p class="prev-info" id="prevInfo"></p>
+
+          <fieldset id="formFields" class="plain">
+            <div class="field-row">
+              <label class="field"><span>Data</span>
+                <input type="date" id="fDate" required></label>
+              <label class="field"><span>Km finali (contachilometri)</span>
+                <span class="inp"><input type="text" id="fOdo" inputmode="numeric" placeholder="es. 45.230" required><em>km</em></span></label>
+            </div>
+
+            <div class="field-row">
+              <label class="field"><span>Litri (facoltativi)</span>
+                <span class="inp"><input type="text" id="fLiters" inputmode="decimal" placeholder="es. 38,5" required><em>L</em></span></label>
+              <label class="field"><span>Prezzo €/L (alla colonnina)</span>
+                <span class="inp"><input type="text" id="fPrice" inputmode="decimal" placeholder="es. 1,859" required><em>€/L</em></span></label>
+            </div>
+
+            <label class="field"><span>Totale pagato €</span>
+              <span class="inp"><input type="text" id="fTotal" inputmode="decimal" placeholder="es. 30,00"><em>€</em></span></label>
+            <p class="hint">Bastano due dati su tre: scrivi il <b>totale</b> e il prezzo e i litri li calcola l'app; oppure litri e totale e ricava il prezzo.</p>
+
+            <label class="switch"><input type="checkbox" id="fFvg"><span class="track"></span><span class="lbl">Sconto FVG applicato</span></label>
+            <div id="fvgBox" hidden>
+              <label class="field"><span>Sconto FVG (€ per litro)</span>
+                <span class="inp"><input type="text" id="fDiscount" inputmode="decimal" placeholder="es. 0,15"><em>€/L</em></span></label>
+            </div>
+
+            <label class="switch"><input type="checkbox" id="fFull" checked><span class="track"></span><span class="lbl">Pieno completo</span></label>
+            <p class="hint">Hai riempito il serbatoio fino al massimo? Lascia attivo e puoi non scrivere i litri: basta il totale. Disattivalo solo per un rifornimento parziale.</p>
+
+            <label class="field"><span>Note (facoltative)</span>
+              <input type="text" id="fNote" maxlength="120" placeholder="es. autostrada, viaggio…"></label>
+
+            <div id="formError" class="form-error" role="alert" hidden></div>
+
+            <div class="actions">
+              <button type="submit" class="btn primary" id="btnSave">Salva rifornimento</button>
+              <button type="button" class="btn ghost" id="btnCancelEdit" hidden>Annulla modifica</button>
+            </div>
+          </fieldset>
+        </form>
+
+        <aside class="card preview" aria-live="polite">
+          <h2>Anteprima</h2>
+          <div id="previewBody"></div>
+        </aside>
+  </div>
+</dialog>
+
+<!-- ============ DIALOG VEICOLO ============ -->
+<dialog id="vehicleDialog">
+  <form id="vehicleForm" method="dialog" novalidate autocomplete="off">
+    <h2 id="vTitle">Nuovo veicolo</h2>
+    <p class="hint" id="vIntro">Inserisci i km attuali del contachilometri: servono per calcolare i km del primo rifornimento.</p>
+    <label class="field"><span>Tipo di veicolo</span>
+      <select id="vType"></select></label>
+    <label class="field"><span>Nome *</span>
+      <input type="text" id="vName" maxlength="40" placeholder="es. Panda, Scooter…"></label>
+    <div class="field-row">
+      <label class="field"><span>Targa</span>
+        <input type="text" id="vPlate" maxlength="12" placeholder="facoltativa"></label>
+      <label class="field"><span>Carburante</span>
+        <select id="vFuel">
+          <option>Benzina</option><option>Gasolio</option><option>GPL</option>
+          <option>Metano</option><option>Ibrida</option><option>Elettrica</option><option>Altro</option>
+        </select></label>
+    </div>
+    <div class="field-row">
+      <label class="field"><span>Km iniziali *</span>
+        <input type="text" id="vInitKm" inputmode="numeric" placeholder="es. 45.000"></label>
+      <label class="field"><span>Serbatoio (L)</span>
+        <input type="text" id="vTank" inputmode="decimal" placeholder="facoltativo"></label>
+    </div>
+    <div class="field"><span>Icona</span>
+      <div class="icon-grid" id="vIcons" role="radiogroup" aria-label="Icona del veicolo"></div></div>
+    <div id="vError" class="form-error" role="alert" hidden></div>
+    <div class="actions">
+      <button type="submit" class="btn primary" id="vSave">Salva</button>
+      <button type="button" class="btn ghost" id="vCancel">Annulla</button>
+      <button type="button" class="btn danger" id="vDelete" hidden>Elimina veicolo</button>
+    </div>
+  </form>
+</dialog>
+
+<div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+<script src="js/storage.js"></script>
+<script src="js/calc.js"></script>
+<script src="js/charts.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

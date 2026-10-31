@@ -637,6 +637,10 @@
         {
           "name": "Convertitore Colori",
           "link": "Site/Utilities/Convertitore_di_Colori/index.html"
+        },
+        {
+          "name": "Ricarica Pieno",
+          "link": "Site/Utilities/Ricarica_Pieno/index.html"
         }
       ]
     }

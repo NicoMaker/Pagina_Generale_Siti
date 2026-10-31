@@ -13,6 +13,7 @@
 - **[Ora giorno tempo reale](Ora_giorno_tempo_reale)**
 - **[Organizzazione Note](Organizzazione_Note)**
 - **[QR Code Generator](QR_Code_Generator)**
+- **[Ricarica Pieno](Ricarica_pieno)**
 - **[Rimuovi Sfondo](Rimuovi_sfondo)**
 - **[Timer Pomodoro](Timer_Pomodoro)**
 - **[ToDoList](ToDoList)**
