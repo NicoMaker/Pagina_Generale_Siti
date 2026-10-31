@@ -210,11 +210,12 @@ $("chips").addEventListener("click", (e) => {
 function render() {
   const q = $("filter").value.trim().toLowerCase(),
     sort = $("sort").value;
-  const arr = places.filter((p) =>
-    (!catFilter || (p.cat || "generico") === catFilter) &&
-    `${p.name} ${p.note ?? ""} ${catLabel(p.cat || "generico")}`
-      .toLowerCase()
-      .includes(q),
+  const arr = places.filter(
+    (p) =>
+      (!catFilter || (p.cat || "generico") === catFilter) &&
+      `${p.name} ${p.note ?? ""} ${catLabel(p.cat || "generico")}`
+        .toLowerCase()
+        .includes(q),
   );
   renderChips();
   if (sort === "name") arr.sort((a, b) => a.name.localeCompare(b.name));
@@ -840,7 +841,9 @@ if (places.length)
 
 /* ---------- scorciatoie da tastiera ---------- */
 document.addEventListener("keydown", (e) => {
-  const typing = /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName);
+  const typing = /^(INPUT|TEXTAREA|SELECT)$/.test(
+    document.activeElement.tagName,
+  );
   if (e.key === "/" && !typing && !$("dlg").open) {
     e.preventDefault();
     $("q").focus();

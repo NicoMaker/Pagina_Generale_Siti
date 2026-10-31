@@ -14,7 +14,10 @@
       media="(prefers-color-scheme: light)"
     />
     <title>Contatore righe di codice</title>
-    <meta name="description" content="Conta righe di codice, linguaggi e funzioni da file, cartelle o repository GitHub, GitLab, Bitbucket e Codeberg." />
+    <meta
+      name="description"
+      content="Conta righe di codice, linguaggi e funzioni da file, cartelle o repository GitHub, GitLab, Bitbucket e Codeberg."
+    />
     <meta name="color-scheme" content="dark light" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -23,7 +26,10 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="style.css" />
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script
+      defer
+      src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"
+    ></script>
   </head>
   <body>
     <div class="layout">
@@ -134,13 +140,15 @@
               <div class="btn-row">
                 <button
                   class="btn btn-primary"
-                  data-action="clickElement" data-args='["fileInput"]'
+                  data-action="clickElement"
+                  data-args='["fileInput"]'
                 >
                   + File
                 </button>
                 <button
                   class="btn btn-primary"
-                  data-action="clickElement" data-args='["folderInput"]'
+                  data-action="clickElement"
+                  data-args='["folderInput"]'
                 >
                   + Cartella
                 </button>
@@ -234,7 +242,8 @@
             <button
               class="ctab ctab-active"
               id="tabFiles"
-              data-action="switchTab" data-args='["files"]'
+              data-action="switchTab"
+              data-args='["files"]'
             >
               <span class="ctab-icon">&#9783;</span>
               <span class="ctab-label">Struttura File</span>
@@ -242,7 +251,8 @@
             <button
               class="ctab"
               id="tabFunctions"
-              data-action="switchTab" data-args='["functions"]'
+              data-action="switchTab"
+              data-args='["functions"]'
             >
               <span class="ctab-icon">ƒ</span>
               <span class="ctab-label">Funzioni</span>
@@ -332,28 +342,32 @@
                   </button>
                   <button
                     class="btn btn-xs"
-                    data-action="toggleFnFullSort" data-args='["lines"]'
+                    data-action="toggleFnFullSort"
+                    data-args='["lines"]'
                     id="btnSortLines"
                   >
                     Righe ↓
                   </button>
                   <button
                     class="btn btn-xs"
-                    data-action="toggleFnFullSort" data-args='["name"]'
+                    data-action="toggleFnFullSort"
+                    data-args='["name"]'
                     id="btnSortName"
                   >
                     Nome
                   </button>
                   <button
                     class="btn btn-xs"
-                    data-action="toggleFnFullSort" data-args='["file"]'
+                    data-action="toggleFnFullSort"
+                    data-args='["file"]'
                     id="btnSortFile"
                   >
                     File
                   </button>
                   <button
                     class="btn btn-xs"
-                    data-action="toggleFnFullSort" data-args='["kind"]'
+                    data-action="toggleFnFullSort"
+                    data-args='["kind"]'
                     id="btnSortKind"
                   >
                     Tipo
@@ -565,7 +579,9 @@
               ⬇ Scarica funzione
             </button>
             <button class="btn btn-xs" id="codeModalCopy">⎘ Copia</button>
-            <button class="modal-close" data-action="chiudiCodiceModal">✕</button>
+            <button class="modal-close" data-action="chiudiCodiceModal">
+              ✕
+            </button>
           </div>
         </div>
         <div class="code-modal-meta" id="codeModalMeta"></div>
@@ -580,7 +596,9 @@
       <div class="modal dl-sel-modal">
         <div class="modal-header">
           <span class="modal-title">⬇ &nbsp;Scarica selezione</span>
-          <button class="modal-close" data-action="chiudiModalScarica">✕</button>
+          <button class="modal-close" data-action="chiudiModalScarica">
+            ✕
+          </button>
         </div>
         <div class="dl-sel-body">
           <!-- MODE TABS -->
@@ -588,14 +606,16 @@
             <button
               class="dl-tab dl-tab-active"
               id="dlTabFiles"
-              data-action="switchDlTab" data-args='["files"]'
+              data-action="switchDlTab"
+              data-args='["files"]'
             >
               <span class="ctab-icon">&#9783;</span> File
             </button>
             <button
               class="dl-tab"
               id="dlTabFunctions"
-              data-action="switchDlTab" data-args='["functions"]'
+              data-action="switchDlTab"
+              data-args='["functions"]'
             >
               <span class="ctab-icon">ƒ</span> Funzioni
             </button>
@@ -612,10 +632,18 @@
                 data-input-action="renderDlFileList"
               />
               <div class="dl-sel-actions">
-                <button class="btn btn-xs" data-action="dlSelectAllFiles" data-args='[true]'>
+                <button
+                  class="btn btn-xs"
+                  data-action="dlSelectAllFiles"
+                  data-args="[true]"
+                >
                   Seleziona tutti
                 </button>
-                <button class="btn btn-xs" data-action="dlSelectAllFiles" data-args='[false]'>
+                <button
+                  class="btn btn-xs"
+                  data-action="dlSelectAllFiles"
+                  data-args="[false]"
+                >
                   Deseleziona tutti
                 </button>
               </div>
@@ -635,10 +663,18 @@
                 data-input-action="renderDlFnList"
               />
               <div class="dl-sel-actions">
-                <button class="btn btn-xs" data-action="dlSelectAllFns" data-args='[true]'>
+                <button
+                  class="btn btn-xs"
+                  data-action="dlSelectAllFns"
+                  data-args="[true]"
+                >
                   Seleziona tutte
                 </button>
-                <button class="btn btn-xs" data-action="dlSelectAllFns" data-args='[false]'>
+                <button
+                  class="btn btn-xs"
+                  data-action="dlSelectAllFns"
+                  data-args="[false]"
+                >
                   Deseleziona tutte
                 </button>
               </div>
