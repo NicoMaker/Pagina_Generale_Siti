@@ -5,7 +5,7 @@
 const MOBILE_MENU_CLOSE_MS = 180; // deve combaciare con @keyframes mobileMenuOut in style.css
 
 // Chiude il menu mobile al click fuori
-document.addEventListener("click", function (e) {
+document.addEventListener("click", (e) => {
   const btn = document.getElementById("hamburgerBtn");
   const menu = document.getElementById("mobileMenu");
   if (!btn || !menu) return;
@@ -16,7 +16,7 @@ document.addEventListener("click", function (e) {
 });
 
 // Chiude il menu mobile con il tasto Esc (accessibilità da tastiera)
-document.addEventListener("keydown", function (e) {
+document.addEventListener("keydown", (e) => {
   if (e.key !== "Escape") return;
   const menu = document.getElementById("mobileMenu");
   if (menu && !menu.classList.contains("hidden")) {

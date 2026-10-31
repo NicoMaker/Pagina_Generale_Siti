@@ -13,14 +13,17 @@
       content="#f2f2fa"
       media="(prefers-color-scheme: light)"
     />
-    <title>contatore righe di codice</title>
+    <title>Contatore righe di codice</title>
+    <meta name="description" content="Conta righe di codice, linguaggi e funzioni da file, cartelle o repository GitHub, GitLab, Bitbucket e Codeberg." />
+    <meta name="color-scheme" content="dark light" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Geist:wght@300;400;500;600&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="style.css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
   </head>
   <body>
     <div class="layout">
@@ -35,20 +38,20 @@
             class="btn-theme"
             id="themeToggle"
             title="Cambia tema"
-            onclick="toggleTheme()"
+            data-action="toggleTheme"
           >
             ☀
           </button>
-          <button class="btn btn-ghost" onclick="ricalcola()">
+          <button class="btn btn-ghost" data-action="ricalcola">
             &#8635; Ricalcola
           </button>
-          <button class="btn btn-dl" onclick="scaricaTuttiFile()">
+          <button class="btn btn-dl" data-action="scaricaTuttiFile">
             ⬇ Scarica tutto
           </button>
-          <button class="btn btn-dl-sel" onclick="apriModalScarica()">
+          <button class="btn btn-dl-sel" data-action="apriModalScarica">
             ⬇ Selezione
           </button>
-          <button class="btn btn-danger" onclick="rimuoviTutti()">
+          <button class="btn btn-danger" data-action="rimuoviTutti">
             &#10005; Svuota
           </button>
         </div>
@@ -59,14 +62,14 @@
             class="btn-theme"
             id="themeToggleMobile"
             title="Cambia tema"
-            onclick="toggleTheme()"
+            data-action="toggleTheme"
           >
             ☀
           </button>
           <button
             class="btn-hamburger"
             id="hamburgerBtn"
-            onclick="toggleMobileMenu()"
+            data-action="toggleMobileMenu"
             aria-label="Menu"
             aria-expanded="false"
             aria-controls="mobileMenu"
@@ -80,37 +83,25 @@
       <div class="mobile-menu hidden" id="mobileMenu">
         <button
           class="btn btn-ghost w-full"
-          onclick="
-            ricalcola();
-            toggleMobileMenu();
-          "
+          data-action="ricalcola toggleMobileMenu"
         >
           &#8635; Ricalcola
         </button>
         <button
           class="btn btn-dl w-full"
-          onclick="
-            scaricaTuttiFile();
-            toggleMobileMenu();
-          "
+          data-action="scaricaTuttiFile toggleMobileMenu"
         >
           ⬇ Scarica tutto
         </button>
         <button
           class="btn btn-dl-sel w-full"
-          onclick="
-            apriModalScarica();
-            toggleMobileMenu();
-          "
+          data-action="apriModalScarica toggleMobileMenu"
         >
           ⬇ Selezione
         </button>
         <button
           class="btn btn-danger w-full"
-          onclick="
-            rimuoviTutti();
-            toggleMobileMenu();
-          "
+          data-action="rimuoviTutti toggleMobileMenu"
         >
           &#10005; Svuota
         </button>
@@ -122,7 +113,7 @@
           <button
             class="sidebar-toggle-btn"
             id="sidebarToggleBtn"
-            onclick="toggleSidebar()"
+            data-action="toggleSidebar"
             aria-expanded="false"
             aria-controls="mobileSidebar"
           >
@@ -143,20 +134,20 @@
               <div class="btn-row">
                 <button
                   class="btn btn-primary"
-                  onclick="document.getElementById('fileInput').click()"
+                  data-action="clickElement" data-args='["fileInput"]'
                 >
                   + File
                 </button>
                 <button
                   class="btn btn-primary"
-                  onclick="document.getElementById('folderInput').click()"
+                  data-action="clickElement" data-args='["folderInput"]'
                 >
                   + Cartella
                 </button>
               </div>
 
               <!-- URL IMPORT BUTTON -->
-              <button class="btn btn-url" onclick="apriModalUrl()">
+              <button class="btn btn-url" data-action="apriModalUrl">
                 <span class="btn-url-icon">⬡</span>
                 Importa da URL
               </button>
@@ -223,7 +214,7 @@
                 <span class="panel-title">Linguaggi importati</span>
               </div>
               <div class="lang-panel-actions">
-                <button class="btn btn-xs" onclick="clearLangFilter()">
+                <button class="btn btn-xs" data-action="clearLangFilter">
                   Mostra tutti
                 </button>
               </div>
@@ -243,7 +234,7 @@
             <button
               class="ctab ctab-active"
               id="tabFiles"
-              onclick="switchTab('files')"
+              data-action="switchTab" data-args='["files"]'
             >
               <span class="ctab-icon">&#9783;</span>
               <span class="ctab-label">Struttura File</span>
@@ -251,7 +242,7 @@
             <button
               class="ctab"
               id="tabFunctions"
-              onclick="switchTab('functions')"
+              data-action="switchTab" data-args='["functions"]'
             >
               <span class="ctab-icon">ƒ</span>
               <span class="ctab-label">Funzioni</span>
@@ -264,15 +255,15 @@
             <!-- Floating file selection bar -->
             <div class="fn-sel-bar hidden" id="fileSelBar">
               <span class="fn-sel-bar-count" id="fileSelBarCount"></span>
-              <button class="btn btn-xs" onclick="fileSelectAllVisible()">
+              <button class="btn btn-xs" data-action="fileSelectAllVisible">
                 Seleziona tutti visibili
               </button>
-              <button class="btn btn-xs" onclick="fileClearSelection()">
+              <button class="btn btn-xs" data-action="fileClearSelection">
                 Deseleziona tutti
               </button>
               <button
                 class="btn btn-xs btn-dl"
-                onclick="scaricaFileSelezionatiInline()"
+                data-action="scaricaFileSelezionatiInline"
               >
                 ⬇ Scarica selezionati
               </button>
@@ -281,10 +272,10 @@
               <div class="panel-header">
                 <span class="panel-title">Struttura File</span>
                 <div class="header-btns">
-                  <button class="btn btn-xs" onclick="espandiTutti()">
+                  <button class="btn btn-xs" data-action="espandiTutti">
                     Espandi &#8595;
                   </button>
-                  <button class="btn btn-xs" onclick="comprimiTutti()">
+                  <button class="btn btn-xs" data-action="comprimiTutti">
                     Comprimi &#8593;
                   </button>
                 </div>
@@ -315,15 +306,15 @@
             <!-- Floating selection action bar -->
             <div class="fn-sel-bar hidden" id="fnSelBar">
               <span class="fn-sel-bar-count" id="fnSelBarCount"></span>
-              <button class="btn btn-xs" onclick="fnSelectAllVisible()">
+              <button class="btn btn-xs" data-action="fnSelectAllVisible">
                 Seleziona tutte visibili
               </button>
-              <button class="btn btn-xs" onclick="fnClearSelection()">
+              <button class="btn btn-xs" data-action="fnClearSelection">
                 Deseleziona tutte
               </button>
               <button
                 class="btn btn-xs btn-dl"
-                onclick="scaricaFunzioniSelezionate()"
+                data-action="scaricaFunzioniSelezionate"
               >
                 ⬇ Scarica selezionate
               </button>
@@ -335,34 +326,34 @@
                   <span class="fn-panel-summary" id="fnFullSummary"></span>
                   <button
                     class="btn btn-xs btn-dl"
-                    onclick="scaricaTutteFunzioni()"
+                    data-action="scaricaTutteFunzioni"
                   >
                     ⬇ Scarica tutte
                   </button>
                   <button
                     class="btn btn-xs"
-                    onclick="toggleFnFullSort('lines')"
+                    data-action="toggleFnFullSort" data-args='["lines"]'
                     id="btnSortLines"
                   >
                     Righe ↓
                   </button>
                   <button
                     class="btn btn-xs"
-                    onclick="toggleFnFullSort('name')"
+                    data-action="toggleFnFullSort" data-args='["name"]'
                     id="btnSortName"
                   >
                     Nome
                   </button>
                   <button
                     class="btn btn-xs"
-                    onclick="toggleFnFullSort('file')"
+                    data-action="toggleFnFullSort" data-args='["file"]'
                     id="btnSortFile"
                   >
                     File
                   </button>
                   <button
                     class="btn btn-xs"
-                    onclick="toggleFnFullSort('kind')"
+                    data-action="toggleFnFullSort" data-args='["kind"]'
                     id="btnSortKind"
                   >
                     Tipo
@@ -391,7 +382,7 @@
                   <span
                     class="fn-hdr-checkbox"
                     id="fnHdrCheckbox"
-                    onclick="fnToggleSelectAll()"
+                    data-action="fnToggleSelectAll"
                   ></span>
                 </span>
                 <span class="fth-lines">Righe</span>
@@ -429,7 +420,7 @@
       <div class="modal">
         <div class="modal-header">
           <span class="modal-title">Importa da Repository Remoto</span>
-          <button class="modal-close" onclick="chiudiModalUrl()">✕</button>
+          <button class="modal-close" data-action="chiudiModalUrl">✕</button>
         </div>
         <div class="modal-body">
           <div class="modal-providers">
@@ -494,10 +485,10 @@
           <div class="modal-error" id="urlError"></div>
         </div>
         <div class="modal-footer">
-          <button class="btn btn-ghost" onclick="chiudiModalUrl()">
+          <button class="btn btn-ghost" data-action="chiudiModalUrl">
             Annulla
           </button>
-          <button class="btn btn-import" onclick="confermaImportUrl()">
+          <button class="btn btn-import" data-action="confermaImportUrl">
             ⬇ Importa
           </button>
         </div>
@@ -515,11 +506,11 @@
             <button
               class="btn btn-xs btn-dl"
               id="fnModalDlBtn"
-              onclick="scaricaFunzioniFile()"
+              data-action="scaricaFunzioniFile"
             >
               ⬇ Scarica funzioni
             </button>
-            <button class="modal-close" onclick="chiudiFunzioniModal()">
+            <button class="modal-close" data-action="chiudiFunzioniModal">
               ✕
             </button>
           </div>
@@ -552,7 +543,7 @@
               ⬇ Scarica
             </button>
             <button class="btn btn-xs" id="fileModalCopy">⎘ Copia</button>
-            <button class="modal-close" onclick="chiudiFileModal()">✕</button>
+            <button class="modal-close" data-action="chiudiFileModal">✕</button>
           </div>
         </div>
         <div class="code-modal-meta" id="fileModalMeta"></div>
@@ -574,7 +565,7 @@
               ⬇ Scarica funzione
             </button>
             <button class="btn btn-xs" id="codeModalCopy">⎘ Copia</button>
-            <button class="modal-close" onclick="chiudiCodiceModal()">✕</button>
+            <button class="modal-close" data-action="chiudiCodiceModal">✕</button>
           </div>
         </div>
         <div class="code-modal-meta" id="codeModalMeta"></div>
@@ -589,7 +580,7 @@
       <div class="modal dl-sel-modal">
         <div class="modal-header">
           <span class="modal-title">⬇ &nbsp;Scarica selezione</span>
-          <button class="modal-close" onclick="chiudiModalScarica()">✕</button>
+          <button class="modal-close" data-action="chiudiModalScarica">✕</button>
         </div>
         <div class="dl-sel-body">
           <!-- MODE TABS -->
@@ -597,14 +588,14 @@
             <button
               class="dl-tab dl-tab-active"
               id="dlTabFiles"
-              onclick="switchDlTab('files')"
+              data-action="switchDlTab" data-args='["files"]'
             >
               <span class="ctab-icon">&#9783;</span> File
             </button>
             <button
               class="dl-tab"
               id="dlTabFunctions"
-              onclick="switchDlTab('functions')"
+              data-action="switchDlTab" data-args='["functions"]'
             >
               <span class="ctab-icon">ƒ</span> Funzioni
             </button>
@@ -618,13 +609,13 @@
                 id="dlFileSearch"
                 placeholder="&#9906;  Filtra file..."
                 type="text"
-                oninput="renderDlFileList()"
+                data-input-action="renderDlFileList"
               />
               <div class="dl-sel-actions">
-                <button class="btn btn-xs" onclick="dlSelectAllFiles(true)">
+                <button class="btn btn-xs" data-action="dlSelectAllFiles" data-args='[true]'>
                   Seleziona tutti
                 </button>
-                <button class="btn btn-xs" onclick="dlSelectAllFiles(false)">
+                <button class="btn btn-xs" data-action="dlSelectAllFiles" data-args='[false]'>
                   Deseleziona tutti
                 </button>
               </div>
@@ -641,13 +632,13 @@
                 id="dlFnSearch"
                 placeholder="&#9906;  Filtra funzioni..."
                 type="text"
-                oninput="renderDlFnList()"
+                data-input-action="renderDlFnList"
               />
               <div class="dl-sel-actions">
-                <button class="btn btn-xs" onclick="dlSelectAllFns(true)">
+                <button class="btn btn-xs" data-action="dlSelectAllFns" data-args='[true]'>
                   Seleziona tutte
                 </button>
-                <button class="btn btn-xs" onclick="dlSelectAllFns(false)">
+                <button class="btn btn-xs" data-action="dlSelectAllFns" data-args='[false]'>
                   Deseleziona tutte
                 </button>
               </div>
@@ -657,13 +648,13 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button class="btn btn-ghost" onclick="chiudiModalScarica()">
+          <button class="btn btn-ghost" data-action="chiudiModalScarica">
             Annulla
           </button>
           <button
             class="btn btn-import"
             id="dlSelConfirmBtn"
-            onclick="eseguiDownloadSelezione()"
+            data-action="eseguiDownloadSelezione"
           >
             ⬇ Scarica selezionati
           </button>
@@ -674,8 +665,9 @@
     <div class="toast" id="toast"></div>
     <input type="file" id="fileInput" multiple />
     <input type="file" id="folderInput" webkitdirectory directory multiple />
-    <script src="js/function-parser.js"></script>
-    <script src="js/script.js"></script>
-    <script src="js/hamburger_mobile.js"></script>
+    <script defer src="js/function-parser.js"></script>
+    <script defer src="js/script.js"></script>
+    <script defer src="js/hamburger_mobile.js"></script>
+    <script defer src="js/actions.js"></script>
   </body>
 </html>
