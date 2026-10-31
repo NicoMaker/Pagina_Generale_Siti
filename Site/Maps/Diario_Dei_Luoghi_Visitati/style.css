@@ -580,3 +580,49 @@ dialog label > * {
     transition: none !important;
   }
 }
+
+/* ===== Modernizzazione: dark mode, vetro, dvh, chip ===== */
+:root {
+  color-scheme: light dark;
+  --bg: #f4f5fc;
+  --ink-soft: color-mix(in srgb, var(--ink) 78%, transparent);
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0d0f1f;
+    --card: #171a2f;
+    --ink: #eceefb;
+    --muted: #9aa0c6;
+    --line: #2a2e4d;
+    --accent: #8f8fff;
+    --accent-d: #a3a3ff;
+    --accent-soft: #26294f;
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+  }
+  input, select, textarea, button, .item, .cat, .results, dialog { background: var(--card); }
+  .seg button.on { background: var(--accent-soft); }
+  button.primary { background: var(--accent); color: #0d0f1f; }
+  .leaflet-tile-pane { filter: invert(1) hue-rotate(180deg) brightness(0.95) contrast(0.9); }
+  .leaflet-container { background: #1b1d2b; }
+}
+html { scroll-behavior: smooth; }
+.app { height: 100dvh; padding: max(14px, env(safe-area-inset-top)) max(14px, env(safe-area-inset-right)) max(14px, env(safe-area-inset-bottom)) max(14px, env(safe-area-inset-left)); }
+.top { position: sticky; top: 0; z-index: 1100; background: color-mix(in srgb, var(--card) 80%, transparent); backdrop-filter: blur(14px) saturate(1.4); }
+.panel, #map, .top { border: 1px solid var(--line); }
+.note { color: var(--ink-soft); }
+button { transition: transform 0.15s var(--ease), background 0.15s, border-color 0.15s; }
+button:active { transform: scale(0.97); }
+.item { transition: transform 0.2s var(--ease), box-shadow 0.2s, border-color 0.2s; }
+.item:hover { transform: translateY(-2px); }
+.chips { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; }
+.chips:empty { display: none; }
+.chip { flex: none; padding: 5px 12px; border-radius: 99px; font-size: 0.8rem; white-space: nowrap; }
+.chip.on { background: var(--accent); border-color: var(--accent); color: #fff; }
+@media (prefers-color-scheme: dark) { .chip.on { color: #0d0f1f; } }
+dialog[open] { animation: pop 0.25s var(--ease); }
+@keyframes pop { from { opacity: 0; transform: translateY(14px) scale(0.98); } }
+@media (max-width: 820px) {
+  .app { height: auto; min-height: 100dvh; grid-template-rows: auto 42dvh 1fr; }
+  dialog { margin: auto auto 0; width: 100%; max-width: 100%; border-radius: 22px 22px 0 0; }
+}

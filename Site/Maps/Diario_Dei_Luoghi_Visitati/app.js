@@ -3,6 +3,7 @@ const KEY = "diario-luoghi-v1",
   VKEY = "diario-luoghi-view";
 let places = load(),
   activeId = null,
+  catFilter = "",
   editingId = null,
   pending = null,
   pendingCat = "generico";
@@ -52,10 +53,13 @@ function load() {
   }
 }
 function save() {
-  localStorage.setItem(KEY, JSON.stringify(places));
+  try {
+    localStorage.setItem(KEY, JSON.stringify(places));
+  } catch {
+    toast("Impossibile salvare: spazio esaurito o storage bloccato");
+  }
 }
-const uid = () =>
-  Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+const uid = () => crypto.randomUUID();
 const esc = (s) =>
   String(s ?? "").replace(
     /[&<>"']/g,
@@ -180,15 +184,39 @@ function syncMarkers() {
   });
 }
 
+/* ---------- chip filtro categoria ---------- */
+function renderChips() {
+  const used = [...new Set(places.map((p) => p.cat || "generico"))];
+  if (catFilter && !used.includes(catFilter)) catFilter = "";
+  $("chips").innerHTML =
+    used.length > 1
+      ? [
+          `<button class="chip${catFilter ? "" : " on"}" data-c="">Tutti</button>`,
+          ...used.map(
+            (c) =>
+              `<button class="chip${catFilter === c ? " on" : ""}" data-c="${c}">${catIco(c)} ${catLabel(c)}</button>`,
+          ),
+        ].join("")
+      : "";
+}
+$("chips").addEventListener("click", (e) => {
+  const b = e.target.closest(".chip");
+  if (!b) return;
+  catFilter = b.dataset.c;
+  render();
+});
+
 /* ---------- lista ---------- */
 function render() {
   const q = $("filter").value.trim().toLowerCase(),
     sort = $("sort").value;
   const arr = places.filter((p) =>
-    (p.name + " " + p.note + " " + catLabel(p.cat || "generico"))
+    (!catFilter || (p.cat || "generico") === catFilter) &&
+    `${p.name} ${p.note ?? ""} ${catLabel(p.cat || "generico")}`
       .toLowerCase()
       .includes(q),
   );
+  renderChips();
   if (sort === "name") arr.sort((a, b) => a.name.localeCompare(b.name));
   else if (sort === "date")
     arr.sort((a, b) => (b.date || "").localeCompare(a.date || ""));
@@ -267,6 +295,7 @@ $("sort").addEventListener("change", render);
 
 /* ---------- vista ---------- */
 function setView(v) {
+  if (v !== "list" && v !== "split") v = "split";
   $("app").dataset.view = v;
   document
     .querySelectorAll(".seg button")
@@ -360,6 +389,7 @@ map.on("click", async (e) => {
     const j = await (
       await fetch(
         `https://nominatim.openstreetmap.org/reverse?format=jsonv2&zoom=10&addressdetails=1&accept-language=it&lat=${lat}&lon=${lng}`,
+        { signal: AbortSignal.timeout(8000) },
       )
     ).json();
     name = paeseFromAddress(j.address) || paeseFromDisplay(j.display_name);
@@ -380,6 +410,7 @@ async function search() {
     const arr = await (
       await fetch(
         `https://nominatim.openstreetmap.org/search?format=jsonv2&limit=8&addressdetails=1&accept-language=it&q=${encodeURIComponent(q)}`,
+        { signal: AbortSignal.timeout(8000) },
       )
     ).json();
     ul._data = arr;
@@ -806,3 +837,12 @@ if (places.length)
     places.map((p) => [p.lat, p.lng]),
     { padding: [40, 40], maxZoom: 10 },
   );
+
+/* ---------- scorciatoie da tastiera ---------- */
+document.addEventListener("keydown", (e) => {
+  const typing = /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName);
+  if (e.key === "/" && !typing && !$("dlg").open) {
+    e.preventDefault();
+    $("q").focus();
+  }
+});
