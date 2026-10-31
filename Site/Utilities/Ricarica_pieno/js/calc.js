@@ -8,14 +8,16 @@
  * parziale, litri e km si accumulano fino al pieno successivo.
  */
 (function (g) {
-  'use strict';
+  "use strict";
 
   function sum(arr, fn) {
-    return arr.reduce(function (a, x) { return a + fn(x); }, 0);
+    return arr.reduce(function (a, x) {
+      return a + fn(x);
+    }, 0);
   }
 
   function parseDate(s) {
-    var p = String(s).split('-');
+    var p = String(s).split("-");
     return Date.UTC(+p[0], (+p[1] || 1) - 1, +p[2] || 1);
   }
 
@@ -25,7 +27,9 @@
 
   function sorted(refuels) {
     return refuels.slice().sort(function (a, b) {
-      return (a.odometer - b.odometer) || String(a.date).localeCompare(String(b.date));
+      return (
+        a.odometer - b.odometer || String(a.date).localeCompare(String(b.date))
+      );
     });
   }
 
@@ -34,7 +38,8 @@
     var list = sorted(vehicle.refuels || []);
     var prev = Number(vehicle.initialKm) || 0;
     var prevDate = null;
-    var segKm = 0, segL = 0;
+    var segKm = 0,
+      segL = 0;
 
     return list.map(function (r) {
       var km = r.odometer - prev;
@@ -45,7 +50,8 @@
 
       segKm += km;
       segL += r.liters;
-      var kmPerL = null, segment = null;
+      var kmPerL = null,
+        segment = null;
       if (r.full) {
         if (segL > 0 && segKm > 0) {
           kmPerL = segKm / segL;
@@ -65,7 +71,7 @@
         l100: kmPerL ? 100 / kmPerL : null,
         costPerKm: km > 0 ? total / km : null,
         days: prevDate ? daysBetween(prevDate, r.date) : null,
-        segment: segment
+        segment: segment,
       });
       prev = r.odometer;
       prevDate = r.date;
@@ -76,28 +82,40 @@
   /** Riga calcolata per un rifornimento "candidato" (anteprima live). */
   function preview(vehicle, cand, editId) {
     if (!isFinite(cand.odometer)) return null;
-    var others = (vehicle.refuels || []).filter(function (r) { return r.id !== editId; });
+    var others = (vehicle.refuels || []).filter(function (r) {
+      return r.id !== editId;
+    });
     var temp = {
       initialKm: vehicle.initialKm,
-      refuels: others.concat([{
-        id: '__preview',
-        date: cand.date || '1970-01-01',
-        odometer: cand.odometer,
-        liters: isFinite(cand.liters) ? cand.liters : 0,
-        price: isFinite(cand.price) ? cand.price : 0,
-        fvg: !!cand.fvg,
-        discount: isFinite(cand.discount) ? cand.discount : 0,
-        paidTotal: cand.paidTotal > 0 ? cand.paidTotal : null,
-        full: cand.full !== false,
-        note: ''
-      }])
+      refuels: others.concat([
+        {
+          id: "__preview",
+          date: cand.date || "1970-01-01",
+          odometer: cand.odometer,
+          liters: isFinite(cand.liters) ? cand.liters : 0,
+          price: isFinite(cand.price) ? cand.price : 0,
+          fvg: !!cand.fvg,
+          discount: isFinite(cand.discount) ? cand.discount : 0,
+          paidTotal: cand.paidTotal > 0 ? cand.paidTotal : null,
+          full: cand.full !== false,
+          note: "",
+        },
+      ]),
     };
-    return rows(temp).filter(function (r) { return r.id === '__preview'; })[0] || null;
+    return (
+      rows(temp).filter(function (r) {
+        return r.id === "__preview";
+      })[0] || null
+    );
   }
 
   function weighted(segs) {
-    var km = sum(segs, function (r) { return r.segment.km; });
-    var l = sum(segs, function (r) { return r.segment.liters; });
+    var km = sum(segs, function (r) {
+      return r.segment.km;
+    });
+    var l = sum(segs, function (r) {
+      return r.segment.liters;
+    });
     return l > 0 ? km / l : null;
   }
 
@@ -106,26 +124,46 @@
     var o = { n: n };
     if (!n) return o;
 
-    var first = rs[0], last = rs[n - 1];
+    var first = rs[0],
+      last = rs[n - 1];
     o.totalKm = last.odometer - vehicle.initialKm;
-    o.liters = sum(rs, function (r) { return r.liters; });
-    o.spent = sum(rs, function (r) { return r.total; });
-    o.saved = sum(rs, function (r) { return r.saved; });
-    o.fvgCount = rs.filter(function (r) { return r.fvg; }).length;
+    o.liters = sum(rs, function (r) {
+      return r.liters;
+    });
+    o.spent = sum(rs, function (r) {
+      return r.total;
+    });
+    o.saved = sum(rs, function (r) {
+      return r.saved;
+    });
+    o.fvgCount = rs.filter(function (r) {
+      return r.fvg;
+    }).length;
 
-    var segs = rs.filter(function (r) { return r.segment; });
+    var segs = rs.filter(function (r) {
+      return r.segment;
+    });
     o.segCount = segs.length;
     o.avgKmL = weighted(segs);
     o.l100 = o.avgKmL ? 100 / o.avgKmL : null;
     o.last3KmL = segs.length ? weighted(segs.slice(-3)) : null;
 
     if (segs.length) {
-      o.best = segs.reduce(function (a, r) { return r.kmPerL > a.kmPerL ? r : a; });
-      o.worst = segs.reduce(function (a, r) { return r.kmPerL < a.kmPerL ? r : a; });
+      o.best = segs.reduce(function (a, r) {
+        return r.kmPerL > a.kmPerL ? r : a;
+      });
+      o.worst = segs.reduce(function (a, r) {
+        return r.kmPerL < a.kmPerL ? r : a;
+      });
     }
 
     o.avgPrice = o.liters > 0 ? o.spent / o.liters : null;
-    o.avgListino = o.liters > 0 ? sum(rs, function (r) { return r.liters * r.price; }) / o.liters : null;
+    o.avgListino =
+      o.liters > 0
+        ? sum(rs, function (r) {
+            return r.liters * r.price;
+          }) / o.liters
+        : null;
     o.costPerKm = o.totalKm > 0 ? o.spent / o.totalKm : null;
     o.avgKmPerRefuel = o.totalKm / n;
     o.avgLitersPerRefuel = o.liters / n;
@@ -134,8 +172,10 @@
     var span = n > 1 ? daysBetween(first.date, last.date) : 0;
     o.spanDays = span;
     o.avgDaysBetween = n > 1 && span > 0 ? span / (n - 1) : null;
-    o.kmPerDay = n > 1 && span > 0 ? (last.odometer - first.odometer) / span : null;
-    o.spentPerMonth = n > 1 && span > 0 ? (o.spent - first.total) / span * 30.4375 : null;
+    o.kmPerDay =
+      n > 1 && span > 0 ? (last.odometer - first.odometer) / span : null;
+    o.spentPerMonth =
+      n > 1 && span > 0 ? ((o.spent - first.total) / span) * 30.4375 : null;
     return o;
   }
 
@@ -144,14 +184,20 @@
     var map = {};
     rs.forEach(function (r) {
       var k = String(r.date).slice(0, 7);
-      var m = map[k] || (map[k] = { key: k, spent: 0, liters: 0, km: 0, saved: 0, count: 0 });
+      var m =
+        map[k] ||
+        (map[k] = { key: k, spent: 0, liters: 0, km: 0, saved: 0, count: 0 });
       m.spent += r.total;
       m.liters += r.liters;
       m.km += Math.max(r.km, 0);
       m.saved += r.saved;
       m.count++;
     });
-    return Object.keys(map).sort().map(function (k) { return map[k]; });
+    return Object.keys(map)
+      .sort()
+      .map(function (k) {
+        return map[k];
+      });
   }
 
   g.Calc = {
@@ -160,6 +206,6 @@
     stats: stats,
     monthly: monthly,
     sorted: sorted,
-    daysBetween: daysBetween
+    daysBetween: daysBetween,
   };
-})(typeof window !== 'undefined' ? window : globalThis);
+})(typeof window !== "undefined" ? window : globalThis);
