@@ -461,21 +461,62 @@
   }
 
   /**
-   * Grafico a barre Minimo / Media / Mediana / Massimo (SVG).
+   * Semicerchio compatto per la griglia di gauge.
    */
-  function perfBarsChart(p) {
-    if (!p || !p.count) return "";
-    var items = [
-      { label: "Minimo", value: p.min },
-      { label: "Media", value: p.avg },
-      { label: "Mediana", value: p.median },
-      { label: "Massimo", value: p.max },
-    ];
-    return CH.bars(items, {
-      decimals: 2,
-      unit: "km/L",
-      label: "Minimo, media, mediana e massimo (km/L)",
-    });
+  function semiGauge(val, min, max, title, subtitle) {
+    if (val == null || !isFinite(val)) return "";
+    var pct = Math.max(0, Math.min(1, (val - min) / (max - min))) * 100;
+    var arc = "M20 100 A80 80 0 0 1 180 100";
+    return (
+      '<div class="mini-gauge">' +
+      '<svg viewBox="0 0 200 124" role="img" aria-label="' + esc(title) + '">' +
+      '<path class="ga-track" d="' + arc + '" pathLength="100"/>' +
+      '<path class="ga-val" d="' + arc + '" pathLength="100" stroke-dasharray="' + pct.toFixed(1) + ' 100"/>' +
+      '<text class="ga-big" x="100" y="92" text-anchor="middle">' + fmt2(val) + '</text>' +
+      '<text class="ga-small" x="100" y="112" text-anchor="middle">' + esc(subtitle) + '</text>' +
+      '</svg>' +
+      '<span class="mg-lbl">' + esc(title) + '</span>' +
+      '</div>'
+    );
+  }
+
+  /**
+   * Card "Ultimo pieno vs record":
+   * griglia di 4 semicerchi (min, media, mediana, max) sopra
+   * + il semicerchio grande dell'ultimo pieno con caption.
+   */
+  function lastVsRecordPanel(st) {
+    var p = st.perf;
+    if (!p || !p.count) {
+      return chartCard(
+        "Ultimo pieno vs record",
+        fewer("Serve almeno un pieno calcolato."),
+      );
+    }
+    var maxV = Math.max(p.max, p.record.kmPerL);
+    
+    // Griglia 2x2 in alto
+    var grid = '<div class="mg-grid">' +
+      semiGauge(p.min, 0, maxV, "Minimo", "km/L") +
+      semiGauge(p.avg, 0, maxV, "Media", "km/L") +
+      semiGauge(p.median, 0, maxV, "Mediana", "km/L") +
+      semiGauge(p.max, 0, maxV, "Massimo", "km/L") +
+      '</div>';
+
+    // Gauge grande in basso
+    var gauge = CH.gauge(
+      p.record.kmPerL,
+      0,
+      maxV,
+      {
+        unit: "km/L ultimo pieno",
+        label: "Ultimo pieno rispetto al record",
+        caption:
+          "Il tuo record è " + fmt2(p.max) +
+          " km/L (" + fmtDate(p.maxRow.date) + ")",
+      },
+    );
+    return chartCard("Ultimo pieno vs record", grid + gauge);
   }
 
   /**
@@ -505,9 +546,16 @@
       fmtDate(rec.date) + " · " + fmt0(rec.odometer) + " km)</span>" +
       "</div></div>";
 
-    var barsHtml = perfBarsChart(p);
+    // Griglia di gauge anche nel record panel
+    var maxV = Math.max(p.max, p.record.kmPerL);
+    var gridGauges = '<div class="mg-grid">' +
+      semiGauge(p.min, 0, maxV, "Minimo", "km/L") +
+      semiGauge(p.avg, 0, maxV, "Media", "km/L") +
+      semiGauge(p.median, 0, maxV, "Mediana", "km/L") +
+      semiGauge(p.max, 0, maxV, "Massimo", "km/L") +
+      '</div>';
 
-    var grid =
+    var numericGrid =
       '<div class="record-grid">' +
       '<div class="record-stat avg"><span class="rs-lbl">Media</span><strong class="rs-val">' +
       fmt2(p.avg) + '</strong><span class="rs-sub">km/L sui pieni</span></div>' +
@@ -528,41 +576,12 @@
 
     return (
       '<div class="card record-card"><h3>' + title + "</h3>" +
-      recLine + barsHtml + grid +
+      recLine + gridGauges + numericGrid +
       '<p class="hint" style="margin:10px 0 0">Calcolato su ' +
       pieniCompletati(p.count) +
       ". La media pesata sui litri è " + fmt2(p.avgKmL) + " km/L.</p>" +
       "</div>"
     );
-  }
-
-  /**
-   * Card "Ultimo pieno vs record":
-   *  - sopra: grafico a barre Minimo/Media/Mediana/Massimo
-   *  - sotto: gauge semicircolare con l'ultimo pieno
-   */
-  function lastVsRecordPanel(st) {
-    var p = st.perf;
-    if (!p || !p.count) {
-      return chartCard(
-        "Ultimo pieno vs record",
-        fewer("Serve almeno un pieno calcolato."),
-      );
-    }
-    var bars = perfBarsChart(p);
-    var gauge = CH.gauge(
-      p.record.kmPerL,
-      0,
-      Math.max(p.max, p.record.kmPerL),
-      {
-        unit: "km/L ultimo pieno",
-        label: "Ultimo pieno rispetto al record",
-        caption:
-          "Il tuo record è " + fmt2(p.max) +
-          " km/L (" + fmtDate(p.maxRow.date) + ")",
-      },
-    );
-    return chartCard("Ultimo pieno vs record", bars + gauge);
   }
 
   function renderDashboard() {
