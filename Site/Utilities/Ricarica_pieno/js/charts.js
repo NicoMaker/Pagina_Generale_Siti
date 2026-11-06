@@ -443,7 +443,9 @@
       names
         .map(function (n, i) {
           return (
-            '<span><i style="background:var(--c' + i + ')"></i>' +
+            '<span><i style="background:var(--c' +
+            i +
+            ')"></i>' +
             esc(n) +
             "</span>"
           );

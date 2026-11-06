@@ -57,7 +57,18 @@
     return p.length === 3 ? p[2] + "/" + p[1] + "/" + p[0] : iso;
   }
   var MONTHS = [
-    "gen","feb","mar","apr","mag","giu","lug","ago","set","ott","nov","dic",
+    "gen",
+    "feb",
+    "mar",
+    "apr",
+    "mag",
+    "giu",
+    "lug",
+    "ago",
+    "set",
+    "ott",
+    "nov",
+    "dic",
   ];
   function monthLabel(key) {
     var p = key.split("-");
@@ -166,8 +177,18 @@
     hQuery = "",
     hFilter = "all";
   var MONTHS_FULL = [
-    "gennaio","febbraio","marzo","aprile","maggio","giugno",
-    "luglio","agosto","settembre","ottobre","novembre","dicembre",
+    "gennaio",
+    "febbraio",
+    "marzo",
+    "aprile",
+    "maggio",
+    "giugno",
+    "luglio",
+    "agosto",
+    "settembre",
+    "ottobre",
+    "novembre",
+    "dicembre",
   ];
   function norm(t) {
     return String(t)
@@ -342,24 +363,45 @@
           s = C.stats(v, rs);
         var odo = rs.length ? rs[rs.length - 1].odometer : v.initialKm;
         return (
-          '<article class="gcard" style="--c:' + esc(v.color) + '">' +
+          '<article class="gcard" style="--c:' +
+          esc(v.color) +
+          '">' +
           '<button type="button" class="gc-main" data-gact="open" data-id="' +
-          esc(v.id) + '" aria-label="Apri ' + esc(v.name) + '">' +
+          esc(v.id) +
+          '" aria-label="Apri ' +
+          esc(v.name) +
+          '">' +
           '<div class="gc-top"><span class="gc-ico" aria-hidden="true">' +
-          esc(v.icon || "🚗") + "</span><div><strong>" + esc(v.name) +
-          "</strong><small>" + esc(typeLabel(v)) + " · " +
-          (v.plate ? esc(v.plate) + " · " : "") + esc(v.fuel) +
+          esc(v.icon || "🚗") +
+          "</span><div><strong>" +
+          esc(v.name) +
+          "</strong><small>" +
+          esc(typeLabel(v)) +
+          " · " +
+          (v.plate ? esc(v.plate) + " · " : "") +
+          esc(v.fuel) +
           "</small></div></div>" +
           '<div class="gc-stats">' +
-          "<div><b>" + fmt0(odo) + "</b><small>km</small></div>" +
-          "<div><b>" + (s.avgKmL ? fmt2(s.avgKmL) : "–") +
+          "<div><b>" +
+          fmt0(odo) +
+          "</b><small>km</small></div>" +
+          "<div><b>" +
+          (s.avgKmL ? fmt2(s.avgKmL) : "–") +
           "</b><small>km/L medio</small></div>" +
-          "<div><b>" + (s.n ? eur(s.spent, 2) : "–") + "</b><small>" +
-          (v.refuels.length === 1 ? "1 pieno" : fmt0(v.refuels.length) + " pieni") +
+          "<div><b>" +
+          (s.n ? eur(s.spent, 2) : "–") +
+          "</b><small>" +
+          (v.refuels.length === 1
+            ? "1 pieno"
+            : fmt0(v.refuels.length) + " pieni") +
           "</small></div></div></button>" +
           '<button type="button" class="gc-edit" data-gact="edit" data-id="' +
-          esc(v.id) + '" title="Modifica ' + esc(v.name) +
-          '" aria-label="Modifica ' + esc(v.name) + '">✎</button></article>'
+          esc(v.id) +
+          '" title="Modifica ' +
+          esc(v.name) +
+          '" aria-label="Modifica ' +
+          esc(v.name) +
+          '">✎</button></article>'
         );
       })
       .join("");
@@ -369,30 +411,46 @@
     else {
       var hits = [];
       st.vehicles.forEach(function (v) {
-        C.rows(v).slice().reverse().forEach(function (r) {
-          if (matches(rowText(r), q)) hits.push({ v: v, r: r });
-        });
+        C.rows(v)
+          .slice()
+          .reverse()
+          .forEach(function (r) {
+            if (matches(rowText(r), q)) hits.push({ v: v, r: r });
+          });
       });
       if (!list.length && !hits.length)
         html =
           '<p class="empty" style="grid-column:1/-1">Nessun risultato per «' +
-          esc(q) + "».</p>";
+          esc(q) +
+          "».</p>";
       if (hits.length) {
         html +=
           '<div class="hits" style="grid-column:1/-1"><h3>' +
           pl(hits.length, "rifornimento trovato", "rifornimenti trovati") +
           "</h3>" +
-          hits.slice(0, 30).map(function (h) {
-            return (
-              '<button type="button" class="hit" data-gact="hit" data-id="' +
-              esc(h.v.id) + '"><span class="hit-ico">' +
-              esc(h.v.icon || "🚗") + "</span><span><b>" +
-              fmtDate(h.r.date) + " · " + esc(h.v.name) +
-              "</b><small>" + fmt0(h.r.odometer) + " km · " +
-              fmt2(h.r.liters) + " L · " + eur(h.r.total) +
-              "</small></span></button>"
-            );
-          }).join("") + "</div>";
+          hits
+            .slice(0, 30)
+            .map(function (h) {
+              return (
+                '<button type="button" class="hit" data-gact="hit" data-id="' +
+                esc(h.v.id) +
+                '"><span class="hit-ico">' +
+                esc(h.v.icon || "🚗") +
+                "</span><span><b>" +
+                fmtDate(h.r.date) +
+                " · " +
+                esc(h.v.name) +
+                "</b><small>" +
+                fmt0(h.r.odometer) +
+                " km · " +
+                fmt2(h.r.liters) +
+                " L · " +
+                eur(h.r.total) +
+                "</small></span></button>"
+              );
+            })
+            .join("") +
+          "</div>";
       }
     }
     box.innerHTML = html;
@@ -400,7 +458,9 @@
 
   function kmlPoints(rs) {
     return rs
-      .filter(function (r) { return r.kmPerL; })
+      .filter(function (r) {
+        return r.kmPerL;
+      })
       .map(function (r) {
         return {
           label: fmtDate(r.date),
@@ -410,9 +470,11 @@
       });
   }
   function monthPoints(rs) {
-    return C.monthly(rs).slice(-12).map(function (m) {
-      return { label: monthLabel(m.key), value: m.spent };
-    });
+    return C.monthly(rs)
+      .slice(-12)
+      .map(function (m) {
+        return { label: monthLabel(m.key), value: m.spent };
+      });
   }
   function pct(a, b) {
     return b ? (a / b - 1) * 100 : 0;
@@ -431,12 +493,19 @@
     });
   }
   function segsOf(rs) {
-    return rs.filter(function (r) { return r.kmPerL; });
+    return rs.filter(function (r) {
+      return r.kmPerL;
+    });
   }
   function chartCard(title, body, cls) {
     return (
-      '<div class="card chart-card ' + (cls || "") + '"><h3>' + title +
-      "</h3>" + body + "</div>"
+      '<div class="card chart-card ' +
+      (cls || "") +
+      '"><h3>' +
+      title +
+      "</h3>" +
+      body +
+      "</div>"
     );
   }
   function fewer(msg) {
@@ -469,14 +538,28 @@
     var arc = "M20 100 A80 80 0 0 1 180 100";
     return (
       '<div class="mini-gauge">' +
-      '<svg viewBox="0 0 200 124" role="img" aria-label="' + esc(title) + '">' +
-      '<path class="ga-track" d="' + arc + '" pathLength="100"/>' +
-      '<path class="ga-val" d="' + arc + '" pathLength="100" stroke-dasharray="' + pct.toFixed(1) + ' 100"/>' +
-      '<text class="ga-big" x="100" y="92" text-anchor="middle">' + fmt2(val) + '</text>' +
-      '<text class="ga-small" x="100" y="112" text-anchor="middle">' + esc(subtitle) + '</text>' +
-      '</svg>' +
-      '<span class="mg-lbl">' + esc(title) + '</span>' +
-      '</div>'
+      '<svg viewBox="0 0 200 124" role="img" aria-label="' +
+      esc(title) +
+      '">' +
+      '<path class="ga-track" d="' +
+      arc +
+      '" pathLength="100"/>' +
+      '<path class="ga-val" d="' +
+      arc +
+      '" pathLength="100" stroke-dasharray="' +
+      pct.toFixed(1) +
+      ' 100"/>' +
+      '<text class="ga-big" x="100" y="92" text-anchor="middle">' +
+      fmt2(val) +
+      "</text>" +
+      '<text class="ga-small" x="100" y="112" text-anchor="middle">' +
+      esc(subtitle) +
+      "</text>" +
+      "</svg>" +
+      '<span class="mg-lbl">' +
+      esc(title) +
+      "</span>" +
+      "</div>"
     );
   }
 
@@ -494,28 +577,27 @@
       );
     }
     var maxV = Math.max(p.max, p.record.kmPerL);
-    
+
     // Griglia 2x2 in alto
-    var grid = '<div class="mg-grid">' +
+    var grid =
+      '<div class="mg-grid">' +
       semiGauge(p.min, 0, maxV, "Minimo", "km/L") +
       semiGauge(p.avg, 0, maxV, "Media", "km/L") +
       semiGauge(p.median, 0, maxV, "Mediana", "km/L") +
       semiGauge(p.max, 0, maxV, "Massimo", "km/L") +
-      '</div>';
+      "</div>";
 
     // Gauge grande in basso
-    var gauge = CH.gauge(
-      p.record.kmPerL,
-      0,
-      maxV,
-      {
-        unit: "km/L ultimo pieno",
-        label: "Ultimo pieno rispetto al record",
-        caption:
-          "Il tuo record è " + fmt2(p.max) +
-          " km/L (" + fmtDate(p.maxRow.date) + ")",
-      },
-    );
+    var gauge = CH.gauge(p.record.kmPerL, 0, maxV, {
+      unit: "km/L ultimo pieno",
+      label: "Ultimo pieno rispetto al record",
+      caption:
+        "Il tuo record è " +
+        fmt2(p.max) +
+        " km/L (" +
+        fmtDate(p.maxRow.date) +
+        ")",
+    });
     return chartCard("Ultimo pieno vs record", grid + gauge);
   }
 
@@ -528,8 +610,12 @@
     var title = opts.title || "Record e medie (km/L)";
     if (!p || !p.count) {
       return (
-        '<div class="card record-card"><h3>' + title + "</h3>" +
-        fewer("Registra almeno un pieno completato per vedere record e medie.") +
+        '<div class="card record-card"><h3>' +
+        title +
+        "</h3>" +
+        fewer(
+          "Registra almeno un pieno completato per vedere record e medie.",
+        ) +
         "</div>"
       );
     }
@@ -543,43 +629,62 @@
       fmt2(rec.kmPerL) +
       ' <span class="unit">km/L</span></strong>' +
       '<span class="record-date">(' +
-      fmtDate(rec.date) + " · " + fmt0(rec.odometer) + " km)</span>" +
+      fmtDate(rec.date) +
+      " · " +
+      fmt0(rec.odometer) +
+      " km)</span>" +
       "</div></div>";
 
     // Griglia di gauge anche nel record panel
     var maxV = Math.max(p.max, p.record.kmPerL);
-    var gridGauges = '<div class="mg-grid">' +
+    var gridGauges =
+      '<div class="mg-grid">' +
       semiGauge(p.min, 0, maxV, "Minimo", "km/L") +
       semiGauge(p.avg, 0, maxV, "Media", "km/L") +
       semiGauge(p.median, 0, maxV, "Mediana", "km/L") +
       semiGauge(p.max, 0, maxV, "Massimo", "km/L") +
-      '</div>';
+      "</div>";
 
     var numericGrid =
       '<div class="record-grid">' +
       '<div class="record-stat avg"><span class="rs-lbl">Media</span><strong class="rs-val">' +
-      fmt2(p.avg) + '</strong><span class="rs-sub">km/L sui pieni</span></div>' +
+      fmt2(p.avg) +
+      '</strong><span class="rs-sub">km/L sui pieni</span></div>' +
       '<div class="record-stat max"><span class="rs-lbl">Massimo</span><strong class="rs-val">' +
-      fmt2(p.max) + '</strong><span class="rs-sub">' + fmtDate(p.maxRow.date) +
+      fmt2(p.max) +
+      '</strong><span class="rs-sub">' +
+      fmtDate(p.maxRow.date) +
       "</span></div>" +
       '<div class="record-stat min"><span class="rs-lbl">Minimo</span><strong class="rs-val">' +
-      fmt2(p.min) + '</strong><span class="rs-sub">' + fmtDate(p.minRow.date) +
+      fmt2(p.min) +
+      '</strong><span class="rs-sub">' +
+      fmtDate(p.minRow.date) +
       "</span></div>" +
       '<div class="record-stat med"><span class="rs-lbl">Mediana</span><strong class="rs-val">' +
-      fmt2(p.median) + '</strong><span class="rs-sub">valore centrale</span></div>' +
+      fmt2(p.median) +
+      '</strong><span class="rs-sub">valore centrale</span></div>' +
       '<div class="record-stat delta"><span class="rs-lbl">Delta max-min</span><strong class="rs-val">' +
-      fmt2(p.max - p.min) + '</strong><span class="rs-sub">km/L di differenza</span></div>' +
+      fmt2(p.max - p.min) +
+      '</strong><span class="rs-sub">km/L di differenza</span></div>' +
       '<div class="record-stat pes"><span class="rs-lbl">Consumo pesato</span><strong class="rs-val">' +
-      fmt2(p.avgKmL) + '</strong><span class="rs-sub">' +
-      (p.l100 ? fmt2(p.l100) + " L/100 km" : "km/L") + "</span></div>" +
+      fmt2(p.avgKmL) +
+      '</strong><span class="rs-sub">' +
+      (p.l100 ? fmt2(p.l100) + " L/100 km" : "km/L") +
+      "</span></div>" +
       "</div>";
 
     return (
-      '<div class="card record-card"><h3>' + title + "</h3>" +
-      recLine + gridGauges + numericGrid +
+      '<div class="card record-card"><h3>' +
+      title +
+      "</h3>" +
+      recLine +
+      gridGauges +
+      numericGrid +
       '<p class="hint" style="margin:10px 0 0">Calcolato su ' +
       pieniCompletati(p.count) +
-      ". La media pesata sui litri è " + fmt2(p.avgKmL) + " km/L.</p>" +
+      ". La media pesata sui litri è " +
+      fmt2(p.avgKmL) +
+      " km/L.</p>" +
       "</div>"
     );
   }
@@ -595,14 +700,21 @@
       st = C.stats(v, rs),
       last = rs[rs.length - 1];
     var odo = last ? last.odometer : v.initialKm;
-    var segs = rs.filter(function (r) { return r.kmPerL; });
-    var sparkVals = segs.slice(-12).map(function (r) { return r.kmPerL; });
+    var segs = rs.filter(function (r) {
+      return r.kmPerL;
+    });
+    var sparkVals = segs.slice(-12).map(function (r) {
+      return r.kmPerL;
+    });
 
     var h =
       '<section class="cluster">' +
       '<div class="cl-top"><span class="cl-name">' +
-      esc(v.icon || "🚗") + " " + esc(v.name) +
-      (v.plate ? " · " + esc(v.plate) : "") + "</span>" +
+      esc(v.icon || "🚗") +
+      " " +
+      esc(v.name) +
+      (v.plate ? " · " + esc(v.plate) : "") +
+      "</span>" +
       '<button type="button" class="btn accent" data-go="add">⛽ Rifornisci</button></div>' +
       odoDrum(odo) +
       '<div class="cl-read">' +
@@ -615,7 +727,8 @@
     if (!st.n) {
       h +=
         '<div class="card empty-card"><div class="big-emoji">⛽</div><h2>Registra il primo rifornimento</h2>' +
-        "<p>Parti da <b>" + fmt0(v.initialKm) +
+        "<p>Parti da <b>" +
+        fmt0(v.initialKm) +
         " km</b>. Ti bastano km finali, litri e prezzo: al resto pensa Ricarica Pieno.</p>" +
         '<button type="button" class="btn primary" data-go="add">＋ Primo rifornimento</button></div>';
       box.innerHTML = h;
@@ -633,28 +746,44 @@
           ? st.avgLitersPerRefuel * st.avgKmL
           : null;
     var tiles = [
-      ["Costo al km",
+      [
+        "Costo al km",
         st.costPerKm != null ? fmt2(st.costPerKm) + " €" : "–",
-        st.costPerKm != null ? fmt2(st.costPerKm * 100) + " € / 100 km" : ""],
-      ["Spesa questo mese",
+        st.costPerKm != null ? fmt2(st.costPerKm * 100) + " € / 100 km" : "",
+      ],
+      [
+        "Spesa questo mese",
         eur(mon ? mon.spent : 0, 2),
-        pl(mon ? mon.count : 0, "rifornimento", "rifornimenti")],
+        pl(mon ? mon.count : 0, "rifornimento", "rifornimenti"),
+      ],
       ["Spesa totale", eur(st.spent, 2), fmt2(st.liters) + " L totali"],
       ["Risparmio FVG", eur2(st.saved), st.fvgCount + " con sconto"],
-      ["Km percorsi", fmt0(st.totalKm), "dai " + fmt0(v.initialKm) + " iniziali"],
-      ["Autonomia stimata",
+      [
+        "Km percorsi",
+        fmt0(st.totalKm),
+        "dai " + fmt0(v.initialKm) + " iniziali",
+      ],
+      [
+        "Autonomia stimata",
         range ? fmt0(range) + " km" : "–",
-        v.tank ? "a serbatoio pieno" : "dalla media dei pieni"],
+        v.tank ? "a serbatoio pieno" : "dalla media dei pieni",
+      ],
     ];
     h +=
       '<div class="tiles">' +
-      tiles.map(function (t) {
-        return (
-          '<div class="tile"><span class="t-label">' + t[0] +
-          '</span><strong class="t-value">' + t[1] +
-          '</strong><span class="t-sub">' + t[2] + "</span></div>"
-        );
-      }).join("") +
+      tiles
+        .map(function (t) {
+          return (
+            '<div class="tile"><span class="t-label">' +
+            t[0] +
+            '</span><strong class="t-value">' +
+            t[1] +
+            '</strong><span class="t-sub">' +
+            t[2] +
+            "</span></div>"
+          );
+        })
+        .join("") +
       "</div>";
 
     var ins = [];
@@ -662,51 +791,105 @@
       var ls = segs[segs.length - 1];
       if (segs.length > 1 && st.avgKmL) {
         var d = pct(ls.kmPerL, st.avgKmL);
-        ins.push([d >= 0 ? "good" : "warn", d >= 0 ? "📈" : "📉",
-          "Ultimo pieno: <b>" + fmt2(ls.kmPerL) + " km/L</b> (" +
-          (d > 0 ? "+" : "") + fmt(d, 1) + "% rispetto alla media)"]);
+        ins.push([
+          d >= 0 ? "good" : "warn",
+          d >= 0 ? "📈" : "📉",
+          "Ultimo pieno: <b>" +
+            fmt2(ls.kmPerL) +
+            " km/L</b> (" +
+            (d > 0 ? "+" : "") +
+            fmt(d, 1) +
+            "% rispetto alla media)",
+        ]);
       } else {
-        ins.push(["", "⛽", "Ultimo pieno: <b>" + fmt2(ls.kmPerL) + " km/L</b>"]);
+        ins.push([
+          "",
+          "⛽",
+          "Ultimo pieno: <b>" + fmt2(ls.kmPerL) + " km/L</b>",
+        ]);
       }
     }
     if (rs.length > 1 && st.avgPrice) {
       var dp = last.paid - st.avgPrice;
-      ins.push([dp <= 0 ? "good" : "warn", "💶",
-        "Ultimo prezzo pagato <b>" + fmt(last.paid, 3) + " €/L</b> (" +
-        (dp > 0 ? "+" : "") + fmt(dp, 3) + " € rispetto alla media)"]);
+      ins.push([
+        dp <= 0 ? "good" : "warn",
+        "💶",
+        "Ultimo prezzo pagato <b>" +
+          fmt(last.paid, 3) +
+          " €/L</b> (" +
+          (dp > 0 ? "+" : "") +
+          fmt(dp, 3) +
+          " € rispetto alla media)",
+      ]);
     }
     var ago = C.daysBetween(last.date, S.todayISO());
-    ins.push(["", "🗓️",
+    ins.push([
+      "",
+      "🗓️",
       "Ultimo rifornimento " +
-      (ago <= 0 ? "<b>oggi</b>" : ago === 1 ? "<b>ieri</b>" :
-        "<b>" + ago + " giorni fa</b>") +
-      " (" + fmtDate(last.date) + ")"]);
+        (ago <= 0
+          ? "<b>oggi</b>"
+          : ago === 1
+            ? "<b>ieri</b>"
+            : "<b>" + ago + " giorni fa</b>") +
+        " (" +
+        fmtDate(last.date) +
+        ")",
+    ]);
     if (st.avgDaysBetween)
-      ins.push(["", "⏱️",
-        "In media fai il pieno ogni <b>" + fmt(st.avgDaysBetween, 1) +
-        " giorni</b> (" + fmt(st.kmPerDay, 1) + " km al giorno)"]);
+      ins.push([
+        "",
+        "⏱️",
+        "In media fai il pieno ogni <b>" +
+          fmt(st.avgDaysBetween, 1) +
+          " giorni</b> (" +
+          fmt(st.kmPerDay, 1) +
+          " km al giorno)",
+      ]);
 
-    var recent = rs.slice(-3).reverse().map(function (r) {
-      return (
-        '<div class="mini"><b>' + fmtDate(r.date) +
-        (r.fvg ? ' <span class="tag">FVG</span>' : "") + "</b>" +
-        "<small>" + fmt2(r.liters) + " L · " + eur(r.total, 2) +
-        " · " + kmFmt(r.km) + " km</small>" +
-        '<div class="kml">' + (r.kmPerL ? fmt2(r.kmPerL) : "–") +
-        "<small>km/L</small></div></div>"
-      );
-    }).join("");
+    var recent = rs
+      .slice(-3)
+      .reverse()
+      .map(function (r) {
+        return (
+          '<div class="mini"><b>' +
+          fmtDate(r.date) +
+          (r.fvg ? ' <span class="tag">FVG</span>' : "") +
+          "</b>" +
+          "<small>" +
+          fmt2(r.liters) +
+          " L · " +
+          eur(r.total, 2) +
+          " · " +
+          kmFmt(r.km) +
+          " km</small>" +
+          '<div class="kml">' +
+          (r.kmPerL ? fmt2(r.kmPerL) : "–") +
+          "<small>km/L</small></div></div>"
+        );
+      })
+      .join("");
 
     h +=
       '<div class="dash-cols">' +
       '<div class="card"><h2>In breve</h2><ul class="insights">' +
-      ins.map(function (i) {
-        return '<li class="' + i[0] + '"><span class="i-ico">' + i[1] +
-          "</span><span>" + i[2] + "</span></li>";
-      }).join("") +
+      ins
+        .map(function (i) {
+          return (
+            '<li class="' +
+            i[0] +
+            '"><span class="i-ico">' +
+            i[1] +
+            "</span><span>" +
+            i[2] +
+            "</span></li>"
+          );
+        })
+        .join("") +
       "</ul></div>" +
       '<div class="card"><h2>Ultimi rifornimenti</h2><div class="mini-list">' +
-      recent + "</div>" +
+      recent +
+      "</div>" +
       '<button type="button" class="btn small" data-go="history">Vedi tutto lo storico</button></div></div>';
 
     h += recordPanel(st, { title: "Record e medie (km/L)" });
@@ -728,13 +911,17 @@
       '<div class="card chart-card"><h3>Spesa mensile (€)</h3>' +
       CH.bars(mp, { decimals: 2, unit: "€", label: "Spesa mensile" }) +
       "</div>" +
-      chartCard("Km al mese",
+      chartCard(
+        "Km al mese",
         CH.bars(
-          C.monthly(rs).slice(-12).map(function (m) {
-            return { label: monthLabel(m.key), value: m.km };
-          }),
+          C.monthly(rs)
+            .slice(-12)
+            .map(function (m) {
+              return { label: monthLabel(m.key), value: m.km };
+            }),
           { decimals: 0, unit: "km", label: "Km al mese" },
-        )) +
+        ),
+      ) +
       dashDonut(st) +
       "</div>";
 
@@ -749,7 +936,9 @@
       if (typeof dlg.showModal === "function") dlg.showModal();
       else dlg.setAttribute("open", "");
     }
-    setTimeout(function () { $("#fOdo").focus(); }, 60);
+    setTimeout(function () {
+      $("#fOdo").focus();
+    }, 60);
   }
   function openNewRefuel() {
     resetForm();
@@ -806,7 +995,11 @@
 
   function startEdit(id) {
     var v = vehicle();
-    var r = v && v.refuels.filter(function (x) { return x.id === id; })[0];
+    var r =
+      v &&
+      v.refuels.filter(function (x) {
+        return x.id === id;
+      })[0];
     if (!r) return;
     editingId = id;
     $("#fDate").value = r.date;
@@ -853,28 +1046,52 @@
     if (!isFinite(c.odometer) || c.odometer <= 0)
       return ["Inserisci i km finali del contachilometri.", "fOdo"];
     if (!isFinite(c.price) || c.price <= 0)
-      return ["Scrivi almeno due dati tra litri, prezzo e totale pagato.", "fTotal"];
+      return [
+        "Scrivi almeno due dati tra litri, prezzo e totale pagato.",
+        "fTotal",
+      ];
     if (c.price < 0.5 || c.price > 4)
-      return ["Prezzo al litro insolito (" + fmt(c.price, 3) +
-        " €). Scrivilo come 1,859.", "fPrice"];
+      return [
+        "Prezzo al litro insolito (" +
+          fmt(c.price, 3) +
+          " €). Scrivilo come 1,859.",
+        "fPrice",
+      ];
     if (c.fvg) {
       if (!isFinite(c.discount) || c.discount < 0)
-        return ["Inserisci lo sconto FVG in € per litro (es. 0,15).", "fDiscount"];
+        return [
+          "Inserisci lo sconto FVG in € per litro (es. 0,15).",
+          "fDiscount",
+        ];
       if (c.discount >= c.price)
-        return ["Lo sconto deve essere inferiore al prezzo al litro.", "fDiscount"];
+        return [
+          "Lo sconto deve essere inferiore al prezzo al litro.",
+          "fDiscount",
+        ];
     }
     if (!isFinite(c.liters) || c.liters <= 0)
       return ["Scrivi i litri riforniti oppure il totale pagato.", "fTotal"];
     if (c.liters > 150 || (v.tank && c.liters > v.tank * 1.1)) {
-      return ["Litri insolitamente alti (" + fmt2(c.liters) +
-        " L): controlla di non aver messo l'importo in euro.", "fLiters"];
+      return [
+        "Litri insolitamente alti (" +
+          fmt2(c.liters) +
+          " L): controlla di non aver messo l'importo in euro.",
+        "fLiters",
+      ];
     }
     var calc = c.liters * (c.price - (c.fvg ? c.discount : 0));
-    if (c.paidTotal &&
-      Math.abs(calc - c.paidTotal) > Math.max(0.5, c.paidTotal * 0.02)) {
-      return ["Litri × prezzo = " + eur(calc, 2) +
-        ", ma hai indicato " + eur(c.paidTotal, 2) +
-        " pagati. Controlla litri, prezzo e sconto.", "fLiters"];
+    if (
+      c.paidTotal &&
+      Math.abs(calc - c.paidTotal) > Math.max(0.5, c.paidTotal * 0.02)
+    ) {
+      return [
+        "Litri × prezzo = " +
+          eur(calc, 2) +
+          ", ma hai indicato " +
+          eur(c.paidTotal, 2) +
+          " pagati. Controlla litri, prezzo e sconto.",
+        "fLiters",
+      ];
     }
 
     var rs = C.rows(v),
@@ -882,20 +1099,31 @@
       hi = null,
       i;
     if (editingId) {
-      i = rs.findIndex(function (r) { return r.id === editingId; });
+      i = rs.findIndex(function (r) {
+        return r.id === editingId;
+      });
       lo = i > 0 ? rs[i - 1].odometer : v.initialKm;
       hi = i >= 0 && i < rs.length - 1 ? rs[i + 1].odometer : null;
     } else if (rs.length) {
       lo = rs[rs.length - 1].odometer;
     }
     if (c.odometer <= lo) {
-      return ["I km finali (" + fmt0(c.odometer) +
-        ") devono essere maggiori dei km precedenti (" + fmt0(lo) + ").",
-        "fOdo"];
+      return [
+        "I km finali (" +
+          fmt0(c.odometer) +
+          ") devono essere maggiori dei km precedenti (" +
+          fmt0(lo) +
+          ").",
+        "fOdo",
+      ];
     }
     if (hi != null && c.odometer >= hi) {
-      return ["I km finali devono essere inferiori al rifornimento successivo (" +
-        fmt0(hi) + " km).", "fOdo"];
+      return [
+        "I km finali devono essere inferiori al rifornimento successivo (" +
+          fmt0(hi) +
+          " km).",
+        "fOdo",
+      ];
     }
     return null;
   }
@@ -916,9 +1144,10 @@
     else S.addRefuel(v.id, rec);
     S.setSettings({
       lastFvg: c.fvg,
-      fvgDiscount: c.fvg && isFinite(c.discount) && c.discount > 0
-        ? c.discount
-        : S.get().settings.fvgDiscount,
+      fvgDiscount:
+        c.fvg && isFinite(c.discount) && c.discount > 0
+          ? c.discount
+          : S.get().settings.fvgDiscount,
     });
 
     var row = C.rows(vehicle()).filter(function (r) {
@@ -975,17 +1204,26 @@
     if (c.fvg && hasCost) m.push(["Risparmio FVG", eur2(row.saved), "good"]);
 
     var html =
-      '<div class="hero"><strong>' + hero +
+      '<div class="hero"><strong>' +
+      hero +
       "</strong><span>km/L</span></div>" +
-      '<p class="hero-sub">' + esc(sub) + '</p><dl class="metrics">';
+      '<p class="hero-sub">' +
+      esc(sub) +
+      '</p><dl class="metrics">';
     if (hasCost)
       html +=
         '<div class="metric wide total"><dt>Totale da pagare</dt><dd>' +
-        eur(row.total, 2) + "</dd></div>";
+        eur(row.total, 2) +
+        "</dd></div>";
     m.forEach(function (x) {
       html +=
-        '<div class="metric ' + (x[2] || "") + '"><dt>' + x[0] +
-        "</dt><dd>" + x[1] + "</dd></div>";
+        '<div class="metric ' +
+        (x[2] || "") +
+        '"><dt>' +
+        x[0] +
+        "</dt><dd>" +
+        x[1] +
+        "</dd></div>";
     });
     html += "</dl>";
 
@@ -999,9 +1237,14 @@
       var diff = pct(row.kmPerL, all.avgKmL);
       if (Math.abs(diff) >= 1) {
         html +=
-          '<div class="badge-note ' + (diff > 0 ? "good" : "warn") + '">' +
-          (diff > 0 ? "+" : "") + fmt(diff, 1) +
-          "% rispetto alla tua media (" + fmt2(all.avgKmL) + " km/L)</div>";
+          '<div class="badge-note ' +
+          (diff > 0 ? "good" : "warn") +
+          '">' +
+          (diff > 0 ? "+" : "") +
+          fmt(diff, 1) +
+          "% rispetto alla tua media (" +
+          fmt2(all.avgKmL) +
+          " km/L)</div>";
       }
     }
     box.innerHTML = html;
@@ -1019,10 +1262,16 @@
       last = rs[rs.length - 1];
     var prevKm = last ? last.odometer : v.initialKm;
     $("#prevInfo").innerHTML = last
-      ? "Ultimo rifornimento: <b>" + fmtDate(last.date) +
-        "</b> a <b>" + fmt0(prevKm) + " km</b>"
-      : "Km iniziali di " + esc(v.name) +
-        ": <b>" + fmt0(prevKm) + " km</b> (primo rifornimento)";
+      ? "Ultimo rifornimento: <b>" +
+        fmtDate(last.date) +
+        "</b> a <b>" +
+        fmt0(prevKm) +
+        " km</b>"
+      : "Km iniziali di " +
+        esc(v.name) +
+        ": <b>" +
+        fmt0(prevKm) +
+        " km</b> (primo rifornimento)";
     $("#fOdo").placeholder = "> " + fmt0(prevKm);
     $("#fPrice").placeholder = last ? fmt(last.price, 3) : "es. 1,859";
   }
@@ -1035,39 +1284,64 @@
       (!r.full ? ' <span class="tag warn">Parziale</span>' : "");
     return (
       '<details class="rf"><summary>' +
-      '<span class="rf-day"><b>' + +d[2] + "</b><small>" +
-      MONTHS[+d[1] - 1] + "</small></span>" +
-      '<span class="rf-main"><b>' + fmt2(r.liters) + " L · " +
-      fmt(r.paid, 3) + " €/L</b><small>" + kmFmt(r.km) +
-      " km · " + eur(r.total, 2) + tags + "</small></span>" +
-      '<span class="rf-kml ' + cls + '">' +
+      '<span class="rf-day"><b>' +
+      +d[2] +
+      "</b><small>" +
+      MONTHS[+d[1] - 1] +
+      "</small></span>" +
+      '<span class="rf-main"><b>' +
+      fmt2(r.liters) +
+      " L · " +
+      fmt(r.paid, 3) +
+      " €/L</b><small>" +
+      kmFmt(r.km) +
+      " km · " +
+      eur(r.total, 2) +
+      tags +
+      "</small></span>" +
+      '<span class="rf-kml ' +
+      cls +
+      '">' +
       (r.kmPerL ? fmt2(r.kmPerL) : "–") +
       "<small>km/L</small></span></summary>" +
       '<div class="rf-body"><dl class="rf-grid">' +
-      "<div><dt>Data</dt><dd>" + fmtDate(r.date) + "</dd></div>" +
-      "<div><dt>Km finali</dt><dd>" + fmt0(r.odometer) + "</dd></div>" +
-      "<div><dt>Percorsi</dt><dd>" + kmFmt(r.km) + " km</dd></div>" +
+      "<div><dt>Data</dt><dd>" +
+      fmtDate(r.date) +
+      "</dd></div>" +
+      "<div><dt>Km finali</dt><dd>" +
+      fmt0(r.odometer) +
+      "</dd></div>" +
+      "<div><dt>Percorsi</dt><dd>" +
+      kmFmt(r.km) +
+      " km</dd></div>" +
       "<div><dt>Consumo</dt><dd>" +
-      (r.l100 ? fmt2(r.l100) + " L/100" : "–") + "</dd></div>" +
-      "<div><dt>€/L pagato</dt><dd>" + fmt(r.paid, 3) +
-      (r.fvg ? " <s>" + fmt(r.price, 3) + "</s>" : "") + "</dd></div>" +
+      (r.l100 ? fmt2(r.l100) + " L/100" : "–") +
+      "</dd></div>" +
+      "<div><dt>€/L pagato</dt><dd>" +
+      fmt(r.paid, 3) +
+      (r.fvg ? " <s>" + fmt(r.price, 3) + "</s>" : "") +
+      "</dd></div>" +
       "<div><dt>€/km</dt><dd>" +
-      (r.costPerKm != null ? fmt2(r.costPerKm) : "–") + "</dd></div>" +
+      (r.costPerKm != null ? fmt2(r.costPerKm) : "–") +
+      "</dd></div>" +
       "</dl>" +
       (r.fvg && r.saved > 0
         ? '<p class="rf-note">Risparmio FVG: <b>' + eur2(r.saved) + "</b></p>"
         : "") +
       (r.days != null
-        ? '<p class="rf-note">' + r.days +
+        ? '<p class="rf-note">' +
+          r.days +
           (r.days === 1 ? " giorno" : " giorni") +
           " dal rifornimento precedente</p>"
         : "") +
       (r.note ? '<p class="rf-note">📝 ' + esc(r.note) + "</p>" : "") +
       '<div class="rf-actions">' +
       '<button type="button" class="btn small" data-act="edit" data-id="' +
-      esc(r.id) + '">Modifica</button>' +
+      esc(r.id) +
+      '">Modifica</button>' +
       '<button type="button" class="btn small danger" data-act="del" data-id="' +
-      esc(r.id) + '">Elimina</button>' +
+      esc(r.id) +
+      '">Elimina</button>' +
       "</div></div></details>"
     );
   }
@@ -1096,7 +1370,8 @@
     });
     var filtered = rs.length !== all.length;
     $("#historyCount").textContent =
-      v.name + " · " +
+      v.name +
+      " · " +
       (filtered ? fmt0(rs.length) + " di " : "") +
       pl(all.length, "rifornimento", "rifornimenti");
     if (!all.length) {
@@ -1109,7 +1384,8 @@
     if (!rs.length) {
       box.innerHTML =
         '<div class="empty-state"><h3>Nessun risultato</h3><p>Nessun rifornimento' +
-        (hq ? " per «" + esc(hq) + "»" : " con questo filtro") + ".</p></div>";
+        (hq ? " per «" + esc(hq) + "»" : " con questo filtro") +
+        ".</p></div>";
       return;
     }
     var groups = [],
@@ -1122,20 +1398,33 @@
       }
       cur.rows.push(r);
     });
-    var html = groups.map(function (g) {
-      var p = g.k.split("-"),
-        name = MONTHS_FULL[+p[1] - 1];
-      var tot = g.rows.reduce(function (a, r) { return a + r.total; }, 0);
-      return (
-        '<section class="mgroup"><h3 class="mh"><span>' +
-        name.charAt(0).toUpperCase() + name.slice(1) + " " + p[0] +
-        "</span><small>" +
-        pl(g.rows.length, "rifornimento", "rifornimenti") +
-        " · " + eur(tot, 2) + '</small></h3><div class="mlist">' +
-        g.rows.map(function (r) { return histRow(r, avg); }).join("") +
-        "</div></section>"
-      );
-    }).join("");
+    var html = groups
+      .map(function (g) {
+        var p = g.k.split("-"),
+          name = MONTHS_FULL[+p[1] - 1];
+        var tot = g.rows.reduce(function (a, r) {
+          return a + r.total;
+        }, 0);
+        return (
+          '<section class="mgroup"><h3 class="mh"><span>' +
+          name.charAt(0).toUpperCase() +
+          name.slice(1) +
+          " " +
+          p[0] +
+          "</span><small>" +
+          pl(g.rows.length, "rifornimento", "rifornimenti") +
+          " · " +
+          eur(tot, 2) +
+          '</small></h3><div class="mlist">' +
+          g.rows
+            .map(function (r) {
+              return histRow(r, avg);
+            })
+            .join("") +
+          "</div></section>"
+        );
+      })
+      .join("");
     if (!filtered && !hq)
       html +=
         '<p class="start-km">Partenza: <b>' + fmt0(v.initialKm) + " km</b></p>";
@@ -1144,9 +1433,14 @@
 
   function statCard(label, value, sub, cls) {
     return (
-      '<div class="stat ' + (cls || "") +
-      '"><span class="stat-label">' + label + "</span>" +
-      '<strong class="stat-value">' + value + "</strong>" +
+      '<div class="stat ' +
+      (cls || "") +
+      '"><span class="stat-label">' +
+      label +
+      "</span>" +
+      '<strong class="stat-value">' +
+      value +
+      "</strong>" +
       (sub ? '<span class="stat-sub">' + sub + "</span>" : "") +
       "</div>"
     );
@@ -1166,63 +1460,107 @@
     if (!st.n) {
       box.innerHTML =
         '<p class="empty">Registra il primo rifornimento per vedere le statistiche di <b>' +
-        esc(v.name) + "</b>.</p>";
+        esc(v.name) +
+        "</b>.</p>";
       return;
     }
 
     var cards = "";
-    cards += statCard("Consumo medio",
+    cards += statCard(
+      "Consumo medio",
       st.avgKmL ? fmt2(st.avgKmL) + " km/L" : "–",
-      st.l100 ? fmt2(st.l100) + " L/100 km" : "Serve almeno un pieno dopo il primo",
-      "hero");
-    cards += statCard("Costo al km",
+      st.l100
+        ? fmt2(st.l100) + " L/100 km"
+        : "Serve almeno un pieno dopo il primo",
+      "hero",
+    );
+    cards += statCard(
+      "Costo al km",
       st.costPerKm != null ? fmt2(st.costPerKm) + " €" : "–",
-      st.costPerKm != null ? fmt2(st.costPerKm * 100) + " € ogni 100 km" : "");
-    cards += statCard("Spesa totale", eur(st.spent, 2),
-      pl(st.n, "rifornimento", "rifornimenti"));
-    cards += statCard("Km percorsi", fmt0(st.totalKm) + " km",
-      "da " + fmt0(v.initialKm) + " a " + fmt0(rs[rs.length - 1].odometer));
-    cards += statCard("Litri totali", fmt2(st.liters) + " L",
-      "media " + fmt2(st.avgLitersPerRefuel) + " L a pieno");
-    cards += statCard("Prezzo medio pagato", fmt(st.avgPrice, 3) + " €/L",
-      "listino medio " + fmt(st.avgListino, 3) + " €/L");
-    cards += statCard("Risparmio FVG", eur2(st.saved),
-      st.fvgCount + " di " + st.n + " con sconto");
-    cards += statCard("Miglior consumo",
+      st.costPerKm != null ? fmt2(st.costPerKm * 100) + " € ogni 100 km" : "",
+    );
+    cards += statCard(
+      "Spesa totale",
+      eur(st.spent, 2),
+      pl(st.n, "rifornimento", "rifornimenti"),
+    );
+    cards += statCard(
+      "Km percorsi",
+      fmt0(st.totalKm) + " km",
+      "da " + fmt0(v.initialKm) + " a " + fmt0(rs[rs.length - 1].odometer),
+    );
+    cards += statCard(
+      "Litri totali",
+      fmt2(st.liters) + " L",
+      "media " + fmt2(st.avgLitersPerRefuel) + " L a pieno",
+    );
+    cards += statCard(
+      "Prezzo medio pagato",
+      fmt(st.avgPrice, 3) + " €/L",
+      "listino medio " + fmt(st.avgListino, 3) + " €/L",
+    );
+    cards += statCard(
+      "Risparmio FVG",
+      eur2(st.saved),
+      st.fvgCount + " di " + st.n + " con sconto",
+    );
+    cards += statCard(
+      "Miglior consumo",
       st.best ? fmt2(st.best.kmPerL) + " km/L" : "–",
-      st.best ? fmtDate(st.best.date) : "");
-    cards += statCard("Peggior consumo",
+      st.best ? fmtDate(st.best.date) : "",
+    );
+    cards += statCard(
+      "Peggior consumo",
       st.worst ? fmt2(st.worst.kmPerL) + " km/L" : "–",
-      st.worst ? fmtDate(st.worst.date) : "");
-    cards += statCard("Ultimi 3 pieni",
-      st.last3KmL ? fmt2(st.last3KmL) + " km/L" : "–", "media recente");
-    cards += statCard("Spesa media a rifornimento",
+      st.worst ? fmtDate(st.worst.date) : "",
+    );
+    cards += statCard(
+      "Ultimi 3 pieni",
+      st.last3KmL ? fmt2(st.last3KmL) + " km/L" : "–",
+      "media recente",
+    );
+    cards += statCard(
+      "Spesa media a rifornimento",
       eur(st.avgSpentPerRefuel, 2),
-      "media " + fmt0(st.avgKmPerRefuel) + " km a pieno");
-    cards += statCard("Spesa mensile stimata",
+      "media " + fmt0(st.avgKmPerRefuel) + " km a pieno",
+    );
+    cards += statCard(
+      "Spesa mensile stimata",
       st.spentPerMonth != null ? eur(st.spentPerMonth, 2) : "–",
-      st.kmPerDay != null ? fmt(st.kmPerDay, 1) + " km al giorno"
-        : "servono 2+ rifornimenti");
-    cards += statCard("Frequenza",
+      st.kmPerDay != null
+        ? fmt(st.kmPerDay, 1) + " km al giorno"
+        : "servono 2+ rifornimenti",
+    );
+    cards += statCard(
+      "Frequenza",
       st.avgDaysBetween != null ? fmt(st.avgDaysBetween, 1) + " gg" : "–",
-      "tra un rifornimento e l'altro");
+      "tra un rifornimento e l'altro",
+    );
 
     var kmlPts = kmlPoints(rs);
     var mon = C.monthly(rs).slice(-12);
-    var l100Pts = rs.filter(function (r) { return r.l100; }).map(function (r) {
-      return {
-        label: fmtDate(r.date),
-        short: fmtDate(r.date).slice(0, 5),
-        value: r.l100,
-      };
-    });
-    var cpkPts = rs.filter(function (r) { return r.costPerKm != null; }).map(function (r) {
-      return {
-        label: fmtDate(r.date),
-        short: fmtDate(r.date).slice(0, 5),
-        value: r.costPerKm,
-      };
-    });
+    var l100Pts = rs
+      .filter(function (r) {
+        return r.l100;
+      })
+      .map(function (r) {
+        return {
+          label: fmtDate(r.date),
+          short: fmtDate(r.date).slice(0, 5),
+          value: r.l100,
+        };
+      });
+    var cpkPts = rs
+      .filter(function (r) {
+        return r.costPerKm != null;
+      })
+      .map(function (r) {
+        return {
+          label: fmtDate(r.date),
+          short: fmtDate(r.date).slice(0, 5),
+          value: r.costPerKm,
+        };
+      });
     var run = 0,
       cumPts = rs.map(function (r) {
         run += r.total;
@@ -1239,7 +1577,11 @@
         v: [r.price, r.paid],
       };
     });
-    var top5 = rs.slice().sort(function (a, b) { return b.total - a.total; })
+    var top5 = rs
+      .slice()
+      .sort(function (a, b) {
+        return b.total - a.total;
+      })
       .slice(0, 5)
       .map(function (r) {
         return {
@@ -1254,14 +1596,19 @@
       var y = r.date.slice(0, 4);
       years[y] = (years[y] || 0) + r.total;
     });
-    var yearItems = Object.keys(years).sort().reverse().map(function (y) {
-      return { label: y, value: years[y], text: eur(years[y], 2) };
-    });
+    var yearItems = Object.keys(years)
+      .sort()
+      .reverse()
+      .map(function (y) {
+        return { label: y, value: years[y], text: eur(years[y], 2) };
+      });
     var fvgItems = [
       { label: "Con sconto FVG", value: st.fvgCount },
       { label: "Senza sconto", value: st.n - st.fvgCount },
     ];
-    var fullN = rs.filter(function (r) { return r.full; }).length;
+    var fullN = rs.filter(function (r) {
+      return r.full;
+    }).length;
     var typeItems = [
       { label: "Pieni", value: fullN },
       { label: "Parziali", value: st.n - fullN },
@@ -1269,7 +1616,8 @@
 
     var charts =
       '<div class="charts">' +
-      chartCard("Consumo (km/L) per rifornimento",
+      chartCard(
+        "Consumo (km/L) per rifornimento",
         kmlPts.length > 1
           ? CH.line(kmlPts, {
               decimals: 2,
@@ -1278,9 +1626,11 @@
               label: "Consumo km/L",
             })
           : fewer("Servono almeno due pieni per il grafico."),
-        "wide") +
+        "wide",
+      ) +
       lastVsRecordPanel(st) +
-      chartCard("Consumo (L/100 km)",
+      chartCard(
+        "Consumo (L/100 km)",
         l100Pts.length > 1
           ? CH.line(l100Pts, {
               decimals: 2,
@@ -1288,44 +1638,56 @@
               avg: st.l100,
               label: "Litri ogni 100 km",
             })
-          : fewer("Servono almeno due pieni.")) +
-      chartCard("Prezzo: listino e pagato (€/L)",
+          : fewer("Servono almeno due pieni."),
+      ) +
+      chartCard(
+        "Prezzo: listino e pagato (€/L)",
         CH.multi(priceMulti, ["Listino", "Pagato"], {
           decimals: 3,
           unit: "€/L",
           label: "Listino e pagato",
         }),
-        "wide") +
-      chartCard("Spesa mensile (€)",
+        "wide",
+      ) +
+      chartCard(
+        "Spesa mensile (€)",
         CH.bars(
           mon.map(function (m) {
             return { label: monthLabel(m.key), value: m.spent };
           }),
           { decimals: 2, unit: "€", label: "Spesa mensile" },
-        )) +
-      chartCard("Pagato e risparmio FVG per mese (€)",
+        ),
+      ) +
+      chartCard(
+        "Pagato e risparmio FVG per mese (€)",
         CH.stacked(
           mon.map(function (m) {
             return { label: monthLabel(m.key), parts: [m.spent, m.saved] };
           }),
           ["Pagato", "Risparmio FVG"],
           { decimals: 2, unit: "€", label: "Pagato e risparmio" },
-        )) +
-      chartCard("Km al mese",
+        ),
+      ) +
+      chartCard(
+        "Km al mese",
         CH.bars(
           mon.map(function (m) {
             return { label: monthLabel(m.key), value: m.km };
           }),
           { decimals: 0, unit: "km", label: "Km al mese" },
-        )) +
-      chartCard("Litri al mese",
+        ),
+      ) +
+      chartCard(
+        "Litri al mese",
         CH.bars(
           mon.map(function (m) {
             return { label: monthLabel(m.key), value: m.liters };
           }),
           { decimals: 2, unit: "L", label: "Litri al mese" },
-        )) +
-      chartCard("Costo al km (€)",
+        ),
+      ) +
+      chartCard(
+        "Costo al km (€)",
         cpkPts.length > 1
           ? CH.line(cpkPts, {
               decimals: 2,
@@ -1333,16 +1695,20 @@
               avg: st.costPerKm,
               label: "Costo al km",
             })
-          : fewer("Servono almeno due rifornimenti.")) +
-      chartCard("Spesa accumulata (€)",
+          : fewer("Servono almeno due rifornimenti."),
+      ) +
+      chartCard(
+        "Spesa accumulata (€)",
         cumPts.length > 1
           ? CH.line(cumPts, {
               decimals: 2,
               unit: "€",
               label: "Spesa accumulata",
             })
-          : fewer("Servono almeno due rifornimenti.")) +
-      chartCard("Pagato e risparmiato",
+          : fewer("Servono almeno due rifornimenti."),
+      ) +
+      chartCard(
+        "Pagato e risparmiato",
         st.saved > 0
           ? CH.donut(
               [
@@ -1357,27 +1723,34 @@
                 label: "Pagato e risparmiato",
               },
             )
-          : fewer("Nessuno sconto FVG registrato.")) +
-      chartCard("Rifornimenti con sconto FVG",
+          : fewer("Nessuno sconto FVG registrato."),
+      ) +
+      chartCard(
+        "Rifornimenti con sconto FVG",
         CH.donut(fvgItems, {
           decimals: 0,
           big: fmt0(st.fvgCount),
           small: "con sconto",
           label: "Rifornimenti con sconto",
-        })) +
-      chartCard("Pieni e parziali",
+        }),
+      ) +
+      chartCard(
+        "Pieni e parziali",
         CH.donut(typeItems, {
           decimals: 0,
           big: fmt0(st.n),
           small: st.n === 1 ? "rifornimento" : "rifornimenti",
           label: "Pieni e parziali",
-        })) +
-      chartCard("Giorno della settimana",
+        }),
+      ) +
+      chartCard(
+        "Giorno della settimana",
         CH.bars(dowPoints(rs), {
           decimals: 0,
           unit: "rifornimenti",
           label: "Rifornimenti per giorno",
-        })) +
+        }),
+      ) +
       chartCard("I 5 pieni più cari", CH.hbars(top5)) +
       chartCard("Spesa per anno", CH.hbars(yearItems)) +
       "</div>";
@@ -1387,21 +1760,37 @@
     if (p && p.count) {
       perfHtml =
         '<div class="stat-grid" style="grid-template-columns:1fr 1fr">' +
-        statCard("Performance media",
+        statCard(
+          "Performance media",
           fmt2(p.avg) + " km/L",
           pieniCompletati(p.count),
-          "hero") +
-        statCard("Massimo", fmt2(p.max) + " km/L",
-          fmtDate(p.maxRow.date) + " · " + fmt0(p.maxRow.odometer) + " km") +
-        statCard("Minimo", fmt2(p.min) + " km/L",
-          fmtDate(p.minRow.date) + " · " + fmt0(p.minRow.odometer) + " km") +
-        statCard("Mediana", fmt2(p.median) + " km/L",
-          "valore centrale dei pieni") +
-        statCard("Delta max-min", fmt2(p.max - p.min) + " km/L",
-          "differenza record/minimo") +
-        statCard("Consumo medio pesato",
+          "hero",
+        ) +
+        statCard(
+          "Massimo",
+          fmt2(p.max) + " km/L",
+          fmtDate(p.maxRow.date) + " · " + fmt0(p.maxRow.odometer) + " km",
+        ) +
+        statCard(
+          "Minimo",
+          fmt2(p.min) + " km/L",
+          fmtDate(p.minRow.date) + " · " + fmt0(p.minRow.odometer) + " km",
+        ) +
+        statCard(
+          "Mediana",
+          fmt2(p.median) + " km/L",
+          "valore centrale dei pieni",
+        ) +
+        statCard(
+          "Delta max-min",
+          fmt2(p.max - p.min) + " km/L",
+          "differenza record/minimo",
+        ) +
+        statCard(
+          "Consumo medio pesato",
           fmt2(p.avgKmL) + " km/L",
-          p.l100 ? fmt2(p.l100) + " L/100 km" : "") +
+          p.l100 ? fmt2(p.l100) + " L/100 km" : "",
+        ) +
         "</div>";
     }
 
@@ -1413,22 +1802,34 @@
       compare =
         '<div class="card chart-card"><h3>Confronto veicoli</h3><div class="table-wrap"><table><thead><tr>' +
         "<th>Veicolo</th><th>km/L</th><th>€/km</th><th>Spesa</th><th>Km</th></tr></thead><tbody>" +
-        all.map(function (x) {
-          var s = C.stats(x, C.rows(x));
-          return (
-            "<tr><td>" + esc(x.name) + "</td><td>" +
-            (s.avgKmL ? fmt2(s.avgKmL) : "–") + "</td><td>" +
-            (s.costPerKm != null ? fmt2(s.costPerKm) : "–") + "</td><td>" +
-            (s.n ? eur(s.spent, 2) : "–") + "</td><td>" +
-            (s.n ? fmt0(s.totalKm) : "–") + "</td></tr>"
-          );
-        }).join("") +
+        all
+          .map(function (x) {
+            var s = C.stats(x, C.rows(x));
+            return (
+              "<tr><td>" +
+              esc(x.name) +
+              "</td><td>" +
+              (s.avgKmL ? fmt2(s.avgKmL) : "–") +
+              "</td><td>" +
+              (s.costPerKm != null ? fmt2(s.costPerKm) : "–") +
+              "</td><td>" +
+              (s.n ? eur(s.spent, 2) : "–") +
+              "</td><td>" +
+              (s.n ? fmt0(s.totalKm) : "–") +
+              "</td></tr>"
+            );
+          })
+          .join("") +
         "</tbody></table></div></div>";
     }
     box.innerHTML =
       recordBlock +
-      '<div class="stat-grid">' + cards + "</div>" +
-      perfHtml + charts + compare;
+      '<div class="stat-grid">' +
+      cards +
+      "</div>" +
+      perfHtml +
+      charts +
+      compare;
   }
 
   function renderSettings() {
@@ -1437,9 +1838,16 @@
     $("#themeGrid").innerHTML = THEMES.map(function (t) {
       return (
         '<button type="button" class="theme-opt" role="radio" data-theme-id="' +
-        t[0] + '" aria-checked="' + (t[0] === st.settings.theme) + '">' +
+        t[0] +
+        '" aria-checked="' +
+        (t[0] === st.settings.theme) +
+        '">' +
         '<span class="sw" style="background:linear-gradient(135deg,' +
-        t[2] + " 50%," + t[3] + ' 50%)"></span><span>' + t[1] +
+        t[2] +
+        " 50%," +
+        t[3] +
+        ' 50%)"></span><span>' +
+        t[1] +
         "</span></button>"
       );
     }).join("");
@@ -1459,15 +1867,35 @@
   var vEditId = null;
   function pickColor() {
     var palette = [
-      "#0f766e","#2563eb","#c2410c","#7c3aed",
-      "#be123c","#4d7c0f","#0e7490","#a16207",
+      "#0f766e",
+      "#2563eb",
+      "#c2410c",
+      "#7c3aed",
+      "#be123c",
+      "#4d7c0f",
+      "#0e7490",
+      "#a16207",
     ];
     return palette[S.get().vehicles.length % palette.length];
   }
 
   var ICONS = [
-    "🚗","🚙","🚕","🏎️","🚓","🚐","🛻","🚚",
-    "🚛","🏍️","🛵","🚜","⛵","🛥️","🚌","🚲",
+    "🚗",
+    "🚙",
+    "🚕",
+    "🏎️",
+    "🚓",
+    "🚐",
+    "🛻",
+    "🚚",
+    "🚛",
+    "🏍️",
+    "🛵",
+    "🚜",
+    "⛵",
+    "🛥️",
+    "🚌",
+    "🚲",
   ];
   var vIcon = "🚗";
 
@@ -1475,7 +1903,11 @@
     $("#vIcons").innerHTML = ICONS.map(function (ic) {
       return (
         '<button type="button" class="icon-opt" role="radio" data-icon="' +
-        ic + '" aria-checked="' + (ic === vIcon) + '">' + ic +
+        ic +
+        '" aria-checked="' +
+        (ic === vIcon) +
+        '">' +
+        ic +
         "</button>"
       );
     }).join("");
@@ -1484,7 +1916,9 @@
   function openVehicleDialog(id) {
     var dlg = $("#vehicleDialog");
     var v = id
-      ? S.get().vehicles.filter(function (x) { return x.id === id; })[0]
+      ? S.get().vehicles.filter(function (x) {
+          return x.id === id;
+        })[0]
       : null;
     vEditId = v ? v.id : null;
     $("#vTitle").textContent = v ? "Modifica veicolo" : "Nuovo veicolo";
@@ -1501,7 +1935,9 @@
     $("#vError").hidden = true;
     if (typeof dlg.showModal === "function") dlg.showModal();
     else dlg.setAttribute("open", "");
-    setTimeout(function () { $("#vName").focus(); }, 30);
+    setTimeout(function () {
+      $("#vName").focus();
+    }, 30);
   }
 
   function closeVehicleDialog() {
@@ -1542,13 +1978,19 @@
       })[0];
       data.color = cur.color;
       var minOdo = cur.refuels.length
-        ? Math.min.apply(null, cur.refuels.map(function (r) {
-            return r.odometer;
-          }))
+        ? Math.min.apply(
+            null,
+            cur.refuels.map(function (r) {
+              return r.odometer;
+            }),
+          )
         : Infinity;
       if (km >= minOdo)
-        return fail("I km iniziali devono essere inferiori al primo rifornimento (" +
-          fmt0(minOdo) + " km).");
+        return fail(
+          "I km iniziali devono essere inferiori al primo rifornimento (" +
+            fmt0(minOdo) +
+            " km).",
+        );
       S.updateVehicle(vEditId, data);
       closeVehicleDialog();
       renderAll();
@@ -1564,14 +2006,21 @@
   }
 
   function onVehicleDelete() {
-    var v = S.get().vehicles.filter(function (x) { return x.id === vEditId; })[0];
+    var v = S.get().vehicles.filter(function (x) {
+      return x.id === vEditId;
+    })[0];
     if (!v) return;
-    if (window.confirm(
-      'Eliminare "' + v.name + '" e ' +
-      (v.refuels.length === 1
-        ? "il suo rifornimento"
-        : "i suoi " + v.refuels.length + " rifornimenti") +
-      "? Operazione non annullabile.")) {
+    if (
+      window.confirm(
+        'Eliminare "' +
+          v.name +
+          '" e ' +
+          (v.refuels.length === 1
+            ? "il suo rifornimento"
+            : "i suoi " + v.refuels.length + " rifornimenti") +
+          "? Operazione non annullabile.",
+      )
+    ) {
       S.deleteVehicle(v.id);
       closeVehicleDialog();
       showGarage();
@@ -1619,8 +2068,11 @@
       );
     });
     download(
-      "ricarica-pieno-" + v.name.replace(/[^\w-]+/g, "_") +
-        "-" + stamp() + ".csv",
+      "ricarica-pieno-" +
+        v.name.replace(/[^\w-]+/g, "_") +
+        "-" +
+        stamp() +
+        ".csv",
       "\ufeff" + lines.join("\r\n"),
       "text/csv;charset=utf-8",
     );
@@ -1633,16 +2085,23 @@
     var reader = new FileReader();
     reader.onload = function () {
       try {
-        if (mode === "replace" &&
-          !window.confirm("Sostituire TUTTI i dati attuali con quelli del file?"))
+        if (
+          mode === "replace" &&
+          !window.confirm(
+            "Sostituire TUTTI i dati attuali con quelli del file?",
+          )
+        )
           return;
         var res = S.importData(String(reader.result), mode);
         resetForm();
         renderAll();
         applyChrome(false);
         toast(
-          "Importati " + pl(res.vehicles, "veicolo", "veicoli") +
-          " e " + pl(res.refuels, "rifornimento", "rifornimenti"));
+          "Importati " +
+            pl(res.vehicles, "veicolo", "veicoli") +
+            " e " +
+            pl(res.refuels, "rifornimento", "rifornimenti"),
+        );
       } catch (err) {
         toast(err.message || "Importazione non riuscita", "error");
       } finally {
@@ -1728,8 +2187,12 @@
       var b = e.target.closest("button[data-act]");
       if (!b) return;
       if (b.dataset.act === "edit") startEdit(b.dataset.id);
-      if (b.dataset.act === "del" &&
-        window.confirm("Eliminare questo rifornimento? I km/L verranno ricalcolati.")) {
+      if (
+        b.dataset.act === "del" &&
+        window.confirm(
+          "Eliminare questo rifornimento? I km/L verranno ricalcolati.",
+        )
+      ) {
         S.deleteRefuel(vehicle().id, b.dataset.id);
         if (editingId === b.dataset.id) resetForm();
         renderAll();
@@ -1805,8 +2268,11 @@
       var v = vehicle();
       if (!v) return toast("Apri prima un veicolo", "error");
       download(
-        "ricarica-pieno-" + v.name.replace(/[^\w-]+/g, "_") +
-          "-" + stamp() + ".json",
+        "ricarica-pieno-" +
+          v.name.replace(/[^\w-]+/g, "_") +
+          "-" +
+          stamp() +
+          ".json",
         S.exportData(v.id),
         "application/json",
       );
@@ -1815,8 +2281,11 @@
     $("#importFile").addEventListener("change", onImport);
 
     $("#btnReset").addEventListener("click", function () {
-      if (window.confirm(
-        "Cancellare TUTTI i veicoli e i rifornimenti da questo dispositivo? Esporta prima un backup se ti serve.")) {
+      if (
+        window.confirm(
+          "Cancellare TUTTI i veicoli e i rifornimenti da questo dispositivo? Esporta prima un backup se ti serve.",
+        )
+      ) {
         S.reset();
         showGarage();
         toast("Dati cancellati");

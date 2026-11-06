@@ -2894,8 +2894,13 @@ details.rf .rf-kml small {
 }
 
 /* ============ Record e medie (km/L) ============ */
-.record-card { margin-bottom: 16px; }
-.record-card h3 { margin: 0 0 14px; font-size: 1rem; }
+.record-card {
+  margin-bottom: 16px;
+}
+.record-card h3 {
+  margin: 0 0 14px;
+  font-size: 1rem;
+}
 .record-hero {
   display: flex;
   align-items: center;
@@ -2921,7 +2926,9 @@ details.rf .rf-kml small {
   background: var(--surface);
   border: 1px solid color-mix(in srgb, var(--accent) 45%, var(--border));
 }
-.record-text { min-width: 0; }
+.record-text {
+  min-width: 0;
+}
 .record-lbl {
   display: block;
   font-size: 0.78rem;
@@ -2951,14 +2958,22 @@ details.rf .rf-kml small {
   font-weight: 600;
 }
 
-.cmp-bars { display: grid; gap: 10px; margin: 6px 0 16px; }
+.cmp-bars {
+  display: grid;
+  gap: 10px;
+  margin: 6px 0 16px;
+}
 .cmp-row {
   display: grid;
   grid-template-columns: 74px 1fr auto;
   gap: 10px;
   align-items: center;
 }
-.cmp-lbl { font-size: 0.8rem; font-weight: 700; color: var(--muted); }
+.cmp-lbl {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--muted);
+}
 .cmp-track {
   height: 12px;
   border-radius: 99px;
@@ -2972,8 +2987,12 @@ details.rf .rf-kml small {
   background: var(--accent);
   transition: width 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
-.cmp-row.max .cmp-track i { background: var(--good); }
-.cmp-row.min .cmp-track i { background: var(--warn); }
+.cmp-row.max .cmp-track i {
+  background: var(--good);
+}
+.cmp-row.min .cmp-track i {
+  background: var(--warn);
+}
 .cmp-row.med .cmp-track i {
   background: color-mix(in srgb, var(--accent) 60%, var(--muted));
 }
@@ -3023,10 +3042,16 @@ details.rf .rf-kml small {
   background: color-mix(in srgb, var(--accent) 14%, transparent);
   border-color: color-mix(in srgb, var(--accent) 40%, transparent);
 }
-.record-stat.max .rs-val { color: var(--good); }
-.record-stat.min .rs-val { color: var(--warn); }
+.record-stat.max .rs-val {
+  color: var(--good);
+}
+.record-stat.min .rs-val {
+  color: var(--warn);
+}
 @media (min-width: 640px) {
-  .record-grid { grid-template-columns: repeat(3, 1fr); }
+  .record-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 /* Contrasto numeri / decimali in tema scuro */
