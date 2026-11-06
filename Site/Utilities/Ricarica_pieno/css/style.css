@@ -2549,3 +2549,510 @@ details.rf .rf-kml small {
     bottom: 28px;
   }
 }
+
+/* ============ Performance card (dashboard + statistiche) ============ */
+.perf-card h3 {
+  margin: 0 0 12px;
+  font-size: 1rem;
+}
+.perf-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.perf {
+  background: var(--surface-2);
+  border-radius: 18px;
+  padding: 12px 14px;
+  border: 1px solid color-mix(in srgb, var(--border) 80%, transparent);
+  min-width: 0;
+}
+.perf.avg {
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  border-color: color-mix(in srgb, var(--accent) 40%, transparent);
+}
+.perf.max .perf-val {
+  color: var(--good);
+}
+.perf.min .perf-val {
+  color: var(--warn);
+}
+.perf-lbl {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+.perf-val {
+  display: block;
+  font: 800 1.7rem/1.15 var(--display);
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+}
+.perf-sub {
+  display: block;
+  font-size: 0.72rem;
+  color: var(--muted);
+  margin-top: 2px;
+  overflow-wrap: anywhere;
+}
+@media (min-width: 640px) {
+  .perf-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* ============ Contrasto numeri / decimali in tema scuro ============ */
+/* Allinea i numeri e rende leggibili 0,00 · 16,70 · 69,00 anche su sfondi scuri */
+.gc-stats b,
+.gc-stats small,
+.tile .t-sub,
+.tile .t-label,
+.stat-sub,
+.stat-label,
+.mini small,
+.mini b,
+.rf-main small,
+.rf-main b,
+.rf-grid dt,
+.rf-grid dd,
+.rf-day small,
+.rf-day b,
+.metric dt,
+.metric dd,
+.cl-name,
+.cl-read span,
+.cl-read b,
+.dn-legend small,
+.insights li,
+.stat-value,
+.stat-sub,
+.chart .axis,
+.chart .axis.val,
+.legend,
+.hb small,
+.hb-top,
+.empty,
+.hint {
+  font-variant-numeric: tabular-nums;
+}
+
+/* tema scuro / amoled: spingi i testi secondari un po' più chiari */
+:root[data-theme="dark"] .tile .t-sub,
+:root[data-theme="dark"] .tile .t-label,
+:root[data-theme="dark"] .stat:not(.hero) .stat-sub,
+:root[data-theme="dark"] .stat:not(.hero) .stat-label,
+:root[data-theme="dark"] .mini small,
+:root[data-theme="dark"] .rf-main small,
+:root[data-theme="dark"] .rf-grid dt,
+:root[data-theme="dark"] .rf-day small,
+:root[data-theme="dark"] .metric dt,
+:root[data-theme="dark"] .cl-read span,
+:root[data-theme="dark"] .perf-lbl,
+:root[data-theme="dark"] .perf-sub,
+:root[data-theme="dark"] .dn-legend small,
+:root[data-theme="dark"] .legend,
+:root[data-theme="dark"] .hb small,
+:root[data-theme="amoled"] .tile .t-sub,
+:root[data-theme="amoled"] .tile .t-label,
+:root[data-theme="amoled"] .stat:not(.hero) .stat-sub,
+:root[data-theme="amoled"] .stat:not(.hero) .stat-label,
+:root[data-theme="amoled"] .mini small,
+:root[data-theme="amoled"] .rf-main small,
+:root[data-theme="amoled"] .rf-grid dt,
+:root[data-theme="amoled"] .rf-day small,
+:root[data-theme="amoled"] .metric dt,
+:root[data-theme="amoled"] .cl-read span,
+:root[data-theme="amoled"] .perf-lbl,
+:root[data-theme="amoled"] .perf-sub,
+:root[data-theme="amoled"] .dn-legend small,
+:root[data-theme="amoled"] .legend,
+:root[data-theme="amoled"] .hb small {
+  color: color-mix(in srgb, var(--text) 75%, var(--muted));
+}
+
+/* i numeri "forti" restano bianco pieno sui temi scuri */
+:root[data-theme="dark"] .tile .t-value,
+:root[data-theme="dark"] .stat:not(.hero) .stat-value,
+:root[data-theme="dark"] .metric dd,
+:root[data-theme="dark"] .rf-grid dd,
+:root[data-theme="dark"] .mini b,
+:root[data-theme="dark"] .perf-val,
+:root[data-theme="amoled"] .tile .t-value,
+:root[data-theme="amoled"] .stat:not(.hero) .stat-value,
+:root[data-theme="amoled"] .metric dd,
+:root[data-theme="amoled"] .rf-grid dd,
+:root[data-theme="amoled"] .mini b,
+:root[data-theme="amoled"] .perf-val {
+  color: var(--text);
+}
+
+/* ============ Record e medie (km/L) ============ */
+.record-card {
+  margin-bottom: 16px;
+}
+.record-card h3 {
+  margin: 0 0 14px;
+  font-size: 1rem;
+}
+.record-hero {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 18px;
+  border-radius: 22px;
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--accent) 22%, transparent),
+    color-mix(in srgb, var(--accent) 6%, transparent)
+  );
+  border: 1px solid color-mix(in srgb, var(--accent) 38%, var(--border));
+  margin-bottom: 16px;
+}
+.record-badge {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  flex: none;
+  border-radius: 18px;
+  font-size: 1.9rem;
+  background: var(--surface);
+  border: 1px solid color-mix(in srgb, var(--accent) 45%, var(--border));
+  box-shadow: 0 6px 18px color-mix(in srgb, var(--accent) 28%, transparent);
+}
+.record-text {
+  min-width: 0;
+}
+.record-lbl {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+}
+.record-val {
+  display: block;
+  font: 800 clamp(1.6rem, 6vw, 2.2rem) / 1.1 var(--display);
+  color: var(--accent);
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+  margin: 2px 0 4px;
+}
+.record-val .unit {
+  font-size: 0.55em;
+  font-weight: 700;
+  color: var(--muted);
+  letter-spacing: 0;
+}
+.record-date {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+/* Barre comparative min/media/mediana/max */
+.cmp-bars {
+  display: grid;
+  gap: 10px;
+  margin: 6px 0 16px;
+}
+.cmp-row {
+  display: grid;
+  grid-template-columns: 74px 1fr auto;
+  gap: 10px;
+  align-items: center;
+}
+.cmp-lbl {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--muted);
+}
+.cmp-track {
+  height: 12px;
+  border-radius: 99px;
+  background: var(--surface-2);
+  overflow: hidden;
+}
+.cmp-track i {
+  display: block;
+  height: 100%;
+  border-radius: 99px;
+  background: var(--accent);
+  transition: width 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.cmp-row.avg .cmp-track i {
+  background: var(--accent);
+}
+.cmp-row.max .cmp-track i {
+  background: var(--good);
+}
+.cmp-row.min .cmp-track i {
+  background: var(--warn);
+}
+.cmp-row.med .cmp-track i {
+  background: color-mix(in srgb, var(--accent) 60%, var(--muted));
+}
+.cmp-val {
+  font: 800 1rem var(--font);
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+  min-width: 3.6em;
+  text-align: right;
+}
+
+/* Griglia statistiche record */
+.record-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.record-stat {
+  background: var(--surface-2);
+  border-radius: 16px;
+  padding: 12px 14px;
+  border: 1px solid color-mix(in srgb, var(--border) 80%, transparent);
+  min-width: 0;
+}
+.record-stat .rs-lbl {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+.record-stat .rs-val {
+  display: block;
+  font: 800 1.4rem / 1.2 var(--display);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+.record-stat .rs-sub {
+  display: block;
+  font-size: 0.72rem;
+  color: var(--muted);
+  margin-top: 2px;
+  overflow-wrap: anywhere;
+}
+.record-stat.avg {
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  border-color: color-mix(in srgb, var(--accent) 40%, transparent);
+}
+.record-stat.max .rs-val {
+  color: var(--good);
+}
+.record-stat.min .rs-val {
+  color: var(--warn);
+}
+.record-stat.delta .rs-val {
+  color: var(--text);
+}
+@media (min-width: 640px) {
+  .record-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* ============ Contrasto numeri in tema scuro ============ */
+/* Rendiamo SEMPRE leggibili i numeri anche quando hanno ,00 */
+:root[data-theme="dark"] .record-stat,
+:root[data-theme="amoled"] .record-stat {
+  background: color-mix(in srgb, var(--surface-2) 100%, transparent);
+}
+:root[data-theme="dark"] .record-lbl,
+:root[data-theme="dark"] .record-date,
+:root[data-theme="dark"] .record-val .unit,
+:root[data-theme="dark"] .cmp-lbl,
+:root[data-theme="dark"] .record-stat .rs-lbl,
+:root[data-theme="dark"] .record-stat .rs-sub,
+:root[data-theme="dark"] .record-stat.delta .rs-val,
+:root[data-theme="amoled"] .record-lbl,
+:root[data-theme="amoled"] .record-date,
+:root[data-theme="amoled"] .record-val .unit,
+:root[data-theme="amoled"] .cmp-lbl,
+:root[data-theme="amoled"] .record-stat .rs-lbl,
+:root[data-theme="amoled"] .record-stat .rs-sub,
+:root[data-theme="amoled"] .record-stat.delta .rs-val {
+  color: color-mix(in srgb, var(--text) 72%, var(--muted));
+}
+:root[data-theme="dark"] .cmp-val,
+:root[data-theme="dark"] .record-stat.avg .rs-val,
+:root[data-theme="dark"] .record-stat.med .rs-val,
+:root[data-theme="dark"] .record-stat.pes .rs-val,
+:root[data-theme="amoled"] .cmp-val,
+:root[data-theme="amoled"] .record-stat.avg .rs-val,
+:root[data-theme="amoled"] .record-stat.med .rs-val,
+:root[data-theme="amoled"] .record-stat.pes .rs-val {
+  color: var(--text);
+}
+
+/* ============ Record e medie (km/L) ============ */
+.record-card { margin-bottom: 16px; }
+.record-card h3 { margin: 0 0 14px; font-size: 1rem; }
+.record-hero {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 18px;
+  border-radius: 22px;
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--accent) 22%, transparent),
+    color-mix(in srgb, var(--accent) 6%, transparent)
+  );
+  border: 1px solid color-mix(in srgb, var(--accent) 38%, var(--border));
+  margin-bottom: 16px;
+}
+.record-badge {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  flex: none;
+  border-radius: 18px;
+  font-size: 1.9rem;
+  background: var(--surface);
+  border: 1px solid color-mix(in srgb, var(--accent) 45%, var(--border));
+}
+.record-text { min-width: 0; }
+.record-lbl {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+}
+.record-val {
+  display: block;
+  font: 800 clamp(1.6rem, 6vw, 2.2rem) / 1.1 var(--display);
+  color: var(--accent);
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+  margin: 2px 0 4px;
+}
+.record-val .unit {
+  font-size: 0.55em;
+  font-weight: 700;
+  color: var(--muted);
+  letter-spacing: 0;
+}
+.record-date {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.cmp-bars { display: grid; gap: 10px; margin: 6px 0 16px; }
+.cmp-row {
+  display: grid;
+  grid-template-columns: 74px 1fr auto;
+  gap: 10px;
+  align-items: center;
+}
+.cmp-lbl { font-size: 0.8rem; font-weight: 700; color: var(--muted); }
+.cmp-track {
+  height: 12px;
+  border-radius: 99px;
+  background: var(--surface-2);
+  overflow: hidden;
+}
+.cmp-track i {
+  display: block;
+  height: 100%;
+  border-radius: 99px;
+  background: var(--accent);
+  transition: width 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.cmp-row.max .cmp-track i { background: var(--good); }
+.cmp-row.min .cmp-track i { background: var(--warn); }
+.cmp-row.med .cmp-track i {
+  background: color-mix(in srgb, var(--accent) 60%, var(--muted));
+}
+.cmp-val {
+  font: 800 1rem var(--font);
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+  min-width: 3.6em;
+  text-align: right;
+}
+
+.record-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.record-stat {
+  background: var(--surface-2);
+  border-radius: 16px;
+  padding: 12px 14px;
+  border: 1px solid color-mix(in srgb, var(--border) 80%, transparent);
+  min-width: 0;
+}
+.record-stat .rs-lbl {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+.record-stat .rs-val {
+  display: block;
+  font: 800 1.4rem / 1.2 var(--display);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+.record-stat .rs-sub {
+  display: block;
+  font-size: 0.72rem;
+  color: var(--muted);
+  margin-top: 2px;
+  overflow-wrap: anywhere;
+}
+.record-stat.avg {
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  border-color: color-mix(in srgb, var(--accent) 40%, transparent);
+}
+.record-stat.max .rs-val { color: var(--good); }
+.record-stat.min .rs-val { color: var(--warn); }
+@media (min-width: 640px) {
+  .record-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* Contrasto numeri / decimali in tema scuro */
+:root[data-theme="dark"] .record-lbl,
+:root[data-theme="dark"] .record-date,
+:root[data-theme="dark"] .record-val .unit,
+:root[data-theme="dark"] .cmp-lbl,
+:root[data-theme="dark"] .record-stat .rs-lbl,
+:root[data-theme="dark"] .record-stat .rs-sub,
+:root[data-theme="dark"] .record-stat.delta .rs-val,
+:root[data-theme="amoled"] .record-lbl,
+:root[data-theme="amoled"] .record-date,
+:root[data-theme="amoled"] .record-val .unit,
+:root[data-theme="amoled"] .cmp-lbl,
+:root[data-theme="amoled"] .record-stat .rs-lbl,
+:root[data-theme="amoled"] .record-stat .rs-sub,
+:root[data-theme="amoled"] .record-stat.delta .rs-val {
+  color: color-mix(in srgb, var(--text) 72%, var(--muted));
+}
+:root[data-theme="dark"] .cmp-val,
+:root[data-theme="dark"] .record-stat.avg .rs-val,
+:root[data-theme="dark"] .record-stat.med .rs-val,
+:root[data-theme="dark"] .record-stat.pes .rs-val,
+:root[data-theme="amoled"] .cmp-val,
+:root[data-theme="amoled"] .record-stat.avg .rs-val,
+:root[data-theme="amoled"] .record-stat.med .rs-val,
+:root[data-theme="amoled"] .record-stat.pes .rs-val {
+  color: var(--text);
+}

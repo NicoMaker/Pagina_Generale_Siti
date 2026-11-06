@@ -1,12 +1,11 @@
-/* Ricarica Pieno – charts.js
- * Grafici SVG leggeri, senza librerie esterne.
- * I colori sono definiti nel CSS (classi .chart .line, .bar, ecc.).
- */
+/* Ricarica Pieno – charts.js */
 (function (g) {
   "use strict";
 
   var cache = {};
   function nf(v, d) {
+    d = d == null ? 2 : d;
+    if (v == null || !isFinite(v)) return "–";
     var f =
       cache[d] ||
       (cache[d] = new Intl.NumberFormat("it-IT", {
@@ -51,11 +50,10 @@
     return '<p class="muted small">Servono più dati per mostrare il grafico.</p>';
   }
 
-  /** points: [{label, value}], opt: {decimals, unit, avg, label} */
   function line(points, opt) {
     opt = opt || {};
     if (!points.length) return empty();
-    var d = opt.decimals == null ? 1 : opt.decimals;
+    var d = opt.decimals == null ? 2 : opt.decimals;
     var unit = opt.unit || "";
     var vals = points.map(function (p) {
       return p.value;
@@ -198,7 +196,6 @@
     return s + "</svg>";
   }
 
-  /** items: [{label, short, value}], opt: {decimals, unit, label} */
   function bars(items, opt) {
     opt = opt || {};
     if (!items.length) return empty();
@@ -306,7 +303,6 @@
     return s + hs + "</svg>";
   }
 
-  /** Contenuto del tooltip: titolo + righe [{c, name, val}] */
   function tipHtml(title, rows) {
     return (
       '<div class="tp-t">' +
@@ -362,7 +358,6 @@
   }
 
   var gcount = 0;
-  /** Gradiente verticale con il colore della serie (c0..c4). */
   function grad(c, a, b) {
     a = a == null ? 0.55 : a;
     b = b == null ? 0.04 : b;
@@ -448,9 +443,7 @@
       names
         .map(function (n, i) {
           return (
-            '<span><i style="background:var(--c' +
-            i +
-            ')"></i>' +
+            '<span><i style="background:var(--c' + i + ')"></i>' +
             esc(n) +
             "</span>"
           );
@@ -460,7 +453,6 @@
     );
   }
 
-  /** Più linee: points [{label, short, v:[a,b,...]}], names [..] */
   function multi(points, names, opt) {
     opt = opt || {};
     if (points.length < 2) return empty();
@@ -532,11 +524,10 @@
     return s + xLabels(points, x) + "</svg>" + legend(names);
   }
 
-  /** Barre impilate: items [{label, short, parts:[a,b]}] */
   function stacked(items, names, opt) {
     opt = opt || {};
     if (!items.length) return empty();
-    var d = opt.decimals == null ? 0 : opt.decimals;
+    var d = opt.decimals == null ? 2 : opt.decimals;
     var max =
       Math.max.apply(
         null,
@@ -613,14 +604,13 @@
     return s + hs + "</svg>" + legend(names);
   }
 
-  /** Ciambella: items [{label, value}], opt {big, small, decimals, unit} */
   function donut(items, opt) {
     opt = opt || {};
     var tot = items.reduce(function (a, i) {
       return a + i.value;
     }, 0);
     if (!(tot > 0)) return empty();
-    var d = opt.decimals == null ? 0 : opt.decimals,
+    var d = opt.decimals == null ? 2 : opt.decimals,
       r = 62,
       c = 2 * Math.PI * r,
       acc = 0;
@@ -654,7 +644,7 @@
               name: "Valore",
               val: nf(it.value, d) + (opt.unit ? " " + opt.unit : ""),
             },
-            { name: "Quota", val: nf((it.value / tot) * 100, 1) + "%" },
+            { name: "Quota", val: nf((it.value / tot) * 100, 2) + "%" },
           ]),
         ) +
         '"/>';
@@ -683,12 +673,11 @@
     return s + "</ul></div>";
   }
 
-  /** Contachilometri semicircolare: value tra min e max. */
   function gauge(value, min, max, opt) {
     opt = opt || {};
     if (value == null || !(max > min)) return empty();
     var pct = Math.max(0, Math.min(1, (value - min) / (max - min))) * 100,
-      d = opt.decimals == null ? 1 : opt.decimals;
+      d = opt.decimals == null ? 2 : opt.decimals;
     var arc = "M20 100 A80 80 0 0 1 180 100";
     return (
       '<div class="gauge"><svg viewBox="0 0 200 124" role="img" aria-label="' +
@@ -730,7 +719,6 @@
     );
   }
 
-  /** Barre orizzontali (HTML): items [{label, value, text, sub}] */
   function hbars(items, opt) {
     opt = opt || {};
     if (!items.length) return empty();
@@ -775,7 +763,6 @@
     );
   }
 
-  /** Mini grafico per la dashboard (solo linea, senza assi). */
   function spark(vals) {
     if (!vals || vals.length < 2) return "";
     var w = 180,
@@ -827,7 +814,6 @@
     );
   }
 
-  /* ---------- tooltip interattivo (mouse e touch) ---------- */
   var tipEl = null,
     active = [],
     activeSvg = null;

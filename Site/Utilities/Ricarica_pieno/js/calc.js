@@ -1,12 +1,4 @@
-/* Ricarica Pieno – calc.js
- * Calcoli: km percorsi, km/L, costi, medie, statistiche mensili.
- *
- * Logica: l'utente inserisce i km FINALI (contachilometri) a ogni pieno.
- * I km percorsi = km finali - km del rifornimento precedente
- * (o km iniziali del veicolo per il primo rifornimento).
- * I consumi sono calcolati "da pieno a pieno": se un rifornimento è
- * parziale, litri e km si accumulano fino al pieno successivo.
- */
+/* Ricarica Pieno – calc.js */
 (function (g) {
   "use strict";
 
@@ -33,7 +25,6 @@
     });
   }
 
-  /** Righe arricchite, ordinate per km crescenti. */
   function rows(vehicle) {
     var list = sorted(vehicle.refuels || []);
     var prev = Number(vehicle.initialKm) || 0;
@@ -79,7 +70,6 @@
     });
   }
 
-  /** Riga calcolata per un rifornimento "candidato" (anteprima live). */
   function preview(vehicle, cand, editId) {
     if (!isFinite(cand.odometer)) return null;
     var others = (vehicle.refuels || []).filter(function (r) {
@@ -119,6 +109,62 @@
     return l > 0 ? km / l : null;
   }
 
+  function performance(segs) {
+    if (!segs.length) {
+      return {
+        count: 0,
+        avg: null,
+        max: null,
+        min: null,
+        median: null,
+        maxRow: null,
+        minRow: null,
+        avgKmL: null,
+        l100: null,
+        record: null,
+      };
+    }
+    var vals = segs.map(function (r) {
+      return r.kmPerL;
+    });
+    var sortedVals = vals.slice().sort(function (a, b) {
+      return a - b;
+    });
+    var mid = Math.floor(sortedVals.length / 2);
+    var median =
+      sortedVals.length % 2
+        ? sortedVals[mid]
+        : (sortedVals[mid - 1] + sortedVals[mid]) / 2;
+    var maxRow = segs.reduce(function (a, r) {
+      return r.kmPerL > a.kmPerL ? r : a;
+    });
+    var minRow = segs.reduce(function (a, r) {
+      return r.kmPerL < a.kmPerL ? r : a;
+    });
+    var km = sum(segs, function (r) {
+      return r.segment.km;
+    });
+    var l = sum(segs, function (r) {
+      return r.segment.liters;
+    });
+    var avgKmL = l > 0 ? km / l : null;
+    return {
+      count: segs.length,
+      avg:
+        sum(vals, function (v) {
+          return v;
+        }) / vals.length,
+      max: maxRow.kmPerL,
+      min: minRow.kmPerL,
+      median: median,
+      maxRow: maxRow,
+      minRow: minRow,
+      avgKmL: avgKmL,
+      l100: avgKmL ? 100 / avgKmL : null,
+      record: maxRow,
+    };
+  }
+
   function stats(vehicle, rs) {
     var n = rs.length;
     var o = { n: n };
@@ -147,6 +193,8 @@
     o.avgKmL = weighted(segs);
     o.l100 = o.avgKmL ? 100 / o.avgKmL : null;
     o.last3KmL = segs.length ? weighted(segs.slice(-3)) : null;
+
+    o.perf = performance(segs);
 
     if (segs.length) {
       o.best = segs.reduce(function (a, r) {
@@ -179,7 +227,6 @@
     return o;
   }
 
-  /** Raggruppa per mese (YYYY-MM). */
   function monthly(rs) {
     var map = {};
     rs.forEach(function (r) {
@@ -204,6 +251,7 @@
     rows: rows,
     preview: preview,
     stats: stats,
+    performance: performance,
     monthly: monthly,
     sorted: sorted,
     daysBetween: daysBetween,
