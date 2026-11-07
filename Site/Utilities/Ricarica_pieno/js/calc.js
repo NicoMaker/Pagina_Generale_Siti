@@ -192,7 +192,10 @@
     o.segCount = segs.length;
     o.avgKmL = weighted(segs);
     o.l100 = o.avgKmL ? 100 / o.avgKmL : null;
-    o.last3KmL = segs.length ? weighted(segs.slice(-3)) : null;
+
+    var lastSegs = segs.slice(-3);
+    o.last3KmL = lastSegs.length ? weighted(lastSegs) : null;
+    o.lastN = lastSegs.length;
 
     o.perf = performance(segs);
 

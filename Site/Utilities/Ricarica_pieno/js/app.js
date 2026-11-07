@@ -529,9 +529,6 @@
     );
   }
 
-  /**
-   * Semicerchio compatto per la griglia di gauge.
-   */
   function semiGauge(val, min, max, title, subtitle) {
     if (val == null || !isFinite(val)) return "";
     var pct = Math.max(0, Math.min(1, (val - min) / (max - min))) * 100;
@@ -563,12 +560,6 @@
     );
   }
 
-  /**
-   * Card "Ultimo pieno vs record":
-   * griglia di 4 semicerchi (min, media, mediana, max) sopra
-   * + il semicerchio grande dell'ultimo pieno con caption.
-   * La media usata è SEMPRE avgKmL (media pesata sui litri).
-   */
   function lastVsRecordPanel(st) {
     var p = st.perf;
     if (!p || !p.count) {
@@ -579,7 +570,6 @@
     }
     var maxV = Math.max(p.max, p.record.kmPerL);
 
-    // Griglia 2x2 in alto — "Media" = media pesata sui litri
     var grid =
       '<div class="mg-grid">' +
       semiGauge(p.min, 0, maxV, "Minimo", "km/L") +
@@ -588,7 +578,6 @@
       semiGauge(p.max, 0, maxV, "Massimo", "km/L") +
       "</div>";
 
-    // Gauge grande in basso
     var gauge = CH.gauge(p.record.kmPerL, 0, maxV, {
       unit: "km/L ultimo pieno",
       label: "Ultimo pieno rispetto al record",
@@ -602,10 +591,6 @@
     return chartCard("Ultimo pieno vs record", grid + gauge);
   }
 
-  /**
-   * BLOCCO "RECORD E MEDIE" — dashboard + statistiche.
-   * Tutte le medie mostrate qui usano avgKmL (media pesata sui litri).
-   */
   function recordPanel(st, opts) {
     opts = opts || {};
     var p = st.perf;
@@ -637,7 +622,6 @@
       " km)</span>" +
       "</div></div>";
 
-    // Griglia di gauge anche nel record panel — "Media" = avgKmL
     var maxV = Math.max(p.max, p.record.kmPerL);
     var gridGauges =
       '<div class="mg-grid">' +
@@ -1467,6 +1451,12 @@
       return;
     }
 
+    // Sottotitolo dinamico per "Ultimi N pieni"
+    var last3Sub = "media recente";
+    if (st.lastN === 1) last3Sub = "media ultimo pieno";
+    else if (st.lastN === 2) last3Sub = "media ultimi 2 pieni";
+    else if (st.lastN >= 3) last3Sub = "media ultimi 3 pieni";
+
     var cards = "";
     cards += statCard(
       "Consumo medio",
@@ -1519,7 +1509,7 @@
     cards += statCard(
       "Ultimi 3 pieni",
       st.last3KmL ? fmt2(st.last3KmL) + " km/L" : "–",
-      "media recente",
+      last3Sub,
     );
     cards += statCard(
       "Spesa media a rifornimento",
