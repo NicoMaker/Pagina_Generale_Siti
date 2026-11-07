@@ -567,6 +567,7 @@
    * Card "Ultimo pieno vs record":
    * griglia di 4 semicerchi (min, media, mediana, max) sopra
    * + il semicerchio grande dell'ultimo pieno con caption.
+   * La media usata è SEMPRE avgKmL (media pesata sui litri).
    */
   function lastVsRecordPanel(st) {
     var p = st.perf;
@@ -578,11 +579,11 @@
     }
     var maxV = Math.max(p.max, p.record.kmPerL);
 
-    // Griglia 2x2 in alto
+    // Griglia 2x2 in alto — "Media" = media pesata sui litri
     var grid =
       '<div class="mg-grid">' +
       semiGauge(p.min, 0, maxV, "Minimo", "km/L") +
-      semiGauge(p.avg, 0, maxV, "Media", "km/L") +
+      semiGauge(p.avgKmL, 0, maxV, "Media", "km/L") +
       semiGauge(p.median, 0, maxV, "Mediana", "km/L") +
       semiGauge(p.max, 0, maxV, "Massimo", "km/L") +
       "</div>";
@@ -603,6 +604,7 @@
 
   /**
    * BLOCCO "RECORD E MEDIE" — dashboard + statistiche.
+   * Tutte le medie mostrate qui usano avgKmL (media pesata sui litri).
    */
   function recordPanel(st, opts) {
     opts = opts || {};
@@ -635,12 +637,12 @@
       " km)</span>" +
       "</div></div>";
 
-    // Griglia di gauge anche nel record panel
+    // Griglia di gauge anche nel record panel — "Media" = avgKmL
     var maxV = Math.max(p.max, p.record.kmPerL);
     var gridGauges =
       '<div class="mg-grid">' +
       semiGauge(p.min, 0, maxV, "Minimo", "km/L") +
-      semiGauge(p.avg, 0, maxV, "Media", "km/L") +
+      semiGauge(p.avgKmL, 0, maxV, "Media", "km/L") +
       semiGauge(p.median, 0, maxV, "Mediana", "km/L") +
       semiGauge(p.max, 0, maxV, "Massimo", "km/L") +
       "</div>";
@@ -648,8 +650,8 @@
     var numericGrid =
       '<div class="record-grid">' +
       '<div class="record-stat avg"><span class="rs-lbl">Media</span><strong class="rs-val">' +
-      fmt2(p.avg) +
-      '</strong><span class="rs-sub">km/L sui pieni</span></div>' +
+      fmt2(p.avgKmL) +
+      '</strong><span class="rs-sub">km/L (pesata sui litri)</span></div>' +
       '<div class="record-stat max"><span class="rs-lbl">Massimo</span><strong class="rs-val">' +
       fmt2(p.max) +
       '</strong><span class="rs-sub">' +
@@ -682,7 +684,7 @@
       numericGrid +
       '<p class="hint" style="margin:10px 0 0">Calcolato su ' +
       pieniCompletati(p.count) +
-      ". La media pesata sui litri è " +
+      ". Media pesata sui litri: " +
       fmt2(p.avgKmL) +
       " km/L.</p>" +
       "</div>"
@@ -1762,8 +1764,8 @@
         '<div class="stat-grid" style="grid-template-columns:1fr 1fr">' +
         statCard(
           "Performance media",
-          fmt2(p.avg) + " km/L",
-          pieniCompletati(p.count),
+          fmt2(p.avgKmL) + " km/L",
+          pieniCompletati(p.count) + " · pesata sui litri",
           "hero",
         ) +
         statCard(
