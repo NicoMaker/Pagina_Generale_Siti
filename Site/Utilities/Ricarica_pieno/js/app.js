@@ -1271,7 +1271,7 @@
     return (
       '<details class="rf"><summary>' +
       '<span class="rf-day"><b>' +
-      +d[2] +
+      d[2] +
       "</b><small>" +
       MONTHS[+d[1] - 1] +
       "</small></span>" +
