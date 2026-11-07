@@ -3164,7 +3164,9 @@ details.rf .rf-kml small {
   fill: none;
   stroke-width: 18;
   stroke-linecap: butt;
-  transition: stroke-width 0.2s ease, filter 0.2s ease;
+  transition:
+    stroke-width 0.2s ease,
+    filter 0.2s ease;
   animation: gz-in 0.9s ease-out both;
 }
 .gz-zone.z1 {
