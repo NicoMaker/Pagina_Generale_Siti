@@ -17,14 +17,16 @@
   }
 
   const esc = (s) =>
-    String(s).replace(/[&<>"']/g, (c) =>
-      ({
-        "&": "&amp;",
-        "<": "&lt;",
-        ">": "&gt;",
-        '"': "&quot;",
-        "'": "&#39;",
-      })[c],
+    String(s).replace(
+      /[&<>"']/g,
+      (c) =>
+        ({
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          '"': "&quot;",
+          "'": "&#39;",
+        })[c],
     );
 
   const range = (min, max) => {
@@ -195,10 +197,7 @@
     var d = opt.decimals == null ? 0 : opt.decimals;
     var unit = opt.unit || "";
     var max =
-      Math.max.apply(
-        null,
-        items.map((i) => i.value).concat([0.0001]),
-      ) * 1.15;
+      Math.max.apply(null, items.map((i) => i.value).concat([0.0001])) * 1.15;
     var n = items.length,
       slot = iw / n,
       bw = Math.min(slot * 0.62, 52);
@@ -336,8 +335,7 @@
     );
   }
 
-  const sgn = (v, d) =>
-    (v > 0 ? "+" : v < 0 ? "−" : "") + nf(Math.abs(v), d);
+  const sgn = (v, d) => (v > 0 ? "+" : v < 0 ? "−" : "") + nf(Math.abs(v), d);
 
   var gcount = 0;
   function grad(c, a, b) {
@@ -508,9 +506,7 @@
     var max =
       Math.max.apply(
         null,
-        items
-          .map((i) => i.parts.reduce((a, b) => a + b, 0))
-          .concat([0.0001]),
+        items.map((i) => i.parts.reduce((a, b) => a + b, 0)).concat([0.0001]),
       ) * 1.15;
     var n = items.length,
       slot = iw / n,
@@ -687,10 +683,7 @@
   function hbars(items, opt) {
     opt = opt || {};
     if (!items.length) return empty();
-    var max = Math.max.apply(
-      null,
-      items.map((i) => i.value).concat([0.0001]),
-    );
+    var max = Math.max.apply(null, items.map((i) => i.value).concat([0.0001]));
     return (
       '<div class="hbars">' +
       items

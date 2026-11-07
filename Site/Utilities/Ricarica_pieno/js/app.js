@@ -1803,9 +1803,7 @@
 
   function openVehicleDialog(id) {
     var dlg = $("#vehicleDialog");
-    var v = id
-      ? S.get().vehicles.filter((x) => x.id === id)[0]
-      : null;
+    var v = id ? S.get().vehicles.filter((x) => x.id === id)[0] : null;
     vEditId = v ? v.id : null;
     $("#vTitle").textContent = v ? "Modifica veicolo" : "Nuovo veicolo";
     $("#vIntro").hidden = !!v;

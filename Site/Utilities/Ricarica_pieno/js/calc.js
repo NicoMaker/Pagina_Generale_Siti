@@ -13,10 +13,13 @@
     Math.round((parseDate(b) - parseDate(a)) / 86400000);
 
   const sorted = (refuels) =>
-    refuels.slice().sort(
-      (a, b) =>
-        a.odometer - b.odometer || String(a.date).localeCompare(String(b.date)),
-    );
+    refuels
+      .slice()
+      .sort(
+        (a, b) =>
+          a.odometer - b.odometer ||
+          String(a.date).localeCompare(String(b.date)),
+      );
 
   function rows(vehicle) {
     var list = sorted(vehicle.refuels || []);
@@ -164,9 +167,7 @@
 
     o.avgPrice = o.liters > 0 ? o.spent / o.liters : null;
     o.avgListino =
-      o.liters > 0
-        ? sum(rs, (r) => r.liters * r.price) / o.liters
-        : null;
+      o.liters > 0 ? sum(rs, (r) => r.liters * r.price) / o.liters : null;
     o.costPerKm = o.totalKm > 0 ? o.spent / o.totalKm : null;
     o.avgKmPerRefuel = o.totalKm / n;
     o.avgLitersPerRefuel = o.liters / n;
