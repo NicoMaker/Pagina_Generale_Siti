@@ -2,28 +2,21 @@
 (function (g) {
   "use strict";
 
-  function sum(arr, fn) {
-    return arr.reduce(function (a, x) {
-      return a + fn(x);
-    }, 0);
-  }
+  const sum = (arr, fn) => arr.reduce((a, x) => a + fn(x), 0);
 
-  function parseDate(s) {
+  const parseDate = (s) => {
     var p = String(s).split("-");
     return Date.UTC(+p[0], (+p[1] || 1) - 1, +p[2] || 1);
-  }
+  };
 
-  function daysBetween(a, b) {
-    return Math.round((parseDate(b) - parseDate(a)) / 86400000);
-  }
+  const daysBetween = (a, b) =>
+    Math.round((parseDate(b) - parseDate(a)) / 86400000);
 
-  function sorted(refuels) {
-    return refuels.slice().sort(function (a, b) {
-      return (
-        a.odometer - b.odometer || String(a.date).localeCompare(String(b.date))
-      );
-    });
-  }
+  const sorted = (refuels) =>
+    refuels.slice().sort(
+      (a, b) =>
+        a.odometer - b.odometer || String(a.date).localeCompare(String(b.date)),
+    );
 
   function rows(vehicle) {
     var list = sorted(vehicle.refuels || []);
@@ -72,9 +65,7 @@
 
   function preview(vehicle, cand, editId) {
     if (!isFinite(cand.odometer)) return null;
-    var others = (vehicle.refuels || []).filter(function (r) {
-      return r.id !== editId;
-    });
+    var others = (vehicle.refuels || []).filter((r) => r.id !== editId);
     var temp = {
       initialKm: vehicle.initialKm,
       refuels: others.concat([
@@ -92,22 +83,14 @@
         },
       ]),
     };
-    return (
-      rows(temp).filter(function (r) {
-        return r.id === "__preview";
-      })[0] || null
-    );
+    return rows(temp).filter((r) => r.id === "__preview")[0] || null;
   }
 
-  function weighted(segs) {
-    var km = sum(segs, function (r) {
-      return r.segment.km;
-    });
-    var l = sum(segs, function (r) {
-      return r.segment.liters;
-    });
+  const weighted = (segs) => {
+    var km = sum(segs, (r) => r.segment.km);
+    var l = sum(segs, (r) => r.segment.liters);
     return l > 0 ? km / l : null;
-  }
+  };
 
   function performance(segs) {
     if (!segs.length) {
@@ -124,36 +107,21 @@
         record: null,
       };
     }
-    var vals = segs.map(function (r) {
-      return r.kmPerL;
-    });
-    var sortedVals = vals.slice().sort(function (a, b) {
-      return a - b;
-    });
+    var vals = segs.map((r) => r.kmPerL);
+    var sortedVals = vals.slice().sort((a, b) => a - b);
     var mid = Math.floor(sortedVals.length / 2);
     var median =
       sortedVals.length % 2
         ? sortedVals[mid]
         : (sortedVals[mid - 1] + sortedVals[mid]) / 2;
-    var maxRow = segs.reduce(function (a, r) {
-      return r.kmPerL > a.kmPerL ? r : a;
-    });
-    var minRow = segs.reduce(function (a, r) {
-      return r.kmPerL < a.kmPerL ? r : a;
-    });
-    var km = sum(segs, function (r) {
-      return r.segment.km;
-    });
-    var l = sum(segs, function (r) {
-      return r.segment.liters;
-    });
+    var maxRow = segs.reduce((a, r) => (r.kmPerL > a.kmPerL ? r : a));
+    var minRow = segs.reduce((a, r) => (r.kmPerL < a.kmPerL ? r : a));
+    var km = sum(segs, (r) => r.segment.km);
+    var l = sum(segs, (r) => r.segment.liters);
     var avgKmL = l > 0 ? km / l : null;
     return {
       count: segs.length,
-      avg:
-        sum(vals, function (v) {
-          return v;
-        }) / vals.length,
+      avg: sum(vals, (v) => v) / vals.length,
       max: maxRow.kmPerL,
       min: minRow.kmPerL,
       median: median,
@@ -173,22 +141,12 @@
     var first = rs[0],
       last = rs[n - 1];
     o.totalKm = last.odometer - vehicle.initialKm;
-    o.liters = sum(rs, function (r) {
-      return r.liters;
-    });
-    o.spent = sum(rs, function (r) {
-      return r.total;
-    });
-    o.saved = sum(rs, function (r) {
-      return r.saved;
-    });
-    o.fvgCount = rs.filter(function (r) {
-      return r.fvg;
-    }).length;
+    o.liters = sum(rs, (r) => r.liters);
+    o.spent = sum(rs, (r) => r.total);
+    o.saved = sum(rs, (r) => r.saved);
+    o.fvgCount = rs.filter((r) => r.fvg).length;
 
-    var segs = rs.filter(function (r) {
-      return r.segment;
-    });
+    var segs = rs.filter((r) => r.segment);
     o.segCount = segs.length;
     o.avgKmL = weighted(segs);
     o.l100 = o.avgKmL ? 100 / o.avgKmL : null;
@@ -200,20 +158,14 @@
     o.perf = performance(segs);
 
     if (segs.length) {
-      o.best = segs.reduce(function (a, r) {
-        return r.kmPerL > a.kmPerL ? r : a;
-      });
-      o.worst = segs.reduce(function (a, r) {
-        return r.kmPerL < a.kmPerL ? r : a;
-      });
+      o.best = segs.reduce((a, r) => (r.kmPerL > a.kmPerL ? r : a));
+      o.worst = segs.reduce((a, r) => (r.kmPerL < a.kmPerL ? r : a));
     }
 
     o.avgPrice = o.liters > 0 ? o.spent / o.liters : null;
     o.avgListino =
       o.liters > 0
-        ? sum(rs, function (r) {
-            return r.liters * r.price;
-          }) / o.liters
+        ? sum(rs, (r) => r.liters * r.price) / o.liters
         : null;
     o.costPerKm = o.totalKm > 0 ? o.spent / o.totalKm : null;
     o.avgKmPerRefuel = o.totalKm / n;
@@ -245,9 +197,7 @@
     });
     return Object.keys(map)
       .sort()
-      .map(function (k) {
-        return map[k];
-      });
+      .map((k) => map[k]);
   }
 
   g.Calc = {

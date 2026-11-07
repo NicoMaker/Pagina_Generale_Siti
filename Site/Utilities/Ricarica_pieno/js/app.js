@@ -6,12 +6,9 @@
     C = window.Calc,
     CH = window.Charts;
 
-  function $(sel, root) {
-    return (root || document).querySelector(sel);
-  }
-  function $$(sel, root) {
-    return Array.prototype.slice.call((root || document).querySelectorAll(sel));
-  }
+  const $ = (sel, root) => (root || document).querySelector(sel);
+  const $$ = (sel, root) =>
+    Array.prototype.slice.call((root || document).querySelectorAll(sel));
 
   var nfCache = {};
   function nf(d) {
@@ -29,20 +26,13 @@
     if (v == null || !isFinite(v)) return "–";
     return nf(d).format(v);
   }
-  function fmt2(v) {
-    return fmt(v, 2);
-  }
-  function fmt0(v) {
-    return fmt(v, 0);
-  }
-  function eur(v, d) {
-    return v == null || !isFinite(v) ? "–" : fmt(v, d == null ? 2 : d) + " €";
-  }
-  function eur2(v) {
-    return eur(v, 2);
-  }
-  function esc(s) {
-    return String(s).replace(/[&<>"']/g, function (c) {
+  const fmt2 = (v) => fmt(v, 2);
+  const fmt0 = (v) => fmt(v, 0);
+  const eur = (v, d) =>
+    v == null || !isFinite(v) ? "–" : fmt(v, d == null ? 2 : d) + " €";
+  const eur2 = (v) => eur(v, 2);
+  const esc = (s) =>
+    String(s).replace(/[&<>"']/g, (c) => {
       return {
         "&": "&amp;",
         "<": "&lt;",
@@ -51,11 +41,10 @@
         "'": "&#39;",
       }[c];
     });
-  }
-  function fmtDate(iso) {
+  const fmtDate = (iso) => {
     var p = String(iso).split("-");
     return p.length === 3 ? p[2] + "/" + p[1] + "/" + p[0] : iso;
-  }
+  };
   var MONTHS = [
     "gen",
     "feb",
@@ -70,10 +59,10 @@
     "nov",
     "dic",
   ];
-  function monthLabel(key) {
+  const monthLabel = (key) => {
     var p = key.split("-");
     return MONTHS[+p[1] - 1] + " " + p[0].slice(2);
-  }
+  };
   function parseNum(str, isInt) {
     var t = String(str == null ? "" : str)
       .trim()
@@ -83,20 +72,13 @@
     t = t.replace(",", ".");
     return /^-?\d*\.?\d+$/.test(t) ? parseFloat(t) : NaN;
   }
-  function toField(v) {
-    return String(v).replace(".", ",");
-  }
-  function kmFmt(v) {
-    if (v == null || !isFinite(v)) return "–";
-    return v % 1 ? fmt(v, 1) : fmt(v, 0);
-  }
+  const toField = (v) => String(v).replace(".", ",");
+  const kmFmt = (v) =>
+    v == null || !isFinite(v) ? "–" : v % 1 ? fmt(v, 1) : fmt(v, 0);
 
-  function pieniCompletati(n) {
-    return n === 1 ? "1 pieno completato" : fmt0(n) + " pieni completati";
-  }
-  function pl(n, one, many) {
-    return fmt0(n) + " " + (n === 1 ? one : many);
-  }
+  const pieniCompletati = (n) =>
+    n === 1 ? "1 pieno completato" : fmt0(n) + " pieni completati";
+  const pl = (n, one, many) => fmt0(n) + " " + (n === 1 ? one : many);
 
   var DRUM =
     "<b>0</b><b>1</b><b>2</b><b>3</b><b>4</b><b>5</b><b>6</b><b>7</b><b>8</b><b>9</b>";
@@ -124,9 +106,8 @@
       '<span class="u">km</span></div>'
     );
   }
-  function reading(v, label) {
-    return "<div><b>" + v + "</b><span>" + label + "</span></div>";
-  }
+  const reading = (v, label) =>
+    "<div><b>" + v + "</b><span>" + label + "</span></div>";
 
   function groupInput(el) {
     var raw = el.value,
@@ -157,9 +138,7 @@
     barca: ["Barca", "⛵"],
     altro: ["Altro", "🚘"],
   };
-  function typeLabel(v) {
-    return (TYPES[v.type] || TYPES.altro)[0];
-  }
+  const typeLabel = (v) => (TYPES[v.type] || TYPES.altro)[0];
 
   var THEMES = [
     ["auto", "Automatico", "#e2e8f0", "#0f172a"],
@@ -190,22 +169,21 @@
     "novembre",
     "dicembre",
   ];
-  function norm(t) {
-    return String(t)
+  const norm = (t) =>
+    String(t)
       .toLowerCase()
       .normalize("NFD")
       .replace(/[\u0300-\u036f]/g, "");
-  }
   function matches(hay, q) {
     var toks = norm(q).split(/\s+/).filter(Boolean);
-    return toks.every(function (t) {
-      return hay.indexOf(t) >= 0 || hay.indexOf(t.replace(/\./g, "")) >= 0;
-    });
+    return toks.every(
+      (t) => hay.indexOf(t) >= 0 || hay.indexOf(t.replace(/\./g, "")) >= 0,
+    );
   }
-  function dot(n, d) {
+  const dot = (n, d) => {
     d = d == null ? 2 : d;
     return String(Number(n).toFixed(d)).replace(".", ",");
-  }
+  };
   function rowText(r) {
     var p = r.date.split("-");
     return norm(
@@ -226,9 +204,7 @@
       ].join(" "),
     );
   }
-  function vText(v) {
-    return norm([v.name, v.plate, v.fuel, typeLabel(v)].join(" "));
-  }
+  const vText = (v) => norm([v.name, v.plate, v.fuel, typeLabel(v)].join(" "));
 
   var toastTimer;
   function toast(msg, kind) {
@@ -237,7 +213,7 @@
     el.className = "toast" + (kind === "error" ? " error" : "");
     el.hidden = false;
     clearTimeout(toastTimer);
-    toastTimer = setTimeout(function () {
+    toastTimer = setTimeout(() => {
       el.hidden = true;
     }, 3400);
   }
@@ -249,13 +225,13 @@
     a.download = name;
     document.body.appendChild(a);
     a.click();
-    setTimeout(function () {
+    setTimeout(() => {
       URL.revokeObjectURL(a.href);
       a.remove();
     }, 500);
   }
 
-  function contrast(hex) {
+  const contrast = (hex) => {
     var n = parseInt(hex.slice(1), 16),
       r = n >> 16,
       g = (n >> 8) & 255,
@@ -263,16 +239,14 @@
     return (0.299 * r + 0.587 * g + 0.114 * b) / 255 > 0.62
       ? "#0b1220"
       : "#ffffff";
-  }
+  };
 
   var DEFAULT_ACCENT = "#0f766e";
   var screen = "garage";
   var tab = "dash";
   var editingId = null;
 
-  function vehicle() {
-    return S.activeVehicle();
-  }
+  const vehicle = () => S.activeVehicle();
 
   function applyTheme() {
     var t = S.get().settings.theme;
@@ -292,7 +266,7 @@
 
     var show =
       screen === "garage" ? "garage" : screen === "settings" ? "settings" : tab;
-    $$(".view").forEach(function (el) {
+    $$(".view").forEach((el) => {
       el.classList.toggle("active", el.id === "view-" + show);
     });
 
@@ -309,7 +283,7 @@
       $("#vpPlate").textContent = v.plate || v.fuel;
       $("#vpIcon").textContent = v.icon || "🚗";
     }
-    $$("#tabs button").forEach(function (b) {
+    $$("#tabs button").forEach((b) => {
       var on = b.dataset.tab === tab;
       b.classList.toggle("active", on);
       b.setAttribute("aria-current", on ? "page" : "false");
@@ -354,11 +328,9 @@
         '<button type="button" class="btn" data-gact="import">Ho già un backup JSON</button></div></div>';
       return;
     }
-    var list = st.vehicles.filter(function (v) {
-      return !q || matches(vText(v), q);
-    });
+    var list = st.vehicles.filter((v) => !q || matches(vText(v), q));
     var html = list
-      .map(function (v) {
+      .map((v) => {
         var rs = C.rows(v),
           s = C.stats(v, rs);
         var odo = rs.length ? rs[rs.length - 1].odometer : v.initialKm;
@@ -410,11 +382,11 @@
         '<div class="gcard add"><button type="button" data-gact="new"><span class="plus">＋</span>Aggiungi veicolo</button></div>';
     else {
       var hits = [];
-      st.vehicles.forEach(function (v) {
+      st.vehicles.forEach((v) => {
         C.rows(v)
           .slice()
           .reverse()
-          .forEach(function (r) {
+          .forEach((r) => {
             if (matches(rowText(r), q)) hits.push({ v: v, r: r });
           });
       });
@@ -430,8 +402,8 @@
           "</h3>" +
           hits
             .slice(0, 30)
-            .map(function (h) {
-              return (
+            .map(
+              (h) =>
                 '<button type="button" class="hit" data-gact="hit" data-id="' +
                 esc(h.v.id) +
                 '"><span class="hit-ico">' +
@@ -446,9 +418,8 @@
                 fmt2(h.r.liters) +
                 " L · " +
                 eur(h.r.total) +
-                "</small></span></button>"
-              );
-            })
+                "</small></span></button>",
+            )
             .join("") +
           "</div>";
       }
@@ -456,61 +427,40 @@
     box.innerHTML = html;
   }
 
-  function kmlPoints(rs) {
-    return rs
-      .filter(function (r) {
-        return r.kmPerL;
-      })
-      .map(function (r) {
-        return {
-          label: fmtDate(r.date),
-          short: fmtDate(r.date).slice(0, 5),
-          value: r.kmPerL,
-        };
-      });
-  }
-  function monthPoints(rs) {
-    return C.monthly(rs)
+  const kmlPoints = (rs) =>
+    rs
+      .filter((r) => r.kmPerL)
+      .map((r) => ({
+        label: fmtDate(r.date),
+        short: fmtDate(r.date).slice(0, 5),
+        value: r.kmPerL,
+      }));
+  const monthPoints = (rs) =>
+    C.monthly(rs)
       .slice(-12)
-      .map(function (m) {
-        return { label: monthLabel(m.key), value: m.spent };
-      });
-  }
-  function pct(a, b) {
-    return b ? (a / b - 1) * 100 : 0;
-  }
+      .map((m) => ({ label: monthLabel(m.key), value: m.spent }));
+  const pct = (a, b) => (b ? (a / b - 1) * 100 : 0);
 
   var DOW = ["Lun", "Mar", "Mer", "Gio", "Ven", "Sab", "Dom"];
   function dowPoints(rs) {
     var c = [0, 0, 0, 0, 0, 0, 0];
-    rs.forEach(function (r) {
+    rs.forEach((r) => {
       var p = r.date.split("-"),
         d = new Date(Date.UTC(+p[0], +p[1] - 1, +p[2])).getUTCDay();
       c[(d + 6) % 7]++;
     });
-    return c.map(function (n, i) {
-      return { label: DOW[i], value: n };
-    });
+    return c.map((n, i) => ({ label: DOW[i], value: n }));
   }
-  function segsOf(rs) {
-    return rs.filter(function (r) {
-      return r.kmPerL;
-    });
-  }
-  function chartCard(title, body, cls) {
-    return (
-      '<div class="card chart-card ' +
-      (cls || "") +
-      '"><h3>' +
-      title +
-      "</h3>" +
-      body +
-      "</div>"
-    );
-  }
-  function fewer(msg) {
-    return '<p class="muted small">' + msg + "</p>";
-  }
+  const segsOf = (rs) => rs.filter((r) => r.kmPerL);
+  const chartCard = (title, body, cls) =>
+    '<div class="card chart-card ' +
+    (cls || "") +
+    '"><h3>' +
+    title +
+    "</h3>" +
+    body +
+    "</div>";
+  const fewer = (msg) => '<p class="muted small">' + msg + "</p>";
 
   function dashDonut(st) {
     if (!(st.spent > 0)) return "";
@@ -686,12 +636,8 @@
       st = C.stats(v, rs),
       last = rs[rs.length - 1];
     var odo = last ? last.odometer : v.initialKm;
-    var segs = rs.filter(function (r) {
-      return r.kmPerL;
-    });
-    var sparkVals = segs.slice(-12).map(function (r) {
-      return r.kmPerL;
-    });
+    var segs = rs.filter((r) => r.kmPerL);
+    var sparkVals = segs.slice(-12).map((r) => r.kmPerL);
 
     var h =
       '<section class="cluster">' +
@@ -722,9 +668,7 @@
     }
 
     var mk = S.todayISO().slice(0, 7);
-    var mon = C.monthly(rs).filter(function (m) {
-      return m.key === mk;
-    })[0];
+    var mon = C.monthly(rs).filter((m) => m.key === mk)[0];
     var range =
       v.tank && st.avgKmL
         ? v.tank * st.avgKmL
@@ -758,17 +702,16 @@
     h +=
       '<div class="tiles">' +
       tiles
-        .map(function (t) {
-          return (
+        .map(
+          (t) =>
             '<div class="tile"><span class="t-label">' +
             t[0] +
             '</span><strong class="t-value">' +
             t[1] +
             '</strong><span class="t-sub">' +
             t[2] +
-            "</span></div>"
-          );
-        })
+            "</span></div>",
+        )
         .join("") +
       "</div>";
 
@@ -836,8 +779,8 @@
     var recent = rs
       .slice(-3)
       .reverse()
-      .map(function (r) {
-        return (
+      .map(
+        (r) =>
           '<div class="mini"><b>' +
           fmtDate(r.date) +
           (r.fvg ? ' <span class="tag">FVG</span>' : "") +
@@ -851,26 +794,24 @@
           " km</small>" +
           '<div class="kml">' +
           (r.kmPerL ? fmt2(r.kmPerL) : "–") +
-          "<small>km/L</small></div></div>"
-        );
-      })
+          "<small>km/L</small></div></div>",
+      )
       .join("");
 
     h +=
       '<div class="dash-cols">' +
       '<div class="card"><h2>In breve</h2><ul class="insights">' +
       ins
-        .map(function (i) {
-          return (
+        .map(
+          (i) =>
             '<li class="' +
             i[0] +
             '"><span class="i-ico">' +
             i[1] +
             "</span><span>" +
             i[2] +
-            "</span></li>"
-          );
-        })
+            "</span></li>",
+        )
         .join("") +
       "</ul></div>" +
       '<div class="card"><h2>Ultimi rifornimenti</h2><div class="mini-list">' +
@@ -902,9 +843,7 @@
         CH.bars(
           C.monthly(rs)
             .slice(-12)
-            .map(function (m) {
-              return { label: monthLabel(m.key), value: m.km };
-            }),
+            .map((m) => ({ label: monthLabel(m.key), value: m.km })),
           { decimals: 0, unit: "km", label: "Km al mese" },
         ),
       ) +
@@ -922,7 +861,7 @@
       if (typeof dlg.showModal === "function") dlg.showModal();
       else dlg.setAttribute("open", "");
     }
-    setTimeout(function () {
+    setTimeout(() => {
       $("#fOdo").focus();
     }, 60);
   }
@@ -981,11 +920,7 @@
 
   function startEdit(id) {
     var v = vehicle();
-    var r =
-      v &&
-      v.refuels.filter(function (x) {
-        return x.id === id;
-      })[0];
+    var r = v && v.refuels.filter((x) => x.id === id)[0];
     if (!r) return;
     editingId = id;
     $("#fDate").value = r.date;
@@ -1011,7 +946,7 @@
     var el = $("#formError");
     el.textContent = msg;
     el.hidden = false;
-    $$("#refuelForm input").forEach(function (i) {
+    $$("#refuelForm input").forEach((i) => {
       i.classList.remove("invalid");
     });
     if (fieldId) {
@@ -1022,7 +957,7 @@
   }
   function clearError() {
     $("#formError").hidden = true;
-    $$("#refuelForm input").forEach(function (i) {
+    $$("#refuelForm input").forEach((i) => {
       i.classList.remove("invalid");
     });
   }
@@ -1085,9 +1020,7 @@
       hi = null,
       i;
     if (editingId) {
-      i = rs.findIndex(function (r) {
-        return r.id === editingId;
-      });
+      i = rs.findIndex((r) => r.id === editingId);
       lo = i > 0 ? rs[i - 1].odometer : v.initialKm;
       hi = i >= 0 && i < rs.length - 1 ? rs[i + 1].odometer : null;
     } else if (rs.length) {
@@ -1136,9 +1069,7 @@
           : S.get().settings.fvgDiscount,
     });
 
-    var row = C.rows(vehicle()).filter(function (r) {
-      return r.id === rec.id;
-    })[0];
+    var row = C.rows(vehicle()).filter((r) => r.id === rec.id)[0];
     var wasEdit = !!editingId;
     var msg = wasEdit ? "Modifiche salvate" : "Rifornimento salvato";
     if (row && row.kmPerL) msg += " · " + fmt2(row.kmPerL) + " km/L";
@@ -1201,7 +1132,7 @@
         '<div class="metric wide total"><dt>Totale da pagare</dt><dd>' +
         eur(row.total, 2) +
         "</dd></div>";
-    m.forEach(function (x) {
+    m.forEach((x) => {
       html +=
         '<div class="metric ' +
         (x[2] || "") +
@@ -1335,7 +1266,7 @@
   function renderHistory() {
     var v = vehicle(),
       box = $("#historyList");
-    $$("#hFilters .chip").forEach(function (b) {
+    $$("#hFilters .chip").forEach((b) => {
       b.classList.toggle("active", b.dataset.f === hFilter);
     });
     if (!v) {
@@ -1346,7 +1277,7 @@
     var all = C.rows(v).slice().reverse(),
       hq = hQuery.trim(),
       avg = C.stats(v, C.rows(v)).avgKmL;
-    var rs = all.filter(function (r) {
+    var rs = all.filter((r) => {
       var okF =
         hFilter === "all" ||
         (hFilter === "fvg" && r.fvg) ||
@@ -1376,7 +1307,7 @@
     }
     var groups = [],
       cur = null;
-    rs.forEach(function (r) {
+    rs.forEach((r) => {
       var k = r.date.slice(0, 7);
       if (!cur || cur.k !== k) {
         cur = { k: k, rows: [] };
@@ -1385,12 +1316,10 @@
       cur.rows.push(r);
     });
     var html = groups
-      .map(function (g) {
+      .map((g) => {
         var p = g.k.split("-"),
           name = MONTHS_FULL[+p[1] - 1];
-        var tot = g.rows.reduce(function (a, r) {
-          return a + r.total;
-        }, 0);
+        var tot = g.rows.reduce((a, r) => a + r.total, 0);
         return (
           '<section class="mgroup"><h3 class="mh"><span>' +
           name.charAt(0).toUpperCase() +
@@ -1402,11 +1331,7 @@
           " · " +
           eur(tot, 2) +
           '</small></h3><div class="mlist">' +
-          g.rows
-            .map(function (r) {
-              return histRow(r, avg);
-            })
-            .join("") +
+          g.rows.map((r) => histRow(r, avg)).join("") +
           "</div></section>"
         );
       })
@@ -1417,20 +1342,17 @@
     box.innerHTML = html;
   }
 
-  function statCard(label, value, sub, cls) {
-    return (
-      '<div class="stat ' +
-      (cls || "") +
-      '"><span class="stat-label">' +
-      label +
-      "</span>" +
-      '<strong class="stat-value">' +
-      value +
-      "</strong>" +
-      (sub ? '<span class="stat-sub">' + sub + "</span>" : "") +
-      "</div>"
-    );
-  }
+  const statCard = (label, value, sub, cls) =>
+    '<div class="stat ' +
+    (cls || "") +
+    '"><span class="stat-label">' +
+    label +
+    "</span>" +
+    '<strong class="stat-value">' +
+    value +
+    "</strong>" +
+    (sub ? '<span class="stat-sub">' + sub + "</span>" : "") +
+    "</div>";
 
   function renderStats() {
     var v = vehicle(),
@@ -1451,7 +1373,6 @@
       return;
     }
 
-    // Sottotitolo dinamico per "Ultimi N pieni"
     var last3Sub = "media recente";
     if (st.lastN === 1) last3Sub = "media ultimo pieno";
     else if (st.lastN === 2) last3Sub = "media ultimi 2 pieni";
@@ -1532,29 +1453,21 @@
     var kmlPts = kmlPoints(rs);
     var mon = C.monthly(rs).slice(-12);
     var l100Pts = rs
-      .filter(function (r) {
-        return r.l100;
-      })
-      .map(function (r) {
-        return {
-          label: fmtDate(r.date),
-          short: fmtDate(r.date).slice(0, 5),
-          value: r.l100,
-        };
-      });
+      .filter((r) => r.l100)
+      .map((r) => ({
+        label: fmtDate(r.date),
+        short: fmtDate(r.date).slice(0, 5),
+        value: r.l100,
+      }));
     var cpkPts = rs
-      .filter(function (r) {
-        return r.costPerKm != null;
-      })
-      .map(function (r) {
-        return {
-          label: fmtDate(r.date),
-          short: fmtDate(r.date).slice(0, 5),
-          value: r.costPerKm,
-        };
-      });
+      .filter((r) => r.costPerKm != null)
+      .map((r) => ({
+        label: fmtDate(r.date),
+        short: fmtDate(r.date).slice(0, 5),
+        value: r.costPerKm,
+      }));
     var run = 0,
-      cumPts = rs.map(function (r) {
+      cumPts = rs.map((r) => {
         run += r.total;
         return {
           label: fmtDate(r.date),
@@ -1562,45 +1475,35 @@
           value: run,
         };
       });
-    var priceMulti = rs.map(function (r) {
-      return {
-        label: fmtDate(r.date),
-        short: fmtDate(r.date).slice(0, 5),
-        v: [r.price, r.paid],
-      };
-    });
+    var priceMulti = rs.map((r) => ({
+      label: fmtDate(r.date),
+      short: fmtDate(r.date).slice(0, 5),
+      v: [r.price, r.paid],
+    }));
     var top5 = rs
       .slice()
-      .sort(function (a, b) {
-        return b.total - a.total;
-      })
+      .sort((a, b) => b.total - a.total)
       .slice(0, 5)
-      .map(function (r) {
-        return {
-          label: fmtDate(r.date),
-          value: r.total,
-          text: eur(r.total, 2),
-          sub: fmt2(r.liters) + " L · " + fmt(r.paid, 3) + " €/L",
-        };
-      });
+      .map((r) => ({
+        label: fmtDate(r.date),
+        value: r.total,
+        text: eur(r.total, 2),
+        sub: fmt2(r.liters) + " L · " + fmt(r.paid, 3) + " €/L",
+      }));
     var years = {};
-    rs.forEach(function (r) {
+    rs.forEach((r) => {
       var y = r.date.slice(0, 4);
       years[y] = (years[y] || 0) + r.total;
     });
     var yearItems = Object.keys(years)
       .sort()
       .reverse()
-      .map(function (y) {
-        return { label: y, value: years[y], text: eur(years[y], 2) };
-      });
+      .map((y) => ({ label: y, value: years[y], text: eur(years[y], 2) }));
     var fvgItems = [
       { label: "Con sconto FVG", value: st.fvgCount },
       { label: "Senza sconto", value: st.n - st.fvgCount },
     ];
-    var fullN = rs.filter(function (r) {
-      return r.full;
-    }).length;
+    var fullN = rs.filter((r) => r.full).length;
     var typeItems = [
       { label: "Pieni", value: fullN },
       { label: "Parziali", value: st.n - fullN },
@@ -1644,18 +1547,17 @@
       chartCard(
         "Spesa mensile (€)",
         CH.bars(
-          mon.map(function (m) {
-            return { label: monthLabel(m.key), value: m.spent };
-          }),
+          mon.map((m) => ({ label: monthLabel(m.key), value: m.spent })),
           { decimals: 2, unit: "€", label: "Spesa mensile" },
         ),
       ) +
       chartCard(
         "Pagato e risparmio FVG per mese (€)",
         CH.stacked(
-          mon.map(function (m) {
-            return { label: monthLabel(m.key), parts: [m.spent, m.saved] };
-          }),
+          mon.map((m) => ({
+            label: monthLabel(m.key),
+            parts: [m.spent, m.saved],
+          })),
           ["Pagato", "Risparmio FVG"],
           { decimals: 2, unit: "€", label: "Pagato e risparmio" },
         ),
@@ -1663,18 +1565,14 @@
       chartCard(
         "Km al mese",
         CH.bars(
-          mon.map(function (m) {
-            return { label: monthLabel(m.key), value: m.km };
-          }),
+          mon.map((m) => ({ label: monthLabel(m.key), value: m.km })),
           { decimals: 0, unit: "km", label: "Km al mese" },
         ),
       ) +
       chartCard(
         "Litri al mese",
         CH.bars(
-          mon.map(function (m) {
-            return { label: monthLabel(m.key), value: m.liters };
-          }),
+          mon.map((m) => ({ label: monthLabel(m.key), value: m.liters })),
           { decimals: 2, unit: "L", label: "Litri al mese" },
         ),
       ) +
@@ -1795,7 +1693,7 @@
         '<div class="card chart-card"><h3>Confronto veicoli</h3><div class="table-wrap"><table><thead><tr>' +
         "<th>Veicolo</th><th>km/L</th><th>€/km</th><th>Spesa</th><th>Km</th></tr></thead><tbody>" +
         all
-          .map(function (x) {
+          .map((x) => {
             var s = C.stats(x, C.rows(x));
             return (
               "<tr><td>" +
@@ -1827,8 +1725,8 @@
   function renderSettings() {
     var st = S.get();
     $("#sDiscount").value = toField(st.settings.fvgDiscount);
-    $("#themeGrid").innerHTML = THEMES.map(function (t) {
-      return (
+    $("#themeGrid").innerHTML = THEMES.map(
+      (t) =>
         '<button type="button" class="theme-opt" role="radio" data-theme-id="' +
         t[0] +
         '" aria-checked="' +
@@ -1840,9 +1738,8 @@
         t[3] +
         ' 50%)"></span><span>' +
         t[1] +
-        "</span></button>"
-      );
-    }).join("");
+        "</span></button>",
+    ).join("");
   }
 
   function renderAll() {
@@ -1892,25 +1789,22 @@
   var vIcon = "🚗";
 
   function renderIconPicker() {
-    $("#vIcons").innerHTML = ICONS.map(function (ic) {
-      return (
+    $("#vIcons").innerHTML = ICONS.map(
+      (ic) =>
         '<button type="button" class="icon-opt" role="radio" data-icon="' +
         ic +
         '" aria-checked="' +
         (ic === vIcon) +
         '">' +
         ic +
-        "</button>"
-      );
-    }).join("");
+        "</button>",
+    ).join("");
   }
 
   function openVehicleDialog(id) {
     var dlg = $("#vehicleDialog");
     var v = id
-      ? S.get().vehicles.filter(function (x) {
-          return x.id === id;
-        })[0]
+      ? S.get().vehicles.filter((x) => x.id === id)[0]
       : null;
     vEditId = v ? v.id : null;
     $("#vTitle").textContent = v ? "Modifica veicolo" : "Nuovo veicolo";
@@ -1927,7 +1821,7 @@
     $("#vError").hidden = true;
     if (typeof dlg.showModal === "function") dlg.showModal();
     else dlg.setAttribute("open", "");
-    setTimeout(function () {
+    setTimeout(() => {
       $("#vName").focus();
     }, 30);
   }
@@ -1965,16 +1859,12 @@
     };
 
     if (vEditId) {
-      var cur = S.get().vehicles.filter(function (x) {
-        return x.id === vEditId;
-      })[0];
+      var cur = S.get().vehicles.filter((x) => x.id === vEditId)[0];
       data.color = cur.color;
       var minOdo = cur.refuels.length
         ? Math.min.apply(
             null,
-            cur.refuels.map(function (r) {
-              return r.odometer;
-            }),
+            cur.refuels.map((r) => r.odometer),
           )
         : Infinity;
       if (km >= minOdo)
@@ -1998,9 +1888,7 @@
   }
 
   function onVehicleDelete() {
-    var v = S.get().vehicles.filter(function (x) {
-      return x.id === vEditId;
-    })[0];
+    var v = S.get().vehicles.filter((x) => x.id === vEditId)[0];
     if (!v) return;
     if (
       window.confirm(
@@ -2020,9 +1908,7 @@
     }
   }
 
-  function stamp() {
-    return S.todayISO();
-  }
+  const stamp = () => S.todayISO();
 
   function exportCsv() {
     var v = vehicle();
@@ -2040,7 +1926,7 @@
     var lines = [
       "data;km_finali;km_percorsi;litri;prezzo_listino;sconto_fvg;prezzo_pagato;totale;km_l;l_100km;costo_km;pieno;note",
     ];
-    rs.forEach(function (r) {
+    rs.forEach((r) => {
       lines.push(
         [
           r.date,
@@ -2108,7 +1994,7 @@
   }
 
   function bind() {
-    $("#tabs").addEventListener("click", function (e) {
+    $("#tabs").addEventListener("click", (e) => {
       var b = e.target.closest("button[data-tab]");
       if (!b) return;
       if (b.dataset.tab === "add") openNewRefuel();
@@ -2116,12 +2002,12 @@
     });
     $("#btnBack").addEventListener("click", showGarage);
     $("#vehiclePill").addEventListener("click", showGarage);
-    $("#btnGear").addEventListener("click", function () {
+    $("#btnGear").addEventListener("click", () => {
       screen = "settings";
       applyChrome(true);
     });
 
-    $("#garageGrid").addEventListener("click", function (e) {
+    $("#garageGrid").addEventListener("click", (e) => {
       var b = e.target.closest("[data-gact]");
       if (!b) return;
       var a = b.dataset.gact;
@@ -2141,7 +2027,7 @@
       }
     });
 
-    $("#dashBody").addEventListener("click", function (e) {
+    $("#dashBody").addEventListener("click", (e) => {
       var b = e.target.closest("[data-go]");
       if (!b) return;
       if (b.dataset.go === "add") openNewRefuel();
@@ -2150,7 +2036,7 @@
 
     var form = $("#refuelForm");
     form.addEventListener("submit", onSubmit);
-    form.addEventListener("input", function () {
+    form.addEventListener("input", () => {
       clearError();
       renderPreview();
     });
@@ -2165,12 +2051,12 @@
     $("#refuelDialog").addEventListener("click", function (e) {
       if (e.target === this) closeRefuel();
     });
-    $("#refuelDialog").addEventListener("close", function () {
+    $("#refuelDialog").addEventListener("close", () => {
       resetForm();
       renderPreview();
     });
 
-    $("#historyList").addEventListener("click", function (e) {
+    $("#historyList").addEventListener("click", (e) => {
       var g = e.target.closest("[data-go]");
       if (g) {
         openNewRefuel();
@@ -2195,7 +2081,7 @@
     $("#vehicleForm").addEventListener("submit", onVehicleSubmit);
     $("#vCancel").addEventListener("click", closeVehicleDialog);
     $("#vDelete").addEventListener("click", onVehicleDelete);
-    $("#vIcons").addEventListener("click", function (e) {
+    $("#vIcons").addEventListener("click", (e) => {
       var b = e.target.closest(".icon-opt");
       if (!b) return;
       vIcon = b.dataset.icon;
@@ -2215,7 +2101,7 @@
       resetForm();
       renderPreview();
     });
-    $("#themeGrid").addEventListener("click", function (e) {
+    $("#themeGrid").addEventListener("click", (e) => {
       var b = e.target.closest("[data-theme-id]");
       if (!b) return;
       S.setSettings({ theme: b.dataset.themeId });
@@ -2230,7 +2116,7 @@
       hQuery = this.value;
       renderHistory();
     });
-    $("#hFilters").addEventListener("click", function (e) {
+    $("#hFilters").addEventListener("click", (e) => {
       var b = e.target.closest("[data-f]");
       if (b) {
         hFilter = b.dataset.f;
@@ -2241,13 +2127,13 @@
       vIcon = TYPES[this.value][1];
       renderIconPicker();
     });
-    ["fOdo", "vInitKm"].forEach(function (id) {
+    ["fOdo", "vInitKm"].forEach((id) => {
       $("#" + id).addEventListener("input", function () {
         groupInput(this);
       });
     });
 
-    $("#btnExportAll").addEventListener("click", function () {
+    $("#btnExportAll").addEventListener("click", () => {
       if (!S.get().vehicles.length)
         return toast("Nessun dato da esportare", "error");
       download(
@@ -2256,7 +2142,7 @@
         "application/json",
       );
     });
-    $("#btnExportOne").addEventListener("click", function () {
+    $("#btnExportOne").addEventListener("click", () => {
       var v = vehicle();
       if (!v) return toast("Apri prima un veicolo", "error");
       download(
@@ -2272,7 +2158,7 @@
     $("#btnExportCsv").addEventListener("click", exportCsv);
     $("#importFile").addEventListener("change", onImport);
 
-    $("#btnReset").addEventListener("click", function () {
+    $("#btnReset").addEventListener("click", () => {
       if (
         window.confirm(
           "Cancellare TUTTI i veicoli e i rifornimenti da questo dispositivo? Esporta prima un backup se ti serve.",
@@ -2287,9 +2173,7 @@
 
   function init() {
     $("#vType").innerHTML = Object.keys(TYPES)
-      .map(function (k) {
-        return '<option value="' + k + '">' + TYPES[k][0] + "</option>";
-      })
+      .map((k) => '<option value="' + k + '">' + TYPES[k][0] + "</option>")
       .join("");
     bind();
     resetForm();

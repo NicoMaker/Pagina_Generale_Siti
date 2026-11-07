@@ -6,16 +6,15 @@
 
   var KEY = "fuellog.v1";
 
-  function uid() {
-    return Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
-  }
+  const uid = () =>
+    Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
 
   function num(v, d) {
     var n = Number(v);
     return isFinite(n) ? n : d === undefined ? 0 : d;
   }
 
-  function todayISO() {
+  const todayISO = () => {
     var d = new Date();
     return (
       d.getFullYear() +
@@ -24,47 +23,41 @@
       "-" +
       String(d.getDate()).padStart(2, "0")
     );
-  }
+  };
 
-  function defaults() {
-    return {
-      version: 1,
-      activeVehicleId: null,
-      settings: { fvgDiscount: 0.24, lastFvg: false, theme: "auto" },
-      vehicles: [],
-    };
-  }
+  const defaults = () => ({
+    version: 1,
+    activeVehicleId: null,
+    settings: { fvgDiscount: 0.24, lastFvg: false, theme: "auto" },
+    vehicles: [],
+  });
 
-  function normRefuel(r) {
-    return {
-      id: r.id || uid(),
-      date: /^\d{4}-\d{2}-\d{2}$/.test(r.date || "") ? r.date : todayISO(),
-      odometer: num(r.odometer),
-      liters: num(r.liters),
-      price: num(r.price),
-      fvg: !!r.fvg,
-      discount: num(r.discount),
-      paidTotal: num(r.paidTotal) > 0 ? num(r.paidTotal) : null,
-      full: r.full !== false,
-      note: String(r.note || ""),
-    };
-  }
+  const normRefuel = (r) => ({
+    id: r.id || uid(),
+    date: /^\d{4}-\d{2}-\d{2}$/.test(r.date || "") ? r.date : todayISO(),
+    odometer: num(r.odometer),
+    liters: num(r.liters),
+    price: num(r.price),
+    fvg: !!r.fvg,
+    discount: num(r.discount),
+    paidTotal: num(r.paidTotal) > 0 ? num(r.paidTotal) : null,
+    full: r.full !== false,
+    note: String(r.note || ""),
+  });
 
-  function normVehicle(v) {
-    return {
-      id: v.id || uid(),
-      name: String(v.name || "Veicolo"),
-      plate: String(v.plate || ""),
-      type: String(v.type || "auto"),
-      fuel: String(v.fuel || "Benzina"),
-      initialKm: num(v.initialKm),
-      tank: v.tank === "" || v.tank == null ? null : num(v.tank, null),
-      icon: String(v.icon || "🚗"),
-      color: /^#[0-9a-f]{6}$/i.test(v.color || "") ? v.color : "#0f766e",
-      createdAt: v.createdAt || new Date().toISOString(),
-      refuels: (Array.isArray(v.refuels) ? v.refuels : []).map(normRefuel),
-    };
-  }
+  const normVehicle = (v) => ({
+    id: v.id || uid(),
+    name: String(v.name || "Veicolo"),
+    plate: String(v.plate || ""),
+    type: String(v.type || "auto"),
+    fuel: String(v.fuel || "Benzina"),
+    initialKm: num(v.initialKm),
+    tank: v.tank === "" || v.tank == null ? null : num(v.tank, null),
+    icon: String(v.icon || "🚗"),
+    color: /^#[0-9a-f]{6}$/i.test(v.color || "") ? v.color : "#0f766e",
+    createdAt: v.createdAt || new Date().toISOString(),
+    refuels: (Array.isArray(v.refuels) ? v.refuels : []).map(normRefuel),
+  });
 
   function normalize(d) {
     var s = defaults();
@@ -88,9 +81,7 @@
         ? st.theme
         : "auto";
     s.vehicles = (Array.isArray(d.vehicles) ? d.vehicles : []).map(normVehicle);
-    var ok = s.vehicles.some(function (v) {
-      return v.id === d.activeVehicleId;
-    });
+    var ok = s.vehicles.some((v) => v.id === d.activeVehicleId);
     s.activeVehicleId = ok
       ? d.activeVehicleId
       : s.vehicles[0]
@@ -103,14 +94,14 @@
     if (!obj || typeof obj !== "object" || !Array.isArray(obj.vehicles)) {
       throw new Error('File non valido: manca l\'elenco "vehicles".');
     }
-    obj.vehicles.forEach(function (v, i) {
+    obj.vehicles.forEach((v, i) => {
       if (!v || typeof v.name !== "string" || !v.name.trim()) {
         throw new Error("Veicolo #" + (i + 1) + ": nome mancante.");
       }
       if (!isFinite(Number(v.initialKm))) {
         throw new Error('Veicolo "' + v.name + '": km iniziali non validi.');
       }
-      (v.refuels || []).forEach(function (r, j) {
+      (v.refuels || []).forEach((r, j) => {
         if (
           !r ||
           !isFinite(Number(r.odometer)) ||
@@ -150,33 +141,24 @@
     }
   }
 
-  function findVehicle(id) {
-    return (
-      state.vehicles.filter(function (v) {
-        return v.id === id;
-      })[0] || null
-    );
-  }
+  const findVehicle = (id) =>
+    state.vehicles.filter((v) => v.id === id)[0] || null;
 
   var Store = {
     uid: uid,
     todayISO: todayISO,
-    get: function () {
-      return state;
-    },
+    get: () => state,
     save: save,
 
-    activeVehicle: function () {
-      return findVehicle(state.activeVehicleId);
-    },
-    setActive: function (id) {
+    activeVehicle: () => findVehicle(state.activeVehicleId),
+    setActive: (id) => {
       if (findVehicle(id)) {
         state.activeVehicleId = id;
         save();
       }
     },
 
-    addVehicle: function (data) {
+    addVehicle: (data) => {
       var v = normVehicle(
         Object.assign({}, data, {
           id: uid(),
@@ -189,7 +171,7 @@
       save();
       return v;
     },
-    updateVehicle: function (id, patch) {
+    updateVehicle: (id, patch) => {
       var v = findVehicle(id);
       if (!v) return null;
       var merged = normVehicle(
@@ -203,17 +185,15 @@
       save();
       return v;
     },
-    deleteVehicle: function (id) {
-      state.vehicles = state.vehicles.filter(function (v) {
-        return v.id !== id;
-      });
+    deleteVehicle: (id) => {
+      state.vehicles = state.vehicles.filter((v) => v.id !== id);
       if (state.activeVehicleId === id) {
         state.activeVehicleId = state.vehicles[0] ? state.vehicles[0].id : null;
       }
       save();
     },
 
-    addRefuel: function (vid, r) {
+    addRefuel: (vid, r) => {
       var v = findVehicle(vid);
       if (!v) return null;
       var n = normRefuel(r);
@@ -221,37 +201,31 @@
       save();
       return n;
     },
-    updateRefuel: function (vid, r) {
+    updateRefuel: (vid, r) => {
       var v = findVehicle(vid);
       if (!v) return null;
-      var i = v.refuels.findIndex(function (x) {
-        return x.id === r.id;
-      });
+      var i = v.refuels.findIndex((x) => x.id === r.id);
       if (i < 0) return null;
       v.refuels[i] = normRefuel(r);
       save();
       return v.refuels[i];
     },
-    deleteRefuel: function (vid, rid) {
+    deleteRefuel: (vid, rid) => {
       var v = findVehicle(vid);
       if (!v) return;
-      v.refuels = v.refuels.filter(function (x) {
-        return x.id !== rid;
-      });
+      v.refuels = v.refuels.filter((x) => x.id !== rid);
       save();
     },
 
-    setSettings: function (patch) {
+    setSettings: (patch) => {
       Object.assign(state.settings, patch);
       save();
     },
 
     /** Esporta tutto (o un solo veicolo) come stringa JSON. */
-    exportData: function (vehicleId) {
+    exportData: (vehicleId) => {
       var vehicles = vehicleId
-        ? state.vehicles.filter(function (v) {
-            return v.id === vehicleId;
-          })
+        ? state.vehicles.filter((v) => v.id === vehicleId)
         : state.vehicles;
       return JSON.stringify(
         {
@@ -268,7 +242,7 @@
     },
 
     /** Importa da stringa JSON. mode: 'merge' | 'replace'. */
-    importData: function (text, mode) {
+    importData: (text, mode) => {
       var obj;
       try {
         obj = JSON.parse(text);
@@ -282,11 +256,12 @@
       if (mode === "replace") {
         state = incoming;
         res.vehicles = incoming.vehicles.length;
-        res.refuels = incoming.vehicles.reduce(function (a, v) {
-          return a + v.refuels.length;
-        }, 0);
+        res.refuels = incoming.vehicles.reduce(
+          (a, v) => a + v.refuels.length,
+          0,
+        );
       } else {
-        incoming.vehicles.forEach(function (iv) {
+        incoming.vehicles.forEach((iv) => {
           var ex = findVehicle(iv.id);
           if (!ex) {
             state.vehicles.push(iv);
@@ -294,10 +269,10 @@
             res.refuels += iv.refuels.length;
           } else {
             var ids = {};
-            ex.refuels.forEach(function (r) {
+            ex.refuels.forEach((r) => {
               ids[r.id] = true;
             });
-            iv.refuels.forEach(function (r) {
+            iv.refuels.forEach((r) => {
               if (!ids[r.id]) {
                 ex.refuels.push(r);
                 res.refuels++;
@@ -312,7 +287,7 @@
       return res;
     },
 
-    reset: function () {
+    reset: () => {
       state = defaults();
       save();
     },
