@@ -552,6 +552,9 @@ function handleViewDetails(vehicleId) {
   document.getElementById("detailsVehicleInfo").textContent =
     `${vehicle.plate} - Anno ${vehicle.year}`;
   document.getElementById("updateKm").value = vehicle.currentKm || 0;
+  // Nascondi il messaggio di conferma km (viene mostrato solo dopo un aggiornamento)
+  const updateKmMsgEl = document.getElementById("updateKmMessage");
+  if (updateKmMsgEl) updateKmMsgEl.classList.remove("show");
   // Display vehicle notes if present
   const vehicleNotesDisplay = document.getElementById("vehicleNotesDisplay");
   const vehicleNotesText = document.getElementById("vehicleNotesText");
@@ -805,7 +808,7 @@ function handleMarkCompleteFromAlert(maintenanceId) {
   loadData(); // Ricarica tutti i dati per aggiornare l'interfaccia
 }
 
-// LOGICA AGGIORNATA PER IMPEDIRE KM INFERIORI AL PRECEDENTE
+// Aggiorna i km dal riquadro dei dettagli: accetta solo km SUPERIORI a quelli attuali
 function handleUpdateKm() {
   const kmInputEl = document.getElementById("updateKm");
   const newKm = parseInt(kmInputEl.value) || 0;
@@ -813,18 +816,20 @@ function handleUpdateKm() {
   // 1. Prendi il chilometraggio attuale del veicolo
   const currentKm = currentVehicle.currentKm || 0;
 
-  // 2. Controllo: Se il nuovo KM è inferiore al KM attuale
-  if (newKm < currentKm) {
-    showAlertDialog(
-      "Errore Chilometraggio",
-      `Il nuovo chilometraggio (${newKm.toLocaleString()} km) non può essere inferiore al chilometraggio attuale registrato per il veicolo (${currentKm.toLocaleString()} km).`,
+  // 2. Controllo: i nuovi km devono essere maggiori di quelli attuali
+  if (newKm <= currentKm) {
+    showUpdateKmMessage(
+      newKm === currentKm
+        ? `✗ Non possibile: i km inseriti (${newKm.toLocaleString()} km) sono uguali a quelli attuali. Inserisci un valore maggiore.`
+        : `✗ Non possibile: ${newKm.toLocaleString()} km sono inferiori ai km attuali (${currentKm.toLocaleString()} km). Inserisci un valore maggiore.`,
+      "error",
     );
-    // Non aggiornare e riporta il valore al chilometraggio attuale per evitare confusione nell'interfaccia
+    // Non salvare e riporta il campo al valore attuale
     kmInputEl.value = currentKm;
-    return; // Interrompe l'esecuzione della funzione di salvataggio
+    return;
   }
 
-  // 3. Se la convalida è superata, procedi al salvataggio
+  // 3. Convalida superata: salva
   const updatedVehicle = {
     ...currentVehicle,
     currentKm: newKm,
@@ -833,6 +838,25 @@ function handleUpdateKm() {
   saveVehicle(updatedVehicle);
   loadData();
   handleViewDetails(currentVehicle.id);
+
+  // 4. Messaggio di conferma sotto il campo km
+  showUpdateKmMessage(
+    `✓ Chilometraggio aggiornato: ${currentKm.toLocaleString()} km → ${newKm.toLocaleString()} km`,
+    "success",
+  );
+}
+
+let updateKmMessageTimeout = null;
+function showUpdateKmMessage(text, type = "success") {
+  const msgEl = document.getElementById("updateKmMessage");
+  if (!msgEl) return;
+  msgEl.textContent = text;
+  msgEl.classList.remove("success", "error");
+  msgEl.classList.add("show", type);
+  clearTimeout(updateKmMessageTimeout);
+  updateKmMessageTimeout = setTimeout(() => {
+    msgEl.classList.remove("show");
+  }, 6000);
 }
 
 // Dialog buttons
@@ -974,6 +998,7 @@ formAddVehicleEl.addEventListener("submit", (e) => {
 
   // If editing, keep the ID and remember we were editing
   const wasEditing = !!currentVehicle;
+  const oldKm = currentVehicle ? currentVehicle.currentKm || 0 : 0;
   if (currentVehicle) {
     vehicle.id = currentVehicle.id;
   }
@@ -988,6 +1013,13 @@ formAddVehicleEl.addEventListener("submit", (e) => {
   // If we were editing, reopen the details dialog with updated data
   if (wasEditing && vehicle.id) {
     handleViewDetails(vehicle.id);
+
+    // Se i km sono cambiati, mostra il messaggio di conferma sotto il campo km
+    if (vehicle.currentKm !== oldKm) {
+      showUpdateKmMessage(
+        `✓ Chilometraggio aggiornato: ${oldKm.toLocaleString()} km → ${vehicle.currentKm.toLocaleString()} km`,
+      );
+    }
   }
 });
 
@@ -1053,6 +1085,9 @@ formEditMaintenanceEl.addEventListener("submit", (e) => {
           : currentMaintenance.completedAt,
   };
 
+  const oldDueKm = currentMaintenance.dueKm || null;
+  const newDueKm = maintenance.dueKm || null;
+
   saveMaintenance(maintenance);
   loadData();
 
@@ -1061,6 +1096,14 @@ formEditMaintenanceEl.addEventListener("submit", (e) => {
   // Refresh details if open
   if (currentVehicle) {
     handleViewDetails(currentVehicle.id);
+
+    // Se i km di scadenza sono cambiati, mostra il messaggio di conferma
+    if (oldDueKm !== newDueKm) {
+      const fmt = (km) => (km ? `${km.toLocaleString()} km` : "nessuno");
+      showUpdateKmMessage(
+        `✓ Km scadenza manutenzione aggiornati: ${fmt(oldDueKm)} → ${fmt(newDueKm)}`,
+      );
+    }
   }
 });
 

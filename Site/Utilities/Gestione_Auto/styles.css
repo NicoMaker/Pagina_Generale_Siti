@@ -766,6 +766,25 @@ textarea::placeholder {
 .update-km-input {
   flex: 1;
 }
+.update-km-message {
+  display: none;
+  margin-top: 0.6rem;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--success);
+  background: color-mix(in srgb, var(--success) 12%, transparent);
+  border: 1px solid var(--success);
+  border-radius: var(--r-md);
+}
+.update-km-message.show {
+  display: block;
+}
+.update-km-message.error {
+  color: var(--danger, #ef4444);
+  background: color-mix(in srgb, var(--danger, #ef4444) 12%, transparent);
+  border-color: var(--danger, #ef4444);
+}
 .maintenances-list-section {
   margin-top: 1.5rem;
 }
