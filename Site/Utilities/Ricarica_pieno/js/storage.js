@@ -51,6 +51,7 @@
         name: String((p && p.name) || "Colore").slice(0, 30),
         c1: hex6(p && p.c1),
         c2: hex6(p && p.c2),
+        c3: hex6(p && p.c3),
       }))
       .filter((p) => p.c1);
 
@@ -78,6 +79,7 @@
     icon: normIcon(v),
     color: hex6(v.color) || "#0f766e",
     color2: hex6(v.color2),
+    color3: hex6(v.color3),
     createdAt: v.createdAt || new Date().toISOString(),
     refuels: (Array.isArray(v.refuels) ? v.refuels : []).map(normRefuel),
   });
@@ -247,8 +249,8 @@
     },
 
     /** Combinazioni di colori create dall'utente (principale + secondario facoltativo). */
-    addPalette: (name, c1, c2) => {
-      var p = normPalette([{ name: name, c1: c1, c2: c2 }])[0];
+    addPalette: (name, c1, c2, c3) => {
+      var p = normPalette([{ name: name, c1: c1, c2: c2, c3: c3 }])[0];
       if (!p) return null;
       state.settings.palette.push(p);
       save();

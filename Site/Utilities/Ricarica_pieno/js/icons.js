@@ -1,15 +1,55 @@
 /* Ricarica Pieno – icons.js
- * Icone veicolo in SVG generate interamente in JS, con colore principale e secondario.
- * Uso: Icons.svg("auto", "#2563eb", "#111827")
+ * Icone veicolo moderne in SVG, generate interamente in JS, con colore principale e secondario.
+ * Uso: Icons.svg("auto", "#2563eb", "#111827")  ·  colori anche a parole: "rosso", "blu", "teal"
  */
 (function (g) {
   "use strict";
 
-  var GLASS = "#e0f2fe";
-  var TYRE = "#111827";
-  var HUB = "#d1d5db";
+  /* ---------- colori ---------- */
+  var IT = {
+    rosso: "#dc2626",
+    rossa: "#dc2626",
+    bordeaux: "#7f1d1d",
+    rosa: "#ec4899",
+    fucsia: "#d946ef",
+    magenta: "#c026d3",
+    arancio: "#f97316",
+    arancione: "#f97316",
+    giallo: "#facc15",
+    gialla: "#facc15",
+    oro: "#eab308",
+    ocra: "#a16207",
+    verde: "#16a34a",
+    lime: "#84cc16",
+    "verde acqua": "#0f766e",
+    "verde scuro": "#14532d",
+    "verde chiaro": "#4ade80",
+    smeraldo: "#059669",
+    turchese: "#14b8a6",
+    ciano: "#06b6d4",
+    azzurro: "#38bdf8",
+    azzurra: "#38bdf8",
+    celeste: "#7dd3fc",
+    blu: "#2563eb",
+    "blu scuro": "#1e3a8a",
+    "blu notte": "#172554",
+    viola: "#7c3aed",
+    lilla: "#c084fc",
+    marrone: "#92400e",
+    bronzo: "#b45309",
+    beige: "#d6c7a1",
+    panna: "#fef3c7",
+    bianco: "#f8fafc",
+    bianca: "#f8fafc",
+    nero: "#111827",
+    nera: "#111827",
+    grigio: "#6b7280",
+    grigia: "#6b7280",
+    grafite: "#374151",
+    argento: "#9ca3af",
+    argentata: "#9ca3af",
+  };
 
-  /* ---------- utilità colore ---------- */
   var ctx = null;
   function normHex(str) {
     var s = String(str == null ? "" : str).trim().toLowerCase();
@@ -21,7 +61,8 @@
         h = h.charAt(0) + h.charAt(0) + h.charAt(1) + h.charAt(1) + h.charAt(2) + h.charAt(2);
       return "#" + h;
     }
-    // nomi CSS (rosso non esiste: usa red, blue, orange, teal…)
+    var key = s.normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/\s+/g, " ");
+    if (IT[key]) return IT[key];
     try {
       if (!ctx) ctx = document.createElement("canvas").getContext("2d");
       ctx.fillStyle = "#000001";
@@ -71,144 +112,215 @@
     return (0.299 * c[0] + 0.587 * c[1] + 0.114 * c[2]) / 255 > 0.62 ? "#0b1220" : "#ffffff";
   }
 
-  /* ---------- pezzi ---------- */
-  function wheel(cx, cy, r) {
-    return (
-      '<circle cx="' + cx + '" cy="' + cy + '" r="' + r + '" fill="' + TYRE + '"/>' +
-      '<circle cx="' + cx + '" cy="' + cy + '" r="' + (r * 0.45).toFixed(1) + '" fill="' + HUB + '"/>'
-    );
+  /* ---------- pezzi riutilizzabili ---------- */
+  var SHADOW = '<ellipse cx="32" cy="35.8" rx="27" ry="2" fill="#0f172a" opacity=".16"/>';
+
+  /** corpo con sfumatura + riflesso di luce */
+  function body(d, k) {
+    return '<path d="' + d + '" fill="' + k.A + '"/><path d="' + d + '" fill="' + k.H + '"/>';
   }
-  function waves(b) {
+  function glass(d, k) {
+    return '<path d="' + d + '" fill="' + k.G + '"/>';
+  }
+  function line(d) {
+    return '<path d="' + d + '" fill="none" stroke="#0f172a" stroke-opacity=".22" stroke-width=".7" stroke-linecap="round"/>';
+  }
+  function handle(x, y) {
+    return '<rect x="' + x + '" y="' + y + '" width="3.6" height="1.1" rx=".55" fill="#fff" opacity=".7"/>';
+  }
+  function lampF(x, y, w, h) {
+    return '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" rx="' + (h / 2) + '" fill="#fef08a"/>';
+  }
+  function lampR(x, y, w, h) {
+    return '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" rx="' + (h / 2) + '" fill="#f87171"/>';
+  }
+  function wheel(cx, cy, r, k) {
+    var s =
+      '<circle cx="' + cx + '" cy="' + cy + '" r="' + (r + 1.3) + '" fill="#0f172a" opacity=".32"/>' +
+      '<circle cx="' + cx + '" cy="' + cy + '" r="' + r + '" fill="#111827"/>' +
+      '<circle cx="' + cx + '" cy="' + cy + '" r="' + (r * 0.66).toFixed(2) + '" fill="' + k.R + '"/>';
+    for (var i = 0; i < 5; i++) {
+      var an = (i * 2 * Math.PI) / 5 - Math.PI / 2;
+      s +=
+        '<path d="M' + cx + " " + cy + "L" +
+        (cx + Math.cos(an) * r * 0.62).toFixed(2) + " " +
+        (cy + Math.sin(an) * r * 0.62).toFixed(2) +
+        '" stroke="#6b7280" stroke-width=".7" stroke-linecap="round"/>';
+    }
+    return s + '<circle cx="' + cx + '" cy="' + cy + '" r="' + (r * 0.17).toFixed(2) + '" fill="#374151"/>';
+  }
+  function waves(k) {
     return (
       '<path d="M3 37.500c4-2 8-2 12 0s8 2 12 0 8-2 12 0 8 2 12 0 6-1.500 6-1.500" fill="none" stroke="' +
-      b + '" stroke-width="1.800" stroke-linecap="round" opacity=".55"/>'
+      k.b + '" stroke-width="1.800" stroke-linecap="round" opacity=".5"/>' +
+      '<path d="M8 39c3-1.300 6-1.300 9 0s6 1.300 9 0 6-1.300 9 0" fill="none" stroke="' +
+      k.b + '" stroke-width="1.200" stroke-linecap="round" opacity=".28"/>'
     );
   }
 
   /* ---------- icone (viewBox 0 0 64 40) ---------- */
   var DRAW = {
-    auto: function (a, b) {
+    auto: function (k) {
       return (
-        '<path d="M4 28v-5c0-1.600 1-2.800 2.600-3.200L16 18l6-6.500c.9-1 2.100-1.500 3.400-1.500h13c1.500 0 2.800.7 3.800 1.800L48 18l9 2c1.800.4 3 2 3 3.800V28c0 1.100-.9 2-2 2H6c-1.100 0-2-.9-2-2z" fill="' + a + '"/>' +
-        '<path d="M23 18l4-5h6v5zM35.500 13h4.200c.7 0 1.300.3 1.800.8L45 18H35.500z" fill="' + GLASS + '"/>' +
-        '<rect x="4" y="24.500" width="56" height="2.200" fill="' + b + '"/>' +
-        '<rect x="56" y="21.500" width="4" height="2" rx="1" fill="#fde68a"/>' +
-        wheel(17, 30, 5.5) + wheel(47, 30, 5.5)
+        SHADOW +
+        body("M4 28v-5c0-1.600 1-2.800 2.600-3.200L16 18l6-6.500c.9-1 2.100-1.500 3.400-1.500h13c1.500 0 2.800.7 3.800 1.800L48 18l9 2c1.800.4 3 2 3 3.800V28c0 1.100-.9 2-2 2H6c-1.100 0-2-.9-2-2z", k) +
+        '<rect x="4.500" y="25" width="55" height="2.200" rx="1.100" fill="' + k.C + '"/>' +
+        glass("M23 18l4-5h6v5zM35.500 13h4.200c.7 0 1.300.3 1.800.8L45 18H35.500z", k) +
+        line("M34 13v5M33.500 18.500V25M17.500 22v3") +
+        handle(37, 21) + handle(24, 21) +
+        lampF(56.500, 21.500, 3.500, 2) + lampR(4, 21.500, 2.500, 2.200) +
+        wheel(17, 30, 5.500, k) + wheel(47, 30, 5.500, k)
       );
     },
-    suv: function (a, b) {
+    suv: function (k) {
       return (
-        '<rect x="9" y="10.500" width="27" height="2" rx="1" fill="' + b + '"/>' +
-        '<path d="M4 28V15c0-1.100.9-2 2-2h30c1.200 0 2.200.5 3 1.300L46 19l10 2c2 .4 4 2 4 4v3c0 1.100-.9 2-2 2H6c-1.100 0-2-.9-2-2z" fill="' + a + '"/>' +
-        '<path d="M9 15.500h12V21H9zM23.500 15.500H36l6.500 5.500H23.500z" fill="' + GLASS + '"/>' +
-        '<rect x="4" y="25" width="56" height="2.200" fill="' + b + '"/>' +
-        '<rect x="56" y="22" width="4" height="2" rx="1" fill="#fde68a"/>' +
-        wheel(17, 30, 6) + wheel(48, 30, 6)
+        SHADOW +
+        '<rect x="9" y="10.500" width="27" height="2" rx="1" fill="' + k.B + '"/>' +
+        body("M4 28V15c0-1.100.9-2 2-2h30c1.200 0 2.200.5 3 1.300L46 19l10 2c2 .4 4 2 4 4v3c0 1.100-.9 2-2 2H6c-1.100 0-2-.9-2-2z", k) +
+        '<rect x="4.500" y="25" width="55" height="2.200" rx="1.100" fill="' + k.C + '"/>' +
+        glass("M9 15.500h12V21H9zM23.500 15.500H36l6.500 5.500H23.500z", k) +
+        line("M22.200 15.500V25M36.500 21V25") +
+        handle(26, 22) + handle(12, 22) +
+        lampF(56.500, 22, 3.500, 2) + lampR(4, 19, 2.500, 3) +
+        wheel(17, 30, 6, k) + wheel(48, 30, 6, k)
       );
     },
-    sportiva: function (a, b) {
+    sportiva: function (k) {
       return (
-        '<path d="M3 28v-4c0-1.200.8-2.200 2-2.500L17 19l8-5c1-.6 2.100-1 3.300-1h8c1.600 0 3 .6 4.200 1.600L47 19.500l10 2c1.700.4 3 1.900 3 3.600V28c0 1.100-.9 2-2 2H5c-1.100 0-2-.9-2-2z" fill="' + a + '"/>' +
-        '<path d="M26 18.500l3.800-3.800c.5-.4 1-.7 1.700-.7H37c.8 0 1.500.3 2 .8l4 3.700z" fill="' + GLASS + '"/>' +
-        '<rect x="3" y="24.500" width="57" height="1.800" fill="' + b + '"/>' +
-        '<path d="M3 21.500h5v2H3z" fill="' + b + '"/>' +
-        '<rect x="56" y="22" width="4" height="1.800" rx=".9" fill="#fde68a"/>' +
-        wheel(16, 30, 5) + wheel(48, 30, 5.500)
+        SHADOW +
+        body("M3 28v-4c0-1.200.8-2.200 2-2.500L17 19l8-5c1-.6 2.100-1 3.300-1h8c1.600 0 3 .6 4.200 1.600L47 19.500l10 2c1.700.4 3 1.900 3 3.600V28c0 1.100-.9 2-2 2H5c-1.100 0-2-.9-2-2z", k) +
+        '<rect x="3.500" y="24.500" width="56" height="1.800" rx=".9" fill="' + k.C + '"/>' +
+        '<path d="M3 21.500h6l-1 2H3z" fill="' + k.B + '"/>' +
+        glass("M26 18.500l3.800-3.800c.5-.4 1-.7 1.700-.7H37c.8 0 1.500.3 2 .8l4 3.700z", k) +
+        line("M35 14v4.500M30 19.500L28 25") +
+        handle(33, 21.500) +
+        lampF(56, 22, 4, 1.800) + lampR(3, 20.500, 2.500, 1.800) +
+        wheel(16, 30, 5, k) + wheel(48, 30, 5.500, k)
       );
     },
-    pickup: function (a, b) {
+    pickup: function (k) {
       return (
-        '<path d="M39 17h18c1.100 0 2 .9 2 2v9c0 1.100-.9 2-2 2H39z" fill="' + b + '"/>' +
-        '<path d="M4 28v-6c0-1.500 1-2.700 2.400-3.100L13 17l5-5c.7-.7 1.600-1 2.600-1H30c1 0 1.900.4 2.600 1l4.400 5h1v11c0 1.100-.9 2-2 2H6c-1.100 0-2-.9-2-2z" fill="' + a + '"/>' +
-        '<path d="M16 17.500l3.500-4H30.500l4 4z" fill="' + GLASS + '"/>' +
-        '<rect x="4" y="24.500" width="35" height="2" fill="' + b + '" opacity=".8"/>' +
-        wheel(17, 30, 5.500) + wheel(49, 30, 5.500)
+        SHADOW +
+        '<path d="M39 17h18c1.100 0 2 .9 2 2v9c0 1.100-.9 2-2 2H39z" fill="' + k.B + '"/>' +
+        '<path d="M39 17h18c1.100 0 2 .9 2 2v9c0 1.100-.9 2-2 2H39z" fill="' + k.H + '"/>' +
+        '<rect x="41" y="19" width="16" height="2" rx="1" fill="#000" opacity=".16"/>' +
+        body("M4 28v-6c0-1.500 1-2.700 2.400-3.100L13 17l5-5c.7-.7 1.600-1 2.600-1H30c1 0 1.900.4 2.600 1l4.400 5h1v11c0 1.100-.9 2-2 2H6c-1.100 0-2-.9-2-2z", k) +
+        glass("M16 17.500l3.500-4H30.500l4 4z", k) +
+        line("M24 14v3.500M24 18V26") +
+        handle(27, 21) +
+        lampF(4, 20, 2.500, 2.200) + lampR(57, 21.500, 2, 2.500) +
+        wheel(17, 30, 5.500, k) + wheel(49, 30, 5.500, k)
       );
     },
-    furgone: function (a, b) {
+    furgone: function (k) {
       return (
-        '<path d="M4 28V12c0-1.100.9-2 2-2h32c1.200 0 2.300.6 3 1.500L47 19l9 2c2 .4 4 2 4 4v3c0 1.100-.9 2-2 2H6c-1.100 0-2-.9-2-2z" fill="' + a + '"/>' +
-        '<path d="M40 13h1.500L46 19H40z" fill="' + GLASS + '"/>' +
-        '<rect x="4" y="22" width="35" height="3" fill="' + b + '"/>' +
-        '<rect x="57" y="23" width="3" height="2" rx="1" fill="#fde68a"/>' +
-        wheel(17, 30, 5.500) + wheel(48, 30, 5.500)
+        SHADOW +
+        body("M4 28V12c0-1.100.9-2 2-2h32c1.200 0 2.300.6 3 1.500L47 19l9 2c2 .4 4 2 4 4v3c0 1.100-.9 2-2 2H6c-1.100 0-2-.9-2-2z", k) +
+        '<rect x="4.500" y="22" width="34" height="3" rx="1.500" fill="' + k.C + '"/>' +
+        glass("M40 13h1.500L46 19H40z", k) +
+        line("M39 10.500V28M22 11V22") +
+        handle(41.500, 22) +
+        lampF(57, 22.500, 3, 2) + lampR(4, 17, 2, 3) +
+        wheel(17, 30, 5.500, k) + wheel(48, 30, 5.500, k)
       );
     },
-    camper: function (a, b) {
+    camper: function (k) {
       return (
-        '<rect x="3" y="7" width="49" height="23" rx="4" fill="' + a + '"/>' +
-        '<path d="M50 14h5c1 0 1.900.5 2.500 1.300L61 20c.6.700 1 1.600 1 2.500V28c0 1.100-.9 2-2 2H50z" fill="' + a + '"/>' +
-        '<rect x="8" y="11" width="14" height="8" rx="1.500" fill="' + GLASS + '"/>' +
-        '<rect x="25" y="11" width="11" height="8" rx="1.500" fill="' + GLASS + '"/>' +
-        '<path d="M53 16.500h3l3 3.500h-6z" fill="' + GLASS + '"/>' +
-        '<rect x="3" y="23" width="59" height="3" fill="' + b + '"/>' +
-        '<rect x="40" y="11" width="6" height="14" rx="1" fill="' + b + '" opacity=".6"/>' +
-        wheel(15, 30, 5.500) + wheel(49, 30, 5.500)
+        SHADOW +
+        body("M7 7h41c2.200 0 4 1.800 4 4v19H3V11c0-2.200 1.800-4 4-4z", k) +
+        body("M50 14h5c1 0 1.900.5 2.500 1.300L61 20c.6.700 1 1.600 1 2.500V28c0 1.100-.9 2-2 2H50z", k) +
+        '<rect x="3" y="23" width="59" height="3" rx="1.500" fill="' + k.C + '"/>' +
+        '<rect x="8" y="11" width="14" height="8" rx="2" fill="' + k.G + '"/>' +
+        '<rect x="25" y="11" width="11" height="8" rx="2" fill="' + k.G + '"/>' +
+        glass("M53 16.500h3l3 3.500h-6z", k) +
+        '<rect x="40" y="11" width="6.500" height="14" rx="1.500" fill="' + k.B + '" opacity=".75"/>' +
+        '<rect x="9" y="4.500" width="18" height="2.500" rx="1.200" fill="' + k.B + '"/>' +
+        lampF(60, 22, 2, 2) + lampR(3, 20, 1.800, 3) +
+        wheel(15, 30, 5.500, k) + wheel(49, 30, 5.500, k)
       );
     },
-    camion: function (a, b) {
+    camion: function (k) {
       return (
-        '<rect x="3" y="8" width="38" height="22" rx="2" fill="' + b + '"/>' +
-        '<path d="M43 14h9c1 0 1.900.5 2.500 1.300L60 22v6c0 1.100-.9 2-2 2H43z" fill="' + a + '"/>' +
-        '<path d="M46 17h5.500l4 5H46z" fill="' + GLASS + '"/>' +
-        '<rect x="3" y="28" width="57" height="3" fill="#374151"/>' +
-        wheel(12, 31, 5) + wheel(24, 31, 5) + wheel(51, 31, 5)
+        SHADOW +
+        '<rect x="3" y="8" width="38" height="22" rx="3" fill="' + k.B + '"/>' +
+        '<rect x="3" y="8" width="38" height="22" rx="3" fill="' + k.H + '"/>' +
+        '<path d="M9 12v14M17 12v14M25 12v14M33 12v14" stroke="#000" stroke-opacity=".12" stroke-width="1"/>' +
+        body("M43 14h9c1 0 1.900.5 2.500 1.300L60 22v6c0 1.100-.9 2-2 2H43z", k) +
+        glass("M46 17h5.500l4 5H46z", k) +
+        '<rect x="3" y="28" width="57" height="3" rx="1.500" fill="#374151"/>' +
+        lampF(58, 23.500, 2.500, 2) + lampR(3, 24, 1.800, 3) +
+        wheel(12, 31, 5, k) + wheel(24, 31, 5, k) + wheel(51, 31, 5, k)
       );
     },
-    moto: function (a, b) {
+    moto: function (k) {
       return (
-        '<circle cx="14" cy="29" r="7" fill="none" stroke="' + TYRE + '" stroke-width="3"/>' +
-        '<circle cx="50" cy="29" r="7" fill="none" stroke="' + TYRE + '" stroke-width="3"/>' +
-        '<circle cx="14" cy="29" r="2" fill="' + HUB + '"/><circle cx="50" cy="29" r="2" fill="' + HUB + '"/>' +
-        '<path d="M14 29L30 25" stroke="' + b + '" stroke-width="3" stroke-linecap="round"/>' +
-        '<path d="M50 29L43 12" stroke="#6b7280" stroke-width="2.500" stroke-linecap="round"/>' +
-        '<rect x="27" y="21" width="13" height="8" rx="2" fill="' + b + '"/>' +
-        '<path d="M24 14h13l4.500 5-3 5H26l-3.500-4z" fill="' + a + '"/>' +
-        '<path d="M10.500 19c0-1 .8-1.800 1.800-1.800H24c1 0 1.500 1 1 1.800L24 21H12.500c-1.100 0-2-.9-2-2z" fill="' + TYRE + '"/>' +
+        SHADOW +
+        '<circle cx="14" cy="29" r="7" fill="none" stroke="#111827" stroke-width="3"/>' +
+        '<circle cx="50" cy="29" r="7" fill="none" stroke="#111827" stroke-width="3"/>' +
+        '<circle cx="14" cy="29" r="4.500" fill="' + k.R + '" opacity=".9"/><circle cx="50" cy="29" r="4.500" fill="' + k.R + '" opacity=".9"/>' +
+        '<circle cx="14" cy="29" r="1.500" fill="#374151"/><circle cx="50" cy="29" r="1.500" fill="#374151"/>' +
+        '<path d="M14 29L30 25" stroke="' + k.b + '" stroke-width="3" stroke-linecap="round"/>' +
+        '<path d="M50 29L43 12" stroke="#9ca3af" stroke-width="2.800" stroke-linecap="round"/>' +
+        '<path d="M44 20c2.500-3 6-3.500 8-2" stroke="' + k.c + '" stroke-width="2.600" fill="none" stroke-linecap="round"/>' +
+        '<rect x="27" y="21" width="13" height="8" rx="2.500" fill="' + k.B + '"/>' +
+        body("M24 14h13l4.500 5-3 5H26l-3.500-4z", k) +
+        '<path d="M10.500 19c0-1 .8-1.800 1.800-1.800H24c1 0 1.500 1 1 1.800L24 21H12.500c-1.100 0-2-.9-2-2z" fill="#1f2937"/>' +
         '<path d="M40 11.500h7" stroke="#374151" stroke-width="2.800" stroke-linecap="round"/>' +
-        '<circle cx="46.500" cy="15.500" r="2.200" fill="#fde68a"/>' +
-        '<path d="M30 28.500L17 27.500" stroke="#9ca3af" stroke-width="2.200" stroke-linecap="round"/>'
+        '<path d="M44 14.500h5.500a2.700 2.700 0 0 1-2.700 3z" fill="#fef08a"/>' +
+        '<path d="M30 28.500L15 27.500" stroke="#cbd5e1" stroke-width="2.200" stroke-linecap="round"/>'
       );
     },
-    scooter: function (a, b) {
+    scooter: function (k) {
       return (
-        '<path d="M8 28c0-5 3-9 8-9h7v9z" fill="' + a + '"/>' +
-        '<path d="M10 17c0-1.100.9-2 2-2h10c1.100 0 2 .9 2 2v2H10z" fill="' + TYRE + '"/>' +
-        '<rect x="22" y="26" width="23" height="3.500" rx="1.500" fill="' + b + '"/>' +
-        '<path d="M44 27L42 11h4.500l3.500 16z" fill="' + a + '"/>' +
-        '<path d="M47 22l4 9" stroke="#6b7280" stroke-width="2.500" stroke-linecap="round"/>' +
+        SHADOW +
+        body("M8 28c0-5 3-9 8-9h7v9z", k) +
+        '<path d="M10 17c0-1.100.9-2 2-2h10c1.100 0 2 .9 2 2v2H10z" fill="#1f2937"/>' +
+        '<rect x="22" y="26" width="23" height="3.500" rx="1.750" fill="' + k.C + '"/>' +
+        body("M44 27L42 11h4.500l3.500 16z", k) +
+        '<path d="M47 22l4 9" stroke="#9ca3af" stroke-width="2.600" stroke-linecap="round"/>' +
         '<path d="M40 10h8" stroke="#374151" stroke-width="2.800" stroke-linecap="round"/>' +
-        '<circle cx="49" cy="14.500" r="2.200" fill="#fde68a"/>' +
-        wheel(14, 31, 5.500) + wheel(51, 31, 5.500)
+        '<path d="M47 12.500h4.500a2.500 2.500 0 0 1-2.500 3z" fill="#fef08a"/>' +
+        lampR(7.500, 22, 2, 3) +
+        wheel(14, 31, 5.500, k) + wheel(51, 31, 5.500, k)
       );
     },
-    trattore: function (a, b) {
+    trattore: function (k) {
       return (
-        '<rect x="40" y="8" width="2.500" height="9" fill="#374151"/>' +
-        '<path d="M28 28V17c0-1.100.9-2 2-2h14c1.100 0 2 .9 2 2v11z" fill="' + a + '"/>' +
-        '<path d="M8 26V9c0-1.100.9-2 2-2h14c1.100 0 2 .9 2 2v17z" fill="' + a + '"/>' +
-        '<rect x="12" y="10.500" width="11" height="9" rx="1.500" fill="' + GLASS + '"/>' +
-        '<rect x="8" y="24" width="38" height="3" fill="' + b + '"/>' +
-        '<circle cx="16" cy="28" r="10" fill="' + TYRE + '"/><circle cx="16" cy="28" r="5.500" fill="' + b + '"/><circle cx="16" cy="28" r="2" fill="' + HUB + '"/>' +
-        wheel(50, 31, 6)
+        SHADOW +
+        '<rect x="40" y="7" width="2.600" height="10" rx="1.300" fill="#374151"/>' +
+        body("M28 28V17c0-1.100.9-2 2-2h14c1.100 0 2 .9 2 2v11z", k) +
+        '<path d="M46 19h4v7h-4z" fill="#374151"/>' +
+        body("M8 26V9c0-1.100.9-2 2-2h14c1.100 0 2 .9 2 2v17z", k) +
+        '<rect x="12" y="10.500" width="11" height="9" rx="2" fill="' + k.G + '"/>' +
+        '<rect x="8" y="24" width="38" height="3" rx="1.500" fill="' + k.C + '"/>' +
+        '<path d="M29 18h14M29 21h14" stroke="#000" stroke-opacity=".16" stroke-width=".9"/>' +
+        '<circle cx="16" cy="28" r="10" fill="#111827"/>' +
+        '<circle cx="16" cy="28" r="6" fill="' + k.B + '"/>' +
+        '<circle cx="16" cy="28" r="2.200" fill="#d1d5db"/>' +
+        '<path d="M16 18v2M16 36v-2M6 28h2M26 28h-2M9 21l1.500 1.500M23 21l-1.500 1.500M9 35l1.500-1.500M23 35l-1.500-1.500" stroke="#374151" stroke-width="1.500" stroke-linecap="round"/>' +
+        wheel(50, 31, 6, k) +
+        lampF(45, 17.500, 2, 2.500)
       );
     },
-    barca: function (a, b) {
+    barca: function (k) {
       return (
-        '<rect x="31" y="3" width="2" height="25" fill="#6b7280"/>' +
-        '<path d="M34 5v21h17z" fill="' + b + '"/>' +
-        '<path d="M30 8v18H14z" fill="#e5e7eb"/>' +
-        '<path d="M6 28h52l-6 8H13z" fill="' + a + '"/>' +
-        waves(b)
+        '<rect x="31" y="3" width="2" height="26" rx="1" fill="#9ca3af"/>' +
+        '<path d="M34 5v21h17z" fill="' + k.B + '"/><path d="M34 5v21h17z" fill="' + k.H + '"/>' +
+        '<path d="M30 8v18H14z" fill="#f1f5f9"/><path d="M30 8v18H14z" fill="#94a3b8" opacity=".18"/>' +
+        '<path d="M32 3l5 1.500-5 1.500z" fill="' + k.A + '"/>' +
+        body("M6 28h52l-6 8H13z", k) +
+        '<path d="M10 30.500h45" stroke="#fff" stroke-opacity=".5" stroke-width="1" stroke-linecap="round"/>' +
+        waves(k)
       );
     },
-    motoscafo: function (a, b) {
+    motoscafo: function (k) {
       return (
-        '<path d="M4 24h52l5 3-6 8H12c-4 0-7-4-8-11z" fill="' + a + '"/>' +
-        '<path d="M20 24l5-9h14l6 9z" fill="' + b + '"/>' +
-        '<path d="M27 23l3-6h8l3.500 6z" fill="' + GLASS + '"/>' +
-        '<rect x="8" y="28.500" width="46" height="2" fill="#fff" opacity=".8"/>' +
-        waves(b)
+        body("M4 24h52l5 3-6 8H12c-4 0-7-4-8-11z", k) +
+        '<path d="M20 24l5-9h14l6 9z" fill="' + k.B + '"/><path d="M20 24l5-9h14l6 9z" fill="' + k.H + '"/>' +
+        glass("M27 23l3-6h8l3.500 6z", k) +
+        '<rect x="8" y="28.500" width="46" height="2" rx="1" fill="#fff" opacity=".75"/>' +
+        '<path d="M55 20.500v4" stroke="#9ca3af" stroke-width="1.200" stroke-linecap="round"/>' +
+        waves(k)
       );
     },
   };
@@ -273,6 +385,10 @@
     ["Verde/Oro", "#15803d", "#eab308"],
     ["Arancio/Blu", "#f97316", "#1d4ed8"],
     ["Viola/Rosa", "#7c3aed", "#ec4899"],
+    ["Tricolore", "#16a34a", "#f8fafc", "#dc2626"],
+    ["Racing", "#dc2626", "#111827", "#facc15"],
+    ["Marina", "#1d4ed8", "#f8fafc", "#dc2626"],
+    ["Tramonto", "#f97316", "#7c3aed", "#facc15"],
   ];
 
   function find(key) {
@@ -280,20 +396,52 @@
     return LIST[0];
   }
 
+  function grad(id, c, top, bot) {
+    return (
+      '<linearGradient id="' + id + '" x1="0" y1="0" x2="0" y2="1">' +
+      '<stop offset="0" stop-color="' + shade(c, top) + '"/>' +
+      '<stop offset=".55" stop-color="' + c + '"/>' +
+      '<stop offset="1" stop-color="' + shade(c, bot) + '"/></linearGradient>'
+    );
+  }
+
+  var uid = 0;
   /** SVG completo. c2 facoltativo: se manca usa una variante più scura di c1. */
-  function svg(key, c1, c2, cls) {
+  function svg(key, c1, c2, c3, cls) {
     var a = normHex(c1) || "#0f766e";
     var b = normHex(c2) || shade(a, -0.28);
+    var c = normHex(c3) || b;
     var k = DRAW[key] ? key : "auto";
+    var id = "vi" + ++uid;
+    var defs =
+      "<defs>" +
+      grad(id + "a", a, 0.22, -0.2) +
+      grad(id + "b", b, 0.2, -0.2) +
+      grad(id + "c", c, 0.2, -0.2) +
+      '<linearGradient id="' + id + 'g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f0f9ff"/><stop offset="1" stop-color="#7dd3fc"/></linearGradient>' +
+      '<linearGradient id="' + id + 'r" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f8fafc"/><stop offset="1" stop-color="#94a3b8"/></linearGradient>' +
+      '<linearGradient id="' + id + 'h" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".42"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/></linearGradient>' +
+      "</defs>";
+    var ctxo = {
+      a: a,
+      b: b,
+      c: c,
+      C: "url(#" + id + "c)",
+      A: "url(#" + id + "a)",
+      B: "url(#" + id + "b)",
+      G: "url(#" + id + "g)",
+      R: "url(#" + id + "r)",
+      H: "url(#" + id + "h)",
+    };
     return (
       '<svg class="vi ' + (cls || "") + '" viewBox="0 0 64 40" role="img" aria-label="' +
-      find(k).l + '" xmlns="http://www.w3.org/2000/svg">' + DRAW[k](a, b) + "</svg>"
+      find(k).l + '" xmlns="http://www.w3.org/2000/svg">' + defs + DRAW[k](ctxo) + "</svg>"
     );
   }
 
   /** Icona del veicolo con i suoi colori. */
   function forVehicle(v, cls) {
-    return svg(v && v.icon, v && v.color, v && v.color2, cls);
+    return svg(v && v.icon, v && v.color, v && v.color2, v && v.color3, cls);
   }
 
   g.Icons = {
@@ -304,6 +452,7 @@
     typeIcon: TYPE_ICON,
     emoji: EMOJI,
     presets: PRESETS,
+    names: IT,
     normHex: normHex,
     shade: shade,
     contrast: contrast,

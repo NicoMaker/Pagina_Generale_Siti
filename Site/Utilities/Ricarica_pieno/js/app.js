@@ -353,7 +353,7 @@
 
   function applyChrome(scrollTop) {
     var v = vehicle();
-    var color = screen === "app" && v ? v.color : DEFAULT_ACCENT;
+    var color = DEFAULT_ACCENT; /* il colore del veicolo vale solo per icona e scheda */
     var root = document.documentElement.style;
     root.setProperty("--accent", color);
     root.setProperty("--accent-contrast", contrast(color));
@@ -447,6 +447,7 @@
           '" style="--c:' +
           esc(v.color) +
           (v.color2 ? ";--cb:" + esc(v.color2) : "") +
+          (v.color3 ? ";--cc:" + esc(v.color3) : "") +
           '">' +
           (gsel
             ? '<span class="gc-check" aria-hidden="true">' +
@@ -1960,12 +1961,21 @@
               '" data-k="2" value="' +
               (v.color2 || "") +
               '" maxlength="20" placeholder="nessuno" /></span></label>' +
+              '<label>Terzo<span class="colorpick mini"><input type="color" data-vid="' +
+              esc(v.id) +
+              '" data-k="3" value="' +
+              (v.color3 || v.color2 || I.shade(v.color, -0.28)) +
+              '" /><input type="text" data-vid="' +
+              esc(v.id) +
+              '" data-k="3" value="' +
+              (v.color3 || "") +
+              '" maxlength="20" placeholder="nessuno" /></span></label>' +
               '<button type="button" class="btn small" data-vclear="' +
               esc(v.id) +
               '" title="Rimuovi secondario">✕</button></div>' +
               '<div class="swatches tiny">' +
               allCombos()
-                .map((p) => swBtn(p, p.c1 === v.color && (p.c2 || "") === (v.color2 || "")))
+                .map((p) => swBtn(p, p.c1 === v.color && (p.c2 || "") === (v.color2 || "") && (p.c3 || "") === (v.color3 || "")))
                 .join("") +
               "</div></div>",
           )
@@ -1977,12 +1987,13 @@
           .map(
             (p) =>
               '<div class="own-item"><span class="cswatch static" style="' +
-              swStyle(p.c1, p.c2) +
+              swStyle(p.c1, p.c2, p.c3) +
               '"></span><b>' +
               esc(p.name) +
               "</b><small>" +
               esc(p.c1) +
               (p.c2 ? " + " + esc(p.c2) : "") +
+              (p.c3 ? " + " + esc(p.c3) : "") +
               '</small><button type="button" class="btn small danger" data-pdel="' +
               esc(p.id) +
               '" aria-label="Elimina ' +
@@ -2023,7 +2034,8 @@
   var vOldType = "auto",
     vIcon = "auto",
     vC1 = "#0f766e",
-    vC2 = "";
+    vC2 = "",
+    vC3 = "";
   const vehType = () => I.find(vIcon).t;
 
   function renderIconPicker() {
@@ -2039,7 +2051,7 @@
           '" aria-checked="' +
           (ic.k === vIcon) +
           '">' +
-          I.svg(ic.k, vC1, vC2) +
+          I.svg(ic.k, vC1, vC2, vC3) +
           "</button>",
       )
       .join("");
@@ -2047,19 +2059,24 @@
   }
 
   /* ---------- colori: combinazioni, anteprima, campi ---------- */
-  const swStyle = (c1, c2) =>
+  const swStyle = (c1, c2, c3) =>
     "background:" +
-    (c2 ? "linear-gradient(135deg," + c1 + " 50%," + c2 + " 50%)" : c1);
+    (c3
+      ? "linear-gradient(135deg," + c1 + " 34%," + (c2 || c1) + " 34% 67%," + c3 + " 67%)"
+      : c2
+        ? "linear-gradient(135deg," + c1 + " 50%," + c2 + " 50%)"
+        : c1);
   function allCombos() {
     var own = S.get().settings.palette.map((p) => ({
       id: p.id,
       name: p.name,
       c1: p.c1,
       c2: p.c2,
+      c3: p.c3 || "",
       own: true,
     }));
     return I.presets
-      .map((p) => ({ name: p[0], c1: p[1], c2: p[2], own: false }))
+      .map((p) => ({ name: p[0], c1: p[1], c2: p[2], c3: p[3] || "", own: false }))
       .concat(own);
   }
   const swBtn = (p, on) =>
@@ -2069,6 +2086,8 @@
     p.c1 +
     '" data-c2="' +
     (p.c2 || "") +
+    '" data-c3="' +
+    (p.c3 || "") +
     '" title="' +
     esc(p.name) +
     '" aria-label="' +
@@ -2076,26 +2095,29 @@
     '" aria-pressed="' +
     !!on +
     '" style="' +
-    swStyle(p.c1, p.c2) +
+    swStyle(p.c1, p.c2, p.c3) +
     '"></button>';
 
   function renderVehicleColors(skip) {
     $("#vPreview").innerHTML =
       '<span class="vprev-ico">' +
-      I.svg(vIcon, vC1, vC2) +
+      I.svg(vIcon, vC1, vC2, vC3) +
       '</span><span class="vprev-txt"><b>' +
       esc($("#vName").value.trim() || "Anteprima") +
       "</b><small>" +
       esc(vC1) +
       (vC2 ? " + " + esc(vC2) : " (secondario automatico)") +
+      (vC3 ? " + " + esc(vC3) : "") +
       "</small></span>";
     $("#vSwatches").innerHTML = allCombos()
-      .map((p) => swBtn(p, p.c1 === vC1 && (p.c2 || "") === vC2))
+      .map((p) => swBtn(p, p.c1 === vC1 && (p.c2 || "") === vC2 && (p.c3 || "") === vC3))
       .join("");
     $("#vColor1").value = vC1;
     $("#vColor2").value = vC2 || I.shade(vC1, -0.28);
+    $("#vColor3").value = vC3 || vC2 || I.shade(vC1, -0.28);
     if (skip !== "hex1") $("#vHex1").value = vC1;
     if (skip !== "hex2") $("#vHex2").value = vC2;
+    if (skip !== "hex3") $("#vHex3").value = vC3;
     renderIconPicker();
   }
 
@@ -2124,6 +2146,23 @@
       }
       renderVehicleColors("hex2");
     });
+    $("#vColor3").addEventListener("input", function () {
+      vC3 = I.normHex(this.value) || vC3;
+      renderVehicleColors();
+    });
+    $("#vHex3").addEventListener("input", function () {
+      if (!this.value.trim()) vC3 = "";
+      else {
+        var n = I.normHex(this.value);
+        if (!n) return;
+        vC3 = n;
+      }
+      renderVehicleColors("hex3");
+    });
+    $("#vNoColor3").addEventListener("click", function () {
+      vC3 = "";
+      renderVehicleColors();
+    });
     $("#vNoColor2").addEventListener("click", function () {
       vC2 = "";
       renderVehicleColors();
@@ -2136,6 +2175,7 @@
       if (!b) return;
       vC1 = b.dataset.c1;
       vC2 = b.dataset.c2 || "";
+      vC3 = b.dataset.c3 || "";
       renderVehicleColors();
     });
     $("#vSavePalette").addEventListener("click", function () {
@@ -2144,7 +2184,7 @@
         vC2 ? "Mix personale" : "Colore personale",
       );
       if (name == null) return;
-      var p = S.addPalette(name.trim() || "Colore personale", vC1, vC2);
+      var p = S.addPalette(name.trim() || "Colore personale", vC1, vC2, vC3);
       if (!p) return toast("Colore non valido", "error");
       renderVehicleColors();
       renderSettings();
@@ -2171,7 +2211,7 @@
           toast("Colore non valido", "error");
           return renderSettings();
         }
-        patch.color2 = n;
+        patch[k === "3" ? "color3" : "color2"] = n;
       }
       S.updateVehicle(id, patch);
       renderAll();
@@ -2181,7 +2221,7 @@
     $("#sVehicles").addEventListener("click", function (e) {
       var b = e.target.closest("[data-vclear]");
       if (b) {
-        S.updateVehicle(b.dataset.vclear, { color2: "" });
+        S.updateVehicle(b.dataset.vclear, { color2: "", color3: "" });
         renderAll();
         applyChrome(false);
         toast("Colore secondario rimosso");
@@ -2192,6 +2232,7 @@
         S.updateVehicle(sw.closest("[data-id]").dataset.id, {
           color: sw.dataset.c1,
           color2: sw.dataset.c2 || "",
+          color3: sw.dataset.c3 || "",
         });
         renderAll();
         applyChrome(false);
@@ -2211,24 +2252,28 @@
     }
     sync("pColor1", "pHex1");
     sync("pColor2", "pHex2");
+    sync("pColor3", "pHex3");
     $("#pAdd").addEventListener("click", function () {
       var err = $("#pError");
       err.hidden = true;
       var h1 = $("#pHex1").value.trim(),
-        h2 = $("#pHex2").value.trim();
+        h2 = $("#pHex2").value.trim(),
+        h3 = $("#pHex3").value.trim();
       var c1 = I.normHex(h1 || $("#pColor1").value);
       var c2 = h2 ? I.normHex(h2) : "";
-      if (!c1 || (h2 && !c2)) {
+      var c3 = h3 ? I.normHex(h3) : "";
+      if (!c1 || (h2 && !c2) || (h3 && !c3)) {
         err.textContent =
           "Colore non valido: usa un codice come #2563eb oppure un nome come red, teal, gold.";
         err.hidden = false;
         return;
       }
       var name = $("#pName").value.trim() || (c2 ? c1 + " + " + c2 : c1);
-      S.addPalette(name, c1, c2);
+      S.addPalette(name, c1, c2, c3);
       $("#pName").value = "";
       $("#pHex1").value = "";
       $("#pHex2").value = "";
+      $("#pHex3").value = "";
       renderSettings();
       toast("Combinazione aggiunta");
     });
@@ -2257,6 +2302,7 @@
     vIcon = v ? v.icon || I.typeIcon[v.type] || "auto" : "auto";
     vC1 = v ? v.color : pickColor();
     vC2 = v ? v.color2 || "" : "";
+    vC3 = v ? v.color3 || "" : "";
     renderVehicleColors();
     $("#vError").hidden = true;
     if (typeof dlg.showModal === "function") dlg.showModal();
@@ -2297,6 +2343,7 @@
       icon: vIcon,
       color: vC1,
       color2: vC2,
+      color3: vC3,
     };
     if (vEditId) {
       var cur = S.get().vehicles.filter((x) => x.id === vEditId)[0];

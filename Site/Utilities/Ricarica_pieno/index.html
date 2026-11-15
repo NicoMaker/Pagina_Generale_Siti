@@ -269,8 +269,8 @@
           <div class="card" style="margin-top: 16px">
             <h2>Colori dei veicoli</h2>
             <p class="hint">
-              Cambia il colore principale e quello secondario (mix) di ogni
-              veicolo: l'icona si colora in automatico. I tuoi dati non
+              Cambia colore principale, secondario e terzo (mix) di ogni
+              veicolo: cambia solo l'icona, non il resto dell'app. I tuoi dati non
               vengono toccati.
             </p>
             <div id="sVehicles" class="vcolors"></div>
@@ -303,6 +303,13 @@
                 </div></label
               >
             </div>
+            <label class="field"
+              ><span>Terzo colore (facoltativo)</span>
+              <div class="colorpick">
+                <input type="color" id="pColor3" value="#facc15" aria-label="Terzo colore" />
+                <input type="text" id="pHex3" maxlength="20" placeholder="nessuno" />
+              </div></label
+            >
             <div id="pError" class="form-error" role="alert" hidden></div>
             <button type="button" class="btn primary" id="pAdd">＋ Aggiungi combinazione</button>
             <div id="pList" class="swatches own"></div>
@@ -482,8 +489,16 @@
               </div></label
             >
           </div>
+          <label class="field"
+            ><span>Terzo colore (facoltativo)</span>
+            <div class="colorpick">
+              <input type="color" id="vColor3" aria-label="Terzo colore" />
+              <input type="text" id="vHex3" maxlength="20" placeholder="nessuno" />
+            </div></label
+          >
           <div class="btn-row">
             <button type="button" class="btn small" id="vNoColor2">Nessun secondario</button>
+            <button type="button" class="btn small" id="vNoColor3">Nessun terzo</button>
             <button type="button" class="btn small" id="vSavePalette">＋ Salva combinazione</button>
           </div>
         </div>

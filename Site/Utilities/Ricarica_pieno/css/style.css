@@ -3902,3 +3902,12 @@ body[data-screen="app"] .bulkbar {
   display: block;
   margin: 14px 0 0;
 }
+/* ============ Terzo colore veicolo (solo scheda/icona) ============ */
+.gc-top {
+  background: linear-gradient(
+    135deg,
+    var(--c),
+    var(--cb, color-mix(in srgb, var(--c) 52%, #000)),
+    var(--cc, var(--cb, color-mix(in srgb, var(--c) 52%, #000)))
+  );
+}
