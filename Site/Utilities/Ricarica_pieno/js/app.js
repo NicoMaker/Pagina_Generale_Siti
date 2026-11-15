@@ -367,7 +367,7 @@
   const segsOf = (rs) => rs.filter((r) => r.kmPerL);
   const chartCard = (title, body, cls) => '<div class="card chart-card ' + (cls || "") + '"><h3>' + title + "</h3>" + body + "</div>";
   const fewer = (msg) => '<p class="muted small">' + msg + "</p>";
-  
+
   function topKmlCard(rs) {
     var top = segsOf(rs).slice().sort((a, b) => b.kmPerL - a.kmPerL).slice(0, 5).map((r) => ({
       label: fmtDate(r.date), value: r.kmPerL, text: fmt2(r.kmPerL) + " km/L",
@@ -379,7 +379,6 @@
         : fewer("Serve almeno un pieno completato."));
   }
 
-  // NUOVA FUNZIONE: card "I 5 pieni più cari" con bottone
   function topCariCard(rs) {
     var top = rs.slice().sort((a, b) => b.total - a.total).slice(0, 5).map((r) => ({
       label: fmtDate(r.date), value: r.total, text: eur(r.total, 2),
@@ -479,10 +478,12 @@
     var mk = S.todayISO().slice(0, 7);
     var mon = C.monthly(rs).filter((m) => m.key === mk)[0];
     var range = v.tank && st.avgKmL ? v.tank * st.avgKmL : st.avgKmL ? st.avgLitersPerRefuel * st.avgKmL : null;
+    var litersSub = fmt2(st.liters) + " L totali";
+    if (st.partialLiters > 0) litersSub += " (di cui " + fmt2(st.partialLiters) + " L in parziali)";
     var tiles = [
       ["Costo al km", st.costPerKm != null ? fmt2(st.costPerKm) + " €" : "–", st.costPerKm != null ? fmt2(st.costPerKm * 100) + " € / 100 km" : ""],
       ["Spesa questo mese", eur(mon ? mon.spent : 0, 2), pl(mon ? mon.count : 0, "rifornimento", "rifornimenti")],
-      ["Spesa totale", eur(st.spent, 2), fmt2(st.liters) + " L totali"],
+      ["Spesa totale", eur(st.spent, 2), litersSub],
       ["Risparmio FVG", eur2(st.saved), st.fvgCount + " con sconto"],
       ["Km percorsi", fmt0(st.totalKm), "dai " + fmt0(v.initialKm) + " iniziali"],
       ["Autonomia stimata", range ? fmt0(range) + " km" : "–", v.tank ? "a serbatoio pieno" : "dalla media dei pieni"],
@@ -648,6 +649,7 @@
     var wasEdit = !!editingId;
     var msg = wasEdit ? "Modifiche salvate" : "Rifornimento salvato";
     if (row && row.kmPerL) msg += " · " + fmt2(row.kmPerL) + " km/L";
+    else if (row && !row.full) msg += " · parziale";
     resetForm(); closeRefuel(); renderAll(); applyChrome(false); toast(msg);
   }
 
@@ -663,7 +665,7 @@
     var hero = row.kmPerL ? fmt2(row.kmPerL) : "–";
     var sub;
     if (row.km <= 0) sub = "Km finali non validi";
-    else if (!c.full) sub = "Pieno parziale: il consumo si calcola al prossimo pieno";
+    else if (!c.full) sub = "Pieno parziale: i litri vengono contati nelle statistiche, il consumo si calcolerà al prossimo pieno completo";
     else if (!(c.liters > 0)) sub = "Inserisci i litri per calcolare il consumo";
     else sub = "Percorsi " + kmFmt(row.km) + " km dal rifornimento precedente";
     var hasCost = c.liters > 0 && c.price > 0;
@@ -827,6 +829,15 @@
     cards += statCard("Spesa mensile stimata", st.spentPerMonth != null ? eur(st.spentPerMonth, 2) : "–",
       st.kmPerDay != null ? fmt(st.kmPerDay, 1) + " km al giorno" : "servono 2+ rifornimenti");
     cards += statCard("Frequenza", st.avgDaysBetween != null ? fmt(st.avgDaysBetween, 1) + " gg" : "–", "tra un rifornimento e l'altro");
+
+    if (st.partialCount > 0) {
+      cards += statCard(
+        "Pieni e parziali",
+        st.fullCount + " pieni · " + st.partialCount + (st.partialCount === 1 ? " parziale" : " parziali"),
+        "Parziali: " + fmt2(st.partialLiters) + " L · " + eur(st.partialSpent, 2) + " · " + fmt0(st.partialKm) + " km",
+      );
+    }
+
     var kmlPts = kmlPoints(rs), mon = C.monthly(rs).slice(-12);
     var l100Pts = rs.filter((r) => r.l100).map((r) => ({ label: fmtDate(r.date), short: fmtDate(r.date).slice(0, 5), value: r.l100 }));
     var cpkPts = rs.filter((r) => r.costPerKm != null).map((r) => ({ label: fmtDate(r.date), short: fmtDate(r.date).slice(0, 5), value: r.costPerKm }));
@@ -836,10 +847,8 @@
     rs.forEach((r) => { var y = r.date.slice(0, 4); years[y] = (years[y] || 0) + r.total; });
     var yearItems = Object.keys(years).sort().reverse().map((y) => ({ label: y, value: years[y], text: eur(years[y], 2) }));
     var fvgItems = [{ label: "Con sconto FVG", value: st.fvgCount }, { label: "Senza sconto", value: st.n - st.fvgCount }];
-    var fullN = rs.filter((r) => r.full).length;
-    var typeItems = [{ label: "Pieni", value: fullN }, { label: "Parziali", value: st.n - fullN }];
-    
-    // QUI: usiamo topCariCard(rs) invece del vecchio chartCard
+    var typeItems = [{ label: "Pieni", value: st.fullCount }, { label: "Parziali", value: st.partialCount }];
+
     var charts = '<div class="charts">' +
       chartCard("Consumo (km/L) per rifornimento", kmlPts.length > 1 ? CH.line(kmlPts, { decimals: 2, unit: "km/L", avg: st.avgKmL, label: "Consumo km/L" }) : fewer("Servono almeno due pieni per il grafico."), "wide") +
       lastVsRecordPanel(st) +
@@ -1019,6 +1028,7 @@
     var odo = rs.length ? rs[rs.length - 1].odometer : v.initialKm;
     var L = ["⛽ Ricarica Pieno – " + v.name + (v.plate ? " (" + v.plate + ")" : ""),
       "Km: " + fmt0(odo), "Rifornimenti: " + fmt0(st.n || 0)];
+    if (st.partialCount > 0) L.push("Pieni: " + fmt0(st.fullCount) + " · Parziali: " + fmt0(st.partialCount));
     if (st.avgKmL) L.push("Consumo medio: " + fmt2(st.avgKmL) + " km/L (" + fmt2(st.l100) + " L/100 km)");
     if (st.perf && st.perf.count) L.push("Record: " + fmt2(st.perf.max) + " km/L (" + fmtDate(st.perf.maxRow.date) + ")");
     if (st.n) {
@@ -1060,10 +1070,6 @@
     reader.onerror = function () { toast("Impossibile leggere il file", "error"); e.target.value = ""; };
     reader.readAsText(f);
   }
-
-  // ============================================================
-  // FIX: listener robusti (sia diretti che delegati)
-  // ============================================================
 
   function bindSelButtons() {
     var g = document.getElementById("gSelect");
@@ -1117,10 +1123,6 @@
     bindSelButtons();
     bindGlobalDelegate();
   }
-
-  // ============================================================
-  // bind() principale
-  // ============================================================
 
   function bind() {
     $("#tabs").addEventListener("click", (e) => {
