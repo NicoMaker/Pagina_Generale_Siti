@@ -3551,3 +3551,146 @@ dialog::backdrop {
   fill: var(--muted);
   font: 700 9px var(--font);
 }
+
+
+/* ============ Revisione: barra sopra neutra, selezione, elimina ============ */
+body {
+  background: var(--bg);
+}
+.topbar {
+  background: var(--bg);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  border-bottom: 1px solid var(--border);
+}
+.icon-grid {
+  grid-template-columns: repeat(5, 1fr);
+}
+.toolrow {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+.toolrow .searchbar {
+  flex: 1;
+  min-width: 0;
+}
+.toolrow .btn {
+  min-height: 52px;
+  white-space: nowrap;
+}
+.sortfield {
+  margin-bottom: 10px;
+}
+.gc-top {
+  padding-right: 104px;
+}
+.gc-del {
+  position: absolute;
+  top: 12px;
+  right: 56px;
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  border: 0;
+  background: rgba(255, 255, 255, 0.22);
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+}
+.gc-del:hover {
+  background: rgba(220, 38, 38, 0.7);
+}
+.gcard.selmode .gc-edit,
+.gcard.selmode .gc-del {
+  display: none;
+}
+.gcard.selmode .gc-top {
+  padding-right: 20px;
+}
+.gc-check {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  z-index: 2;
+  font-size: 1.7rem;
+  line-height: 1;
+  color: #fff;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+}
+.gcard.sel {
+  outline: 3px solid var(--accent);
+  outline-offset: -3px;
+}
+.mini-act {
+  grid-column: 1 / -1;
+  grid-row: 3;
+  display: flex;
+  gap: 8px;
+  margin-top: 6px;
+}
+.mini-act .btn {
+  flex: 1;
+  min-height: 36px;
+}
+.rf-actions .btn.danger {
+  flex: 1;
+}
+details.rf summary {
+  position: relative;
+}
+.selmode details.rf summary {
+  padding-left: 48px;
+}
+.selmode details.rf .ck {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.4rem;
+  line-height: 1;
+  color: var(--muted);
+}
+.selmode details.rf.selected {
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+}
+.selmode details.rf.selected .ck {
+  color: var(--accent);
+}
+.bulkbar {
+  position: fixed;
+  left: 12px;
+  right: 12px;
+  bottom: calc(16px + env(safe-area-inset-bottom));
+  z-index: 45;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.3);
+}
+.bulkbar span {
+  flex: 1;
+  text-align: center;
+  font-weight: 700;
+  font-size: 0.88rem;
+}
+.bulkbar .btn:disabled {
+  opacity: 0.45;
+}
+body[data-screen="app"] .bulkbar {
+  bottom: calc(92px + env(safe-area-inset-bottom));
+}
+@media (min-width: 860px) {
+  body[data-screen="app"] .bulkbar {
+    bottom: 20px;
+    max-width: 520px;
+    left: 50%;
+    right: auto;
+    width: calc(100% - 40px);
+    transform: translateX(-50%);
+  }
+}

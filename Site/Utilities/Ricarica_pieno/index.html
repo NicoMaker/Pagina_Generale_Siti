@@ -6,7 +6,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1, viewport-fit=cover"
     />
-    <meta name="theme-color" content="#0f766e" />
+    <meta name="theme-color" content="#f2f4f8" />
     <meta name="color-scheme" content="light dark" />
     <title>Ricarica Pieno – Diario rifornimenti</title>
     <link
@@ -100,15 +100,20 @@
               aggiungine uno nuovo.
             </p>
           </div>
-          <label class="searchbar" id="gSearchWrap"
-            ><span aria-hidden="true">🔍</span>
-            <input
-              type="search"
-              id="gSearch"
-              placeholder="Cerca veicolo, targa o rifornimento…"
-              autocomplete="off"
-              aria-label="Cerca"
-          /></label>
+          <div class="toolrow" id="gTools">
+            <label class="searchbar" id="gSearchWrap"
+              ><span aria-hidden="true">🔍</span>
+              <input
+                type="search"
+                id="gSearch"
+                placeholder="Cerca veicolo, targa o rifornimento…"
+                autocomplete="off"
+                aria-label="Cerca"
+            /></label>
+            <button type="button" class="btn small" id="gSelect">
+              ☑ Seleziona
+            </button>
+          </div>
           <div id="garageGrid" class="garage-grid"></div>
         </section>
 
@@ -123,15 +128,29 @@
             <h2>Storico rifornimenti</h2>
             <span class="muted small" id="historyCount"></span>
           </div>
-          <label class="searchbar"
-            ><span aria-hidden="true">🔍</span>
-            <input
-              type="search"
-              id="hSearch"
-              placeholder="Cerca per data, km, litri, prezzo, note…"
-              autocomplete="off"
-              aria-label="Cerca nello storico"
-          /></label>
+          <div class="toolrow">
+            <label class="searchbar"
+              ><span aria-hidden="true">🔍</span>
+              <input
+                type="search"
+                id="hSearch"
+                placeholder="Cerca per data, km, litri, prezzo, note…"
+                autocomplete="off"
+                aria-label="Cerca nello storico"
+            /></label>
+            <button type="button" class="btn small" id="hSelect">
+              ☑ Seleziona
+            </button>
+          </div>
+          <label class="field sortfield"
+            ><span>Ordina per</span>
+            <select id="hSort">
+              <option value="date">Data (più recenti)</option>
+              <option value="best">Migliori km/L (dal più alto)</option>
+              <option value="worst">Peggiori km/L (dal più basso)</option>
+              <option value="cost">Più cari (totale)</option>
+            </select></label
+          >
           <div class="chips" id="hFilters">
             <button type="button" data-f="all" class="chip active">
               Tutti
@@ -196,6 +215,23 @@
                 </button>
                 <button type="button" class="btn" id="btnExportCsv">
                   ⬇ Veicolo attivo in CSV (Excel)
+                </button>
+              </div>
+              <hr />
+              <h2>Condividi</h2>
+              <p class="hint">
+                Invia il backup via WhatsApp, e-mail, AirDrop… oppure condividi
+                un riepilogo testuale del veicolo.
+              </p>
+              <div class="btn-col">
+                <button type="button" class="btn" id="btnShareAll">
+                  📤 Condividi backup (tutti i veicoli)
+                </button>
+                <button type="button" class="btn" id="btnShareOne">
+                  📤 Condividi veicolo attivo
+                </button>
+                <button type="button" class="btn" id="btnShareText">
+                  💬 Condividi riepilogo (testo)
                 </button>
               </div>
             </div>
@@ -370,10 +406,18 @@
           Inserisci i km attuali del contachilometri: servono per calcolare i km
           del primo rifornimento.
         </p>
-        <label class="field"
-          ><span>Tipo di veicolo</span>
-          <select id="vType"></select
-        ></label>
+        <div class="field">
+          <span>Icona (determina il tipo di veicolo)</span>
+          <div
+            class="icon-grid"
+            id="vIcons"
+            role="radiogroup"
+            aria-label="Icona del veicolo"
+          ></div>
+          <p class="hint" style="margin: 8px 0 0">
+            Tipo: <b id="vTypeLabel">Auto</b>
+          </p>
+        </div>
         <label class="field"
           ><span>Nome *</span>
           <input
@@ -414,23 +458,18 @@
               placeholder="es. 45.000"
           /></label>
           <label class="field"
-            ><span>Serbatoio (L)</span>
+            ><span>Serbatoio (L) *</span>
             <input
               type="text"
               id="vTank"
               inputmode="decimal"
-              placeholder="facoltativo"
+              placeholder="es. 38"
           /></label>
         </div>
-        <div class="field">
-          <span>Icona</span>
-          <div
-            class="icon-grid"
-            id="vIcons"
-            role="radiogroup"
-            aria-label="Icona del veicolo"
-          ></div>
-        </div>
+        <p class="hint">
+          La capacità del serbatoio è il limite massimo di litri per ogni
+          rifornimento.
+        </p>
         <div id="vError" class="form-error" role="alert" hidden></div>
         <div class="actions">
           <button type="submit" class="btn primary" id="vSave">Salva</button>
@@ -441,6 +480,17 @@
         </div>
       </form>
     </dialog>
+
+    <div id="bulkBar" class="bulkbar" hidden>
+      <button type="button" class="btn small" id="bulkAll">Tutti</button>
+      <span id="bulkCount">0 selezionati</span>
+      <button type="button" class="btn small danger" id="bulkDel">
+        🗑 Elimina
+      </button>
+      <button type="button" class="btn small ghost" id="bulkCancel">
+        Annulla
+      </button>
+    </div>
 
     <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
 

@@ -154,7 +154,86 @@
 
   var gQuery = "",
     hQuery = "",
-    hFilter = "all";
+    hFilter = "all",
+    hSort = "date";
+  var sel = { mode: null, ids: {} };
+  var gVisible = [],
+    hVisible = [];
+  const selIds = () => Object.keys(sel.ids).filter((k) => sel.ids[k]);
+  function syncSel() {
+    var n = selIds().length;
+    $("#bulkBar").hidden = !sel.mode;
+    $("#bulkCount").textContent =
+      n === 1 ? "1 selezionato" : n + " selezionati";
+    $("#bulkDel").disabled = !n;
+    $("#gSelect").textContent =
+      sel.mode === "garage" ? "✕ Fine" : "☑ Seleziona";
+    $("#hSelect").textContent =
+      sel.mode === "history" ? "✕ Fine" : "☑ Seleziona";
+    document.body.classList.toggle("selecting", !!sel.mode);
+  }
+  function rerenderSel() {
+    renderGarage();
+    renderHistory();
+  }
+  function clearSel() {
+    if (!sel.mode && !selIds().length) return;
+    sel.mode = null;
+    sel.ids = {};
+    syncSel();
+    rerenderSel();
+  }
+  function startSel(mode) {
+    if (sel.mode === mode) return clearSel();
+    sel.mode = mode;
+    sel.ids = {};
+    syncSel();
+    rerenderSel();
+  }
+  function toggleSel(id) {
+    sel.ids[id] = !sel.ids[id];
+    syncSel();
+    rerenderSel();
+  }
+  function delRefuel(id) {
+    var v = vehicle();
+    if (!v) return;
+    if (
+      !window.confirm(
+        "Eliminare questo rifornimento? I km/L verranno ricalcolati.",
+      )
+    )
+      return;
+    S.deleteRefuel(v.id, id);
+    if (editingId === id) resetForm();
+    renderAll();
+    toast("Rifornimento eliminato");
+  }
+  function delVehicle(id) {
+    var v = S.get().vehicles.filter((x) => x.id === id)[0];
+    if (!v) return;
+    var n = v.refuels.length;
+    if (
+      !window.confirm(
+        'Eliminare "' +
+          v.name +
+          '" e ' +
+          (n === 1 ? "il suo rifornimento" : "i suoi " + n + " rifornimenti") +
+          "? Operazione non annullabile.",
+      )
+    )
+      return;
+    S.deleteVehicle(id);
+    renderAll();
+    applyChrome(false);
+    toast("Veicolo eliminato");
+  }
+  function goRank() {
+    hSort = "best";
+    $("#hSort").value = "best";
+    renderHistory();
+    setTab("history");
+  }
   var MONTHS_FULL = [
     "gennaio",
     "febbraio",
@@ -248,11 +327,20 @@
 
   const vehicle = () => S.activeVehicle();
 
+  function themeColor() {
+    var meta = $('meta[name="theme-color"]');
+    if (!meta) return;
+    var bg = getComputedStyle(document.documentElement)
+      .getPropertyValue("--bg")
+      .trim();
+    if (bg) meta.setAttribute("content", bg);
+  }
   function applyTheme() {
     var t = S.get().settings.theme;
     if (t && t !== "auto")
       document.documentElement.setAttribute("data-theme", t);
     else document.documentElement.removeAttribute("data-theme");
+    themeColor();
   }
 
   function applyChrome(scrollTop) {
@@ -261,8 +349,7 @@
     var root = document.documentElement.style;
     root.setProperty("--accent", color);
     root.setProperty("--accent-contrast", contrast(color));
-    var meta = $('meta[name="theme-color"]');
-    if (meta) meta.setAttribute("content", color);
+    themeColor();
 
     var show =
       screen === "garage" ? "garage" : screen === "settings" ? "settings" : tab;
@@ -292,11 +379,13 @@
   }
 
   function setTab(t) {
+    if (sel.mode) clearSel();
     tab = t;
     screen = "app";
     applyChrome(true);
   }
   function showGarage() {
+    clearSel();
     screen = "garage";
     resetForm();
     renderAll();
@@ -306,6 +395,9 @@
     S.setActive(id);
     hQuery = "";
     hFilter = "all";
+    hSort = "date";
+    $("#hSort").value = "date";
+    clearSel();
     $("#hSearch").value = "";
     resetForm();
     screen = "app";
@@ -318,7 +410,7 @@
     var st = S.get(),
       box = $("#garageGrid"),
       q = gQuery.trim();
-    $("#gSearchWrap").hidden = !st.vehicles.length;
+    $("#gTools").hidden = !st.vehicles.length;
     if (!st.vehicles.length) {
       box.innerHTML =
         '<div class="card garage-empty" style="grid-column:1/-1">' +
@@ -329,15 +421,25 @@
       return;
     }
     var list = st.vehicles.filter((v) => !q || matches(vText(v), q));
+    gVisible = list.map((v) => v.id);
+    var gsel = sel.mode === "garage";
     var html = list
       .map((v) => {
         var rs = C.rows(v),
           s = C.stats(v, rs);
         var odo = rs.length ? rs[rs.length - 1].odometer : v.initialKm;
         return (
-          '<article class="gcard" style="--c:' +
+          '<article class="gcard' +
+          (gsel ? " selmode" : "") +
+          (gsel && sel.ids[v.id] ? " sel" : "") +
+          '" style="--c:' +
           esc(v.color) +
           '">' +
+          (gsel
+            ? '<span class="gc-check" aria-hidden="true">' +
+              (sel.ids[v.id] ? "☑" : "☐") +
+              "</span>"
+            : "") +
           '<button type="button" class="gc-main" data-gact="open" data-id="' +
           esc(v.id) +
           '" aria-label="Apri ' +
@@ -373,11 +475,18 @@
           esc(v.name) +
           '" aria-label="Modifica ' +
           esc(v.name) +
-          '">✎</button></article>'
+          '">✎</button>' +
+          '<button type="button" class="gc-del" data-gact="del" data-id="' +
+          esc(v.id) +
+          '" title="Elimina ' +
+          esc(v.name) +
+          '" aria-label="Elimina ' +
+          esc(v.name) +
+          '">🗑</button></article>'
         );
       })
       .join("");
-    if (!q)
+    if (!q && !gsel)
       html +=
         '<div class="gcard add"><button type="button" data-gact="new"><span class="plus">＋</span>Aggiungi veicolo</button></div>';
     else {
@@ -461,6 +570,25 @@
     body +
     "</div>";
   const fewer = (msg) => '<p class="muted small">' + msg + "</p>";
+  function topKmlCard(rs) {
+    var top = segsOf(rs)
+      .slice()
+      .sort((a, b) => b.kmPerL - a.kmPerL)
+      .slice(0, 5)
+      .map((r) => ({
+        label: fmtDate(r.date),
+        value: r.kmPerL,
+        text: fmt2(r.kmPerL) + " km/L",
+        sub: fmt0(r.odometer) + " km · " + fmt2(r.liters) + " L",
+      }));
+    return chartCard(
+      "I 5 pieni con più km/L",
+      top.length
+        ? CH.hbars(top) +
+            '<button type="button" class="btn small" style="margin-top:14px" data-go="rank">Vedi classifica completa</button>'
+        : fewer("Serve almeno un pieno completato."),
+    );
+  }
 
   function dashDonut(st) {
     if (!(st.spent > 0)) return "";
@@ -794,7 +922,14 @@
           " km</small>" +
           '<div class="kml">' +
           (r.kmPerL ? fmt2(r.kmPerL) : "–") +
-          "<small>km/L</small></div></div>",
+          "<small>km/L</small></div>" +
+          '<div class="mini-act">' +
+          '<button type="button" class="btn small" data-act="edit" data-id="' +
+          esc(r.id) +
+          '">✎ Modifica</button>' +
+          '<button type="button" class="btn small danger" data-act="del" data-id="' +
+          esc(r.id) +
+          '">🗑 Elimina</button></div></div>',
       )
       .join("");
 
@@ -848,6 +983,7 @@
         ),
       ) +
       dashDonut(st) +
+      topKmlCard(rs) +
       "</div>";
 
     box.innerHTML = h;
@@ -992,7 +1128,19 @@
     }
     if (!isFinite(c.liters) || c.liters <= 0)
       return ["Scrivi i litri riforniti oppure il totale pagato.", "fTotal"];
-    if (c.liters > 150 || (v.tank && c.liters > v.tank * 1.1)) {
+    if (v.tank && c.liters > v.tank + 0.001) {
+      return [
+        "Il serbatoio di " +
+          v.name +
+          " contiene al massimo " +
+          fmt2(v.tank) +
+          " L: non puoi inserirne " +
+          fmt2(c.liters) +
+          ".",
+        "fLiters",
+      ];
+    }
+    if (c.liters > 150) {
       return [
         "Litri insolitamente alti (" +
           fmt2(c.liters) +
@@ -1191,26 +1339,46 @@
         " km</b> (primo rifornimento)";
     $("#fOdo").placeholder = "> " + fmt0(prevKm);
     $("#fPrice").placeholder = last ? fmt(last.price, 3) : "es. 1,859";
+    $("#fLiters").placeholder = v.tank
+      ? "max " + fmt(v.tank, v.tank % 1 ? 1 : 0)
+      : "es. 38,5";
   }
 
-  function histRow(r, avg) {
+  function histRow(r, avg, o) {
+    o = o || {};
     var d = r.date.split("-");
     var cls = r.kmPerL && avg ? (r.kmPerL >= avg ? "good" : "warn") : "";
     var tags =
       (r.fvg ? ' <span class="tag">FVG</span>' : "") +
       (!r.full ? ' <span class="tag warn">Parziale</span>' : "");
+    var isSel = !!sel.ids[r.id];
+    var inSel = sel.mode === "history";
+    var dayBox = o.rank
+      ? '<span class="rf-day"><b>' + o.rank + "</b><small>pos.</small></span>"
+      : '<span class="rf-day"><b>' +
+        d[2] +
+        "</b><small>" +
+        MONTHS[+d[1] - 1] +
+        "</small></span>";
+    var datePre = o.rank ? fmtDate(r.date) + " · " : "";
     return (
-      '<details class="rf"><summary>' +
-      '<span class="rf-day"><b>' +
-      d[2] +
-      "</b><small>" +
-      MONTHS[+d[1] - 1] +
-      "</small></span>" +
+      '<details class="rf' +
+      (inSel && isSel ? " selected" : "") +
+      '" data-id="' +
+      esc(r.id) +
+      '"><summary>' +
+      (inSel
+        ? '<span class="ck" aria-hidden="true">' +
+          (isSel ? "☑" : "☐") +
+          "</span>"
+        : "") +
+      dayBox +
       '<span class="rf-main"><b>' +
       fmt2(r.liters) +
       " L · " +
       fmt(r.paid, 3) +
       " €/L</b><small>" +
+      datePre +
       kmFmt(r.km) +
       " km · " +
       eur(r.total, 2) +
@@ -1255,10 +1423,10 @@
       '<div class="rf-actions">' +
       '<button type="button" class="btn small" data-act="edit" data-id="' +
       esc(r.id) +
-      '">Modifica</button>' +
+      '">✎ Modifica</button>' +
       '<button type="button" class="btn small danger" data-act="del" data-id="' +
       esc(r.id) +
-      '">Elimina</button>' +
+      '">🗑 Elimina</button>' +
       "</div></div></details>"
     );
   }
@@ -1269,8 +1437,10 @@
     $$("#hFilters .chip").forEach((b) => {
       b.classList.toggle("active", b.dataset.f === hFilter);
     });
+    box.classList.toggle("selmode", sel.mode === "history");
     if (!v) {
       box.innerHTML = "";
+      hVisible = [];
       $("#historyCount").textContent = "";
       return;
     }
@@ -1285,6 +1455,17 @@
         (hFilter === "full" && r.full);
       return okF && (!hq || matches(rowText(r), hq));
     });
+    var ranked = hSort !== "date";
+    if (ranked) {
+      if (hSort === "best" || hSort === "worst")
+        rs = rs.filter((r) => r.kmPerL);
+      rs = rs.slice().sort((a, b) => {
+        if (hSort === "best") return b.kmPerL - a.kmPerL;
+        if (hSort === "worst") return a.kmPerL - b.kmPerL;
+        return b.total - a.total;
+      });
+    }
+    hVisible = rs.map((r) => r.id);
     var filtered = rs.length !== all.length;
     $("#historyCount").textContent =
       v.name +
@@ -1303,6 +1484,26 @@
         '<div class="empty-state"><h3>Nessun risultato</h3><p>Nessun rifornimento' +
         (hq ? " per «" + esc(hq) + "»" : " con questo filtro") +
         ".</p></div>";
+      return;
+    }
+    if (ranked) {
+      var title =
+        hSort === "best"
+          ? "Migliori km/L"
+          : hSort === "worst"
+            ? "Peggiori km/L"
+            : "Più cari";
+      box.innerHTML =
+        '<section class="mgroup"><h3 class="mh"><span>' +
+        title +
+        "</span><small>" +
+        pl(rs.length, "rifornimento", "rifornimenti") +
+        '</small></h3><div class="mlist">' +
+        rs.map((r, i) => histRow(r, avg, { rank: i + 1 })).join("") +
+        "</div></section>" +
+        (hSort !== "cost"
+          ? '<p class="start-km">Sono inclusi solo i pieni completati con km/L calcolato.</p>'
+          : "");
       return;
     }
     var groups = [],
@@ -1641,6 +1842,7 @@
           label: "Rifornimenti per giorno",
         }),
       ) +
+      topKmlCard(rs) +
       chartCard("I 5 pieni più cari", CH.hbars(top5)) +
       chartCard("Spesa per anno", CH.hbars(yearItems)) +
       "</div>";
@@ -1769,36 +1971,41 @@
   }
 
   var ICONS = [
-    "🚗",
-    "🚙",
-    "🚕",
-    "🏎️",
-    "🚓",
-    "🚐",
-    "🛻",
-    "🚚",
-    "🚛",
-    "🏍️",
-    "🛵",
-    "🚜",
-    "⛵",
-    "🛥️",
-    "🚌",
-    "🚲",
+    ["🚗", "auto"],
+    ["🚙", "auto"],
+    ["🛻", "furgone"],
+    ["🚐", "furgone"],
+    ["🚚", "camion"],
+    ["🏍️", "moto"],
+    ["🛵", "scooter"],
+    ["🚜", "trattore"],
+    ["⛵", "barca"],
+    ["🛥️", "barca"],
   ];
+  var ICON_TYPE = {};
+  ICONS.forEach(function (i) {
+    ICON_TYPE[i[0]] = i[1];
+  });
+  var vOldType = "auto";
   var vIcon = "🚗";
+  const vehType = () => ICON_TYPE[vIcon] || vOldType || "altro";
 
   function renderIconPicker() {
     $("#vIcons").innerHTML = ICONS.map(
       (ic) =>
         '<button type="button" class="icon-opt" role="radio" data-icon="' +
-        ic +
+        ic[0] +
+        '" title="' +
+        TYPES[ic[1]][0] +
+        '" aria-label="' +
+        TYPES[ic[1]][0] +
         '" aria-checked="' +
-        (ic === vIcon) +
+        (ic[0] === vIcon) +
         '">' +
-        ic +
+        ic[0] +
         "</button>",
     ).join("");
+    $("#vTypeLabel").textContent = (TYPES[vehType()] || TYPES.altro)[0];
   }
 
   function openVehicleDialog(id) {
@@ -1808,13 +2015,13 @@
     $("#vTitle").textContent = v ? "Modifica veicolo" : "Nuovo veicolo";
     $("#vIntro").hidden = !!v;
     $("#vDelete").hidden = !v;
-    $("#vType").value = v ? v.type : "auto";
+    vOldType = v ? v.type : "auto";
     $("#vName").value = v ? v.name : "";
     $("#vPlate").value = v ? v.plate : "";
     $("#vFuel").value = v ? v.fuel : "Benzina";
     $("#vInitKm").value = v ? fmt0(v.initialKm) : "";
     $("#vTank").value = v && v.tank != null ? toField(v.tank) : "";
-    vIcon = v ? v.icon || TYPES[v.type][1] : "🚗";
+    vIcon = v ? v.icon || (TYPES[v.type] || TYPES.altro)[1] : "🚗";
     renderIconPicker();
     $("#vError").hidden = true;
     if (typeof dlg.showModal === "function") dlg.showModal();
@@ -1843,11 +2050,11 @@
     if (!name) return fail("Inserisci il nome del veicolo.");
     if (!isFinite(km) || km < 0)
       return fail("Inserisci i km attuali del contachilometri.");
-    if (tankStr && (!isFinite(tank) || tank <= 0))
-      return fail("Capacità serbatoio non valida.");
+    if (!tankStr || !isFinite(tank) || tank <= 0)
+      return fail("Inserisci la capacità del serbatoio in litri (es. 38).");
 
     var data = {
-      type: $("#vType").value,
+      type: vehType(),
       name: name,
       plate: $("#vPlate").value.trim().toUpperCase(),
       fuel: $("#vFuel").value,
@@ -1870,6 +2077,18 @@
           "I km iniziali devono essere inferiori al primo rifornimento (" +
             fmt0(minOdo) +
             " km).",
+        );
+      var maxL = cur.refuels.length
+        ? Math.max.apply(
+            null,
+            cur.refuels.map((r) => r.liters),
+          )
+        : 0;
+      if (tank < maxL)
+        return fail(
+          "Il serbatoio non può essere inferiore al rifornimento più grande già registrato (" +
+            fmt2(maxL) +
+            " L).",
         );
       S.updateVehicle(vEditId, data);
       closeVehicleDialog();
@@ -1954,6 +2173,70 @@
     );
   }
 
+  async function shareFile(name, text, mime, title) {
+    try {
+      var f = new File([text], name, { type: mime });
+      if (navigator.canShare && navigator.canShare({ files: [f] })) {
+        await navigator.share({ files: [f], title: title });
+        return;
+      }
+    } catch (err) {
+      if (err && err.name === "AbortError") return;
+    }
+    download(name, text, mime);
+    toast("Condivisione non disponibile: file scaricato", "error");
+  }
+
+  function vehicleSummary(v) {
+    var rs = C.rows(v),
+      st = C.stats(v, rs);
+    var odo = rs.length ? rs[rs.length - 1].odometer : v.initialKm;
+    var L = [
+      "⛽ Ricarica Pieno – " + v.name + (v.plate ? " (" + v.plate + ")" : ""),
+      "Km: " + fmt0(odo),
+      "Rifornimenti: " + fmt0(st.n || 0),
+    ];
+    if (st.avgKmL)
+      L.push(
+        "Consumo medio: " +
+          fmt2(st.avgKmL) +
+          " km/L (" +
+          fmt2(st.l100) +
+          " L/100 km)",
+      );
+    if (st.perf && st.perf.count)
+      L.push(
+        "Record: " +
+          fmt2(st.perf.max) +
+          " km/L (" +
+          fmtDate(st.perf.maxRow.date) +
+          ")",
+      );
+    if (st.n) {
+      L.push("Spesa totale: " + eur(st.spent, 2));
+      if (st.costPerKm != null) L.push("Costo al km: " + eur(st.costPerKm, 2));
+      if (st.saved > 0) L.push("Risparmio FVG: " + eur(st.saved, 2));
+    }
+    return L.join("\n");
+  }
+
+  async function shareText() {
+    var v = vehicle();
+    if (!v) return toast("Apri prima un veicolo", "error");
+    var text = vehicleSummary(v);
+    try {
+      if (navigator.share) {
+        await navigator.share({ title: "Ricarica Pieno – " + v.name, text: text });
+        return;
+      }
+      await navigator.clipboard.writeText(text);
+      toast("Riepilogo copiato negli appunti");
+    } catch (err) {
+      if (err && err.name === "AbortError") return;
+      toast("Impossibile condividere", "error");
+    }
+  }
+
   function onImport(e) {
     var f = e.target.files[0];
     if (!f) return;
@@ -2001,6 +2284,7 @@
     $("#btnBack").addEventListener("click", showGarage);
     $("#vehiclePill").addEventListener("click", showGarage);
     $("#btnGear").addEventListener("click", () => {
+      clearSel();
       screen = "settings";
       applyChrome(true);
     });
@@ -2009,7 +2293,11 @@
       var b = e.target.closest("[data-gact]");
       if (!b) return;
       var a = b.dataset.gact;
-      if (a === "open") openVehicle(b.dataset.id);
+      if (a === "open") {
+        if (sel.mode === "garage") toggleSel(b.dataset.id);
+        else openVehicle(b.dataset.id);
+      }
+      if (a === "del") delVehicle(b.dataset.id);
       if (a === "edit") openVehicleDialog(b.dataset.id);
       if (a === "new") openVehicleDialog();
       if (a === "hit") {
@@ -2026,9 +2314,16 @@
     });
 
     $("#dashBody").addEventListener("click", (e) => {
+      var ab = e.target.closest("button[data-act]");
+      if (ab) {
+        if (ab.dataset.act === "edit") startEdit(ab.dataset.id);
+        if (ab.dataset.act === "del") delRefuel(ab.dataset.id);
+        return;
+      }
       var b = e.target.closest("[data-go]");
       if (!b) return;
       if (b.dataset.go === "add") openNewRefuel();
+      else if (b.dataset.go === "rank") goRank();
       else setTab(b.dataset.go);
     });
 
@@ -2055,6 +2350,12 @@
     });
 
     $("#historyList").addEventListener("click", (e) => {
+      var sm = e.target.closest("summary");
+      if (sel.mode === "history" && sm) {
+        e.preventDefault();
+        toggleSel(sm.parentNode.dataset.id);
+        return;
+      }
       var g = e.target.closest("[data-go]");
       if (g) {
         openNewRefuel();
@@ -2063,19 +2364,75 @@
       var b = e.target.closest("button[data-act]");
       if (!b) return;
       if (b.dataset.act === "edit") startEdit(b.dataset.id);
-      if (
-        b.dataset.act === "del" &&
-        window.confirm(
-          "Eliminare questo rifornimento? I km/L verranno ricalcolati.",
-        )
-      ) {
-        S.deleteRefuel(vehicle().id, b.dataset.id);
-        if (editingId === b.dataset.id) resetForm();
-        renderAll();
-        toast("Rifornimento eliminato");
-      }
+      if (b.dataset.act === "del") delRefuel(b.dataset.id);
     });
 
+    $("#statsBody").addEventListener("click", (e) => {
+      var b = e.target.closest("[data-go]");
+      if (b && b.dataset.go === "rank") goRank();
+    });
+    $("#hSort").addEventListener("change", function () {
+      hSort = this.value;
+      renderHistory();
+    });
+    $("#gSelect").addEventListener("click", () => startSel("garage"));
+    $("#hSelect").addEventListener("click", () => startSel("history"));
+    $("#bulkCancel").addEventListener("click", clearSel);
+    $("#bulkAll").addEventListener("click", () => {
+      var ids = sel.mode === "garage" ? gVisible : hVisible;
+      var allOn = ids.length && ids.every((id) => sel.ids[id]);
+      ids.forEach((id) => {
+        sel.ids[id] = !allOn;
+      });
+      syncSel();
+      rerenderSel();
+    });
+    $("#bulkDel").addEventListener("click", () => {
+      var ids = selIds(),
+        mode = sel.mode;
+      if (!ids.length) return;
+      var msg =
+        mode === "garage"
+          ? "Eliminare " +
+            pl(ids.length, "veicolo", "veicoli") +
+            " con tutti i rifornimenti? Operazione non annullabile."
+          : "Eliminare " +
+            pl(ids.length, "rifornimento", "rifornimenti") +
+            "? I km/L verranno ricalcolati.";
+      if (!window.confirm(msg)) return;
+      if (mode === "garage") ids.forEach((id) => S.deleteVehicle(id));
+      else {
+        var v = vehicle();
+        if (v) ids.forEach((id) => S.deleteRefuel(v.id, id));
+      }
+      sel.mode = null;
+      sel.ids = {};
+      syncSel();
+      renderAll();
+      applyChrome(false);
+      toast(pl(ids.length, "elemento eliminato", "elementi eliminati"));
+    });
+    $("#btnShareAll").addEventListener("click", () => {
+      if (!S.get().vehicles.length)
+        return toast("Nessun dato da condividere", "error");
+      shareFile(
+        "ricarica-pieno-backup-" + stamp() + ".json",
+        S.exportData(),
+        "application/json",
+        "Backup Ricarica Pieno",
+      );
+    });
+    $("#btnShareOne").addEventListener("click", () => {
+      var v = vehicle();
+      if (!v) return toast("Apri prima un veicolo", "error");
+      shareFile(
+        "ricarica-pieno-" + v.name.replace(/[^\w-]+/g, "_") + "-" + stamp() + ".json",
+        S.exportData(v.id),
+        "application/json",
+        "Ricarica Pieno – " + v.name,
+      );
+    });
+    $("#btnShareText").addEventListener("click", shareText);
     $("#vehicleForm").addEventListener("submit", onVehicleSubmit);
     $("#vCancel").addEventListener("click", closeVehicleDialog);
     $("#vDelete").addEventListener("click", onVehicleDelete);
@@ -2120,10 +2477,6 @@
         hFilter = b.dataset.f;
         renderHistory();
       }
-    });
-    $("#vType").addEventListener("change", function () {
-      vIcon = TYPES[this.value][1];
-      renderIconPicker();
     });
     ["fOdo", "vInitKm"].forEach((id) => {
       $("#" + id).addEventListener("input", function () {
@@ -2170,10 +2523,12 @@
   }
 
   function init() {
-    $("#vType").innerHTML = Object.keys(TYPES)
-      .map((k) => '<option value="' + k + '">' + TYPES[k][0] + "</option>")
-      .join("");
     bind();
+    try {
+      window
+        .matchMedia("(prefers-color-scheme: dark)")
+        .addEventListener("change", themeColor);
+    } catch (e) {}
     resetForm();
     screen = "garage";
     renderAll();
