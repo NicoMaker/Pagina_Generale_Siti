@@ -3552,7 +3552,6 @@ dialog::backdrop {
   font: 700 9px var(--font);
 }
 
-
 /* ============ Revisione: barra sopra neutra, selezione, elimina ============ */
 body {
   background: var(--bg);

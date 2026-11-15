@@ -98,8 +98,16 @@
   function performance(segs) {
     if (!segs.length) {
       return {
-        count: 0, avg: null, max: null, min: null, median: null,
-        maxRow: null, minRow: null, avgKmL: null, l100: null, record: null,
+        count: 0,
+        avg: null,
+        max: null,
+        min: null,
+        median: null,
+        maxRow: null,
+        minRow: null,
+        avgKmL: null,
+        l100: null,
+        record: null,
       };
     }
     var vals = segs.map((r) => r.kmPerL);
@@ -144,9 +152,18 @@
     // Pieni / parziali
     o.fullCount = rs.filter((r) => r.full).length;
     o.partialCount = n - o.fullCount;
-    o.partialLiters = sum(rs.filter((r) => !r.full), (r) => r.liters);
-    o.partialSpent = sum(rs.filter((r) => !r.full), (r) => r.total);
-    o.partialKm = sum(rs.filter((r) => !r.full), (r) => Math.max(r.km, 0));
+    o.partialLiters = sum(
+      rs.filter((r) => !r.full),
+      (r) => r.liters,
+    );
+    o.partialSpent = sum(
+      rs.filter((r) => !r.full),
+      (r) => r.total,
+    );
+    o.partialKm = sum(
+      rs.filter((r) => !r.full),
+      (r) => Math.max(r.km, 0),
+    );
     o.fullLiters = o.liters - o.partialLiters;
     o.fullSpent = o.spent - o.partialSpent;
 
@@ -190,13 +207,23 @@
       var k = String(r.date).slice(0, 7);
       var m =
         map[k] ||
-        (map[k] = { key: k, spent: 0, liters: 0, km: 0, saved: 0, count: 0, partial: 0, full: 0 });
+        (map[k] = {
+          key: k,
+          spent: 0,
+          liters: 0,
+          km: 0,
+          saved: 0,
+          count: 0,
+          partial: 0,
+          full: 0,
+        });
       m.spent += r.total;
       m.liters += r.liters;
       m.km += Math.max(r.km, 0);
       m.saved += r.saved;
       m.count++;
-      if (r.full) m.full++; else m.partial++;
+      if (r.full) m.full++;
+      else m.partial++;
     });
     return Object.keys(map)
       .sort()

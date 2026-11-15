@@ -373,11 +373,11 @@
       $("#vpPlate").textContent = v.plate || v.fuel;
       $("#vpIcon").textContent = v.icon || "🚗";
     }
-    
+
     // FIX: Icona dinamica nel bottone "Veicoli"
     var backIcon = document.getElementById("backIcon");
     if (backIcon) {
-      backIcon.textContent = v ? (v.icon || "🚗") : "🚗";
+      backIcon.textContent = v ? v.icon || "🚗" : "🚗";
     }
 
     $$("#tabs button").forEach((b) => {
@@ -2181,7 +2181,10 @@
     ];
     if (st.partialCount > 0)
       L.push(
-        "Pieni: " + fmt0(st.fullCount) + " · Parziali: " + fmt0(st.partialCount),
+        "Pieni: " +
+          fmt0(st.fullCount) +
+          " · Parziali: " +
+          fmt0(st.partialCount),
       );
     if (st.avgKmL)
       L.push(
