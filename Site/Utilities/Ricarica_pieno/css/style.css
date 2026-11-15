@@ -3700,3 +3700,205 @@ body[data-screen="app"] .bulkbar {
   font-size: 1.05rem; /* Dimensione leggermente più piccola per non sbilanciare */
   vertical-align: -1px; /* Allinea l'emoji al centro del testo */
 }
+
+/* ============ Icone SVG veicolo e colori ============ */
+.vi {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+.icon-grid {
+  grid-template-columns: repeat(4, 1fr);
+}
+.icon-opt {
+  aspect-ratio: 8 / 5;
+  padding: 6px 8px;
+}
+.icon-opt .vi {
+  width: 100%;
+}
+.gc-ico {
+  width: 78px;
+  height: 56px;
+  padding: 6px 8px;
+  border-radius: 17px;
+  background: rgba(255, 255, 255, 0.92);
+}
+.gc-top {
+  background: linear-gradient(
+    135deg,
+    var(--c),
+    var(--cb, color-mix(in srgb, var(--c) 52%, #000))
+  );
+}
+.vp-ico {
+  width: 52px;
+  height: 34px;
+  padding: 3px 4px;
+  background: color-mix(in srgb, var(--accent) 14%, var(--surface));
+}
+.hit-ico {
+  width: 56px;
+  height: 40px;
+  padding: 4px 6px;
+}
+#backIcon {
+  width: 30px;
+  margin-right: 4px;
+  font-size: inherit;
+  vertical-align: middle;
+}
+#backIcon .vi {
+  width: 30px;
+}
+.cl-name {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.cl-name .vi {
+  width: 38px;
+  flex: none;
+}
+
+.vprev {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 14px;
+  margin-bottom: 12px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+}
+.vprev-ico {
+  width: 96px;
+  flex: none;
+}
+.vprev-txt b {
+  display: block;
+}
+.vprev-txt small {
+  color: var(--muted);
+  font-size: 0.78rem;
+  overflow-wrap: anywhere;
+}
+.swatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.cswatch {
+  width: 34px;
+  height: 34px;
+  flex: none;
+  padding: 0;
+  border-radius: 50%;
+  border: 2px solid var(--surface);
+  box-shadow: 0 0 0 1px var(--border);
+  cursor: pointer;
+}
+.cswatch.own {
+  border-radius: 10px;
+}
+.cswatch[aria-pressed="true"] {
+  box-shadow: 0 0 0 3px var(--accent);
+}
+.cswatch.static {
+  cursor: default;
+  display: inline-block;
+}
+.swatches.tiny {
+  margin: 10px 0 0;
+}
+.swatches.tiny .cswatch {
+  width: 26px;
+  height: 26px;
+}
+.colorpick {
+  display: flex;
+  gap: 8px;
+}
+.colorpick input[type="color"] {
+  width: 50px;
+  flex: none;
+  padding: 4px;
+}
+.colorpick input[type="text"] {
+  flex: 1;
+  min-width: 0;
+}
+.btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+.vcolors {
+  display: grid;
+  gap: 14px;
+}
+.vc-row {
+  padding: 14px;
+  border-radius: 20px;
+  background: var(--surface-2);
+}
+.vc-row {
+  display: grid;
+  grid-template-columns: 72px 1fr;
+  gap: 10px 14px;
+  align-items: center;
+}
+.vc-ico {
+  width: 72px;
+}
+.vc-name small {
+  display: block;
+  color: var(--muted);
+  font-weight: 600;
+  font-size: 0.78rem;
+}
+.vc-ctl {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: flex-end;
+}
+.vc-ctl label {
+  flex: 1 1 200px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: var(--muted);
+}
+.vc-ctl .colorpick {
+  margin-top: 4px;
+}
+.vc-ctl input[type="text"],
+.vc-ctl input[type="color"] {
+  min-height: 42px;
+  height: 42px;
+}
+.vc-row .swatches {
+  grid-column: 1 / -1;
+}
+.own-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+.own-item small {
+  color: var(--muted);
+  margin-right: auto;
+}
+.own-item b {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+#pList {
+  display: block;
+  margin: 14px 0 0;
+}

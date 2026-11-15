@@ -139,6 +139,8 @@
     altro: ["Altro", "🚘"],
   };
   const typeLabel = (v) => (TYPES[v.type] || TYPES.altro)[0];
+  var I = window.Icons;
+  const vIco = (v, cls) => I.forVehicle(v, cls);
 
   var THEMES = [
     ["auto", "Automatico", "#e2e8f0", "#0f172a"],
@@ -371,13 +373,13 @@
     if (v && screen === "app") {
       $("#vpName").textContent = v.name;
       $("#vpPlate").textContent = v.plate || v.fuel;
-      $("#vpIcon").textContent = v.icon || "🚗";
+      $("#vpIcon").innerHTML = vIco(v);
     }
 
     // FIX: Icona dinamica nel bottone "Veicoli"
     var backIcon = document.getElementById("backIcon");
     if (backIcon) {
-      backIcon.textContent = v ? v.icon || "🚗" : "🚗";
+      backIcon.innerHTML = v ? vIco(v) : I.svg("auto", "#64748b");
     }
 
     $$("#tabs button").forEach((b) => {
@@ -444,6 +446,7 @@
           (gsel && sel.ids[v.id] ? " sel" : "") +
           '" style="--c:' +
           esc(v.color) +
+          (v.color2 ? ";--cb:" + esc(v.color2) : "") +
           '">' +
           (gsel
             ? '<span class="gc-check" aria-hidden="true">' +
@@ -456,7 +459,7 @@
           esc(v.name) +
           '">' +
           '<div class="gc-top"><span class="gc-ico" aria-hidden="true">' +
-          esc(v.icon || "🚗") +
+          vIco(v) +
           "</span><div><strong>" +
           esc(v.name) +
           "</strong><small>" +
@@ -526,7 +529,7 @@
                 '<button type="button" class="hit" data-gact="hit" data-id="' +
                 esc(h.v.id) +
                 '"><span class="hit-ico">' +
-                esc(h.v.icon || "🚗") +
+                vIco(h.v) +
                 "</span><span><b>" +
                 fmtDate(h.r.date) +
                 " · " +
@@ -784,7 +787,7 @@
     var sparkVals = segs.slice(-12).map((r) => r.kmPerL);
     var h =
       '<section class="cluster"><div class="cl-top"><span class="cl-name">' +
-      esc(v.icon || "🚗") +
+      vIco(v) +
       " " +
       esc(v.name) +
       (v.plate ? " · " + esc(v.plate) : "") +
@@ -1926,6 +1929,68 @@
         t[1] +
         "</span></button>",
     ).join("");
+
+    $("#sVehicles").innerHTML = st.vehicles.length
+      ? st.vehicles
+          .map(
+            (v) =>
+              '<div class="vc-row" data-id="' +
+              esc(v.id) +
+              '"><span class="vc-ico">' +
+              vIco(v) +
+              '</span><b class="vc-name">' +
+              esc(v.name) +
+              (v.plate ? "<small>" + esc(v.plate) + "</small>" : "") +
+              '</b><div class="vc-ctl">' +
+              '<label>Principale<span class="colorpick mini"><input type="color" data-vid="' +
+              esc(v.id) +
+              '" data-k="1" value="' +
+              v.color +
+              '" /><input type="text" data-vid="' +
+              esc(v.id) +
+              '" data-k="1" value="' +
+              v.color +
+              '" maxlength="20" /></span></label>' +
+              '<label>Secondario<span class="colorpick mini"><input type="color" data-vid="' +
+              esc(v.id) +
+              '" data-k="2" value="' +
+              (v.color2 || I.shade(v.color, -0.28)) +
+              '" /><input type="text" data-vid="' +
+              esc(v.id) +
+              '" data-k="2" value="' +
+              (v.color2 || "") +
+              '" maxlength="20" placeholder="nessuno" /></span></label>' +
+              '<button type="button" class="btn small" data-vclear="' +
+              esc(v.id) +
+              '" title="Rimuovi secondario">✕</button></div>' +
+              '<div class="swatches tiny">' +
+              allCombos()
+                .map((p) => swBtn(p, p.c1 === v.color && (p.c2 || "") === (v.color2 || "")))
+                .join("") +
+              "</div></div>",
+          )
+          .join("")
+      : '<p class="muted small">Nessun veicolo: aggiungine uno dalla schermata Veicoli.</p>';
+
+    $("#pList").innerHTML = st.settings.palette.length
+      ? st.settings.palette
+          .map(
+            (p) =>
+              '<div class="own-item"><span class="cswatch static" style="' +
+              swStyle(p.c1, p.c2) +
+              '"></span><b>' +
+              esc(p.name) +
+              "</b><small>" +
+              esc(p.c1) +
+              (p.c2 ? " + " + esc(p.c2) : "") +
+              '</small><button type="button" class="btn small danger" data-pdel="' +
+              esc(p.id) +
+              '" aria-label="Elimina ' +
+              esc(p.name) +
+              '">🗑</button></div>',
+          )
+          .join("")
+      : '<p class="muted small" style="margin-top:12px">Nessuna combinazione salvata.</p>';
   }
 
   function renderAll() {
@@ -1955,42 +2020,225 @@
     return palette[S.get().vehicles.length % palette.length];
   }
 
-  var ICONS = [
-    ["🚗", "auto"],
-    ["🚙", "auto"],
-    ["🛻", "furgone"],
-    ["🚐", "furgone"],
-    ["🚚", "camion"],
-    ["🏍️", "moto"],
-    ["🛵", "scooter"],
-    ["🚜", "trattore"],
-    ["⛵", "barca"],
-    ["🛥️", "barca"],
-  ];
-  var ICON_TYPE = {};
-  ICONS.forEach(function (i) {
-    ICON_TYPE[i[0]] = i[1];
-  });
   var vOldType = "auto",
-    vIcon = "🚗";
-  const vehType = () => ICON_TYPE[vIcon] || vOldType || "altro";
+    vIcon = "auto",
+    vC1 = "#0f766e",
+    vC2 = "";
+  const vehType = () => I.find(vIcon).t;
 
   function renderIconPicker() {
-    $("#vIcons").innerHTML = ICONS.map(
-      (ic) =>
-        '<button type="button" class="icon-opt" role="radio" data-icon="' +
-        ic[0] +
-        '" title="' +
-        TYPES[ic[1]][0] +
-        '" aria-label="' +
-        TYPES[ic[1]][0] +
-        '" aria-checked="' +
-        (ic[0] === vIcon) +
-        '">' +
-        ic[0] +
-        "</button>",
-    ).join("");
+    $("#vIcons").innerHTML = I.list
+      .map(
+        (ic) =>
+          '<button type="button" class="icon-opt" role="radio" data-icon="' +
+          ic.k +
+          '" title="' +
+          ic.l +
+          '" aria-label="' +
+          ic.l +
+          '" aria-checked="' +
+          (ic.k === vIcon) +
+          '">' +
+          I.svg(ic.k, vC1, vC2) +
+          "</button>",
+      )
+      .join("");
     $("#vTypeLabel").textContent = (TYPES[vehType()] || TYPES.altro)[0];
+  }
+
+  /* ---------- colori: combinazioni, anteprima, campi ---------- */
+  const swStyle = (c1, c2) =>
+    "background:" +
+    (c2 ? "linear-gradient(135deg," + c1 + " 50%," + c2 + " 50%)" : c1);
+  function allCombos() {
+    var own = S.get().settings.palette.map((p) => ({
+      id: p.id,
+      name: p.name,
+      c1: p.c1,
+      c2: p.c2,
+      own: true,
+    }));
+    return I.presets
+      .map((p) => ({ name: p[0], c1: p[1], c2: p[2], own: false }))
+      .concat(own);
+  }
+  const swBtn = (p, on) =>
+    '<button type="button" class="cswatch' +
+    (p.own ? " own" : "") +
+    '" data-c1="' +
+    p.c1 +
+    '" data-c2="' +
+    (p.c2 || "") +
+    '" title="' +
+    esc(p.name) +
+    '" aria-label="' +
+    esc(p.name) +
+    '" aria-pressed="' +
+    !!on +
+    '" style="' +
+    swStyle(p.c1, p.c2) +
+    '"></button>';
+
+  function renderVehicleColors(skip) {
+    $("#vPreview").innerHTML =
+      '<span class="vprev-ico">' +
+      I.svg(vIcon, vC1, vC2) +
+      '</span><span class="vprev-txt"><b>' +
+      esc($("#vName").value.trim() || "Anteprima") +
+      "</b><small>" +
+      esc(vC1) +
+      (vC2 ? " + " + esc(vC2) : " (secondario automatico)") +
+      "</small></span>";
+    $("#vSwatches").innerHTML = allCombos()
+      .map((p) => swBtn(p, p.c1 === vC1 && (p.c2 || "") === vC2))
+      .join("");
+    $("#vColor1").value = vC1;
+    $("#vColor2").value = vC2 || I.shade(vC1, -0.28);
+    if (skip !== "hex1") $("#vHex1").value = vC1;
+    if (skip !== "hex2") $("#vHex2").value = vC2;
+    renderIconPicker();
+  }
+
+  function bindColors() {
+    $("#vColor1").addEventListener("input", function () {
+      vC1 = I.normHex(this.value) || vC1;
+      renderVehicleColors();
+    });
+    $("#vColor2").addEventListener("input", function () {
+      vC2 = I.normHex(this.value) || vC2;
+      renderVehicleColors();
+    });
+    $("#vHex1").addEventListener("input", function () {
+      var n = I.normHex(this.value);
+      if (n) {
+        vC1 = n;
+        renderVehicleColors("hex1");
+      }
+    });
+    $("#vHex2").addEventListener("input", function () {
+      if (!this.value.trim()) vC2 = "";
+      else {
+        var n = I.normHex(this.value);
+        if (!n) return;
+        vC2 = n;
+      }
+      renderVehicleColors("hex2");
+    });
+    $("#vNoColor2").addEventListener("click", function () {
+      vC2 = "";
+      renderVehicleColors();
+    });
+    $("#vName").addEventListener("input", function () {
+      renderVehicleColors("hex1");
+    });
+    $("#vSwatches").addEventListener("click", function (e) {
+      var b = e.target.closest(".cswatch");
+      if (!b) return;
+      vC1 = b.dataset.c1;
+      vC2 = b.dataset.c2 || "";
+      renderVehicleColors();
+    });
+    $("#vSavePalette").addEventListener("click", function () {
+      var name = window.prompt(
+        "Nome della combinazione:",
+        vC2 ? "Mix personale" : "Colore personale",
+      );
+      if (name == null) return;
+      var p = S.addPalette(name.trim() || "Colore personale", vC1, vC2);
+      if (!p) return toast("Colore non valido", "error");
+      renderVehicleColors();
+      renderSettings();
+      toast("Combinazione salvata");
+    });
+
+    /* impostazioni: colori per veicolo */
+    $("#sVehicles").addEventListener("change", function (e) {
+      var t = e.target;
+      var id = t.dataset.vid,
+        k = t.dataset.k;
+      if (!id || !k) return;
+      var val = t.value.trim();
+      var n = I.normHex(val);
+      var patch = {};
+      if (k === "1") {
+        if (!n) {
+          toast("Colore non valido", "error");
+          return renderSettings();
+        }
+        patch.color = n;
+      } else {
+        if (val && !n) {
+          toast("Colore non valido", "error");
+          return renderSettings();
+        }
+        patch.color2 = n;
+      }
+      S.updateVehicle(id, patch);
+      renderAll();
+      applyChrome(false);
+      toast("Colore aggiornato");
+    });
+    $("#sVehicles").addEventListener("click", function (e) {
+      var b = e.target.closest("[data-vclear]");
+      if (b) {
+        S.updateVehicle(b.dataset.vclear, { color2: "" });
+        renderAll();
+        applyChrome(false);
+        toast("Colore secondario rimosso");
+        return;
+      }
+      var sw = e.target.closest(".cswatch");
+      if (sw) {
+        S.updateVehicle(sw.closest("[data-id]").dataset.id, {
+          color: sw.dataset.c1,
+          color2: sw.dataset.c2 || "",
+        });
+        renderAll();
+        applyChrome(false);
+        toast("Colori aggiornati");
+      }
+    });
+
+    /* impostazioni: crea combinazione */
+    function sync(colorId, hexId, optional) {
+      $("#" + colorId).addEventListener("input", function () {
+        $("#" + hexId).value = this.value;
+      });
+      $("#" + hexId).addEventListener("input", function () {
+        var n = I.normHex(this.value);
+        if (n) $("#" + colorId).value = n;
+      });
+    }
+    sync("pColor1", "pHex1");
+    sync("pColor2", "pHex2");
+    $("#pAdd").addEventListener("click", function () {
+      var err = $("#pError");
+      err.hidden = true;
+      var h1 = $("#pHex1").value.trim(),
+        h2 = $("#pHex2").value.trim();
+      var c1 = I.normHex(h1 || $("#pColor1").value);
+      var c2 = h2 ? I.normHex(h2) : "";
+      if (!c1 || (h2 && !c2)) {
+        err.textContent =
+          "Colore non valido: usa un codice come #2563eb oppure un nome come red, teal, gold.";
+        err.hidden = false;
+        return;
+      }
+      var name = $("#pName").value.trim() || (c2 ? c1 + " + " + c2 : c1);
+      S.addPalette(name, c1, c2);
+      $("#pName").value = "";
+      $("#pHex1").value = "";
+      $("#pHex2").value = "";
+      renderSettings();
+      toast("Combinazione aggiunta");
+    });
+    $("#pList").addEventListener("click", function (e) {
+      var d = e.target.closest("[data-pdel]");
+      if (!d) return;
+      S.deletePalette(d.dataset.pdel);
+      renderSettings();
+      toast("Combinazione eliminata");
+    });
   }
 
   function openVehicleDialog(id) {
@@ -2006,8 +2254,10 @@
     $("#vFuel").value = v ? v.fuel : "Benzina";
     $("#vInitKm").value = v ? fmt0(v.initialKm) : "";
     $("#vTank").value = v && v.tank != null ? toField(v.tank) : "";
-    vIcon = v ? v.icon || (TYPES[v.type] || TYPES.altro)[1] : "🚗";
-    renderIconPicker();
+    vIcon = v ? v.icon || I.typeIcon[v.type] || "auto" : "auto";
+    vC1 = v ? v.color : pickColor();
+    vC2 = v ? v.color2 || "" : "";
+    renderVehicleColors();
     $("#vError").hidden = true;
     if (typeof dlg.showModal === "function") dlg.showModal();
     else dlg.setAttribute("open", "");
@@ -2045,10 +2295,11 @@
       initialKm: km,
       tank: tank,
       icon: vIcon,
+      color: vC1,
+      color2: vC2,
     };
     if (vEditId) {
       var cur = S.get().vehicles.filter((x) => x.id === vEditId)[0];
-      data.color = cur.color;
       var minOdo = cur.refuels.length
         ? Math.min.apply(
             null,
@@ -2079,7 +2330,6 @@
       applyChrome(false);
       toast("Veicolo aggiornato");
     } else {
-      data.color = pickColor();
       var created = S.addVehicle(data);
       closeVehicleDialog();
       openVehicle(created.id);
@@ -2489,13 +2739,14 @@
     $("#btnShareText").addEventListener("click", shareText);
 
     $("#vehicleForm").addEventListener("submit", onVehicleSubmit);
+    bindColors();
     $("#vCancel").addEventListener("click", closeVehicleDialog);
     $("#vDelete").addEventListener("click", onVehicleDelete);
     $("#vIcons").addEventListener("click", (e) => {
       var b = e.target.closest(".icon-opt");
       if (!b) return;
       vIcon = b.dataset.icon;
-      renderIconPicker();
+      renderVehicleColors();
     });
     $("#vehicleDialog").addEventListener("click", function (e) {
       if (e.target === this) closeVehicleDialog();

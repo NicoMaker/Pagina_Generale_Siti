@@ -28,9 +28,31 @@
   const defaults = () => ({
     version: 1,
     activeVehicleId: null,
-    settings: { fvgDiscount: 0.24, lastFvg: false, theme: "auto" },
+    settings: { fvgDiscount: 0.24, lastFvg: false, theme: "auto", palette: [] },
     vehicles: [],
   });
+
+  const hex6 = (c) => (/^#[0-9a-f]{6}$/i.test(c || "") ? String(c).toLowerCase() : "");
+
+  /** Converte le vecchie emoji nelle nuove icone SVG, senza perdere il tipo. */
+  const normIcon = (v) => {
+    var I = g.Icons,
+      ic = String(v.icon || "");
+    if (!I) return ic || "auto";
+    if (I.has(ic)) return ic;
+    if (I.emoji[ic]) return I.emoji[ic];
+    return I.typeIcon[v.type] || "auto";
+  };
+
+  const normPalette = (arr) =>
+    (Array.isArray(arr) ? arr : [])
+      .map((p) => ({
+        id: (p && p.id) || uid(),
+        name: String((p && p.name) || "Colore").slice(0, 30),
+        c1: hex6(p && p.c1),
+        c2: hex6(p && p.c2),
+      }))
+      .filter((p) => p.c1);
 
   const normRefuel = (r) => ({
     id: r.id || uid(),
@@ -53,8 +75,9 @@
     fuel: String(v.fuel || "Benzina"),
     initialKm: num(v.initialKm),
     tank: v.tank === "" || v.tank == null ? null : num(v.tank, null),
-    icon: String(v.icon || "🚗"),
-    color: /^#[0-9a-f]{6}$/i.test(v.color || "") ? v.color : "#0f766e",
+    icon: normIcon(v),
+    color: hex6(v.color) || "#0f766e",
+    color2: hex6(v.color2),
     createdAt: v.createdAt || new Date().toISOString(),
     refuels: (Array.isArray(v.refuels) ? v.refuels : []).map(normRefuel),
   });
@@ -80,6 +103,7 @@
       ].indexOf(st.theme) >= 0
         ? st.theme
         : "auto";
+    s.settings.palette = normPalette(st.palette);
     s.vehicles = (Array.isArray(d.vehicles) ? d.vehicles : []).map(normVehicle);
     var ok = s.vehicles.some((v) => v.id === d.activeVehicleId);
     s.activeVehicleId = ok
@@ -222,6 +246,19 @@
       save();
     },
 
+    /** Combinazioni di colori create dall'utente (principale + secondario facoltativo). */
+    addPalette: (name, c1, c2) => {
+      var p = normPalette([{ name: name, c1: c1, c2: c2 }])[0];
+      if (!p) return null;
+      state.settings.palette.push(p);
+      save();
+      return p;
+    },
+    deletePalette: (id) => {
+      state.settings.palette = state.settings.palette.filter((p) => p.id !== id);
+      save();
+    },
+
     /** Esporta tutto (o un solo veicolo) come stringa JSON. */
     exportData: (vehicleId) => {
       var vehicles = vehicleId
@@ -261,6 +298,10 @@
           0,
         );
       } else {
+        incoming.settings.palette.forEach((p) => {
+          if (!state.settings.palette.some((x) => x.id === p.id))
+            state.settings.palette.push(p);
+        });
         incoming.vehicles.forEach((iv) => {
           var ex = findVehicle(iv.id);
           if (!ex) {

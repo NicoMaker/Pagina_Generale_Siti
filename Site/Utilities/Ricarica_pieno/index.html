@@ -265,6 +265,48 @@
               </button>
             </div>
           </div>
+
+          <div class="card" style="margin-top: 16px">
+            <h2>Colori dei veicoli</h2>
+            <p class="hint">
+              Cambia il colore principale e quello secondario (mix) di ogni
+              veicolo: l'icona si colora in automatico. I tuoi dati non
+              vengono toccati.
+            </p>
+            <div id="sVehicles" class="vcolors"></div>
+          </div>
+
+          <div class="card" style="margin-top: 16px">
+            <h2>Combinazioni personalizzate</h2>
+            <p class="hint">
+              Crea un colore o un mix tutto tuo: scegli dal selettore oppure
+              scrivi un codice (#2563eb) o un nome (red, teal, gold…). Le
+              combinazioni salvate compaiono quando modifichi un veicolo.
+            </p>
+            <label class="field"
+              ><span>Nome</span>
+              <input type="text" id="pName" maxlength="30" placeholder="es. Rosso Ferrari"
+            /></label>
+            <div class="field-row">
+              <label class="field"
+                ><span>Principale</span>
+                <div class="colorpick">
+                  <input type="color" id="pColor1" value="#2563eb" aria-label="Principale" />
+                  <input type="text" id="pHex1" maxlength="20" placeholder="#2563eb" />
+                </div></label
+              >
+              <label class="field"
+                ><span>Secondario (facoltativo)</span>
+                <div class="colorpick">
+                  <input type="color" id="pColor2" value="#111827" aria-label="Secondario" />
+                  <input type="text" id="pHex2" maxlength="20" placeholder="nessuno" />
+                </div></label
+              >
+            </div>
+            <div id="pError" class="form-error" role="alert" hidden></div>
+            <button type="button" class="btn primary" id="pAdd">＋ Aggiungi combinazione</button>
+            <div id="pList" class="swatches own"></div>
+          </div>
         </section>
       </main>
     </div>
@@ -420,6 +462,31 @@
             Tipo: <b id="vTypeLabel">Auto</b>
           </p>
         </div>
+        <div class="field">
+          <span>Colori del veicolo</span>
+          <div class="vprev" id="vPreview"></div>
+          <div class="swatches" id="vSwatches" role="group" aria-label="Combinazioni di colori"></div>
+          <div class="field-row">
+            <label class="field"
+              ><span>Principale</span>
+              <div class="colorpick">
+                <input type="color" id="vColor1" aria-label="Colore principale" />
+                <input type="text" id="vHex1" maxlength="20" placeholder="#2563eb o blue" />
+              </div></label
+            >
+            <label class="field"
+              ><span>Secondario (mix, facoltativo)</span>
+              <div class="colorpick">
+                <input type="color" id="vColor2" aria-label="Colore secondario" />
+                <input type="text" id="vHex2" maxlength="20" placeholder="nessuno" />
+              </div></label
+            >
+          </div>
+          <div class="btn-row">
+            <button type="button" class="btn small" id="vNoColor2">Nessun secondario</button>
+            <button type="button" class="btn small" id="vSavePalette">＋ Salva combinazione</button>
+          </div>
+        </div>
         <label class="field"
           ><span>Nome *</span>
           <input
@@ -496,6 +563,7 @@
 
     <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
 
+    <script src="js/icons.js"></script>
     <script src="js/storage.js"></script>
     <script src="js/calc.js"></script>
     <script src="js/charts.js"></script>
