@@ -367,6 +367,7 @@
   const segsOf = (rs) => rs.filter((r) => r.kmPerL);
   const chartCard = (title, body, cls) => '<div class="card chart-card ' + (cls || "") + '"><h3>' + title + "</h3>" + body + "</div>";
   const fewer = (msg) => '<p class="muted small">' + msg + "</p>";
+  
   function topKmlCard(rs) {
     var top = segsOf(rs).slice().sort((a, b) => b.kmPerL - a.kmPerL).slice(0, 5).map((r) => ({
       label: fmtDate(r.date), value: r.kmPerL, text: fmt2(r.kmPerL) + " km/L",
@@ -376,6 +377,18 @@
       top.length ? CH.hbars(top) +
         '<button type="button" class="btn small" style="margin-top:14px" data-go="rank">Vedi classifica completa</button>'
         : fewer("Serve almeno un pieno completato."));
+  }
+
+  // NUOVA FUNZIONE: card "I 5 pieni più cari" con bottone
+  function topCariCard(rs) {
+    var top = rs.slice().sort((a, b) => b.total - a.total).slice(0, 5).map((r) => ({
+      label: fmtDate(r.date), value: r.total, text: eur(r.total, 2),
+      sub: fmt2(r.liters) + " L · " + fmt(r.paid, 3) + " €/L",
+    }));
+    return chartCard("I 5 pieni più cari",
+      top.length ? CH.hbars(top) +
+        '<button type="button" class="btn small" style="margin-top:14px" data-go="rank">Vedi classifica completa</button>'
+        : fewer("Serve almeno un rifornimento."));
   }
 
   function dashDonut(st) {
@@ -819,13 +832,14 @@
     var cpkPts = rs.filter((r) => r.costPerKm != null).map((r) => ({ label: fmtDate(r.date), short: fmtDate(r.date).slice(0, 5), value: r.costPerKm }));
     var run = 0, cumPts = rs.map((r) => { run += r.total; return { label: fmtDate(r.date), short: fmtDate(r.date).slice(0, 5), value: run }; });
     var priceMulti = rs.map((r) => ({ label: fmtDate(r.date), short: fmtDate(r.date).slice(0, 5), v: [r.price, r.paid] }));
-    var top5 = rs.slice().sort((a, b) => b.total - a.total).slice(0, 5).map((r) => ({ label: fmtDate(r.date), value: r.total, text: eur(r.total, 2), sub: fmt2(r.liters) + " L · " + fmt(r.paid, 3) + " €/L" }));
     var years = {};
     rs.forEach((r) => { var y = r.date.slice(0, 4); years[y] = (years[y] || 0) + r.total; });
     var yearItems = Object.keys(years).sort().reverse().map((y) => ({ label: y, value: years[y], text: eur(years[y], 2) }));
     var fvgItems = [{ label: "Con sconto FVG", value: st.fvgCount }, { label: "Senza sconto", value: st.n - st.fvgCount }];
     var fullN = rs.filter((r) => r.full).length;
     var typeItems = [{ label: "Pieni", value: fullN }, { label: "Parziali", value: st.n - fullN }];
+    
+    // QUI: usiamo topCariCard(rs) invece del vecchio chartCard
     var charts = '<div class="charts">' +
       chartCard("Consumo (km/L) per rifornimento", kmlPts.length > 1 ? CH.line(kmlPts, { decimals: 2, unit: "km/L", avg: st.avgKmL, label: "Consumo km/L" }) : fewer("Servono almeno due pieni per il grafico."), "wide") +
       lastVsRecordPanel(st) +
@@ -841,7 +855,7 @@
       chartCard("Rifornimenti con sconto FVG", CH.donut(fvgItems, { decimals: 0, big: fmt0(st.fvgCount), small: "con sconto", label: "Rifornimenti con sconto" })) +
       chartCard("Pieni e parziali", CH.donut(typeItems, { decimals: 0, big: fmt0(st.n), small: st.n === 1 ? "rifornimento" : "rifornimenti", label: "Pieni e parziali" })) +
       chartCard("Giorno della settimana", CH.bars(dowPoints(rs), { decimals: 0, unit: "rifornimenti", label: "Rifornimenti per giorno" })) +
-      topKmlCard(rs) + chartCard("I 5 pieni più cari", CH.hbars(top5)) + chartCard("Spesa per anno", CH.hbars(yearItems)) + "</div>";
+      topKmlCard(rs) + topCariCard(rs) + chartCard("Spesa per anno", CH.hbars(yearItems)) + "</div>";
     var perfHtml = "";
     var p = st.perf;
     if (p && p.count) {
@@ -1051,7 +1065,6 @@
   // FIX: listener robusti (sia diretti che delegati)
   // ============================================================
 
-  // Bind diretto su #gSelect / #hSelect (con guardia)
   function bindSelButtons() {
     var g = document.getElementById("gSelect");
     if (g && !g._bound) {
@@ -1073,15 +1086,12 @@
     }
   }
 
-  // Delegato globale: intercetta click sulla checkbox gc-check (in modalità selezione)
-  // e su data-go="rank" (classifica) in qualunque punto della pagina
   function bindGlobalDelegate() {
     if (document._globalDelegate) return;
     document._globalDelegate = true;
     document.addEventListener(
       "click",
       function (e) {
-        // Seleziona/deseleziona veicolo cliccando la checkbox
         var ck = e.target.closest(".gc-check");
         if (ck) {
           e.preventDefault();
@@ -1092,7 +1102,6 @@
           if (id) toggleSel(id);
           return;
         }
-        // "Vedi classifica completa" o qualunque data-go=rank
         var go = e.target.closest('[data-go="rank"]');
         if (go) {
           e.preventDefault();
@@ -1104,7 +1113,6 @@
     );
   }
 
-  // Richiamata dopo ogni render (per sicurezza)
   function bindMissing() {
     bindSelButtons();
     bindGlobalDelegate();
@@ -1115,7 +1123,6 @@
   // ============================================================
 
   function bind() {
-    // Tabs
     $("#tabs").addEventListener("click", (e) => {
       var b = e.target.closest("button[data-tab]");
       if (!b) return;
@@ -1126,7 +1133,6 @@
     $("#vehiclePill").addEventListener("click", showGarage);
     $("#btnGear").addEventListener("click", () => { clearSel(); screen = "settings"; applyChrome(true); });
 
-    // Garage: click su card / edit / delete / hit / new / import
     $("#garageGrid").addEventListener("click", (e) => {
       var b = e.target.closest("[data-gact]");
       if (!b) return;
@@ -1142,7 +1148,6 @@
       if (a === "import") { $("#importMode").value = "merge"; $("#importFile").click(); }
     });
 
-    // Dashboard: data-act e data-go
     $("#dashBody").addEventListener("click", (e) => {
       var ab = e.target.closest("button[data-act]");
       if (ab) { if (ab.dataset.act === "edit") startEdit(ab.dataset.id); if (ab.dataset.act === "del") delRefuel(ab.dataset.id); return; }
@@ -1153,7 +1158,6 @@
       else setTab(b.dataset.go);
     });
 
-    // Form rifornimento
     var form = $("#refuelForm");
     form.addEventListener("submit", onSubmit);
     form.addEventListener("input", () => { clearError(); renderPreview(); });
@@ -1167,7 +1171,6 @@
     $("#refuelDialog").addEventListener("click", function (e) { if (e.target === this) closeRefuel(); });
     $("#refuelDialog").addEventListener("close", () => { resetForm(); renderPreview(); });
 
-    // Storico: click su summary (in modalità selezione) o su edit/delete
     $("#historyList").addEventListener("click", (e) => {
       var sm = e.target.closest("summary");
       if (sel.mode === "history" && sm) { e.preventDefault(); toggleSel(sm.parentNode.dataset.id); return; }
@@ -1179,20 +1182,16 @@
       if (b.dataset.act === "del") delRefuel(b.dataset.id);
     });
 
-    // Statistiche: rank
     $("#statsBody").addEventListener("click", (e) => {
       var b = e.target.closest("[data-go]");
       if (b && b.dataset.go === "rank") goRank();
     });
 
-    // Sort storico
     $("#hSort").addEventListener("change", function () { hSort = this.value; renderHistory(); });
 
-    // FIX: bind sel buttons + delegate globale
     bindSelButtons();
     bindGlobalDelegate();
 
-    // Bulk bar
     $("#bulkCancel").addEventListener("click", clearSel);
     $("#bulkAll").addEventListener("click", () => {
       var ids = sel.mode === "garage" ? gVisible : hVisible;
@@ -1213,7 +1212,6 @@
       toast(pl(ids.length, "elemento eliminato", "elementi eliminati"));
     });
 
-    // Share / export
     $("#btnShareAll").addEventListener("click", () => {
       if (!S.get().vehicles.length) return toast("Nessun dato da condividere", "error");
       shareFile("ricarica-pieno-backup-" + stamp() + ".json", S.exportData(), "application/json", "Backup Ricarica Pieno");
@@ -1225,7 +1223,6 @@
     });
     $("#btnShareText").addEventListener("click", shareText);
 
-    // Vehicle dialog
     $("#vehicleForm").addEventListener("submit", onVehicleSubmit);
     $("#vCancel").addEventListener("click", closeVehicleDialog);
     $("#vDelete").addEventListener("click", onVehicleDelete);
@@ -1237,7 +1234,6 @@
     });
     $("#vehicleDialog").addEventListener("click", function (e) { if (e.target === this) closeVehicleDialog(); });
 
-    // Settings
     $("#sDiscount").addEventListener("change", function () {
       var n = parseNum(this.value);
       if (isFinite(n) && n >= 0) { S.setSettings({ fvgDiscount: n }); toast("Sconto FVG predefinito salvato"); }
@@ -1251,7 +1247,6 @@
       applyTheme(); renderSettings();
     });
 
-    // Search / filter
     $("#gSearch").addEventListener("input", function () { gQuery = this.value; renderGarage(); });
     $("#hSearch").addEventListener("input", function () { hQuery = this.value; renderHistory(); });
     $("#hFilters").addEventListener("click", (e) => {
@@ -1262,7 +1257,6 @@
       $("#" + id).addEventListener("input", function () { groupInput(this); });
     });
 
-    // Export buttons
     $("#btnExportAll").addEventListener("click", () => {
       if (!S.get().vehicles.length) return toast("Nessun dato da esportare", "error");
       download("ricarica-pieno-backup-" + stamp() + ".json", S.exportData(), "application/json");
@@ -1275,7 +1269,6 @@
     $("#btnExportCsv").addEventListener("click", exportCsv);
     $("#importFile").addEventListener("change", onImport);
 
-    // Reset
     $("#btnReset").addEventListener("click", () => {
       if (window.confirm("Cancellare TUTTI i veicoli e i rifornimenti da questo dispositivo? Esporta prima un backup se ti serve.")) {
         S.reset(); showGarage();
