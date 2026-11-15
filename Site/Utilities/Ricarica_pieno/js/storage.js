@@ -32,7 +32,8 @@
     vehicles: [],
   });
 
-  const hex6 = (c) => (/^#[0-9a-f]{6}$/i.test(c || "") ? String(c).toLowerCase() : "");
+  const hex6 = (c) =>
+    /^#[0-9a-f]{6}$/i.test(c || "") ? String(c).toLowerCase() : "";
 
   /** Converte le vecchie emoji nelle nuove icone SVG, senza perdere il tipo. */
   const normIcon = (v) => {
@@ -257,7 +258,9 @@
       return p;
     },
     deletePalette: (id) => {
-      state.settings.palette = state.settings.palette.filter((p) => p.id !== id);
+      state.settings.palette = state.settings.palette.filter(
+        (p) => p.id !== id,
+      );
       save();
     },
 

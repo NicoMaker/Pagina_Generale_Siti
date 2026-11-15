@@ -270,8 +270,8 @@
             <h2>Colori dei veicoli</h2>
             <p class="hint">
               Cambia colore principale, secondario e terzo (mix) di ogni
-              veicolo: cambia solo l'icona, non il resto dell'app. I tuoi dati non
-              vengono toccati.
+              veicolo: cambia solo l'icona, non il resto dell'app. I tuoi dati
+              non vengono toccati.
             </p>
             <div id="sVehicles" class="vcolors"></div>
           </div>
@@ -285,33 +285,66 @@
             </p>
             <label class="field"
               ><span>Nome</span>
-              <input type="text" id="pName" maxlength="30" placeholder="es. Rosso Ferrari"
+              <input
+                type="text"
+                id="pName"
+                maxlength="30"
+                placeholder="es. Rosso Ferrari"
             /></label>
             <div class="field-row">
               <label class="field"
                 ><span>Principale</span>
                 <div class="colorpick">
-                  <input type="color" id="pColor1" value="#2563eb" aria-label="Principale" />
-                  <input type="text" id="pHex1" maxlength="20" placeholder="#2563eb" />
-                </div></label
-              >
+                  <input
+                    type="color"
+                    id="pColor1"
+                    value="#2563eb"
+                    aria-label="Principale"
+                  />
+                  <input
+                    type="text"
+                    id="pHex1"
+                    maxlength="20"
+                    placeholder="#2563eb"
+                  /></div
+              ></label>
               <label class="field"
                 ><span>Secondario (facoltativo)</span>
                 <div class="colorpick">
-                  <input type="color" id="pColor2" value="#111827" aria-label="Secondario" />
-                  <input type="text" id="pHex2" maxlength="20" placeholder="nessuno" />
-                </div></label
-              >
+                  <input
+                    type="color"
+                    id="pColor2"
+                    value="#111827"
+                    aria-label="Secondario"
+                  />
+                  <input
+                    type="text"
+                    id="pHex2"
+                    maxlength="20"
+                    placeholder="nessuno"
+                  /></div
+              ></label>
             </div>
             <label class="field"
               ><span>Terzo colore (facoltativo)</span>
               <div class="colorpick">
-                <input type="color" id="pColor3" value="#facc15" aria-label="Terzo colore" />
-                <input type="text" id="pHex3" maxlength="20" placeholder="nessuno" />
-              </div></label
-            >
+                <input
+                  type="color"
+                  id="pColor3"
+                  value="#facc15"
+                  aria-label="Terzo colore"
+                />
+                <input
+                  type="text"
+                  id="pHex3"
+                  maxlength="20"
+                  placeholder="nessuno"
+                /></div
+            ></label>
             <div id="pError" class="form-error" role="alert" hidden></div>
-            <button type="button" class="btn primary" id="pAdd">＋ Aggiungi combinazione</button>
+            <button type="button" class="btn primary" id="pAdd">
+              ＋ Aggiungi combinazione
+            </button>
             <div id="pList" class="swatches own"></div>
           </div>
         </section>
@@ -459,7 +492,12 @@
         </p>
         <div class="field">
           <span>Tipo di veicolo</span>
-          <div class="chips" id="vCats" role="radiogroup" aria-label="Tipo di veicolo"></div>
+          <div
+            class="chips"
+            id="vCats"
+            role="radiogroup"
+            aria-label="Tipo di veicolo"
+          ></div>
           <span>Icona (puoi sceglierne una tra quelle del tipo)</span>
           <div
             class="icon-grid"
@@ -474,34 +512,65 @@
         <div class="field">
           <span>Colori del veicolo</span>
           <div class="vprev" id="vPreview"></div>
-          <div class="swatches" id="vSwatches" role="group" aria-label="Combinazioni di colori"></div>
+          <div
+            class="swatches"
+            id="vSwatches"
+            role="group"
+            aria-label="Combinazioni di colori"
+          ></div>
           <div class="field-row">
             <label class="field"
               ><span>Principale</span>
               <div class="colorpick">
-                <input type="color" id="vColor1" aria-label="Colore principale" />
-                <input type="text" id="vHex1" maxlength="20" placeholder="scrivi: blu, giallo, #2563eb…" />
-              </div></label
-            >
+                <input
+                  type="color"
+                  id="vColor1"
+                  aria-label="Colore principale"
+                />
+                <input
+                  type="text"
+                  id="vHex1"
+                  maxlength="20"
+                  placeholder="scrivi: blu, giallo, #2563eb…"
+                /></div
+            ></label>
             <label class="field"
               ><span>Secondario (mix, facoltativo)</span>
               <div class="colorpick">
-                <input type="color" id="vColor2" aria-label="Colore secondario" />
-                <input type="text" id="vHex2" maxlength="20" placeholder="nessuno (blu, giallo…)" />
-              </div></label
-            >
+                <input
+                  type="color"
+                  id="vColor2"
+                  aria-label="Colore secondario"
+                />
+                <input
+                  type="text"
+                  id="vHex2"
+                  maxlength="20"
+                  placeholder="nessuno (blu, giallo…)"
+                /></div
+            ></label>
           </div>
           <label class="field"
             ><span>Terzo colore (facoltativo)</span>
             <div class="colorpick">
               <input type="color" id="vColor3" aria-label="Terzo colore" />
-              <input type="text" id="vHex3" maxlength="20" placeholder="nessuno (blu, giallo…)" />
-            </div></label
-          >
+              <input
+                type="text"
+                id="vHex3"
+                maxlength="20"
+                placeholder="nessuno (blu, giallo…)"
+              /></div
+          ></label>
           <div class="btn-row">
-            <button type="button" class="btn small" id="vNoColor2">Nessun secondario</button>
-            <button type="button" class="btn small" id="vNoColor3">Nessun terzo</button>
-            <button type="button" class="btn small" id="vSavePalette">＋ Salva combinazione</button>
+            <button type="button" class="btn small" id="vNoColor2">
+              Nessun secondario
+            </button>
+            <button type="button" class="btn small" id="vNoColor3">
+              Nessun terzo
+            </button>
+            <button type="button" class="btn small" id="vSavePalette">
+              ＋ Salva combinazione
+            </button>
           </div>
         </div>
         <label class="field"

@@ -353,7 +353,8 @@
 
   function applyChrome(scrollTop) {
     var v = vehicle();
-    var color = DEFAULT_ACCENT; /* il colore del veicolo vale solo per icona e scheda */
+    var color =
+      DEFAULT_ACCENT; /* il colore del veicolo vale solo per icona e scheda */
     var root = document.documentElement.style;
     root.setProperty("--accent", color);
     root.setProperty("--accent-contrast", contrast(color));
@@ -1999,7 +2000,14 @@
               '" title="Rimuovi secondario">✕</button></div>' +
               '<div class="swatches tiny">' +
               allCombos()
-                .map((p) => swBtn(p, p.c1 === v.color && (p.c2 || "") === (v.color2 || "") && (p.c3 || "") === (v.color3 || "")))
+                .map((p) =>
+                  swBtn(
+                    p,
+                    p.c1 === v.color &&
+                      (p.c2 || "") === (v.color2 || "") &&
+                      (p.c3 || "") === (v.color3 || ""),
+                  ),
+                )
                 .join("") +
               "</div></div>",
           )
@@ -2102,7 +2110,13 @@
   const swStyle = (c1, c2, c3) =>
     "background:" +
     (c3
-      ? "linear-gradient(135deg," + c1 + " 34%," + (c2 || c1) + " 34% 67%," + c3 + " 67%)"
+      ? "linear-gradient(135deg," +
+        c1 +
+        " 34%," +
+        (c2 || c1) +
+        " 34% 67%," +
+        c3 +
+        " 67%)"
       : c2
         ? "linear-gradient(135deg," + c1 + " 50%," + c2 + " 50%)"
         : c1);
@@ -2116,7 +2130,13 @@
       own: true,
     }));
     return I.presets
-      .map((p) => ({ name: p[0], c1: p[1], c2: p[2], c3: p[3] || "", own: false }))
+      .map((p) => ({
+        name: p[0],
+        c1: p[1],
+        c2: p[2],
+        c3: p[3] || "",
+        own: false,
+      }))
       .concat(own);
   }
   const swBtn = (p, on) =>
@@ -2150,7 +2170,9 @@
       (vC3 ? " + " + esc(vC3) : "") +
       "</small></span>";
     $("#vSwatches").innerHTML = allCombos()
-      .map((p) => swBtn(p, p.c1 === vC1 && (p.c2 || "") === vC2 && (p.c3 || "") === vC3))
+      .map((p) =>
+        swBtn(p, p.c1 === vC1 && (p.c2 || "") === vC2 && (p.c3 || "") === vC3),
+      )
       .join("");
     $("#vColor1").value = vC1;
     $("#vColor2").value = vC2 || I.shade(vC1, -0.28);
