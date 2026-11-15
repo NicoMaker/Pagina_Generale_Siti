@@ -418,6 +418,28 @@
     applyChrome(true);
   }
 
+  /* colore del testo leggibile sopra lo sfondo (sfumatura) della scheda veicolo */
+  function cardFg(v) {
+    var cs = v.color2
+      ? [v.color, v.color2, v.color3].filter(Boolean)
+      : [v.color, I.shade(v.color, -0.48)];
+    var r = 0,
+      g = 0,
+      b = 0;
+    cs.forEach(function (c) {
+      var n = parseInt(c.slice(1), 16);
+      r += n >> 16;
+      g += (n >> 8) & 255;
+      b += n & 255;
+    });
+    var h =
+      "#" +
+      [r, g, b]
+        .map((x) => ("0" + Math.round(x / cs.length).toString(16)).slice(-2))
+        .join("");
+    return I.contrast(h);
+  }
+
   function renderGarage() {
     var st = S.get(),
       box = $("#garageGrid"),
@@ -448,6 +470,8 @@
           esc(v.color) +
           (v.color2 ? ";--cb:" + esc(v.color2) : "") +
           (v.color3 ? ";--cc:" + esc(v.color3) : "") +
+          ";--fg:" +
+          cardFg(v) +
           '">' +
           (gsel
             ? '<span class="gc-check" aria-hidden="true">' +

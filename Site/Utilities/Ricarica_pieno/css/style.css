@@ -3911,3 +3911,49 @@ body[data-screen="app"] .bulkbar {
     var(--cc, var(--cb, color-mix(in srgb, var(--c) 52%, #000)))
   );
 }
+
+/* ============ Scheda veicolo: testo leggibile + contorno col tema ============ */
+.gcard {
+  border: 1.5px solid color-mix(in srgb, var(--text) 24%, var(--border));
+}
+.gc-top {
+  color: var(--fg, #fff);
+}
+.gc-top small {
+  opacity: 0.9;
+}
+.gc-edit,
+.gc-del {
+  color: var(--fg, #fff);
+  background: color-mix(in srgb, var(--fg, #fff) 16%, transparent);
+  border: 1px solid color-mix(in srgb, var(--fg, #fff) 30%, transparent);
+}
+.gc-edit:hover {
+  background: color-mix(in srgb, var(--fg, #fff) 28%, transparent);
+}
+.gc-del:hover {
+  background: rgba(220, 38, 38, 0.85);
+  color: #fff;
+}
+.gc-check {
+  color: var(--fg, #fff);
+  text-shadow: none;
+}
+.gc-top::after {
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--fg, #fff) 18%, transparent),
+    transparent 70%
+  );
+}
+
+/* Selettore tipo veicolo: tutte le categorie sempre visibili (a capo) */
+#vCats {
+  flex-wrap: wrap;
+  overflow: visible;
+  padding: 2px 0 10px;
+}
+#vCats .chip {
+  min-height: 36px;
+  padding: 0 14px;
+}
