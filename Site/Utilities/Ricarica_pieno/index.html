@@ -458,7 +458,9 @@
           del primo rifornimento.
         </p>
         <div class="field">
-          <span>Icona (determina il tipo di veicolo)</span>
+          <span>Tipo di veicolo</span>
+          <div class="chips" id="vCats" role="radiogroup" aria-label="Tipo di veicolo"></div>
+          <span>Icona (puoi sceglierne una tra quelle del tipo)</span>
           <div
             class="icon-grid"
             id="vIcons"
@@ -478,14 +480,14 @@
               ><span>Principale</span>
               <div class="colorpick">
                 <input type="color" id="vColor1" aria-label="Colore principale" />
-                <input type="text" id="vHex1" maxlength="20" placeholder="#2563eb o blue" />
+                <input type="text" id="vHex1" maxlength="20" placeholder="scrivi: blu, giallo, #2563eb…" />
               </div></label
             >
             <label class="field"
               ><span>Secondario (mix, facoltativo)</span>
               <div class="colorpick">
                 <input type="color" id="vColor2" aria-label="Colore secondario" />
-                <input type="text" id="vHex2" maxlength="20" placeholder="nessuno" />
+                <input type="text" id="vHex2" maxlength="20" placeholder="nessuno (blu, giallo…)" />
               </div></label
             >
           </div>
@@ -493,7 +495,7 @@
             ><span>Terzo colore (facoltativo)</span>
             <div class="colorpick">
               <input type="color" id="vColor3" aria-label="Terzo colore" />
-              <input type="text" id="vHex3" maxlength="20" placeholder="nessuno" />
+              <input type="text" id="vHex3" maxlength="20" placeholder="nessuno (blu, giallo…)" />
             </div></label
           >
           <div class="btn-row">

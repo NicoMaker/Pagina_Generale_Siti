@@ -48,6 +48,16 @@
     grafite: "#374151",
     argento: "#9ca3af",
     argentata: "#9ca3af",
+    "rosso scuro": "#991b1b",
+    "rosso fuoco": "#ef4444",
+    "giallo oro": "#eab308",
+    "arancio scuro": "#c2410c",
+    "blu elettrico": "#0057ff",
+    "blu chiaro": "#60a5fa",
+    "grigio scuro": "#374151",
+    "grigio chiaro": "#d1d5db",
+    "viola scuro": "#5b21b6",
+    "rosa chiaro": "#f9a8d4",
   };
 
   var ctx = null;
@@ -170,6 +180,84 @@
         handle(37, 21) + handle(24, 21) +
         lampF(56.500, 21.500, 3.500, 2) + lampR(4, 21.500, 2.500, 2.200) +
         wheel(17, 30, 5.500, k) + wheel(47, 30, 5.500, k)
+      );
+    },
+    citycar: function (k) {
+      return (
+        SHADOW +
+        body("M6 28v-6c0-1.500 1-2.800 2.500-3.200L15 17l5-5.200c.8-.8 1.800-1.300 3-1.300h11c1.400 0 2.600.6 3.500 1.600L43 17l10 2.200c2 .4 3.500 2.200 3.500 4.200V28c0 1.100-.9 2-2 2H8c-1.100 0-2-.9-2-2z", k) +
+        '<rect x="6.500" y="25" width="50" height="2.200" rx="1.100" fill="' + k.C + '"/>' +
+        glass("M21 17l3.400-4.300H33V17zM35.500 12.700h2.200c.7 0 1.300.3 1.800.8L42 17h-6.500z", k) +
+        line("M34.200 12.700V17M34 17.500V25") +
+        handle(36.500, 21) + handle(22, 21) +
+        lampF(53.500, 21.500, 3, 2) + lampR(6, 21.500, 2.200, 2.200) +
+        wheel(17, 30, 5.500, k) + wheel(46, 30, 5.500, k)
+      );
+    },
+    familiare: function (k) {
+      return (
+        SHADOW +
+        '<rect x="19" y="9.600" width="24" height="1.300" rx=".65" fill="' + k.C + '"/>' +
+        body("M3 28v-5c0-1.600 1-2.800 2.600-3.200L12 18l3.500-5.500c.8-1.200 2-1.800 3.400-1.800H43c1.300 0 2.500.6 3.300 1.600L49 18l8 2c1.800.4 3 2 3 3.800V28c0 1.100-.9 2-2 2H5c-1.100 0-2-.9-2-2z", k) +
+        '<rect x="4.500" y="25" width="55" height="2.200" rx="1.100" fill="' + k.C + '"/>' +
+        glass("M17 18l3-4.800H30V18zM32 13.200h10.500c.6 0 1.100.3 1.500.7L47 18H32z", k) +
+        line("M31 13.200V18M31 18.500V25M12 22v3") +
+        handle(35, 21.500) + handle(21, 21.500) +
+        lampF(56.500, 21.500, 3.500, 2) + lampR(3, 21.500, 2.500, 2.200) +
+        wheel(15, 30, 5.500, k) + wheel(47, 30, 5.500, k)
+      );
+    },
+    cabrio: function (k) {
+      return (
+        SHADOW +
+        '<path d="M22 19v-4.500c0-.8.6-1.400 1.400-1.400h1.600c.8 0 1.400.6 1.400 1.400V19zM30 19v-4.500c0-.8.6-1.400 1.400-1.400H33c.8 0 1.400.6 1.400 1.400V19z" fill="#1f2937"/>' +
+        body("M3 28v-4c0-1.200.8-2.200 2-2.500L18 19h20l7-3.500c.9-.4 1.900-.3 2.700.3L51 19l7 2.200c1.200.4 2 1.600 2 2.800V28c0 1.100-.9 2-2 2H5c-1.100 0-2-.9-2-2z", k) +
+        '<rect x="3.500" y="25" width="56" height="2" rx="1" fill="' + k.C + '"/>' +
+        glass("M40 18.600l4.600-4.300 1.700.4-.9 3.900z", k) +
+        line("M38 19v6M16 22v3") +
+        handle(33, 21.500) +
+        lampF(56.500, 21.500, 3.500, 2) + lampR(3, 21.500, 2.500, 2) +
+        wheel(16, 30, 5.200, k) + wheel(47, 30, 5.500, k)
+      );
+    },
+    motosport: function (k) {
+      return (
+        SHADOW +
+        '<circle cx="13" cy="29" r="7" fill="none" stroke="#111827" stroke-width="3"/>' +
+        '<circle cx="51" cy="29" r="7" fill="none" stroke="#111827" stroke-width="3"/>' +
+        '<circle cx="13" cy="29" r="4.500" fill="' + k.R + '" opacity=".9"/><circle cx="51" cy="29" r="4.500" fill="' + k.R + '" opacity=".9"/>' +
+        '<circle cx="13" cy="29" r="1.500" fill="#374151"/><circle cx="51" cy="29" r="1.500" fill="#374151"/>' +
+        '<path d="M51 29L45 15" stroke="#9ca3af" stroke-width="2.600" stroke-linecap="round"/>' +
+        '<path d="M13 29L28 26" stroke="' + k.c + '" stroke-width="2.800" stroke-linecap="round"/>' +
+        '<rect x="25" y="22" width="12" height="7" rx="2" fill="#1f2937"/>' +
+        '<path d="M26 28.800L44 27.500" stroke="#cbd5e1" stroke-width="2" stroke-linecap="round"/>' +
+        body("M5 21c0-1.200.9-2.100 2.100-2.100H21l5-4.800c.6-.6 1.400-.9 2.200-.9H35l-.5 7.800H7.100C5.900 21 5 21 5 21z", k) +
+        '<path d="M7 18.500h13l-1.500 1.800H7z" fill="#1f2937"/>' +
+        '<path d="M33 25l2.200-10.500 9.800-2.500 5 3.800-1.800 3.200-2.200 6z" fill="' + k.B + '"/>' +
+        '<path d="M33 25l2.200-10.500 9.800-2.500 5 3.800-1.800 3.200-2.200 6z" fill="' + k.H + '"/>' +
+        glass("M38 13.800l5.800-1.700 1.600 1.300-6.600 1.600z", k) +
+        '<path d="M43 11.500h6" stroke="#374151" stroke-width="2.400" stroke-linecap="round"/>' +
+        lampF(49.500, 17, 2.500, 2) +
+        lampR(3.500, 20, 1.800, 1.600)
+      );
+    },
+    custom: function (k) {
+      return (
+        SHADOW +
+        '<circle cx="12" cy="29" r="7" fill="none" stroke="#111827" stroke-width="3"/>' +
+        '<circle cx="54" cy="29" r="7" fill="none" stroke="#111827" stroke-width="3"/>' +
+        '<circle cx="12" cy="29" r="4.500" fill="' + k.R + '" opacity=".9"/><circle cx="54" cy="29" r="4.500" fill="' + k.R + '" opacity=".9"/>' +
+        '<circle cx="12" cy="29" r="1.500" fill="#374151"/><circle cx="54" cy="29" r="1.500" fill="#374151"/>' +
+        '<path d="M5 28a8 8 0 0 1 13-5" fill="none" stroke="' + k.c + '" stroke-width="2.200" stroke-linecap="round"/>' +
+        '<path d="M54 29L41 14" stroke="#9ca3af" stroke-width="2.400" stroke-linecap="round"/>' +
+        '<path d="M41 14l-1-5h-5" fill="none" stroke="#374151" stroke-width="2.200" stroke-linecap="round" stroke-linejoin="round"/>' +
+        '<path d="M12 29L28 26" stroke="' + k.c + '" stroke-width="2.800" stroke-linecap="round"/>' +
+        '<rect x="23" y="22" width="14" height="7" rx="2.500" fill="' + k.C + '"/>' +
+        '<path d="M22 29.500h22" stroke="#cbd5e1" stroke-width="2" stroke-linecap="round"/>' +
+        '<path d="M10 20.500c0-1.100 5-2.600 12-2.600l1 3.500H10z" fill="#1f2937"/>' +
+        body("M22 19c2-3.500 8-4.500 13-2.500l2.500 1.500-1.500 4.500H22z", k) +
+        '<circle cx="46" cy="16.500" r="2.600" fill="#fef08a"/>' +
+        '<path d="M48 21a8 8 0 0 1 7 6" fill="none" stroke="' + k.c + '" stroke-width="2" stroke-linecap="round"/>'
       );
     },
     suv: function (k) {
@@ -326,18 +414,33 @@
   };
 
   var LIST = [
-    { k: "auto", l: "Auto", t: "auto" },
+    { k: "auto", l: "Berlina", t: "auto" },
+    { k: "citycar", l: "Utilitaria", t: "auto" },
+    { k: "familiare", l: "Station wagon", t: "auto" },
     { k: "suv", l: "SUV", t: "auto" },
     { k: "sportiva", l: "Sportiva", t: "auto" },
+    { k: "cabrio", l: "Cabrio", t: "auto" },
     { k: "pickup", l: "Pickup", t: "furgone" },
     { k: "furgone", l: "Furgone", t: "furgone" },
     { k: "camper", l: "Camper", t: "furgone" },
     { k: "camion", l: "Camion", t: "camion" },
     { k: "moto", l: "Moto", t: "moto" },
+    { k: "motosport", l: "Moto sportiva", t: "moto" },
+    { k: "custom", l: "Custom", t: "moto" },
     { k: "scooter", l: "Scooter", t: "scooter" },
     { k: "trattore", l: "Trattore", t: "trattore" },
     { k: "barca", l: "Barca a vela", t: "barca" },
     { k: "motoscafo", l: "Motoscafo", t: "barca" },
+  ];
+
+  var CATS = [
+    { t: "auto", l: "Auto" },
+    { t: "moto", l: "Moto" },
+    { t: "scooter", l: "Scooter" },
+    { t: "furgone", l: "Furgoni" },
+    { t: "camion", l: "Camion" },
+    { t: "trattore", l: "Trattore" },
+    { t: "barca", l: "Barche" },
   ];
 
   var TYPE_ICON = {
@@ -421,6 +524,12 @@
       '<linearGradient id="' + id + 'g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f0f9ff"/><stop offset="1" stop-color="#7dd3fc"/></linearGradient>' +
       '<linearGradient id="' + id + 'r" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f8fafc"/><stop offset="1" stop-color="#94a3b8"/></linearGradient>' +
       '<linearGradient id="' + id + 'h" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".42"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/></linearGradient>' +
+      '<filter id="' + id + 'o" x="-3" y="-3" width="70" height="46" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">' +
+      '<feMorphology in="SourceAlpha" operator="dilate" radius="1.100" result="d1"/>' +
+      '<feFlood flood-color="#ffffff" flood-opacity=".9"/><feComposite in2="d1" operator="in" result="halo"/>' +
+      '<feMorphology in="SourceAlpha" operator="dilate" radius=".550" result="d2"/>' +
+      '<feFlood flood-color="#0f172a" flood-opacity=".75"/><feComposite in2="d2" operator="in" result="ring"/>' +
+      '<feMerge><feMergeNode in="halo"/><feMergeNode in="ring"/><feMergeNode in="SourceGraphic"/></feMerge></filter>' +
       "</defs>";
     var ctxo = {
       a: a,
@@ -435,7 +544,7 @@
     };
     return (
       '<svg class="vi ' + (cls || "") + '" viewBox="0 0 64 40" role="img" aria-label="' +
-      find(k).l + '" xmlns="http://www.w3.org/2000/svg">' + defs + DRAW[k](ctxo) + "</svg>"
+      find(k).l + '" xmlns="http://www.w3.org/2000/svg">' + defs + '<g filter="url(#' + id + 'o)">' + DRAW[k](ctxo) + "</g></svg>"
     );
   }
 
@@ -448,6 +557,7 @@
     svg: svg,
     forVehicle: forVehicle,
     list: LIST,
+    cats: CATS,
     find: find,
     typeIcon: TYPE_ICON,
     emoji: EMOJI,

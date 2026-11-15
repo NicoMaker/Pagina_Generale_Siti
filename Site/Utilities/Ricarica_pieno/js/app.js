@@ -2039,7 +2039,23 @@
   const vehType = () => I.find(vIcon).t;
 
   function renderIconPicker() {
+    var curType = vehType();
+    $("#vCats").innerHTML = I.cats
+      .map(
+        (c) =>
+          '<button type="button" class="chip' +
+          (c.t === curType ? " active" : "") +
+          '" role="radio" data-cat="' +
+          c.t +
+          '" aria-checked="' +
+          (c.t === curType) +
+          '">' +
+          esc(c.l) +
+          "</button>",
+      )
+      .join("");
     $("#vIcons").innerHTML = I.list
+      .filter((ic) => ic.t === curType)
       .map(
         (ic) =>
           '<button type="button" class="icon-opt" role="radio" data-icon="' +
@@ -2789,6 +2805,13 @@
     bindColors();
     $("#vCancel").addEventListener("click", closeVehicleDialog);
     $("#vDelete").addEventListener("click", onVehicleDelete);
+    $("#vCats").addEventListener("click", (e) => {
+      var b = e.target.closest("[data-cat]");
+      if (!b || b.dataset.cat === vehType()) return;
+      var first = I.list.filter((ic) => ic.t === b.dataset.cat)[0];
+      if (first) vIcon = first.k;
+      renderVehicleColors();
+    });
     $("#vIcons").addEventListener("click", (e) => {
       var b = e.target.closest(".icon-opt");
       if (!b) return;
