@@ -3694,3 +3694,10 @@ body[data-screen="app"] .bulkbar {
     transform: translateX(-50%);
   }
 }
+
+#backIcon {
+  display: inline-block;
+  margin-right: 6px; /* Spazio tra icona e testo */
+  font-size: 1.05rem; /* Dimensione leggermente più piccola per non sbilanciare */
+  vertical-align: -1px; /* Allinea l'emoji al centro del testo */
+}
