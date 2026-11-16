@@ -645,6 +645,14 @@
         {
           "name": "Tracker Abitudini",
           "link": "Site/Utilities/Tracker_Abitudini/index.html"
+        },
+        {
+          "name": "Trasforma Immagine in Immagine con Logo e data",
+          "link": "Site/Utilities/Trasforma_immagine_con_logo_e_data/index.html"
+        },
+        {
+          "name": "Gestione Budget",
+          "link": "Site/Utilities/Gestione-budget/index.html"
         }
       ]
     }

@@ -10,6 +10,7 @@
 - **[Conversioni unità di misura](Convertitore_unità_di_Misura)**
 - **[Cronometro timer](Cronometro_timer)**
 - **[Gestione Auto](Gestione_Auto)**
+- **[Gestione Budget](Gestione-budget)
 - **[Ora giorno tempo reale](Ora_giorno_tempo_reale)**
 - **[Organizzazione Note](Organizzazione_Note)**
 - **[QR Code Generator](QR_Code_Generator)**
@@ -19,3 +20,4 @@
 - **[ToDoList](ToDoList)**
 - **[Tracker Abitudini](Tracker_Abitudini)**
 - **[Traduttore](Traduttore)**
+- **[Trasforma Immagine in Immagine con Logo e data](Trasforma_immagine_con_logo_e_data)**

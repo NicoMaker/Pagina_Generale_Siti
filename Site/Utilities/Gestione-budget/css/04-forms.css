@@ -1,0 +1,30 @@
+/* ---------- campi e pulsanti ---------- */
+input,select{background:var(--surface2);border:1px solid transparent;border-radius:var(--r-sm);padding:10px 12px;min-width:0;width:100%}
+input[type=color]{padding:3px;height:42px;cursor:pointer}
+input[type=checkbox]{width:auto;accent-color:var(--primary)}
+input:focus,select:focus{outline:2px solid var(--accent);outline-offset:0;background:var(--surface)}
+input::placeholder{color:var(--muted);opacity:.8}
+.btn{border:1px solid var(--border);background:var(--surface);border-radius:12px;padding:10px 16px;font-weight:600;cursor:pointer;display:inline-flex;gap:8px;align-items:center;justify-content:center;transition:background .15s,border-color .15s;white-space:nowrap}
+.btn:hover{background:var(--surface2)}
+.btn.primary{background:var(--primary);border-color:var(--primary);color:var(--on-primary)}
+.btn.primary:hover{opacity:.92}
+.btn.danger{color:var(--out)}
+.btn.sm{padding:6px 11px;font-size:.86rem;border-radius:10px}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.iconbtn{border:0;background:var(--surface2);width:38px;height:38px;border-radius:11px;cursor:pointer;display:grid;place-items:center;flex:none;transition:background .15s}
+.iconbtn:hover{background:var(--border)}
+.switch{display:inline-flex;align-items:center;gap:9px;cursor:pointer;font-weight:600;font-size:.88rem;background:var(--surface);border:1px solid var(--border);padding:8px 14px;border-radius:99px}
+
+.form{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;align-items:end}
+.form label{display:flex;flex-direction:column;gap:6px;font-size:.84rem;color:var(--muted);font-weight:600}
+.full{grid-column:1/-1}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--border);background:var(--surface);border-radius:99px;padding:5px 13px 5px 6px;cursor:pointer;font-weight:600;font-size:.88rem;transition:background .15s}
+.chip:hover{background:var(--surface2)}
+.chips:empty{display:none}
+.chip.new{border-style:dashed;cursor:default}
+.chip.more{color:var(--muted)}
+.chip.sel{background:var(--primary);border-color:var(--primary);color:var(--on-primary)}
+.chip .ci{width:24px;height:24px;border-radius:50%}
+.icons .chip .ci{font-size:15px}
+
