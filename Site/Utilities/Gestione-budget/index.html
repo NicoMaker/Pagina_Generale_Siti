@@ -1,301 +1,831 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="it">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Budget · Entrate e Uscite</title>
-<meta name="theme-color" content="#13201E">
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%231F5C52'/%3E%3Cstop offset='1' stop-color='%2312302B'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='url(%23g)'/%3E%3Ctext x='32' y='45' font-family='Arial,Helvetica,sans-serif' font-weight='700' font-size='38' text-anchor='middle' fill='white'%3E%E2%82%AC%3C/text%3E%3Ccircle cx='51' cy='13' r='7' fill='%23E9A93B'/%3E%3C/svg%3E">
-<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%231F5C52'/%3E%3Cstop offset='1' stop-color='%2312302B'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='url(%23g)'/%3E%3Ctext x='32' y='45' font-family='Arial,Helvetica,sans-serif' font-weight='700' font-size='38' text-anchor='middle' fill='white'%3E%E2%82%AC%3C/text%3E%3Ccircle cx='51' cy='13' r='7' fill='%23E9A93B'/%3E%3C/svg%3E">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="color-scheme" content="light dark">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,400,0,0&display=block" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Hanken+Grotesk:wght@400..700&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
-<link rel="stylesheet" href="css/01-base.css">
-<link rel="stylesheet" href="css/02-layout.css">
-<link rel="stylesheet" href="css/03-cards.css">
-<link rel="stylesheet" href="css/04-forms.css">
-<link rel="stylesheet" href="css/05-tables-lists.css">
-<link rel="stylesheet" href="css/06-responsive.css">
-<link rel="stylesheet" href="css/07-theme-modern.css">
-<link rel="stylesheet" href="css/08-transactions.css">
-<link rel="stylesheet" href="css/09-guide.css">
-</head>
-<body>
-<div class="app">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Budget · Entrate e Uscite</title>
+    <meta name="theme-color" content="#13201E" />
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%231F5C52'/%3E%3Cstop offset='1' stop-color='%2312302B'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='url(%23g)'/%3E%3Ctext x='32' y='45' font-family='Arial,Helvetica,sans-serif' font-weight='700' font-size='38' text-anchor='middle' fill='white'%3E%E2%82%AC%3C/text%3E%3Ccircle cx='51' cy='13' r='7' fill='%23E9A93B'/%3E%3C/svg%3E"
+    />
+    <link
+      rel="apple-touch-icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%231F5C52'/%3E%3Cstop offset='1' stop-color='%2312302B'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='url(%23g)'/%3E%3Ctext x='32' y='45' font-family='Arial,Helvetica,sans-serif' font-weight='700' font-size='38' text-anchor='middle' fill='white'%3E%E2%82%AC%3C/text%3E%3Ccircle cx='51' cy='13' r='7' fill='%23E9A93B'/%3E%3C/svg%3E"
+    />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,400,0,0&display=block"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Hanken+Grotesk:wght@400..700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+    <link rel="stylesheet" href="css/01-base.css" />
+    <link rel="stylesheet" href="css/02-layout.css" />
+    <link rel="stylesheet" href="css/03-cards.css" />
+    <link rel="stylesheet" href="css/04-forms.css" />
+    <link rel="stylesheet" href="css/05-tables-lists.css" />
+    <link rel="stylesheet" href="css/06-responsive.css" />
+    <link rel="stylesheet" href="css/07-theme-modern.css" />
+    <link rel="stylesheet" href="css/08-transactions.css" />
+    <link rel="stylesheet" href="css/09-guide.css" />
+  </head>
+  <body>
+    <div class="app">
+      <aside class="side">
+        <div class="logo"><i>€</i> Budget</div>
+        <nav class="nav" id="nav">
+          <button data-page="dash" class="active">
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"
+              /></svg
+            ><span>Dashboard</span>
+          </button>
+          <button data-page="tx">
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"
+              /></svg
+            ><span>Operazioni</span>
+          </button>
+          <button data-page="cat">
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M20.6 13.4l-7.2 7.2a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"
+              />
+              <circle cx="7.5" cy="7.5" r="1.2" /></svg
+            ><span>Categorie</span>
+          </button>
+          <button data-page="tot">
+            <svg viewBox="0 0 24 24"><path d="M18 4H6l7 8-7 8h12" /></svg
+            ><span>Totali</span>
+          </button>
+          <button data-page="rep">
+            <svg viewBox="0 0 24 24">
+              <path d="M4 20V10M10 20V4M16 20v-8M22 20H2" /></svg
+            ><span>Riepilogo</span>
+          </button>
+          <button data-page="data">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 3v12m0 0l-4-4m4 4l4-4M4 17v3h16v-3" /></svg
+            ><span>Dati</span>
+          </button>
+        </nav>
+        <div class="spacer"></div>
+        <button
+          class="btn"
+          id="helpBtn"
+          data-go="help"
+          style="justify-content: center"
+        >
+          <span class="mi">help</span>Guida
+        </button>
+        <button class="btn" id="themeBtn" style="justify-content: center">
+          🌓 Tema
+        </button>
+        <div class="foot">I dati restano sul tuo dispositivo</div>
+      </aside>
 
-<aside class="side">
-  <div class="logo"><i>€</i> Budget</div>
-  <nav class="nav" id="nav">
-    <button data-page="dash" class="active"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg><span>Dashboard</span></button>
-    <button data-page="tx"><svg viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg><span>Operazioni</span></button>
-    <button data-page="cat"><svg viewBox="0 0 24 24"><path d="M20.6 13.4l-7.2 7.2a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/><circle cx="7.5" cy="7.5" r="1.2"/></svg><span>Categorie</span></button>
-    <button data-page="tot"><svg viewBox="0 0 24 24"><path d="M18 4H6l7 8-7 8h12"/></svg><span>Totali</span></button>
-    <button data-page="rep"><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/></svg><span>Riepilogo</span></button>
-    <button data-page="data"><svg viewBox="0 0 24 24"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 17v3h16v-3"/></svg><span>Dati</span></button>
-  </nav>
-  <div class="spacer"></div>
-  <button class="btn" id="helpBtn" data-go="help" style="justify-content:center"><span class="mi">help</span>Guida</button>
-  <button class="btn" id="themeBtn" style="justify-content:center">🌓 Tema</button>
-  <div class="foot">I dati restano sul tuo dispositivo</div>
-</aside>
+      <main>
+        <div class="top">
+          <div class="ttlrow">
+            <div>
+              <h1 id="pageTitle">Dashboard</h1>
+              <div class="sub" id="pageSub"></div>
+            </div>
+            <span class="ttlbtns"
+              ><button
+                class="iconbtn"
+                id="helpTop"
+                data-go="help"
+                title="Guida"
+                aria-label="Guida"
+              >
+                <span class="mi">help</span><span class="fb">?</span></button
+              ><button
+                class="iconbtn"
+                id="themeTop"
+                title="Cambia tema"
+                aria-label="Cambia tema"
+              >
+                🌓
+              </button></span
+            >
+          </div>
+          <div class="period" id="periodBar">
+            <div class="seg">
+              <button id="mDay"><span class="mi">today</span>Giorno</button
+              ><button id="mMonth" class="active">Mensile</button
+              ><button id="mYear">Annuale</button
+              ><button id="mAll">Totale</button>
+            </div>
+            <div class="nav2">
+              <button class="iconbtn" id="prevM" title="Precedente">◀</button>
+              <input type="date" id="day" style="width: 165px; display: none" />
+              <input type="month" id="month" style="width: 165px" />
+              <input
+                type="number"
+                id="year"
+                min="1900"
+                max="2200"
+                step="1"
+                style="width: 105px; display: none"
+              />
+              <button class="iconbtn" id="nextM" title="Successivo">▶</button>
+            </div>
+            <button class="btn sm" id="todayM">Oggi</button>
+          </div>
+        </div>
 
-<main>
-  <div class="top">
-    <div class="ttlrow"><div><h1 id="pageTitle">Dashboard</h1><div class="sub" id="pageSub"></div></div><span class="ttlbtns"><button class="iconbtn" id="helpTop" data-go="help" title="Guida" aria-label="Guida"><span class="mi">help</span><span class="fb">?</span></button><button class="iconbtn" id="themeTop" title="Cambia tema" aria-label="Cambia tema">🌓</button></span></div>
-    <div class="period" id="periodBar">
-      <div class="seg"><button id="mDay"><span class="mi">today</span>Giorno</button><button id="mMonth" class="active">Mensile</button><button id="mYear">Annuale</button><button id="mAll">Totale</button></div>
-      <div class="nav2">
-        <button class="iconbtn" id="prevM" title="Precedente">◀</button>
-        <input type="date" id="day" style="width:165px;display:none">
-        <input type="month" id="month" style="width:165px">
-        <input type="number" id="year" min="1900" max="2200" step="1" style="width:105px;display:none">
-        <button class="iconbtn" id="nextM" title="Successivo">▶</button>
-      </div>
-      <button class="btn sm" id="todayM">Oggi</button>
+        <div class="pages" id="pages">
+          <!-- ================= DASHBOARD ================= -->
+          <section class="page show" id="p-dash">
+            <div class="card welcome mb" id="welcome" style="display: none">
+              <h2>
+                <span class="mi hd">waving_hand</span>Benvenuto! Inizia in 3
+                passi
+              </h2>
+              <div class="steps">
+                <button class="step" data-go="cat">
+                  <b>1</b
+                  ><span
+                    ><strong>Crea le categorie</strong
+                    ><span class="muted"
+                      >Stipendio, Spesa, Affitto… valgono per entrate e
+                      uscite.</span
+                    ></span
+                  >
+                </button>
+                <button class="step" data-go="tx">
+                  <b>2</b
+                  ><span
+                    ><strong>Aggiungi le operazioni</strong
+                    ><span class="muted"
+                      >Scegli data, importo e una categoria.</span
+                    ></span
+                  >
+                </button>
+                <button class="step" data-go="help">
+                  <b>3</b
+                  ><span
+                    ><strong>Leggi la guida</strong
+                    ><span class="muted"
+                      >Giorno, mese, anno, accumulato, esportazione.</span
+                    ></span
+                  >
+                </button>
+              </div>
+            </div>
+            <div class="grid kpis" id="dKpis"></div>
+            <div class="card mb">
+              <h2>Oggi, mese, anno e totale a confronto</h2>
+              <div id="dBoth"></div>
+            </div>
+            <div class="card mb">
+              <div class="row between">
+                <h2 style="margin: 0" id="hBudget">Budget del mese</h2>
+                <div class="row" id="budgetForm">
+                  <input
+                    type="number"
+                    id="budgetInput"
+                    min="0"
+                    step="0.01"
+                    placeholder="Budget spese (€)"
+                    style="width: 170px"
+                  />
+                  <button class="btn" id="budgetSave">Imposta</button>
+                </div>
+              </div>
+              <div class="progress"><div id="budgetBar"></div></div>
+              <div class="muted" id="budgetText"></div>
+            </div>
+            <div class="row between mb">
+              <span class="muted">Grafici</span
+              ><label class="switch"
+                ><input type="checkbox" class="amt" /><span
+                  >Mostra importi nei grafici</span
+                ></label
+              >
+            </div>
+            <div class="grid g3 mb">
+              <div class="card">
+                <h2 id="hFlow">Entrate vs Uscite</h2>
+                <div class="chartbox"><canvas id="cFlow"></canvas></div>
+              </div>
+              <div class="card">
+                <h2>Spese per categoria</h2>
+                <div class="chartbox"><canvas id="cCat"></canvas></div>
+              </div>
+            </div>
+            <div class="card mb">
+              <h2>Da dove arrivano e dove vanno i soldi</h2>
+              <div id="flowD"></div>
+            </div>
+            <div class="grid g2">
+              <div class="card">
+                <h2>Spese per categoria</h2>
+                <div id="top5"></div>
+              </div>
+              <div class="card">
+                <h2><span class="mi hd">history</span>Ultime operazioni</h2>
+                <div class="txlist" id="lastTx"></div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ================= OPERAZIONI ================= -->
+          <section class="page" id="p-tx">
+            <div class="card mb">
+              <h2 id="formTitle">
+                <span class="mi hd">add_circle</span
+                ><span id="formTitleT">Nuova operazione</span>
+              </h2>
+              <form id="txForm" class="form">
+                <input type="hidden" id="fId" /><input
+                  type="hidden"
+                  id="fType"
+                  value="out"
+                />
+                <div class="full">
+                  <div class="seg" id="typeSeg">
+                    <button type="button" data-t="out" class="active">
+                      <span class="mi">south_west</span>Uscita</button
+                    ><button type="button" data-t="in">
+                      <span class="mi">north_east</span>Entrata
+                    </button>
+                  </div>
+                </div>
+                <label
+                  ><span class="lb"><span class="mi">event</span>Data</span
+                  ><input type="date" id="fDate" required
+                /></label>
+                <label
+                  ><span class="lb"
+                    ><span class="mi">payments</span>Importo (€)</span
+                  ><input
+                    type="number"
+                    id="fAmount"
+                    step="0.01"
+                    min="0.01"
+                    placeholder="0,00"
+                    required
+                /></label>
+                <label
+                  ><span class="lb"><span class="mi">sell</span>Categoria</span
+                  ><input
+                    type="text"
+                    id="fCat"
+                    placeholder="Scegli una categoria qui sotto"
+                    required
+                    autocomplete="off"
+                /></label>
+                <label
+                  ><span class="lb"
+                    ><span class="mi">notes</span>Descrizione</span
+                  ><input type="text" id="fDesc" placeholder="Facoltativa"
+                /></label>
+                <div class="full">
+                  <div
+                    class="muted"
+                    id="chipHint"
+                    style="margin-bottom: 8px"
+                  ></div>
+                  <div class="chips" id="chipBox"></div>
+                </div>
+                <div class="row full">
+                  <button type="submit" class="btn primary" id="fSubmit">
+                    <span class="mi">add</span
+                    ><span id="fSubmitT">Aggiungi</span>
+                  </button>
+                  <button
+                    type="button"
+                    class="btn"
+                    id="fCancel"
+                    style="display: none"
+                  >
+                    Annulla
+                  </button>
+                </div>
+              </form>
+            </div>
+            <div class="card">
+              <div class="row between mb">
+                <h2 style="margin: 0">
+                  <span class="mi hd">receipt_long</span>Elenco operazioni
+                </h2>
+                <div class="row">
+                  <input
+                    type="search"
+                    id="qSearch"
+                    placeholder="Cerca…"
+                    style="width: 150px"
+                  />
+                  <select id="qType" style="width: 130px">
+                    <option value="">Tutte</option>
+                    <option value="in">Entrate</option>
+                    <option value="out">Uscite</option>
+                  </select>
+                  <select id="qCat" style="width: 170px"></select>
+                  <label class="muted row" style="gap: 6px; flex-wrap: nowrap"
+                    ><input type="checkbox" id="qAll" /> Tutti i periodi</label
+                  >
+                </div>
+              </div>
+              <div class="txlist" id="tbody"></div>
+              <div class="tablewrap" style="display: contents">
+                <div class="empty" id="emptyMsg" style="display: none">
+                  Nessuna operazione da mostrare.
+                </div>
+              </div>
+              <div class="muted" id="txCount" style="margin-top: 10px"></div>
+              <div class="stiles" id="txBoth"></div>
+            </div>
+          </section>
+
+          <!-- ================= CATEGORIE ================= -->
+          <section class="page" id="p-cat">
+            <div class="card mb">
+              <h2 id="cFormTitle">Nuova categoria</h2>
+              <p class="muted" style="margin: -6px 0 14px">
+                Una categoria vale sia per le entrate sia per le uscite. L'icona
+                viene scelta in automatico dal nome.
+              </p>
+              <form id="catForm" class="form">
+                <input type="hidden" id="cId" />
+                <label
+                  >Nome
+                  <div class="row" style="flex-wrap: nowrap; gap: 10px">
+                    <span class="cdot" id="cPrev"></span
+                    ><input
+                      type="text"
+                      id="cName"
+                      placeholder="Es. Palestra"
+                      required
+                      maxlength="40"
+                      autocomplete="off"
+                    />
+                  </div>
+                  <span
+                    id="cWarn"
+                    class="out"
+                    style="
+                      font-weight: 600;
+                      font-size: 0.84rem;
+                      min-height: 1.2em;
+                    "
+                  ></span
+                ></label>
+                <div class="full chips" id="cSimilar"></div>
+                <div class="row">
+                  <button type="submit" class="btn primary" id="cSubmit">
+                    Aggiungi
+                  </button>
+                  <button
+                    type="button"
+                    class="btn"
+                    id="cCancel"
+                    style="display: none"
+                  >
+                    Annulla
+                  </button>
+                </div>
+              </form>
+            </div>
+            <div class="card mb">
+              <div class="row between mb">
+                <h2 style="margin: 0">Categorie</h2>
+                <span class="muted" id="catPeriodLbl"></span>
+                <button class="btn sm danger" id="catPurge">
+                  Elimina non usate
+                </button>
+              </div>
+              <div class="row between mb" id="selBar">
+                <label class="switch"
+                  ><input type="checkbox" id="selAll" /> Seleziona tutte</label
+                >
+                <button class="btn sm danger" id="catDelSel" disabled>
+                  Elimina selezionate (0)
+                </button>
+              </div>
+              <div class="catgrid" id="catOut"></div>
+            </div>
+            <div class="card">
+              <h2>Importa / esporta categorie</h2>
+              <div class="row">
+                <button class="btn" id="catExport">
+                  Scarica categorie (JSON)
+                </button>
+                <label class="btn" style="cursor: pointer"
+                  >Importa categorie (JSON)<input
+                    type="file"
+                    id="catImport"
+                    accept=".json"
+                    style="display: none"
+                /></label>
+              </div>
+              <p class="muted" style="margin-bottom: 0">
+                L'importazione aggiunge le categorie mancanti senza toccare
+                quelle esistenti.
+              </p>
+            </div>
+          </section>
+
+          <!-- ================= TOTALI ================= -->
+          <section class="page" id="p-tot">
+            <div class="hero mb" id="tHero"></div>
+            <h3 class="sec" id="tMonthT"></h3>
+            <div class="grid kpis" id="tMonth"></div>
+            <h3 class="sec" id="tYearT"></h3>
+            <div class="grid kpis" id="tYear"></div>
+            <div class="card mb">
+              <h2 id="tMonthsT"></h2>
+              <div class="tablewrap" style="max-height: none">
+                <table class="both">
+                  <thead>
+                    <tr>
+                      <th>Mese</th>
+                      <th class="num">Entrate</th>
+                      <th class="num">Uscite</th>
+                      <th class="num">Rimanente</th>
+                      <th class="num">Accumulato</th>
+                    </tr>
+                  </thead>
+                  <tbody id="tMonthsB"></tbody>
+                </table>
+              </div>
+              <div class="muted" style="margin-top: 8px">
+                Accumulato = quello che ti rimane in tutto a fine mese: tutte le
+                entrate meno tutte le uscite fino a lì. Clicca un mese per
+                aprirlo.
+              </div>
+            </div>
+            <div class="card mb">
+              <h2 id="tCatMT"></h2>
+              <div id="tCatM"></div>
+            </div>
+            <div class="card mb">
+              <h2 id="tCatYT"></h2>
+              <div id="tCatY"></div>
+            </div>
+            <div class="card mb">
+              <h2 id="tCatTT"></h2>
+              <div id="tCatT"></div>
+            </div>
+            <h3 class="sec">Totale complessivo</h3>
+            <div class="grid kpis" id="tAll"></div>
+            <div class="row between mb">
+              <span class="muted">Grafici</span
+              ><label class="switch"
+                ><input type="checkbox" class="amt" /><span
+                  >Mostra importi nei grafici</span
+                ></label
+              >
+            </div>
+            <div class="grid g2">
+              <div class="card">
+                <h2 id="tChartT">Guadagni e spese per mese</h2>
+                <div class="chartbox"><canvas id="cTotM"></canvas></div>
+              </div>
+              <div class="card">
+                <h2>
+                  Totali per anno <span class="muted">(clicca un anno)</span>
+                </h2>
+                <div class="tablewrap">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Anno</th>
+                        <th class="num">Guadagni</th>
+                        <th class="num">Spese</th>
+                        <th class="num">Saldo</th>
+                        <th class="num">Cumulato</th>
+                      </tr>
+                    </thead>
+                    <tbody id="tYearsBody"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ================= RIEPILOGO ================= -->
+          <section class="page" id="p-rep">
+            <div class="grid kpis" id="rKpis"></div>
+            <div class="card mb">
+              <h2>Oggi, mese, anno e totale a confronto</h2>
+              <div id="rBoth"></div>
+            </div>
+            <div class="row between mb">
+              <span class="muted">Grafici</span
+              ><label class="switch"
+                ><input type="checkbox" class="amt" /><span
+                  >Mostra importi nei grafici</span
+                ></label
+              >
+            </div>
+            <div class="grid g2 mb">
+              <div class="card">
+                <h2 id="hBal">Andamento saldo cumulato</h2>
+                <div class="chartbox"><canvas id="cBal"></canvas></div>
+              </div>
+              <div class="card">
+                <h2>Entrate per categoria</h2>
+                <div class="chartbox"><canvas id="cInCat"></canvas></div>
+              </div>
+            </div>
+            <div class="card mb">
+              <h2>Da dove arrivano e dove vanno i soldi</h2>
+              <div id="flowR"></div>
+            </div>
+            <div class="card mb">
+              <h2 id="repTitle">Riepilogo</h2>
+              <div class="tablewrap" style="max-height: none">
+                <table>
+                  <thead id="repHead"></thead>
+                  <tbody id="repBody"></tbody>
+                </table>
+              </div>
+            </div>
+            <div class="grid g2">
+              <div class="card">
+                <h2>Spese per categoria</h2>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Categoria</th>
+                      <th class="num">Totale</th>
+                      <th class="num">%</th>
+                    </tr>
+                  </thead>
+                  <tbody id="rOut"></tbody>
+                </table>
+              </div>
+              <div class="card">
+                <h2>Entrate per categoria</h2>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Categoria</th>
+                      <th class="num">Totale</th>
+                      <th class="num">%</th>
+                    </tr>
+                  </thead>
+                  <tbody id="rIn"></tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
+          <!-- ================= DATI ================= -->
+          <section class="page" id="p-help">
+            <div class="card mb helphero">
+              <h2><span class="mi hd">menu_book</span>Come funziona Budget</h2>
+              <p class="muted" style="margin: 0">
+                Tieni traccia di quello che entra e quello che esce. Tutto resta
+                salvato sul tuo dispositivo, nessun account.
+              </p>
+            </div>
+            <div class="faqs">
+              <details class="card faq" open>
+                <summary>
+                  <span class="mi">rocket_launch</span>Da dove comincio
+                </summary>
+                <div class="fbody">
+                  <ol>
+                    <li>
+                      Vai in <b>Categorie</b> e crea quelle che ti servono (es.
+                      Stipendio, Spesa, Affitto). Il colore e l'icona si
+                      scelgono da soli dal nome.
+                    </li>
+                    <li>
+                      Vai in <b>Operazioni</b>, scegli <b>Entrata</b> o
+                      <b>Uscita</b>, inserisci data e importo e tocca una
+                      categoria.
+                    </li>
+                    <li>
+                      Guarda <b>Dashboard</b>, <b>Totali</b> e <b>Riepilogo</b>:
+                      i conti si aggiornano da soli.
+                    </li>
+                  </ol>
+                </div>
+              </details>
+              <details class="card faq">
+                <summary><span class="mi">sell</span>Le categorie</summary>
+                <div class="fbody">
+                  <p>
+                    Una categoria vale sia per le entrate sia per le uscite:
+                    "Stipendio" la usi per incassare, "Spesa" per spendere. Non
+                    puoi creare due categorie con lo stesso nome.
+                  </p>
+                  <p>
+                    Nel modulo di una nuova operazione puoi scegliere
+                    <b>solo categorie già esistenti</b>: scrivi per filtrarle e
+                    toccane una. Le nuove si creano dalla pagina Categorie.
+                  </p>
+                  <p>
+                    Puoi eliminare solo le categorie che non hanno operazioni.
+                    Spunta le caselle per eliminarne più di una, oppure usa
+                    <b>Elimina non usate</b>: quelle in uso (con il lucchetto)
+                    restano.
+                  </p>
+                </div>
+              </details>
+              <details class="card faq">
+                <summary>
+                  <span class="mi">calendar_month</span>Giorno, Mensile,
+                  Annuale, Totale
+                </summary>
+                <div class="fbody">
+                  <p>
+                    In alto scegli quale periodo guardare. <b>Giorno</b> mostra
+                    solo un giorno (di default oggi), <b>Mensile</b> un mese,
+                    <b>Annuale</b> un anno, <b>Totale</b> tutto quello che hai
+                    registrato. Con le frecce ti sposti avanti e indietro, con
+                    <b>Oggi</b> torni al giorno corrente.
+                  </p>
+                  <p>
+                    Sotto ai titoli vedi sempre anche
+                    <b>Oggi · Mese · Anno · Totale</b>, così hai il quadro
+                    completo.
+                  </p>
+                </div>
+              </details>
+              <details class="card faq">
+                <summary>
+                  <span class="mi">savings</span>Rimanente e accumulato
+                </summary>
+                <div class="fbody">
+                  <p>
+                    <b>Rimanente</b> = entrate meno uscite del periodo che
+                    guardi.
+                  </p>
+                  <p>
+                    <b>Accumulato</b> = quello che ti rimane in tutto: tutte le
+                    entrate meno tutte le uscite fino a quella data, riportato
+                    di mese in mese. Lo trovi nel confronto della Dashboard, in
+                    <b>Totali</b> (tabella Mese per mese) e nel Riepilogo.
+                  </p>
+                  <p>
+                    <b>Risparmio</b> è la quota di entrate che non hai speso.
+                  </p>
+                </div>
+              </details>
+              <details class="card faq">
+                <summary>
+                  <span class="mi">edit_note</span>Modificare o eliminare
+                  un'operazione
+                </summary>
+                <div class="fbody">
+                  <p>
+                    In <b>Operazioni</b> tocca la matita per modificarla (il
+                    modulo in alto si riempie) o il cestino per eliminarla.
+                    Prima di eliminare ti viene chiesta conferma.
+                  </p>
+                </div>
+              </details>
+              <details class="card faq">
+                <summary>
+                  <span class="mi">bar_chart</span>Grafici e importi
+                </summary>
+                <div class="fbody">
+                  <p>
+                    Sopra i grafici c'è l'interruttore
+                    <b>Mostra importi nei grafici</b>: lo attivi per vedere le
+                    cifre sulle barre e sulle fette, per categoria.
+                  </p>
+                </div>
+              </details>
+              <details class="card faq">
+                <summary>
+                  <span class="mi">swap_vert</span>Esportare e importare
+                </summary>
+                <div class="fbody">
+                  <p>
+                    In <b>Dati</b> puoi scaricare tutto in <b>JSON</b> (copia di
+                    sicurezza completa con categorie), <b>CSV</b>,
+                    <b>Excel (XLSX)</b> e <b>PDF</b>, per tutto il periodo o
+                    solo per quello che stai guardando. Le categorie si
+                    esportano anche da sole.
+                  </p>
+                  <p>
+                    Per importare scegli un file JSON, CSV o XLSX: puoi unire i
+                    dati a quelli esistenti (i doppioni vengono saltati) oppure
+                    sostituirli. Se nel file ci sono categorie che non hai,
+                    vengono create.
+                  </p>
+                </div>
+              </details>
+              <details class="card faq">
+                <summary><span class="mi">lock</span>I miei dati</summary>
+                <div class="fbody">
+                  <p>
+                    I dati sono salvati solo nel browser di questo dispositivo.
+                    Se cambi dispositivo o cancelli i dati del sito, usa
+                    l'esportazione JSON come copia di sicurezza e reimportala
+                    dove ti serve.
+                  </p>
+                </div>
+              </details>
+            </div>
+          </section>
+
+          <section class="page" id="p-data">
+            <div class="grid g2 mb">
+              <div class="card">
+                <h2>Esporta</h2>
+                <label class="muted"
+                  >Ambito (CSV, XLSX, PDF)
+                  <select id="expScope" style="margin-top: 6px">
+                    <option value="period">Periodo selezionato</option>
+                    <option value="all">Tutti i dati</option>
+                  </select>
+                </label>
+                <p class="muted" id="scopeHint" style="margin: 8px 0 14px"></p>
+                <div class="row">
+                  <button class="btn" id="exJson">JSON completo</button>
+                  <button class="btn" id="exJsonCat">JSON categorie</button>
+                  <button class="btn" id="exCsv">CSV</button>
+                  <button class="btn" id="exXlsx">XLSX</button>
+                  <button class="btn" id="exPdf">PDF</button>
+                </div>
+                <p class="muted" style="margin-bottom: 0">
+                  Il <b>JSON completo</b> è il backup di tutto: operazioni,
+                  categorie e budget.
+                </p>
+              </div>
+              <div class="card">
+                <h2>Importa</h2>
+                <label class="muted"
+                  >Modalità
+                  <select id="impMode" style="margin-top: 6px">
+                    <option value="merge">Unisci (evita duplicati)</option>
+                    <option value="replace">Sostituisci tutto</option>
+                  </select>
+                </label>
+                <div style="margin: 14px 0">
+                  <input
+                    type="file"
+                    id="impFile"
+                    accept=".json,.csv,.xlsx,.xls"
+                  />
+                </div>
+                <p class="muted" style="margin-bottom: 0">
+                  Formati: JSON (backup), CSV, XLSX. Per CSV/XLSX usa le colonne
+                  <b>Data, Tipo, Categoria, Descrizione, Importo</b> (Tipo =
+                  Entrata/Uscita). Le categorie nuove vengono create da sole.
+                </p>
+              </div>
+            </div>
+            <div class="card">
+              <h2>Zona pericolosa</h2>
+              <p class="muted">
+                Cancella operazioni, budget e categorie personalizzate. Fai
+                prima un backup JSON.
+              </p>
+              <button class="btn danger" id="wipe">
+                Cancella tutti i dati
+              </button>
+            </div>
+          </section>
+        </div>
+      </main>
     </div>
-  </div>
-
-  <div class="pages" id="pages">
-  <!-- ================= DASHBOARD ================= -->
-  <section class="page show" id="p-dash">
-    <div class="card welcome mb" id="welcome" style="display:none">
-      <h2><span class="mi hd">waving_hand</span>Benvenuto! Inizia in 3 passi</h2>
-      <div class="steps">
-        <button class="step" data-go="cat"><b>1</b><span><strong>Crea le categorie</strong><span class="muted">Stipendio, Spesa, Affitto… valgono per entrate e uscite.</span></span></button>
-        <button class="step" data-go="tx"><b>2</b><span><strong>Aggiungi le operazioni</strong><span class="muted">Scegli data, importo e una categoria.</span></span></button>
-        <button class="step" data-go="help"><b>3</b><span><strong>Leggi la guida</strong><span class="muted">Giorno, mese, anno, accumulato, esportazione.</span></span></button>
-      </div>
-    </div>
-    <div class="grid kpis" id="dKpis"></div>
-    <div class="card mb"><h2>Oggi, mese, anno e totale a confronto</h2><div id="dBoth"></div></div>
-    <div class="card mb">
-      <div class="row between">
-        <h2 style="margin:0" id="hBudget">Budget del mese</h2>
-        <div class="row" id="budgetForm">
-          <input type="number" id="budgetInput" min="0" step="0.01" placeholder="Budget spese (€)" style="width:170px">
-          <button class="btn" id="budgetSave">Imposta</button>
+    <div class="modal" id="modal" hidden>
+      <div class="mbox" role="dialog" aria-modal="true" aria-labelledby="mText">
+        <div class="mtext" id="mText"></div>
+        <div class="row" style="justify-content: flex-end">
+          <button class="btn" id="mNo">Annulla</button
+          ><button class="btn primary" id="mYes">Elimina</button>
         </div>
       </div>
-      <div class="progress"><div id="budgetBar"></div></div>
-      <div class="muted" id="budgetText"></div>
     </div>
-    <div class="row between mb"><span class="muted">Grafici</span><label class="switch"><input type="checkbox" class="amt"><span>Mostra importi nei grafici</span></label></div>
-    <div class="grid g3 mb">
-      <div class="card"><h2 id="hFlow">Entrate vs Uscite</h2><div class="chartbox"><canvas id="cFlow"></canvas></div></div>
-      <div class="card"><h2>Spese per categoria</h2><div class="chartbox"><canvas id="cCat"></canvas></div></div>
-    </div>
-    <div class="card mb"><h2>Da dove arrivano e dove vanno i soldi</h2><div id="flowD"></div></div>
-    <div class="grid g2">
-      <div class="card"><h2>Spese per categoria</h2><div id="top5"></div></div>
-      <div class="card"><h2><span class="mi hd">history</span>Ultime operazioni</h2><div class="txlist" id="lastTx"></div></div>
-    </div>
-  </section>
+    <div class="toast" id="toast"></div>
 
-  <!-- ================= OPERAZIONI ================= -->
-  <section class="page" id="p-tx">
-    <div class="card mb">
-      <h2 id="formTitle"><span class="mi hd">add_circle</span><span id="formTitleT">Nuova operazione</span></h2>
-      <form id="txForm" class="form">
-        <input type="hidden" id="fId"><input type="hidden" id="fType" value="out">
-        <div class="full"><div class="seg" id="typeSeg"><button type="button" data-t="out" class="active"><span class="mi">south_west</span>Uscita</button><button type="button" data-t="in"><span class="mi">north_east</span>Entrata</button></div></div>
-        <label><span class="lb"><span class="mi">event</span>Data</span><input type="date" id="fDate" required></label>
-        <label><span class="lb"><span class="mi">payments</span>Importo (€)</span><input type="number" id="fAmount" step="0.01" min="0.01" placeholder="0,00" required></label>
-        <label><span class="lb"><span class="mi">sell</span>Categoria</span><input type="text" id="fCat" placeholder="Scegli una categoria qui sotto" required autocomplete="off"></label>
-        <label><span class="lb"><span class="mi">notes</span>Descrizione</span><input type="text" id="fDesc" placeholder="Facoltativa"></label>
-        <div class="full"><div class="muted" id="chipHint" style="margin-bottom:8px"></div><div class="chips" id="chipBox"></div></div>
-        <div class="row full">
-          <button type="submit" class="btn primary" id="fSubmit"><span class="mi">add</span><span id="fSubmitT">Aggiungi</span></button>
-          <button type="button" class="btn" id="fCancel" style="display:none">Annulla</button>
-        </div>
-      </form>
-    </div>
-    <div class="card">
-      <div class="row between mb">
-        <h2 style="margin:0"><span class="mi hd">receipt_long</span>Elenco operazioni</h2>
-        <div class="row">
-          <input type="search" id="qSearch" placeholder="Cerca…" style="width:150px">
-          <select id="qType" style="width:130px"><option value="">Tutte</option><option value="in">Entrate</option><option value="out">Uscite</option></select>
-          <select id="qCat" style="width:170px"></select>
-          <label class="muted row" style="gap:6px;flex-wrap:nowrap"><input type="checkbox" id="qAll"> Tutti i periodi</label>
-        </div>
-      </div>
-      <div class="txlist" id="tbody"></div>
-      <div class="tablewrap" style="display:contents">
-        <div class="empty" id="emptyMsg" style="display:none">Nessuna operazione da mostrare.</div>
-      </div>
-      <div class="muted" id="txCount" style="margin-top:10px"></div>
-      <div class="stiles" id="txBoth"></div>
-    </div>
-  </section>
-
-  <!-- ================= CATEGORIE ================= -->
-  <section class="page" id="p-cat">
-    <div class="card mb">
-      <h2 id="cFormTitle">Nuova categoria</h2>
-      <p class="muted" style="margin:-6px 0 14px">Una categoria vale sia per le entrate sia per le uscite. L'icona viene scelta in automatico dal nome.</p>
-      <form id="catForm" class="form">
-        <input type="hidden" id="cId">
-        <label>Nome<div class="row" style="flex-wrap:nowrap;gap:10px"><span class="cdot" id="cPrev"></span><input type="text" id="cName" placeholder="Es. Palestra" required maxlength="40" autocomplete="off"></div><span id="cWarn" class="out" style="font-weight:600;font-size:.84rem;min-height:1.2em"></span></label>
-        <div class="full chips" id="cSimilar"></div>
-        <div class="row">
-          <button type="submit" class="btn primary" id="cSubmit">Aggiungi</button>
-          <button type="button" class="btn" id="cCancel" style="display:none">Annulla</button>
-        </div>
-      </form>
-    </div>
-    <div class="card mb">
-      <div class="row between mb">
-        <h2 style="margin:0">Categorie</h2><span class="muted" id="catPeriodLbl"></span>
-        <button class="btn sm danger" id="catPurge">Elimina non usate</button>
-      </div>
-      <div class="row between mb" id="selBar">
-        <label class="switch"><input type="checkbox" id="selAll"> Seleziona tutte</label>
-        <button class="btn sm danger" id="catDelSel" disabled>Elimina selezionate (0)</button>
-      </div>
-      <div class="catgrid" id="catOut"></div>
-    </div>
-    <div class="card">
-      <h2>Importa / esporta categorie</h2>
-      <div class="row">
-        <button class="btn" id="catExport">Scarica categorie (JSON)</button>
-        <label class="btn" style="cursor:pointer">Importa categorie (JSON)<input type="file" id="catImport" accept=".json" style="display:none"></label>
-      </div>
-      <p class="muted" style="margin-bottom:0">L'importazione aggiunge le categorie mancanti senza toccare quelle esistenti.</p>
-    </div>
-  </section>
-
-  <!-- ================= TOTALI ================= -->
-  <section class="page" id="p-tot">
-    <div class="hero mb" id="tHero"></div>
-    <h3 class="sec" id="tMonthT"></h3><div class="grid kpis" id="tMonth"></div>
-    <h3 class="sec" id="tYearT"></h3><div class="grid kpis" id="tYear"></div>
-    <div class="card mb"><h2 id="tMonthsT"></h2><div class="tablewrap" style="max-height:none"><table class="both"><thead><tr><th>Mese</th><th class="num">Entrate</th><th class="num">Uscite</th><th class="num">Rimanente</th><th class="num">Accumulato</th></tr></thead><tbody id="tMonthsB"></tbody></table></div><div class="muted" style="margin-top:8px">Accumulato = quello che ti rimane in tutto a fine mese: tutte le entrate meno tutte le uscite fino a lì. Clicca un mese per aprirlo.</div></div>
-    <div class="card mb"><h2 id="tCatMT"></h2><div id="tCatM"></div></div>
-    <div class="card mb"><h2 id="tCatYT"></h2><div id="tCatY"></div></div>
-    <div class="card mb"><h2 id="tCatTT"></h2><div id="tCatT"></div></div>
-    <h3 class="sec">Totale complessivo</h3><div class="grid kpis" id="tAll"></div>
-    <div class="row between mb"><span class="muted">Grafici</span><label class="switch"><input type="checkbox" class="amt"><span>Mostra importi nei grafici</span></label></div>
-    <div class="grid g2">
-      <div class="card"><h2 id="tChartT">Guadagni e spese per mese</h2><div class="chartbox"><canvas id="cTotM"></canvas></div></div>
-      <div class="card"><h2>Totali per anno <span class="muted">(clicca un anno)</span></h2><div class="tablewrap"><table><thead><tr><th>Anno</th><th class="num">Guadagni</th><th class="num">Spese</th><th class="num">Saldo</th><th class="num">Cumulato</th></tr></thead><tbody id="tYearsBody"></tbody></table></div></div>
-    </div>
-  </section>
-
-  <!-- ================= RIEPILOGO ================= -->
-  <section class="page" id="p-rep">
-    <div class="grid kpis" id="rKpis"></div>
-    <div class="card mb"><h2>Oggi, mese, anno e totale a confronto</h2><div id="rBoth"></div></div>
-    <div class="row between mb"><span class="muted">Grafici</span><label class="switch"><input type="checkbox" class="amt"><span>Mostra importi nei grafici</span></label></div>
-    <div class="grid g2 mb">
-      <div class="card"><h2 id="hBal">Andamento saldo cumulato</h2><div class="chartbox"><canvas id="cBal"></canvas></div></div>
-      <div class="card"><h2>Entrate per categoria</h2><div class="chartbox"><canvas id="cInCat"></canvas></div></div>
-    </div>
-    <div class="card mb"><h2>Da dove arrivano e dove vanno i soldi</h2><div id="flowR"></div></div>
-    <div class="card mb">
-      <h2 id="repTitle">Riepilogo</h2>
-      <div class="tablewrap" style="max-height:none"><table><thead id="repHead"></thead><tbody id="repBody"></tbody></table></div>
-    </div>
-    <div class="grid g2">
-      <div class="card"><h2>Spese per categoria</h2><table><thead><tr><th>Categoria</th><th class="num">Totale</th><th class="num">%</th></tr></thead><tbody id="rOut"></tbody></table></div>
-      <div class="card"><h2>Entrate per categoria</h2><table><thead><tr><th>Categoria</th><th class="num">Totale</th><th class="num">%</th></tr></thead><tbody id="rIn"></tbody></table></div>
-    </div>
-  </section>
-
-  <!-- ================= DATI ================= -->
-  <section class="page" id="p-help">
-    <div class="card mb helphero"><h2><span class="mi hd">menu_book</span>Come funziona Budget</h2>
-      <p class="muted" style="margin:0">Tieni traccia di quello che entra e quello che esce. Tutto resta salvato sul tuo dispositivo, nessun account.</p></div>
-    <div class="faqs">
-      <details class="card faq" open><summary><span class="mi">rocket_launch</span>Da dove comincio</summary>
-        <div class="fbody"><ol><li>Vai in <b>Categorie</b> e crea quelle che ti servono (es. Stipendio, Spesa, Affitto). Il colore e l'icona si scelgono da soli dal nome.</li>
-        <li>Vai in <b>Operazioni</b>, scegli <b>Entrata</b> o <b>Uscita</b>, inserisci data e importo e tocca una categoria.</li>
-        <li>Guarda <b>Dashboard</b>, <b>Totali</b> e <b>Riepilogo</b>: i conti si aggiornano da soli.</li></ol></div></details>
-      <details class="card faq"><summary><span class="mi">sell</span>Le categorie</summary>
-        <div class="fbody"><p>Una categoria vale sia per le entrate sia per le uscite: "Stipendio" la usi per incassare, "Spesa" per spendere. Non puoi creare due categorie con lo stesso nome.</p>
-        <p>Nel modulo di una nuova operazione puoi scegliere <b>solo categorie già esistenti</b>: scrivi per filtrarle e toccane una. Le nuove si creano dalla pagina Categorie.</p>
-        <p>Puoi eliminare solo le categorie che non hanno operazioni. Spunta le caselle per eliminarne più di una, oppure usa <b>Elimina non usate</b>: quelle in uso (con il lucchetto) restano.</p></div></details>
-      <details class="card faq"><summary><span class="mi">calendar_month</span>Giorno, Mensile, Annuale, Totale</summary>
-        <div class="fbody"><p>In alto scegli quale periodo guardare. <b>Giorno</b> mostra solo un giorno (di default oggi), <b>Mensile</b> un mese, <b>Annuale</b> un anno, <b>Totale</b> tutto quello che hai registrato. Con le frecce ti sposti avanti e indietro, con <b>Oggi</b> torni al giorno corrente.</p>
-        <p>Sotto ai titoli vedi sempre anche <b>Oggi · Mese · Anno · Totale</b>, così hai il quadro completo.</p></div></details>
-      <details class="card faq"><summary><span class="mi">savings</span>Rimanente e accumulato</summary>
-        <div class="fbody"><p><b>Rimanente</b> = entrate meno uscite del periodo che guardi.</p>
-        <p><b>Accumulato</b> = quello che ti rimane in tutto: tutte le entrate meno tutte le uscite fino a quella data, riportato di mese in mese. Lo trovi nel confronto della Dashboard, in <b>Totali</b> (tabella Mese per mese) e nel Riepilogo.</p>
-        <p><b>Risparmio</b> è la quota di entrate che non hai speso.</p></div></details>
-      <details class="card faq"><summary><span class="mi">edit_note</span>Modificare o eliminare un'operazione</summary>
-        <div class="fbody"><p>In <b>Operazioni</b> tocca la matita per modificarla (il modulo in alto si riempie) o il cestino per eliminarla. Prima di eliminare ti viene chiesta conferma.</p></div></details>
-      <details class="card faq"><summary><span class="mi">bar_chart</span>Grafici e importi</summary>
-        <div class="fbody"><p>Sopra i grafici c'è l'interruttore <b>Mostra importi nei grafici</b>: lo attivi per vedere le cifre sulle barre e sulle fette, per categoria.</p></div></details>
-      <details class="card faq"><summary><span class="mi">swap_vert</span>Esportare e importare</summary>
-        <div class="fbody"><p>In <b>Dati</b> puoi scaricare tutto in <b>JSON</b> (copia di sicurezza completa con categorie), <b>CSV</b>, <b>Excel (XLSX)</b> e <b>PDF</b>, per tutto il periodo o solo per quello che stai guardando. Le categorie si esportano anche da sole.</p>
-        <p>Per importare scegli un file JSON, CSV o XLSX: puoi unire i dati a quelli esistenti (i doppioni vengono saltati) oppure sostituirli. Se nel file ci sono categorie che non hai, vengono create.</p></div></details>
-      <details class="card faq"><summary><span class="mi">lock</span>I miei dati</summary>
-        <div class="fbody"><p>I dati sono salvati solo nel browser di questo dispositivo. Se cambi dispositivo o cancelli i dati del sito, usa l'esportazione JSON come copia di sicurezza e reimportala dove ti serve.</p></div></details>
-    </div>
-  </section>
-
-  <section class="page" id="p-data">
-    <div class="grid g2 mb">
-      <div class="card">
-        <h2>Esporta</h2>
-        <label class="muted">Ambito (CSV, XLSX, PDF)
-          <select id="expScope" style="margin-top:6px"><option value="period">Periodo selezionato</option><option value="all">Tutti i dati</option></select>
-        </label>
-        <p class="muted" id="scopeHint" style="margin:8px 0 14px"></p>
-        <div class="row">
-          <button class="btn" id="exJson">JSON completo</button>
-          <button class="btn" id="exJsonCat">JSON categorie</button>
-          <button class="btn" id="exCsv">CSV</button>
-          <button class="btn" id="exXlsx">XLSX</button>
-          <button class="btn" id="exPdf">PDF</button>
-        </div>
-        <p class="muted" style="margin-bottom:0">Il <b>JSON completo</b> è il backup di tutto: operazioni, categorie e budget.</p>
-      </div>
-      <div class="card">
-        <h2>Importa</h2>
-        <label class="muted">Modalità
-          <select id="impMode" style="margin-top:6px"><option value="merge">Unisci (evita duplicati)</option><option value="replace">Sostituisci tutto</option></select>
-        </label>
-        <div style="margin:14px 0"><input type="file" id="impFile" accept=".json,.csv,.xlsx,.xls"></div>
-        <p class="muted" style="margin-bottom:0">Formati: JSON (backup), CSV, XLSX. Per CSV/XLSX usa le colonne <b>Data, Tipo, Categoria, Descrizione, Importo</b> (Tipo = Entrata/Uscita). Le categorie nuove vengono create da sole.</p>
-      </div>
-    </div>
-    <div class="card">
-      <h2>Zona pericolosa</h2>
-      <p class="muted">Cancella operazioni, budget e categorie personalizzate. Fai prima un backup JSON.</p>
-      <button class="btn danger" id="wipe">Cancella tutti i dati</button>
-    </div>
-  </section>
-  </div>
-</main>
-</div>
-<div class="modal" id="modal" hidden>
-  <div class="mbox" role="dialog" aria-modal="true" aria-labelledby="mText">
-    <div class="mtext" id="mText"></div>
-    <div class="row" style="justify-content:flex-end"><button class="btn" id="mNo">Annulla</button><button class="btn primary" id="mYes">Elimina</button></div>
-  </div>
-</div>
-<div class="toast" id="toast"></div>
-
-<script src="js/core/state.js"></script>
-<script src="js/core/utils.js"></script>
-<script src="js/core/categories.js"></script>
-<script src="js/ui/theme.js"></script>
-<script src="js/ui/period.js"></script>
-<script src="js/ui/render.js"></script>
-<script src="js/pages/dashboard.js"></script>
-<script src="js/pages/transactions.js"></script>
-<script src="js/pages/categories.js"></script>
-<script src="js/pages/totals.js"></script>
-<script src="js/pages/summary.js"></script>
-<script src="js/pages/charts.js"></script>
-<script src="js/data/export.js"></script>
-<script src="js/data/import.js"></script>
-<script src="js/app.js"></script>
-</body>
+    <script src="js/core/state.js"></script>
+    <script src="js/core/utils.js"></script>
+    <script src="js/core/categories.js"></script>
+    <script src="js/ui/theme.js"></script>
+    <script src="js/ui/period.js"></script>
+    <script src="js/ui/render.js"></script>
+    <script src="js/pages/dashboard.js"></script>
+    <script src="js/pages/transactions.js"></script>
+    <script src="js/pages/categories.js"></script>
+    <script src="js/pages/totals.js"></script>
+    <script src="js/pages/summary.js"></script>
+    <script src="js/pages/charts.js"></script>
+    <script src="js/data/export.js"></script>
+    <script src="js/data/import.js"></script>
+    <script src="js/app.js"></script>
+  </body>
 </html>

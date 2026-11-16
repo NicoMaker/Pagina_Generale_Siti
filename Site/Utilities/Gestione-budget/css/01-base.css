@@ -5,27 +5,92 @@
    Categorie (.catcard .chip .cdot) · Tabelle (.both .tablewrap)
    Form (input .btn .iconbtn .switch) · Feedback (.modal .toast .empty)
    ===================================================================== */
-:root{
-  --bg:#F2F4F1; --surface:#FFFFFF; --surface2:#E9EDE9; --text:#13201E; --muted:#5F6F6B; --border:#DADFDA;
-  --primary:#17403B; --on-primary:#FFFFFF; --accent:#E9A93B;
-  --in:#13885A; --out:#D9442F; --warn:#E9A93B;
-  --hero:#13201E; --on-hero:#F2F7F5; --hero-track:rgba(255,255,255,.14);
-  --r-lg:24px; --r-md:16px; --r-sm:11px;
-  --font-body:"Hanken Grotesk",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
-  --font-display:"Bricolage Grotesque","Hanken Grotesk",system-ui,-apple-system,"Segoe UI",sans-serif;
+:root {
+  --bg: #f2f4f1;
+  --surface: #ffffff;
+  --surface2: #e9ede9;
+  --text: #13201e;
+  --muted: #5f6f6b;
+  --border: #dadfda;
+  --primary: #17403b;
+  --on-primary: #ffffff;
+  --accent: #e9a93b;
+  --in: #13885a;
+  --out: #d9442f;
+  --warn: #e9a93b;
+  --hero: #13201e;
+  --on-hero: #f2f7f5;
+  --hero-track: rgba(255, 255, 255, 0.14);
+  --r-lg: 24px;
+  --r-md: 16px;
+  --r-sm: 11px;
+  --font-body:
+    "Hanken Grotesk", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-display:
+    "Bricolage Grotesque", "Hanken Grotesk", system-ui, -apple-system,
+    "Segoe UI", sans-serif;
 }
-[data-theme="dark"]{
-  --bg:#0B1412; --surface:#121F1D; --surface2:#1A2B28; --text:#E7EFEC; --muted:#8CA09B; --border:#243633;
-  --primary:#BEE6DA; --on-primary:#0B1412; --accent:#F0B955;
-  --in:#3DD598; --out:#FF7A66; --warn:#F0B955;
-  --hero:#1C332F; --on-hero:#F2F7F5; --hero-track:rgba(255,255,255,.12);
+[data-theme="dark"] {
+  --bg: #0b1412;
+  --surface: #121f1d;
+  --surface2: #1a2b28;
+  --text: #e7efec;
+  --muted: #8ca09b;
+  --border: #243633;
+  --primary: #bee6da;
+  --on-primary: #0b1412;
+  --accent: #f0b955;
+  --in: #3dd598;
+  --out: #ff7a66;
+  --warn: #f0b955;
+  --hero: #1c332f;
+  --on-hero: #f2f7f5;
+  --hero-track: rgba(255, 255, 255, 0.12);
 }
-*{box-sizing:border-box}
-html,body{height:100%;overflow:hidden;overscroll-behavior:none}
-html{-webkit-text-size-adjust:100%}
-body{margin:0;font-family:var(--font-body);font-size:15px;line-height:1.5;background:var(--bg);color:var(--text);font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased;touch-action:manipulation}
-h1,h2,h3,h4{font-family:var(--font-display);margin:0}
-button,input,select{font:inherit;color:inherit}
-:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.app{display:grid;grid-template-columns:236px minmax(0,1fr);height:100vh;height:100dvh;overflow:hidden}
-
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+html {
+  -webkit-text-size-adjust: 100%;
+}
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.5;
+  background: var(--bg);
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+  -webkit-font-smoothing: antialiased;
+  touch-action: manipulation;
+}
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  margin: 0;
+}
+button,
+input,
+select {
+  font: inherit;
+  color: inherit;
+}
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.app {
+  display: grid;
+  grid-template-columns: 236px minmax(0, 1fr);
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+}

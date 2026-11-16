@@ -1,44 +1,177 @@
 /* Animazioni globali: keyframes, sfondo vivo, ingresso dell'app */
-@keyframes fadeIn { from { opacity: 0; } }
-@keyframes fadeUp { from { opacity: 0; transform: translateY(18px); } }
-@keyframes dropIn { from { opacity: 0; transform: translateY(-14px); } }
-@keyframes popIn { 0% { transform: scale(.6); opacity: 0; } 70% { transform: scale(1.08); } }
-@keyframes fieldIn { from { opacity: 0; transform: translateY(-6px); } }
-@keyframes spin { to { transform: rotate(360deg); } }
-@keyframes shimmer { to { background-position: -200% 0; } }
-@keyframes shimmerX { from { transform: translateX(-100%); } to { transform: translateX(100%); } }
-@keyframes pulse { 50% { box-shadow: 0 0 0 8px color-mix(in srgb, var(--accent) 0%, transparent), 0 0 40px color-mix(in srgb, var(--accent) 35%, transparent); } }
-@keyframes drift { to { transform: translate3d(-2%, 3%, 0) scale(1.1); } }
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+}
+@keyframes dropIn {
+  from {
+    opacity: 0;
+    transform: translateY(-14px);
+  }
+}
+@keyframes popIn {
+  0% {
+    transform: scale(0.6);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.08);
+  }
+}
+@keyframes fieldIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes shimmer {
+  to {
+    background-position: -200% 0;
+  }
+}
+@keyframes shimmerX {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+@keyframes pulse {
+  50% {
+    box-shadow:
+      0 0 0 8px color-mix(in srgb, var(--accent) 0%, transparent),
+      0 0 40px color-mix(in srgb, var(--accent) 35%, transparent);
+  }
+}
+@keyframes drift {
+  to {
+    transform: translate3d(-2%, 3%, 0) scale(1.1);
+  }
+}
 
-body::before { inset: -8%; animation: drift 24s ease-in-out infinite alternate; will-change: transform; }
+body::before {
+  inset: -8%;
+  animation: drift 24s ease-in-out infinite alternate;
+  will-change: transform;
+}
 
 /* Ingresso a cascata (parte mentre la schermata di avvio svanisce) */
-ls-header { animation: dropIn .7s var(--ease) .95s backwards; }
-.sidebar > ls-logo-panel { animation: fadeUp .7s var(--ease) 1.05s backwards; }
-.sidebar > ls-settings-panel { animation: fadeUp .7s var(--ease) 1.2s backwards; }
-ls-dropzone { animation: fadeUp .8s var(--ease) 1.1s backwards; }
+ls-header {
+  animation: dropIn 0.7s var(--ease) 0.95s backwards;
+}
+.sidebar > ls-logo-panel {
+  animation: fadeUp 0.7s var(--ease) 1.05s backwards;
+}
+.sidebar > ls-settings-panel {
+  animation: fadeUp 0.7s var(--ease) 1.2s backwards;
+}
+ls-dropzone {
+  animation: fadeUp 0.8s var(--ease) 1.1s backwards;
+}
 
 /* Pulsanti: riflesso al passaggio, pressione elastica */
-.btn { position: relative; overflow: hidden; }
-.btn--primary::after { content: ""; position: absolute; inset: 0; background: linear-gradient(105deg, transparent 35%, rgba(255,255,255,.35) 50%, transparent 65%); transform: translateX(-120%); transition: transform .7s var(--ease); pointer-events: none; }
-.btn--primary:hover::after { transform: translateX(120%); }
-.btn:active { transform: scale(.97); }
+.btn {
+  position: relative;
+  overflow: hidden;
+}
+.btn--primary::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 35%,
+    rgba(255, 255, 255, 0.35) 50%,
+    transparent 65%
+  );
+  transform: translateX(-120%);
+  transition: transform 0.7s var(--ease);
+  pointer-events: none;
+}
+.btn--primary:hover::after {
+  transform: translateX(120%);
+}
+.btn:active {
+  transform: scale(0.97);
+}
 
 /* ---------- Cambio tema: onda circolare ---------- */
-::view-transition-old(root), ::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
-::view-transition-new(root) { animation: themeReveal .75s var(--ease); }
-@keyframes themeReveal { from { clip-path: circle(0 at var(--vt-x, 95%) var(--vt-y, 5%)); } to { clip-path: circle(150vmax at var(--vt-x, 95%) var(--vt-y, 5%)); } }
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+::view-transition-new(root) {
+  animation: themeReveal 0.75s var(--ease);
+}
+@keyframes themeReveal {
+  from {
+    clip-path: circle(0 at var(--vt-x, 95%) var(--vt-y, 5%));
+  }
+  to {
+    clip-path: circle(150vmax at var(--vt-x, 95%) var(--vt-y, 5%));
+  }
+}
 
 /* ---------- Dettagli moderni ---------- */
-html { scrollbar-gutter: stable; scroll-behavior: smooth; }
-h1, h2, .drop h2, .splash__name { text-wrap: balance; }
-p, small, .switch__label small { text-wrap: pretty; }
-::selection { background: color-mix(in srgb, var(--accent) 45%, transparent); }
+html {
+  scrollbar-gutter: stable;
+  scroll-behavior: smooth;
+}
+h1,
+h2,
+.drop h2,
+.splash__name {
+  text-wrap: balance;
+}
+p,
+small,
+.switch__label small {
+  text-wrap: pretty;
+}
+::selection {
+  background: color-mix(in srgb, var(--accent) 45%, transparent);
+}
 @supports (animation-timeline: scroll()) {
-  ls-header::after { content: ""; position: absolute; inset: auto 0 -1px; height: 1px; background: var(--accent-grad); opacity: 0; animation: hdrLine linear both; animation-timeline: scroll(root); animation-range: 0 160px; }
-  @keyframes hdrLine { to { opacity: .9; } }
+  ls-header::after {
+    content: "";
+    position: absolute;
+    inset: auto 0 -1px;
+    height: 1px;
+    background: var(--accent-grad);
+    opacity: 0;
+    animation: hdrLine linear both;
+    animation-timeline: scroll(root);
+    animation-range: 0 160px;
+  }
+  @keyframes hdrLine {
+    to {
+      opacity: 0.9;
+    }
+  }
 }
 @media (prefers-contrast: more) {
-  :root { --border: rgba(255,255,255,.35); --border-strong: rgba(255,255,255,.6); --muted: #c3cadb; }
-  :root[data-theme="light"] { --border: rgba(20,24,40,.4); --border-strong: rgba(20,24,40,.7); --muted: #3b4256; }
+  :root {
+    --border: rgba(255, 255, 255, 0.35);
+    --border-strong: rgba(255, 255, 255, 0.6);
+    --muted: #c3cadb;
+  }
+  :root[data-theme="light"] {
+    --border: rgba(20, 24, 40, 0.4);
+    --border-strong: rgba(20, 24, 40, 0.7);
+    --muted: #3b4256;
+  }
 }

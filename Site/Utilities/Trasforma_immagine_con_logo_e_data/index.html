@@ -1,106 +1,170 @@
 <!doctype html>
 <html lang="it" data-theme="dark">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#0e0b0d" media="(prefers-color-scheme: dark)">
-  <meta name="theme-color" content="#fbf6f4" media="(prefers-color-scheme: light)">
-  <meta name="color-scheme" content="dark light">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-title" content="Logo Stamp">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="Logo Stamp — logo, data e luogo sulle tue foto">
-  <meta property="og:description" content="Metti il tuo logo su una o mille foto, con data e luogo letti dalla foto. Tutto nel browser.">
-  <meta name="twitter:card" content="summary">
-  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
-  <link rel="icon" href="icons/favicon-32.png" type="image/png" sizes="32x32">
-  <link rel="alternate icon" href="favicon.ico" sizes="any">
-  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
-  <link rel="manifest" href="manifest.webmanifest">
-  <title>Logo Stamp — logo, data e luogo su tutte le tue foto</title>
-  <meta name="description" content="Aggiungi il tuo logo a una o più immagini (o a uno ZIP intero) e scrivi in modo discreto data e luogo letti dalla foto. Tutto nel browser, nessun server.">
-  <link rel="stylesheet" href="css/base.css">
-  <link rel="stylesheet" href="css/layout.css">
-  <link rel="stylesheet" href="css/components/ui.css">
-  <link rel="stylesheet" href="css/components/header.css">
-  <link rel="stylesheet" href="css/components/logo-panel.css">
-  <link rel="stylesheet" href="css/components/settings-panel.css">
-  <link rel="stylesheet" href="css/components/dropzone.css">
-  <link rel="stylesheet" href="css/components/card.css">
-  <link rel="stylesheet" href="css/components/gallery.css">
-  <link rel="stylesheet" href="css/components/export-bar.css">
-  <link rel="stylesheet" href="css/components/preview-modal.css">
-  <link rel="stylesheet" href="css/components/progress.css">
-  <link rel="stylesheet" href="css/components/toast.css">
-  <link rel="stylesheet" href="css/components/splash.css">
-  <link rel="stylesheet" href="css/components/shortcuts.css">
-  <link rel="stylesheet" href="css/animations.css">
-  <script>
-    try {
-      var t = localStorage.getItem('ls-theme');
-      if (t) document.documentElement.dataset.theme = t;
-      else if (window.matchMedia && matchMedia('(prefers-color-scheme: light)').matches) document.documentElement.dataset.theme = 'light';
-    } catch (e) {}
-  </script>
-</head>
-<body>
-  <div class="splash" id="splash" aria-hidden="true">
-    <div class="splash__mark"><svg viewBox="0 0 32 32" width="46" height="46"><rect class="s-frame" x="3" y="5" width="26" height="22" rx="6" fill="none" stroke="currentColor" stroke-width="2"/><rect class="s-stamp" x="15" y="16" width="11" height="8" rx="2.5" fill="currentColor"/></svg></div>
-    <div class="splash__name">Logo Stamp</div>
-    <div class="splash__bar"></div>
-  </div>
-  <ls-progress></ls-progress>
-  <ls-header></ls-header>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta
+      name="theme-color"
+      content="#0e0b0d"
+      media="(prefers-color-scheme: dark)"
+    />
+    <meta
+      name="theme-color"
+      content="#fbf6f4"
+      media="(prefers-color-scheme: light)"
+    />
+    <meta name="color-scheme" content="dark light" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Logo Stamp" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:title"
+      content="Logo Stamp — logo, data e luogo sulle tue foto"
+    />
+    <meta
+      property="og:description"
+      content="Metti il tuo logo su una o mille foto, con data e luogo letti dalla foto. Tutto nel browser."
+    />
+    <meta name="twitter:card" content="summary" />
+    <link rel="icon" href="icons/icon.svg" type="image/svg+xml" />
+    <link
+      rel="icon"
+      href="icons/favicon-32.png"
+      type="image/png"
+      sizes="32x32"
+    />
+    <link rel="alternate icon" href="favicon.ico" sizes="any" />
+    <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <title>Logo Stamp — logo, data e luogo su tutte le tue foto</title>
+    <meta
+      name="description"
+      content="Aggiungi il tuo logo a una o più immagini (o a uno ZIP intero) e scrivi in modo discreto data e luogo letti dalla foto. Tutto nel browser, nessun server."
+    />
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/layout.css" />
+    <link rel="stylesheet" href="css/components/ui.css" />
+    <link rel="stylesheet" href="css/components/header.css" />
+    <link rel="stylesheet" href="css/components/logo-panel.css" />
+    <link rel="stylesheet" href="css/components/settings-panel.css" />
+    <link rel="stylesheet" href="css/components/dropzone.css" />
+    <link rel="stylesheet" href="css/components/card.css" />
+    <link rel="stylesheet" href="css/components/gallery.css" />
+    <link rel="stylesheet" href="css/components/export-bar.css" />
+    <link rel="stylesheet" href="css/components/preview-modal.css" />
+    <link rel="stylesheet" href="css/components/progress.css" />
+    <link rel="stylesheet" href="css/components/toast.css" />
+    <link rel="stylesheet" href="css/components/splash.css" />
+    <link rel="stylesheet" href="css/components/shortcuts.css" />
+    <link rel="stylesheet" href="css/animations.css" />
+    <script>
+      try {
+        var t = localStorage.getItem("ls-theme");
+        if (t) document.documentElement.dataset.theme = t;
+        else if (
+          window.matchMedia &&
+          matchMedia("(prefers-color-scheme: light)").matches
+        )
+          document.documentElement.dataset.theme = "light";
+      } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <div class="splash" id="splash" aria-hidden="true">
+      <div class="splash__mark">
+        <svg viewBox="0 0 32 32" width="46" height="46">
+          <rect
+            class="s-frame"
+            x="3"
+            y="5"
+            width="26"
+            height="22"
+            rx="6"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          />
+          <rect
+            class="s-stamp"
+            x="15"
+            y="16"
+            width="11"
+            height="8"
+            rx="2.5"
+            fill="currentColor"
+          />
+        </svg>
+      </div>
+      <div class="splash__name">Logo Stamp</div>
+      <div class="splash__bar"></div>
+    </div>
+    <ls-progress></ls-progress>
+    <ls-header></ls-header>
 
-  <div class="shell">
-    <div class="sidebar-backdrop" data-sheet-close></div>
-    <aside class="sidebar" id="sidebar" aria-label="Logo e impostazioni">
-      <div class="sheet-head"><strong>Logo e impostazioni</strong><button class="btn btn--primary btn--sm" type="button" data-sheet-close>Fatto</button></div>
-      <ls-logo-panel></ls-logo-panel>
-      <ls-settings-panel></ls-settings-panel>
-    </aside>
+    <div class="shell">
+      <div class="sidebar-backdrop" data-sheet-close></div>
+      <aside class="sidebar" id="sidebar" aria-label="Logo e impostazioni">
+        <div class="sheet-head">
+          <strong>Logo e impostazioni</strong
+          ><button
+            class="btn btn--primary btn--sm"
+            type="button"
+            data-sheet-close
+          >
+            Fatto
+          </button>
+        </div>
+        <ls-logo-panel></ls-logo-panel>
+        <ls-settings-panel></ls-settings-panel>
+      </aside>
 
-    <main class="main">
-      <ls-dropzone></ls-dropzone>
-      <ls-gallery></ls-gallery>
-      <ls-export-bar></ls-export-bar>
-    </main>
-  </div>
+      <main class="main">
+        <ls-dropzone></ls-dropzone>
+        <ls-gallery></ls-gallery>
+        <ls-export-bar></ls-export-bar>
+      </main>
+    </div>
 
-  <ls-preview-modal></ls-preview-modal>
-  <ls-shortcuts></ls-shortcuts>
-  <ls-toast></ls-toast>
+    <ls-preview-modal></ls-preview-modal>
+    <ls-shortcuts></ls-shortcuts>
+    <ls-toast></ls-toast>
 
-  <!-- Libreria ZIP (locale, nessun CDN) -->
-  <script src="vendor/jszip.min.js"></script>
+    <!-- Libreria ZIP (locale, nessun CDN) -->
+    <script src="vendor/jszip.min.js"></script>
 
-  <!-- Core -->
-  <script src="js/core/utils.js"></script>
-  <script src="js/core/store.js"></script>
-  <script src="js/core/component.js"></script>
-  <script src="js/core/exif.js"></script>
-  <script src="js/core/geo.js"></script>
-  <script src="js/core/stamp.js"></script>
-  <script src="js/core/watermark.js"></script>
-  <script src="js/core/loader.js"></script>
-  <script src="js/core/exporter.js"></script>
-  <script src="js/core/actions.js"></script>
+    <!-- Core -->
+    <script src="js/core/utils.js"></script>
+    <script src="js/core/store.js"></script>
+    <script src="js/core/component.js"></script>
+    <script src="js/core/exif.js"></script>
+    <script src="js/core/geo.js"></script>
+    <script src="js/core/stamp.js"></script>
+    <script src="js/core/watermark.js"></script>
+    <script src="js/core/loader.js"></script>
+    <script src="js/core/exporter.js"></script>
+    <script src="js/core/actions.js"></script>
 
-  <!-- Componenti -->
-  <script src="js/components/progress.js"></script>
-  <script src="js/components/toast.js"></script>
-  <script src="js/components/header.js"></script>
-  <script src="js/components/logo-panel.js"></script>
-  <script src="js/components/settings-panel.js"></script>
-  <script src="js/components/dropzone.js"></script>
-  <script src="js/components/card.js"></script>
-  <script src="js/components/gallery.js"></script>
-  <script src="js/components/export-bar.js"></script>
-  <script src="js/components/preview-modal.js"></script>
-  <script src="js/components/shortcuts.js"></script>
+    <!-- Componenti -->
+    <script src="js/components/progress.js"></script>
+    <script src="js/components/toast.js"></script>
+    <script src="js/components/header.js"></script>
+    <script src="js/components/logo-panel.js"></script>
+    <script src="js/components/settings-panel.js"></script>
+    <script src="js/components/dropzone.js"></script>
+    <script src="js/components/card.js"></script>
+    <script src="js/components/gallery.js"></script>
+    <script src="js/components/export-bar.js"></script>
+    <script src="js/components/preview-modal.js"></script>
+    <script src="js/components/shortcuts.js"></script>
 
-  <script src="js/main.js"></script>
-</body>
+    <script src="js/main.js"></script>
+  </body>
 </html>
