@@ -95,7 +95,7 @@
           ["bc", "Basso al centro"],
           ["br", "Basso a destra"],
         ],
-      )}${slider("infoSize", "Dimensione del testo", 0.8, 4, 0.1, "%")}${slider("infoOpacity", "Opacità del testo", 30, 100, 1, "%")}</section><section class="card"><div class="card__head"><h2>Esportazione</h2><button class="link" type="button" data-reset>Ripristina tutto</button></div>${select(
+      )}${slider("infoSize", "Dimensione del testo", 0.8, 8, 0.1, "%")}${slider("infoOpacity", "Opacità del testo", 30, 100, 1, "%")}</section><section class="card"><div class="card__head"><h2>Esportazione</h2><button class="link" type="button" data-reset>Ripristina tutto</button></div>${select(
         "format",
         "Formato",
         [

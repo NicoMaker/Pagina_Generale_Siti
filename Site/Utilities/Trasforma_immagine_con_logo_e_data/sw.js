@@ -1,5 +1,5 @@
 // Logo Stamp: cache dell'app per usarla anche offline. Cambia VERSION quando aggiorni i file.
-const VERSION = "logo-stamp-v4";
+const VERSION = "logo-stamp-v5";
 const SHELL = [
   "./",
   "css/animations.css",

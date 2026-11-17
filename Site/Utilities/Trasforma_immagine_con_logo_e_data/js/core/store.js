@@ -21,7 +21,7 @@
     infoPlace: true,
     infoLookup: true, // cerca il nome del luogo online (OpenStreetMap)
     infoPosition: "auto",
-    infoSize: 1.8, // % del lato minore
+    infoSize: 3.2, // % del lato minore
     infoOpacity: 85, // %
     // Esportazione
     format: "original", // original | png | jpeg | webp
@@ -47,6 +47,8 @@
           saved.infoDate = false;
           saved.infoPlace = false;
         }
+        // Vecchio testo predefinito (1.8%) troppo piccolo: passa alla nuova dimensione.
+        if (saved.infoSize === 1.8) delete saved.infoSize;
         return normalize(Object.assign({}, DEFAULTS, saved));
       }
     } catch (e) {}
