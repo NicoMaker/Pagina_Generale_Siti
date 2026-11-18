@@ -36,9 +36,10 @@
         '<button class="btn btn--ghost" type="button" data-folder>Scegli una cartella</button>' +
         "</div>" +
         '<small class="drop__note">JPG · PNG · WebP · GIF · BMP · AVIF</small>' +
+        '<small class="drop__note drop__tip">Su telefono, per leggere il luogo, scegli le foto da File / Sfoglia (non dalla galleria).</small>' +
         '<div class="drop__loading" role="status" aria-live="polite"><span class="drop__spinner"></span>' +
         "<div><strong data-load-label>Carico le immagini…</strong><br><small data-load-count></small></div><i><b data-load-bar></b></i></div>" +
-        '<input type="file" hidden multiple accept="image/*" data-in-images>' +
+        '<input type="file" hidden multiple accept="image/*,application/octet-stream" data-in-images>' +
         '<input type="file" hidden multiple accept=".zip,application/zip,application/x-zip-compressed" data-in-zip>' +
         '<input type="file" hidden webkitdirectory data-in-folder>' +
         "</section>" +

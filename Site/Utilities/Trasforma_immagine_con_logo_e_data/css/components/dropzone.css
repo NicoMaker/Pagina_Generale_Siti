@@ -212,3 +212,5 @@ body.is-dragging .drop {
 .drop.is-compact .drop__loading small {
   display: none;
 }
+
+.drop__tip{display:none}@media (pointer:coarse){.drop:not(.is-compact) .drop__tip{display:block}}

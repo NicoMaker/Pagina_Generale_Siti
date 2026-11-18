@@ -53,7 +53,11 @@
 
       const info = this.$("[data-info]");
       const text = LS.stamp.summary(it);
-      info.textContent = text || "Nessun dato EXIF di data o luogo";
+      const e = it.exif;
+      info.textContent =
+        text && e && e.date && !e.gps
+          ? `${text} · posizione assente (il telefono l’ha tolta: scegli la foto da File/Sfoglia)`
+          : text || "Nessun dato EXIF di data o luogo";
       info.classList.toggle("is-empty", !text);
     }
 
