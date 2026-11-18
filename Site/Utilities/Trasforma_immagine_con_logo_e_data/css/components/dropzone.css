@@ -213,4 +213,11 @@ body.is-dragging .drop {
   display: none;
 }
 
-.drop__tip{display:none}@media (pointer:coarse){.drop:not(.is-compact) .drop__tip{display:block}}
+.drop__tip {
+  display: none;
+}
+@media (pointer: coarse) {
+  .drop:not(.is-compact) .drop__tip {
+    display: block;
+  }
+}
