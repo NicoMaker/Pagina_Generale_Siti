@@ -370,6 +370,7 @@
     $("#topTitle").hidden = screen !== "settings";
     $("#vehiclePill").hidden = screen !== "app";
     $("#btnGear").hidden = screen !== "garage";
+    $("#btnTopShare").hidden = !S.get().vehicles.length;
     document.body.setAttribute("data-screen", screen);
     if (v && screen === "app") {
       $("#vpName").textContent = v.name;
@@ -377,7 +378,6 @@
       $("#vpIcon").innerHTML = vIco(v);
     }
 
-    // FIX: Icona dinamica nel bottone "Veicoli"
     var backIcon = document.getElementById("backIcon");
     if (backIcon) {
       backIcon.innerHTML = v ? vIco(v) : I.svg("auto", "#64748b");
@@ -508,6 +508,13 @@
             ? "1 pieno"
             : fmt0(v.refuels.length) + " pieni") +
           "</small></div></div></button>" +
+          '<button type="button" class="gc-edit" style="right: 78px;" data-gact="share" data-id="' +
+          esc(v.id) +
+          '" title="Condividi ' +
+          esc(v.name) +
+          '" aria-label="Condividi ' +
+          esc(v.name) +
+          '">📤</button>' +
           '<button type="button" class="gc-edit" data-gact="edit" data-id="' +
           esc(v.id) +
           '" title="Modifica ' +
@@ -818,7 +825,10 @@
       esc(v.name) +
       (v.plate ? " · " + esc(v.plate) : "") +
       "</span>" +
-      '<button type="button" class="btn accent" data-go="add">⛽ Rifornisci</button></div>' +
+      '<div style="display:flex;gap:6px;">' +
+      '<button type="button" class="btn small ghost" data-go="share" title="Condividi dati veicolo">📤</button>' +
+      '<button type="button" class="btn accent" data-go="add">⛽ Rifornisci</button>' +
+      "</div></div>" +
       odoDrum(odo) +
       '<div class="cl-read">' +
       reading(st.avgKmL ? fmt2(st.avgKmL) : "–", "km/L medi") +
@@ -964,7 +974,10 @@
           '<div class="kml">' +
           (r.kmPerL ? fmt2(r.kmPerL) : "–") +
           "<small>km/L</small></div>" +
-          '<div class="mini-act"><button type="button" class="btn small" data-act="edit" data-id="' +
+          '<div class="mini-act"><button type="button" class="btn small" data-act="share" data-id="' +
+          esc(r.id) +
+          '">📤 Condividi</button>' +
+          '<button type="button" class="btn small" data-act="edit" data-id="' +
           esc(r.id) +
           '">✎ Modifica</button>' +
           '<button type="button" class="btn small danger" data-act="del" data-id="' +
@@ -988,7 +1001,7 @@
         .join("") +
       '</ul></div><div class="card"><h2>Ultimi rifornimenti</h2><div class="mini-list">' +
       recent +
-      '</div><button type="button" class="btn small" data-go="history">Vedi tutto lo storico</button></div></div>';
+      '</div><div class="btn-row" style="margin-top:10px;"><button type="button" class="btn small" data-go="history">Vedi tutto lo storico</button><button type="button" class="btn small" data-go="share">📤 Condividi riepilogo</button></div></div></div>';
     h += recordPanel(st, { title: "Record e medie (km/L)" });
     var kp = kmlPoints(rs),
       mp = monthPoints(rs);
@@ -1434,7 +1447,11 @@
           " dal rifornimento precedente</p>"
         : "") +
       (r.note ? '<p class="rf-note">📝 ' + esc(r.note) + "</p>" : "") +
-      '<div class="rf-actions"><button type="button" class="btn small" data-act="edit" data-id="' +
+      '<div class="rf-actions">' +
+      '<button type="button" class="btn small" data-act="share" data-id="' +
+      esc(r.id) +
+      '">📤 Condividi</button>' +
+      '<button type="button" class="btn small" data-act="edit" data-id="' +
       esc(r.id) +
       '">✎ Modifica</button>' +
       '<button type="button" class="btn small danger" data-act="del" data-id="' +
@@ -2303,7 +2320,7 @@
     });
 
     /* impostazioni: crea combinazione */
-    function sync(colorId, hexId, optional) {
+    function sync(colorId, hexId) {
       $("#" + colorId).addEventListener("input", function () {
         $("#" + hexId).value = this.value;
       });
@@ -2469,7 +2486,7 @@
 
   const stamp = () => S.todayISO();
 
-  /** Costruisce il CSV per uno o pi\u00f9 veicoli (con colonne veicolo/targa se withVeh). */
+  /** Costruisce il CSV per uno o più veicoli (con colonne veicolo/targa se withVeh). */
   function csvBuild(list, withVeh) {
     function n(x, d) {
       return x == null || !isFinite(x)
@@ -2508,9 +2525,10 @@
     return count ? "\ufeff" + lines.join("\r\n") : null;
   }
 
-  /** Prepara nome e contenuto del CSV (veicolo attivo oppure tutti i veicoli). */
-  function csvFile(all) {
-    var list = all ? S.get().vehicles : [vehicle()].filter(Boolean);
+  /** Prepara nome e contenuto del CSV (veicolo specificato, attivo oppure tutti i veicoli). */
+  function csvFile(all, targetVeh) {
+    var vObj = targetVeh || vehicle();
+    var list = all ? S.get().vehicles : [vObj].filter(Boolean);
     if (!list.length) {
       toast(all ? "Nessun dato da esportare" : "Apri prima un veicolo", "error");
       return null;
@@ -2530,19 +2548,19 @@
     return { name: name, text: text };
   }
 
-  function exportCsv(all) {
-    var f = csvFile(all === true);
+  function exportCsv(all, targetVeh) {
+    var f = csvFile(all === true, targetVeh);
     if (f) download(f.name, f.text, "text/csv;charset=utf-8");
   }
 
-  function shareCsv(all) {
-    var f = csvFile(all === true);
+  function shareCsv(all, targetVeh) {
+    var f = csvFile(all === true, targetVeh);
     if (f)
       shareFile(
         f.name,
         f.text,
         "text/csv",
-        all ? "Ricarica Pieno \u2013 tutti i veicoli" : "Ricarica Pieno \u2013 CSV",
+        all ? "Ricarica Pieno – tutti i veicoli" : "Ricarica Pieno – CSV",
       );
   }
 
@@ -2557,7 +2575,7 @@
       if (err && err.name === "AbortError") return;
     }
     download(name, text, mime);
-    toast("Condivisione non disponibile: file scaricato", "error");
+    toast("Condivisione file non supportata: file scaricato");
   }
 
   function vehicleSummary(v) {
@@ -2600,8 +2618,23 @@
     return L.join("\n");
   }
 
-  async function shareText(all) {
-    var list = all === true ? S.get().vehicles : [vehicle()].filter(Boolean);
+  async function shareRawText(title, text) {
+    try {
+      if (navigator.share) {
+        await navigator.share({ title: title, text: text });
+        return;
+      }
+      await navigator.clipboard.writeText(text);
+      toast("Testo copiato negli appunti");
+    } catch (err) {
+      if (err && err.name === "AbortError") return;
+      toast("Impossibile condividere", "error");
+    }
+  }
+
+  async function shareText(all, targetVeh) {
+    var vObj = targetVeh || vehicle();
+    var list = all === true ? S.get().vehicles : [vObj].filter(Boolean);
     if (!list.length)
       return toast(
         all === true ? "Nessun dato da condividere" : "Apri prima un veicolo",
@@ -2609,20 +2642,160 @@
       );
     var text = list.map(vehicleSummary).join("\n\n");
     var title =
-      all === true ? "Ricarica Pieno – tutti i veicoli" : "Ricarica Pieno – " + list[0].name;
-    try {
-      if (navigator.share) {
-        await navigator.share({
-          title: title,
-          text: text,
+      all === true
+        ? "Ricarica Pieno – tutti i veicoli"
+        : "Ricarica Pieno – " + list[0].name;
+    await shareRawText(title, text);
+  }
+
+  async function shareSingleRefuel(refuelId) {
+    var v = vehicle();
+    if (!v) return;
+    var r = C.rows(v).filter((x) => x.id === refuelId)[0];
+    if (!r) return;
+    var lines = [
+      "⛽ Rifornimento – " + v.name + (v.plate ? " (" + v.plate + ")" : ""),
+      "Data: " + fmtDate(r.date),
+      "Contachilometri: " + fmt0(r.odometer) + " km (+" + kmFmt(r.km) + " km)",
+      "Litri: " + fmt2(r.liters) + " L",
+      "Prezzo pagato: " +
+        fmt(r.paid, 3) +
+        " €/L" +
+        (r.fvg ? " (sconto FVG -" + fmt(r.price - r.paid, 3) + " €/L)" : ""),
+      "Totale: " + eur(r.total, 2),
+    ];
+    if (r.kmPerL)
+      lines.push(
+        "Consumo: " + fmt2(r.kmPerL) + " km/L (" + fmt2(r.l100) + " L/100 km)",
+      );
+    if (r.note) lines.push("Note: " + r.note);
+    await shareRawText("Rifornimento " + v.name + " – " + fmtDate(r.date), lines.join("\n"));
+  }
+
+  /* ---------- Modale Condivisione Universale ---------- */
+  function openShareDialog(targetVehId) {
+    var st = S.get();
+    if (!st.vehicles.length) {
+      toast("Nessun dato da condividere", "error");
+      return;
+    }
+    var dlg = $("#shareDialog");
+    var targetVeh = targetVehId
+      ? st.vehicles.filter((x) => x.id === targetVehId)[0]
+      : screen === "app"
+        ? vehicle()
+        : null;
+
+    var opts = [];
+    if (targetVeh) {
+      $("#shTitle").textContent = "Condividi · " + targetVeh.name;
+      $("#shSub").textContent =
+        "Condividi i dati di " +
+        targetVeh.name +
+        " oppure l'intero garage (" +
+        pl(st.vehicles.length, "veicolo", "veicoli") +
+        ").";
+      opts.push({
+        id: "v-text",
+        cls: "primary",
+        label: "💬 Riepilogo " + targetVeh.name + " (testo)",
+      });
+      opts.push({
+        id: "v-csv",
+        cls: "",
+        label: "📊 Tabella Excel / CSV (" + targetVeh.name + ")",
+      });
+      opts.push({
+        id: "v-json",
+        cls: "",
+        label: "📦 Backup JSON (" + targetVeh.name + ")",
+      });
+      if (st.vehicles.length > 1) {
+        opts.push({
+          id: "all-text",
+          cls: "",
+          label: "💬 Riepilogo tutti i veicoli (testo)",
         });
-        return;
+        opts.push({
+          id: "all-csv",
+          cls: "",
+          label: "📊 Tabella CSV tutti i veicoli",
+        });
+        opts.push({
+          id: "all-json",
+          cls: "",
+          label: "📦 Backup completo (tutti i veicoli)",
+        });
       }
-      await navigator.clipboard.writeText(text);
-      toast("Riepilogo copiato negli appunti");
-    } catch (err) {
-      if (err && err.name === "AbortError") return;
-      toast("Impossibile condividere", "error");
+    } else {
+      $("#shTitle").textContent = "Condividi tutti i dati";
+      $("#shSub").textContent =
+        "Esporta o invia i dati di " +
+        pl(st.vehicles.length, "veicolo", "veicoli") +
+        ".";
+      opts.push({
+        id: "all-text",
+        cls: "primary",
+        label: "💬 Riepilogo tutti i veicoli (testo)",
+      });
+      opts.push({
+        id: "all-csv",
+        cls: "",
+        label: "📊 Tabella Excel / CSV (tutti i veicoli)",
+      });
+      opts.push({
+        id: "all-json",
+        cls: "",
+        label: "📦 Backup completo (JSON)",
+      });
+    }
+
+    var box = $("#shOptions");
+    box.innerHTML = opts
+      .map(
+        (o) =>
+          '<button type="button" class="btn ' +
+          o.cls +
+          '" data-shact="' +
+          o.id +
+          '">' +
+          esc(o.label) +
+          "</button>",
+      )
+      .join("");
+
+    box.onclick = function (e) {
+      var b = e.target.closest("[data-shact]");
+      if (!b) return;
+      var act = b.dataset.shact;
+      if (dlg.open) dlg.close();
+      if (act === "v-text" && targetVeh) shareText(false, targetVeh);
+      else if (act === "v-csv" && targetVeh) shareCsv(false, targetVeh);
+      else if (act === "v-json" && targetVeh)
+        shareFile(
+          "ricarica-pieno-" +
+            targetVeh.name.replace(/[^\w-]+/g, "_") +
+            "-" +
+            stamp() +
+            ".json",
+          S.exportData(targetVeh.id),
+          "application/json",
+          "Ricarica Pieno – " + targetVeh.name,
+        );
+      else if (act === "all-text") shareText(true);
+      else if (act === "all-csv") shareCsv(true);
+      else if (act === "all-json")
+        shareFile(
+          "ricarica-pieno-backup-" + stamp() + ".json",
+          S.exportData(),
+          "application/json",
+          "Backup Ricarica Pieno",
+        );
+    };
+
+    if (!dlg.open) {
+      if (typeof dlg.showModal === "function") dlg.showModal();
+      else dlg.setAttribute("open", "");
     }
   }
 
@@ -2731,6 +2904,19 @@
       applyChrome(true);
     });
 
+    /* Pulsanti condivisione ovunque */
+    $("#btnTopShare").addEventListener("click", () => openShareDialog());
+    $("#gShareAll").addEventListener("click", () => openShareDialog());
+    $("#hShare").addEventListener("click", () => openShareDialog());
+    $("#stShare").addEventListener("click", () => openShareDialog());
+    $("#shClose").addEventListener("click", () => {
+      var dlg = $("#shareDialog");
+      if (dlg.open) dlg.close();
+    });
+    $("#shareDialog").addEventListener("click", function (e) {
+      if (e.target === this && this.open) this.close();
+    });
+
     $("#garageGrid").addEventListener("click", (e) => {
       var b = e.target.closest("[data-gact]");
       if (!b) return;
@@ -2739,6 +2925,7 @@
         if (sel.mode === "garage") toggleSel(b.dataset.id);
         else openVehicle(b.dataset.id);
       }
+      if (a === "share") openShareDialog(b.dataset.id);
       if (a === "del") delVehicle(b.dataset.id);
       if (a === "edit") openVehicleDialog(b.dataset.id);
       if (a === "new") openVehicleDialog();
@@ -2758,6 +2945,7 @@
     $("#dashBody").addEventListener("click", (e) => {
       var ab = e.target.closest("button[data-act]");
       if (ab) {
+        if (ab.dataset.act === "share") shareSingleRefuel(ab.dataset.id);
         if (ab.dataset.act === "edit") startEdit(ab.dataset.id);
         if (ab.dataset.act === "del") delRefuel(ab.dataset.id);
         return;
@@ -2765,6 +2953,7 @@
       var b = e.target.closest("[data-go]");
       if (!b) return;
       if (b.dataset.go === "add") openNewRefuel();
+      else if (b.dataset.go === "share") openShareDialog();
       else if (b.dataset.go === "rank") goRank();
       else setTab(b.dataset.go);
     });
@@ -2805,6 +2994,7 @@
       }
       var b = e.target.closest("button[data-act]");
       if (!b) return;
+      if (b.dataset.act === "share") shareSingleRefuel(b.dataset.id);
       if (b.dataset.act === "edit") startEdit(b.dataset.id);
       if (b.dataset.act === "del") delRefuel(b.dataset.id);
     });
