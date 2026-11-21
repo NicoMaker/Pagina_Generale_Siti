@@ -168,6 +168,17 @@
     }
   }
 
+  /** Firma di un rifornimento: riconosce i doppioni anche senza id (Excel/CSV). */
+  const sig = (r) =>
+    r.date + "|" + r.odometer + "|" + Math.round(r.liters * 100);
+  const sameVeh = (a, b) => {
+    var n = (s) => String(s || "").trim().toLowerCase();
+    return (
+      n(a.name) === n(b.name) &&
+      (n(a.plate) === n(b.plate) || !n(a.plate) || !n(b.plate))
+    );
+  };
+
   const findVehicle = (id) =>
     state.vehicles.filter((v) => v.id === id)[0] || null;
 
@@ -308,7 +319,9 @@
             state.settings.palette.push(p);
         });
         incoming.vehicles.forEach((iv) => {
-          var ex = findVehicle(iv.id);
+          var ex =
+            findVehicle(iv.id) ||
+            state.vehicles.filter((x) => sameVeh(x, iv))[0];
           if (!ex) {
             state.vehicles.push(iv);
             res.vehicles++;
@@ -317,10 +330,12 @@
             var ids = {};
             ex.refuels.forEach((r) => {
               ids[r.id] = true;
+              ids[sig(r)] = true;
             });
             iv.refuels.forEach((r) => {
-              if (!ids[r.id]) {
+              if (!ids[r.id] && !ids[sig(r)]) {
                 ex.refuels.push(r);
+                ids[sig(r)] = true;
                 res.refuels++;
               }
             });

@@ -508,27 +508,14 @@
             ? "1 pieno"
             : fmt0(v.refuels.length) + " pieni") +
           "</small></div></div></button>" +
-          '<button type="button" class="gc-edit" style="right: 78px;" data-gact="share" data-id="' +
-          esc(v.id) +
-          '" title="Condividi ' +
-          esc(v.name) +
-          '" aria-label="Condividi ' +
-          esc(v.name) +
-          '">📤</button>' +
-          '<button type="button" class="gc-edit" data-gact="edit" data-id="' +
-          esc(v.id) +
-          '" title="Modifica ' +
-          esc(v.name) +
-          '" aria-label="Modifica ' +
-          esc(v.name) +
-          '">✎</button>' +
-          '<button type="button" class="gc-del" data-gact="del" data-id="' +
-          esc(v.id) +
-          '" title="Elimina ' +
-          esc(v.name) +
-          '" aria-label="Elimina ' +
-          esc(v.name) +
-          '">🗑</button></article>'
+          '<div class="gc-actions">' +
+          '<button type="button" class="gc-share" data-gact="share" data-id="' + esc(v.id) +
+          '" title="Condividi ' + esc(v.name) + '" aria-label="Condividi ' + esc(v.name) + '">' + shi("share") + "</button>" +
+          '<button type="button" class="gc-edit" data-gact="edit" data-id="' + esc(v.id) +
+          '" title="Modifica ' + esc(v.name) + '" aria-label="Modifica ' + esc(v.name) + '">' + shi("edit") + "</button>" +
+          '<button type="button" class="gc-del" data-gact="del" data-id="' + esc(v.id) +
+          '" title="Elimina ' + esc(v.name) + '" aria-label="Elimina ' + esc(v.name) + '">' + shi("trash") + "</button></div></article>"
+
         );
       })
       .join("");
@@ -826,7 +813,7 @@
       (v.plate ? " · " + esc(v.plate) : "") +
       "</span>" +
       '<div style="display:flex;gap:6px;">' +
-      '<button type="button" class="btn small ghost" data-go="share" title="Condividi dati veicolo">📤</button>' +
+      '<button type="button" class="btn small ghost" data-go="share" title="Condividi dati veicolo">' + shi("share") + '</button>' +
       '<button type="button" class="btn accent" data-go="add">⛽ Rifornisci</button>' +
       "</div></div>" +
       odoDrum(odo) +
@@ -976,7 +963,7 @@
           "<small>km/L</small></div>" +
           '<div class="mini-act"><button type="button" class="btn small" data-act="share" data-id="' +
           esc(r.id) +
-          '">📤 Condividi</button>' +
+          '">' + shi("share") + ' Condividi</button>' +
           '<button type="button" class="btn small" data-act="edit" data-id="' +
           esc(r.id) +
           '">✎ Modifica</button>' +
@@ -1001,7 +988,7 @@
         .join("") +
       '</ul></div><div class="card"><h2>Ultimi rifornimenti</h2><div class="mini-list">' +
       recent +
-      '</div><div class="btn-row" style="margin-top:10px;"><button type="button" class="btn small" data-go="history">Vedi tutto lo storico</button><button type="button" class="btn small" data-go="share">📤 Condividi riepilogo</button></div></div></div>';
+      '</div><div class="btn-row" style="margin-top:10px;"><button type="button" class="btn small" data-go="history">Vedi tutto lo storico</button><button type="button" class="btn small" data-go="share">' + shi("share") + ' Condividi riepilogo</button></div></div></div>';
     h += recordPanel(st, { title: "Record e medie (km/L)" });
     var kp = kmlPoints(rs),
       mp = monthPoints(rs);
@@ -1450,7 +1437,7 @@
       '<div class="rf-actions">' +
       '<button type="button" class="btn small" data-act="share" data-id="' +
       esc(r.id) +
-      '">📤 Condividi</button>' +
+      '">' + shi("share") + ' Condividi</button>' +
       '<button type="button" class="btn small" data-act="edit" data-id="' +
       esc(r.id) +
       '">✎ Modifica</button>' +
@@ -2525,7 +2512,44 @@
     return count ? "\ufeff" + lines.join("\r\n") : null;
   }
 
-  /** Prepara nome e contenuto del CSV (veicolo specificato, attivo oppure tutti i veicoli). */
+  /* =====================================================================
+   *  CONDIVISIONE · EXPORT · IMPORT (Excel / CSV / JSON)
+   * ===================================================================== */
+  var SH_ICO = {
+    share:
+      '<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/>',
+    edit: '<path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/>',
+    trash:
+      '<path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/>',
+    chat: '<path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 20.5l1.6-5.3A8.4 8.4 0 1 1 21 11.5Z"/>',
+    send: '<path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4Z"/>',
+    mail: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/>',
+    copy: '<rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>',
+    sheet:
+      '<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18"/>',
+    file: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/><path d="M8 13h8M8 17h5"/>',
+    box: '<path d="M21 8l-9-5-9 5v8l9 5 9-5Z"/><path d="M3 8l9 5 9-5M12 13v8"/>',
+    download: '<path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 21h14"/>',
+    upload: '<path d="M12 15V3"/><path d="M7 8l5-5 5 5"/><path d="M5 21h14"/>',
+  };
+  function shi(name, cls) {
+    return (
+      '<svg class="ico ' +
+      (cls || "") +
+      '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+      SH_ICO[name] +
+      "</svg>"
+    );
+  }
+
+  const safeName = (s) => String(s).replace(/[^\w-]+/g, "_");
+  const XLSX_MIME =
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+  const hasX = () => typeof window.XLSX !== "undefined";
+  const rnd = (x, d) =>
+    x == null || !isFinite(x) ? null : Number(Number(x).toFixed(d));
+
+  /* ---------- CSV (sempre con colonne veicolo/targa: re-importabile) ---------- */
   function csvFile(all, targetVeh) {
     var vObj = targetVeh || vehicle();
     var list = all ? S.get().vehicles : [vObj].filter(Boolean);
@@ -2533,40 +2557,183 @@
       toast(all ? "Nessun dato da esportare" : "Apri prima un veicolo", "error");
       return null;
     }
-    var text = csvBuild(list, all);
+    var text = csvBuild(list, true);
     if (!text) {
       toast("Nessun rifornimento da esportare", "error");
       return null;
     }
     var name = all
       ? "ricarica-pieno-tutti-i-veicoli-" + stamp() + ".csv"
-      : "ricarica-pieno-" +
-        list[0].name.replace(/[^\w-]+/g, "_") +
-        "-" +
-        stamp() +
-        ".csv";
+      : "ricarica-pieno-" + safeName(list[0].name) + "-" + stamp() + ".csv";
     return { name: name, text: text };
   }
 
-  function exportCsv(all, targetVeh) {
-    var f = csvFile(all === true, targetVeh);
-    if (f) download(f.name, f.text, "text/csv;charset=utf-8");
+  /* ---------- Excel (.xlsx): fogli «Veicoli» e «Rifornimenti» ---------- */
+  function xlsxBuild(list) {
+    if (!hasX()) return null;
+    var X = window.XLSX,
+      wb = X.utils.book_new();
+    var vh = [
+      [
+        "nome",
+        "targa",
+        "tipo",
+        "carburante",
+        "km_iniziali",
+        "serbatoio_L",
+        "km_attuali",
+        "rifornimenti",
+        "litri_totali",
+        "spesa_totale_eur",
+        "consumo_medio_km_l",
+        "costo_km_eur",
+        "risparmio_fvg_eur",
+      ],
+    ];
+    var rh = [
+      [
+        "veicolo",
+        "targa",
+        "data",
+        "km_finali",
+        "km_percorsi",
+        "litri",
+        "prezzo_listino",
+        "sconto_fvg",
+        "prezzo_pagato",
+        "totale",
+        "km_l",
+        "l_100km",
+        "costo_km",
+        "pieno",
+        "note",
+      ],
+    ];
+    list.forEach((v) => {
+      var rs = C.rows(v),
+        st = C.stats(v, rs);
+      vh.push([
+        v.name,
+        v.plate,
+        v.type,
+        v.fuel,
+        v.initialKm,
+        v.tank,
+        rs.length ? rs[rs.length - 1].odometer : v.initialKm,
+        st.n || 0,
+        rnd(st.liters, 2),
+        rnd(st.spent, 2),
+        rnd(st.avgKmL, 2),
+        rnd(st.costPerKm, 3),
+        rnd(st.saved, 2),
+      ]);
+      rs.forEach((r) => {
+        var p = String(r.date).split("-");
+        rh.push([
+          v.name,
+          v.plate,
+          new Date(+p[0], +p[1] - 1, +p[2]),
+          r.odometer,
+          rnd(r.km, 1),
+          rnd(r.liters, 2),
+          rnd(r.price, 3),
+          r.fvg ? rnd(r.price - r.paid, 3) : null,
+          rnd(r.paid, 3),
+          rnd(r.total, 2),
+          rnd(r.kmPerL, 2),
+          rnd(r.l100, 2),
+          rnd(r.costPerKm, 3),
+          r.full ? "si" : "no",
+          r.note || "",
+        ]);
+      });
+    });
+    function sheet(aoa, widths, fmts) {
+      var ws = X.utils.aoa_to_sheet(aoa, { cellDates: true });
+      ws["!cols"] = widths.map((w) => ({ wch: w }));
+      Object.keys(fmts).forEach((c) => {
+        for (var r = 1; r < aoa.length; r++) {
+          var cell = ws[X.utils.encode_cell({ r: r, c: +c })];
+          if (cell && cell.t !== "s") cell.z = fmts[c];
+        }
+      });
+      if (ws["!ref"]) ws["!autofilter"] = { ref: ws["!ref"] };
+      return ws;
+    }
+    X.utils.book_append_sheet(
+      wb,
+      sheet(vh, [22, 12, 10, 12, 12, 12, 12, 13, 12, 16, 18, 14, 17], {
+        4: "#,##0",
+        6: "#,##0",
+        8: "#,##0.00",
+        9: "#,##0.00",
+        10: "0.00",
+        11: "0.000",
+        12: "#,##0.00",
+      }),
+      "Veicoli",
+    );
+    X.utils.book_append_sheet(
+      wb,
+      sheet(rh, [22, 12, 12, 11, 12, 9, 14, 11, 13, 10, 8, 9, 10, 7, 30], {
+        2: "dd/mm/yyyy",
+        3: "#,##0",
+        4: "#,##0.0",
+        5: "0.00",
+        6: "0.000",
+        7: "0.000",
+        8: "0.000",
+        9: "0.00",
+        10: "0.00",
+        11: "0.00",
+        12: "0.000",
+      }),
+      "Rifornimenti",
+    );
+    return new Uint8Array(X.write(wb, { bookType: "xlsx", type: "array" }));
   }
 
-  function shareCsv(all, targetVeh) {
-    var f = csvFile(all === true, targetVeh);
-    if (f)
-      shareFile(
-        f.name,
-        f.text,
-        "text/csv",
-        all ? "Ricarica Pieno – tutti i veicoli" : "Ricarica Pieno – CSV",
-      );
+  /* Prepara {name, data, mime} per xlsx / csv / json */
+  function fileFor(kind, all, targetVeh) {
+    var vObj = targetVeh || vehicle();
+    var list = all ? S.get().vehicles : [vObj].filter(Boolean);
+    if (!list.length) {
+      toast(all ? "Nessun dato da esportare" : "Apri prima un veicolo", "error");
+      return null;
+    }
+    var base = all
+      ? "ricarica-pieno-garage-" + stamp()
+      : "ricarica-pieno-" + safeName(list[0].name) + "-" + stamp();
+    if (kind === "json")
+      return {
+        name: base + ".json",
+        data: S.exportData(all ? undefined : list[0].id),
+        mime: "application/json",
+      };
+    if (kind === "xlsx") {
+      var x = xlsxBuild(list);
+      if (x) return { name: base + ".xlsx", data: x, mime: XLSX_MIME };
+      toast("Libreria Excel non trovata: uso il CSV", "error");
+    }
+    var c = csvFile(all, targetVeh);
+    return c ? { name: c.name, data: c.text, mime: "text/csv" } : null;
   }
 
-  async function shareFile(name, text, mime, title) {
+  function exportFile(kind, all, targetVeh) {
+    var f = fileFor(kind, all === true, targetVeh);
+    if (f) {
+      download(f.name, f.data, f.mime);
+      toast("File scaricato: " + f.name);
+    }
+  }
+  async function shareFileKind(kind, all, targetVeh) {
+    var f = fileFor(kind, all === true, targetVeh);
+    if (f) await shareFile(f.name, f.data, f.mime, "Ricarica Pieno");
+  }
+
+  async function shareFile(name, data, mime, title) {
     try {
-      var f = new File([text], name, { type: mime });
+      var f = new File([data], name, { type: mime });
       if (navigator.canShare && navigator.canShare({ files: [f] })) {
         await navigator.share({ files: [f], title: title });
         return;
@@ -2574,48 +2741,110 @@
     } catch (err) {
       if (err && err.name === "AbortError") return;
     }
-    download(name, text, mime);
-    toast("Condivisione file non supportata: file scaricato");
+    download(name, data, mime);
+    toast("Condivisione file non supportata qui: file scaricato");
   }
 
-  function vehicleSummary(v) {
+  /* ---------- Messaggio bello (formato WhatsApp: *grassetto* _corsivo_) ---------- */
+  var SEP = "━━━━━━━━━━━━━━━";
+
+  function vehicleBlock(v, withRecent) {
     var rs = C.rows(v),
       st = C.stats(v, rs);
     var odo = rs.length ? rs[rs.length - 1].odometer : v.initialKm;
     var L = [
-      "⛽ Ricarica Pieno – " + v.name + (v.plate ? " (" + v.plate + ")" : ""),
-      "Km: " + fmt0(odo),
-      "Rifornimenti: " + fmt0(st.n || 0),
+      "🚗 *" +
+        v.name +
+        "*" +
+        (v.plate ? " · " + v.plate : "") +
+        (v.fuel ? " · " + v.fuel : ""),
+      "🧭 Contachilometri: *" + fmt0(odo) + " km*",
     ];
-    if (st.partialCount > 0)
-      L.push(
-        "Pieni: " +
-          fmt0(st.fullCount) +
-          " · Parziali: " +
-          fmt0(st.partialCount),
-      );
+    if (!st.n) {
+      L.push("⛽ Nessun rifornimento registrato");
+      return L.join("\n");
+    }
+    L.push(
+      "⛽ " +
+        pl(st.n, "rifornimento", "rifornimenti") +
+        (st.partialCount > 0
+          ? " (" + fmt0(st.fullCount) + " pieni, " + fmt0(st.partialCount) + " parziali)"
+          : ""),
+    );
     if (st.avgKmL)
       L.push(
-        "Consumo medio: " +
+        "📉 Consumo medio: *" +
           fmt2(st.avgKmL) +
-          " km/L (" +
+          " km/L* (" +
           fmt2(st.l100) +
           " L/100 km)",
       );
+    if (st.last3KmL && st.lastN > 1)
+      L.push("🔄 Ultimi " + st.lastN + " pieni: " + fmt2(st.last3KmL) + " km/L");
     if (st.perf && st.perf.count)
       L.push(
-        "Record: " +
-          fmt2(st.perf.max) +
-          " km/L (" +
-          fmtDate(st.perf.maxRow.date) +
-          ")",
+        "🏆 Record: " + fmt2(st.perf.max) + " km/L (" + fmtDate(st.perf.maxRow.date) + ")",
       );
-    if (st.n) {
-      L.push("Spesa totale: " + eur(st.spent, 2));
-      if (st.costPerKm != null) L.push("Costo al km: " + eur(st.costPerKm, 2));
-      if (st.saved > 0) L.push("Risparmio FVG: " + eur(st.saved, 2));
+    L.push("💶 Spesa totale: *" + eur(st.spent, 2) + "*");
+    L.push("🛢️ Litri totali: " + fmt2(st.liters) + " L");
+    if (st.avgPrice) L.push("🏷️ Prezzo medio: " + fmt(st.avgPrice, 3) + " €/L");
+    if (st.costPerKm != null) L.push("🪙 Costo al km: " + eur(st.costPerKm, 2));
+    if (st.saved > 0) L.push("🎁 Risparmio FVG: " + eur(st.saved, 2));
+    if (withRecent) {
+      L.push("", "🕒 *Ultimi rifornimenti*");
+      rs.slice(-3)
+        .reverse()
+        .forEach((r) => {
+          L.push(
+            "• " +
+              fmtDate(r.date) +
+              " · " +
+              fmt2(r.liters) +
+              " L · " +
+              eur(r.total, 2) +
+              (r.kmPerL ? " · " + fmt2(r.kmPerL) + " km/L" : "") +
+              (r.full ? "" : " (parziale)"),
+          );
+        });
     }
     return L.join("\n");
+  }
+
+  function buildMessage(list, withRecent) {
+    var many = list.length > 1;
+    var out = [
+      "⛽ *Ricarica Pieno*",
+      many
+        ? "📊 Il mio garage · " + pl(list.length, "veicolo", "veicoli")
+        : "📊 Riepilogo veicolo",
+      SEP,
+      list.map((v) => vehicleBlock(v, withRecent)).join("\n" + SEP + "\n"),
+    ];
+    if (many) {
+      var tk = 0,
+        tl = 0,
+        ts = 0,
+        tv = 0;
+      list.forEach((v) => {
+        var st = C.stats(v, C.rows(v));
+        if (st.n) {
+          tk += st.totalKm || 0;
+          tl += st.liters;
+          ts += st.spent;
+          tv += st.saved || 0;
+        }
+      });
+      out.push(
+        SEP,
+        "🧮 *Totale garage*",
+        "🛣️ Km registrati: " + fmt0(tk) + " km",
+        "🛢️ Litri: " + fmt2(tl) + " L",
+        "💶 Spesa: *" + eur(ts, 2) + "*",
+      );
+      if (tv > 0) out.push("🎁 Risparmio FVG: " + eur(tv, 2));
+    }
+    out.push(SEP, "_Aggiornato al " + fmtDate(stamp()) + " · Ricarica Pieno_");
+    return out.join("\n");
   }
 
   async function shareRawText(title, text) {
@@ -2624,28 +2853,26 @@
         await navigator.share({ title: title, text: text });
         return;
       }
-      await navigator.clipboard.writeText(text);
-      toast("Testo copiato negli appunti");
+      await copyText(text);
     } catch (err) {
       if (err && err.name === "AbortError") return;
       toast("Impossibile condividere", "error");
     }
   }
 
-  async function shareText(all, targetVeh) {
-    var vObj = targetVeh || vehicle();
-    var list = all === true ? S.get().vehicles : [vObj].filter(Boolean);
-    if (!list.length)
-      return toast(
-        all === true ? "Nessun dato da condividere" : "Apri prima un veicolo",
-        "error",
-      );
-    var text = list.map(vehicleSummary).join("\n\n");
-    var title =
-      all === true
-        ? "Ricarica Pieno – tutti i veicoli"
-        : "Ricarica Pieno – " + list[0].name;
-    await shareRawText(title, text);
+  async function copyText(text) {
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch (e) {
+      var ta = document.createElement("textarea");
+      ta.value = text;
+      ta.style.cssText = "position:fixed;opacity:0";
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      ta.remove();
+    }
+    toast("Messaggio copiato negli appunti ✓");
   }
 
   async function shareSingleRefuel(refuelId) {
@@ -2653,187 +2880,521 @@
     if (!v) return;
     var r = C.rows(v).filter((x) => x.id === refuelId)[0];
     if (!r) return;
-    var lines = [
-      "⛽ Rifornimento – " + v.name + (v.plate ? " (" + v.plate + ")" : ""),
-      "Data: " + fmtDate(r.date),
-      "Contachilometri: " + fmt0(r.odometer) + " km (+" + kmFmt(r.km) + " km)",
-      "Litri: " + fmt2(r.liters) + " L",
-      "Prezzo pagato: " +
+    var L = [
+      "⛽ *Rifornimento* · " + fmtDate(r.date),
+      "🚗 *" + v.name + "*" + (v.plate ? " · " + v.plate : ""),
+      SEP,
+      "🧭 Contachilometri: *" + fmt0(r.odometer) + " km* (+" + kmFmt(r.km) + " km)",
+      "🛢️ Litri: " + fmt2(r.liters) + " L" + (r.full ? "" : " (parziale)"),
+      "🏷️ Prezzo: " +
         fmt(r.paid, 3) +
         " €/L" +
-        (r.fvg ? " (sconto FVG -" + fmt(r.price - r.paid, 3) + " €/L)" : ""),
-      "Totale: " + eur(r.total, 2),
+        (r.fvg ? " (sconto FVG −" + fmt(r.price - r.paid, 3) + ")" : ""),
+      "💶 Totale: *" + eur(r.total, 2) + "*",
     ];
     if (r.kmPerL)
-      lines.push(
-        "Consumo: " + fmt2(r.kmPerL) + " km/L (" + fmt2(r.l100) + " L/100 km)",
-      );
-    if (r.note) lines.push("Note: " + r.note);
-    await shareRawText("Rifornimento " + v.name + " – " + fmtDate(r.date), lines.join("\n"));
+      L.push("📉 Consumo: *" + fmt2(r.kmPerL) + " km/L* (" + fmt2(r.l100) + " L/100 km)");
+    if (r.costPerKm != null) L.push("🪙 Costo al km: " + eur(r.costPerKm, 2));
+    if (r.note) L.push("📝 " + r.note);
+    L.push(SEP, "_Ricarica Pieno_");
+    await shareRawText("Rifornimento " + v.name + " – " + fmtDate(r.date), L.join("\n"));
   }
 
-  /* ---------- Modale Condivisione Universale ---------- */
+  /* ---------- Pannello Condividi ---------- */
+  var shS = { veh: null, scope: "v", recent: true };
+
+  function shList() {
+    return shS.scope === "all" || !shS.veh ? S.get().vehicles : [shS.veh];
+  }
+  const shAll = () => shS.scope === "all" || !shS.veh;
+  const shMessage = () => buildMessage(shList(), shS.recent);
+
+  function previewHtml(msg) {
+    return esc(msg)
+      .replace(/\*([^*\n]+)\*/g, "<b>$1</b>")
+      .replace(/^_(.+)_$/gm, "<i>$1</i>");
+  }
+
+  function shTile(k, ic, col, name, desc) {
+    return (
+      '<div class="sh-tile"><button type="button" class="main" data-sh="file-' +
+      k +
+      '"><i style="background:' +
+      col +
+      '">' +
+      shi(ic) +
+      "</i><span><b>" +
+      name +
+      "</b><small>" +
+      desc +
+      "</small></span></button>" +
+      '<button type="button" class="dl" data-sh="dl-' +
+      k +
+      '" title="Scarica sul dispositivo" aria-label="Scarica ' +
+      name +
+      '">' +
+      shi("download") +
+      "</button></div>"
+    );
+  }
+
+  function renderShare() {
+    var st = S.get(),
+      many = st.vehicles.length > 1;
+    $("#shTitle").textContent = "Condividi · " + (shAll() ? "Tutto il garage" : shS.veh.name);
+    $("#shSub").textContent = shAll()
+      ? pl(st.vehicles.length, "veicolo", "veicoli") + " nel messaggio"
+      : "Riepilogo, file Excel o backup";
+    var h = "";
+    if (shS.veh && many)
+      h +=
+        '<div class="sh-seg" role="tablist">' +
+        '<button type="button" data-sc="v" class="' +
+        (shS.scope === "v" ? "on" : "") +
+        '">🚗 ' +
+        esc(shS.veh.name) +
+        "</button>" +
+        '<button type="button" data-sc="all" class="' +
+        (shS.scope === "all" ? "on" : "") +
+        '">🏠 Tutto il garage (' +
+        st.vehicles.length +
+        ")</button></div>";
+    h +=
+      '<div class="sh-sec"><div class="sh-lab"><span>Messaggio pronto</span>' +
+      '<button type="button" class="sh-chip' +
+      (shS.recent ? " on" : "") +
+      '" data-sh="recent">' +
+      (shS.recent ? "✓ " : "") +
+      "Ultimi rifornimenti</button></div>" +
+      '<div class="sh-bubble">' +
+      previewHtml(shMessage()) +
+      "</div></div>" +
+      '<button type="button" class="btn share-cta big" data-sh="native">' +
+      shi("share") +
+      " Invia messaggio…</button>" +
+      '<div class="sh-ch">' +
+      '<button type="button" data-sh="wa"><i style="background:#25d366">' +
+      shi("chat") +
+      "</i>WhatsApp</button>" +
+      '<button type="button" data-sh="tg"><i style="background:#229ed9">' +
+      shi("send") +
+      "</i>Telegram</button>" +
+      '<button type="button" data-sh="mail"><i style="background:#f97316">' +
+      shi("mail") +
+      "</i>E-mail</button>" +
+      '<button type="button" data-sh="copy"><i style="background:#64748b">' +
+      shi("copy") +
+      "</i>Copia</button></div>" +
+      '<div class="sh-sec"><div class="sh-lab"><span>Oppure invia un file</span></div><div class="sh-files">' +
+      shTile("xlsx", "sheet", "#1d6f42", "Excel (.xlsx)", "Tabelle pronte, si riapre con «Importa»") +
+      shTile("csv", "file", "#0ea5e9", "CSV", "Compatibile con ogni foglio di calcolo") +
+      shTile("json", "box", "#8b5cf6", "Backup JSON", "Copia completa per ripristinare l'app") +
+      "</div></div>" +
+      '<button type="button" class="sh-imp" data-sh="import">' +
+      shi("upload") +
+      " Hai un file Excel, CSV o JSON? <b>Importalo</b></button>";
+    $("#shBody").innerHTML = h;
+  }
+
   function openShareDialog(targetVehId) {
     var st = S.get();
     if (!st.vehicles.length) {
       toast("Nessun dato da condividere", "error");
       return;
     }
-    var dlg = $("#shareDialog");
-    var targetVeh = targetVehId
+    var v = targetVehId
       ? st.vehicles.filter((x) => x.id === targetVehId)[0]
       : screen === "app"
         ? vehicle()
         : null;
-
-    var opts = [];
-    if (targetVeh) {
-      $("#shTitle").textContent = "Condividi · " + targetVeh.name;
-      $("#shSub").textContent =
-        "Condividi i dati di " +
-        targetVeh.name +
-        " oppure l'intero garage (" +
-        pl(st.vehicles.length, "veicolo", "veicoli") +
-        ").";
-      opts.push({
-        id: "v-text",
-        cls: "primary",
-        label: "💬 Riepilogo " + targetVeh.name + " (testo)",
-      });
-      opts.push({
-        id: "v-csv",
-        cls: "",
-        label: "📊 Tabella Excel / CSV (" + targetVeh.name + ")",
-      });
-      opts.push({
-        id: "v-json",
-        cls: "",
-        label: "📦 Backup JSON (" + targetVeh.name + ")",
-      });
-      if (st.vehicles.length > 1) {
-        opts.push({
-          id: "all-text",
-          cls: "",
-          label: "💬 Riepilogo tutti i veicoli (testo)",
-        });
-        opts.push({
-          id: "all-csv",
-          cls: "",
-          label: "📊 Tabella CSV tutti i veicoli",
-        });
-        opts.push({
-          id: "all-json",
-          cls: "",
-          label: "📦 Backup completo (tutti i veicoli)",
-        });
-      }
-    } else {
-      $("#shTitle").textContent = "Condividi tutti i dati";
-      $("#shSub").textContent =
-        "Esporta o invia i dati di " +
-        pl(st.vehicles.length, "veicolo", "veicoli") +
-        ".";
-      opts.push({
-        id: "all-text",
-        cls: "primary",
-        label: "💬 Riepilogo tutti i veicoli (testo)",
-      });
-      opts.push({
-        id: "all-csv",
-        cls: "",
-        label: "📊 Tabella Excel / CSV (tutti i veicoli)",
-      });
-      opts.push({
-        id: "all-json",
-        cls: "",
-        label: "📦 Backup completo (JSON)",
-      });
-    }
-
-    var box = $("#shOptions");
-    box.innerHTML = opts
-      .map(
-        (o) =>
-          '<button type="button" class="btn ' +
-          o.cls +
-          '" data-shact="' +
-          o.id +
-          '">' +
-          esc(o.label) +
-          "</button>",
-      )
-      .join("");
-
-    box.onclick = function (e) {
-      var b = e.target.closest("[data-shact]");
-      if (!b) return;
-      var act = b.dataset.shact;
-      if (dlg.open) dlg.close();
-      if (act === "v-text" && targetVeh) shareText(false, targetVeh);
-      else if (act === "v-csv" && targetVeh) shareCsv(false, targetVeh);
-      else if (act === "v-json" && targetVeh)
-        shareFile(
-          "ricarica-pieno-" +
-            targetVeh.name.replace(/[^\w-]+/g, "_") +
-            "-" +
-            stamp() +
-            ".json",
-          S.exportData(targetVeh.id),
-          "application/json",
-          "Ricarica Pieno – " + targetVeh.name,
-        );
-      else if (act === "all-text") shareText(true);
-      else if (act === "all-csv") shareCsv(true);
-      else if (act === "all-json")
-        shareFile(
-          "ricarica-pieno-backup-" + stamp() + ".json",
-          S.exportData(),
-          "application/json",
-          "Backup Ricarica Pieno",
-        );
-    };
-
+    shS.veh = v || null;
+    shS.scope = v ? "v" : "all";
+    renderShare();
+    var dlg = $("#shareDialog");
     if (!dlg.open) {
       if (typeof dlg.showModal === "function") dlg.showModal();
       else dlg.setAttribute("open", "");
     }
   }
 
-  function onImport(e) {
-    var f = e.target.files[0];
+  function onShareClick(e) {
+    var sc = e.target.closest("[data-sc]");
+    if (sc) {
+      shS.scope = sc.dataset.sc;
+      return renderShare();
+    }
+    var b = e.target.closest("[data-sh]");
+    if (!b) return;
+    var a = b.dataset.sh,
+      all = shAll(),
+      v = shS.veh,
+      enc = encodeURIComponent;
+    if (a === "recent") {
+      shS.recent = !shS.recent;
+      return renderShare();
+    }
+    var msg = shMessage();
+    var subj = "Ricarica Pieno – " + (all ? "il mio garage" : v.name);
+    if (a === "native") shareRawText(subj, msg);
+    else if (a === "copy") copyText(msg);
+    else if (a === "wa")
+      window.open("https://wa.me/?text=" + enc(msg), "_blank", "noopener");
+    else if (a === "tg")
+      window.open(
+        "https://t.me/share/url?url=" +
+          enc(/^https?:/.test(location.href) ? location.href : "https://t.me") +
+          "&text=" +
+          enc(msg),
+        "_blank",
+        "noopener",
+      );
+    else if (a === "mail")
+      location.href = "mailto:?subject=" + enc(subj) + "&body=" + enc(msg);
+    else if (a.indexOf("file-") === 0) shareFileKind(a.slice(5), all, v);
+    else if (a.indexOf("dl-") === 0) exportFile(a.slice(3), all, v);
+    else if (a === "import") {
+      var dlg = $("#shareDialog");
+      if (dlg.open) dlg.close();
+      $("#importMode").value = "merge";
+      $("#importFile").click();
+    }
+  }
+
+  /* ---------- IMPORT: Excel / CSV / JSON ---------- */
+  const nk = (s) =>
+    String(s == null ? "" : s)
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-z0-9]/g, "");
+  var VEH_KEYS = {
+    nome: "name",
+    veicolo: "name",
+    targa: "plate",
+    tipo: "type",
+    carburante: "fuel",
+    kminiziali: "initial",
+    serbatoio: "tank",
+    serbatoiol: "tank",
+  };
+  var REF_KEYS = {
+    veicolo: "veh",
+    nome: "veh",
+    targa: "plate",
+    data: "date",
+    kmfinali: "odo",
+    km: "odo",
+    odometro: "odo",
+    contachilometri: "odo",
+    odometer: "odo",
+    kmpercorsi: "trip",
+    litri: "liters",
+    l: "liters",
+    quantita: "liters",
+    prezzolistino: "price",
+    listino: "price",
+    prezzo: "price",
+    scontofvg: "disc",
+    sconto: "disc",
+    prezzopagato: "paid",
+    totale: "total",
+    importo: "total",
+    spesa: "total",
+    pieno: "full",
+    note: "note",
+  };
+
+  /** Numero da Excel (number) o testo italiano/inglese ("1.234,5", "12,5", "12.5"). */
+  function pn(v) {
+    if (v == null || v === "") return null;
+    if (typeof v === "number") return isFinite(v) ? v : null;
+    var s = String(v).replace(/[€\s]/g, "");
+    if (!s) return null;
+    var c = s.lastIndexOf(","),
+      d = s.lastIndexOf(".");
+    if (c >= 0 && d >= 0)
+      s = c > d ? s.replace(/\./g, "").replace(",", ".") : s.replace(/,/g, "");
+    else if (c >= 0) s = s.replace(",", ".");
+    else if (/^\d{1,3}(\.\d{3})+$/.test(s)) s = s.replace(/\./g, "");
+    var n = Number(s);
+    return isFinite(n) ? n : null;
+  }
+  /** Data → "aaaa-mm-gg" da Date Excel, seriale, "gg/mm/aaaa" o ISO. */
+  function pd(v) {
+    var y, m, d, p;
+    if (v instanceof Date) {
+      var t = new Date(v.getTime() + 43200000);
+      y = t.getFullYear();
+      m = t.getMonth() + 1;
+      d = t.getDate();
+    } else if (typeof v === "number" && v > 20000 && v < 80000) {
+      var u = new Date(Math.round((v - 25569) * 86400000));
+      y = u.getUTCFullYear();
+      m = u.getUTCMonth() + 1;
+      d = u.getUTCDate();
+    } else if (
+      v != null &&
+      (p = String(v).trim().match(/^(\d{4})-(\d{1,2})-(\d{1,2})/))
+    ) {
+      y = +p[1];
+      m = +p[2];
+      d = +p[3];
+    } else if (
+      v != null &&
+      (p = String(v).trim().match(/^(\d{1,2})[\/.\-](\d{1,2})[\/.\-](\d{2,4})/))
+    ) {
+      d = +p[1];
+      m = +p[2];
+      y = +p[3];
+      if (y < 100) y += 2000;
+    } else return null;
+    if (!(y > 1950 && m >= 1 && m <= 12 && d >= 1 && d <= 31)) return null;
+    return y + "-" + String(m).padStart(2, "0") + "-" + String(d).padStart(2, "0");
+  }
+  function isFull(v) {
+    if (v == null || v === "") return true;
+    if (typeof v === "boolean") return v;
+    var s = nk(v);
+    return !(s === "no" || s === "false" || s === "0" || s === "n" || s === "parziale");
+  }
+
+  function csvParse(text) {
+    text = String(text).replace(/^\ufeff/, "");
+    var first = text.split(/\r?\n/)[0] || "";
+    var sep = [";", "\t", ","]
+      .map((s) => [s, first.split(s).length])
+      .sort((a, b) => b[1] - a[1])[0][0];
+    var rows = [],
+      row = [],
+      cell = "",
+      q = false;
+    for (var i = 0; i < text.length; i++) {
+      var ch = text[i];
+      if (q) {
+        if (ch === '"') {
+          if (text[i + 1] === '"') {
+            cell += '"';
+            i++;
+          } else q = false;
+        } else cell += ch;
+      } else if (ch === '"') q = true;
+      else if (ch === sep) {
+        row.push(cell);
+        cell = "";
+      } else if (ch === "\n" || ch === "\r") {
+        if (ch === "\r" && text[i + 1] === "\n") i++;
+        row.push(cell);
+        rows.push(row);
+        row = [];
+        cell = "";
+      } else cell += ch;
+    }
+    if (cell !== "" || row.length) {
+      row.push(cell);
+      rows.push(row);
+    }
+    return rows;
+  }
+
+  function addTable(tables, aoa) {
+    aoa = (aoa || []).filter(
+      (r) => r && r.some((c) => c != null && String(c).trim() !== ""),
+    );
+    if (aoa.length < 1) return;
+    var heads = aoa[0].map(nk);
+    function build(KEYS) {
+      var map = {},
+        found = {};
+      heads.forEach((h, i) => {
+        if (KEYS[h] && !found[KEYS[h]]) {
+          found[KEYS[h]] = true;
+          map[i] = KEYS[h];
+        }
+      });
+      return { map: map, found: found };
+    }
+    function recs(m) {
+      return aoa.slice(1).map((r) => {
+        var o = {};
+        Object.keys(m).forEach((i) => {
+          o[m[i]] = r[i];
+        });
+        return o;
+      });
+    }
+    var rf = build(REF_KEYS);
+    if (rf.found.odo && rf.found.liters) {
+      tables.ref = tables.ref.concat(recs(rf.map));
+      return;
+    }
+    var vf = build(VEH_KEYS);
+    if (vf.found.name) tables.veh = tables.veh.concat(recs(vf.map));
+  }
+
+  function buildImport(tables, fname) {
+    var act = S.activeVehicle();
+    var key = (n, p) => nk(n) + "|" + nk(p);
+    var vinfo = {};
+    tables.veh.forEach((r) => {
+      if (r.name && String(r.name).trim()) vinfo[key(r.name, r.plate)] = r;
+    });
+    var groups = {},
+      order = [],
+      skipped = 0;
+    var fallback = String(fname || "Veicolo importato").replace(/\.[^.]+$/, "");
+    tables.ref.forEach((r) => {
+      var date = pd(r.date),
+        odo = pn(r.odo),
+        liters = pn(r.liters);
+      if (!date || odo == null || !(liters > 0)) {
+        skipped++;
+        return;
+      }
+      var name, plate;
+      if (r.veh != null && String(r.veh).trim()) {
+        name = String(r.veh).trim();
+        plate = r.plate ? String(r.plate).trim() : "";
+      } else {
+        name = act ? act.name : fallback;
+        plate = act ? act.plate : "";
+      }
+      var disc = pn(r.disc) || 0,
+        paid = pn(r.paid),
+        total = pn(r.total),
+        price = pn(r.price);
+      if (!(price > 0))
+        price = paid > 0 ? paid + disc : total > 0 ? total / liters : 0;
+      var k = key(name, plate);
+      if (!groups[k]) {
+        groups[k] = { name: name, plate: plate, list: [] };
+        order.push(k);
+      }
+      groups[k].list.push({
+        date: date,
+        odometer: odo,
+        liters: liters,
+        price: price,
+        fvg: disc > 0,
+        discount: disc,
+        paidTotal: total > 0 ? total : null,
+        full: isFull(r.full),
+        note: r.note ? String(r.note) : "",
+        _trip: pn(r.trip),
+      });
+    });
+    var vehicles = [];
+    order.forEach((k) => {
+      var g = groups[k];
+      var info = vinfo[k] || null;
+      if (!info)
+        Object.keys(vinfo).some((kk) => {
+          if (kk.split("|")[0] === nk(g.name)) {
+            info = vinfo[kk];
+            return true;
+          }
+        });
+      var first = g.list.reduce((a, r) => (r.odometer < a.odometer ? r : a));
+      var ini = info ? pn(info.initial) : null;
+      if (ini == null)
+        ini =
+          first._trip != null && first._trip >= 0
+            ? first.odometer - first._trip
+            : first.odometer;
+      vehicles.push({
+        name: g.name,
+        plate: g.plate || (info && info.plate) || "",
+        type: info && info.type ? String(info.type) : "auto",
+        fuel: info && info.fuel ? String(info.fuel) : "Benzina",
+        initialKm: ini,
+        tank: info ? pn(info.tank) : null,
+        refuels: g.list.map((r) => {
+          delete r._trip;
+          return r;
+        }),
+      });
+    });
+    tables.veh.forEach((r) => {
+      if (
+        r.name &&
+        !vehicles.some((v) => nk(v.name) === nk(r.name))
+      )
+        vehicles.push({
+          name: String(r.name),
+          plate: r.plate ? String(r.plate) : "",
+          type: r.type ? String(r.type) : "auto",
+          fuel: r.fuel ? String(r.fuel) : "Benzina",
+          initialKm: pn(r.initial) || 0,
+          tank: pn(r.tank),
+          refuels: [],
+        });
+    });
+    if (!vehicles.length)
+      throw new Error(
+        "Nessun dato riconosciuto: servono almeno le colonne data, km_finali e litri.",
+      );
+    return {
+      json: JSON.stringify({ app: "Ricarica Pieno", version: 1, vehicles: vehicles }),
+      skipped: skipped,
+    };
+  }
+
+  async function importPayload(f) {
+    var ext = (f.name.split(".").pop() || "").toLowerCase();
+    if (ext === "json") return { json: await f.text(), skipped: 0 };
+    var tables = { veh: [], ref: [] };
+    if (["xlsx", "xls", "xlsm", "ods"].indexOf(ext) >= 0) {
+      if (!hasX())
+        throw new Error("Lettura Excel non disponibile (manca js/xlsx.mini.min.js).");
+      var X = window.XLSX;
+      var wb = X.read(await f.arrayBuffer(), { type: "array", cellDates: true });
+      wb.SheetNames.forEach((n) =>
+        addTable(
+          tables,
+          X.utils.sheet_to_json(wb.Sheets[n], { header: 1, raw: true, defval: null }),
+        ),
+      );
+    } else {
+      var t = await f.text();
+      if (/^\s*\{/.test(t)) return { json: t, skipped: 0 };
+      addTable(tables, csvParse(t));
+    }
+    return buildImport(tables, f.name);
+  }
+
+  async function runImport(f) {
     if (!f) return;
     var mode = $("#importMode").value;
-    var reader = new FileReader();
-    reader.onload = function () {
-      try {
-        if (
-          mode === "replace" &&
-          !window.confirm(
-            "Sostituire TUTTI i dati attuali con quelli del file?",
-          )
-        )
-          return;
-        var res = S.importData(String(reader.result), mode);
-        resetForm();
-        renderAll();
-        applyChrome(false);
-        toast(
-          "Importati " +
+    try {
+      var p = await importPayload(f);
+      if (
+        mode === "replace" &&
+        !window.confirm("Sostituire TUTTI i dati attuali con quelli del file?")
+      )
+        return;
+      var res = S.importData(p.json, mode);
+      resetForm();
+      renderAll();
+      applyChrome(false);
+      var msg =
+        res.vehicles || res.refuels
+          ? "Importati " +
             pl(res.vehicles, "veicolo", "veicoli") +
             " e " +
-            pl(res.refuels, "rifornimento", "rifornimenti"),
-        );
-      } catch (err) {
-        toast(err.message || "Importazione non riuscita", "error");
-      } finally {
-        e.target.value = "";
-      }
-    };
-    reader.onerror = function () {
-      toast("Impossibile leggere il file", "error");
+            pl(res.refuels, "rifornimento", "rifornimenti")
+          : "Nessun dato nuovo: era già tutto presente";
+      if (p.skipped)
+        msg += " · " + pl(p.skipped, "riga ignorata", "righe ignorate");
+      toast(msg);
+    } catch (err) {
+      toast(err.message || "Importazione non riuscita", "error");
+    }
+  }
+
+  function onImport(e) {
+    var f = e.target.files[0];
+    runImport(f).then(() => {
       e.target.value = "";
-    };
-    reader.readAsText(f);
+    });
   }
 
   function bindSelButtons() {
@@ -3048,34 +3609,7 @@
       toast(pl(ids.length, "elemento eliminato", "elementi eliminati"));
     });
 
-    $("#btnShareAll").addEventListener("click", () => {
-      if (!S.get().vehicles.length)
-        return toast("Nessun dato da condividere", "error");
-      shareFile(
-        "ricarica-pieno-backup-" + stamp() + ".json",
-        S.exportData(),
-        "application/json",
-        "Backup Ricarica Pieno",
-      );
-    });
-    $("#btnShareOne").addEventListener("click", () => {
-      var v = vehicle();
-      if (!v) return toast("Apri prima un veicolo", "error");
-      shareFile(
-        "ricarica-pieno-" +
-          v.name.replace(/[^\w-]+/g, "_") +
-          "-" +
-          stamp() +
-          ".json",
-        S.exportData(v.id),
-        "application/json",
-        "Ricarica Pieno – " + v.name,
-      );
-    });
-    $("#btnShareText").addEventListener("click", () => shareText(false));
-    $("#btnShareTextAll").addEventListener("click", () => shareText(true));
-    $("#btnShareCsv").addEventListener("click", () => shareCsv(false));
-    $("#btnShareCsvAll").addEventListener("click", () => shareCsv(true));
+    $("#btnShareOpen").addEventListener("click", () => openShareDialog());
 
     $("#vehicleForm").addEventListener("submit", onVehicleSubmit);
     bindColors();
@@ -3159,8 +3693,15 @@
         "application/json",
       );
     });
-    $("#btnExportCsv").addEventListener("click", () => exportCsv(false));
-    $("#btnExportCsvAll").addEventListener("click", () => exportCsv(true));
+    $("#btnExportCsv").addEventListener("click", () => exportFile("csv", false));
+    $("#btnExportXlsx").addEventListener("click", () => exportFile("xlsx", false));
+    $("#btnExportXlsxAll").addEventListener("click", () => exportFile("xlsx", true));
+    $("#btnExportCsvAll").addEventListener("click", () => exportFile("csv", true));
+    var dz = $("#dropZone");
+    ["dragenter", "dragover"].forEach((ev) => dz.addEventListener(ev, (e) => { e.preventDefault(); dz.classList.add("over"); }));
+    ["dragleave", "drop"].forEach((ev) => dz.addEventListener(ev, (e) => { e.preventDefault(); dz.classList.remove("over"); }));
+    dz.addEventListener("drop", (e) => runImport(e.dataTransfer.files[0]));
+    $("#shBody").addEventListener("click", onShareClick);
     $("#importFile").addEventListener("change", onImport);
 
     $("#btnReset").addEventListener("click", () => {

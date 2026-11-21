@@ -61,12 +61,12 @@
         <div class="btn-row" style="margin-left: auto; gap: 6px; display: flex; align-items: center;">
           <button
             id="btnTopShare"
-            class="btn icon ghost"
+            class="btn icon share-cta"
             type="button"
             title="Condividi dati"
             aria-label="Condividi dati"
           >
-            📤
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>
           </button>
           <button
             id="btnGear"
@@ -123,8 +123,8 @@
                 autocomplete="off"
                 aria-label="Cerca"
             /></label>
-            <button type="button" class="btn small" id="gShareAll" title="Condividi tutti i veicoli">
-              📤 Condividi
+            <button type="button" class="btn small share-cta" id="gShareAll" title="Condividi tutti i veicoli">
+              <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg> Condividi
             </button>
             <button type="button" class="btn small" id="gSelect">
               ☑ Seleziona
@@ -144,8 +144,8 @@
             <h2>Storico rifornimenti</h2>
             <div style="display: flex; align-items: center; gap: 8px;">
               <span class="muted small" id="historyCount"></span>
-              <button type="button" class="btn small" id="hShare" title="Condividi storico veicolo">
-                📤 Condividi
+              <button type="button" class="btn small share-cta" id="hShare" title="Condividi storico veicolo">
+                <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg> Condividi
               </button>
             </div>
           </div>
@@ -193,8 +193,8 @@
             <h2>Statistiche</h2>
             <div style="display: flex; align-items: center; gap: 8px;">
               <span class="muted small" id="statsVehicle"></span>
-              <button type="button" class="btn small" id="stShare" title="Condividi statistiche">
-                📤 Condividi
+              <button type="button" class="btn small share-cta" id="stShare" title="Condividi statistiche">
+                <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg> Condividi
               </button>
             </div>
           </div>
@@ -226,51 +226,22 @@
               </div>
             </div>
 
-            <div class="card">
-              <h2>Esporta</h2>
+            <div class="card share-card">
+              <h2>Condividi e backup</h2>
               <p class="hint">
-                I dati restano solo su questo dispositivo. Scarica un backup
-                JSON per conservarli o spostarli su un altro dispositivo.
+                I dati restano solo su questo dispositivo. Invia un riepilogo
+                pronto su WhatsApp, Telegram o e-mail, oppure manda un file
+                Excel/CSV/JSON a chi vuoi.
               </p>
-              <div class="btn-col">
-                <button type="button" class="btn primary" id="btnExportAll">
-                  ⬇ Esporta tutto (JSON)
-                </button>
-                <button type="button" class="btn" id="btnExportOne">
-                  ⬇ Solo veicolo attivo (JSON)
-                </button>
-                <button type="button" class="btn" id="btnExportCsv">
-                  ⬇ Veicolo attivo in CSV (Excel)
-                </button>
-                <button type="button" class="btn" id="btnExportCsvAll">
-                  ⬇ Tutti i veicoli in CSV (Excel)
-                </button>
-              </div>
-              <hr />
-              <h2>Condividi</h2>
-              <p class="hint">
-                Invia il backup via WhatsApp, e-mail, AirDrop… oppure condividi
-                un riepilogo testuale del veicolo.
-              </p>
-              <div class="btn-col">
-                <button type="button" class="btn" id="btnShareAll">
-                  📤 Condividi backup (tutti i veicoli)
-                </button>
-                <button type="button" class="btn" id="btnShareOne">
-                  📤 Condividi veicolo attivo
-                </button>
-                <button type="button" class="btn" id="btnShareCsv">
-                  📤 Condividi CSV veicolo attivo
-                </button>
-                <button type="button" class="btn" id="btnShareCsvAll">
-                  📤 Condividi CSV (tutti i veicoli)
-                </button>
-                <button type="button" class="btn" id="btnShareText">
-                  💬 Condividi riepilogo veicolo attivo (testo)
-                </button>
-                <button type="button" class="btn" id="btnShareTextAll">
-                  💬 Condividi riepilogo di tutti i veicoli (testo)
-                </button>
+              <button type="button" class="btn share-cta big" id="btnShareOpen"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg> Condividi…</button>
+              <h3 class="sc-h">Scarica un file</h3>
+              <div class="dl-grid">
+                <button type="button" class="dl-tile" id="btnExportXlsx"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 21h14"/></svg><span><b>Excel (.xlsx)</b><small>Veicolo attivo</small></span></button>
+                <button type="button" class="dl-tile" id="btnExportXlsxAll"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 21h14"/></svg><span><b>Excel (.xlsx)</b><small>Tutti i veicoli</small></span></button>
+                <button type="button" class="dl-tile" id="btnExportCsv"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 21h14"/></svg><span><b>CSV</b><small>Veicolo attivo</small></span></button>
+                <button type="button" class="dl-tile" id="btnExportCsvAll"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 21h14"/></svg><span><b>CSV</b><small>Tutti i veicoli</small></span></button>
+                <button type="button" class="dl-tile" id="btnExportOne"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 21h14"/></svg><span><b>Backup JSON</b><small>Veicolo attivo</small></span></button>
+                <button type="button" class="dl-tile" id="btnExportAll"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 21h14"/></svg><span><b>Backup JSON</b><small>Tutti i veicoli</small></span></button>
               </div>
             </div>
 
@@ -283,17 +254,16 @@
                   <option value="replace">Sostituisci tutto</option>
                 </select></label
               >
-              <label class="btn file-btn"
-                >⬆ Scegli file JSON
-                <input
-                  type="file"
-                  id="importFile"
-                  accept="application/json,.json"
-                  hidden
-              /></label>
+              <label class="drop" id="dropZone">
+                <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"/><path d="M7 8l5-5 5 5"/><path d="M5 21h14"/></svg>
+                <b>Scegli o trascina un file</b>
+                <small>Excel (.xlsx) · CSV · Backup JSON</small>
+                <input type="file" id="importFile" accept=".xlsx,.xls,.ods,.csv,.txt,.json,application/json,text/csv" hidden />
+              </label>
               <p class="hint">
                 «Unisci» aggiunge solo veicoli e rifornimenti non ancora
-                presenti.
+                presenti (i doppioni si riconoscono da data e km). Il file
+                Excel/CSV esportato dall'app si reimporta così com'è.
               </p>
               <hr />
               <button type="button" class="btn danger" id="btnReset">
@@ -673,15 +643,13 @@
     </dialog>
 
     <!-- ============ DIALOG CONDIVISIONE OVUNQUE ============ -->
-    <dialog id="shareDialog" aria-labelledby="shTitle">
-      <div style="padding: 4px 0;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-          <h2 id="shTitle" style="margin: 0;">Condividi dati</h2>
-          <button type="button" class="btn icon ghost" id="shClose" aria-label="Chiudi">✕</button>
-        </div>
-        <p class="hint" id="shSub">Scegli il formato da inviare via WhatsApp, e-mail, AirDrop o file.</p>
-        <div id="shOptions" class="btn-col" style="margin-top: 12px;"></div>
+    <dialog id="shareDialog" class="sharesheet" aria-labelledby="shTitle">
+      <div class="sh-hero">
+        <div class="sh-badge"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg></div>
+        <div class="sh-ht"><h2 id="shTitle">Condividi</h2><p id="shSub">Scegli come inviare i tuoi dati</p></div>
+        <button type="button" class="sh-x" id="shClose" aria-label="Chiudi"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
       </div>
+      <div id="shBody" class="sh-body"></div>
     </dialog>
 
     <div id="bulkBar" class="bulkbar" hidden>
@@ -697,6 +665,7 @@
 
     <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
 
+    <script src="js/xlsx.mini.min.js"></script>
     <script src="js/icons.js"></script>
     <script src="js/storage.js"></script>
     <script src="js/calc.js"></script>
