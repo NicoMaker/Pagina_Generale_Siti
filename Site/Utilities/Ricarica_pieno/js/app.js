@@ -833,9 +833,6 @@
       (v.plate ? " · " + esc(v.plate) : "") +
       "</span>" +
       '<div style="display:flex;gap:6px;">' +
-      '<button type="button" class="btn small ghost" data-go="share" title="Condividi dati veicolo">' +
-      shi("share") +
-      "</button>" +
       '<button type="button" class="btn accent" data-go="add">⛽ Rifornisci</button>' +
       "</div></div>" +
       odoDrum(odo) +
