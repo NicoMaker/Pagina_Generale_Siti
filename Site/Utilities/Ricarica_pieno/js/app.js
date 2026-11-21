@@ -509,13 +509,33 @@
             : fmt0(v.refuels.length) + " pieni") +
           "</small></div></div></button>" +
           '<div class="gc-actions">' +
-          '<button type="button" class="gc-share" data-gact="share" data-id="' + esc(v.id) +
-          '" title="Condividi ' + esc(v.name) + '" aria-label="Condividi ' + esc(v.name) + '">' + shi("share") + "</button>" +
-          '<button type="button" class="gc-edit" data-gact="edit" data-id="' + esc(v.id) +
-          '" title="Modifica ' + esc(v.name) + '" aria-label="Modifica ' + esc(v.name) + '">' + shi("edit") + "</button>" +
-          '<button type="button" class="gc-del" data-gact="del" data-id="' + esc(v.id) +
-          '" title="Elimina ' + esc(v.name) + '" aria-label="Elimina ' + esc(v.name) + '">' + shi("trash") + "</button></div></article>"
-
+          '<button type="button" class="gc-share" data-gact="share" data-id="' +
+          esc(v.id) +
+          '" title="Condividi ' +
+          esc(v.name) +
+          '" aria-label="Condividi ' +
+          esc(v.name) +
+          '">' +
+          shi("share") +
+          "</button>" +
+          '<button type="button" class="gc-edit" data-gact="edit" data-id="' +
+          esc(v.id) +
+          '" title="Modifica ' +
+          esc(v.name) +
+          '" aria-label="Modifica ' +
+          esc(v.name) +
+          '">' +
+          shi("edit") +
+          "</button>" +
+          '<button type="button" class="gc-del" data-gact="del" data-id="' +
+          esc(v.id) +
+          '" title="Elimina ' +
+          esc(v.name) +
+          '" aria-label="Elimina ' +
+          esc(v.name) +
+          '">' +
+          shi("trash") +
+          "</button></div></article>"
         );
       })
       .join("");
@@ -813,7 +833,9 @@
       (v.plate ? " · " + esc(v.plate) : "") +
       "</span>" +
       '<div style="display:flex;gap:6px;">' +
-      '<button type="button" class="btn small ghost" data-go="share" title="Condividi dati veicolo">' + shi("share") + '</button>' +
+      '<button type="button" class="btn small ghost" data-go="share" title="Condividi dati veicolo">' +
+      shi("share") +
+      "</button>" +
       '<button type="button" class="btn accent" data-go="add">⛽ Rifornisci</button>' +
       "</div></div>" +
       odoDrum(odo) +
@@ -963,7 +985,9 @@
           "<small>km/L</small></div>" +
           '<div class="mini-act"><button type="button" class="btn small" data-act="share" data-id="' +
           esc(r.id) +
-          '">' + shi("share") + ' Condividi</button>' +
+          '">' +
+          shi("share") +
+          " Condividi</button>" +
           '<button type="button" class="btn small" data-act="edit" data-id="' +
           esc(r.id) +
           '">✎ Modifica</button>' +
@@ -988,7 +1012,9 @@
         .join("") +
       '</ul></div><div class="card"><h2>Ultimi rifornimenti</h2><div class="mini-list">' +
       recent +
-      '</div><div class="btn-row" style="margin-top:10px;"><button type="button" class="btn small" data-go="history">Vedi tutto lo storico</button><button type="button" class="btn small" data-go="share">' + shi("share") + ' Condividi riepilogo</button></div></div></div>';
+      '</div><div class="btn-row" style="margin-top:10px;"><button type="button" class="btn small" data-go="history">Vedi tutto lo storico</button><button type="button" class="btn small" data-go="share">' +
+      shi("share") +
+      " Condividi riepilogo</button></div></div></div>";
     h += recordPanel(st, { title: "Record e medie (km/L)" });
     var kp = kmlPoints(rs),
       mp = monthPoints(rs);
@@ -1437,7 +1463,9 @@
       '<div class="rf-actions">' +
       '<button type="button" class="btn small" data-act="share" data-id="' +
       esc(r.id) +
-      '">' + shi("share") + ' Condividi</button>' +
+      '">' +
+      shi("share") +
+      " Condividi</button>" +
       '<button type="button" class="btn small" data-act="edit" data-id="' +
       esc(r.id) +
       '">✎ Modifica</button>' +
@@ -2529,7 +2557,8 @@
       '<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18"/>',
     file: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/><path d="M8 13h8M8 17h5"/>',
     box: '<path d="M21 8l-9-5-9 5v8l9 5 9-5Z"/><path d="M3 8l9 5 9-5M12 13v8"/>',
-    download: '<path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 21h14"/>',
+    download:
+      '<path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 21h14"/>',
     upload: '<path d="M12 15V3"/><path d="M7 8l5-5 5 5"/><path d="M5 21h14"/>',
   };
   function shi(name, cls) {
@@ -2554,7 +2583,10 @@
     var vObj = targetVeh || vehicle();
     var list = all ? S.get().vehicles : [vObj].filter(Boolean);
     if (!list.length) {
-      toast(all ? "Nessun dato da esportare" : "Apri prima un veicolo", "error");
+      toast(
+        all ? "Nessun dato da esportare" : "Apri prima un veicolo",
+        "error",
+      );
       return null;
     }
     var text = csvBuild(list, true);
@@ -2698,7 +2730,10 @@
     var vObj = targetVeh || vehicle();
     var list = all ? S.get().vehicles : [vObj].filter(Boolean);
     if (!list.length) {
-      toast(all ? "Nessun dato da esportare" : "Apri prima un veicolo", "error");
+      toast(
+        all ? "Nessun dato da esportare" : "Apri prima un veicolo",
+        "error",
+      );
       return null;
     }
     var base = all
@@ -2768,7 +2803,11 @@
       "⛽ " +
         pl(st.n, "rifornimento", "rifornimenti") +
         (st.partialCount > 0
-          ? " (" + fmt0(st.fullCount) + " pieni, " + fmt0(st.partialCount) + " parziali)"
+          ? " (" +
+            fmt0(st.fullCount) +
+            " pieni, " +
+            fmt0(st.partialCount) +
+            " parziali)"
           : ""),
     );
     if (st.avgKmL)
@@ -2780,10 +2819,16 @@
           " L/100 km)",
       );
     if (st.last3KmL && st.lastN > 1)
-      L.push("🔄 Ultimi " + st.lastN + " pieni: " + fmt2(st.last3KmL) + " km/L");
+      L.push(
+        "🔄 Ultimi " + st.lastN + " pieni: " + fmt2(st.last3KmL) + " km/L",
+      );
     if (st.perf && st.perf.count)
       L.push(
-        "🏆 Record: " + fmt2(st.perf.max) + " km/L (" + fmtDate(st.perf.maxRow.date) + ")",
+        "🏆 Record: " +
+          fmt2(st.perf.max) +
+          " km/L (" +
+          fmtDate(st.perf.maxRow.date) +
+          ")",
       );
     L.push("💶 Spesa totale: *" + eur(st.spent, 2) + "*");
     L.push("🛢️ Litri totali: " + fmt2(st.liters) + " L");
@@ -2884,7 +2929,11 @@
       "⛽ *Rifornimento* · " + fmtDate(r.date),
       "🚗 *" + v.name + "*" + (v.plate ? " · " + v.plate : ""),
       SEP,
-      "🧭 Contachilometri: *" + fmt0(r.odometer) + " km* (+" + kmFmt(r.km) + " km)",
+      "🧭 Contachilometri: *" +
+        fmt0(r.odometer) +
+        " km* (+" +
+        kmFmt(r.km) +
+        " km)",
       "🛢️ Litri: " + fmt2(r.liters) + " L" + (r.full ? "" : " (parziale)"),
       "🏷️ Prezzo: " +
         fmt(r.paid, 3) +
@@ -2893,11 +2942,20 @@
       "💶 Totale: *" + eur(r.total, 2) + "*",
     ];
     if (r.kmPerL)
-      L.push("📉 Consumo: *" + fmt2(r.kmPerL) + " km/L* (" + fmt2(r.l100) + " L/100 km)");
+      L.push(
+        "📉 Consumo: *" +
+          fmt2(r.kmPerL) +
+          " km/L* (" +
+          fmt2(r.l100) +
+          " L/100 km)",
+      );
     if (r.costPerKm != null) L.push("🪙 Costo al km: " + eur(r.costPerKm, 2));
     if (r.note) L.push("📝 " + r.note);
     L.push(SEP, "_Ricarica Pieno_");
-    await shareRawText("Rifornimento " + v.name + " – " + fmtDate(r.date), L.join("\n"));
+    await shareRawText(
+      "Rifornimento " + v.name + " – " + fmtDate(r.date),
+      L.join("\n"),
+    );
   }
 
   /* ---------- Pannello Condividi ---------- */
@@ -2941,7 +2999,8 @@
   function renderShare() {
     var st = S.get(),
       many = st.vehicles.length > 1;
-    $("#shTitle").textContent = "Condividi · " + (shAll() ? "Tutto il garage" : shS.veh.name);
+    $("#shTitle").textContent =
+      "Condividi · " + (shAll() ? "Tutto il garage" : shS.veh.name);
     $("#shSub").textContent = shAll()
       ? pl(st.vehicles.length, "veicolo", "veicoli") + " nel messaggio"
       : "Riepilogo, file Excel o backup";
@@ -2986,9 +3045,27 @@
       shi("copy") +
       "</i>Copia</button></div>" +
       '<div class="sh-sec"><div class="sh-lab"><span>Oppure invia un file</span></div><div class="sh-files">' +
-      shTile("xlsx", "sheet", "#1d6f42", "Excel (.xlsx)", "Tabelle pronte, si riapre con «Importa»") +
-      shTile("csv", "file", "#0ea5e9", "CSV", "Compatibile con ogni foglio di calcolo") +
-      shTile("json", "box", "#8b5cf6", "Backup JSON", "Copia completa per ripristinare l'app") +
+      shTile(
+        "xlsx",
+        "sheet",
+        "#1d6f42",
+        "Excel (.xlsx)",
+        "Tabelle pronte, si riapre con «Importa»",
+      ) +
+      shTile(
+        "csv",
+        "file",
+        "#0ea5e9",
+        "CSV",
+        "Compatibile con ogni foglio di calcolo",
+      ) +
+      shTile(
+        "json",
+        "box",
+        "#8b5cf6",
+        "Backup JSON",
+        "Copia completa per ripristinare l'app",
+      ) +
       "</div></div>" +
       '<button type="button" class="sh-imp" data-sh="import">' +
       shi("upload") +
@@ -3134,14 +3211,18 @@
       d = u.getUTCDate();
     } else if (
       v != null &&
-      (p = String(v).trim().match(/^(\d{4})-(\d{1,2})-(\d{1,2})/))
+      (p = String(v)
+        .trim()
+        .match(/^(\d{4})-(\d{1,2})-(\d{1,2})/))
     ) {
       y = +p[1];
       m = +p[2];
       d = +p[3];
     } else if (
       v != null &&
-      (p = String(v).trim().match(/^(\d{1,2})[\/.\-](\d{1,2})[\/.\-](\d{2,4})/))
+      (p = String(v)
+        .trim()
+        .match(/^(\d{1,2})[\/.\-](\d{1,2})[\/.\-](\d{2,4})/))
     ) {
       d = +p[1];
       m = +p[2];
@@ -3149,13 +3230,21 @@
       if (y < 100) y += 2000;
     } else return null;
     if (!(y > 1950 && m >= 1 && m <= 12 && d >= 1 && d <= 31)) return null;
-    return y + "-" + String(m).padStart(2, "0") + "-" + String(d).padStart(2, "0");
+    return (
+      y + "-" + String(m).padStart(2, "0") + "-" + String(d).padStart(2, "0")
+    );
   }
   function isFull(v) {
     if (v == null || v === "") return true;
     if (typeof v === "boolean") return v;
     var s = nk(v);
-    return !(s === "no" || s === "false" || s === "0" || s === "n" || s === "parziale");
+    return !(
+      s === "no" ||
+      s === "false" ||
+      s === "0" ||
+      s === "n" ||
+      s === "parziale"
+    );
   }
 
   function csvParse(text) {
@@ -3314,10 +3403,7 @@
       });
     });
     tables.veh.forEach((r) => {
-      if (
-        r.name &&
-        !vehicles.some((v) => nk(v.name) === nk(r.name))
-      )
+      if (r.name && !vehicles.some((v) => nk(v.name) === nk(r.name)))
         vehicles.push({
           name: String(r.name),
           plate: r.plate ? String(r.plate) : "",
@@ -3333,7 +3419,11 @@
         "Nessun dato riconosciuto: servono almeno le colonne data, km_finali e litri.",
       );
     return {
-      json: JSON.stringify({ app: "Ricarica Pieno", version: 1, vehicles: vehicles }),
+      json: JSON.stringify({
+        app: "Ricarica Pieno",
+        version: 1,
+        vehicles: vehicles,
+      }),
       skipped: skipped,
     };
   }
@@ -3344,13 +3434,22 @@
     var tables = { veh: [], ref: [] };
     if (["xlsx", "xls", "xlsm", "ods"].indexOf(ext) >= 0) {
       if (!hasX())
-        throw new Error("Lettura Excel non disponibile (manca js/xlsx.mini.min.js).");
+        throw new Error(
+          "Lettura Excel non disponibile (manca js/xlsx.mini.min.js).",
+        );
       var X = window.XLSX;
-      var wb = X.read(await f.arrayBuffer(), { type: "array", cellDates: true });
+      var wb = X.read(await f.arrayBuffer(), {
+        type: "array",
+        cellDates: true,
+      });
       wb.SheetNames.forEach((n) =>
         addTable(
           tables,
-          X.utils.sheet_to_json(wb.Sheets[n], { header: 1, raw: true, defval: null }),
+          X.utils.sheet_to_json(wb.Sheets[n], {
+            header: 1,
+            raw: true,
+            defval: null,
+          }),
         ),
       );
     } else {
@@ -3693,13 +3792,31 @@
         "application/json",
       );
     });
-    $("#btnExportCsv").addEventListener("click", () => exportFile("csv", false));
-    $("#btnExportXlsx").addEventListener("click", () => exportFile("xlsx", false));
-    $("#btnExportXlsxAll").addEventListener("click", () => exportFile("xlsx", true));
-    $("#btnExportCsvAll").addEventListener("click", () => exportFile("csv", true));
+    $("#btnExportCsv").addEventListener("click", () =>
+      exportFile("csv", false),
+    );
+    $("#btnExportXlsx").addEventListener("click", () =>
+      exportFile("xlsx", false),
+    );
+    $("#btnExportXlsxAll").addEventListener("click", () =>
+      exportFile("xlsx", true),
+    );
+    $("#btnExportCsvAll").addEventListener("click", () =>
+      exportFile("csv", true),
+    );
     var dz = $("#dropZone");
-    ["dragenter", "dragover"].forEach((ev) => dz.addEventListener(ev, (e) => { e.preventDefault(); dz.classList.add("over"); }));
-    ["dragleave", "drop"].forEach((ev) => dz.addEventListener(ev, (e) => { e.preventDefault(); dz.classList.remove("over"); }));
+    ["dragenter", "dragover"].forEach((ev) =>
+      dz.addEventListener(ev, (e) => {
+        e.preventDefault();
+        dz.classList.add("over");
+      }),
+    );
+    ["dragleave", "drop"].forEach((ev) =>
+      dz.addEventListener(ev, (e) => {
+        e.preventDefault();
+        dz.classList.remove("over");
+      }),
+    );
     dz.addEventListener("drop", (e) => runImport(e.dataTransfer.files[0]));
     $("#shBody").addEventListener("click", onShareClick);
     $("#importFile").addEventListener("change", onImport);

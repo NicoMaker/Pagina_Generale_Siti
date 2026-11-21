@@ -172,7 +172,10 @@
   const sig = (r) =>
     r.date + "|" + r.odometer + "|" + Math.round(r.liters * 100);
   const sameVeh = (a, b) => {
-    var n = (s) => String(s || "").trim().toLowerCase();
+    var n = (s) =>
+      String(s || "")
+        .trim()
+        .toLowerCase();
     return (
       n(a.name) === n(b.name) &&
       (n(a.plate) === n(b.plate) || !n(a.plate) || !n(b.plate))
