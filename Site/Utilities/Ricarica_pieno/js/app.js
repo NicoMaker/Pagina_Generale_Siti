@@ -2469,11 +2469,8 @@
 
   const stamp = () => S.todayISO();
 
-  function exportCsv() {
-    var v = vehicle();
-    if (!v) return toast("Apri prima un veicolo", "error");
-    var rs = C.rows(v);
-    if (!rs.length) return toast("Nessun rifornimento da esportare", "error");
+  /** Costruisce il CSV per uno o pi\u00f9 veicoli (con colonne veicolo/targa se withVeh). */
+  function csvBuild(list, withVeh) {
     function n(x, d) {
       return x == null || !isFinite(x)
         ? ""
@@ -2482,12 +2479,14 @@
     function t(s) {
       return '"' + String(s).replace(/"/g, '""') + '"';
     }
-    var lines = [
-      "data;km_finali;km_percorsi;litri;prezzo_listino;sconto_fvg;prezzo_pagato;totale;km_l;l_100km;costo_km;pieno;note",
-    ];
-    rs.forEach((r) => {
-      lines.push(
-        [
+    var head =
+      "data;km_finali;km_percorsi;litri;prezzo_listino;sconto_fvg;prezzo_pagato;totale;km_l;l_100km;costo_km;pieno;note";
+    var lines = [(withVeh ? "veicolo;targa;" : "") + head];
+    var count = 0;
+    list.forEach((v) => {
+      C.rows(v).forEach((r) => {
+        count++;
+        var cells = [
           r.date,
           n(r.odometer, 1),
           n(r.km, 1),
@@ -2501,18 +2500,50 @@
           n(r.costPerKm, 2),
           r.full ? "si" : "no",
           t(r.note),
-        ].join(";"),
-      );
+        ];
+        if (withVeh) cells.unshift(t(v.name), t(v.plate));
+        lines.push(cells.join(";"));
+      });
     });
-    download(
-      "ricarica-pieno-" +
-        v.name.replace(/[^\w-]+/g, "_") +
+    return count ? "\ufeff" + lines.join("\r\n") : null;
+  }
+
+  /** Prepara nome e contenuto del CSV (veicolo attivo oppure tutti i veicoli). */
+  function csvFile(all) {
+    var list = all ? S.get().vehicles : [vehicle()].filter(Boolean);
+    if (!list.length) {
+      toast(all ? "Nessun dato da esportare" : "Apri prima un veicolo", "error");
+      return null;
+    }
+    var text = csvBuild(list, all);
+    if (!text) {
+      toast("Nessun rifornimento da esportare", "error");
+      return null;
+    }
+    var name = all
+      ? "ricarica-pieno-tutti-i-veicoli-" + stamp() + ".csv"
+      : "ricarica-pieno-" +
+        list[0].name.replace(/[^\w-]+/g, "_") +
         "-" +
         stamp() +
-        ".csv",
-      "\ufeff" + lines.join("\r\n"),
-      "text/csv;charset=utf-8",
-    );
+        ".csv";
+    return { name: name, text: text };
+  }
+
+  function exportCsv(all) {
+    var f = csvFile(all === true);
+    if (f) download(f.name, f.text, "text/csv;charset=utf-8");
+  }
+
+  function shareCsv(all) {
+    var f = csvFile(all === true);
+    if (f)
+      shareFile(
+        f.name,
+        f.text,
+        "text/csv",
+        all ? "Ricarica Pieno \u2013 tutti i veicoli" : "Ricarica Pieno \u2013 CSV",
+      );
   }
 
   async function shareFile(name, text, mime, title) {
@@ -2569,14 +2600,20 @@
     return L.join("\n");
   }
 
-  async function shareText() {
-    var v = vehicle();
-    if (!v) return toast("Apri prima un veicolo", "error");
-    var text = vehicleSummary(v);
+  async function shareText(all) {
+    var list = all === true ? S.get().vehicles : [vehicle()].filter(Boolean);
+    if (!list.length)
+      return toast(
+        all === true ? "Nessun dato da condividere" : "Apri prima un veicolo",
+        "error",
+      );
+    var text = list.map(vehicleSummary).join("\n\n");
+    var title =
+      all === true ? "Ricarica Pieno – tutti i veicoli" : "Ricarica Pieno – " + list[0].name;
     try {
       if (navigator.share) {
         await navigator.share({
-          title: "Ricarica Pieno – " + v.name,
+          title: title,
           text: text,
         });
         return;
@@ -2845,7 +2882,10 @@
         "Ricarica Pieno – " + v.name,
       );
     });
-    $("#btnShareText").addEventListener("click", shareText);
+    $("#btnShareText").addEventListener("click", () => shareText(false));
+    $("#btnShareTextAll").addEventListener("click", () => shareText(true));
+    $("#btnShareCsv").addEventListener("click", () => shareCsv(false));
+    $("#btnShareCsvAll").addEventListener("click", () => shareCsv(true));
 
     $("#vehicleForm").addEventListener("submit", onVehicleSubmit);
     bindColors();
@@ -2929,7 +2969,8 @@
         "application/json",
       );
     });
-    $("#btnExportCsv").addEventListener("click", exportCsv);
+    $("#btnExportCsv").addEventListener("click", () => exportCsv(false));
+    $("#btnExportCsvAll").addEventListener("click", () => exportCsv(true));
     $("#importFile").addEventListener("change", onImport);
 
     $("#btnReset").addEventListener("click", () => {
